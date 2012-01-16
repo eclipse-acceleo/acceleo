@@ -541,7 +541,7 @@ public class AcceleoProject {
 		List<AcceleoProject> result = new ArrayList<AcceleoProject>();
 		for (IProject aProject : getRecursivelyAccessibleProjects()) {
 			try {
-				if (aProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+				if (aProject.isAccessible() && aProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 					result.add(new AcceleoProject(aProject));
 				}
 			} catch (CoreException e) {

@@ -14,8 +14,7 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.ide.ui.tests.examples.ExampleTests;
-import org.eclipse.acceleo.ide.ui.tests.wizards.WizardTests;
+import org.eclipse.acceleo.ide.ui.tests.builder.AcceleoBuilderTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -26,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses({WizardTests.class, ExampleTests.class })
+@SuiteClasses({AcceleoBuilderTests.class, })
 public class AllTests {
 	/**
 	 * Launches the test with the given arguments.

@@ -10,25 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.wizards.project;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
-import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind;
-import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
-import org.eclipse.acceleo.internal.ide.ui.wizards.module.example.AcceleoInitializationStrategyUtils;
-import org.eclipse.core.resources.IFile;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoProjectUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -38,7 +31,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -52,12 +44,8 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkingSet;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.osgi.framework.Bundle;
 
@@ -304,7 +292,8 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 				}
 			}
 		}
-		generateFiles(acceleoProject, project, monitor);
+		boolean generateModules = !(currentPage instanceof WizardNewProjectCreationPage);
+		AcceleoProjectUtils.generateFiles(acceleoProject, allModules, project, generateModules, monitor);
 
 		try {
 			IClasspathEntry newContainerEntry = JavaCore.newContainerEntry(newProjectPage
@@ -333,113 +322,6 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 			getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
 		} catch (CoreException e) {
 			AcceleoUIActivator.log(e, true);
-		}
-	}
-
-	/**
-	 * Generates the files from the information in the wizard.
-	 * 
-	 * @param acceleoProject
-	 *            The Acceleo Project
-	 * @param project
-	 *            The project
-	 * @param monitor
-	 *            The progress monitor
-	 */
-	private void generateFiles(AcceleoProject acceleoProject, IProject project, IProgressMonitor monitor) {
-		// Generate files
-		List<AcceleoModule> allModules = this.newAcceleoModulesCreationPage.getAllModules();
-		IWizardContainer iWizardContainer = this.getContainer();
-		IWizardPage currentPage = iWizardContainer.getCurrentPage();
-		try {
-			// Prepare Ant folder
-			IFolder antTasksFolder = project.getFolder("tasks"); //$NON-NLS-1$
-			if (!antTasksFolder.exists()) {
-				antTasksFolder.create(true, false, monitor);
-			}
-			IProjectDescription description = project.getDescription();
-			String[] natureIds = new String[] {IAcceleoConstants.ACCELEO_NATURE_ID,
-					IAcceleoConstants.PLUGIN_NATURE_ID, IAcceleoConstants.JAVA_NATURE_ID, };
-			description.setNatureIds(natureIds);
-			project.setDescription(description, monitor);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
-		}
-		monitor.beginTask(AcceleoUIMessages.getString("AcceleoNewProjectWizard.Monitor"), 100); //$NON-NLS-1$
-		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateProjectSettings(acceleoProject, project);
-		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateProjectClasspath(acceleoProject, project);
-		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateProjectManifest(acceleoProject, project);
-		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateBuildProperties(acceleoProject, project);
-		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateActivator(acceleoProject, project);
-
-		if (currentPage instanceof WizardNewProjectCreationPage) {
-			return;
-		}
-		IFile file = null;
-
-		for (AcceleoModule acceleoModule : allModules) {
-			monitor.worked(10);
-			String parentFolder = acceleoModule.getParentFolder();
-			IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
-					acceleoModule.getProjectName());
-			if (moduleProject.exists() && moduleProject.isAccessible()) {
-				IPath parentFolderPath = new Path(parentFolder);
-				IFolder folder = moduleProject.getFolder(parentFolderPath.removeFirstSegments(1));
-				file = folder.getFile(acceleoModule.getName() + "." + IAcceleoConstants.MTL_FILE_EXTENSION); //$NON-NLS-1$
-				AcceleoUIGenerator.getDefault().generateAcceleoModule(acceleoModule, folder);
-				if (acceleoModule.isIsInitialized()) {
-					String initializationKind = acceleoModule.getInitializationKind();
-					IAcceleoInitializationStrategy strategy = null;
-					List<IAcceleoInitializationStrategy> initializationStrategy = AcceleoInitializationStrategyUtils
-							.getInitializationStrategy();
-					for (IAcceleoInitializationStrategy iAcceleoInitializationStrategy : initializationStrategy) {
-						if (iAcceleoInitializationStrategy.getDescription() != null
-								&& iAcceleoInitializationStrategy.getDescription().equals(initializationKind)) {
-							strategy = iAcceleoInitializationStrategy;
-							break;
-						}
-					}
-
-					IFile exampleFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
-							new Path(acceleoModule.getInitializationPath()));
-					String moduleElementKind = IAcceleoInitializationStrategy.TEMPLATE_KIND;
-					if (acceleoModule.getModuleElement().getKind().equals(ModuleElementKind.QUERY)) {
-						moduleElementKind = IAcceleoInitializationStrategy.QUERY_KIND;
-					}
-					if (strategy != null && file.exists()) {
-						try {
-							strategy.configure(moduleElementKind, acceleoModule.getModuleElement()
-									.isGenerateFile(), acceleoModule.getModuleElement().isIsMain(),
-									acceleoModule.isGenerateDocumentation());
-							String content = strategy.getContent(exampleFile, acceleoModule.getName(),
-									acceleoModule.getMetamodelURIs(), acceleoModule.getModuleElement()
-											.getParameterType());
-							ByteArrayInputStream javaStream = new ByteArrayInputStream(content
-									.getBytes("UTF8")); //$NON-NLS-1$
-							file.setContents(javaStream, true, false, new NullProgressMonitor());
-						} catch (CoreException e) {
-							AcceleoUIActivator.log(e, true);
-						} catch (UnsupportedEncodingException e) {
-							AcceleoUIActivator.log(e, true);
-						}
-					}
-				}
-			}
-		}
-
-		// Open last created module
-		if (file != null && file.isAccessible()) {
-			IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			try {
-				IDE.openEditor(activePage, file);
-			} catch (PartInitException e) {
-				AcceleoUIActivator.log(e, true);
-			}
 		}
 	}
 
