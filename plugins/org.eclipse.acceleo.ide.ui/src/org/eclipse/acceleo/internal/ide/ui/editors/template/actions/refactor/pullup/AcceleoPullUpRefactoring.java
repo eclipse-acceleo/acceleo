@@ -148,7 +148,8 @@ public class AcceleoPullUpRefactoring extends Refactoring {
 				.getString("AcceleoEditorPullUpRefactoring.InvalidRefactoringParameters")); //$NON-NLS-1$
 		if (this.module != null && this.templates.size() > 0 && this.fileName != null
 				&& this.container != null) {
-			if (this.container.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+			if (this.container.getProject().isAccessible()
+					&& this.container.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 				result = RefactoringStatus.create(Status.OK_STATUS);
 			}
 		}

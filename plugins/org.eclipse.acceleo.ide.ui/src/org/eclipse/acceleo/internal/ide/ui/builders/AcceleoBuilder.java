@@ -126,7 +126,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		for (org.eclipse.acceleo.internal.parser.compiler.AcceleoProject projectToRefresh : projectsToRefresh) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			for (IProject iProject : projects) {
-				if (projectToRefresh.getProjectRoot().equals(iProject.getLocation().toFile())) {
+				if (iProject.isAccessible()
+						&& projectToRefresh.getProjectRoot().equals(iProject.getLocation().toFile())) {
 					iProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
 				}
 			}
@@ -154,7 +155,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				IProject requiredProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 						requiredProjectName);
 				try {
-					if (requiredProject.hasNature(JavaCore.NATURE_ID)
+					if (requiredProject.isAccessible() && requiredProject.hasNature(JavaCore.NATURE_ID)
 							&& requiredProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 						IJavaProject requiredJavaProject = JavaCore.create(requiredProject);
 						File projectRoot = requiredProject.getLocation().toFile();
@@ -179,7 +180,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 			for (IProject iProject : projects) {
 				try {
-					if (iProject.hasNature(JavaCore.NATURE_ID)
+					if (iProject.isAccessible() && iProject.hasNature(JavaCore.NATURE_ID)
 							&& iProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 						IJavaProject iJavaProject = JavaCore.create(iProject);
 						boolean requiring = false;

@@ -318,8 +318,10 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 	private void initializeContent(IDocument document, IFile file) {
 		if (document != null) {
 			try {
-				if (file == null || natureDialogShown
-						|| file.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+				if (file == null
+						|| natureDialogShown
+						|| (file.getProject().isAccessible() && file.getProject().hasNature(
+								IAcceleoConstants.ACCELEO_NATURE_ID))) {
 					content.init(new StringBuffer(document.get()), file);
 					content.createCST();
 				} else {

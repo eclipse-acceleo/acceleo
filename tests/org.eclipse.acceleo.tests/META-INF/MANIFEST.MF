@@ -20,4 +20,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.model.tests,
  org.eclipse.acceleo.engine,
  org.eclipse.acceleo.common.tests,
- org.eclipse.acceleo.traceability.tests
+ org.eclipse.acceleo.traceability.tests,
+ org.eclipse.acceleo.ide.ui.tests

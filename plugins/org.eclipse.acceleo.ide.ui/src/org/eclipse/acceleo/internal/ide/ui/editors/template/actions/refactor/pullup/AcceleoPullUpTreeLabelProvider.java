@@ -54,7 +54,8 @@ public class AcceleoPullUpTreeLabelProvider extends LabelProvider {
 
 		if (element instanceof IProject) {
 			try {
-				boolean hasNature = ((IProject)element).hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
+				boolean hasNature = ((IProject)element).isAccessible()
+						&& ((IProject)element).hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
 				if (hasNature) {
 					image = AcceleoUIActivator.getDefault().getImage("icons/AcceleoNewProject.gif"); //$NON-NLS-1$;
 				}

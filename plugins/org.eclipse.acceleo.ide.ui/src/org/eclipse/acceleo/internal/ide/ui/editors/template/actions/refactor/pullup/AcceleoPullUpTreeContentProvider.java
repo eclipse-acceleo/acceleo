@@ -63,15 +63,16 @@ public class AcceleoPullUpTreeContentProvider implements ITreeContentProvider {
 				for (IResource iResource : members) {
 					if (iResource instanceof IProject) {
 						IProject project = (IProject)iResource;
-						if (project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+						if (project.isAccessible() && project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 							resources.add(project);
 						}
 					} else if (iResource instanceof IFile
 							&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(((IFile)iResource)
 									.getFileExtension())
-							&& iResource.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+							&& (iResource.getProject().isAccessible() && iResource.getProject().hasNature(
+									IAcceleoConstants.ACCELEO_NATURE_ID))) {
 						resources.add(iResource);
-					} else if (iResource instanceof IContainer
+					} else if (iResource instanceof IContainer && iResource.getProject().isAccessible()
 							&& iResource.getProject().hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
 						resources.add(iResource);
 					}

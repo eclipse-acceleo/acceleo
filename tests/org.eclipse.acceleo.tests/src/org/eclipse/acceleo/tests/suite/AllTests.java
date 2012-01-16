@@ -49,7 +49,7 @@ public class AllTests {
 		classicSuite.addTest(CommonTestSuite.suite());
 		classicSuite.addTest(CompatibilityTestSuite.suite());
 		classicSuite.addTest(EngineTestSuite.suite());
-		// classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
+		classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
 
@@ -59,7 +59,7 @@ public class AllTests {
 		traceabilitySuite.addTest(CommonTestSuite.suite());
 		traceabilitySuite.addTest(CompatibilityTestSuite.suite());
 		traceabilitySuite.addTest(EngineTestSuite.suite());
-		// traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
+		traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
 		traceabilitySuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
 
