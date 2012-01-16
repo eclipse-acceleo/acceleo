@@ -13,35 +13,66 @@ package org.eclipse.acceleo.maven;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Utility class to map the Acceleo project declared in the pom.xml
+ * 
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.2
+ */
 public class AcceleoProject {
-	
+
+	/**
+	 * The project root.
+	 */
 	private File root;
-	
-	private Classpath classpath;
-	
-	private List<String> jars;
-	
+
+	/**
+	 * The classpath entries.
+	 */
+	private List<Entry> entries;
+
+	/**
+	 * The jars.
+	 */
+	private List<File> jars;
+
+	/**
+	 * The dependencies.
+	 */
 	private List<AcceleoProject> dependencies;
 
-	public AcceleoProject(File root, Classpath classpath, List<String> jars, List<AcceleoProject> dependencies) {
-		this.root = root;
-		this.classpath = classpath;
-		this.jars = jars;
-		this.dependencies = dependencies;
+	/**
+	 * Returns the classpath entries.
+	 * 
+	 * @return The classpath entries.
+	 */
+	public List<Entry> getEntries() {
+		return entries;
 	}
-	
-	public Classpath getClasspath() {
-		return classpath;
-	}
-	
+
+	/**
+	 * Returns the Acceleo project dependencies.
+	 * 
+	 * @return The Acceleo project dependencies.
+	 */
 	public List<AcceleoProject> getDependencies() {
 		return dependencies;
 	}
-	
-	public List<String> getJars() {
+
+	/**
+	 * Returns the jar dependencies.
+	 * 
+	 * @return The jar dependencies.
+	 */
+	public List<File> getJars() {
 		return jars;
 	}
-	
+
+	/**
+	 * Returns the project root.
+	 * 
+	 * @return The project root.
+	 */
 	public File getRoot() {
 		return root;
 	}

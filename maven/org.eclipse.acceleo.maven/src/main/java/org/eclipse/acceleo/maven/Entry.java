@@ -10,19 +10,37 @@
  *******************************************************************************/
 package org.eclipse.acceleo.maven;
 
+/**
+ * Utility class mapping a classpath entry of an Acceleo project in the pom.xml.
+ * 
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+ * @since 3.2
+ */
 public class Entry {
+	/**
+	 * The input folder.
+	 */
 	private String input;
+
+	/**
+	 * The output folder.
+	 */
 	private String output;
 
-	public Entry(String input, String output) {
-		this.input = input;
-		this.output = output;
-	}
-	
+	/**
+	 * Returns the input folder.
+	 * 
+	 * @return The input folder.
+	 */
 	public String getInput() {
 		return input;
 	}
-	
+
+	/**
+	 * Returns the output folder.
+	 * 
+	 * @return The output folder.
+	 */
 	public String getOutput() {
 		return output;
 	}
