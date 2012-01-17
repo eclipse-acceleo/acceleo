@@ -1,0 +1,29 @@
+[comment]
+  Copyright 2008, 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:stephane.bouchet@obeo.fr">Stephane Bouchet</a>
+[/comment]
+[module interfaceBody('http://www.eclipse.org/uml2/3.0.0/UML')/]
+[import org::eclipse::acceleo::module::example::uml2java::helios::common::common/]
+
+[template public generateInterfaceBody(i : Interface)]
+public interface [i.name.toUpperFirst()/] {
+
+[for (o : Operation | i.ownedOperation)]
+    /**
+     *[for (cmt : Comment | o.ownedComment)] [cmt._body/][/for]
+[for (p : Parameter | o.ownedParameter) ? (p.direction <> ParameterDirectionKind::return)]
+[paramOperationComment(p)/]
+[/for]
+[if (not o.type.name.oclIsUndefined())]
+[returnOperationComment()/]
+[/if]
+     */
+    public [o.returnTypeOperation()/]([o.getInParameter()/]);
+[/for]
+}
+[/template]

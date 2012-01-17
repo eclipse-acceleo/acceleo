@@ -15,15 +15,23 @@ import com.google.common.collect.Sets;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoParser;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
@@ -38,10 +46,18 @@ import org.eclipse.emf.common.util.URI;
  * 
  * @goal acceleo-compile
  * @phase compile
+ * @requiresDependencyResolution runtime
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.2
  */
 public class AcceleoParserMojo extends AbstractMojo {
+
+	/**
+	 * @parameter expression="${project}"
+	 * @required
+	 * @readonly
+	 */
+	private MavenProject project;
 
 	/**
 	 * Indicates if we are compiling the Acceleo modules as binary resources.
@@ -74,27 +90,33 @@ public class AcceleoParserMojo extends AbstractMojo {
 	 */
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		Log log = getLog();
-		log.info("ACCELEO MAVEN STAND ALONE BUILD");
+		log.info("Acceleo maven stand alone build...");
 
-		log.info("Registering packages...");
+		log.info("Starting packages registration...");
 		for (String packageToRegister : this.packagesToRegister) {
 			try {
-				Class<?> forName = Class.forName(packageToRegister);
+				List<?> runtimeClasspathElements = project.getRuntimeClasspathElements();
+				URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
+				for (int i = 0; i < runtimeClasspathElements.size(); i++) {
+					String element = (String)runtimeClasspathElements.get(i);
+					runtimeUrls[i] = new File(element).toURI().toURL();
+				}
+				URLClassLoader newLoader = new URLClassLoader(runtimeUrls, Thread.currentThread()
+						.getContextClassLoader());
+
+				Class<?> forName = Class.forName(packageToRegister, true, newLoader);
 				Field nsUri = forName.getField("eNS_URI");
 				Field eInstance = forName.getField("eINSTANCE");
 
-				Object newInstance = forName.newInstance();
-				Object nsURIInvoked = nsUri.get(newInstance);
+				Object nsURIInvoked = nsUri.get(null);
 				if (nsURIInvoked instanceof String) {
 					log.info("Registering package '" + packageToRegister + "'.");
-					AcceleoPackageRegistry.INSTANCE.put((String)nsURIInvoked, eInstance.get(newInstance));
+					AcceleoPackageRegistry.INSTANCE.put((String)nsURIInvoked, eInstance.get(null));
 				} else {
 					log.error("The URI field is not a string.");
 				}
 
 			} catch (ClassNotFoundException e) {
-				log.error(e);
-			} catch (InstantiationException e) {
 				log.error(e);
 			} catch (IllegalAccessException e) {
 				log.error(e);
@@ -102,11 +124,15 @@ public class AcceleoParserMojo extends AbstractMojo {
 				log.error(e);
 			} catch (NoSuchFieldException e) {
 				log.error(e);
+			} catch (DependencyResolutionRequiredException e) {
+				log.error(e);
+			} catch (MalformedURLException e) {
+				log.error(e);
 			}
 
 		}
 
-		log.info("Starting the build sequence...");
+		log.info("Starting the build sequence for the project '" + this.acceleoProject.getRoot() + "'...");
 		log.info("Mapping the pom.xml to AcceleoProject...");
 
 		Preconditions.checkNotNull(this.acceleoProject);
@@ -123,6 +149,10 @@ public class AcceleoParserMojo extends AbstractMojo {
 		for (Entry entry : entries) {
 			File inputDirectory = new File(root, entry.getInput());
 			File outputDirectory = new File(root, entry.getOutput());
+
+			log.debug("Input: " + inputDirectory.getAbsolutePath());
+			log.debug("Output: " + outputDirectory.getAbsolutePath());
+
 			AcceleoProjectClasspathEntry classpathEntry = new AcceleoProjectClasspathEntry(inputDirectory,
 					outputDirectory);
 			classpathEntries.add(classpathEntry);
@@ -154,12 +184,92 @@ public class AcceleoParserMojo extends AbstractMojo {
 		}
 
 		log.info("Adding jar dependencies...");
-		List<File> jars = this.acceleoProject.getJars();
+		List<String> jars = this.acceleoProject.getJars();
 		if (jars != null) {
 			Set<URI> newDependencies = new LinkedHashSet<URI>();
-			for (File jar : jars) {
-				URI uri = URI.createFileURI(jar.getAbsolutePath());
-				newDependencies.add(uri);
+			for (String jar : jars) {
+				log.info("Resolving jar: '" + jar + "'...");
+				File jarFile = new File(jar);
+				if (jarFile.isFile()) {
+					URI uri = URI.createFileURI(jar);
+					newDependencies.add(uri);
+					log.info("Found jar for '" + jar + "' on the filesystem: '" + jarFile.getAbsolutePath()
+							+ "'.");
+				} else {
+					StringTokenizer tok = new StringTokenizer(jar, ":");
+
+					String groupdId = null;
+					String artifactId = null;
+					String version = null;
+
+					int c = 0;
+					while (tok.hasMoreTokens()) {
+						String nextToken = tok.nextToken();
+						if (c == 0) {
+							groupdId = nextToken;
+						} else if (c == 1) {
+							artifactId = nextToken;
+						} else if (c == 2) {
+							version = nextToken;
+						}
+
+						c++;
+					}
+
+					Set<?> artifacts = this.project.getArtifacts();
+					for (Object object : artifacts) {
+						if (object instanceof Artifact) {
+							Artifact artifact = (Artifact)object;
+							if (groupdId != null && groupdId.equals(artifact.getGroupId())
+									&& artifactId != null && artifactId.equals(artifact.getArtifactId())) {
+								if (version != null && version.equals(artifact.getVersion())) {
+									File artifactFile = artifact.getFile();
+									if (artifactFile != null && artifactFile.exists()) {
+										URI uri = URI.createFileURI(artifactFile.getAbsolutePath());
+										newDependencies.add(uri);
+										log.info("Found jar for '" + jar + "' on the filesystem: '"
+												+ uri.toString() + "'.");
+									}
+								} else if (version == null) {
+									File artifactFile = artifact.getFile();
+									if (artifactFile != null && artifactFile.exists()) {
+										URI uri = URI.createFileURI(artifactFile.getAbsolutePath());
+										newDependencies.add(uri);
+										log.info("Found jar for '" + jar + "' on the filesystem: '"
+												+ uri.toString() + "'.");
+									}
+								}
+							}
+						}
+					}
+
+					List<?> mavenDependencies = this.project.getDependencies();
+					for (Object object : mavenDependencies) {
+						if (object instanceof Dependency) {
+							Dependency dependency = (Dependency)object;
+							if (groupdId != null && groupdId.equals(dependency.getGroupId())
+									&& artifactId != null && artifactId.equals(dependency.getArtifactId())) {
+								if (version != null && version.equals(dependency.getVersion())) {
+									String systemPath = dependency.getSystemPath();
+									if (systemPath != null && new File(systemPath).exists()) {
+										URI uri = URI.createFileURI(systemPath);
+										newDependencies.add(uri);
+										log.info("Found jar for '" + jar + "' on the filesystem: '"
+												+ uri.toString() + "'.");
+									}
+								} else if (version == null) {
+									String systemPath = dependency.getSystemPath();
+									if (systemPath != null && new File(systemPath).exists()) {
+										URI uri = URI.createFileURI(systemPath);
+										newDependencies.add(uri);
+										log.info("Found jar for '" + jar + "' on the filesystem: '"
+												+ uri.toString() + "'.");
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 			aProject.addDependencies(newDependencies);
 		}

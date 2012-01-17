@@ -1,0 +1,89 @@
+[comment]
+  Copyright 2008, 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:stephane.bouchet@obeo.fr">Stephane Bouchet</a>
+[/comment]
+[module classBody('http://www.eclipse.org/uml2/3.0.0/UML')/]
+[import org::eclipse::acceleo::module::example::uml2java::helios::common::common/]
+
+[template public generateClassBody(c : Class)]
+public[if (c.isAbstract)] abstract[/if] class [c.name.toUpperFirst()/][for (superC : Class | c.superClass) before(' extends ') separator(',')] [superC.name/][/for][for (interf : Interface | c.getImplementedInterfaces()) before(' implements ') separator(',')] [interf.name/][/for] {
+[for (p : Property | c.getAllAttributes())]
+[if (p.upper = -1 or p.upper > 1)]
+    /**
+     * the [p.name/] attribute.
+     */
+    private List<[p.type.name/]> [p.name/];
+[else]
+    /**
+     * the [p.name/] attribute.
+     */
+    private [p.type.name/] [p.name/];
+[/if]
+[/for]
+[for (p : Property | c.getAllAttributes())]
+    /**
+     * the [p.name/] getter.
+     * @return the [p.name/].
+     */
+    public [if (p.upper = -1 or p.upper > 1)]List<[p.type.name/]>[else][p.type.name/][/if] get[p.name.toUpperFirst()/]() {
+        return this.[p.name/];
+    }
+
+    /**
+     * the [p.name/] setter.
+     * @param p_[p.name/] the [p.name/] to set.
+     */
+    public void set[p.name.toUpperFirst()/]([if (p.upper = -1 or p.upper > 1)]List<[p.type.name/]>[else][p.type.name/][/if] p_[p.name/]) {
+        this.[p.name/] = p_[p.name/];
+    }
+[/for]
+[for (p : Property | c.getAssociations().memberEnd)]
+[if (p.upper = -1 or p.upper > 1)]
+    /**
+     * the [p.name/] attribute.
+     */
+    private List<[p.type.name/]> [p.name/];
+[else]
+    /**
+     * the [p.name/] attribute.
+     */
+    private [p.type.name/] [p.name/];
+[/if]
+[/for]
+[for (o : Operation | c.getOperations())]
+[o.operationBody()/]
+[/for]
+[for (interf : Interface | c.getImplementedInterfaces())]
+[for (o : Operation | interf.ownedOperation)]
+[o.operationBody()/]
+[/for]
+[/for]
+}
+[/template]
+
+[template private operationBody(o : Operation)]
+    /**
+     *[for (cmt : Comment | o.ownedComment)] [cmt._body/][/for]
+[for (p : Parameter | o.ownedParameter) ? (p.direction <> ParameterDirectionKind::return)]
+[paramOperationComment(p)/]
+[/for]
+[if (not o.type.oclIsUndefined())]
+[returnOperationComment()/]
+[/if]
+     */
+    public [o.returnTypeOperation()/]([o.getInParameter()/]) {
+        // [protected ('for operation '.concat(o.name))]
+[if (not o.type.oclIsUndefined())]
+        // TODO should be implemented
+        return null;
+[else]
+        // TODO should be implemented
+[/if]
+        // [/protected]
+    }
+[/template]
