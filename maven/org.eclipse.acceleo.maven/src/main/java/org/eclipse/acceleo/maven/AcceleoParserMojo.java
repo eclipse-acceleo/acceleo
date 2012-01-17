@@ -35,6 +35,7 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoParser;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
+import org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIResolver;
 import org.eclipse.acceleo.internal.parser.compiler.IParserListener;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
@@ -278,6 +279,8 @@ public class AcceleoParserMojo extends AbstractMojo {
 		AcceleoParser parser = new AcceleoParser(aProject, this.useBinaryResources);
 		AcceleoParserListener listener = new AcceleoParserListener();
 		parser.addListeners(listener);
+		AcceleoURIResolver resolver = new AcceleoURIResolver();
+		parser.setURIResolver(resolver);
 
 		Set<File> builtFiles = parser.buildAll(new BasicMonitor());
 
@@ -293,6 +296,42 @@ public class AcceleoParserMojo extends AbstractMojo {
 		}
 
 		log.info("Build completed.");
+	}
+
+	/**
+	 * The URI resolver that will change the path of the jar resource to a platform:/plugin path.
+	 * 
+	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+	 * @since 3.2
+	 */
+	private class AcceleoURIResolver implements IAcceleoParserURIResolver {
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIResolver#resolve(org.eclipse.emf.common.util.URI)
+		 */
+		public URI resolve(URI uri) {
+			URI newURI = uri;
+			if (newURI.toString().startsWith("jar:file:")) {
+				int indexOf = newURI.toString().indexOf(".jar!/");
+				if (indexOf != -1) {
+					String name = newURI.toString();
+					name = name.substring(0, indexOf);
+					name = name.substring("jar:file:".length() + 1);
+					name = name.substring(0, name.lastIndexOf("-"));
+					if (name.contains("/")) {
+						name = name.substring(name.lastIndexOf("/"));
+						name = name + "/";
+					}
+					name = "platform:/plugin" + name
+							+ newURI.toString().substring(indexOf + ".jar!/".length());
+					newURI = URI.createURI(name);
+				}
+			}
+			return newURI;
+		}
+
 	}
 
 	/**

@@ -96,7 +96,7 @@ public final class AcceleoParserUtils {
 		try {
 			String jarPath = jar.toString();
 			if (jarPath.startsWith("file:\\") || jarPath.startsWith("file:/")) { //$NON-NLS-1$ //$NON-NLS-2$
-				jarPath = jarPath.substring("file:/".length()); //$NON-NLS-1$
+				jarPath = jarPath.substring(6);
 			}
 			JarFile jarFile = new JarFile(jarPath);
 			Enumeration<JarEntry> entries = jarFile.entries();
@@ -127,12 +127,14 @@ public final class AcceleoParserUtils {
 		String modulePath = moduleURI.toString();
 		if (modulePath.startsWith("jar:file:")) { //$NON-NLS-1$
 			int indexOf = modulePath.indexOf(".jar!/"); //$NON-NLS-1$
-			String moduleName = modulePath.substring(indexOf + ".jar!/".length()); //$NON-NLS-1$
-			if (moduleName.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
-				moduleName = moduleName.substring(0, moduleName.length()
-						- (IAcceleoConstants.EMTL_FILE_EXTENSION.length() + 1));
-				moduleName = moduleName.replace("/", IAcceleoConstants.NAMESPACE_SEPARATOR); //$NON-NLS-1$
-				return moduleName;
+			if (indexOf != -1) {
+				String moduleName = modulePath.substring(indexOf + ".jar!/".length()); //$NON-NLS-1$
+				if (moduleName.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+					moduleName = moduleName.substring(0, moduleName.length()
+							- (IAcceleoConstants.EMTL_FILE_EXTENSION.length() + 1));
+					moduleName = moduleName.replace("/", IAcceleoConstants.NAMESPACE_SEPARATOR); //$NON-NLS-1$
+					return moduleName;
+				}
 			}
 		}
 		return null;
