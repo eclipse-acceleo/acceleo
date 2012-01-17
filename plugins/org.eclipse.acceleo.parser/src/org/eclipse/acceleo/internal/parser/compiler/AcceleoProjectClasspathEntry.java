@@ -43,7 +43,6 @@ public class AcceleoProjectClasspathEntry {
 	 */
 	public AcceleoProjectClasspathEntry(File inputDirectory, File outputDirectory) {
 		Preconditions.checkState(inputDirectory.isDirectory());
-		Preconditions.checkState(outputDirectory.isDirectory());
 		this.inputDirectory = inputDirectory;
 		this.outputDirectory = outputDirectory;
 	}
