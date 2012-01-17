@@ -125,7 +125,7 @@
             	<jar>org.eclipse.acceleo:engine:3.2.1</jar>
             	<jar>org.eclipse.acceleo:common</jar>
             	<jar>C:\Users\sbegaudeau\.m2\repository\com\google\collections\google-collections\1.0\google-collections-1.0.jar</jar>
-            	<jar>${project.basedir}\lib\guava-11.0.1.jar</jar>
+            	<jar>${project.basedir}\lib\myFile.jar</jar>
             </jars>
           </acceleoProject>
           <packagesToRegister>
