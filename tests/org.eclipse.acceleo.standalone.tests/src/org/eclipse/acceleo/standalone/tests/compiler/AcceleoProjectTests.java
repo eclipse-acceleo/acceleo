@@ -22,6 +22,7 @@ import org.eclipse.acceleo.internal.parser.compiler.AcceleoParserUtils;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProject;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -274,7 +275,11 @@ public class AcceleoProjectTests {
 	
 	@Test
 	public void testGetURIDependency() {
-		fail();
+		File userDir = new File(System.getProperty("user.dir"));
+		File jar = new File(userDir, "data/test_compiled_modules.jar");
+		firstProject.addDependencies(Sets.newHashSet(URI.createFileURI(jar.getAbsolutePath())));
+		URI dependency = firstProject.getURIDependency("org::obeonetwork::pim::uml2::gen::java::files::classFile");
+		assertTrue(dependency.toString().endsWith("org/obeonetwork/pim/uml2/gen/java/files/classFile.emtl"));
 	}
 	
 	@Test

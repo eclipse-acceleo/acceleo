@@ -11,11 +11,16 @@
 package org.eclipse.acceleo.internal.parser.compiler;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
@@ -87,7 +92,28 @@ public final class AcceleoParserUtils {
 	 * @return The set of uri of the emtls contained in the jar with the given URI.
 	 */
 	public static Set<URI> getAllModules(URI jar) {
-		return null;
+		Set<URI> modulesURIs = new LinkedHashSet<URI>();
+		try {
+			String jarPath = jar.toString();
+			if (jarPath.startsWith("file:\\") || jarPath.startsWith("file:/")) { //$NON-NLS-1$ //$NON-NLS-2$
+				jarPath = jarPath.substring("file:/".length()); //$NON-NLS-1$
+			}
+			JarFile jarFile = new JarFile(jarPath);
+			Enumeration<JarEntry> entries = jarFile.entries();
+			while (entries.hasMoreElements()) {
+				JarEntry nextElement = entries.nextElement();
+				String name = nextElement.getName();
+				if (!nextElement.isDirectory() && name.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+					URI jarFileURI = URI.createFileURI(jarPath);
+					URI entryURI = URI.createURI(name);
+					URI uri = URI.createURI("jar:" + jarFileURI.toString() + "!/" + entryURI.toString()); //$NON-NLS-1$//$NON-NLS-2$
+					modulesURIs.add(uri);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return modulesURIs;
 	}
 
 	/**
@@ -98,6 +124,17 @@ public final class AcceleoParserUtils {
 	 * @return The module name (a::b::c::d) of the resources at the given URI.
 	 */
 	public static String getModuleName(URI moduleURI) {
+		String modulePath = moduleURI.toString();
+		if (modulePath.startsWith("jar:file:")) { //$NON-NLS-1$
+			int indexOf = modulePath.indexOf(".jar!/"); //$NON-NLS-1$
+			String moduleName = modulePath.substring(indexOf + ".jar!/".length()); //$NON-NLS-1$
+			if (moduleName.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+				moduleName = moduleName.substring(0, moduleName.length()
+						- (IAcceleoConstants.EMTL_FILE_EXTENSION.length() + 1));
+				moduleName = moduleName.replace("/", IAcceleoConstants.NAMESPACE_SEPARATOR); //$NON-NLS-1$
+				return moduleName;
+			}
+		}
 		return null;
 	}
 
