@@ -1,0 +1,64 @@
+[comment]
+  Copyright 2008, 2010 Obeo
+  All rights reserved.  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License 1.0
+  
+  Any license can be applied to the files generated with this template.
+  
+  author <a href="mailto:stephane.bouchet@obeo.fr">Stephane Bouchet</a>
+[/comment]
+[module common('http://www.eclipse.org/uml2/3.0.0/UML')/]
+
+[template public packagePath(cl : Classifier)]
+[cl.getNearestPackage().normalizeName()/]
+[/template]
+
+[template public getFullPathFile(cl : Classifier)]
+[if (not cl.getNearestPackage().oclIsUndefined())]
+[cl.getNearestPackage().normalizeName().substituteAll('.', '/').concat('/').concat(cl.name).concat('.java')/]
+[else]
+[cl.name.concat('.java')/]
+[/if]
+[/template]
+
+[template public getInParameter(o : Operation)]
+[for (p : Parameter | o.ownedParameter) separator(',') ? (p.direction <> ParameterDirectionKind::return)][p.type.name/] [p.name/][/for]
+[/template]
+
+[template public returnTypeOperation(o : Operation)]
+[if (o.type.oclIsUndefined())]void [o.name/][else][o.type.name/] [o.name/][/if]
+[/template]
+
+[template public importBlock(traceabilityContext : OclAny)]
+// [protected ('for imports')]
+import java.util.*;
+// [/protected]
+[/template]
+
+[template public packageBlock(cl : Classifier)]
+[if (not cl.getNearestPackage().oclIsUndefined())]package [cl.packagePath()/];[/if]
+[/template]
+
+[template private normalizeName(element : NamedElement)]
+[if ((element.name = 'package') or (element.name = 'interface') or (element.name = 'class'))][element.name.concat('_')/][else][element.name/][/if]
+[/template]
+
+[template public _commentFileBlock(traceabilityContext : OclAny)]
+/**
+ * Generated with MTL UML 2 Java example
+ */
+[/template]
+
+[template public _commentBodyBlock(traceabilityContext : OclAny)]
+/**
+ * @author MTL
+ */
+[/template]
+
+[template public returnOperationComment(traceabilityContext : OclAny)]
+     * @return
+[/template]
+
+[template public paramOperationComment(p : Parameter)]
+     * @param [p.name/]
+[/template]

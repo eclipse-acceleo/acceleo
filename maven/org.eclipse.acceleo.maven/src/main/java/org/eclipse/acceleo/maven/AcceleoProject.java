@@ -34,7 +34,7 @@ public class AcceleoProject {
 	/**
 	 * The jars.
 	 */
-	private List<File> jars;
+	private List<String> jars;
 
 	/**
 	 * The dependencies.
@@ -64,7 +64,7 @@ public class AcceleoProject {
 	 * 
 	 * @return The jar dependencies.
 	 */
-	public List<File> getJars() {
+	public List<String> getJars() {
 		return jars;
 	}
 
