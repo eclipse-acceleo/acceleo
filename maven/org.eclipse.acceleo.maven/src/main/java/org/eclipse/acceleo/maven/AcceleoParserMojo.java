@@ -35,7 +35,7 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoParser;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
-import org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIResolver;
+import org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIHandler;
 import org.eclipse.acceleo.internal.parser.compiler.IParserListener;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
@@ -71,9 +71,9 @@ public class AcceleoParserMojo extends AbstractMojo {
 	/**
 	 * The class to use for the uri converter.
 	 * 
-	 * @parameter expression = "${acceleo-compile.uriResolver}"
+	 * @parameter expression = "${acceleo-compile.uriHandler}"
 	 */
-	private String uriResolver;
+	private String uriHandler;
 
 	/**
 	 * The list of packages to register.
@@ -292,13 +292,13 @@ public class AcceleoParserMojo extends AbstractMojo {
 		parser.addListeners(listener);
 
 		// Load and plug the uri resolver
-		if (this.uriResolver != null && newLoader != null) {
+		if (this.uriHandler != null && newLoader != null) {
 			try {
-				Class<?> forName = Class.forName(this.uriResolver, true, newLoader);
+				Class<?> forName = Class.forName(this.uriHandler, true, newLoader);
 				Object newInstance = forName.newInstance();
-				if (newInstance instanceof IAcceleoParserURIResolver) {
-					IAcceleoParserURIResolver resolver = (IAcceleoParserURIResolver)newInstance;
-					parser.setURIResolver(resolver);
+				if (newInstance instanceof IAcceleoParserURIHandler) {
+					IAcceleoParserURIHandler resolver = (IAcceleoParserURIHandler)newInstance;
+					parser.setURIHandler(resolver);
 				}
 			} catch (ClassNotFoundException e) {
 				log.error(e);

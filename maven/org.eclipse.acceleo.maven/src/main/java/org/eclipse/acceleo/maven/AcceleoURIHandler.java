@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.maven;
 
+import org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIHandler;
 import org.eclipse.emf.common.util.URI;
 
 /**
