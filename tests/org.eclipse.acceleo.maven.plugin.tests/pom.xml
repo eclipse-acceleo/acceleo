@@ -131,6 +131,7 @@
           <packagesToRegister>
             <packageToRegister>org.eclipse.uml2.uml.UMLPackage</packageToRegister>
           </packagesToRegister>
+          <uriResolver>org.eclipse.acceleo.maven.AcceleoURIResolver</uriResolver>
         </configuration>
      </plugin>
     </plugins>

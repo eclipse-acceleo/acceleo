@@ -69,6 +69,13 @@ public class AcceleoParserMojo extends AbstractMojo {
 	private boolean useBinaryResources;
 
 	/**
+	 * The class to use for the uri converter.
+	 * 
+	 * @parameter expression = "${acceleo-compile.uriResolver}"
+	 */
+	private String uriResolver;
+
+	/**
 	 * The list of packages to register.
 	 * 
 	 * @parameter expression = "${acceleo-compile.packagesToRegister}"
@@ -94,29 +101,37 @@ public class AcceleoParserMojo extends AbstractMojo {
 		log.info("Acceleo maven stand alone build...");
 
 		log.info("Starting packages registration...");
+
+		URLClassLoader newLoader = null;
+		try {
+			List<?> runtimeClasspathElements = project.getRuntimeClasspathElements();
+			URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
+			for (int i = 0; i < runtimeClasspathElements.size(); i++) {
+				String element = (String)runtimeClasspathElements.get(i);
+				runtimeUrls[i] = new File(element).toURI().toURL();
+			}
+			newLoader = new URLClassLoader(runtimeUrls, Thread.currentThread().getContextClassLoader());
+		} catch (DependencyResolutionRequiredException e) {
+			log.error(e);
+		} catch (MalformedURLException e) {
+			log.error(e);
+		}
+
 		for (String packageToRegister : this.packagesToRegister) {
 			try {
-				List<?> runtimeClasspathElements = project.getRuntimeClasspathElements();
-				URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
-				for (int i = 0; i < runtimeClasspathElements.size(); i++) {
-					String element = (String)runtimeClasspathElements.get(i);
-					runtimeUrls[i] = new File(element).toURI().toURL();
+				if (newLoader != null) {
+					Class<?> forName = Class.forName(packageToRegister, true, newLoader);
+					Field nsUri = forName.getField("eNS_URI");
+					Field eInstance = forName.getField("eINSTANCE");
+
+					Object nsURIInvoked = nsUri.get(null);
+					if (nsURIInvoked instanceof String) {
+						log.info("Registering package '" + packageToRegister + "'.");
+						AcceleoPackageRegistry.INSTANCE.put((String)nsURIInvoked, eInstance.get(null));
+					} else {
+						log.error("The URI field is not a string.");
+					}
 				}
-				URLClassLoader newLoader = new URLClassLoader(runtimeUrls, Thread.currentThread()
-						.getContextClassLoader());
-
-				Class<?> forName = Class.forName(packageToRegister, true, newLoader);
-				Field nsUri = forName.getField("eNS_URI");
-				Field eInstance = forName.getField("eINSTANCE");
-
-				Object nsURIInvoked = nsUri.get(null);
-				if (nsURIInvoked instanceof String) {
-					log.info("Registering package '" + packageToRegister + "'.");
-					AcceleoPackageRegistry.INSTANCE.put((String)nsURIInvoked, eInstance.get(null));
-				} else {
-					log.error("The URI field is not a string.");
-				}
-
 			} catch (ClassNotFoundException e) {
 				log.error(e);
 			} catch (IllegalAccessException e) {
@@ -124,10 +139,6 @@ public class AcceleoParserMojo extends AbstractMojo {
 			} catch (SecurityException e) {
 				log.error(e);
 			} catch (NoSuchFieldException e) {
-				log.error(e);
-			} catch (DependencyResolutionRequiredException e) {
-				log.error(e);
-			} catch (MalformedURLException e) {
 				log.error(e);
 			}
 
@@ -279,8 +290,24 @@ public class AcceleoParserMojo extends AbstractMojo {
 		AcceleoParser parser = new AcceleoParser(aProject, this.useBinaryResources);
 		AcceleoParserListener listener = new AcceleoParserListener();
 		parser.addListeners(listener);
-		AcceleoURIResolver resolver = new AcceleoURIResolver();
-		parser.setURIResolver(resolver);
+
+		// Load and plug the uri resolver
+		if (this.uriResolver != null && newLoader != null) {
+			try {
+				Class<?> forName = Class.forName(this.uriResolver, true, newLoader);
+				Object newInstance = forName.newInstance();
+				if (newInstance instanceof IAcceleoParserURIResolver) {
+					IAcceleoParserURIResolver resolver = (IAcceleoParserURIResolver)newInstance;
+					parser.setURIResolver(resolver);
+				}
+			} catch (ClassNotFoundException e) {
+				log.error(e);
+			} catch (InstantiationException e) {
+				log.error(e);
+			} catch (IllegalAccessException e) {
+				log.error(e);
+			}
+		}
 
 		Set<File> builtFiles = parser.buildAll(new BasicMonitor());
 
@@ -296,42 +323,6 @@ public class AcceleoParserMojo extends AbstractMojo {
 		}
 
 		log.info("Build completed.");
-	}
-
-	/**
-	 * The URI resolver that will change the path of the jar resource to a platform:/plugin path.
-	 * 
-	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
-	 * @since 3.2
-	 */
-	private class AcceleoURIResolver implements IAcceleoParserURIResolver {
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIResolver#resolve(org.eclipse.emf.common.util.URI)
-		 */
-		public URI resolve(URI uri) {
-			URI newURI = uri;
-			if (newURI.toString().startsWith("jar:file:")) {
-				int indexOf = newURI.toString().indexOf(".jar!/");
-				if (indexOf != -1) {
-					String name = newURI.toString();
-					name = name.substring(0, indexOf);
-					name = name.substring("jar:file:".length() + 1);
-					name = name.substring(0, name.lastIndexOf("-"));
-					if (name.contains("/")) {
-						name = name.substring(name.lastIndexOf("/"));
-						name = name + "/";
-					}
-					name = "platform:/plugin" + name
-							+ newURI.toString().substring(indexOf + ".jar!/".length());
-					newURI = URI.createURI(name);
-				}
-			}
-			return newURI;
-		}
-
 	}
 
 	/**
