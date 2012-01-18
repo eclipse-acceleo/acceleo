@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.maven;
 
-import org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIResolver;
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -19,14 +18,14 @@ import org.eclipse.emf.common.util.URI;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.2
  */
-public class AcceleoURIResolver implements IAcceleoParserURIResolver {
+public class AcceleoURIHandler implements IAcceleoParserURIHandler {
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIResolver#resolve(org.eclipse.emf.common.util.URI)
+	 * @see org.eclipse.acceleo.internal.parser.compiler.IAcceleoParserURIHandler#transform(org.eclipse.emf.common.util.URI)
 	 */
-	public URI resolve(URI uri) {
+	public URI transform(URI uri) {
 		URI newURI = uri;
 		if (newURI.toString().startsWith("jar:file:")) {
 			int indexOf = newURI.toString().indexOf(".jar!/");
@@ -39,8 +38,7 @@ public class AcceleoURIResolver implements IAcceleoParserURIResolver {
 					name = name.substring(name.lastIndexOf("/"));
 					name = name + "/";
 				}
-				name = "platform:/plugin" + name
-						+ newURI.toString().substring(indexOf + ".jar!/".length());
+				name = "platform:/plugin" + name + newURI.toString().substring(indexOf + ".jar!/".length());
 				newURI = URI.createURI(name);
 			}
 		}
