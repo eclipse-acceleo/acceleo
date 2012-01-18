@@ -13,19 +13,19 @@ package org.eclipse.acceleo.internal.parser.compiler;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * The common interface for the URI resolver.
+ * The common interface for the URI handler.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @sicne 3.2
  */
-public interface IAcceleoParserURIResolver {
+public interface IAcceleoParserURIHandler {
 
 	/**
-	 * Resolves the uri of a loaded Acceleo module.
+	 * Transform the uri of a loaded Acceleo module.
 	 * 
 	 * @param uri
 	 *            the uri
 	 * @return A new URI for the Acceleo module.
 	 */
-	URI resolve(URI uri);
+	URI transform(URI uri);
 }

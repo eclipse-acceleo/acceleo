@@ -93,7 +93,7 @@ public class AcceleoParser {
 	 * This object is used to change the uris of the loaded dependencies in order, for example, to change
 	 * absolute paths of emtl files to platform:/plugin paths.
 	 */
-	private IAcceleoParserURIResolver uriResolver;
+	private IAcceleoParserURIHandler uriHandler;
 
 	/**
 	 * The problems computed during the build.
@@ -185,14 +185,14 @@ public class AcceleoParser {
 	}
 
 	/**
-	 * Sets the given URI resolver used to change the uri of a loaded resource is order to affect the
+	 * Sets the given URI handler used to change the uri of a loaded resource is order to affect the
 	 * serialization.
 	 * 
 	 * @param resolver
 	 *            The URI resolver.
 	 */
-	public void setURIResolver(IAcceleoParserURIResolver resolver) {
-		this.uriResolver = resolver;
+	public void setURIHandler(IAcceleoParserURIHandler resolver) {
+		this.uriHandler = resolver;
 	}
 
 	/**
@@ -360,7 +360,7 @@ public class AcceleoParser {
 									this.usebinaryResources);
 							parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners
 									.size()]));
-							parser.setURIResolver(this.uriResolver);
+							parser.setURIHandler(this.uriHandler);
 							parser.addDependencyToBuild(dependingModule);
 							filesBuilt.addAll(parser.build(dependingModule, file, monitor));
 							filesBuilt.add(dependingModule);
@@ -427,8 +427,8 @@ public class AcceleoParser {
 			// Convert the uris if necessary
 			for (Resource resource : resourceSet.getResources()) {
 				URI resourceURI = resource.getURI();
-				if (this.uriResolver != null && resourceURI != null) {
-					URI reusableURI = this.uriResolver.resolve(resourceURI);
+				if (this.uriHandler != null && resourceURI != null) {
+					URI reusableURI = this.uriHandler.transform(resourceURI);
 					if (reusableURI != null) {
 						resource.setURI(reusableURI);
 					}
@@ -516,7 +516,7 @@ public class AcceleoParser {
 
 					AcceleoParser parser = new AcceleoParser(dependentAcceleoProject, this.usebinaryResources);
 					parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners.size()]));
-					parser.setURIResolver(this.uriResolver);
+					parser.setURIHandler(this.uriHandler);
 					parser.clearDependencyToBuild();
 					filesBuilt.addAll(parser.build(fileToBuild, monitor));
 					filesBuilt.add(fileToBuild);
