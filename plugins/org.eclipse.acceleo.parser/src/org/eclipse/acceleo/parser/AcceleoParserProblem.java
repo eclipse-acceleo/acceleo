@@ -102,4 +102,48 @@ public class AcceleoParserProblem implements AcceleoParserMessage {
 		return getMessage();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof AcceleoParserProblem)) {
+			return false;
+		}
+
+		final AcceleoParserProblem other = (AcceleoParserProblem)obj;
+		return this == other
+				|| (this.line == other.line && this.message.equals(other.message)
+						&& this.posBegin == other.posBegin && this.posEnd == other.posEnd);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hashCode = prime;
+
+		int tmp = line << prime;
+		hashCode = hashCode * prime + line * tmp;
+
+		if (message == null) {
+			hashCode = hashCode * prime;
+		} else {
+			hashCode = hashCode * prime + message.hashCode();
+		}
+
+		tmp = posBegin << prime;
+		hashCode = hashCode * prime + posBegin * tmp;
+
+		tmp = posEnd << prime;
+		hashCode = hashCode * prime + posEnd * tmp;
+
+		return hashCode;
+	}
 }

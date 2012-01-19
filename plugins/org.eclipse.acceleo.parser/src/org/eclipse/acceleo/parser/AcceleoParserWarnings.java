@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * All the syntax warnings of the parsing.
@@ -24,13 +27,13 @@ public class AcceleoParserWarnings implements AcceleoParserMessages {
 	/**
 	 * List of warnings.
 	 */
-	private List<AcceleoParserWarning> list;
+	private Set<AcceleoParserWarning> warnings;
 
 	/**
 	 * Constructor.
 	 */
 	public AcceleoParserWarnings() {
-		list = new ArrayList<AcceleoParserWarning>();
+		warnings = Sets.newLinkedHashSet();
 	}
 
 	/**
@@ -46,7 +49,7 @@ public class AcceleoParserWarnings implements AcceleoParserMessages {
 	 *            is the ending index of the warning
 	 */
 	public void addWarning(String message, int line, int posBegin, int posEnd) {
-		list.add(new AcceleoParserWarning(message, line, posBegin, posEnd));
+		warnings.add(new AcceleoParserWarning(message, line, posBegin, posEnd));
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class AcceleoParserWarnings implements AcceleoParserMessages {
 	 */
 	public List<AcceleoParserWarning> getList() {
 		// We copy the warnings list to prevent concurrent thread access...
-		return new ArrayList<AcceleoParserWarning>(list);
+		return Lists.newArrayList(warnings);
 	}
 
 	/**
@@ -65,7 +68,7 @@ public class AcceleoParserWarnings implements AcceleoParserMessages {
 	 * @see org.eclipse.acceleo.parser.AcceleoParserMessages#clear()
 	 */
 	public void clear() {
-		list.clear();
+		warnings.clear();
 	}
 
 	/**
@@ -75,7 +78,7 @@ public class AcceleoParserWarnings implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserWarning> warningsIt = list.iterator(); warningsIt.hasNext();) {
+		for (Iterator<AcceleoParserWarning> warningsIt = warnings.iterator(); warningsIt.hasNext();) {
 			result.append(warningsIt.next().getMessage());
 			if (warningsIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$

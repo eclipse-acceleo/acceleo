@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * All the syntax infos of the parsing.
@@ -25,13 +28,13 @@ public class AcceleoParserInfos implements AcceleoParserMessages {
 	/**
 	 * List of infos.
 	 */
-	private List<AcceleoParserInfo> list;
+	private Set<AcceleoParserInfo> infos;
 
 	/**
 	 * Constructor.
 	 */
 	public AcceleoParserInfos() {
-		list = new ArrayList<AcceleoParserInfo>();
+		infos = Sets.newLinkedHashSet();
 	}
 
 	/**
@@ -47,7 +50,7 @@ public class AcceleoParserInfos implements AcceleoParserMessages {
 	 *            is the ending index of the info
 	 */
 	public void addInfo(String message, int line, int posBegin, int posEnd) {
-		list.add(new AcceleoParserInfo(message, line, posBegin, posEnd));
+		infos.add(new AcceleoParserInfo(message, line, posBegin, posEnd));
 	}
 
 	/**
@@ -57,7 +60,7 @@ public class AcceleoParserInfos implements AcceleoParserMessages {
 	 */
 	public List<AcceleoParserInfo> getList() {
 		// We copy the infos list to prevent concurrent thread access...
-		return new ArrayList<AcceleoParserInfo>(list);
+		return Lists.newArrayList(infos);
 	}
 
 	/**
@@ -66,7 +69,7 @@ public class AcceleoParserInfos implements AcceleoParserMessages {
 	 * @see org.eclipse.acceleo.parser.AcceleoParserMessages#clear()
 	 */
 	public void clear() {
-		list.clear();
+		infos.clear();
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class AcceleoParserInfos implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserInfo> infosIt = list.iterator(); infosIt.hasNext();) {
+		for (Iterator<AcceleoParserInfo> infosIt = infos.iterator(); infosIt.hasNext();) {
 			result.append(infosIt.next().getMessage());
 			if (infosIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$
