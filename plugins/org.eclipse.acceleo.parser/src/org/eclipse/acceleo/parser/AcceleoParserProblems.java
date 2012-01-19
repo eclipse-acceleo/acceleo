@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * All the syntax problems of the parsing.
@@ -21,17 +24,16 @@ import java.util.List;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoParserProblems implements AcceleoParserMessages {
-
 	/**
 	 * List of problems.
 	 */
-	private List<AcceleoParserProblem> list;
+	private Set<AcceleoParserProblem> problems;
 
 	/**
 	 * Constructor.
 	 */
 	public AcceleoParserProblems() {
-		list = new ArrayList<AcceleoParserProblem>();
+		problems = Sets.newLinkedHashSet();
 	}
 
 	/**
@@ -49,7 +51,7 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 *            is the ending index of the problem
 	 */
 	public void addProblem(File file, String message, int line, int posBegin, int posEnd) {
-		list.add(new AcceleoParserProblem(message, line, posBegin, posEnd));
+		problems.add(new AcceleoParserProblem(message, line, posBegin, posEnd));
 	}
 
 	/**
@@ -59,7 +61,7 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 */
 	public List<AcceleoParserProblem> getList() {
 		// We copy the problems list to prevent concurrent thread access...
-		return new ArrayList<AcceleoParserProblem>(list);
+		return Lists.newArrayList(problems);
 	}
 
 	/**
@@ -68,7 +70,7 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 * @see org.eclipse.acceleo.parser.AcceleoParserMessages#clear()
 	 */
 	public void clear() {
-		list.clear();
+		problems.clear();
 	}
 
 	/**
@@ -78,7 +80,7 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserProblem> problemsIt = list.iterator(); problemsIt.hasNext();) {
+		for (Iterator<AcceleoParserProblem> problemsIt = problems.iterator(); problemsIt.hasNext();) {
 			result.append(problemsIt.next().getMessage());
 			if (problemsIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$
