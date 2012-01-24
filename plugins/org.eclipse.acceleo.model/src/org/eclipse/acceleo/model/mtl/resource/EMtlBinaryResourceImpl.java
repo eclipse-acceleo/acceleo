@@ -74,13 +74,9 @@ public class EMtlBinaryResourceImpl extends BinaryResourceImpl {
 	 * 
 	 * @see org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl#doLoad(java.io.InputStream, java.util.Map)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
-		Map<Object, Object> actualOptions = (Map<Object, Object>)options;
-		if (actualOptions == null) {
-			actualOptions = new HashMap<Object, Object>();
-		}
+		Map<Object, Object> actualOptions = new HashMap<Object, Object>(options);
 		super.doLoad(inputStream, actualOptions);
 
 		if (!trimPosition) {
