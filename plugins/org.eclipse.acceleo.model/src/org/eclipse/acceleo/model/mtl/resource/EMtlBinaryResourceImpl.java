@@ -76,7 +76,10 @@ public class EMtlBinaryResourceImpl extends BinaryResourceImpl {
 	 */
 	@Override
 	public void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
-		Map<Object, Object> actualOptions = new HashMap<Object, Object>(options);
+		Map<Object, Object> actualOptions = new HashMap<Object, Object>();
+		if (options != null) {
+			actualOptions.putAll(options);
+		}
 		super.doLoad(inputStream, actualOptions);
 
 		if (!trimPosition) {

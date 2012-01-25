@@ -76,7 +76,10 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 */
 	@Override
 	public void doLoad(InputStream inputStream, Map<?, ?> options) throws IOException {
-		Map<Object, Object> actualOptions = new HashMap<Object, Object>(options);
+		Map<Object, Object> actualOptions = new HashMap<Object, Object>();
+		if (options != null) {
+			actualOptions.putAll(options);
+		}
 		// Record unknown features so that we can load emtl files compiled under 3.1 with 3.0
 		actualOptions.put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
 		actualOptions.put(XMLResource.OPTION_URI_HANDLER, new AcceleoXMIURIHandler());
