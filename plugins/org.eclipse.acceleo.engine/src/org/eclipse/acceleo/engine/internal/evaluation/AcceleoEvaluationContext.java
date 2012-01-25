@@ -492,7 +492,12 @@ public class AcceleoEvaluationContext<C> {
 		do {
 			previous = expressionIterator.previous();
 		} while (!(previous instanceof Block) && expressionIterator.hasPrevious());
-		return (Block)previous;
+
+		Block lastBlock = null;
+		if (previous instanceof Block) {
+			lastBlock = (Block)previous;
+		}
+		return lastBlock;
 	}
 
 	/**

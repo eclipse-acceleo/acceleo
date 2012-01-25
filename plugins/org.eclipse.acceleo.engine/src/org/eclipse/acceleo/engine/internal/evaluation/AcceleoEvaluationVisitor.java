@@ -1037,11 +1037,19 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (expression == lastSourceExpression) {
 				lastSourceExpressionResult = result;
 			}
-
 			if (shouldGenerateText((EReference)expression.eContainingFeature())) {
 				Object source = null;
 				// TODO get last structural feature
-				final Block generatedBlock = getContext().getLastVisitedBlock();
+				Block generatedBlock = getContext().getLastVisitedBlock();
+				if (generatedBlock == null) {
+					EObject temp = expression;
+					while (!(temp instanceof Block) && temp.eContainer() != null) {
+						temp = temp.eContainer();
+					}
+					if (temp instanceof Block) {
+						generatedBlock = (Block)temp;
+					}
+				}
 				if (lastSourceExpressionResult == null) {
 					source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				} else {
