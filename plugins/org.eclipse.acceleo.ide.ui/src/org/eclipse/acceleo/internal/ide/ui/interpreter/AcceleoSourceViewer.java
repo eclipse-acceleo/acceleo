@@ -239,8 +239,10 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 * @see org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer#showContentAssist(org.eclipse.acceleo.ui.interpreter.language.InterpreterContext)
 	 */
 	public void showContentAssist(InterpreterContext context) {
-		updateCST(context);
-		fContentAssistant.showPossibleCompletions();
+		if (fContentAssistant != null) {
+			updateCST(context);
+			fContentAssistant.showPossibleCompletions();
+		}
 	}
 
 	/**
@@ -669,13 +671,13 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	private Set<String> getMetamodelURIs(InterpreterContext context) {
 		Set<String> uris = new HashSet<String>();
 
-		final String targetNsURI = extractNsURI(context.getTargetEObjects().get(0));
-		if (targetNsURI != null) {
-			uris.add(targetNsURI);
-		}
 		EObject root = null;
 		if (!context.getTargetEObjects().isEmpty()) {
 			root = EcoreUtil.getRootContainer(context.getTargetEObjects().get(0));
+			final String targetNsURI = extractNsURI(context.getTargetEObjects().get(0));
+			if (targetNsURI != null) {
+				uris.add(targetNsURI);
+			}
 		}
 		if (root != null) {
 			final String modelNsURI = extractNsURI(root);
