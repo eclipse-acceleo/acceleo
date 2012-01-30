@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.common;singleton:=true
-Bundle-Version: 3.1.2.qualifier
+Bundle-Version: 3.1.3.qualifier
 Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.common,
  org.eclipse.acceleo.common.internal.utils;x-friends:="org.eclipse.acceleo.engine,org.eclipse.acceleo.parser,org.eclipse.acceleo.ide.ui",
