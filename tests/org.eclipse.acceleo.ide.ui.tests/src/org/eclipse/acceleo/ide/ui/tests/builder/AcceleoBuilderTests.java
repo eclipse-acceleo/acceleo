@@ -59,6 +59,18 @@ public class AcceleoBuilderTests {
 			if (listener.message != null) {
 				fail(listener.message);
 			}
+
+			try {
+				project.delete(true, new NullProgressMonitor());
+			} catch (CoreException e) {
+				fail(e.getMessage());
+			}
+		} catch (CoreException e) {
+			fail(e.getMessage());
+		}
+
+		try {
+			closedProject.delete(true, new NullProgressMonitor());
 		} catch (CoreException e) {
 			fail(e.getMessage());
 		}
