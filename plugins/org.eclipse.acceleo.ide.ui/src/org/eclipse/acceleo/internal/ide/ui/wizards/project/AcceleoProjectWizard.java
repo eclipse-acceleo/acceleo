@@ -11,9 +11,12 @@
 package org.eclipse.acceleo.internal.ide.ui.wizards.project;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -21,10 +24,12 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilder;
 import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoProjectUtils;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -36,12 +41,17 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
+import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.pde.core.project.IBundleProjectDescription;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkingSet;
@@ -225,6 +235,8 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 							project.create(desc, monitor);
 							project.open(monitor);
 							convert(project, monitor);
+							project.build(IncrementalProjectBuilder.FULL_BUILD, AcceleoBuilder.BUILDER_ID,
+									new HashMap<String, String>(), monitor);
 						}
 					} catch (CoreException e) {
 						AcceleoUIActivator.log(e, true);
@@ -260,8 +272,10 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 		acceleoProject.setGeneratorName(generatorName);
 
 		// Default JRE value
-		acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$
 		acceleoProject.setJre(newProjectPage.getSelectedJVM());
+		if (acceleoProject.getJre() == null && acceleoProject.getJre().length() == 0) {
+			acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$			
+		}
 
 		List<AcceleoModule> allModules = this.newAcceleoModulesCreationPage.getAllModules();
 		IWizardContainer iWizardContainer = this.getContainer();
@@ -292,31 +306,51 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 				}
 			}
 		}
-		boolean generateModules = !(currentPage instanceof WizardNewProjectCreationPage);
-		AcceleoProjectUtils.generateFiles(acceleoProject, allModules, project, generateModules, monitor);
 
 		try {
-			IClasspathEntry newContainerEntry = JavaCore.newContainerEntry(newProjectPage
-					.getJREContainerPath());
+			IProjectDescription description = project.getDescription();
+			description.setNatureIds(new String[] {JavaCore.NATURE_ID,
+					IBundleProjectDescription.PLUGIN_NATURE, IAcceleoConstants.ACCELEO_NATURE_ID, });
+			project.setDescription(description, monitor);
+
 			IJavaProject iJavaProject = JavaCore.create(project);
-			IClasspathEntry[] rawClasspath = iJavaProject.getRawClasspath();
-			IClasspathEntry[] newRawClasspath = new IClasspathEntry[rawClasspath.length];
 
-			// Do not change
-			final String jreContainerPrefix = "org.eclipse.jdt.launching.JRE_CONTAINER/"; //$NON-NLS-1$
-
-			int cpt = 0;
-			for (IClasspathEntry iClasspathEntry : rawClasspath) {
-				if (iClasspathEntry.getPath() != null
-						&& iClasspathEntry.getPath().toString().startsWith(jreContainerPrefix)) {
-					newRawClasspath[cpt] = newContainerEntry;
-				} else {
-					newRawClasspath[cpt] = iClasspathEntry;
+			// Compute the JRE
+			List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+			IExecutionEnvironmentsManager executionEnvironmentsManager = JavaRuntime
+					.getExecutionEnvironmentsManager();
+			IExecutionEnvironment[] executionEnvironments = executionEnvironmentsManager
+					.getExecutionEnvironments();
+			for (IExecutionEnvironment iExecutionEnvironment : executionEnvironments) {
+				if (acceleoProject.getJre().equals(iExecutionEnvironment.getId())) {
+					entries.add(JavaCore.newContainerEntry(JavaRuntime
+							.newJREContainerPath(iExecutionEnvironment)));
+					break;
 				}
-				cpt++;
 			}
 
-			iJavaProject.setRawClasspath(newRawClasspath, monitor);
+			// PDE Entry (will not be generated anymore)
+			entries.add(JavaCore.newContainerEntry(new Path("org.eclipse.pde.core.requiredPlugins"))); //$NON-NLS-1$
+
+			// Sets the input / output folders
+			IFolder target = project.getFolder("src"); //$NON-NLS-1$
+			target.create(true, true, monitor);
+
+			IFolder classes = project.getFolder("bin"); //$NON-NLS-1$
+			if (!classes.exists()) {
+				classes.create(true, true, monitor);
+			}
+
+			iJavaProject.setOutputLocation(classes.getFullPath(), monitor);
+			IPackageFragmentRoot packageRoot = iJavaProject.getPackageFragmentRoot(target);
+			entries.add(JavaCore.newSourceEntry(packageRoot.getPath(), new Path[] {}, new Path[] {}, classes
+					.getFullPath()));
+
+			iJavaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
+			iJavaProject.open(monitor);
+
+			boolean generateModules = !(currentPage instanceof WizardNewProjectCreationPage);
+			AcceleoProjectUtils.generateFiles(acceleoProject, allModules, project, generateModules, monitor);
 
 			IWorkingSet[] workingSets = newProjectPage.getSelectedWorkingSets();
 			getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);

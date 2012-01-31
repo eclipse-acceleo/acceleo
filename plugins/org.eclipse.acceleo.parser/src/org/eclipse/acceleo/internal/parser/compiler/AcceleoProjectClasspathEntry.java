@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.compiler;
 
-import com.google.common.base.Preconditions;
-
 import java.io.File;
 
 /**
@@ -42,7 +40,6 @@ public class AcceleoProjectClasspathEntry {
 	 *            The output directory.
 	 */
 	public AcceleoProjectClasspathEntry(File inputDirectory, File outputDirectory) {
-		Preconditions.checkState(inputDirectory.isDirectory());
 		this.inputDirectory = inputDirectory;
 		this.outputDirectory = outputDirectory;
 	}
