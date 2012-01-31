@@ -119,6 +119,17 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			acceleoProject.clean();
 		}
 
+		// Ensure that we didn't forget to build a file out of the dependency graph of the file(s) currently
+		// built, this can occur if two files are not related at all and we force the build of only one of
+		// those files.
+		Set<File> fileNotCompiled = acceleoProject.getFileNotCompiled();
+		for (File fileToBuild : fileNotCompiled) {
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
+					acceleoProject, useBinaryResources);
+			acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+		}
+
+		// Refresh all the projects potentially containing files.
 		Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets
 				.newHashSet(acceleoProject);
 		projectsToRefresh.addAll(acceleoProject.getProjectDependencies());
@@ -246,21 +257,24 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						outputFolderPath = javaProject.getOutputLocation();
 					}
 
-					IContainer inputContainer = ResourcesPlugin.getWorkspace().getRoot().getFolder(
-							inputFolderPath);
-					IContainer outputContainer = ResourcesPlugin.getWorkspace().getRoot().getFolder(
-							outputFolderPath);
+					IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+							inputFolderPath.lastSegment());
+					if (!(project != null && project.exists() && project.equals(javaProject.getProject()))) {
+						IContainer inputContainer = ResourcesPlugin.getWorkspace().getRoot().getFolder(
+								inputFolderPath);
+						IContainer outputContainer = ResourcesPlugin.getWorkspace().getRoot().getFolder(
+								outputFolderPath);
 
-					if (inputContainer != null && outputContainer != null) {
-						File inputDirectory = inputContainer.getLocation().toFile();
-						File outputDirectory = outputContainer.getLocation().toFile();
-						AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory,
-								outputDirectory);
-						classpathEntries.add(entry);
+						if (inputContainer != null && outputContainer != null) {
+							File inputDirectory = inputContainer.getLocation().toFile();
+							File outputDirectory = outputContainer.getLocation().toFile();
+							AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(
+									inputDirectory, outputDirectory);
+							classpathEntries.add(entry);
+						}
 					}
 				}
 			}
-
 			acceleoProject.addClasspathEntries(classpathEntries);
 		} catch (JavaModelException e) {
 			AcceleoUIActivator.log(e, true);

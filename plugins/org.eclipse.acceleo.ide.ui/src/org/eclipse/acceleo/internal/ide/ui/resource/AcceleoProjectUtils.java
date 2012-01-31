@@ -82,10 +82,6 @@ public final class AcceleoProjectUtils {
 		}
 		monitor.beginTask(AcceleoUIMessages.getString("AcceleoNewProjectWizard.Monitor"), 100); //$NON-NLS-1$
 		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateProjectSettings(acceleoProject, project);
-		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateProjectClasspath(acceleoProject, project);
-		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateProjectManifest(acceleoProject, project);
 		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateBuildProperties(acceleoProject, project);

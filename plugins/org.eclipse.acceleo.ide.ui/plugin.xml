@@ -60,6 +60,9 @@ Contributors:
          <run class="org.eclipse.acceleo.ide.ui.natures.AcceleoNature" /> 
       </runtime>
       <builder id="org.eclipse.acceleo.ide.ui.acceleoBuilder"/>
+      <requires-nature
+            id="org.eclipse.pde.PluginNature">
+      </requires-nature>
    </extension>
 
    <extension id="problem" point="org.eclipse.core.resources.markers" name="%AcceleoProblemLabel">
