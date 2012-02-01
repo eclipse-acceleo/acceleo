@@ -14,6 +14,7 @@ import com.google.common.collect.Sets;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
@@ -32,6 +33,9 @@ import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
+import org.eclipse.acceleo.parser.AcceleoParserInfo;
+import org.eclipse.acceleo.parser.AcceleoParserProblem;
+import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -43,6 +47,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -108,15 +113,19 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					acceleoProject, useBinaryResources);
 			for (IFile iFile : deltaMembers) {
 				File fileToBuild = iFile.getLocation().toFile();
-				acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+				Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+				this.addAcceleoMarkers(builtFiles, acceleoParser);
 			}
 		} else if (kind == IncrementalProjectBuilder.FULL_BUILD) {
 			acceleoProject.clean();
+			this.cleanAcceleoMarkers(project);
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
 					acceleoProject, useBinaryResources);
-			acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
+			Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
+			this.addAcceleoMarkers(builtFiles, acceleoParser);
 		} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
 			acceleoProject.clean();
+			this.cleanAcceleoMarkers(project);
 		}
 
 		// Ensure that we didn't forget to build a file out of the dependency graph of the file(s) currently
@@ -126,7 +135,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		for (File fileToBuild : fileNotCompiled) {
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
 					acceleoProject, useBinaryResources);
-			acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+			this.addAcceleoMarkers(builtFiles, acceleoParser);
 		}
 
 		// Refresh all the projects potentially containing files.
@@ -145,6 +155,63 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Adds the necessary markers on the given built files.
+	 * 
+	 * @param builtFiles
+	 *            The files built by the parser.
+	 * @param parser
+	 *            The parser.
+	 */
+	private void addAcceleoMarkers(Set<File> builtFiles,
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser parser) {
+		for (File builtFile : builtFiles) {
+			try {
+				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+						new Path(builtFile.getAbsolutePath()));
+				Collection<AcceleoParserInfo> infos = parser.getInfos(builtFile);
+				for (AcceleoParserInfo info : infos) {
+					AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.INFO_MARKER_ID, workspaceFile,
+							info.getLine(), info.getPosBegin(), info.getPosEnd(), info.getMessage());
+				}
+				Collection<AcceleoParserWarning> warnings = parser.getWarnings(builtFile);
+				for (AcceleoParserWarning warning : warnings) {
+					AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.WARNING_MARKER_ID,
+							workspaceFile, warning.getLine(), warning.getPosBegin(), warning.getPosEnd(),
+							warning.getMessage());
+				}
+				Collection<AcceleoParserProblem> problems = parser.getProblems(builtFile);
+				for (AcceleoParserProblem problem : problems) {
+					AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
+							workspaceFile, problem.getLine(), problem.getPosBegin(), problem.getPosEnd(),
+							problem.getMessage());
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.log(e, true);
+			}
+
+		}
+	}
+
+	/**
+	 * Cleans the Acceleo marker from the given resource.
+	 * 
+	 * @param resource
+	 *            The resource.
+	 */
+	private void cleanAcceleoMarkers(IResource resource) {
+		try {
+			resource.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(AcceleoMarkerUtils.INFO_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(AcceleoMarkerUtils.OVERRIDE_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			resource.deleteMarkers(AcceleoMarkerUtils.TASK_MARKER_ID, true, IResource.DEPTH_INFINITE);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+
 	}
 
 	/**
@@ -504,14 +571,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	@Override
 	protected void clean(IProgressMonitor monitor) throws CoreException {
 		super.clean(monitor);
-		List<IFile> filesOutput = new ArrayList<IFile>();
-		AcceleoBuilderUtils.members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
-				outputFolder);
-		if (filesOutput.size() > 0) {
-			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
-			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, true);
-			compileOperation.run(monitor);
-		}
+		IProject project = getProject();
+		IJavaProject javaProject = JavaCore.create(project);
+		File projectRoot = project.getLocation().toFile();
+		org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
+				projectRoot);
+		acceleoProject = AcceleoBuilder.computeProjectClassPath(acceleoProject, javaProject);
+		acceleoProject = AcceleoBuilder.computeProjectDependencies(acceleoProject, javaProject);
+		acceleoProject.clean();
+		this.cleanAcceleoMarkers(project);
 	}
 
 	/**
