@@ -29,6 +29,7 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
+import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -106,6 +107,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		String resourceKind = settings.getResourceKind();
 		boolean useBinaryResources = !AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind);
 
+		Set<File> mainFiles = new LinkedHashSet<File>();
 		if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
 				|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
 			List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
@@ -115,6 +117,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				File fileToBuild = iFile.getLocation().toFile();
 				Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 				this.addAcceleoMarkers(builtFiles, acceleoParser);
+				mainFiles.addAll(acceleoParser.getMainFiles());
 			}
 		} else if (kind == IncrementalProjectBuilder.FULL_BUILD) {
 			acceleoProject.clean();
@@ -123,6 +126,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					acceleoProject, useBinaryResources);
 			Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
 			this.addAcceleoMarkers(builtFiles, acceleoParser);
+			mainFiles.addAll(acceleoParser.getMainFiles());
 		} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
 			acceleoProject.clean();
 			this.cleanAcceleoMarkers(project);
@@ -137,7 +141,19 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					acceleoProject, useBinaryResources);
 			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 			this.addAcceleoMarkers(builtFiles, acceleoParser);
+			mainFiles.addAll(acceleoParser.getMainFiles());
 		}
+
+		// Launch the build of the MANIFEST.MF, Java launcher, build.acceleo etc.
+		List<IFile> filesWithMainTag = new ArrayList<IFile>();
+		for (File mainFile : mainFiles) {
+			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+					new Path(mainFile.getAbsolutePath()));
+			filesWithMainTag.add(workspaceFile);
+		}
+		CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
+				new AcceleoProject(project), filesWithMainTag);
+		createRunnableAcceleoOperation.run(monitor);
 
 		// Refresh all the projects potentially containing files.
 		Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets

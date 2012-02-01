@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
@@ -102,6 +103,11 @@ public class AcceleoParser {
 	 * absolute paths of emtl files to platform:/plugin paths.
 	 */
 	private IAcceleoParserURIHandler uriHandler;
+
+	/**
+	 * The files with a main tag.
+	 */
+	private Set<File> mainFiles = new LinkedHashSet<File>();
 
 	/**
 	 * The problems computed during the build.
@@ -214,6 +220,15 @@ public class AcceleoParser {
 	}
 
 	/**
+	 * Returns the set of file with the main tag.
+	 * 
+	 * @return The set of file with the main tag.
+	 */
+	public Set<File> getMainFiles() {
+		return this.mainFiles;
+	}
+
+	/**
 	 * Build all the non built modules in the project (for a full build, clean the project before).
 	 * 
 	 * @param monitor
@@ -316,6 +331,11 @@ public class AcceleoParser {
 		AcceleoFile acceleoFile = new AcceleoFile(file, this.acceleoProject.getModuleQualifiedName(file));
 		AcceleoSourceBuffer acceleoSourceBuffer = new AcceleoSourceBuffer(acceleoFile);
 		acceleoSourceBuffer.createCST();
+
+		// Check for the main tag
+		if (this.hasMainTag(acceleoSourceBuffer.getBuffer())) {
+			this.mainFiles.add(file);
+		}
 
 		org.eclipse.acceleo.parser.cst.Module module = acceleoSourceBuffer.getCST();
 		List<String> newSignature = AcceleoParserSignatureUtils.signature(module);
@@ -499,6 +519,21 @@ public class AcceleoParser {
 			listener.endBuild(file);
 		}
 		return filesBuilt;
+	}
+
+	/**
+	 * Checks if the file has a main tag.
+	 * 
+	 * @param contents
+	 *            The contents of the file.
+	 * @return <code>true</code> if there is a main tag, <code>false</code> otherwise.
+	 */
+	private boolean hasMainTag(StringBuffer contents) {
+		Sequence pattern = new Sequence(IAcceleoConstants.TAG_MAIN);
+		if (pattern.search(contents).b() > -1) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
