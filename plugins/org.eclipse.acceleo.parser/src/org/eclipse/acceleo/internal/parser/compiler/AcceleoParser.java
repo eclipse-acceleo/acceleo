@@ -37,11 +37,14 @@ import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.ocl.ecore.OperationCallExp;
 
 /**
  * The Acceleo Parser is the main class used to compile Acceleo projects. The parser uses
@@ -71,6 +74,11 @@ public class AcceleoParser {
 	 * Indicates if the serialization will use binary reources.
 	 */
 	private boolean usebinaryResources;
+
+	/**
+	 * Indicates if the parser should report errors againsts the full OMG compilance.
+	 */
+	private boolean checkOMGCompliance;
 
 	/**
 	 * The resource set used during the compilation.
@@ -193,6 +201,16 @@ public class AcceleoParser {
 	 */
 	public void setURIHandler(IAcceleoParserURIHandler resolver) {
 		this.uriHandler = resolver;
+	}
+
+	/**
+	 * Sets if the full OMG compilance is required.
+	 * 
+	 * @param fullOMGCompilance
+	 *            The full OMG compliance.
+	 */
+	public void setFullOMGCompliance(boolean fullOMGCompilance) {
+		this.checkOMGCompliance = fullOMGCompilance;
 	}
 
 	/**
@@ -320,6 +338,10 @@ public class AcceleoParser {
 		// Compute the signature of the previous compilation
 		AcceleoParserSignatureUtils.signature(file, new ResourceSetImpl());
 
+		if (monitor.isCanceled()) {
+			return filesBuilt;
+		}
+
 		// Check if they are already built and if they are not, do so
 		for (String moduleDependency : moduleDependencies) {
 			boolean found = false;
@@ -390,7 +412,7 @@ public class AcceleoParser {
 			}
 		}
 
-		if (outputFile != null && !filesBuilt.contains(file)) {
+		if (outputFile != null && !filesBuilt.contains(file) && !monitor.isCanceled()) {
 			// Create the AST
 			URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
 			Resource oResource = createResource(fileURI, resourceSet);
@@ -448,6 +470,11 @@ public class AcceleoParser {
 				options.put(XMLResource.OPTION_ENCODING, encoding);
 			}
 
+			// Check OMG Compilance
+			if (this.checkOMGCompliance && oResource.getContents().size() > 0) {
+				checkOMGCompilance(file, acceleoSourceBuffer, oResource);
+			}
+
 			try {
 				for (IParserListener listener : this.listeners) {
 					listener.fileSaved(file);
@@ -472,6 +499,38 @@ public class AcceleoParser {
 			listener.endBuild(file);
 		}
 		return filesBuilt;
+	}
+
+	/**
+	 * Checks the compilance with the OMG specification.
+	 * 
+	 * @param file
+	 *            The file currently built.
+	 * @param acceleoSourceBuffer
+	 *            The source buffer used.
+	 * @param oResource
+	 *            The resource containing the AST.
+	 */
+	private void checkOMGCompilance(File file, AcceleoSourceBuffer acceleoSourceBuffer, Resource oResource) {
+		EObject eObject = oResource.getContents().get(0);
+		TreeIterator<EObject> oAllContents = eObject.eAllContents();
+		while (oAllContents.hasNext()) {
+			EObject oNext = oAllContents.next();
+			if (oNext instanceof OperationCallExp) {
+				OperationCallExp oOperationCallExp = (OperationCallExp)oNext;
+				if (oOperationCallExp.getReferredOperation() != null
+						&& oOperationCallExp.getReferredOperation().getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
+					String message = AcceleoParserMessages.getString(
+							"AcceleoParser.NotFullyCompliant", oOperationCallExp //$NON-NLS-1$
+									.getReferredOperation().getName());
+					int line = acceleoSourceBuffer.getLineOfOffset(oOperationCallExp.getStartPosition());
+					int posBegin = oOperationCallExp.getStartPosition();
+					int posEnd = oOperationCallExp.getEndPosition();
+					AcceleoParserProblem problem = new AcceleoParserProblem(message, line, posBegin, posEnd);
+					this.problems.put(file, problem);
+				}
+			}
+		}
 	}
 
 	/**
