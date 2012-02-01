@@ -327,15 +327,14 @@ public class AcceleoParser {
 			signature = AcceleoParserSignatureUtils.signature(outputFile, resourceSetTMP);
 		}
 
+		if (outputFile == null || monitor.isCanceled()) {
+			return filesBuilt;
+		}
+
 		// Compute the imported / extended modules
 		AcceleoFile acceleoFile = new AcceleoFile(file, this.acceleoProject.getModuleQualifiedName(file));
 		AcceleoSourceBuffer acceleoSourceBuffer = new AcceleoSourceBuffer(acceleoFile);
 		acceleoSourceBuffer.createCST();
-
-		// Check for the main tag
-		if (this.hasMainTag(acceleoSourceBuffer.getBuffer())) {
-			this.mainFiles.add(file);
-		}
 
 		org.eclipse.acceleo.parser.cst.Module module = acceleoSourceBuffer.getCST();
 		List<String> newSignature = AcceleoParserSignatureUtils.signature(module);
@@ -357,10 +356,6 @@ public class AcceleoParser {
 
 		// Compute the signature of the previous compilation
 		AcceleoParserSignatureUtils.signature(file, new ResourceSetImpl());
-
-		if (monitor.isCanceled()) {
-			return filesBuilt;
-		}
 
 		// Check if they are already built and if they are not, do so
 		for (String moduleDependency : moduleDependencies) {
@@ -432,7 +427,12 @@ public class AcceleoParser {
 			}
 		}
 
-		if (outputFile != null && !filesBuilt.contains(file) && !monitor.isCanceled()) {
+		if (!filesBuilt.contains(file) && !monitor.isCanceled()) {
+			// Check for the main tag
+			if (this.hasMainTag(acceleoSourceBuffer.getBuffer())) {
+				this.mainFiles.add(file);
+			}
+
 			// Create the AST
 			URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
 			Resource oResource = createResource(fileURI, resourceSet);
