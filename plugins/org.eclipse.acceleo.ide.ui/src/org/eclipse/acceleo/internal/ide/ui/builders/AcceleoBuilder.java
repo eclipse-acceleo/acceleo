@@ -72,7 +72,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	/**
 	 * The output folders to ignore.
 	 */
-	private List<File> outputFolders = new ArrayList<File>();
+	private Set<File> outputFolders = new LinkedHashSet<File>();
 
 	/**
 	 * Constructor.
@@ -151,10 +151,14 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					new Path(mainFile.getAbsolutePath()));
 			filesWithMainTag.add(workspaceFile);
 		}
-		CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
-				new AcceleoProject(project), filesWithMainTag);
-		createRunnableAcceleoOperation.run(monitor);
+		if (filesWithMainTag.size() > 0) {
+			monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.GeneratingAcceleoFiles")); //$NON-NLS-1$
+			CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
+					new AcceleoProject(project), filesWithMainTag);
+			createRunnableAcceleoOperation.run(monitor);
+		}
 
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.RefreshingProjects")); //$NON-NLS-1$
 		// Refresh all the projects potentially containing files.
 		Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets
 				.newHashSet(acceleoProject);
