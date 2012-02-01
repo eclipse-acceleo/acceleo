@@ -311,6 +311,9 @@ public class AcceleoParser {
 			listener.startBuild(file);
 		}
 
+		monitor.subTask(AcceleoParserMessages
+				.getString("AcceleoParser.StartingBuild", file.getAbsolutePath())); //$NON-NLS-1$
+
 		Set<File> filesBuilt = new LinkedHashSet<File>();
 		Set<AcceleoProject> dependingAcceleoProjects = this.acceleoProject.getProjectDependencies();
 
@@ -331,10 +334,14 @@ public class AcceleoParser {
 			return filesBuilt;
 		}
 
+		monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", file.getAbsolutePath())); //$NON-NLS-1$
+
 		// Compute the imported / extended modules
 		AcceleoFile acceleoFile = new AcceleoFile(file, this.acceleoProject.getModuleQualifiedName(file));
 		AcceleoSourceBuffer acceleoSourceBuffer = new AcceleoSourceBuffer(acceleoFile);
 		acceleoSourceBuffer.createCST();
+
+		monitor.worked(1);
 
 		org.eclipse.acceleo.parser.cst.Module module = acceleoSourceBuffer.getCST();
 		List<String> newSignature = AcceleoParserSignatureUtils.signature(module);
@@ -356,6 +363,9 @@ public class AcceleoParser {
 
 		// Compute the signature of the previous compilation
 		AcceleoParserSignatureUtils.signature(file, new ResourceSetImpl());
+
+		monitor.subTask(AcceleoParserMessages.getString(
+				"AcceleoParser.ResolvingDependencies", file.getAbsolutePath())); //$NON-NLS-1$
 
 		// Check if they are already built and if they are not, do so
 		for (String moduleDependency : moduleDependencies) {
@@ -433,10 +443,15 @@ public class AcceleoParser {
 				this.mainFiles.add(file);
 			}
 
+			monitor.subTask(AcceleoParserMessages.getString(
+					"AcceleoParser.ParseFileAST", file.getAbsolutePath())); //$NON-NLS-1$
+
 			// Create the AST
 			URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
 			Resource oResource = createResource(fileURI, resourceSet);
 			acceleoSourceBuffer.createAST(oResource);
+
+			monitor.worked(1);
 
 			// Load the other modules in jars in the resource set
 			for (URI uri : dependingModulesURI) {
@@ -495,11 +510,15 @@ public class AcceleoParser {
 				checkOMGCompilance(file, acceleoSourceBuffer, oResource);
 			}
 
+			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.SaveAST", file.getAbsolutePath())); //$NON-NLS-1$
+
 			try {
 				for (IParserListener listener : this.listeners) {
 					listener.fileSaved(file);
 				}
 				oResource.save(options);
+				monitor.worked(10);
+				filesBuilt.add(file);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
