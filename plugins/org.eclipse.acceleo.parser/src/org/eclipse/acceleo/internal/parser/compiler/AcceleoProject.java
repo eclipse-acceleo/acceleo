@@ -130,13 +130,28 @@ public class AcceleoProject {
 	 * @return The file matching the given uri dependency (a::b::c::d).
 	 */
 	public File getFileDependency(String dependency) {
+		File module = null;
 		for (File acceleoModule : this.getAllAcceleoModules()) {
 			// Find the dependencies in the current project first
 			if (dependency.equals(this.getModuleQualifiedName(acceleoModule))) {
-				return acceleoModule;
+				module = acceleoModule;
+				break;
 			}
 		}
-		return null;
+		// If we are there, we didn't found a file with the qualified name given
+		// Let's look, at a file with the name
+		for (File acceleoModule : this.getAllAcceleoModules()) {
+			String name = acceleoModule.getName();
+			if (name.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
+				name = name.substring(0, name.length()
+						- ('.' + IAcceleoConstants.MTL_FILE_EXTENSION).length());
+			}
+			if (dependency.equals(name)) {
+				module = acceleoModule;
+				break;
+			}
+		}
+		return module;
 	}
 
 	/**

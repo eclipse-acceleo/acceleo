@@ -70,9 +70,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	public static final String BUILDER_ID = "org.eclipse.acceleo.ide.ui.acceleoBuilder"; //$NON-NLS-1$
 
 	/**
-	 * The output folder to ignore.
+	 * The output folders to ignore.
 	 */
-	private IPath outputFolder;
+	private List<File> outputFolders = new ArrayList<File>();
 
 	/**
 	 * Constructor.
@@ -100,8 +100,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				projectRoot);
 
 		IJavaProject javaProject = JavaCore.create(project);
-		acceleoProject = AcceleoBuilder.computeProjectClassPath(acceleoProject, javaProject);
-		acceleoProject = AcceleoBuilder.computeProjectDependencies(acceleoProject, javaProject);
+		acceleoProject = this.computeProjectClassPath(acceleoProject, javaProject);
+		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
 
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		String resourceKind = settings.getResourceKind();
@@ -239,7 +239,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *            The Java project.
 	 * @return The Acceleo project with its dependencies resolved.
 	 */
-	private static org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectDependencies(
+	private org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectDependencies(
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
 			IJavaProject javaProject) {
 		try {
@@ -256,12 +256,12 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 						org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiredAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
 								projectRoot);
-						requiredAcceleoProject = AcceleoBuilder.computeProjectClassPath(
-								requiredAcceleoProject, requiredJavaProject);
+						requiredAcceleoProject = this.computeProjectClassPath(requiredAcceleoProject,
+								requiredJavaProject);
 						if (!acceleoProject.getProjectDependencies().contains(requiredAcceleoProject)) {
 							acceleoProject.addProjectDependencies(Sets.newHashSet(requiredAcceleoProject));
-							requiredAcceleoProject = AcceleoBuilder.computeProjectDependencies(
-									requiredAcceleoProject, requiredJavaProject);
+							requiredAcceleoProject = this.computeProjectDependencies(requiredAcceleoProject,
+									requiredJavaProject);
 						}
 
 					}
@@ -291,11 +291,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						if (requiring) {
 							org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiringAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
 									iProject.getLocation().toFile());
-							requiringAcceleoProject = AcceleoBuilder.computeProjectClassPath(
-									requiringAcceleoProject, iJavaProject);
+							requiringAcceleoProject = this.computeProjectClassPath(requiringAcceleoProject,
+									iJavaProject);
 							if (!acceleoProject.getDependentProjects().contains(requiringAcceleoProject)) {
 								acceleoProject.addDependentProjects(Sets.newHashSet(requiringAcceleoProject));
-								requiringAcceleoProject = AcceleoBuilder.computeProjectDependencies(
+								requiringAcceleoProject = this.computeProjectDependencies(
 										requiringAcceleoProject, iJavaProject);
 							}
 						}
@@ -320,7 +320,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *            The Java project
 	 * @return The Acceleo project matching the given Java project with its classpath set.
 	 */
-	private static org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectClassPath(
+	private org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectClassPath(
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
 			IJavaProject javaProject) {
 		Set<AcceleoProjectClasspathEntry> classpathEntries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
@@ -354,6 +354,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 							AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(
 									inputDirectory, outputDirectory);
 							classpathEntries.add(entry);
+
+							this.outputFolders.add(outputDirectory);
 						}
 					}
 				}
@@ -375,24 +377,28 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	protected void fullBuild(IProgressMonitor monitor) throws CoreException {
 		List<IFile> filesOutput = new ArrayList<IFile>();
-		AcceleoBuilderUtils.members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
-				outputFolder);
-		if (filesOutput.size() > 0) {
-			Collections.sort(filesOutput, new Comparator<IFile>() {
-				public int compare(IFile arg0, IFile arg1) {
-					long m0 = arg0.getLocation().toFile().lastModified();
-					long m1 = arg1.getLocation().toFile().lastModified();
-					if (m0 < m1) {
-						return 1;
+		for (File outputFolder : this.outputFolders) {
+			IPath path = new Path(outputFolder.getAbsolutePath());
+			AcceleoBuilderUtils
+					.members(filesOutput, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION, path);
+			if (filesOutput.size() > 0) {
+				Collections.sort(filesOutput, new Comparator<IFile>() {
+					public int compare(IFile arg0, IFile arg1) {
+						long m0 = arg0.getLocation().toFile().lastModified();
+						long m1 = arg1.getLocation().toFile().lastModified();
+						if (m0 < m1) {
+							return 1;
+						}
+						return -1;
 					}
-					return -1;
-				}
-			});
-			registerAccessibleEcoreFiles();
-			IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
-			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
-			compileOperation.run(monitor);
-			generateAcceleoBuildFile(monitor);
+				});
+				registerAccessibleEcoreFiles();
+				IFile[] files = filesOutput.toArray(new IFile[filesOutput.size()]);
+				AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files,
+						false);
+				compileOperation.run(monitor);
+				generateAcceleoBuildFile(monitor);
+			}
 		}
 	}
 
@@ -407,7 +413,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		for (IProject project : acceleoProject.getRecursivelyAccessibleProjects()) {
 			if (project.isAccessible()) {
-				AcceleoBuilderUtils.members(ecoreFiles, project, "ecore", outputFolder); //$NON-NLS-1$
+				for (File outputFolder : this.outputFolders) {
+					IPath path = new Path(outputFolder.getAbsolutePath());
+					AcceleoBuilderUtils.members(ecoreFiles, project, "ecore", path); //$NON-NLS-1$
+				}
 			}
 		}
 		for (IFile ecoreFile : ecoreFiles) {
@@ -427,27 +436,31 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private void generateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
 		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
-		if (outputFolder != null && outputFolder.segmentCount() >= 1) {
-			IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
-			AcceleoProject project = new AcceleoProject(getProject());
-			List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
-			dependencies.remove(getProject());
-			org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoProject = AcceleowizardmodelFactory.eINSTANCE
-					.createAcceleoProject();
-			List<String> pluginDependencies = acceleoProject.getPluginDependencies();
-			for (IProject iProject : dependencies) {
-				pluginDependencies.add(iProject.getName());
-			}
+		for (File outputFolder : this.outputFolders) {
+			IPath path = new Path(outputFolder.getAbsolutePath());
+			if (path.segmentCount() >= 1) {
+				IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
+				AcceleoProject project = new AcceleoProject(getProject());
+				List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
+				dependencies.remove(getProject());
+				org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoProject = AcceleowizardmodelFactory.eINSTANCE
+						.createAcceleoProject();
+				List<String> pluginDependencies = acceleoProject.getPluginDependencies();
+				for (IProject iProject : dependencies) {
+					pluginDependencies.add(iProject.getName());
+				}
 
-			AcceleoUIGenerator.getDefault().generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
+				AcceleoUIGenerator.getDefault()
+						.generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
 
-			if (buildProperties.exists()
-					&& FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
-							buildAcceleo.getName()) == -1) {
-				AcceleoUIActivator.getDefault().getLog().log(
-						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages.getString(
-								"AcceleoBuilder.AcceleoBuildFileIssue", new Object[] {getProject() //$NON-NLS-1$
-										.getName(), })));
+				if (buildProperties.exists()
+						&& FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
+								buildAcceleo.getName()) == -1) {
+					AcceleoUIActivator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
+									.getString("AcceleoBuilder.AcceleoBuildFileIssue", //$NON-NLS-1$
+											new Object[] {getProject().getName(), })));
+				}
 			}
 		}
 	}
@@ -471,8 +484,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 			if (containsManifest) {
 				deltaFilesOutput.clear();
-				AcceleoBuilderUtils.members(deltaFilesOutput, getProject(),
-						IAcceleoConstants.MTL_FILE_EXTENSION, outputFolder);
+				for (File outputFolder : this.outputFolders) {
+					IPath path = new Path(outputFolder.getAbsolutePath());
+					AcceleoBuilderUtils.members(deltaFilesOutput, getProject(),
+							IAcceleoConstants.MTL_FILE_EXTENSION, path);
+				}
 			} else {
 				computeOtherFilesToBuild(deltaFilesOutput);
 			}
@@ -518,8 +534,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	private void computeOtherFilesToBuild(List<IFile> deltaFiles) throws CoreException {
 		AcceleoProject acceleoProject = new AcceleoProject(getProject());
 		List<IFile> otherTemplates = new ArrayList<IFile>();
-		AcceleoBuilderUtils.members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
-				outputFolder);
+		for (File outputFolder : this.outputFolders) {
+			IPath path = new Path(outputFolder.getAbsolutePath());
+			AcceleoBuilderUtils.members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
+					path);
+		}
 		List<Sequence> importSequencesToSearch = new ArrayList<Sequence>();
 		for (int i = 0; i < deltaFiles.size(); i++) {
 			IFile deltaFile = deltaFiles.get(i);
@@ -592,8 +611,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		File projectRoot = project.getLocation().toFile();
 		org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
 				projectRoot);
-		acceleoProject = AcceleoBuilder.computeProjectClassPath(acceleoProject, javaProject);
-		acceleoProject = AcceleoBuilder.computeProjectDependencies(acceleoProject, javaProject);
+		acceleoProject = this.computeProjectClassPath(acceleoProject, javaProject);
+		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
 		acceleoProject.clean();
 		this.cleanAcceleoMarkers(project);
 	}
@@ -624,10 +643,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					deltaFilesOutput.add((IFile)resource);
 				}
 			} else {
-				if (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath())) {
-					IResourceDelta[] children = delta.getAffectedChildren();
-					for (int i = 0; i < children.length; i++) {
-						deltaFilesOutput.addAll(deltaMembers(children[i], monitor));
+				for (File outputFolder : this.outputFolders) {
+					if (outputFolder == null
+							|| !new Path(outputFolder.getAbsolutePath()).isPrefixOf(resource.getLocation())) {
+						IResourceDelta[] children = delta.getAffectedChildren();
+						for (int i = 0; i < children.length; i++) {
+							deltaFilesOutput.addAll(deltaMembers(children[i], monitor));
+						}
 					}
 				}
 			}
@@ -657,10 +679,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					deltaFilesOutput.add((IFile)resource);
 				}
 			} else {
-				if (outputFolder == null || !outputFolder.isPrefixOf(resource.getFullPath())) {
-					IResourceDelta[] children = delta.getAffectedChildren();
-					for (int i = 0; i < children.length; i++) {
-						deltaRemovedMembers(deltaFilesOutput, children[i], monitor);
+				for (File outputFolder : this.outputFolders) {
+					if (outputFolder == null
+							|| !new Path(outputFolder.getAbsolutePath()).isPrefixOf(resource.getLocation())) {
+						IResourceDelta[] children = delta.getAffectedChildren();
+						for (int i = 0; i < children.length; i++) {
+							deltaRemovedMembers(deltaFilesOutput, children[i], monitor);
+						}
 					}
 				}
 			}
