@@ -530,7 +530,7 @@ public class AcceleoParser {
 
 			// If there are major changes, build the modules depending on the file
 			if (isImpactingBuild) {
-				filesBuilt = buildImpactedModules(file, monitor, filesBuilt);
+				filesBuilt.addAll(buildImpactedModules(file, monitor, filesBuilt));
 			}
 
 		}

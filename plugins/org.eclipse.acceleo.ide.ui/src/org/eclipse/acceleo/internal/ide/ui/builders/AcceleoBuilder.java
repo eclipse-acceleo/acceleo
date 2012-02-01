@@ -116,6 +116,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			for (IFile iFile : deltaMembers) {
 				File fileToBuild = iFile.getLocation().toFile();
 				Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
+				for (File builtFile : builtFiles) {
+					IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+							new Path(builtFile.getAbsolutePath()));
+					this.cleanAcceleoMarkers(workspaceFile);
+				}
 				this.addAcceleoMarkers(builtFiles, acceleoParser);
 				mainFiles.addAll(acceleoParser.getMainFiles());
 			}
@@ -125,6 +130,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
 					acceleoProject, useBinaryResources);
 			Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
+			for (File builtFile : builtFiles) {
+				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+						new Path(builtFile.getAbsolutePath()));
+				this.cleanAcceleoMarkers(workspaceFile);
+			}
 			this.addAcceleoMarkers(builtFiles, acceleoParser);
 			mainFiles.addAll(acceleoParser.getMainFiles());
 		} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
@@ -173,6 +183,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				}
 			}
 		}
+		monitor.done();
 
 		return null;
 	}
