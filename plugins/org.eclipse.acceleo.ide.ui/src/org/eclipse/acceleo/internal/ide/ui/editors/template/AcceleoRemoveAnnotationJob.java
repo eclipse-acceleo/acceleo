@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -18,8 +21,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.text.ISynchronizable;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 
 /**
  * This job will clean the annotation when the Acceleo editor becomes dirty.
@@ -60,6 +65,8 @@ public class AcceleoRemoveAnnotationJob extends Job {
 
 			if (model != null) {
 				synchronized(getLockObject(model)) {
+					List<Annotation> annotationsList = new ArrayList<Annotation>();
+
 					Iterator<Annotation> annotations = model.getAnnotationIterator();
 					while (annotations.hasNext()) {
 						if (monitor.isCanceled()) {
@@ -68,10 +75,20 @@ public class AcceleoRemoveAnnotationJob extends Job {
 						Annotation annotation = annotations.next();
 						if (AcceleoOccurrencesFinderJob.FIND_OCCURENCES_ANNOTATION_TYPE.equals(annotation
 								.getType())) {
-							model.removeAnnotation(annotation);
+							annotationsList.add(annotation);
 						}
 					}
 
+					if (model instanceof IAnnotationModelExtension) {
+						IAnnotationModelExtension annotationModelExtension = (IAnnotationModelExtension)model;
+						annotationModelExtension.replaceAnnotations(annotationsList
+								.toArray(new Annotation[annotationsList.size()]),
+								new HashMap<Annotation, Position>());
+					} else {
+						for (Annotation annotation : annotationsList) {
+							model.removeAnnotation(annotation);
+						}
+					}
 					// We re-initialize this variable to allow the user to click on the same element again
 					// and see the highlighting.
 					this.acceleoEditor.offsetASTNodeURI = ""; //$NON-NLS-1$

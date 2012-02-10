@@ -11,7 +11,11 @@
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferenceEntry;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.actions.references.ReferencesSearchQuery;
@@ -29,6 +33,7 @@ import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
@@ -107,7 +112,6 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
 					this.editor.getEditorInput());
 			if (annotationModel != null) {
-
 				List<Match> matches = this.listOfTheOccurencesInTheCurrentFile(result);
 				for (Match match : matches) {
 					ReferenceEntry ref = null;
@@ -133,11 +137,22 @@ public class AcceleoOccurrencesFinderJob extends Job {
 
 					final String description = ref.getMatch().toString();
 
+					Map<Annotation, Position> annotations2positions = new HashMap<Annotation, Position>();
 					for (Position position : this.computePositions(ref)) {
+						// Existing marker of the JDT do not modify !
+						annotations2positions.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false,
+								description), position);
+					}
+					if (annotationModel instanceof IAnnotationModelExtension) {
+						IAnnotationModelExtension annotationModelExtension = (IAnnotationModelExtension)annotationModel;
 						synchronized(getLockObject(annotationModel)) {
-							// Existing marker of the JDT do not modify !
-							annotationModel.addAnnotation(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE,
-									false, description), position);
+							annotationModelExtension.replaceAnnotations(new Annotation[0],
+									annotations2positions);
+						}
+					} else {
+						Set<Entry<Annotation, Position>> entrySet = annotations2positions.entrySet();
+						for (Entry<Annotation, Position> entry : entrySet) {
+							annotationModel.addAnnotation(entry.getKey(), entry.getValue());
 						}
 					}
 				}
