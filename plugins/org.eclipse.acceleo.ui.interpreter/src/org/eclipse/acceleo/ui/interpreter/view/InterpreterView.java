@@ -2141,6 +2141,7 @@ public class InterpreterView extends ViewPart {
 				if (e.getCause() != null) {
 					message = e.getCause().getMessage();
 				}
+				message = e.getClass().getName() + ' ' + message;
 				final IStatus status = new Status(IStatus.ERROR, InterpreterPlugin.PLUGIN_ID, message);
 				final EvaluationResult result = new EvaluationResult(status);
 
