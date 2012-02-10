@@ -444,6 +444,21 @@ public class AcceleoProject {
 	}
 
 	/**
+	 * Returns the URIs of the emtl files in the required plugin of the given project.
+	 * 
+	 * @param project
+	 *            The project
+	 * @return The URIs of the emtl files in the required plugin of the given project.
+	 * @since 3.3
+	 */
+	public static List<URI> computeAcceleoModuleInRequiredPlugins(IProject project) {
+		List<URI> uris = new ArrayList<URI>();
+		AcceleoProject acceleoProject = new AcceleoProject(project);
+		acceleoProject.computeAccessibleOutputFilesWithPluginXML(uris, project);
+		return uris;
+	}
+
+	/**
 	 * Computes the URIs of all the accessible output files (EMTL) in the dependencies of the current plug-in
 	 * (project). It browses all the required plug-ins declared in the 'plugin.xml' file.
 	 * 
@@ -744,6 +759,33 @@ public class AcceleoProject {
 			} catch (CoreException e) {
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
+		}
+		return outputURIs;
+	}
+
+	/**
+	 * Returns the URIs of the EMTL files in the bundle dependencies of the given project.
+	 * 
+	 * @param project
+	 *            The project
+	 * @return The URIs of the EMTL files in the bundle dependencies of the given project.
+	 * @since 3.3
+	 */
+	public static List<URI> getAccessiblePluginModules(IProject project) {
+		List<URI> outputURIs = new ArrayList<URI>();
+		List<String> bundles = new ArrayList<String>();
+
+		IPluginModelBase plugin = PluginRegistry.findModel(project);
+		if (plugin != null && plugin.getBundleDescription() != null) {
+			BundleDescription[] requiredPlugins = plugin.getBundleDescription().getResolvedRequires();
+			for (int i = 0; i < requiredPlugins.length; i++) {
+				String requiredSymbolicName = requiredPlugins[i].getSymbolicName();
+				bundles.add(requiredSymbolicName);
+			}
+		}
+
+		for (String bundle : bundles) {
+			outputURIs.addAll(bundle2outputFiles.get(bundle));
 		}
 		return outputURIs;
 	}
