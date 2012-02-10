@@ -45,7 +45,7 @@ public class AcceleoProject {
 	private Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 
 	/**
-	 * The jar dependencies of the project.
+	 * The dependencies of the project.
 	 */
 	private Set<URI> dependencies = new LinkedHashSet<URI>();
 
@@ -162,20 +162,62 @@ public class AcceleoProject {
 	 * @return The URI of the emtl matching the given URI dependency (a::b::c::d).
 	 */
 	public URI getURIDependency(String dependency) {
+		URI result = null;
+
 		Iterator<URI> iterator = this.dependencies.iterator();
 		while (iterator.hasNext()) {
 			URI uri = iterator.next();
-			Set<URI> allModules = AcceleoParserUtils.getAllModules(uri);
-			Iterator<URI> moduleIterator = allModules.iterator();
-			while (moduleIterator.hasNext()) {
-				URI moduleURI = moduleIterator.next();
-				String moduleName = AcceleoParserUtils.getModuleName(moduleURI);
-				if (dependency.equals(moduleName)) {
-					return moduleURI;
+			if (uri.isPlatformPlugin()) {
+				String uriStr = uri.toString();
+				String[] segments = uri.segments();
+				if (uriStr.startsWith("platform:/plugin/") && segments.length > 1 && "plugin".equals(segments[0])) { //$NON-NLS-1$ //$NON-NLS-2$
+					String moduleQualifiedName = ""; //$NON-NLS-1$
+					for (int cpt = 2; cpt < segments.length; cpt++) {
+						String segment = segments[cpt];
+						moduleQualifiedName = moduleQualifiedName + IAcceleoConstants.NAMESPACE_SEPARATOR
+								+ segment;
+					}
+					if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
+						moduleQualifiedName = moduleQualifiedName.substring(0, moduleQualifiedName
+								.lastIndexOf('.'));
+					}
+					if (dependency.equals(moduleQualifiedName)) {
+						result = uri;
+						break;
+					}
+				}
+			} else if (uri.isPlatformResource()) {
+				String uriStr = uri.toString();
+				String[] segments = uri.segments();
+				if (uriStr.startsWith("platform:/resource/") && segments.length > 1 && "resource".equals(segments[0])) { //$NON-NLS-1$ //$NON-NLS-2$
+					String moduleQualifiedName = ""; //$NON-NLS-1$
+					for (int cpt = 2; cpt < segments.length; cpt++) {
+						String segment = segments[cpt];
+						moduleQualifiedName = moduleQualifiedName + IAcceleoConstants.NAMESPACE_SEPARATOR
+								+ segment;
+					}
+					if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
+						moduleQualifiedName = moduleQualifiedName.substring(0, moduleQualifiedName
+								.lastIndexOf('.'));
+					}
+					if (dependency.equals(moduleQualifiedName)) {
+						result = uri;
+						break;
+					}
+				}
+			} else {
+				Set<URI> allModules = AcceleoParserUtils.getAllModules(uri);
+				Iterator<URI> moduleIterator = allModules.iterator();
+				while (moduleIterator.hasNext()) {
+					URI moduleURI = moduleIterator.next();
+					String moduleName = AcceleoParserUtils.getModuleName(moduleURI);
+					if (dependency.equals(moduleName)) {
+						return moduleURI;
+					}
 				}
 			}
 		}
-		return null;
+		return result;
 	}
 
 	/**
@@ -189,7 +231,8 @@ public class AcceleoProject {
 	}
 
 	/**
-	 * Adds the given dependencies. The URI should be the URI of jar files.
+	 * Adds the given dependencies. The URI should be the URI of jar files or platform:/plugin module uris or
+	 * platform:/resource module uri.
 	 * 
 	 * @param newDependencies
 	 *            The dependencies
@@ -208,6 +251,15 @@ public class AcceleoProject {
 	 */
 	public void clearDependencies() {
 		this.dependencies.clear();
+	}
+
+	/**
+	 * Return the modules dependencies.
+	 * 
+	 * @return The modules dependencies.
+	 */
+	public Set<URI> getModulesDependencies() {
+		return Collections.unmodifiableSet(this.dependencies);
 	}
 
 	/**

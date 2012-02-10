@@ -15,6 +15,7 @@ import com.google.common.collect.Multimap;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -268,9 +269,11 @@ public class AcceleoParser {
 				 */
 				@Override
 				public void run() {
-					Iterator<Resource> resources = resourceSet.getResources().iterator();
-					while (resources.hasNext()) {
-						resources.next().unload();
+					List<Resource> resources = new ArrayList<Resource>();
+					resources.addAll(resourceSet.getResources());
+					Iterator<Resource> it = resources.iterator();
+					while (it.hasNext()) {
+						it.next().unload();
 					}
 				}
 			};

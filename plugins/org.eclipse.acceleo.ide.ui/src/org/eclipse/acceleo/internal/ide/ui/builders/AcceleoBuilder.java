@@ -51,6 +51,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -102,6 +103,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		IJavaProject javaProject = JavaCore.create(project);
 		acceleoProject = this.computeProjectClassPath(acceleoProject, javaProject);
 		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
+
+		List<URI> accessibleOutputFiles = AcceleoProject.computeAcceleoModuleInRequiredPlugins(project);
+		acceleoProject.addDependencies(Sets.newHashSet(accessibleOutputFiles));
 
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		String resourceKind = settings.getResourceKind();
