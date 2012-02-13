@@ -72,7 +72,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	/**
 	 * If the text doesn't start with "[module", we'll use this as a query signature.
 	 */
-	private static final String DUMMY_QUERY = "[query public temporaryInterpreterQuery(target : {0}, model : {1}{2}) : OclAny = " + LINE_SEPARATOR; //$NON-NLS-1$
+	private static final String DUMMY_QUERY = "[query public temporaryInterpreterQuery(thisEObject : {0}, currentModel : {1}{2}) : OclAny = " + LINE_SEPARATOR; //$NON-NLS-1$
 
 	/**
 	 * The default query end.
