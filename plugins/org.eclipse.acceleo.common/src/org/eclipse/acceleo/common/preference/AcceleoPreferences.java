@@ -98,11 +98,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchTraceability(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_TRACEABILITY, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -123,11 +118,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchQueryCache(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_QUERY_CACHE, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -148,11 +138,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchProfiler(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_PROFILER, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -173,6 +158,12 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchDebugMessages(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_DEBUG_MESSAGES, state);
+	}
+
+	/**
+	 * This will be called at plugin stopping in order to flush the preference scope.
+	 */
+	public static void save() {
 		try {
 			PREFERENCES_SCOPE.flush();
 		} catch (BackingStoreException e) {
@@ -200,11 +191,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -228,11 +214,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchForceDeactivationNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_FORCED_DEACTIVATION, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -255,11 +236,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchErrorNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_ERROR, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -282,11 +258,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchWarningNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_WARNING, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -309,11 +280,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchOKNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_OK, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -336,11 +302,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchSuccessNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_SUCCESS, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -363,11 +324,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchInfoNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_INFO, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
@@ -390,11 +346,6 @@ public final class AcceleoPreferences {
 	 */
 	public static void switchCancelNotifications(boolean state) {
 		PREFERENCES_SCOPE.putBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_CANCEL, state);
-		try {
-			PREFERENCES_SCOPE.flush();
-		} catch (BackingStoreException e) {
-			AcceleoCommonPlugin.log(e, true);
-		}
 	}
 
 	/**
