@@ -174,10 +174,12 @@ public class AcceleoProject {
 					String moduleQualifiedName = ""; //$NON-NLS-1$
 					for (int cpt = 2; cpt < segments.length; cpt++) {
 						String segment = segments[cpt];
-						moduleQualifiedName = moduleQualifiedName + IAcceleoConstants.NAMESPACE_SEPARATOR
-								+ segment;
+						if (cpt > 2) {
+							moduleQualifiedName = moduleQualifiedName + IAcceleoConstants.NAMESPACE_SEPARATOR;
+						}
+						moduleQualifiedName = moduleQualifiedName + segment;
 					}
-					if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
+					if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.EMTL_FILE_EXTENSION)) {
 						moduleQualifiedName = moduleQualifiedName.substring(0, moduleQualifiedName
 								.lastIndexOf('.'));
 					}
