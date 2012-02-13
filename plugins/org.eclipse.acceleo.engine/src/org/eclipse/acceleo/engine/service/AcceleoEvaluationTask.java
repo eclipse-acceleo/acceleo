@@ -99,7 +99,6 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			while (!foundMatch && variableIterator.hasNext()) {
 				final Map.Entry<String, Collection<Object>> variable = variableIterator.next();
 				if (variable.getKey().equals(parameter.getName())) {
-					// Viewpoint only considers the last value
 					final List<Object> values = (List<Object>)variable.getValue();
 					arguments.add(values.listIterator(values.size()).previous());
 					foundMatch = true;

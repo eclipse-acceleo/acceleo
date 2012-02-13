@@ -19,6 +19,7 @@ import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.library.connector.ILibrary;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -264,6 +265,7 @@ public class AcceleoCommonPlugin extends Plugin {
 		AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
 		AcceleoLibrariesEclipseUtil.clearRegistry();
 		AcceleoWorkspaceUtil.INSTANCE.dispose();
+		AcceleoPreferences.save();
 		plugin = null;
 		context = null;
 		super.stop(bundleContext);
@@ -462,12 +464,12 @@ public class AcceleoCommonPlugin extends Plugin {
 		 */
 		public void resourceChanged(IResourceChangeEvent event) {
 			switch (event.getType()) {
-			/*
-			 * Project closing and deletion must trigger the removal of its models from the dynamic registry.
-			 * Model deletion must trigger its removal from the dynamic registry. Model change must trigger
-			 * its removal and re-adding in the registry. Model creation must trigger its addition in the
-			 * registry.
-			 */
+				/*
+				 * Project closing and deletion must trigger the removal of its models from the dynamic
+				 * registry. Model deletion must trigger its removal from the dynamic registry. Model change
+				 * must trigger its removal and re-adding in the registry. Model creation must trigger its
+				 * addition in the registry.
+				 */
 				case IResourceChangeEvent.PRE_CLOSE:
 				case IResourceChangeEvent.PRE_DELETE:
 					if (event.getResource() instanceof IProject) {
