@@ -140,8 +140,10 @@ public class AcceleoOccurrencesFinderJob extends Job {
 					Map<Annotation, Position> annotations2positions = new HashMap<Annotation, Position>();
 					for (Position position : this.computePositions(ref)) {
 						// Existing marker of the JDT do not modify !
-						annotations2positions.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false,
-								description), position);
+						if (position != null) {							
+							annotations2positions.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false,
+									description), position);
+						}
 					}
 					if (annotationModel instanceof IAnnotationModelExtension) {
 						IAnnotationModelExtension annotationModelExtension = (IAnnotationModelExtension)annotationModel;
