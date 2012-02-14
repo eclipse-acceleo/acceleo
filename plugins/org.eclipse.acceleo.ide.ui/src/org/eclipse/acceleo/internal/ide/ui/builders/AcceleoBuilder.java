@@ -662,13 +662,17 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					deltaFilesOutput.add((IFile)resource);
 				}
 			} else {
+				boolean shouldConsider = true;
 				for (File outputFolder : this.outputFolders) {
 					if (outputFolder == null
-							|| !new Path(outputFolder.getAbsolutePath()).isPrefixOf(resource.getLocation())) {
-						IResourceDelta[] children = delta.getAffectedChildren();
-						for (int i = 0; i < children.length; i++) {
-							deltaFilesOutput.addAll(deltaMembers(children[i], monitor));
-						}
+							|| new Path(outputFolder.getAbsolutePath()).isPrefixOf(resource.getLocation())) {
+						shouldConsider = false;
+					}
+				}
+				if (shouldConsider) {
+					IResourceDelta[] children = delta.getAffectedChildren();
+					for (int i = 0; i < children.length; i++) {
+						deltaFilesOutput.addAll(deltaMembers(children[i], monitor));
 					}
 				}
 			}
