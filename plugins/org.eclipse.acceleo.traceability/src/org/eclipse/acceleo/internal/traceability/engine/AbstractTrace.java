@@ -68,7 +68,9 @@ public abstract class AbstractTrace {
 	 *            Generated text value. This will be used to properly set the trace's offsets.
 	 */
 	public void addTrace(InputElement input, GeneratedText trace, Object value) {
-		addTrace(input, trace, value.toString().length());
+		if (value != null) {
+			addTrace(input, trace, value.toString().length());
+		}
 	}
 
 	/**
