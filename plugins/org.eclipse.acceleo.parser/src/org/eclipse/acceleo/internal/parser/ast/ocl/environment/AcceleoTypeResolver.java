@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.AbstractTypeResolver;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.internal.OCLEcorePlugin;
@@ -97,11 +96,6 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 						&& ((ENamedElement)shadowedEContainer).getName() != null
 						&& (((ENamedElement)shadowedEContainer).getName()
 								.equals(((ENamedElement)typeEContainer).getName()));
-			}
-
-			if (shadowedEContainer != null && typeEContainer != null) {
-				result = result
-						&& EcoreUtil.getURI(shadowedEContainer).equals(EcoreUtil.getURI(typeEContainer));
 			}
 
 			// Same features
