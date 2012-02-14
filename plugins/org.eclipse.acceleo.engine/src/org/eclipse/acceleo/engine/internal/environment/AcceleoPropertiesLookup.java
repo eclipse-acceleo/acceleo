@@ -21,6 +21,9 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
+import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.emf.common.EMFPlugin;
 
 /**
@@ -128,6 +131,16 @@ public class AcceleoPropertiesLookup {
 		if (bundle != null) {
 			value = bundle.getString(key);
 		}
+
+		if (value == null) {
+			if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
+				AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+						"AcceleoPropertiesLookup.PropertiesNotFound", key), false); //$NON-NLS-1$
+			}
+
+			value = ""; //$NON-NLS-1$
+		}
+
 		return value;
 	}
 
@@ -166,6 +179,15 @@ public class AcceleoPropertiesLookup {
 		if (bundle != null) {
 			value = bundle.getString(key);
 		}
+
+		if (value == null) {
+			if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
+				AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+						"AcceleoPropertiesLookup.PropertiesNotFound", key), false); //$NON-NLS-1$
+			}
+			value = ""; //$NON-NLS-1$
+		}
+
 		return value;
 	}
 
