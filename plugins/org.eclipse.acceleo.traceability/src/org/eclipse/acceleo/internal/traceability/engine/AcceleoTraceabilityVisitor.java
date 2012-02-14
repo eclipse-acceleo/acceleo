@@ -499,7 +499,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 		if (hasProblems) {
-			AcceleoEnginePlugin.log("problems with file " + file.getName(), false); //$NON-NLS-1$
+			AcceleoEnginePlugin.log("Traceability problems with file " + file.getName(), false); //$NON-NLS-1$
 		}
 		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == fileBlock
 				&& recordedTraces.getLast().getTraces().isEmpty()) {
@@ -1115,6 +1115,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} finally {
 			record = oldRecordingValue;
 			evaluatingOperationCall = oldOperationEvaluationState;
+		}
+
+		if (result == null) {
+			AcceleoTraceabilityPlugin.log(AcceleoTraceabilityMessages.getString(
+					"AcceleoTraceabilityVisitor.NullEvaluation", callExp.toString()), true); //$NON-NLS-1$
 		}
 
 		operationCallSource = null;
