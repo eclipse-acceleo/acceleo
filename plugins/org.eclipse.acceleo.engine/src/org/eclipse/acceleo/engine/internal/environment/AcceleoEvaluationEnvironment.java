@@ -771,7 +771,9 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		}
 		// We have a resource set, let's find out where its module are coming from
 		List<Resource> resources = resourceSet.getResources();
-		for (Resource resource : resources) {
+		Iterator<Resource> iterator = resources.iterator();
+		while (iterator.hasNext()) {
+			Resource resource = iterator.next();
 			URI uri = resource.getURI();
 			String generatorID = uri.toString();
 
@@ -784,7 +786,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			} else if (uri.isPlatform() && uri.segments().length > 2) {
 				// Not supposed to happen since extension point works only when deployed in eclipse
 				generatorID = uri.segment(1);
-			} else if (uri.isFile()) {
+			} else if (uri.isFile() || generatorID.startsWith("jar:file:")) { //$NON-NLS-1$
 				BundleURLConverter converter = new BundleURLConverter(generatorID);
 				generatorID = converter.resolveAsPlatformPlugin();
 				// generatorID = AcceleoWorkspaceUtil.resolveAsPlatformPlugin(generatorID);
