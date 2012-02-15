@@ -90,10 +90,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverride.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 0, 0);
-			checkASTResolution(1, 0, 0);
-			checkASTDocumentationResolution(1, 0, 0);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(1, 1, 0);
+			checkASTResolution(1, 1, 0);
+			checkASTDocumentationResolution(1, 1, 0);
 		} else {
 			fail();
 		}
@@ -124,10 +124,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideInSameModule.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 0, 0);
-			checkASTResolution(1, 0, 1);
-			checkASTDocumentationResolution(1, 0, 1);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(1, 1, 0);
+			checkASTResolution(1, 1, 1);
+			checkASTDocumentationResolution(1, 1, 1);
 		} else {
 			fail();
 		}
@@ -141,10 +141,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 0, 0);
-			checkASTResolution(1, 0, 1);
-			checkASTDocumentationResolution(1, 0, 1);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(1, 1, 0);
+			checkASTResolution(1, 1, 1);
+			checkASTDocumentationResolution(1, 1, 1);
 		} else {
 			fail();
 		}
@@ -175,10 +175,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverride.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 2, 0);
-			checkASTDocumentationResolution(1, 2, 0);
+			checkCSTParsing(moduleFile, 0, 2, 0);
+			checkCST2ASTConvertion(1, 4, 0);
+			checkASTResolution(1, 4, 0);
+			checkASTDocumentationResolution(1, 4, 0);
 		} else {
 			fail();
 		}
@@ -192,10 +192,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideQualifiedName.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 2, 0);
-			checkASTDocumentationResolution(1, 2, 0);
+			checkCSTParsing(moduleFile, 0, 2, 0);
+			checkCST2ASTConvertion(1, 4, 0);
+			checkASTResolution(1, 4, 0);
+			checkASTDocumentationResolution(1, 4, 0);
 		} else {
 			fail();
 		}
@@ -209,10 +209,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideSameValue.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 3, 0);
-			checkASTDocumentationResolution(1, 3, 0);
+			checkCSTParsing(moduleFile, 0, 2, 0);
+			checkCST2ASTConvertion(1, 4, 0);
+			checkASTResolution(1, 5, 0);
+			checkASTDocumentationResolution(1, 5, 0);
 		} else {
 			fail();
 		}
@@ -227,10 +227,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideSameValueQualifiedName.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 3, 0);
-			checkASTDocumentationResolution(1, 3, 0);
+			checkCSTParsing(moduleFile, 0, 2, 0);
+			checkCST2ASTConvertion(1, 4, 0);
+			checkASTResolution(1, 5, 0);
+			checkASTDocumentationResolution(1, 5, 0);
 		} else {
 			fail();
 		}
@@ -244,10 +244,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideInSameModule.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 2, 1);
-			checkASTDocumentationResolution(1, 2, 1);
+			checkCSTParsing(moduleFile, 0, 2, 0);
+			checkCST2ASTConvertion(1, 4, 0);
+			checkASTResolution(1, 4, 1);
+			checkASTDocumentationResolution(1, 4, 1);
 		} else {
 			fail();
 		}
@@ -262,10 +262,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 2, 0);
-			checkASTResolution(1, 2, 1);
-			checkASTDocumentationResolution(1, 2, 1);
+			checkCSTParsing(moduleFile, 0, 2, 0);
+			checkCST2ASTConvertion(1, 4, 0);
+			checkASTResolution(1, 4, 1);
+			checkASTDocumentationResolution(1, 4, 1);
 		} else {
 			fail();
 		}
@@ -433,10 +433,10 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideDeprecated.mtl"); //$NON-NLS-1$
 		if (moduleFile.exists() && buffer.length() > 0) {
-			checkCSTParsing(moduleFile, 0, 0, 0);
-			checkCST2ASTConvertion(1, 0, 0);
-			checkASTResolution(1, 1, 0);
-			checkASTDocumentationResolution(1, 1, 0);
+			checkCSTParsing(moduleFile, 0, 1, 0);
+			checkCST2ASTConvertion(1, 1, 0);
+			checkASTResolution(1, 2, 0);
+			checkASTDocumentationResolution(1, 2, 0);
 		} else {
 			fail();
 		}
