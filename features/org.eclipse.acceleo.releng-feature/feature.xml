@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.acceleo.releng"
-      label="%featureName"
+      label="Acceleo"
       version="3.3.0.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
@@ -14,8 +14,10 @@
       %copyright
    </copyright>
 
-   <license url="%licenseURL">%license</license>
-   
+   <license url="%licenseURL">
+      %license
+   </license>
+
    <url>
       <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
@@ -24,5 +26,5 @@
    <includes
          id="org.eclipse.acceleo.sdk"
          version="0.0.0"/>
-         
+
 </feature>
