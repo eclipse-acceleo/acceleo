@@ -34,14 +34,14 @@ public class CSTParserModuleTests extends AbstractCSTParserTests {
 	public void testParseModuleHeaderUMLExtendsOneModule() {
 		StringBuffer buffer = new StringBuffer(
 				"mymodule(http://www.eclipse.org/uml2/2.1.0/UML) extends mymodule1"); //$NON-NLS-1$
-		testParseModuleHeader(buffer, 0, 0, 0);
+		testParseModuleHeader(buffer, 0, 1, 0);
 	}
 
 	@Test
 	public void testParseModuleHeaderUMLExtendsTwoModules() {
 		StringBuffer buffer = new StringBuffer(
 				"mymodule(http://www.eclipse.org/uml2/2.1.0/UML) extends mymodule1, mymodule2"); //$NON-NLS-1$
-		testParseModuleHeader(buffer, 0, 0, 0);
+		testParseModuleHeader(buffer, 0, 2, 0);
 	}
 
 	@Test

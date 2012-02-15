@@ -54,7 +54,7 @@ public class CSTParserTests extends AbstractCSTParserTests {
 	@Test
 	public void testParseFileLibrary2textAcceleo() {
 		File file = createFile("/data/template/cstParserLibrary2text.mtl"); //$NON-NLS-1$
-		checkCSTParsing(file, 0, 2, 0);
+		checkCSTParsing(file, 0, 3, 0);
 	}
 
 	@Test

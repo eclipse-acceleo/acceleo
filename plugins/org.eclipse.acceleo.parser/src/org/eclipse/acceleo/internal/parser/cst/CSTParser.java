@@ -796,12 +796,22 @@ public class CSTParser {
 						bExtend = indexOfSpaceInTrimmedText;
 						errorFound = true;
 					}
+					if (eModuleExtendsValue.getName() != null
+							&& !eModuleExtendsValue.getName().contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
+						this.logWarning(AcceleoParserMessages.getString("CSTParser.UnqualifiedExtend"), //$NON-NLS-1$
+								eModuleExtendsValue.getStartPosition(), eModuleExtendsValue.getEndPosition());
+					}
 				} else {
 					ModuleExtendsValue eModuleExtendsValue = CstFactory.eINSTANCE.createModuleExtendsValue();
 					setPositions(eModuleExtendsValue, bExtend, comma.b());
 					eModuleExtendsValue.setName(source.getBuffer().substring(bExtend, comma.b()).trim());
 					eModule.getExtends().add(eModuleExtendsValue);
 					bExtend = comma.e();
+					if (eModuleExtendsValue.getName() != null
+							&& !eModuleExtendsValue.getName().contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
+						this.logWarning(AcceleoParserMessages.getString("CSTParser.UnqualifiedExtend"), //$NON-NLS-1$
+								eModuleExtendsValue.getStartPosition(), eModuleExtendsValue.getEndPosition());
+					}
 				}
 			}
 		}
@@ -987,6 +997,13 @@ public class CSTParser {
 			ModuleImportsValue eModuleImportsValue = CstFactory.eINSTANCE.createModuleImportsValue();
 			setPositions(eModuleImportsValue, beginHeader.e(), eH.b());
 			eModuleImportsValue.setName(source.getBuffer().substring(beginHeader.e(), eH.b()).trim());
+
+			if (eModuleImportsValue.getName() != null
+					&& !eModuleImportsValue.getName().contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
+				this.logWarning(AcceleoParserMessages.getString("CSTParser.UnqualifiedImport"), beginHeader //$NON-NLS-1$
+						.e(), eH.b());
+			}
+
 			eModule.getImports().add(eModuleImportsValue);
 			posBegin = eH.e();
 		}
