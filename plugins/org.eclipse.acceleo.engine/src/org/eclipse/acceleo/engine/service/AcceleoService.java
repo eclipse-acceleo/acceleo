@@ -911,9 +911,9 @@ public final class AcceleoService {
 			} else if (EMFPlugin.IS_ECLIPSE_RUNNING && generationRoot != null) {
 				// Check the nature of the output project
 				IPath location = new Path(generationRoot.getAbsolutePath());
-				IContainer container = ResourcesPlugin.getWorkspace().getRoot().getContainerForLocation(
-						location);
-				if (container != null) {
+				IContainer[] containers = ResourcesPlugin.getWorkspace().getRoot()
+						.findContainersForLocationURI(location.toFile().toURI());
+				for (IContainer container : containers) {
 					IProject project = container.getProject();
 					try {
 						if (project != null && project.isAccessible()
