@@ -41,7 +41,7 @@ public class AcceleoWarningQuickFix implements IMarkerResolutionGenerator2 {
 			result[0] = new AcceleoCreateComparisonResolution();
 			return result;
 		}
-		return null;
+		return new IMarkerResolution[0];
 	}
 
 	/**
