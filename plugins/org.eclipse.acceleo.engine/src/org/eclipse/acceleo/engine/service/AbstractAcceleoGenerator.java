@@ -351,8 +351,10 @@ public abstract class AbstractAcceleoGenerator {
 		resourceSet.setResourceFactoryRegistry(new AcceleoResourceFactoryRegistry(resourceFactoryRegistry));
 
 		originalResources.addAll(resourceSet.getResources());
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			resourceSet.setURIConverter(createURIConverter());
+
+		URIConverter uriConverter = createURIConverter();
+		if (uriConverter != null) {
+			resourceSet.setURIConverter(uriConverter);
 		}
 
 		// make sure that metamodel projects in the workspace override those in plugins
@@ -383,6 +385,8 @@ public abstract class AbstractAcceleoGenerator {
 		model = element;
 		targetFolder = folder;
 		generationArguments = arguments;
+
+		this.postInitialize();
 	}
 
 	/**
@@ -403,8 +407,10 @@ public abstract class AbstractAcceleoGenerator {
 	public void initialize(URI modelURI, File folder, List<?> arguments) throws IOException {
 		ResourceSet modulesResourceSet = new AcceleoResourceSetImpl();
 		modulesResourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			modulesResourceSet.setURIConverter(createURIConverter());
+
+		URIConverter uriConverter = createURIConverter();
+		if (uriConverter != null) {
+			modulesResourceSet.setURIConverter(uriConverter);
 		}
 
 		Map<URI, URI> uriMap = EcorePlugin.computePlatformURIMap();
@@ -417,8 +423,8 @@ public abstract class AbstractAcceleoGenerator {
 
 		ResourceSet modelResourceSet = new AcceleoResourceSetImpl();
 		modelResourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
-		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
-			modelResourceSet.setURIConverter(createURIConverter());
+		if (uriConverter != null) {
+			modelResourceSet.setURIConverter(uriConverter);
 		}
 
 		// make sure that metamodel projects in the workspace override those in plugins
@@ -451,6 +457,17 @@ public abstract class AbstractAcceleoGenerator {
 		model = ModelUtils.load(newModelURI, modelResourceSet);
 		targetFolder = folder;
 		generationArguments = arguments;
+
+		this.postInitialize();
+	}
+
+	/**
+	 * This method is called after the initialization of the generator.
+	 * 
+	 * @since 3.3
+	 */
+	protected void postInitialize() {
+		// do nothing by default
 	}
 
 	/**
@@ -634,6 +651,10 @@ public abstract class AbstractAcceleoGenerator {
 	 * @since 3.0
 	 */
 	protected URIConverter createURIConverter() {
+		if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
+			return null;
+		}
+
 		return new ExtensibleURIConverterImpl() {
 			/**
 			 * {@inheritDoc}
