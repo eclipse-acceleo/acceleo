@@ -285,15 +285,29 @@ public final class AcceleoLibraryOperationVisitor {
 		final String operationName = operation.getName();
 
 		if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
-			final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
-			final Iterator<?> sourceIterator = source.iterator();
-			while (sourceIterator.hasNext()) {
-				temp.add(sourceIterator.next());
-				if (sourceIterator.hasNext()) {
-					temp.add(args[0]);
+			if (args.length == 1) {
+				final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+				final Iterator<?> sourceIterator = source.iterator();
+				while (sourceIterator.hasNext()) {
+					temp.add(sourceIterator.next());
+					if (sourceIterator.hasNext()) {
+						temp.add(args[0]);
+					}
 				}
+				result = temp;
+			} else if (args.length == 3) {
+				final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+				temp.add(args[0]);
+				final Iterator<?> sourceIterator = source.iterator();
+				while (sourceIterator.hasNext()) {
+					temp.add(sourceIterator.next());
+					if (sourceIterator.hasNext()) {
+						temp.add(args[1]);
+					}
+				}
+				temp.add(args[2]);
+				result = temp;
 			}
-			result = temp;
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_FILTER.equals(operationName)) {
 			final Collection<Object> temp;
 
@@ -329,7 +343,114 @@ public final class AcceleoLibraryOperationVisitor {
 			final List<Object> temp = new ArrayList<Object>(source);
 			result = Integer.valueOf(temp.lastIndexOf(args[0]) + 1);
 			if (result.equals(Integer.valueOf(0))) {
-				Integer.valueOf(-1);
+				result = Integer.valueOf(-1);
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_ADD_ALL.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Collection<?>) {
+				if (source instanceof LinkedHashSet) {
+					final LinkedHashSet<Object> temp = new LinkedHashSet<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.addAll(arg);
+					result = temp;
+				} else if (source instanceof Set) {
+					final HashSet<Object> temp = new HashSet<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.addAll(arg);
+					result = temp;
+				} else if (source instanceof List) {
+					final List<Object> temp = new ArrayList<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.addAll(arg);
+					result = temp;
+				} else if (source instanceof Bag) {
+					Bag<Object> temp = CollectionUtil.createNewBag(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.addAll(arg);
+					result = temp;
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_REMOVE_ALL.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Collection<?>) {
+				if (source instanceof LinkedHashSet) {
+					final LinkedHashSet<Object> temp = new LinkedHashSet<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.removeAll(arg);
+					result = temp;
+				} else if (source instanceof Set) {
+					final HashSet<Object> temp = new HashSet<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.removeAll(arg);
+					result = temp;
+				} else if (source instanceof List) {
+					final List<Object> temp = new ArrayList<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.removeAll(arg);
+					result = temp;
+				} else if (source instanceof Bag) {
+					final List<Object> temp = new ArrayList<Object>(source);
+					Collection<?> arg = (Collection<?>)args[0];
+					temp.removeAll(arg);
+					Bag<Object> bag = CollectionUtil.createNewBag(temp);
+					result = bag;
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_DROP.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Integer) {
+				final List<Object> temp = new ArrayList<Object>(source);
+				int index = ((Integer)args[0]).intValue();
+				if (index <= temp.size()) {
+					result = temp.subList(index, temp.size());
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_DROP_RIGHT.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Integer) {
+				final List<Object> temp = new ArrayList<Object>(source);
+				int index = ((Integer)args[0]).intValue();
+				if (index <= temp.size()) {
+					result = temp.subList(0, temp.size() - index);
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_STARTS_WITH.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Collection<?>) {
+				final List<Object> temp = new ArrayList<Object>(source);
+				List<Object> arg = new ArrayList<Object>((Collection<?>)args[0]);
+
+				result = Boolean.FALSE;
+				if (temp.size() >= arg.size()) {
+					List<Object> subTemp = temp.subList(0, arg.size());
+					result = Boolean.valueOf(subTemp.equals(arg));
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_ENDS_WITH.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Collection<?>) {
+				final List<Object> temp = new ArrayList<Object>(source);
+				List<Object> arg = new ArrayList<Object>((Collection<?>)args[0]);
+
+				result = Boolean.FALSE;
+				if (temp.size() >= arg.size()) {
+					List<Object> subTemp = temp.subList(temp.size() - arg.size(), temp.size());
+					result = Boolean.valueOf(subTemp.equals(arg));
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_INDEX_OF_SLICE.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Collection<?>) {
+				final List<Object> temp = new ArrayList<Object>(source);
+				List<Object> arg = new ArrayList<Object>((Collection<?>)args[0]);
+				int indexOfSubList = Collections.indexOfSubList(temp, arg);
+				result = Integer.valueOf(indexOfSubList + 1);
+				if (result.equals(Integer.valueOf(0))) {
+					result = Integer.valueOf(-1);
+				}
+			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_LAST_INDEX_OF_SLICE.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof Collection<?>) {
+				final List<Object> temp = new ArrayList<Object>(source);
+				List<Object> arg = new ArrayList<Object>((Collection<?>)args[0]);
+				int indexOfSubList = Collections.lastIndexOfSubList(temp, arg);
+				result = Integer.valueOf(indexOfSubList + 1);
+				if (result.equals(Integer.valueOf(0))) {
+					result = Integer.valueOf(-1);
+				}
 			}
 		}
 
@@ -441,19 +562,41 @@ public final class AcceleoLibraryOperationVisitor {
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TRIM.equals(operationName)) {
 			result = source.trim();
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE.equals(operationName)) {
-			result = tokenize(source, (String)args[0]);
+			if (args.length == 1) {
+				result = tokenize(source, (String)args[0]);
+			} else if (args.length == 0) {
+				result = tokenize(source);
+			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS.equals(operationName)) {
 			result = Boolean.valueOf(source.contains((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_MATCHES.equals(operationName)) {
 			result = Boolean.valueOf(source.matches((String)args[0]));
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_LASTINDEX.equals(operationName)) {
-			// Increment java index value by 1 for OCL
-			result = Integer.valueOf(source.lastIndexOf((String)args[0]) + 1);
-			if (result.equals(Integer.valueOf(0))) {
-				result = Integer.valueOf(-1);
+			if (args.length == 1) {
+				// Increment java index value by 1 for OCL
+				result = Integer.valueOf(source.lastIndexOf((String)args[0]) + 1);
+				if (result.equals(Integer.valueOf(0))) {
+					result = Integer.valueOf(-1);
+				}
+			} else if (args.length == 2) {
+				// Increment java index value by 1 for OCL
+				result = Integer
+						.valueOf(source.lastIndexOf((String)args[0], ((Integer)args[1]).intValue()) + 1);
+				if (result.equals(Integer.valueOf(0))) {
+					result = Integer.valueOf(-1);
+				}
 			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING.equals(operationName)) {
 			result = source.substring(((Integer)args[0]).intValue() - 1);
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_INDEX.equals(operationName)) {
+			// If we are here, it should be for index(String, Integer) not for index(String)
+			if (args.length == 2) {
+				// Increment java index value by 1 for OCL
+				result = Integer.valueOf(source.indexOf((String)args[0], ((Integer)args[1]).intValue()) + 1);
+				if (result.equals(Integer.valueOf(0))) {
+					result = Integer.valueOf(-1);
+				}
+			}
 		}
 
 		return result;
@@ -1183,6 +1326,23 @@ public final class AcceleoLibraryOperationVisitor {
 	 */
 	private static List<String> tokenize(String source, String delim) {
 		final StringTokenizer tokenizer = new StringTokenizer(source, delim);
+		List<String> result = new ArrayList<String>();
+		while (tokenizer.hasMoreTokens()) {
+			result.add(tokenizer.nextToken());
+		}
+		return result;
+	}
+
+	/**
+	 * Implements the "tokenize" operation on String type. This will return a sequence containing the tokens
+	 * of the given string (using line separators and carriage returns as delimiter).
+	 * 
+	 * @param source
+	 *            Source String that is to be tokenized.
+	 * @return A sequence containing the tokens of the given.
+	 */
+	private static List<String> tokenize(String source) {
+		final StringTokenizer tokenizer = new StringTokenizer(source);
 		List<String> result = new ArrayList<String>();
 		while (tokenizer.hasMoreTokens()) {
 			result.add(tokenizer.nextToken());

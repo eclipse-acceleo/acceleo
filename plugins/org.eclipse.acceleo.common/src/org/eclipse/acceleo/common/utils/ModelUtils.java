@@ -507,5 +507,11 @@ public final class ModelUtils {
 						IAcceleoConstants.XMI_CONTENT_TYPE, xmiResourceFactory);
 			}
 		}
+
+		final String xmi = "xmi"; //$NON-NLS-1$
+		if (resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(xmi) != null) {
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(xmi,
+					Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().get(xmi));
+		}
 	}
 }

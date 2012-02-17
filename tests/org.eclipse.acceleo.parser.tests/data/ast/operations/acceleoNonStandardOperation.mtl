@@ -17,6 +17,10 @@ Non-standard String operations
 ['e'.tokenize('e')/]
 ['e'.trim()/]
 
+['e'.index('e', 1)/]
+['e'.lastIndex('e', 1)/]
+['e'.tokenize()/]
+
 Non-standard EObject operations
 [eClass.ancestors()/]
 [eClass.ancestors(EClass)/]
@@ -53,6 +57,77 @@ Non-standard Collection operations
 [Sequence{'a'}->filter(String)/]
 [Sequence{'a'}->reverse()/]
 [Sequence{'a'}->lastIndexOf('a')/]
+
+[Sequence{'a', 'b', 'c'}->sep('prefix', 'separator', 'suffix')/]
+[OrderedSet{'a', 'b', 'c'}->sep('prefix', 'separator', 'suffix')/]
+[Bag{'a', 'b', 'c'}->sep('prefix', 'separator', 'suffix')/]
+[Set{'a', 'b', 'c'}->sep('prefix', 'separator', 'suffix')/]
+
+[Sequence{'a', 'b', 'c'}->addAll(OrderedSet{'a', 'b', 'c'})/]
+[Sequence{'a', 'b', 'c'}->addAll(Bag{'a', 'b', 'c'})/]
+[Sequence{'a', 'b', 'c'}->addAll(Set{'a', 'b', 'c'})/]
+[Sequence{'a', 'b', 'c'}->addAll(Sequence{'a', 'b', 'c'})/]
+
+[OrderedSet{'a', 'b', 'c'}->addAll(OrderedSet{'a', 'b', 'c'})/]
+[OrderedSet{'a', 'b', 'c'}->addAll(Bag{'a', 'b', 'c'})/]
+[OrderedSet{'a', 'b', 'c'}->addAll(Set{'a', 'b', 'c'})/]
+[OrderedSet{'a', 'b', 'c'}->addAll(Sequence{'a', 'b', 'c'})/]
+
+[Set{'a', 'b', 'c'}->addAll(OrderedSet{'a', 'b', 'c'})/]
+[Set{'a', 'b', 'c'}->addAll(Bag{'a', 'b', 'c'})/]
+[Set{'a', 'b', 'c'}->addAll(Set{'a', 'b', 'c'})/]
+[Set{'a', 'b', 'c'}->addAll(Sequence{'a', 'b', 'c'})/]
+
+[Bag{'a', 'b', 'c'}->addAll(OrderedSet{'a', 'b', 'c'})/]
+[Bag{'a', 'b', 'c'}->addAll(Bag{'a', 'b', 'c'})/]
+[Bag{'a', 'b', 'c'}->addAll(Set{'a', 'b', 'c'})/]
+[Bag{'a', 'b', 'c'}->addAll(Sequence{'a', 'b', 'c'})/]
+
+[Sequence{'a', 'b', 'c'}->removeAll(OrderedSet{'a', 'b', 'c'})/]
+[Sequence{'a', 'b', 'c'}->removeAll(Bag{'a', 'b', 'c'})/]
+[Sequence{'a', 'b', 'c'}->removeAll(Set{'a', 'b', 'c'})/]
+[Sequence{'a', 'b', 'c'}->removeAll(Sequence{'a', 'b', 'c'})/]
+
+[OrderedSet{'a', 'b', 'c'}->removeAll(OrderedSet{'a', 'b', 'c'})/]
+[OrderedSet{'a', 'b', 'c'}->removeAll(Bag{'a', 'b', 'c'})/]
+[OrderedSet{'a', 'b', 'c'}->removeAll(Set{'a', 'b', 'c'})/]
+[OrderedSet{'a', 'b', 'c'}->removeAll(Sequence{'a', 'b', 'c'})/]
+
+[Set{'a', 'b', 'c'}->removeAll(OrderedSet{'a', 'b', 'c'})/]
+[Set{'a', 'b', 'c'}->removeAll(Bag{'a', 'b', 'c'})/]
+[Set{'a', 'b', 'c'}->removeAll(Set{'a', 'b', 'c'})/]
+[Set{'a', 'b', 'c'}->removeAll(Sequence{'a', 'b', 'c'})/]
+
+[Bag{'a', 'b', 'c'}->removeAll(OrderedSet{'a', 'b', 'c'})/]
+[Bag{'a', 'b', 'c'}->removeAll(Bag{'a', 'b', 'c'})/]
+[Bag{'a', 'b', 'c'}->removeAll(Set{'a', 'b', 'c'})/]
+[Bag{'a', 'b', 'c'}->removeAll(Sequence{'a', 'b', 'c'})/]
+
+[Sequence{'a', 'b', 'c'}->drop(2)/]
+[OrderedSet{'a', 'b', 'c'}->drop(2)/]
+
+[Sequence{'a', 'b', 'c'}->dropRight(2)/]
+[OrderedSet{'a', 'b', 'c'}->dropRight(2)/]
+
+[Sequence{'a', 'b', 'c'}->startsWith(OrderedSet{'a', 'b'})/]
+[Sequence{'a', 'b', 'c'}->startsWith(Sequence{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->startsWith(OrderedSet{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->startsWith(Sequence{'a', 'b'})/]
+
+[Sequence{'a', 'b', 'c'}->endsWith(OrderedSet{'a', 'b'})/]
+[Sequence{'a', 'b', 'c'}->endsWith(Sequence{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->endsWith(OrderedSet{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->endsWith(Sequence{'a', 'b'})/]
+
+[Sequence{'a', 'b', 'c'}->indexOfSlice(OrderedSet{'a', 'b'})/]
+[Sequence{'a', 'b', 'c'}->indexOfSlice(Sequence{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->indexOfSlice(OrderedSet{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->indexOfSlice(Sequence{'a', 'b'})/]
+
+[Sequence{'a', 'b', 'c'}->lastIndexOfSlice(OrderedSet{'a', 'b'})/]
+[Sequence{'a', 'b', 'c'}->lastIndexOfSlice(Sequence{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->lastIndexOfSlice(OrderedSet{'a', 'b'})/]
+[OrderedSet{'a', 'b', 'c'}->lastIndexOfSlice(Sequence{'a', 'b'})/]
 
 [/template]
 

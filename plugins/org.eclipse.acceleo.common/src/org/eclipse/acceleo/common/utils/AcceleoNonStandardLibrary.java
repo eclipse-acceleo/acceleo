@@ -112,10 +112,148 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns all elements from the source collection separated by an element composed of the
 	 * <code>separator</code> String.
 	 * </p>
+	 * <p>
+	 * <b>sep( String prefix, String separator String suffix ) : Collection</b><br/>
+	 * Returns all elements from the source collection starting by the <code>prefix</code> String separated by
+	 * an element composed of the <code>separator</code> String and ending with the <code>suffix</code>
+	 * String.
+	 * </p>
 	 * 
 	 * @since 3.0
 	 */
 	public static final String OPERATION_COLLECTION_SEP = "sep"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;addAll&quot; non standard operation accessible on collections. The returned type of
+	 * the operation will be the same type as the type of collection on which the operation is called.
+	 * <p>
+	 * <b>addAll(Collection): Collection</b><br />
+	 * Returns a collection containing all the elements of the collection on which the operation is called and
+	 * the collection passed as a parameter.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_ADD_ALL = "addAll"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;removeAll&quot; non standard operation accessible on collections. The returned type
+	 * of the operation will be the same type as the type of collection on which the operation is called.
+	 * <p>
+	 * <b>removeAll(Collection): Collection</b><br />
+	 * Returns a collection containing the elements of the collection on which the operation is called minus
+	 * the elements of the collection passed as a parameter.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_REMOVE_ALL = "removeAll"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;drop&quot; non standard operation accessible on OrderedSet and Sequence. The returned
+	 * type of the operation will be the same type as the type of collection on which the operation is called
+	 * (ie OrderedSet or Sequence).
+	 * <p>
+	 * <b>drop(Integer): OrderedSet</b><br />
+	 * Returns an OrderedSet containing the elements of the OrderedSet on which the operation is called minus
+	 * the <code>n</code> first elements.
+	 * </p>
+	 * <p>
+	 * <b>drop(Integer): Sequence</b><br />
+	 * Returns an Sequence containing the elements of the OrderedSet on which the operation is called minus
+	 * the <code>n</code> first elements.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_DROP = "drop"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;dropRight&quot; non standard operation accessible on OrderedSet and Sequence. The
+	 * returned type of the operation will be the same type as the type of collection on which the operation
+	 * is called (ie OrderedSet or Sequence).
+	 * <p>
+	 * <b>drop(Integer): OrderedSet</b><br />
+	 * Returns an OrderedSet containing the elements of the OrderedSet on which the operation is called minus
+	 * the <code>n</code> last elements.
+	 * </p>
+	 * <p>
+	 * <b>drop(Integer): Sequence</b><br />
+	 * Returns an Sequence containing the elements of the OrderedSet on which the operation is called minus
+	 * the <code>n</code> last elements.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_DROP_RIGHT = "dropRight"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;startsWith&quot; non standard operation accessible on OrderedSet and Sequence. The
+	 * returned type of the operation will be a boolean only if the collection on which the operation is
+	 * applied starts with the collection given as argument.
+	 * <p>
+	 * <b>startsWith(OrderedSet): Boolean</b><br />
+	 * Returns true if the collection (Sequence or OrderedSet) starts with the given OrderedSet.
+	 * </p>
+	 * <b>startsWith(Sequence): Boolean</b><br />
+	 * Returns true if the collection (Sequence or OrderedSet) starts with the given Sequence. </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_STARTS_WITH = "startsWith"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;endsWith&quot; non standard operation accessible on OrderedSet and Sequence. The
+	 * returned type of the operation will be a boolean only if the collection on which the operation is
+	 * applied ends with the collection given as argument.
+	 * <p>
+	 * <b>endsWith(OrderedSet): Boolean</b><br />
+	 * Returns true if the collection (Sequence or OrderedSet) ends with the given OrderedSet.
+	 * </p>
+	 * <b>endsWith(Sequence): Boolean</b><br />
+	 * Returns true if the collection (Sequence or OrderedSet) ends with the given Sequence. </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_ENDS_WITH = "endsWith"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;indexOfSlice&quot; non standard operation accessible on OrderedSet and Sequence. The
+	 * returned type of the operation will be an integer indicating the index of the sub-collection in the
+	 * original collection.
+	 * <p>
+	 * <b>indexOfSlice(OrderedSet): Integer</b><br />
+	 * Returns the index of the sub-collection in the collection on which is called the operation. -1 if the
+	 * sub-collection does not appear in the original collection.
+	 * </p>
+	 * <p>
+	 * <b>indexOfSlice(Sequence): Integer</b><br />
+	 * Returns the index of the sub-collection in the collection on which is called the operation. -1 if the
+	 * sub-collection does not appear in the original collection.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_INDEX_OF_SLICE = "indexOfSlice"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;indexOfSlice&quot; non standard operation accessible on OrderedSet and Sequence. The
+	 * returned type of the operation will be an integer indicating the last index of the sub-collection in
+	 * the original collection.
+	 * <p>
+	 * <b>lastIndexOfSlice(OrderedSet): Integer</b><br />
+	 * Returns the last index of the sub-collection in the collection on which is called the operation. -1 if
+	 * the sub-collection does not appear in the original collection.
+	 * </p>
+	 * <p>
+	 * <b>lastIndexOfSlice(Sequence): Integer</b><br />
+	 * Returns the last index of the sub-collection in the collection on which is called the operation. -1 if
+	 * the sub-collection does not appear in the original collection.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_COLLECTION_LAST_INDEX_OF_SLICE = "lastIndexOfSlice"; //$NON-NLS-1$
 
 	/**
 	 * Name of the &quot;ancestors&quot; non-standard operation accessible on all objects. This operation
@@ -369,6 +507,10 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns the index of the last occurence of <code>substring</code> in self, <code>-1</code> if self
 	 * doesn't contain this particular substring.
 	 * </p>
+	 * <b>lastIndex( String substring, Integer index ) : Integer</b><br/>
+	 * Returns the index of the first occurence of <code>substring</code> in self starting from
+	 * <code>index</code> but backward, <code>-1</code> if self doesn't contain this particular substring.
+	 * </p>
 	 * 
 	 * @since 3.0
 	 */
@@ -460,6 +602,9 @@ public final class AcceleoNonStandardLibrary {
 	 * Returns a sequence containing all parts of self split around delimiters defined by the characters in
 	 * String delim.
 	 * </p>
+	 * <p>
+	 * <b>tokenize(): Sequence</b> Returns a sequence containing all parts of self split around line
+	 * delimiters '\n' '\r' or '\r\n'. </^>
 	 */
 	public static final String OPERATION_STRING_TOKENIZE = "tokenize"; //$NON-NLS-1$
 
@@ -471,6 +616,17 @@ public final class AcceleoNonStandardLibrary {
 	 * </p>
 	 */
 	public static final String OPERATION_STRING_TRIM = "trim"; //$NON-NLS-1$
+
+	/**
+	 * Name of the &quot;index&quot; non-standard String operation.
+	 * <p>
+	 * <b>index(String, Integer) : Integer</b><br/>
+	 * Returns the index of the subString starting from the given index.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_STRING_INDEX = "index"; //$NON-NLS-1$
 
 	/** Name of the primitive type "String" as defined in the OCL standard library. */
 	public static final String PRIMITIVE_STRING_NAME = "String"; //$NON-NLS-1$

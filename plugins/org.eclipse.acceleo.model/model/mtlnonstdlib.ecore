@@ -58,6 +58,19 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="other" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
     </eOperations>
+    <eOperations name="index" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="r" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="start" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eOperations>
+    <eOperations name="lastIndex" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="substring" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="start" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eOperations>
+    <eOperations name="tokenize" eType="#//Sequence(String)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OclAny">
     <eOperations name="toString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
@@ -167,6 +180,20 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="filter" eType="ocl.ecore:TypeType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
     </eOperations>
+    <eOperations name="sep" eType="#//Sequence(OclAny)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="prefix" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="separatorString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+      <eParameters name="suffix" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
+    <eOperations name="addAll" eType="ocl.ecore:CollectionType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="otherCollection" eType="ocl.ecore:CollectionType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)"/>
+    </eOperations>
+    <eOperations name="removeAll" eType="ocl.ecore:CollectionType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="otherCollection" eType="ocl.ecore:CollectionType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)">
     <eOperations name="reverse" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)">
@@ -176,6 +203,46 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="element" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
     </eOperations>
+    <eOperations name="drop" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="n" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eOperations>
+    <eOperations name="dropRight" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="n" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eOperations>
+    <eOperations name="startsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="startsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
+    <eOperations name="endsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="endsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
+    <eOperations name="indexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="indexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
+    <eOperations name="lastIndexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="lastIndexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Sequence(T)">
     <eOperations name="reverse" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
@@ -184,6 +251,46 @@
     <eOperations name="lastIndexOf" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="element" eType="ocl.ecore:AnyType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
+    </eOperations>
+    <eOperations name="drop" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="n" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eOperations>
+    <eOperations name="dropRight" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="n" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+    </eOperations>
+    <eOperations name="startsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="startsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
+    <eOperations name="endsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="endsWith" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
+    <eOperations name="indexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="indexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
+    </eOperations>
+    <eOperations name="lastIndexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:OrderedSetType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
+    </eOperations>
+    <eOperations name="lastIndexOfSlice" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="subCollection" eType="ocl.ecore:SequenceType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ocl.ecore:SequenceType" name="Sequence(String)" instanceClassName="java.util.List"

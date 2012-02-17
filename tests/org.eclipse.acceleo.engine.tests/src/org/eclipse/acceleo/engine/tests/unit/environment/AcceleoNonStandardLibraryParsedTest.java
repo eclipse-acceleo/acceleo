@@ -176,6 +176,127 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the non standard "index(String, Integer)" operation on Strings.
+	 */
+	public void testStringIndex() {
+		assertFileContainsOutput("test_string_index");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "lastIndex(String, Integer)" operation on Strings.
+	 */
+	public void testStringLastIndex() {
+		assertFileContainsOutput("test_string_last_index");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "tokenize()" operation on Strings.
+	 */
+	public void testStringTokenize_2() {
+		assertFileContainsOutput("test_string_tokenize_2");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "sep(String, String, String)" operation on Collections.
+	 */
+	public void testCollectionSep() {
+		assertFileContainsOutput("test_collection_sep_3");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "addAll(Collection)" operation on Collections.
+	 */
+	public void testCollectionAddAll() {
+		assertFileContainsOutput("test_collection_add_all_sequence_1");
+		assertFileContainsOutput("test_collection_add_all_sequence_2");
+		assertFileContainsOutput("test_collection_add_all_sequence_3");
+		assertFileContainsOutput("test_collection_add_all_sequence_4");
+
+		assertFileContainsOutput("test_collection_add_all_ordered_set_1");
+		assertFileContainsOutput("test_collection_add_all_ordered_set_2");
+		assertFileContainsOutput("test_collection_add_all_ordered_set_3");
+		assertFileContainsOutput("test_collection_add_all_ordered_set_4");
+
+		assertFileContainsOutput("test_collection_add_all_set_1");
+		assertFileContainsOutput("test_collection_add_all_set_2");
+		assertFileContainsOutput("test_collection_add_all_set_3");
+		assertFileContainsOutput("test_collection_add_all_set_4");
+
+		assertFileContainsOutput("test_collection_add_all_bag_1");
+		assertFileContainsOutput("test_collection_add_all_bag_2");
+		assertFileContainsOutput("test_collection_add_all_bag_3");
+		assertFileContainsOutput("test_collection_add_all_bag_4");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "removeAll(Collection)" operation on Collections.
+	 */
+	public void testCollectionRemoveAll() {
+		assertFileContainsOutput("test_collection_remove_all_sequence_1");
+		assertFileContainsOutput("test_collection_remove_all_sequence_2");
+		assertFileContainsOutput("test_collection_remove_all_sequence_3");
+		assertFileContainsOutput("test_collection_remove_all_sequence_4");
+
+		assertFileContainsOutput("test_collection_remove_all_ordered_set_1");
+		assertFileContainsOutput("test_collection_remove_all_ordered_set_2");
+		assertFileContainsOutput("test_collection_remove_all_ordered_set_3");
+		assertFileContainsOutput("test_collection_remove_all_ordered_set_4");
+
+		assertFileContainsOutput("test_collection_remove_all_set_1");
+		assertFileContainsOutput("test_collection_remove_all_set_2");
+		assertFileContainsOutput("test_collection_remove_all_set_3");
+		assertFileContainsOutput("test_collection_remove_all_set_4");
+
+		assertFileContainsOutput("test_collection_remove_all_bag_1");
+		assertFileContainsOutput("test_collection_remove_all_bag_2");
+		assertFileContainsOutput("test_collection_remove_all_bag_3");
+		assertFileContainsOutput("test_collection_remove_all_bag_4");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "drop(Integer)" operation on Sequence and OrderedSet.
+	 */
+	public void testCollectionDrop() {
+		assertFileContainsOutput("test_collection_drop");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "dropRight(Integer)" operation on Sequence and OrderedSet.
+	 */
+	public void testCollectionDropRight() {
+		assertFileContainsOutput("test_collection_drop_right");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "startsWith(Collection)" operation on Sequence and OrderedSet.
+	 */
+	public void testCollectionStartsWith() {
+		assertFileContainsOutput("test_collection_starts_with");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "endsWith(Collection)" operation on Sequence and OrderedSet.
+	 */
+	public void testCollectionEndsWith() {
+		assertFileContainsOutput("test_collection_ends_with");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "indexOfSlice(Collection)" operation on Sequence and OrderedSet.
+	 */
+	public void testCollectionIndexOfSlice() {
+		assertFileContainsOutput("test_collection_index_of_slice");
+	}
+
+	/**
+	 * Tests the behavior of the non standard "lastIndexOfSlice(Collection)" operation on Sequence and
+	 * OrderedSet.
+	 */
+	public void testCollectionLastIndexOfSlice() {
+		assertFileContainsOutput("test_collection_last_index_of_slice");
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
