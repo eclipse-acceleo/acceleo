@@ -85,8 +85,8 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 */
 	private static final String DUMMY_TEMPLATE = "[template public temporaryInterpreterTemplate({0})]"; //$NON-NLS-1$
 
-	/** The "model" dummy template parameter. Will be set to the root of the selected target EObject. */
-	private static final String DUMMY_TEMPLATE_MODEL_PARAM = "model : {0}"; //$NON-NLS-1$
+	/** The "currentModel" dummy template parameter. Will be set to the root of the selected target EObject. */
+	private static final String DUMMY_TEMPLATE_MODEL_PARAM = "currentModel : {0}"; //$NON-NLS-1$
 
 	/**
 	 * If the text doesn't start with "[module", we'll use this to close the template. Otherwise, we'll assume
@@ -94,8 +94,8 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 	 */
 	private static final String DUMMY_TEMPLATE_TAIL = LINE_SEPARATOR + "[/template]"; //$NON-NLS-1$
 
-	/** The "target" dummy template parameter. Will be set to the selected target EObject. */
-	private static final String DUMMY_TEMPLATE_TARGET_PARAM = "target : {0}"; //$NON-NLS-1$
+	/** The "thisEObject" dummy template parameter. Will be set to the selected target EObject. */
+	private static final String DUMMY_TEMPLATE_TARGET_PARAM = "thisEObject : {0}"; //$NON-NLS-1$
 
 	/**
 	 * This will be updated with the exact text as entered by the user and displayed on the viewer. However,
