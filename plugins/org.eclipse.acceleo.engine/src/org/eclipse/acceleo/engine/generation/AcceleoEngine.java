@@ -394,7 +394,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 		for (int i = 0; i < acceleoQuery.getParameter().size(); i++) {
 			Variable param = acceleoQuery.getParameter().get(i);
 			Object value = arguments.get(i);
-			if (param.getType().isInstance(value)) {
+			if (value == null || param.getType().isInstance(value)) {
 				query.getEvaluationEnvironment().add(param.getName(), value);
 			} else {
 				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(ARGUMENT_MISMATCH_KEY,

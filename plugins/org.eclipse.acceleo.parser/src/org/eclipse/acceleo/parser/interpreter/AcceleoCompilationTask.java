@@ -19,10 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.interpreter.CompilationResult;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
@@ -62,7 +59,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	private final Set<URI> dependencies;
 
 	/** String representation of the module we are to compile. */
-	private final String module;
+	private final ModuleDescriptor moduleDescriptor;
 
 	/** The name of the query the {@link CompilationResult}s should reference. */
 	private final String queryName;
@@ -73,14 +70,14 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	/**
 	 * Instantiates our compilation task given the current interpreter context and the optional dependencies.
 	 * 
-	 * @param module
+	 * @param descriptor
 	 *            The String representation of the module we are to compile.
 	 * @param dependencies
 	 *            Dependencies required by the compiled module. Can be <code>null</code>.
 	 * @since 3.3
 	 */
-	public AcceleoCompilationTask(String module, Set<URI> dependencies) {
-		this(module, dependencies, null);
+	public AcceleoCompilationTask(ModuleDescriptor descriptor, Set<URI> dependencies) {
+		this(descriptor, dependencies, null);
 	}
 
 	/**
@@ -90,7 +87,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 * specific query as the result.
 	 * </p>
 	 * 
-	 * @param module
+	 * @param descriptor
 	 *            The String representation of the module we are to compile.
 	 * @param dependencies
 	 *            Dependencies required by the compiled module. Can be <code>null</code>.
@@ -99,8 +96,8 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            <code>null</code>.
 	 * @since 3.3
 	 */
-	public AcceleoCompilationTask(String module, Set<URI> dependencies, String queryName) {
-		this(module, dependencies, queryName, null);
+	public AcceleoCompilationTask(ModuleDescriptor descriptor, Set<URI> dependencies, String queryName) {
+		this(descriptor, dependencies, queryName, null);
 	}
 
 	/**
@@ -110,7 +107,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 * specific query as the result.
 	 * </p>
 	 * 
-	 * @param module
+	 * @param descriptor
 	 *            The String representation of the module we are to compile.
 	 * @param dependencies
 	 *            Dependencies required by the compiled module. Can be <code>null</code>.
@@ -121,9 +118,9 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            The resource set in which to compile. Can be <code>null</code>.
 	 * @since 3.3
 	 */
-	public AcceleoCompilationTask(String module, Set<URI> dependencies, String queryName,
+	public AcceleoCompilationTask(ModuleDescriptor descriptor, Set<URI> dependencies, String queryName,
 			ResourceSet resourceSet) {
-		this.module = module;
+		this.moduleDescriptor = descriptor;
 		if (dependencies != null) {
 			this.dependencies = dependencies;
 		} else {
@@ -142,7 +139,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            List of the warnings that arose during the compilation.
 	 * @param infos
 	 *            List of the infos that arose during the compilation.
-	 * @return A single MultiStatus referenging all issues.
+	 * @return A single MultiStatus referencing all issues.
 	 */
 	private static IStatus parseProblems(AcceleoParserProblems errors, AcceleoParserWarnings warnings,
 			AcceleoParserInfos infos) {
@@ -179,11 +176,10 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		if (resourceSet == null) {
 			resourceSet = new ResourceSetImpl();
 		}
-		final String moduleName = extractModuleName(module);
-		final Resource resource = ModelUtils.createResource(URI.createURI("http://acceleo.eclipse.org/" //$NON-NLS-1$
-				+ moduleName + '.' + IAcceleoConstants.EMTL_FILE_EXTENSION), resourceSet);
+		final Resource resource = ModelUtils.createResource(moduleDescriptor.getModuleURI(), resourceSet);
 
-		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(module));
+		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(moduleDescriptor
+				.getModuleContent()));
 
 		loadImports();
 
@@ -208,23 +204,6 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 
 		IStatus problems = parseProblems(source.getProblems(), source.getWarnings(), source.getInfos());
 		return new CompilationResult(resultNode, problems);
-	}
-
-	/**
-	 * Extract the name of a module from the given String representation.
-	 * 
-	 * @param moduleString
-	 *            The String representation of an Acceleo module.
-	 * @return The name of the module represented by the given String. <code>null</code> if none.
-	 */
-	private static String extractModuleName(String moduleString) {
-		final String modulePattern = "\\[module ([^(]+)\\("; //$NON-NLS-1$
-		final Pattern pattern = Pattern.compile(modulePattern);
-		final Matcher matcher = pattern.matcher(moduleString);
-		if (matcher.find()) {
-			return matcher.group(1);
-		}
-		return null;
 	}
 
 	/**
