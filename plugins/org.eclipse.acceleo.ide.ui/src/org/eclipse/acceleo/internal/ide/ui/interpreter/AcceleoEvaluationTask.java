@@ -434,13 +434,15 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			actualArgument = target.get(0);
 		}
 		ocl.getEvaluationEnvironment().add("self", actualArgument); //$NON-NLS-1$
-		ocl.getEvaluationEnvironment().add("target", actualArgument); //$NON-NLS-1$
+		// AcceleoSourceViewer.DUMMY_TEMPLATE_TARGET_PARAM
+		ocl.getEvaluationEnvironment().add("thisEObject", actualArgument); //$NON-NLS-1$
 
 		EObject modelRoot = null;
 		if (target.size() > 0) {
 			modelRoot = EcoreUtil.getRootContainer(target.get(0));
 		}
-		ocl.getEvaluationEnvironment().add("model", modelRoot); //$NON-NLS-1$
+		// AcceleoSourceViewer.DUMMY_TEMPLATE_MODEL_PARAM
+		ocl.getEvaluationEnvironment().add("currentModel", modelRoot); //$NON-NLS-1$
 
 		for (Variable variable : context.getVariables()) {
 			Object value = variable.getValue();
