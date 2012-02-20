@@ -892,9 +892,15 @@ public final class AcceleoWorkspaceUtil {
 			try {
 				url = candidateManifest.getProject().getLocationURI().toURL();
 			} catch (MalformedURLException e) {
-				URI uri = new URI("file", "/" //$NON-NLS-1$//$NON-NLS-2$
-						+ ResourcesPlugin.getWorkspace().getRoot().getLocation().append(
-								project.getFullPath().toString()), null);
+				URI uri = project.getLocationURI();
+				// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=354360
+				if ("sourcecontrol".equals(uri.getScheme())) { //$NON-NLS-1$
+					uri = new URI(uri.getQuery());
+				} else {
+					uri = new URI("file", "/" //$NON-NLS-1$ //$NON-NLS-2$
+							+ ResourcesPlugin.getWorkspace().getRoot().getLocation().append(
+									project.getFullPath().toString()), null);
+				}
 				url = uri.toURL();
 			}
 
