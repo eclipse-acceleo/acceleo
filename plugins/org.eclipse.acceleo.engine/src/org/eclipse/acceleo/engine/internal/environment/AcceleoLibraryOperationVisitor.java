@@ -292,7 +292,7 @@ public final class AcceleoLibraryOperationVisitor {
 		final String operationName = operation.getName();
 
 		if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
-			result = sep(source, result, args);
+			result = sep(source, args);
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_FILTER.equals(operationName)) {
 			final Collection<Object> temp;
 
@@ -411,7 +411,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 *            The arguments [separator] or [prefix, separator, suffix]
 	 * @return The source collection separated.
 	 */
-	private static Object sep(Collection<?> source, Object... args) {
+	private static Object sep(Collection<?> source, Object[] args) {
 		Object result = OPERATION_CALL_FAILED;
 		if (args.length == 1) {
 			final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
@@ -1279,22 +1279,24 @@ public final class AcceleoLibraryOperationVisitor {
 	private static List<EObject> siblings(EObject source, EClassifier filter, boolean preceding) {
 		final List<EObject> result = new ArrayList<EObject>();
 		final EObject container = source.eContainer();
-		final List<EObject> siblings = getContents(container);
+		if (container != null) {
+			final List<EObject> siblings = getContents(container);
+			int startIndex = 0;
+			int endIndex = siblings.size();
+			if (preceding) {
+				endIndex = siblings.indexOf(source);
+			} else {
+				startIndex = siblings.indexOf(source) + 1;
+			}
 
-		int startIndex = 0;
-		int endIndex = siblings.size();
-		if (preceding) {
-			endIndex = siblings.indexOf(source);
-		} else {
-			startIndex = siblings.indexOf(source) + 1;
-		}
-
-		for (int i = startIndex; i < endIndex; i++) {
-			EObject child = siblings.get(i);
-			if (filter == null || filter.isInstance(child)) {
-				result.add(child);
+			for (int i = startIndex; i < endIndex; i++) {
+				EObject child = siblings.get(i);
+				if (filter == null || filter.isInstance(child)) {
+					result.add(child);
+				}
 			}
 		}
+
 		return result;
 	}
 
@@ -1441,7 +1443,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 * 
 	 * @param eObject
 	 *            The EObject we seek the content of.
-	 * @return The list of all the content of a given EObject, derived containmnent references included.
+	 * @return The list of all the content of a given EObject, derived containment references included.
 	 */
 	private static List<EObject> getContents(EObject eObject) {
 		final List<EObject> result = new ArrayList<EObject>(eObject.eContents());
