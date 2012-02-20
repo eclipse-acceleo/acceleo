@@ -47,6 +47,7 @@ Non-standard OclAny operations
 [eClass.getProperty('e', 'i')/]
 [eClass.invoke('org.eclipse.acceleo.UnknownTestMethod', 'i', Sequence{})/]
 [eClass.toString()/]
+[eClass.lineSeparator()/]
 
 Non-standard Collection operations
 [OrderedSet{'a', 'e', 'i', 'o', 'u', 'y'}->sep(', ')/]

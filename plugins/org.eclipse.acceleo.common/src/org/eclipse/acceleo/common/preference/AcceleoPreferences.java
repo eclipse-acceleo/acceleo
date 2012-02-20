@@ -11,7 +11,9 @@
 package org.eclipse.acceleo.common.preference;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -406,5 +408,17 @@ public final class AcceleoPreferences {
 	public static boolean areCancelNotificationsEnabled() {
 		return PREFERENCES_SCOPE.getBoolean(PREFERENCE_KEY_ENABLE_NOTIFICATIONS_CANCEL,
 				DEFAULT_ENABLE_NOTIFICATIONS_TYPE);
+	}
+
+	/**
+	 * Returns the line delimiter of the Eclipse platform.
+	 * 
+	 * @return The line delimiter used by the Eclipse platform.
+	 * @since 3.3
+	 */
+	public static String getLineSeparator() {
+		IScopeContext scope = new InstanceScope();
+		IEclipsePreferences node = scope.getNode(Platform.PI_RUNTIME);
+		return node.get(Platform.PREF_LINE_SEPARATOR, System.getProperty("line.separator")); //$NON-NLS-1$
 	}
 }

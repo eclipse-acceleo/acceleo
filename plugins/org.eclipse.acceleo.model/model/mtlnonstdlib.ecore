@@ -117,6 +117,9 @@
       <eAnnotations source="MTL non-standard"/>
       <eParameters name="other" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
     </eOperations>
+    <eOperations name="lineSeparator" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObject">
     <eOperations name="eAllContents" eType="#//Sequence(OclAny)">

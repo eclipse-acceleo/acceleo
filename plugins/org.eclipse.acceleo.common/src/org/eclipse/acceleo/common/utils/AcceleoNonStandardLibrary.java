@@ -467,6 +467,18 @@ public final class AcceleoNonStandardLibrary {
 	public static final String OPERATION_OCLANY_TOSTRING = "toString"; //$NON-NLS-1$
 
 	/**
+	 * Name of the &quot;lineSeparator&quot; non-standard operation accessible on all objects.
+	 * <p>
+	 * <b>lineSeparator(): String</b><br />
+	 * Returns the currently used line separator by Eclipse. (by default, the standard line separator of the
+	 * platform)
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_OCLANY_LINE_SEPARATOR = "lineSeparator"; //$NON-NLS-1$
+
+	/**
 	 * Name of the &quot;contains&quot; non-standard String operation.
 	 * <p>
 	 * <b>contains( String substring ) : Boolean</b><br/>

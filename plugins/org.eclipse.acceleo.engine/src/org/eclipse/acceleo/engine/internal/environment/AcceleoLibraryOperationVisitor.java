@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.AcceleoServicesRegistry;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
@@ -147,6 +148,12 @@ public final class AcceleoLibraryOperationVisitor {
 				result = getProperty(env, (String)args[0], (String)args[1], ((List<Object>)args[2]).toArray());
 			}
 			// fall through : let else fail in UnsupportedOperationException
+		} else if (AcceleoNonStandardLibrary.OPERATION_OCLANY_LINE_SEPARATOR.equals(operationName)) {
+			if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+				result = AcceleoPreferences.getLineSeparator();
+			} else {
+				result = System.getProperty("line.separator"); //$NON-NLS-1$
+			}
 		} else if (source instanceof String) {
 			result = callNonStandardStringOperation(operation, (String)source, args);
 		} else if (source instanceof EObject) {

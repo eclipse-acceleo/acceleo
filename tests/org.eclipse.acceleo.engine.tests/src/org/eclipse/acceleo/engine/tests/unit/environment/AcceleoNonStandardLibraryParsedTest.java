@@ -120,6 +120,13 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the non standard "lineSeparator(OclAny)" operation on OclAny.
+	 */
+	public void testOclAnyLineSeparator() {
+		assertFileContainsOutput("test_oclany_line_separator");
+	}
+
+	/**
 	 * Tests the behavior of the non standard "contains(String)" operation on Strings.
 	 */
 	public void testStringContains() {
