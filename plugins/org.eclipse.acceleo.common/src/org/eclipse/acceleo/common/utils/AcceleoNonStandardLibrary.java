@@ -650,6 +650,17 @@ public final class AcceleoNonStandardLibrary {
 	 */
 	public static final String OPERATION_STRING_TOKENIZE_LINE = "tokenizeLine"; //$NON-NLS-1$
 
+	/**
+	 * Name of &quot;prefix&quot; non standard String operation.
+	 * <p>
+	 * <b>prefix(String): String</b><br />
+	 * Returns the self String prefixed by the String given as argument.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_STRING_PREFIX = "prefix"; //$NON-NLS-1$
+
 	/** Name of the primitive type "String" as defined in the OCL standard library. */
 	public static final String PRIMITIVE_STRING_NAME = "String"; //$NON-NLS-1$
 

@@ -659,6 +659,11 @@ public final class AcceleoLibraryOperationVisitor {
 				temp.add(source);
 				result = temp;
 			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_PREFIX.equals(operationName)) {
+			if (args.length == 1 && args[0] instanceof String) {
+				String prefix = (String)args[0];
+				result = prefix + source;
+			}
 		}
 
 		return result;

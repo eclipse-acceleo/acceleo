@@ -74,6 +74,10 @@
     <eOperations name="tokenizeLine" eType="#//Sequence(String)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
+    <eOperations name="prefix" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
+      <eAnnotations source="MTL non-standard"/>
+      <eParameters name="prefix" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OclAny">
     <eOperations name="toString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
