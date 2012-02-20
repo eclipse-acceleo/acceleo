@@ -111,9 +111,9 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 		// deactivate the notifications to work with EMF transaction
 		eSetDeliver(false);
 
-		Map<Object, Object> actualOptions = (Map<Object, Object>)options;
-		if (actualOptions == null) {
-			actualOptions = new HashMap<Object, Object>();
+		Map<Object, Object> actualOptions = new HashMap<Object, Object>();
+		if (options != null) {
+			actualOptions.putAll(options);
 		}
 		actualOptions.put(XMLResource.OPTION_URI_HANDLER, new AcceleoXMIURIHandler());
 
