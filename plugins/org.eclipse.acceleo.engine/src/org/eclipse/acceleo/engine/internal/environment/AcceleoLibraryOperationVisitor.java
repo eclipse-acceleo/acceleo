@@ -292,29 +292,7 @@ public final class AcceleoLibraryOperationVisitor {
 		final String operationName = operation.getName();
 
 		if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP.equals(operationName)) {
-			if (args.length == 1) {
-				final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
-				final Iterator<?> sourceIterator = source.iterator();
-				while (sourceIterator.hasNext()) {
-					temp.add(sourceIterator.next());
-					if (sourceIterator.hasNext()) {
-						temp.add(args[0]);
-					}
-				}
-				result = temp;
-			} else if (args.length == 3) {
-				final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
-				temp.add(args[0]);
-				final Iterator<?> sourceIterator = source.iterator();
-				while (sourceIterator.hasNext()) {
-					temp.add(sourceIterator.next());
-					if (sourceIterator.hasNext()) {
-						temp.add(args[1]);
-					}
-				}
-				temp.add(args[2]);
-				result = temp;
-			}
+			result = sep(source, result, args);
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_FILTER.equals(operationName)) {
 			final Collection<Object> temp;
 
@@ -354,52 +332,11 @@ public final class AcceleoLibraryOperationVisitor {
 			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_ADD_ALL.equals(operationName)) {
 			if (args.length == 1 && args[0] instanceof Collection<?>) {
-				if (source instanceof LinkedHashSet) {
-					final LinkedHashSet<Object> temp = new LinkedHashSet<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.addAll(arg);
-					result = temp;
-				} else if (source instanceof Set) {
-					final HashSet<Object> temp = new HashSet<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.addAll(arg);
-					result = temp;
-				} else if (source instanceof List) {
-					final List<Object> temp = new ArrayList<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.addAll(arg);
-					result = temp;
-				} else if (source instanceof Bag) {
-					Bag<Object> temp = CollectionUtil.createNewBag(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.addAll(arg);
-					result = temp;
-				}
+				result = addAll(source, (Collection<?>)args[0]);
 			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_REMOVE_ALL.equals(operationName)) {
 			if (args.length == 1 && args[0] instanceof Collection<?>) {
-				if (source instanceof LinkedHashSet) {
-					final LinkedHashSet<Object> temp = new LinkedHashSet<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.removeAll(arg);
-					result = temp;
-				} else if (source instanceof Set) {
-					final HashSet<Object> temp = new HashSet<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.removeAll(arg);
-					result = temp;
-				} else if (source instanceof List) {
-					final List<Object> temp = new ArrayList<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.removeAll(arg);
-					result = temp;
-				} else if (source instanceof Bag) {
-					final List<Object> temp = new ArrayList<Object>(source);
-					Collection<?> arg = (Collection<?>)args[0];
-					temp.removeAll(arg);
-					Bag<Object> bag = CollectionUtil.createNewBag(temp);
-					result = bag;
-				}
+				result = removeAll(source, (Collection<?>)args[0]);
 			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_DROP.equals(operationName)) {
 			if (args.length == 1 && args[0] instanceof Integer) {
@@ -461,6 +398,107 @@ public final class AcceleoLibraryOperationVisitor {
 			}
 		}
 
+		return result;
+	}
+
+	/**
+	 * Execute the operation sep('separator') or separator('prefix', 'separator', 'suffix') on the given
+	 * source.
+	 * 
+	 * @param source
+	 *            The source collection
+	 * @param args
+	 *            The arguments [separator] or [prefix, separator, suffix]
+	 * @return The source collection separated.
+	 */
+	private static Object sep(Collection<?> source, Object... args) {
+		Object result = OPERATION_CALL_FAILED;
+		if (args.length == 1) {
+			final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+			final Iterator<?> sourceIterator = source.iterator();
+			while (sourceIterator.hasNext()) {
+				temp.add(sourceIterator.next());
+				if (sourceIterator.hasNext()) {
+					temp.add(args[0]);
+				}
+			}
+			result = temp;
+		} else if (args.length == 3) {
+			final Collection<Object> temp = new ArrayList<Object>(source.size() << 1);
+			temp.add(args[0]);
+			final Iterator<?> sourceIterator = source.iterator();
+			while (sourceIterator.hasNext()) {
+				temp.add(sourceIterator.next());
+				if (sourceIterator.hasNext()) {
+					temp.add(args[1]);
+				}
+			}
+			temp.add(args[2]);
+			result = temp;
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the source collection on which all the elements of the arg collection have been added.
+	 * 
+	 * @param source
+	 *            The source collection
+	 * @param arg
+	 *            The collection to add
+	 * @return The source collection on which all the elements of the arg collection have been added.
+	 */
+	private static Object addAll(Collection<?> source, Collection<?> arg) {
+		Object result = OPERATION_CALL_FAILED;
+		if (source instanceof LinkedHashSet) {
+			final LinkedHashSet<Object> temp = new LinkedHashSet<Object>(source);
+			temp.addAll(arg);
+			result = temp;
+		} else if (source instanceof Set) {
+			final HashSet<Object> temp = new HashSet<Object>(source);
+			temp.addAll(arg);
+			result = temp;
+		} else if (source instanceof List) {
+			final List<Object> temp = new ArrayList<Object>(source);
+			temp.addAll(arg);
+			result = temp;
+		} else if (source instanceof Bag) {
+			Bag<Object> temp = CollectionUtil.createNewBag(source);
+			temp.addAll(arg);
+			result = temp;
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the source collection on which all the elements of the arg collection have been removed.
+	 * 
+	 * @param source
+	 *            The source collection.
+	 * @param arg
+	 *            The collection to remove.
+	 * @return The source collection on which all the elements of the arg collection have been removed.
+	 */
+	private static Object removeAll(Collection<?> source, Collection<?> arg) {
+		Object result = OPERATION_CALL_FAILED;
+		if (source instanceof LinkedHashSet) {
+			final LinkedHashSet<Object> temp = new LinkedHashSet<Object>(source);
+			temp.removeAll(arg);
+			result = temp;
+		} else if (source instanceof Set) {
+			final HashSet<Object> temp = new HashSet<Object>(source);
+			temp.removeAll(arg);
+			result = temp;
+		} else if (source instanceof List) {
+			final List<Object> temp = new ArrayList<Object>(source);
+			temp.removeAll(arg);
+			result = temp;
+		} else if (source instanceof Bag) {
+			final List<Object> temp = new ArrayList<Object>(source);
+			temp.removeAll(arg);
+			Bag<Object> bag = CollectionUtil.createNewBag(temp);
+			result = bag;
+		}
 		return result;
 	}
 
