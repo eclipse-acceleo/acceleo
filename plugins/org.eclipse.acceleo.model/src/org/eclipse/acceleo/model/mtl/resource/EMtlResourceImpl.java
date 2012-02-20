@@ -105,7 +105,6 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 * 
 	 * @see org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl#doSave(java.io.OutputStream, java.util.Map)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
 		// deactivate the notifications to work with EMF transaction
