@@ -197,6 +197,13 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	}
 
 	/**
+	 * Tests the behavior of the non standard "tokenizeLine()" operation on Strings.
+	 */
+	public void testStringTokenizeLine() {
+		assertFileContainsOutput("test_string_tokenize_line");
+	}
+
+	/**
 	 * Tests the behavior of the non standard "sep(String, String, String)" operation on Collections.
 	 */
 	public void testCollectionSep() {

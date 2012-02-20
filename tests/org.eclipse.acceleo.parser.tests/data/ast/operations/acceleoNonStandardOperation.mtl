@@ -20,6 +20,7 @@ Non-standard String operations
 ['e'.index('e', 1)/]
 ['e'.lastIndex('e', 1)/]
 ['e'.tokenize()/]
+['e'.tokenizeLine()/]
 
 Non-standard EObject operations
 [eClass.ancestors()/]

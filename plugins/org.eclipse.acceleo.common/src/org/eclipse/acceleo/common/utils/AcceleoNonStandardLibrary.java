@@ -603,8 +603,7 @@ public final class AcceleoNonStandardLibrary {
 	 * String delim.
 	 * </p>
 	 * <p>
-	 * <b>tokenize(): Sequence</b> Returns a sequence containing all parts of self split around line
-	 * delimiters '\n' '\r' or '\r\n'. </^>
+	 * <b>tokenize(): Sequence</b> Returns a sequence containing all parts of self split around whitespaces.
 	 */
 	public static final String OPERATION_STRING_TOKENIZE = "tokenize"; //$NON-NLS-1$
 
@@ -627,6 +626,17 @@ public final class AcceleoNonStandardLibrary {
 	 * @since 3.3
 	 */
 	public static final String OPERATION_STRING_INDEX = "index"; //$NON-NLS-1$
+
+	/**
+	 * Name of the $quot;tokenizeLine$quot; non standard String operation.
+	 * <p>
+	 * <b>tokenizeLine(): Sequence(String)</b><br />
+	 * Returns a sequence of String containing all parts of self split around line delimiters.
+	 * </p>
+	 * 
+	 * @since 3.3
+	 */
+	public static final String OPERATION_STRING_TOKENIZE_LINE = "tokenizeLine"; //$NON-NLS-1$
 
 	/** Name of the primitive type "String" as defined in the OCL standard library. */
 	public static final String PRIMITIVE_STRING_NAME = "String"; //$NON-NLS-1$

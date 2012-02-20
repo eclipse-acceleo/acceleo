@@ -597,6 +597,23 @@ public final class AcceleoLibraryOperationVisitor {
 					result = Integer.valueOf(-1);
 				}
 			}
+		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_TOKENIZE_LINE.equals(operationName)) {
+			final String dos = "\r\n"; //$NON-NLS-1$
+			final String unix = "\n"; //$NON-NLS-1$
+			final String macOsClassic = "\r"; //$NON-NLS-1$
+
+			if (source.contains(dos)) {
+				result = tokenize(source, dos);
+			} else if (source.contains(unix)) {
+				result = tokenize(source, unix);
+			} else if (source.contains(macOsClassic)) {
+				result = tokenize(source, macOsClassic);
+			} else {
+				// One line only
+				List<String> temp = new ArrayList<String>();
+				temp.add(source);
+				result = temp;
+			}
 		}
 
 		return result;

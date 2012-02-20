@@ -71,6 +71,9 @@
     <eOperations name="tokenize" eType="#//Sequence(String)">
       <eAnnotations source="MTL non-standard"/>
     </eOperations>
+    <eOperations name="tokenizeLine" eType="#//Sequence(String)">
+      <eAnnotations source="MTL non-standard"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OclAny">
     <eOperations name="toString" eType="ocl.ecore:PrimitiveType http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String">
