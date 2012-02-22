@@ -1,0 +1,6 @@
+a#acceleo img {
+	background-image : url(../images/acceleo-logo.png);
+}
+a#acceleo:hover img {
+	background-image : url(../images/acceleo-logo.png);
+}
