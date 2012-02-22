@@ -68,6 +68,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -609,8 +610,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
-					Boolean.valueOf(variableViewer.getControl().isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
+					.isVisible()));
 		}
 	}
 
@@ -793,7 +794,10 @@ public class InterpreterView extends ViewPart {
 	 * @return The adapter factory that will be used for our label and content providers.
 	 */
 	protected AdapterFactory createAdapterFactory() {
-		return new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+		return adapterFactory;
 	}
 
 	/**

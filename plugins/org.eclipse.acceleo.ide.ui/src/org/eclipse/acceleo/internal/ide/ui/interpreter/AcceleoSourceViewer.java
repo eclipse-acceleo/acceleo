@@ -19,6 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.acceleo.ui.interpreter.view.Variable;
@@ -629,10 +630,29 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 		if (pack != null) {
 			final String uri = pack.getNsURI();
 			if (uri != null && uri.length() > 0) {
+				// Check package registration
+				ensurePackageRegistration(pack, uri);
+
 				return uri;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Ensures that the package with the given URI has been registered.
+	 * 
+	 * @param pack
+	 *            The package.
+	 * @param uri
+	 *            The NS URI of the package.
+	 */
+	private void ensurePackageRegistration(final EPackage pack, final String uri) {
+		Object ePackage = AcceleoPackageRegistry.INSTANCE.get(uri);
+		if (ePackage == null && pack.eResource() != null) {
+			// Package not registered
+			AcceleoPackageRegistry.INSTANCE.registerEcorePackage(pack);
+		}
 	}
 
 	/**

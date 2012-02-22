@@ -379,6 +379,16 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	}
 
 	/**
+	 * Utility operation to register Ecore packages for dynamic metamodel already loaded by EMF.
+	 * 
+	 * @param loadedEPackage
+	 *            The EPackage to register.
+	 */
+	public void registerEcorePackage(EPackage loadedEPackage) {
+		this.registerEcorePackageHierarchy(loadedEPackage);
+	}
+
+	/**
 	 * Register the given EPackage and its descendants.
 	 * 
 	 * @param ePackage
