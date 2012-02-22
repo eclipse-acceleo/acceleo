@@ -904,24 +904,26 @@ public final class AcceleoWorkspaceUtil {
 				url = uri.toURL();
 			}
 
-			final String candidateLocationReference = REFERENCE_URI_PREFIX
-					+ URLDecoder.decode(url.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
+			if (url != null) {
+				final String candidateLocationReference = REFERENCE_URI_PREFIX
+						+ URLDecoder.decode(url.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
 
-			Bundle bundle = getBundle(candidateLocationReference);
+				Bundle bundle = getBundle(candidateLocationReference);
 
-			/*
-			 * Install the bundle if needed. Note that we'll check bundle dependencies in two phases as even
-			 * if there cannot be cyclic dependencies through the "require-bundle" header, there could be
-			 * through the "import package" header.
-			 */
-			if (bundle == null) {
-				checkRequireBundleDependencies(model);
-				bundle = installBundle(candidateLocationReference);
-				setBundleClasspath(project, bundle);
-				workspaceInstalledBundles.put(model, bundle);
-				checkImportPackagesDependencies(model);
+				/*
+				 * Install the bundle if needed. Note that we'll check bundle dependencies in two phases as
+				 * even if there cannot be cyclic dependencies through the "require-bundle" header, there
+				 * could be through the "import package" header.
+				 */
+				if (bundle == null) {
+					checkRequireBundleDependencies(model);
+					bundle = installBundle(candidateLocationReference);
+					setBundleClasspath(project, bundle);
+					workspaceInstalledBundles.put(model, bundle);
+					checkImportPackagesDependencies(model);
+				}
+				refreshPackages(new Bundle[] {bundle, });
 			}
-			refreshPackages(new Bundle[] {bundle, });
 		} catch (BundleException e) {
 			AcceleoCommonPlugin.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
 					AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", model //$NON-NLS-1$
