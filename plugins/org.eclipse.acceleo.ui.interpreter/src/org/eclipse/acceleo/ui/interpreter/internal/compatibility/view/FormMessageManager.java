@@ -41,7 +41,9 @@ public class FormMessageManager implements IFormMessageManager {
 	 *      java.lang.String, int)
 	 */
 	public void addMessage(Object key, String message, int type) {
-		managedForm.getMessageManager().addMessage(key, message, null, type);
+		if (!managedForm.isDisposed()) {
+			managedForm.getMessageManager().addMessage(key, message, null, type);
+		}
 	}
 
 	/**
@@ -51,7 +53,9 @@ public class FormMessageManager implements IFormMessageManager {
 	 *      java.lang.String, int, org.eclipse.swt.widgets.Control)
 	 */
 	public void addMessage(String key, String message, int type, Control control) {
-		managedForm.getMessageManager().addMessage(key, message, null, type, control);
+		if (!managedForm.isDisposed()) {
+			managedForm.getMessageManager().addMessage(key, message, null, type, control);
+		}
 	}
 
 	/**
@@ -60,7 +64,9 @@ public class FormMessageManager implements IFormMessageManager {
 	 * @see org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.IFormMessageManager#removeAllMessages()
 	 */
 	public void removeAllMessages() {
-		managedForm.getMessageManager().removeAllMessages();
+		if (!managedForm.isDisposed()) {
+			managedForm.getMessageManager().removeAllMessages();
+		}
 	}
 
 	/**
@@ -69,7 +75,9 @@ public class FormMessageManager implements IFormMessageManager {
 	 * @see org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.IFormMessageManager#removeMessage(java.lang.Object)
 	 */
 	public void removeMessage(Object key) {
-		managedForm.getMessageManager().removeMessage(key);
+		if (!managedForm.isDisposed()) {
+			managedForm.getMessageManager().removeMessage(key);
+		}
 	}
 
 	/**
@@ -78,7 +86,9 @@ public class FormMessageManager implements IFormMessageManager {
 	 * @see org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.IFormMessageManager#removeMessages(org.eclipse.swt.widgets.Control)
 	 */
 	public void removeMessages(Control control) {
-		managedForm.getMessageManager().removeMessages(control);
+		if (!managedForm.isDisposed()) {
+			managedForm.getMessageManager().removeMessages(control);
+		}
 	}
 
 	/**
@@ -87,6 +97,8 @@ public class FormMessageManager implements IFormMessageManager {
 	 * @see org.eclipse.acceleo.ui.interpreter.internal.compatibility.view.IFormMessageManager#setDecorationPosition(int)
 	 */
 	public void setDecorationPosition(int position) {
-		managedForm.getMessageManager().setDecorationPosition(position);
+		if (!managedForm.isDisposed()) {
+			managedForm.getMessageManager().setDecorationPosition(position);
+		}
 	}
 }
