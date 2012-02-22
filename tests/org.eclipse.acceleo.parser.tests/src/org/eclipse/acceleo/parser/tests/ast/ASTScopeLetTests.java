@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -25,6 +23,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.fail;
 
 public class ASTScopeLetTests extends AbstractASTParserTests {
 
@@ -44,7 +44,7 @@ public class ASTScopeLetTests extends AbstractASTParserTests {
 				resource.unload();
 			}
 		} catch (CoreException e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 
