@@ -1245,4 +1245,11 @@ Contributors:
              forceTraceability="false">
        </traceabilityListener>
     </extension>
+    <extension
+          point="org.eclipse.ui.intro.configExtension">
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-overview.xml">
+       </configExtension>
+    </extension>
 </plugin>

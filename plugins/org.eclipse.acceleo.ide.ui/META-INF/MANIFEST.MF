@@ -45,7 +45,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.common.ui;bundle-version="3.3.0",
  org.eclipse.acceleo.traceability;bundle-version="3.3.0",
  org.eclipse.acceleo.ui.interpreter;bundle-version="1.0.0",
- com.google.collect
+ com.google.collect,
+ org.eclipse.ui.intro
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
