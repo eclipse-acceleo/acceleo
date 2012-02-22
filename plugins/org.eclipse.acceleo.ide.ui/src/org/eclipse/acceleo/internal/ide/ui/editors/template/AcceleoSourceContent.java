@@ -597,10 +597,8 @@ public class AcceleoSourceContent {
 				EcoreUtil.replace(oldExpression, newExpression);
 				return newExpression;
 			} catch (ClassCastException e) {
-				AcceleoUIActivator.log(e, true);
 				// continue
 			} catch (ArrayStoreException e) {
-				AcceleoUIActivator.log(e, true);
 				// continue
 			}
 		}
