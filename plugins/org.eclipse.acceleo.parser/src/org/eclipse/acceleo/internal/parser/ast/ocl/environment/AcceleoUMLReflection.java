@@ -331,7 +331,7 @@ public class AcceleoUMLReflection implements org.eclipse.ocl.utilities.UMLReflec
 			final List<EOperation> candidates = new ArrayList<EOperation>(((EClass)classifier)
 					.getEOperations());
 			for (EOperation candidate : candidates) {
-				if (name.equals(candidate.getName())) {
+				if (name != null && candidate != null && name.equals(candidate.getName())) {
 					result.add(candidate);
 				}
 			}
