@@ -1,0 +1,31 @@
+a#acceleo img {
+	background-image : url(../images/acceleo-logo.png);
+}
+a#acceleo:hover img {
+	background-image : url(../images/acceleo-logo.png);
+}
+a#tutorial1 img {
+	background-image : url(../images/tutorial.png);
+}
+a#tutorial1:hover img {
+	background-image : url(../images/tutorial_hov.png);
+}
+
+a#tutorial2 img {
+	background-image : url(../images/tutorial.png);
+}
+a#tutorial2:hover img {
+	background-image : url(../images/tutorial_hov.png);
+}
+a#acceleo-noteworthy img {
+	background-image : url(../images/acceleo-logo.png);
+}
+a#acceleo-noteworthy:hover img {
+	background-image : url(../images/acceleo-logo.png);
+}
+a#generators img {
+	background-image : url(../images/generators.png);
+}
+a#generators:hover img {
+	background-image : url(../images/generators.png);
+}

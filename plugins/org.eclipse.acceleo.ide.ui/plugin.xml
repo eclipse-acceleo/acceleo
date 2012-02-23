@@ -1251,5 +1251,29 @@ Contributors:
              configId="org.eclipse.ui.intro.universalConfig"
              content="intro/acceleo-overview.xml">
        </configExtension>
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-tutorials.xml">
+       </configExtension>
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-whatsnew.xml">
+       </configExtension>
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-samples.xml">
+       </configExtension>
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-webresources.xml">
+       </configExtension>
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-firststeps.xml">
+       </configExtension>
+       <configExtension
+             configId="org.eclipse.ui.intro.universalConfig"
+             content="intro/acceleo-migrate.xml">
+       </configExtension>
     </extension>
 </plugin>
