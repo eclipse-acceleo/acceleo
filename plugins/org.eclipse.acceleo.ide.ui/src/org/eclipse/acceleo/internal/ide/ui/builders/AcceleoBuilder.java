@@ -104,6 +104,23 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		acceleoProject = this.computeProjectClassPath(acceleoProject, javaProject);
 		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
 
+		// Check that all ".ecore" models in accessible projects have been loaded.
+		AcceleoProject aProject = new AcceleoProject(project);
+		List<IProject> accessibleProjects = aProject.getRecursivelyAccessibleProjects();
+		for (IProject iProject : accessibleProjects) {
+			List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
+			for (IFile iFile : members) {
+				Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
+						.getDynamicEcorePackagePaths();
+				Collection<String> values = dynamicEcorePackagePaths.values();
+				boolean contains = values.contains(iFile.getFullPath().toString());
+				if (!contains) {
+					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(iFile.getFullPath().toString(),
+							AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+				}
+			}
+		}
+
 		List<URI> accessibleOutputFiles = AcceleoProject.computeAcceleoModuleInRequiredPlugins(project);
 		acceleoProject.addDependencies(Sets.newHashSet(accessibleOutputFiles));
 
@@ -732,5 +749,34 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (outputFile instanceof IFile && outputFile.isAccessible()) {
 			outputFile.delete(true, monitor);
 		}
+	}
+
+	/**
+	 * Returns a list of existing member files (that validate the file extension) in this resource.
+	 * 
+	 * @param container
+	 *            The container to browse for files with the given extension.
+	 * @param extension
+	 *            The file extension to browse for.
+	 * @return The List of files of the given extension contained by <code>container</code>.
+	 * @throws CoreException
+	 *             Thrown if we couldn't retrieve the children of <code>container</code>.
+	 */
+	private List<IFile> members(IContainer container, String extension) throws CoreException {
+		List<IFile> output = new ArrayList<IFile>();
+		if (container != null) {
+			IResource[] children = container.members();
+			if (children != null) {
+				for (int i = 0; i < children.length; ++i) {
+					IResource resource = children[i];
+					if (resource instanceof IFile && extension.equals(((IFile)resource).getFileExtension())) {
+						output.add((IFile)resource);
+					} else if (resource instanceof IContainer) {
+						output.addAll(members((IContainer)resource, extension));
+					}
+				}
+			}
+		}
+		return output;
 	}
 }
