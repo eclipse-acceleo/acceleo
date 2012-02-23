@@ -77,6 +77,16 @@ public class AcceleoDocumentProvider extends FileDocumentProvider {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.ui.editors.text.StorageDocumentProvider#createEmptyDocument()
+	 */
+	@Override
+	protected IDocument createEmptyDocument() {
+		return new AcceleoDocument();
+	}
+
+	/**
 	 * A position updater is responsible for adapting document positions. This method is called by a position
 	 * updater. A modification has been detected in the template text, at the specified start, until the
 	 * character at index end - 1 or to the end of the sequence if no such character exists.
