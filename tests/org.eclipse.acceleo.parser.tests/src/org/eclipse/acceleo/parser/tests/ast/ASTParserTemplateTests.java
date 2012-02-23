@@ -588,8 +588,8 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
-			checkASTResolution(0, 0, 2);
-			checkASTDocumentationResolution(0, 0, 2);
+			checkASTResolution(0, 0, 1);
+			checkASTDocumentationResolution(0, 0, 1);
 		} else {
 			fail();
 		}
@@ -605,8 +605,8 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
-			checkASTResolution(0, 0, 2);
-			checkASTDocumentationResolution(0, 0, 2);
+			checkASTResolution(0, 0, 1);
+			checkASTDocumentationResolution(0, 0, 1);
 		} else {
 			fail();
 		}
