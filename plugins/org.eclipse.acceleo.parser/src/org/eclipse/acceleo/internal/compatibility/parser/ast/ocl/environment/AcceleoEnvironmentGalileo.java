@@ -368,9 +368,11 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			int relationship;
 			if (oclType1 == oclType2) {
 				relationship = UMLReflection.SAME_TYPE;
-			} else if (oclType1 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+			} else if (oclType1 != null
+					&& org.eclipse.ocl.ecore.AnyType.class.isAssignableFrom(oclType1.getClass())) {
 				relationship = UMLReflection.STRICT_SUPERTYPE;
-			} else if (oclType2 == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+			} else if (oclType2 != null
+					&& org.eclipse.ocl.ecore.AnyType.class.isAssignableFrom(oclType2.getClass())) {
 				relationship = UMLReflection.STRICT_SUBTYPE;
 			} else {
 				relationship = super.getRelationship(type1, type2);
