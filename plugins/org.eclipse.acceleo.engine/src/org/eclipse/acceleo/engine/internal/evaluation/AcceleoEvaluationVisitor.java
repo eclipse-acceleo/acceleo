@@ -1138,7 +1138,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		// We know these are handled by us, no need to carry on with OCL.
 		final EOperation operation = (EOperation)callExp.getReferredOperation();
-		final Object result;
+		Object result;
 		lastSourceExpression = callExp.getSource();
 		boolean isStandardOperation = false;
 		boolean isNonStandardOperation = false;
@@ -1159,12 +1159,24 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			for (int i = 0; i < callExp.getArgument().size(); i++) {
 				args[i] = getVisitor().visitExpression(callExp.getArgument().get(i));
 			}
-			if (isStandardOperation) {
-				result = AcceleoLibraryOperationVisitor.callStandardOperation(
-						(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source, args);
-			} else {
-				result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
-						(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source, args);
+			try {
+				if (isStandardOperation) {
+					result = AcceleoLibraryOperationVisitor
+							.callStandardOperation((AcceleoEvaluationEnvironment)getEvaluationEnvironment(),
+									operation, source, args);
+				} else {
+					result = AcceleoLibraryOperationVisitor
+							.callNonStandardOperation(
+									(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation,
+									source, args);
+				}
+				// CHECKSTYLE:OFF
+			} catch (Exception e) {
+				// CHECKSTYLE:ON
+				AcceleoEnginePlugin.log(e, true);
+
+				// Set the result to invalid
+				result = this.invalid;
 			}
 		} else {
 			return getDelegate().visitOperationCallExp(callExp);
