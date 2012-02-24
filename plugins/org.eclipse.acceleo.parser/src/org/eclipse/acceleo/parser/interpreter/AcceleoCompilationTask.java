@@ -41,7 +41,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This class allows adopters to compile the String representation of a module in an asynchronous way. The
@@ -74,6 +73,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            The String representation of the module we are to compile.
 	 * @param dependencies
 	 *            Dependencies required by the compiled module. Can be <code>null</code>.
+	 * @since 3.2
 	 */
 	public AcceleoCompilationTask(ModuleDescriptor descriptor, Set<URI> dependencies) {
 		this(descriptor, dependencies, null);
@@ -93,6 +93,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 * @param queryName
 	 *            The name of the query the {@link CompilationResult}s should reference. Can be
 	 *            <code>null</code>.
+	 * @since 3.2
 	 */
 	public AcceleoCompilationTask(ModuleDescriptor descriptor, Set<URI> dependencies, String queryName) {
 		this(descriptor, dependencies, queryName, null);
@@ -114,6 +115,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            <code>null</code>.
 	 * @param resourceSet
 	 *            The resource set in which to compile. Can be <code>null</code>.
+	 * @since 3.2
 	 */
 	public AcceleoCompilationTask(ModuleDescriptor descriptor, Set<URI> dependencies, String queryName,
 			ResourceSet resourceSet) {
@@ -210,6 +212,5 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		for (URI dependency : dependencies) {
 			resourceSet.getResource(dependency, true);
 		}
-		EcoreUtil.resolveAll(resourceSet);
 	}
 }

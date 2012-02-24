@@ -112,13 +112,11 @@ public class Sequence implements ISequence {
 	 * @return the index of the string, or -1 if it doesn't exist
 	 */
 	private int indexOf(StringBuffer buffer, String tag, int posBegin, int posEnd) {
-		int limit = posEnd - tag.length();
-		for (int i = posBegin; i <= limit; i++) {
-			if (matches(buffer, tag, i)) {
-				return i;
-			}
+		int index = buffer.substring(posBegin, posEnd).indexOf(tag);
+		if (index >= 0) {
+			return index + posBegin;
 		}
-		return -1;
+		return index;
 	}
 
 	/**

@@ -449,7 +449,7 @@ public class AcceleoProject {
 	 * @param project
 	 *            The project
 	 * @return The URIs of the emtl files in the required plugin of the given project.
-	 * @since 3.3
+	 * @since 3.2
 	 */
 	public static List<URI> computeAcceleoModuleInRequiredPlugins(IProject project) {
 		List<URI> uris = new ArrayList<URI>();
@@ -769,7 +769,7 @@ public class AcceleoProject {
 	 * @param project
 	 *            The project
 	 * @return The URIs of the EMTL files in the bundle dependencies of the given project.
-	 * @since 3.3
+	 * @since 3.2
 	 */
 	public static List<URI> getAccessiblePluginModules(IProject project) {
 		List<URI> outputURIs = new ArrayList<URI>();

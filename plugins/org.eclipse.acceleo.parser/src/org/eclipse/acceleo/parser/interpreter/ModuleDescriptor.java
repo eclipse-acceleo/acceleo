@@ -70,4 +70,37 @@ public class ModuleDescriptor {
 	public String getModuleContent() {
 		return moduleContent;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof ModuleDescriptor)) {
+			return false;
+		}
+
+		boolean equal = false;
+		if (obj == this) {
+			equal = true;
+		} else {
+			ModuleDescriptor other = (ModuleDescriptor)obj;
+			equal = moduleURI.equals(other.moduleURI) && qualifiedName.equals(other.qualifiedName)
+					&& moduleContent.equals(other.moduleContent);
+		}
+
+		return equal;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return moduleURI.hashCode() + qualifiedName.hashCode() + moduleContent.hashCode();
+	}
 }

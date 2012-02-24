@@ -65,6 +65,7 @@ public class CompilationContext {
 	 *            Optional dependencies of this compilation.
 	 * @param extendedDependencies
 	 *            This can be used to tell us that other modules need to be built before the current one.
+	 * @since 3.2
 	 */
 	public CompilationContext(String expression, String targetType, Map<String, String> variables,
 			Set<String> nsURIs, Multimap<String, URI> dependencies, Set<ModuleDescriptor> extendedDependencies) {
@@ -125,6 +126,7 @@ public class CompilationContext {
 	 * Returns the dependencies that need to be built before the current module.
 	 * 
 	 * @return The dependencies that need to be built before the current module.
+	 * @since 3.2
 	 */
 	public Set<ModuleDescriptor> getExtendedDependencies() {
 		return extendedDependencies;
