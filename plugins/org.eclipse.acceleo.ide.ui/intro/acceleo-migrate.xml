@@ -3,7 +3,7 @@
   <!-- Extension to the SDK Web Resources Page. -->
   <extensionContent id="org.eclipse.acceleo" name="Acceleo" alt-style="css/acceleo.properties" style="css/acceleo.css" path="migrate/@">
     <group label="Acceleo" id="acceleo" style-id="content-group">
-       <link label="From Acceleo 2 to Acceleo 3" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.pde.ui&amp;class=org.eclipse.pde.internal.ui.samples.ShowSampleAction&amp;id=org.eclipse.sdk.samples.javaeditor" id="acceleo" style-id="content-link">
+       <link label="From Acceleo 2 to Acceleo 3" url="http://org.eclipse.ui.intro/showHelpTopic?id=/org.eclipse.acceleo.doc/doc/html/acceleo_equivalence.html" id="acceleo" style-id="content-link">
           <text>
               Have a look at the Acceleo migration guide to have all the instructions to translate your Acceleo 2 generators to Acceleo 3
           </text>

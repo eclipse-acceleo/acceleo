@@ -3,11 +3,8 @@
   <!-- Extension to the SDK Tutorials Page. -->
   <extensionContent id="org.eclipse.jdt" name="Acceleo" alt-style="css/acceleo.properties" style="css/acceleo.css" path="tutorials/@">
     <group label="Acceleo" id="acceleo" style-id="content-group">
-      <link url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=org.eclipse.jdt.helloworld" label="Create an UML generator" id="tutorial1" style-id="content-link">
-        <text>Learn how to start a code generation project for UML models</text>
-      </link>
-      <link url="http://org.eclipse.ui.intro/showStandby?partId=org.eclipse.platform.cheatsheet&amp;input=org.eclipse.jdt.helloworld.swt" label="Create a generator for your own domain" id="tutorial2" style-id="content-link">
-        <text>Learn how to generate code from your domain specific language.</text>
+      <link url="http://wiki.eclipse.org/Acceleo/Getting_Started" label="Create an UML generator" id="tutorial1" style-id="content-link">
+        <text>Learn how to start a code generation project for UML models (Internet Connection required)</text>
       </link>
     </group>
   </extensionContent>
