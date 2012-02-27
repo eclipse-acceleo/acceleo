@@ -38,9 +38,11 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.IShellProvider;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
 /**
@@ -85,28 +87,37 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 		final Collection<ProjectDescriptor> projectDescriptors = getProjectDescriptors();
 
 		try {
-			getContainer().run(true, false, new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor) throws InvocationTargetException,
-						InterruptedException {
+			final WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+				@Override
+				protected void execute(IProgressMonitor m)
 
-					final WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
-						@Override
-						protected void execute(IProgressMonitor m)
+				throws CoreException, InvocationTargetException, InterruptedException {
+					m.beginTask(AcceleoExamplesMessages.getString("AbstractExampleWizard.Task.Unzip"), //$NON-NLS-1$
+							projectDescriptors.size());
 
-						throws CoreException, InvocationTargetException, InterruptedException {
-							m.beginTask(
-									AcceleoExamplesMessages.getString("AbstractExampleWizard.Task.Unzip"), //$NON-NLS-1$
-									projectDescriptors.size());
-
-							for (final ProjectDescriptor project : projectDescriptors) {
-								unzipProject(project, m);
-								m.worked(1);
-							}
-						}
-					};
-					op.run(monitor);
+					for (final ProjectDescriptor project : projectDescriptors) {
+						unzipProject(project, m);
+						m.worked(1);
+					}
 				}
-			});
+			};
+
+			IWizardContainer container = this.getContainer();
+			if (container != null) {
+				container.run(true, false, new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor) throws InvocationTargetException,
+							InterruptedException {
+						op.run(monitor);
+					}
+				});
+			} else {
+				PlatformUI.getWorkbench().getProgressService().run(false, false, new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor) throws InvocationTargetException,
+							InterruptedException {
+						op.run(monitor);
+					}
+				});
+			}
 		} catch (final InvocationTargetException e) {
 			log(e);
 		} catch (final InterruptedException e) {
@@ -219,8 +230,6 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 			project.build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
 			project.build(IncrementalProjectBuilder.CLEAN_BUILD, "org.eclipse.acceleo.ide.ui.acceleoBuilder",
 					null, monitor);
-
-			ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 
 			monitor.worked(1);
 		} catch (final IOException e) {

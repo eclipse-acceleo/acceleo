@@ -76,4 +76,11 @@ Contributors:
          </description>
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro/acceleo-samples.xml">
+      </configExtension>
+   </extension>
 </plugin>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<introContent>
+  <!-- Extension to the SDK Samples Page. -->
+  <extensionContent id="org.eclipse.jdt" name="Acceleo" alt-style="css/acceleo.properties" style="css/acceleo.css" path="samples/@">
+    <group label="Acceleo" id="jdt" style-id="content-group">
+       <text style-id="group-description">Code generator examples realized with Acceleo.</text>
+       <link label="UML to Java" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.acceleo.examples&amp;class=org.eclipse.acceleo.examples.internal.intro.ShowSampleAction&amp;id=uml2java" id="acceleo" style-id="content-link">
+          <text>Basic Acceleo generator to create Java objects from UML classes.</text>
+       </link>
+       <link label="Ecore to Java Unit Tests" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.acceleo.examples&amp;class=org.eclipse.acceleo.examples.internal.intro.ShowSampleAction&amp;id=ecore2junit" id="acceleo" style-id="content-link">
+          <text>Generate unit tests for your Ecore models.</text>
+       </link>
+       <link label="Ecore to Python" url="http://org.eclipse.ui.intro/runAction?pluginId=org.eclipse.acceleo.examples&amp;class=org.eclipse.acceleo.examples.internal.intro.ShowSampleAction&amp;id=ecore2python" id="acceleo" style-id="content-link">
+          <text>Create Python classes from Ecore models.</text>
+       </link>
+    </group>
+  </extensionContent>
+</introContent>

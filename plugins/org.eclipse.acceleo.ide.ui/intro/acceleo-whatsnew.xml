@@ -3,8 +3,8 @@
   <!-- Extension to the SDK What's New Page. -->
   <extensionContent id="org.eclipse.jdt" name="Acceleo" alt-style="css/acceleo.properties" style="css/acceleo.css" path="whatsnew/@">
      <group id="content-group" style-id="content-group">
-    	<link label="Acceleo" url="http://org.eclipse.ui.intro/showHelpTopic?id=/org.eclipse.jdt.doc.user/whatsNew/jdt_whatsnew.html" id="acceleo-noteworthy" style-id="content-link">
-           <text>Discover the latest features available in this release of Acceleo.</text>
+    	<link label="Acceleo" url="http://wiki.eclipse.org/Acceleo/New_And_Noteworthy" id="acceleo-noteworthy" style-id="content-link">
+           <text>Discover the latest features available in this release of Acceleo. (Internet Connection required)</text>
         </link>
      </group>
   </extensionContent>
