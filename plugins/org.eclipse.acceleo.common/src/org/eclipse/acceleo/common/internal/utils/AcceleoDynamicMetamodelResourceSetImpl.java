@@ -11,15 +11,22 @@
 package org.eclipse.acceleo.common.internal.utils;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl.PlatformSchemeAware;
 
 /**
  * The resource set used to load the dynamic metamodels.
@@ -31,6 +38,17 @@ public class AcceleoDynamicMetamodelResourceSetImpl extends ResourceSetImpl {
 
 	/** The resource set used by all the dynamic metamodels. */
 	public static final ResourceSet DYNAMIC_METAMODEL_RESOURCE_SET = new AcceleoDynamicMetamodelResourceSetImpl();
+
+	/**
+	 * The constructor.
+	 */
+	public AcceleoDynamicMetamodelResourceSetImpl() {
+		super();
+		if (this.loadOptions == null) {
+			this.loadOptions = new HashMap<Object, Object>();
+		}
+		this.loadOptions.put(XMLResource.OPTION_URI_HANDLER, new AcceleoDynamicURIHandler());
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -95,5 +113,53 @@ public class AcceleoDynamicMetamodelResourceSetImpl extends ResourceSetImpl {
 		}
 
 		return path;
+	}
+
+	/**
+	 * Utility class used to convert platform:/plugin uris to http://www... ones.
+	 * 
+	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+	 * @since 3.2
+	 */
+	public class AcceleoDynamicURIHandler extends PlatformSchemeAware {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl.PlatformSchemeAware#deresolve(org.eclipse.emf.common.util.URI)
+		 */
+		@Override
+		public URI deresolve(URI uri) {
+			return super.deresolve(uri);
+
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl#resolve(URI)
+		 */
+		@Override
+		public URI resolve(URI uri) {
+			// platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass
+			Map<String, URI> map = EcorePlugin.getEPackageNsURIToGenModelLocationMap();
+			URI trimmedURI = uri.trimFragment();
+			Set<Entry<String, URI>> entries = map.entrySet();
+			for (Entry<String, URI> entry : entries) {
+				URI dummyValue = entry.getValue();
+				String dummy = dummyValue.toString();
+				if (dummy.endsWith("genmodel")) { //$NON-NLS-1$
+					dummy = dummy.substring(0, dummy.length() - "genmodel".length()); //$NON-NLS-1$
+					dummy = dummy + "ecore"; //$NON-NLS-1$
+				}
+				if (dummy.equals(trimmedURI.toString())) {
+					URI newURI = URI.createURI(entry.getKey());
+					newURI = newURI.appendFragment(uri.fragment());
+					// http://www.eclipse.org/emf/2002/Ecore#//EClass
+					return newURI;
+				}
+			}
+			return super.resolve(uri);
+
+		}
 	}
 }
