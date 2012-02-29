@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -33,6 +32,8 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -890,18 +891,21 @@ public final class AcceleoWorkspaceUtil {
 
 			URL url = null;
 			try {
-				url = candidateManifest.getProject().getLocationURI().toURL();
+				url = project.getLocationURI().toURL();
 			} catch (MalformedURLException e) {
-				URI uri = project.getLocationURI();
 				// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=354360
-				if ("sourcecontrol".equals(uri.getScheme())) { //$NON-NLS-1$
-					uri = new URI(uri.getQuery());
-				} else {
-					uri = new URI("file", "/" //$NON-NLS-1$ //$NON-NLS-2$
-							+ ResourcesPlugin.getWorkspace().getRoot().getLocation().append(
-									project.getFullPath().toString()), null);
+				try {
+					URI uri = project.getLocationURI();
+					IFileStore store = EFS.getStore(uri);
+					File file = store.toLocalFile(0, null);
+					if (file != null) {						
+						url = file.toURI().toURL();
+					}
+				} catch (CoreException ex) {
+					// Logging both exceptions just to be sure
+					AcceleoCommonPlugin.log(e, false);
+					AcceleoCommonPlugin.log(ex, false);
 				}
-				url = uri.toURL();
 			}
 
 			if (url != null) {
@@ -928,8 +932,6 @@ public final class AcceleoWorkspaceUtil {
 			AcceleoCommonPlugin.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
 					AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", model //$NON-NLS-1$
 							.getBundleDescription().getName()), e));
-		} catch (URISyntaxException e) {
-			AcceleoCommonPlugin.log(e, false);
 		} catch (MalformedURLException e) {
 			AcceleoCommonPlugin.log(e, false);
 		} catch (UnsupportedEncodingException e) {
