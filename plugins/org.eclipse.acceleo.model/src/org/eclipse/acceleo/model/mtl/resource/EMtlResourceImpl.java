@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -122,7 +123,7 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 			fixVariablesAndPositions(positions);
 		}
 		try {
-			super.doSave(outputStream, options);
+			super.doSave(outputStream, actualOptions);
 		} finally {
 			if (!trimPosition && positions != null) {
 				getContents().remove(positions);
@@ -142,16 +143,19 @@ public class EMtlResourceImpl extends XMIResourceImpl {
 	 */
 	private void fixVariablesAndPositions(EAnnotation positions) {
 		variableNames = new ArrayList<String>();
-		Iterator<EObject> contentsIterator = getContents().iterator();
-		while (contentsIterator.hasNext()) {
-			EObject content = contentsIterator.next();
-			if (content instanceof Module) {
-				Module eModule = (Module)content;
-				TreeIterator<EObject> eAllContents = eModule.eAllContents();
-				while (eAllContents.hasNext()) {
-					EObject eObject = eAllContents.next();
-					fixVariableAmbiguities(eObject);
-					savePositions(eObject, positions);
+		List<EObject> synchronizedList = Collections.synchronizedList(getContents());
+		synchronized(synchronizedList) {
+			Iterator<EObject> contentsIterator = synchronizedList.iterator();
+			while (contentsIterator.hasNext()) {
+				EObject content = contentsIterator.next();
+				if (content instanceof Module) {
+					Module eModule = (Module)content;
+					TreeIterator<EObject> eAllContents = eModule.eAllContents();
+					while (eAllContents.hasNext()) {
+						EObject eObject = eAllContents.next();
+						fixVariableAmbiguities(eObject);
+						savePositions(eObject, positions);
+					}
 				}
 			}
 		}
