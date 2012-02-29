@@ -29,6 +29,7 @@ import org.eclipse.ocl.ecore.PropertyCallExp;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.utilities.ASTNode;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -1575,6 +1576,7 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testTraceabilityBlockProtectedMultiple() {
 		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
