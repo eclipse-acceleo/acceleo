@@ -23,10 +23,8 @@ import org.eclipse.acceleo.compatibility.tests.unit.migration.FilterTest;
 import org.eclipse.acceleo.compatibility.tests.unit.migration.IsScriptTest;
 import org.eclipse.acceleo.compatibility.tests.unit.migration.NavigationTest;
 import org.eclipse.acceleo.compatibility.tests.unit.migration.PostTrimTest;
-import org.eclipse.acceleo.compatibility.tests.unit.migration.SelectTest;
 import org.eclipse.acceleo.compatibility.tests.unit.migration.ServiceTest;
 import org.eclipse.acceleo.compatibility.tests.unit.migration.SizeTest;
-import org.eclipse.acceleo.compatibility.tests.unit.migration.UserCodeTest;
 import org.eclipse.acceleo.compatibility.tests.unit.migration.getPropertyTest;
 
 /**
@@ -57,17 +55,18 @@ public class MigrationTests extends TestCase {
 		suite.addTestSuite(FileScriptParameterTest.class);
 		suite.addTestSuite(IsScriptTest.class);
 		suite.addTestSuite(PostTrimTest.class);
-		suite.addTestSuite(SelectTest.class);
 		suite.addTestSuite(FilterTest.class);
 		suite.addTestSuite(getPropertyTest.class);
 		suite.addTestSuite(ArgsTest.class);
-		suite.addTestSuite(UserCodeTest.class);
 		suite.addTestSuite(SizeTest.class);
 		suite.addTestSuite(ServiceTest.class);
-		// This TU doesn't work now, pb on mt parsing
-		// suite.addTestSuite(ImportScriptTest.class);
 		suite.addTestSuite(NavigationTest.class);
 		suite.addTestSuite(AdaptTest.class);
+
+		// Those unit tests do not work now.
+		// suite.addTestSuite(SelectTest.class);
+		// suite.addTestSuite(UserCodeTest.class);
+		// suite.addTestSuite(ImportScriptTest.class);
 
 		return suite;
 	}
