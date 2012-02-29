@@ -1045,12 +1045,18 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			for (final Module imported : origin.getImports()) {
 				Module myImportedModule = imported;
 
+				boolean shouldBreak = false;
 				while (myImportedModule.getExtends().size() > 0) {
 					if (myImportedModule.getExtends().get(0) == candidate.eContainer()) {
 						reorderedList.add(candidate);
 						candidateIterator.remove();
+						shouldBreak = true;
 					}
 					myImportedModule = myImportedModule.getExtends().get(0);
+				}
+
+				if (shouldBreak) {
+					break;
 				}
 			}
 		}
