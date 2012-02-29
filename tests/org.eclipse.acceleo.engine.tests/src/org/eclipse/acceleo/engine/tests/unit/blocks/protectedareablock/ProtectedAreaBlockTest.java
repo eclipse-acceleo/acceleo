@@ -544,7 +544,7 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		generate("test_protected_area_multiple_generations", 0); //$NON-NLS-1$
 	}
 
-	public void testProtectedAreaPerforanceMultipleGenerations() throws IOException {
+	public void testProtectedAreaPerformanceMultipleGenerations() throws IOException {
 		generate("test_protected_area_performance_multiple_generations", 0); //$NON-NLS-1$
 	}
 
