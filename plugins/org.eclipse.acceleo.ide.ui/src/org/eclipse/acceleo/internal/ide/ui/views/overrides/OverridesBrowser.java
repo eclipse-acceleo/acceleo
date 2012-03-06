@@ -712,7 +712,7 @@ public class OverridesBrowser extends ViewPart implements IEditingDomainProvider
 							&& currentBuffer.length() >= element.getEndPosition()) {
 						StringBuffer currentText = new StringBuffer(currentBuffer.substring(
 								element.getStartPosition(), element.getEndPosition()).replace("$", "$$")); //$NON-NLS-1$ //$NON-NLS-2$
-						currentText.append("\n"); //$NON-NLS-1$
+						currentText.append(System.getProperty("line.separator")); //$NON-NLS-1$
 						StringBuffer result = modifyModuleElementContent(document.get(), element,
 								currentText, offset);
 						proposalBuffer.append(result);
