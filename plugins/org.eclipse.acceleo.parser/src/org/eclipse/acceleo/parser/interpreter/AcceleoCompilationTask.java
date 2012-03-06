@@ -77,6 +77,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            The String representation of the module we are to compile.
 	 * @param dependencies
 	 *            Dependencies required by the compiled module. Can be <code>null</code>.
+	 * @since 3.3
 	 */
 	public AcceleoCompilationTask(String module, Set<URI> dependencies) {
 		this(module, dependencies, null);
@@ -96,6 +97,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 * @param queryName
 	 *            The name of the query the {@link CompilationResult}s should reference. Can be
 	 *            <code>null</code>.
+	 * @since 3.3
 	 */
 	public AcceleoCompilationTask(String module, Set<URI> dependencies, String queryName) {
 		this(module, dependencies, queryName, null);
@@ -117,6 +119,7 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 	 *            <code>null</code>.
 	 * @param resourceSet
 	 *            The resource set in which to compile. Can be <code>null</code>.
+	 * @since 3.3
 	 */
 	public AcceleoCompilationTask(String module, Set<URI> dependencies, String queryName,
 			ResourceSet resourceSet) {
