@@ -375,59 +375,18 @@ public class AcceleoParser {
 			boolean found = false;
 			File acceleoModule = this.acceleoProject.getFileDependency(moduleDependency);
 			if (acceleoModule != null) {
-				File output = this.acceleoProject.getOutputFile(acceleoModule);
-				if (output != null && !output.exists() && !this.dependenciesToBuild.contains(acceleoModule)) {
-					// The depending module has not been compiled yet
-					this.addDependencyToBuild(acceleoModule);
-					filesBuilt.addAll(this.build(acceleoModule, file, monitor));
-					filesBuilt.add(acceleoModule);
-					this.removeBuiltDependency(acceleoModule);
-				}
-				// If cyclic dependencies, log error
-				if (output != null && !output.exists() && this.dependenciesToBuild.contains(acceleoModule)) {
-					this.problems.put(file, new AcceleoParserProblem(AcceleoParserMessages.getString(
-							"AcceleoParser.CircularDependency", this.acceleoProject //$NON-NLS-1$
-									.getModuleQualifiedName(file), this.acceleoProject
-									.getModuleQualifiedName(acceleoModule)), 0, 0, 0));
-				}
-				if (output != null && output.exists()) {
-					dependingModulesFiles.add(output);
-					found = true;
-				}
+				int originalSize = dependingModulesFiles.size();
+				dependingModulesFiles = computeModuleFileDependency(file, filesBuilt, dependingModulesFiles,
+						acceleoModule, monitor);
+				found = dependingModulesFiles.size() > originalSize;
 			}
 
 			// Find the dependencies in another project
 			if (!found) {
-				Iterator<AcceleoProject> iterator = dependingAcceleoProjects.iterator();
-				while (iterator.hasNext() && !found) {
-					AcceleoProject dependingAcceleoProject = iterator.next();
-					File dependingModule = dependingAcceleoProject.getFileDependency(moduleDependency);
-					if (dependingModule != null) {
-						File output = dependingAcceleoProject.getOutputFile(dependingModule);
-						if (output != null && !output.exists()
-								&& !this.dependenciesToBuild.contains(dependingModule)) {
-							AcceleoParser parser = new AcceleoParser(dependingAcceleoProject,
-									this.usebinaryResources);
-							parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners
-									.size()]));
-							parser.setURIHandler(this.uriHandler);
-							parser.addDependencyToBuild(dependingModule);
-							filesBuilt.addAll(parser.build(dependingModule, file, monitor));
-							filesBuilt.add(dependingModule);
-							parser.removeBuiltDependency(dependingModule);
-
-							// Save the errors encountered
-							this.problems.putAll(dependingModule, parser.getProblems(dependingModule));
-							this.warnings.putAll(dependingModule, parser.getWarnings(dependingModule));
-							this.infos.putAll(dependingModule, parser.getInfos(dependingModule));
-						}
-						output = dependingAcceleoProject.getOutputFile(dependingModule);
-						if (output != null && output.exists()) {
-							dependingModulesFiles.add(output);
-							found = true;
-						}
-					}
-				}
+				int originalSize = dependingModulesFiles.size();
+				dependingModulesFiles = computeModuleFileDependencyInOtherProjects(file, filesBuilt,
+						dependingAcceleoProjects, dependingModulesFiles, moduleDependency, monitor);
+				found = dependingModulesFiles.size() > originalSize;
 			}
 
 			// Find the dependencies in the jars
@@ -449,87 +408,8 @@ public class AcceleoParser {
 			monitor.subTask(AcceleoParserMessages.getString(
 					"AcceleoParser.ParseFileAST", file.getAbsolutePath())); //$NON-NLS-1$
 
-			// Create the AST
-			URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
-			Resource oResource = createResource(fileURI, resourceSet);
-			acceleoSourceBuffer.createAST(oResource);
-
-			monitor.worked(1);
-
-			// Load the other modules in jars in the resource set
-			for (URI uri : dependingModulesURI) {
-				try {
-					for (IParserListener listener : this.listeners) {
-						listener.loadDependency(uri);
-					}
-					ModelUtils.load(uri, resourceSet);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			// Load the other modules compiled in the resource set
-			for (File dependingModule : dependingModulesFiles) {
-				try {
-					for (IParserListener listener : this.listeners) {
-						listener.loadDependency(dependingModule);
-					}
-					ModelUtils.load(dependingModule, resourceSet);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			// Resolve the AST
-			acceleoSourceBuffer.resolveAST();
-			acceleoSourceBuffer.resolveASTDocumentation();
-
-			// Convert the uris if necessary
-			for (Resource resource : resourceSet.getResources()) {
-				URI resourceURI = resource.getURI();
-				if (this.uriHandler != null && resourceURI != null) {
-					URI reusableURI = this.uriHandler.transform(resourceURI);
-					if (reusableURI != null) {
-						resource.setURI(reusableURI);
-					}
-				}
-			}
-
-			// Trim the modules built
-			AcceleoParserTrimUtils.getInstance().trimEnvironment(resourceSet);
-
-			// Save the file
-			Map<String, String> options = new HashMap<String, String>();
-			if (!this.usebinaryResources) {
-				String encoding = acceleoSourceBuffer.getEncoding();
-				if (encoding == null) {
-					encoding = "UTF-8"; //$NON-NLS-1$
-				}
-				options.put(XMLResource.OPTION_ENCODING, encoding);
-			}
-
-			// Check OMG Compilance
-			if (this.checkOMGCompliance && oResource.getContents().size() > 0) {
-				checkOMGCompilance(file, acceleoSourceBuffer, oResource);
-			}
-
-			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.SaveAST", file.getAbsolutePath())); //$NON-NLS-1$
-
-			try {
-				for (IParserListener listener : this.listeners) {
-					listener.fileSaved(file);
-				}
-				oResource.save(options);
-				monitor.worked(10);
-				filesBuilt.add(file);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			// Saving the errors encountered
-			this.problems.putAll(file, acceleoSourceBuffer.getProblems().getList());
-			this.warnings.putAll(file, acceleoSourceBuffer.getWarnings().getList());
-			this.infos.putAll(file, acceleoSourceBuffer.getInfos().getList());
+			doBuild(file, filesBuilt, outputFile, acceleoSourceBuffer, dependingModulesURI,
+					dependingModulesFiles, monitor);
 
 			// If there are major changes, build the modules depending on the file
 			if (isImpactingBuild) {
@@ -541,6 +421,201 @@ public class AcceleoParser {
 			listener.endBuild(file);
 		}
 		return filesBuilt;
+	}
+
+	/**
+	 * Build the file that we are depending on in the project of the currently built file. Returns the
+	 * collection of the depending modules files found.
+	 * 
+	 * @param file
+	 *            The file that we are building
+	 * @param filesBuilt
+	 *            The files already built.
+	 * @param dependingModulesFiles
+	 *            The depending modules files.
+	 * @param acceleoModule
+	 *            The Acceleo module that we are depending on.
+	 * @param monitor
+	 *            The progress monitor.
+	 * @return The collection of the modules files dependencies.
+	 */
+	private Set<File> computeModuleFileDependency(File file, Set<File> filesBuilt,
+			Set<File> dependingModulesFiles, File acceleoModule, Monitor monitor) {
+		File output = this.acceleoProject.getOutputFile(acceleoModule);
+		if (output != null && !output.exists() && !this.dependenciesToBuild.contains(acceleoModule)) {
+			// The depending module has not been compiled yet
+			this.addDependencyToBuild(acceleoModule);
+			filesBuilt.addAll(this.build(acceleoModule, file, monitor));
+			filesBuilt.add(acceleoModule);
+			this.removeBuiltDependency(acceleoModule);
+		}
+		// If cyclic dependencies, log error
+		if (output != null && !output.exists() && this.dependenciesToBuild.contains(acceleoModule)) {
+			this.problems.put(file, new AcceleoParserProblem(AcceleoParserMessages.getString(
+					"AcceleoParser.CircularDependency", this.acceleoProject //$NON-NLS-1$
+							.getModuleQualifiedName(file), this.acceleoProject
+							.getModuleQualifiedName(acceleoModule)), 0, 0, 0));
+		}
+		if (output != null && output.exists()) {
+			dependingModulesFiles.add(output);
+		}
+		return dependingModulesFiles;
+	}
+
+	/**
+	 * Compute the location of the dependency we are looking for in the other projects. Returns the collection
+	 * of the depending modules files found.
+	 * 
+	 * @param file
+	 *            The file that we are building.
+	 * @param filesBuilt
+	 *            The files already built.
+	 * @param dependingAcceleoProjects
+	 *            The depending acceleo projects.
+	 * @param dependingModulesFiles
+	 *            The depending modules files.
+	 * @param moduleDependency
+	 *            The dependency (ie: org::eclipse::acceleo::module::sample::myModule)
+	 * @param monitor
+	 *            The progress monitor.
+	 * @return The new depending modules files (including, if found, the resolved dependency)
+	 */
+	private Set<File> computeModuleFileDependencyInOtherProjects(File file, Set<File> filesBuilt,
+			Set<AcceleoProject> dependingAcceleoProjects, Set<File> dependingModulesFiles,
+			String moduleDependency, Monitor monitor) {
+		boolean found = false;
+		Iterator<AcceleoProject> iterator = dependingAcceleoProjects.iterator();
+		while (iterator.hasNext() && !found) {
+			AcceleoProject dependingAcceleoProject = iterator.next();
+			File dependingModule = dependingAcceleoProject.getFileDependency(moduleDependency);
+			if (dependingModule != null) {
+				File output = dependingAcceleoProject.getOutputFile(dependingModule);
+				if (output != null && !output.exists() && !this.dependenciesToBuild.contains(dependingModule)) {
+					AcceleoParser parser = new AcceleoParser(dependingAcceleoProject, this.usebinaryResources);
+					parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners.size()]));
+					parser.setURIHandler(this.uriHandler);
+					parser.addDependencyToBuild(dependingModule);
+					filesBuilt.addAll(parser.build(dependingModule, file, monitor));
+					filesBuilt.add(dependingModule);
+					parser.removeBuiltDependency(dependingModule);
+
+					// Save the errors encountered
+					this.problems.putAll(dependingModule, parser.getProblems(dependingModule));
+					this.warnings.putAll(dependingModule, parser.getWarnings(dependingModule));
+					this.infos.putAll(dependingModule, parser.getInfos(dependingModule));
+				}
+				output = dependingAcceleoProject.getOutputFile(dependingModule);
+				if (output != null && output.exists()) {
+					dependingModulesFiles.add(output);
+					found = true;
+				}
+			}
+		}
+		return dependingModulesFiles;
+	}
+
+	/**
+	 * Build the file.
+	 * 
+	 * @param file
+	 *            The file to build.
+	 * @param filesBuilt
+	 *            The files already built.
+	 * @param outputFile
+	 *            The output file created after building the file.
+	 * @param acceleoSourceBuffer
+	 *            The source buffer of the file.
+	 * @param dependingModulesURI
+	 *            The module URI dependencies.
+	 * @param dependingModulesFiles
+	 *            The modules files dependencies.
+	 * @param monitor
+	 *            The progress monitor.
+	 */
+	private void doBuild(File file, Set<File> filesBuilt, File outputFile,
+			AcceleoSourceBuffer acceleoSourceBuffer, Set<URI> dependingModulesURI,
+			Set<File> dependingModulesFiles, Monitor monitor) {
+		// Create the AST
+		URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
+		Resource oResource = createResource(fileURI, resourceSet);
+		acceleoSourceBuffer.createAST(oResource);
+
+		monitor.worked(1);
+
+		// Load the other modules in jars in the resource set
+		for (URI uri : dependingModulesURI) {
+			try {
+				for (IParserListener listener : this.listeners) {
+					listener.loadDependency(uri);
+				}
+				ModelUtils.load(uri, resourceSet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Load the other modules compiled in the resource set
+		for (File dependingModule : dependingModulesFiles) {
+			try {
+				for (IParserListener listener : this.listeners) {
+					listener.loadDependency(dependingModule);
+				}
+				ModelUtils.load(dependingModule, resourceSet);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// Resolve the AST
+		acceleoSourceBuffer.resolveAST();
+		acceleoSourceBuffer.resolveASTDocumentation();
+
+		// Convert the uris if necessary
+		for (Resource resource : resourceSet.getResources()) {
+			URI resourceURI = resource.getURI();
+			if (this.uriHandler != null && resourceURI != null) {
+				URI reusableURI = this.uriHandler.transform(resourceURI);
+				if (reusableURI != null) {
+					resource.setURI(reusableURI);
+				}
+			}
+		}
+
+		// Trim the modules built
+		AcceleoParserTrimUtils.getInstance().trimEnvironment(resourceSet);
+
+		// Save the file
+		Map<String, String> options = new HashMap<String, String>();
+		if (!this.usebinaryResources) {
+			String encoding = acceleoSourceBuffer.getEncoding();
+			if (encoding == null) {
+				encoding = "UTF-8"; //$NON-NLS-1$
+			}
+			options.put(XMLResource.OPTION_ENCODING, encoding);
+		}
+
+		// Check OMG Compilance
+		if (this.checkOMGCompliance && oResource.getContents().size() > 0) {
+			checkOMGCompilance(file, acceleoSourceBuffer, oResource);
+		}
+
+		monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.SaveAST", file.getAbsolutePath())); //$NON-NLS-1$
+
+		try {
+			for (IParserListener listener : this.listeners) {
+				listener.fileSaved(file);
+			}
+			oResource.save(options);
+			monitor.worked(10);
+			filesBuilt.add(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Saving the errors encountered
+		this.problems.putAll(file, acceleoSourceBuffer.getProblems().getList());
+		this.warnings.putAll(file, acceleoSourceBuffer.getWarnings().getList());
+		this.infos.putAll(file, acceleoSourceBuffer.getInfos().getList());
 	}
 
 	/**
