@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
@@ -498,7 +499,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				break;
 			}
 		}
-		if (hasProblems) {
+		if (hasProblems && AcceleoPreferences.isDebugMessagesEnabled()) {
 			AcceleoEnginePlugin.log("Traceability problems with file " + file.getName(), false); //$NON-NLS-1$
 		}
 		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == fileBlock
@@ -1117,9 +1118,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			evaluatingOperationCall = oldOperationEvaluationState;
 		}
 
-		if (result == null) {
+		if (result == null && AcceleoPreferences.isDebugMessagesEnabled()) {
 			AcceleoTraceabilityPlugin.log(AcceleoTraceabilityMessages.getString(
-					"AcceleoTraceabilityVisitor.NullEvaluation", callExp.toString()), true); //$NON-NLS-1$
+					"AcceleoTraceabilityVisitor.NullEvaluation", callExp.toString()), false); //$NON-NLS-1$
 		}
 
 		operationCallSource = null;
