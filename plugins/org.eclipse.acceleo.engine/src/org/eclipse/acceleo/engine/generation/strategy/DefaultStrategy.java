@@ -69,6 +69,7 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 			}
 			lostCreationTasks.remove(task);
 		}
+		lostCreatorsPool.shutdown();
 		super.awaitCompletion();
 	}
 
