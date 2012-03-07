@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.AbstractTypeResolver;
+import org.eclipse.ocl.Environment;
 import org.eclipse.ocl.EnvironmentFactory;
 import org.eclipse.ocl.ecore.CallOperationAction;
 import org.eclipse.ocl.ecore.Constraint;
@@ -54,6 +55,18 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 */
 	protected AcceleoEnvironment(EPackage.Registry reg) {
 		super(reg);
+	}
+
+	/**
+	 * Delegates instantiation to the super-constructor.
+	 * 
+	 * @param parent
+	 *            The parent environment.
+	 * @since 3.2
+	 */
+	protected AcceleoEnvironment(
+			Environment<EPackage, EClassifier, EOperation, EStructuralFeature, EEnumLiteral, EParameter, EObject, CallOperationAction, SendSignalAction, Constraint, EClass, EObject> parent) {
+		super(parent);
 	}
 
 	/**
