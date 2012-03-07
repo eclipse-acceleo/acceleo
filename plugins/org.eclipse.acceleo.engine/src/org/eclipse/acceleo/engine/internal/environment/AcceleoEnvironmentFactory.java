@@ -108,7 +108,7 @@ public class AcceleoEnvironmentFactory extends AbstractAcceleoEnvironmentFactory
 					"AcceleoEnvironmentFactory.IllegalParent", parent.getClass().getName())); //$NON-NLS-1$
 		}
 
-		AcceleoEnvironment result = new AcceleoEnvironment(getEPackageRegistry());
+		AcceleoEnvironment result = new AcceleoEnvironment(parent);
 		result.setFactory(this);
 		result.restoreBrokenEnvironmentPackages(module.eResource());
 		return result;
