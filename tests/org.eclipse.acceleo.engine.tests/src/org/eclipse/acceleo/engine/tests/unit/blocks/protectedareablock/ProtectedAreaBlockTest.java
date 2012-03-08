@@ -556,4 +556,7 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 		generate("test_protected_area_conditional_multiple_generations", 1); //$NON-NLS-1$
 	}
 
+	public void testProtectedAreaLetComplex() throws IOException {
+		generate("test_protected_area_template_let_complex", 1); //$NON-NLS-1$
+	}
 }
