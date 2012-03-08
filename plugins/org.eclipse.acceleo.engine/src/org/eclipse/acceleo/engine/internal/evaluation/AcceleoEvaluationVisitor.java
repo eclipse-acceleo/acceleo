@@ -758,11 +758,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			dummy.getBody().add(userCodeStart);
 			dummy.getBody().add(userCodeEnd);
 
-			final StringLiteralExp markerExp = EcoreFactory.eINSTANCE.createStringLiteralExp();
-			userCodeStart.setStringSymbol(marker);
-
 			getVisitor().visitExpression((OCLExpression<C>)userCodeStart);
-			getVisitor().visitExpression((OCLExpression<C>)markerExp);
+			getVisitor().visitExpression((OCLExpression<C>)protectedArea.getMarker());
 			visitAcceleoBlock(protectedArea);
 			getVisitor().visitExpression((OCLExpression<C>)userCodeEnd);
 		}
