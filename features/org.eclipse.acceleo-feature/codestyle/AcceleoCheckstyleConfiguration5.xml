@@ -5,9 +5,9 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Acceleo
+    Checkstyle-Configuration: Acceleo Checkstyle 5
     Description: 
-Checkstyle 5 Configuration for Acceleo
+Acceleo Checkstyle 5 Configuration
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -26,7 +26,7 @@ Checkstyle 5 Configuration for Acceleo
     </module>
     <module name="JavadocType">
       <property name="severity" value="error"/>
-      <property name="authorFormat" value="mailto:[a-z.]+@[a-z.]+\.[a-z]{2,4}\&quot;&gt;[A-Z][a-z]+\s[A-Z][a-z]+"/>
+      <property name="authorFormat" value="(&lt;a href=&quot;mailto:[a-z.]+@[a-z.]+\.[a-z]{2,4}\&quot;&gt;)?[A-Z][a-z]+\s[A-Z][a-z]+(&lt;/a&gt;)?"/>
       <property name="allowUnknownTags" value="true"/>
     </module>
     <module name="JavadocVariable">
@@ -198,12 +198,7 @@ Checkstyle 5 Configuration for Acceleo
     </module>
     <module name="IllegalCatch">
       <property name="severity" value="error"/>
-    </module>
-    <module name="IllegalCatch">
       <property name="illegalClassNames" value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException, java.lang.Error"/>
-    </module>
-    <module name="IllegalCatch">
-      <property name="severity" value="error"/>
     </module>
     <module name="IllegalThrows">
       <property name="severity" value="error"/>
@@ -335,6 +330,10 @@ Checkstyle 5 Configuration for Acceleo
     </module>
     <module name="OuterTypeFilename">
       <property name="severity" value="error"/>
+    </module>
+    <module name="AbstractClassName">
+      <property name="severity" value="error"/>
+      <property name="format" value="^Abstract.*$"/>
     </module>
   </module>
   <module name="FileLength">
