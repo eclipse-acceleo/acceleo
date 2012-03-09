@@ -144,6 +144,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private boolean fireGenerationEvent;
 
+	/**
+	 * This will shut down the generation of the text for protected area marker.
+	 */
+	private boolean fireProtectedAreaGenerationEvent;
+
 	/** Retrieve invalid once and for all. */
 	private final Object invalid = getAcceleoEnvironment().getOCLStandardLibraryReflection().getInvalid();
 
@@ -720,7 +725,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	public void visitAcceleoProtectedArea(ProtectedAreaBlock protectedArea) {
 		boolean fireEvents = fireGenerationEvent;
 		fireGenerationEvent = false;
+		fireProtectedAreaGenerationEvent = false;
 		final Object markerValue = getVisitor().visitExpression((OCLExpression<C>)protectedArea.getMarker());
+		fireProtectedAreaGenerationEvent = true;
 		fireGenerationEvent = fireEvents;
 		final Object source = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 		if (isUndefined(markerValue)) {
@@ -1739,7 +1746,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		boolean generate = reference == MtlPackage.eINSTANCE.getBlock_Body();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Each();
 		generate = generate
-				|| (fireGenerationEvent && reference == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker());
+				|| (fireProtectedAreaGenerationEvent && reference == MtlPackage.eINSTANCE
+						.getProtectedAreaBlock_Marker());
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Each();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Before();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_After();

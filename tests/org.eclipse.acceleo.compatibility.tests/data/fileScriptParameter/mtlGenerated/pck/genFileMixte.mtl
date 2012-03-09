@@ -15,16 +15,20 @@
 [/file]
 [/template]
 
+
 [template public testSimpleScript(class : Class)]
 Text of testSimpleScript
 [/template]
+
 
 [template public testParameterScript(class : Class, args0 : OclAny, args1 : OclAny)]
 Text of testParameterScript with parameter 1 : [args0/] and parameter 2 : [args1/]
 [/template]
 
+
 [template public fullPathFile(class : Class)]
 testMixte[name.trim()/]
 [/template]
+
 
 

@@ -19,8 +19,10 @@
 [/file]
 [/template]
 
+
 [query public hasStereotype(operation : Operation, args0 : OclAny) : Boolean =
 if (args0 = 'true') then true else false endif
 /]
+
 
 

@@ -541,4 +541,8 @@ public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 	public void testProtectedAreaTemplateIfFileForLetElseLetTemplateBlockMerge() throws IOException {
 		generate("test_protected_area_template_if_file_for_let_elselet_template_block_merge"); //$NON-NLS-1$
 	}
+
+	public void testProtectedAreaLetComplex() throws IOException {
+		generate("test_protected_area_template_let_complex"); //$NON-NLS-1$
+	}
 }

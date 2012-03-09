@@ -18,11 +18,13 @@
 [/file]
 [/template]
 
+
 [template public testSimpleScript1(class : Class) post(trim())]
 Text of testSimpleScript
 
 
 [/template]
+
 
 [template public testParameterScript1(class : Class, args0 : OclAny, args1 : OclAny) post(trim())]
 Text of testParameterScript with parameter 1 : [args0/] and parameter 2 : [args1/]
@@ -32,6 +34,7 @@ Text of testParameterScript with parameter 1 : [args0/] and parameter 2 : [args1
 
 [/template]
 
+
 [template public testSimpleScript2(class : Class) post(trim())]
 Text of testSimpleScript
 
@@ -40,8 +43,10 @@ Text of testSimpleScript
 
 [/template]
 
+
 [template public testParameterScript2(class : Class, args0 : OclAny, args1 : OclAny) post(trim())]
 Text of testParameterScript with parameter 1 : [args0/] and parameter 2 : [args1/]
 [/template]
+
 
 

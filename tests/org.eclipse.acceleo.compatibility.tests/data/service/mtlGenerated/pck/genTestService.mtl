@@ -15,9 +15,11 @@ Path : [toPath(getPackage())/]
 [/file]
 [/template]
 
+
 [template public getPackage(class : Class)]
 fr.obeo.test
 [/template]
+
 
 
 [query private toPath(arg0 : OclAny, arg1 : String) : String = invoke('services.StringServices', 'toPath(fr.obeo.acceleo.gen.template.eval.ENode, java.lang.String)', Sequence{arg0, arg1})/]

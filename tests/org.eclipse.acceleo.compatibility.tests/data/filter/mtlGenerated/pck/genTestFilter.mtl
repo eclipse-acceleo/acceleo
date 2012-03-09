@@ -19,8 +19,10 @@
 [/file]
 [/template]
 
+
 [template public getClass(package : Package)]
 [eAllContents()->filter(Class).name/]
 [/template]
+
 
 

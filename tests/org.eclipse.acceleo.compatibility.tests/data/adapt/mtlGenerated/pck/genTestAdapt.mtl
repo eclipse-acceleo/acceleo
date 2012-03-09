@@ -17,6 +17,7 @@ Boolean : [getProperty('Test').adaptToboolean()/]
 [/file]
 [/template]
 
+
 [query public hasOneOperation(class : Class) : Boolean =
 if (eAllContents(Property)->size() = 1) then 
 	true
@@ -25,6 +26,7 @@ if (eAllContents(Property)->size() = 1) then
  endif
 
 /]
+
 
 [query private adaptToint(o : OclAny) : String = invoke('org.eclipse.acceleo.compatibility.services.MigrationServices', 'adaptToint(java.lang.Object)', Sequence{o})/]
 [query private adaptToboolean(o : OclAny) : String = invoke('org.eclipse.acceleo.compatibility.services.MigrationServices', 'adaptToboolean(java.lang.Object)', Sequence{o})/]

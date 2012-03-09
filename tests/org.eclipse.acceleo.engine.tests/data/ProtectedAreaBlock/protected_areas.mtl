@@ -899,3 +899,25 @@ protected block
 [/if]
 [/for]
 [/template]
+
+[template public test_protected_area_template_let_complex(anEClass : EClass)]
+[for (str1 : String | Sequence{'a'})]
+[if (true)]
+[for (str2 : String | Sequence{'a'})]
+[file ('test_protected_area_template_let_complex', false, 'UTF-8')]
+[let str3 : String = anEClass.protectedTest()]
+[str3/]
+[/let]
+
+[/file]
+[/for]
+[/if]
+[/for]
+[/template]
+
+[template public protectedTest(anEClass : EClass)]
+	[protected ('protected')]
+	protected block
+	[/protected]
+
+[/template]
