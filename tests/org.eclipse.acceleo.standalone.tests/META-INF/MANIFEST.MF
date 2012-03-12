@@ -8,6 +8,6 @@ Require-Bundle: org.eclipse.acceleo.parser,
  org.eclipse.acceleo.engine,
  org.junit4,
  org.hamcrest,
- com.google.collect
+ com.google.guava;bundle-version="10.0.1"
 Bundle-Vendor: %providerName
 Bundle-ActivationPolicy: lazy

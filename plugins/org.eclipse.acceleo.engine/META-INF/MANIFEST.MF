@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.acceleo.common;visibility:=reexport,
  org.eclipse.osgi;resolution:=optional,
  org.eclipse.emf.codegen.ecore;bundle-version="2.4.0";resolution:=optional;visibility:=reexport,
  org.eclipse.swt;resolution:=optional,
- com.google.collect;bundle-version="1.0.0"
+ com.google.guava;bundle-version="10.0.1"
 Export-Package: org.eclipse.acceleo.engine,
  org.eclipse.acceleo.engine.event,
  org.eclipse.acceleo.engine.generation,
