@@ -17,7 +17,7 @@
         <cs:dependency name="org.eclipse.uml2.uml" componentType="osgi.bundle"/>
         <cs:dependency name="org.hamcrest" componentType="osgi.bundle"/>
         <cs:dependency name="org.junit4" componentType="osgi.bundle"/>
-        <cs:dependency name="com.google.collect" componentType="osgi.bundle"/>
+        <cs:dependency name="com.google.guava" componentType="osgi.bundle"/>
     </cs:dependencies>
     <cs:actions>
         <cs:public name="setup.promoter" actor="ant">
