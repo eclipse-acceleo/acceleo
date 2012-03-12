@@ -3,20 +3,15 @@
   <rm:property key="checkout.location" value="${workspace.root}/"/>
   <rm:property key="eclipse.download" value="http://download.eclipse.org"/>
   <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
-  
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="indigo"/>
   <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="indigo"/>
   <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="indigo"/>
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="indigo"/>
-  
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
-  
-  <rm:locator pattern="^org\.apache(?:\..+)?$" searchPathRef="orbit"/>
+  <rm:locator pattern="^org\.apache(?:\..+)?$" searchPathRef="oldorbit"/>
   <rm:locator pattern="^com\.google(?:\..+)?$" searchPathRef="orbit"/>
-  
   <rm:locator searchPathRef="platform"/>
-  
   <rm:searchPath name="local.releng">
     <rm:provider componentTypes="buckminster" readerType="local" mutable="false">
       <rm:uri format="{0}{1}">
@@ -25,7 +20,6 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  
   <rm:searchPath name="emf">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/modeling/emf/emf/updates/2.7">
@@ -33,7 +27,6 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  
   <rm:searchPath name="ocl">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/modeling/mdt/ocl/updates/releases/3.1.0">
@@ -41,7 +34,6 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  
   <rm:searchPath name="indigo">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/releases/indigo">
@@ -65,7 +57,6 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  
   <rm:searchPath name="platform">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/eclipse/updates/3.7">
@@ -73,10 +64,16 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  
   <rm:searchPath name="orbit">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/tools/orbit/downloads/drops/S20120308061416/repository">
+      <rm:uri format="{0}/tools/orbit/downloads/drops/S20120308061416/repository/">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="oldorbit">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/tools/orbit/downloads/drops/R20120119162704/repository/">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
