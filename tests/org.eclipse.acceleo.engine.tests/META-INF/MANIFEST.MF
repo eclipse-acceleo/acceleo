@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.acceleo.engine,
  org.eclipse.acceleo.common,
  org.eclipse.ocl.ecore,
  org.junit,
- org.eclipse.acceleo.parser
+ org.eclipse.acceleo.parser,
+ com.google.guava;bundle-version="10.0.1"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin
@@ -18,5 +19,3 @@ Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.engine.tests.mock;x-friends:="org.eclipse.acceleo.dynamic.tests",
  org.eclipse.acceleo.engine.tests.suite;x-friends:="org.eclipse.acceleo.tests"
 Bundle-Localization: plugin
-Import-Package: com.google.common.base,
- com.google.common.collect

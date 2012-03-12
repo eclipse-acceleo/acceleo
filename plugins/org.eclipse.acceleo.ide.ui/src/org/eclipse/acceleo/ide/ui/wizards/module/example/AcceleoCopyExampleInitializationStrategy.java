@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.CoreException;
  * template or a new query.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- * @since 3.1
+ * @since 3.3
  */
 public class AcceleoCopyExampleInitializationStrategy implements IAcceleoInitializationStrategy {
 

@@ -45,8 +45,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.common.ui;bundle-version="3.3.0",
  org.eclipse.acceleo.traceability;bundle-version="3.3.0",
  org.eclipse.acceleo.ui.interpreter;bundle-version="1.0.0",
- com.google.collect,
- org.eclipse.ui.intro
+ org.eclipse.ui.intro,
+ com.google.guava;bundle-version="10.0.1"
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -56,7 +56,7 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.ide.ui.popupMenus,
  org.eclipse.acceleo.ide.ui.resources,
  org.eclipse.acceleo.ide.ui.views.proposals.patterns,
- org.eclipse.acceleo.ide.ui.wizards.module.example;x-internal:=true,
+ org.eclipse.acceleo.ide.ui.wizards.module.example,
  org.eclipse.acceleo.ide.ui.wizards.newfile.example,
  org.eclipse.acceleo.internal.ide.ui;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel;x-friends:="org.eclipse.acceleo.ide.ui.tests",
@@ -93,7 +93,7 @@ Export-Package: org.eclipse.acceleo.ide.ui,
  org.eclipse.acceleo.internal.ide.ui.launching;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.launching.strategy;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.natures;x-internal:=true,
- org.eclipse.acceleo.internal.ide.ui.notifications,
+ org.eclipse.acceleo.internal.ide.ui.notifications;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.perspectives;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.popupMenus;x-internal:=true,
  org.eclipse.acceleo.internal.ide.ui.preferences;x-internal:=true,

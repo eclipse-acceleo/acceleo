@@ -21,7 +21,7 @@ import org.eclipse.core.resources.IFile;
  * implementing this interface.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
- * @since 3.1
+ * @since 3.3
  */
 public interface IAcceleoInitializationStrategy {
 
