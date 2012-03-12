@@ -15,7 +15,11 @@
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/unit/')).concat(pack.prefix.toUpperFirst()).concat('AdapterFactoryTest.java'), false)]
 package [pack.testPackage().concat('.unit')/];
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+
+import org.junit.Test;
 
 import [pack.modelPackage()/].[pack.modelFactoryClassName()/];
 import [pack.modelPackage()/].[pack.modelPackageClassName()/];
@@ -34,14 +38,14 @@ import [pack.modelPackage()/].[eClass.name/];
  *
  * @generated
  */
-@SuppressWarnings("nls")
-public class [pack.modelAdapterFactoryClassName()/]Test extends TestCase {
+public class [pack.modelAdapterFactoryClassName()/]Test {
 	[for (eClass : EClass | pack.genClasses.ecoreClass) separator('\n')]
 	/**
 	 * Ensures that creating adapters for {@link [eClass.name/]} can be done through the AdapterFactory.
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testCreate[eClass.name.toUpperFirst()/]Adapter() {
 		[pack.modelAdapterFactoryClassName()/] adapterFactory = new [pack.modelAdapterFactoryClassName()/]();
 		assertNull(adapterFactory.create[eClass.name.toUpperFirst()/]Adapter());
@@ -58,6 +62,7 @@ public class [pack.modelAdapterFactoryClassName()/]Test extends TestCase {
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testIsFactoryForType() {
 		[pack.modelAdapterFactoryClassName()/] adapterFactory = new [pack.modelAdapterFactoryClassName()/]();
 		[for (eClass : EClass | pack.genClasses.ecoreClass) ? (not eClass.abstract)]

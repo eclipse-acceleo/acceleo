@@ -14,7 +14,9 @@
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/unit/')).concat(pack.prefix.toUpperFirst()).concat('SwitchTest.java'), false)]
 package [pack.testPackage().concat('.unit')/];
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertNull;
+
+import org.junit.Test;
 
 import [pack.modelPackage()/].[pack.modelFactoryClassName()/];
 import [pack.modelPackage()/].util.[pack.modelSwitchClassName()/];
@@ -32,14 +34,14 @@ import [pack.modelPackage()/].[eClass.name/];
  *
  * @generated
  */
-@SuppressWarnings("nls")
-public class [pack.modelSwitchClassName()/]Test extends TestCase {
+public class [pack.modelSwitchClassName()/]Test {
 	[for (eClass : EClass | pack.genClasses.ecoreClass) separator('\n') ? (not interface)]
 	/**
 	 * Ensures that the generated switch knows {@link [eClass.name/]}.
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testCase[eClass.name.toUpperFirst()/]() {
 		[pack.modelSwitchClassName()/]<?> [pack.ecorePackage.name.toLowerFirst()/]switch = new [pack.modelSwitchClassName()/]<Object>();
 		assertNull([pack.ecorePackage.name.toLowerFirst()/]switch.case[eClass.name.toUpperFirst()/]([instanceCreator(pack, eClass)/]));

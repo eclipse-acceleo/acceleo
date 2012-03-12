@@ -15,10 +15,18 @@
 [file ('src-gen/'.concat(class.testPackage().substituteAll('.', '/')).concat('/unit/').concat(class.ecoreClass.name.toUpperFirst()).concat('Test.java'), false)]
 package [class.testPackage().concat('.unit')/];
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+
+import org.junit.Test;
 
 import [class.modelPackage()/].[class.genPackage.modelFactoryClassName()/];
 import [class.modelPackage()/].[class.ecoreClass.name.toUpperFirst()/];
@@ -54,6 +62,7 @@ public class [class.ecoreClass.name.toUpperFirst()/]Test extends Abstract[class.
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void test[ref.name.toUpperFirst()/]() {
 		EStructuralFeature feature = [ref.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[ref.eContainingClass.name.toUpperFirst()/]_[ref.name.toUpperFirst()/]();
 		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
@@ -112,6 +121,7 @@ public class [class.ecoreClass.name.toUpperFirst()/]Test extends Abstract[class.
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void test[ref.name.toUpperFirst()/]() {
 		EStructuralFeature feature = [ref.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[ref.eContainingClass.name.toUpperFirst()/]_[ref.name.toUpperFirst()/]();
 		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
@@ -195,6 +205,7 @@ public class [class.ecoreClass.name.toUpperFirst()/]Test extends Abstract[class.
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void test[attribute.name.toUpperFirst()/]() {
 		EStructuralFeature feature = [attribute.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[attribute.eContainingClass.name.toUpperFirst()/]_[attribute.name.toUpperFirst()/]();
 		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();
@@ -250,6 +261,7 @@ public class [class.ecoreClass.name.toUpperFirst()/]Test extends Abstract[class.
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void test[feature.name.toUpperFirst()/]() {
 		EStructuralFeature feature = [feature.eContainingClass.qualifiedModelPackageClassName()/].eINSTANCE.get[feature.eContainingClass.name.toUpperFirst()/]_[feature.name.toUpperFirst()/]();
 		[class.ecoreClass.name.toUpperFirst()/] [class.ecoreClass.name.toLowerFirst()/] = [class.genPackage.modelFactoryClassName()/].eINSTANCE.create[class.ecoreClass.name.toUpperFirst()/]();

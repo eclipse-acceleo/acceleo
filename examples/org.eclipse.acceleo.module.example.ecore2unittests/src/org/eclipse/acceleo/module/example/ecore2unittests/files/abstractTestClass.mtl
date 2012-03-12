@@ -17,8 +17,6 @@ package [pack.testPackage().concat('.unit')/];
 
 import java.util.Calendar;
 
-import junit.framework.TestCase;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -31,7 +29,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @generated
  */
 @SuppressWarnings("nls")
-public class Abstract[pack.prefix.toUpperFirst()/]Test extends TestCase {
+public class Abstract[pack.prefix.toUpperFirst()/]Test {
 	/**
 	 * Will hold <code>true</code> if the mock adapter has been notified of a changes.
 	 *
