@@ -15,7 +15,13 @@
 [file ('src-gen/'.concat(enum.testPackage().substituteAll('.', '/').concat('/unit/')).concat(enum.ecoreEnum.name.toUpperFirst()).concat('Test.java'), false)]
 package [enum.testPackage().concat('.unit')/];
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.assertTrue;
+
+import org.junit.Test;
 
 import [enum.modelPackage()/].[enum.ecoreEnum.name.toUpperFirst()/];
 
@@ -25,12 +31,13 @@ import [enum.modelPackage()/].[enum.ecoreEnum.name.toUpperFirst()/];
  * @generated
  */
 @SuppressWarnings("nls")
-public class [enum.ecoreEnum.name.toUpperFirst()/]Test extends TestCase {
+public class [enum.ecoreEnum.name.toUpperFirst()/]Test {
 	/**
 	 * Tests the behavior of the {@link [enum.ecoreEnum.name.toUpperFirst()/]#get(int)} method.
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void testGetInt() {
 		int highestValue = -1;
 		for ([enum.ecoreEnum.name.toUpperFirst()/] value : [enum.ecoreEnum.name.toUpperFirst()/].VALUES) {
@@ -47,6 +54,7 @@ public class [enum.ecoreEnum.name.toUpperFirst()/]Test extends TestCase {
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void testGetString() {
 		for ([enum.ecoreEnum.name.toUpperFirst()/] value : [enum.ecoreEnum.name.toUpperFirst()/].VALUES) {
 			assertSame([enum.ecoreEnum.name.toUpperFirst()/].get(value.getLiteral()), value);
@@ -59,6 +67,7 @@ public class [enum.ecoreEnum.name.toUpperFirst()/]Test extends TestCase {
 	 * 
 	 * @generated
  	 */
+	@Test
 	public void testGetByName() {
 		for ([enum.ecoreEnum.name.toUpperFirst()/] value : [enum.ecoreEnum.name.toUpperFirst()/].VALUES) {
 			assertSame([enum.ecoreEnum.name.toUpperFirst()/].getByName(value.getName()), value);

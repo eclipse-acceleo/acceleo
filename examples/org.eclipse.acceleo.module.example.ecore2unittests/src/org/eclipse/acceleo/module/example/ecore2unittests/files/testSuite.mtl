@@ -14,10 +14,12 @@
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/suite/')).concat(pack.prefix.toUpperFirst()).concat('TestSuite.java'), false)]
 package [pack.testPackage().concat('.suite')/];
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 [for (genClass : GenClass | pack.genClasses) ? (not genClass.ecoreClass.abstract and not genClass.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
 import [pack.testPackage().concat('.unit')/].[genClass.ecoreClass.name.toUpperFirst()/]Test;
 [/for]
@@ -33,7 +35,19 @@ import [pack.testPackage().concat('.unit')/].[pack.prefix.toUpperFirst()/]Switch
  *
  * @generated
  */
-public class [pack.prefix.toUpperFirst()/]TestSuite extends TestCase {
+@RunWith(Suite.class)
+@SuiteClasses({
+		[for (genClass : GenClass | pack.genClasses) ? (not genClass.ecoreClass.abstract and not genClass.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
+		[genClass.ecoreClass.name.toUpperFirst()/]Test.class,
+		[/for]
+		[for (genEnum : GenEnum | pack.genEnums)]
+		[genEnum.ecoreEnum.name.toUpperFirst()/]Test.class,
+		[/for]
+		[pack.prefix.toUpperFirst()/]AdapterFactoryTest.class,
+		[pack.prefix.toUpperFirst()/]FactoryTest.class,
+		[pack.prefix.toUpperFirst()/]SwitchTest.class,
+})
+public class [pack.prefix.toUpperFirst()/]TestSuite {
 	/**
 	 * Standalone launcher for package [pack.ecorePackage.name/]'s tests.
 	 *
@@ -49,19 +63,7 @@ public class [pack.prefix.toUpperFirst()/]TestSuite extends TestCase {
 	 * @generated
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("[pack.prefix.toUpperFirst()/] test suite"); //$NON-NLS-1$
-
-		[for (genClass : GenClass | pack.genClasses) ? (not genClass.ecoreClass.abstract and not genClass.ecoreClass.eContents()->select(eObj | not eObj.oclIsKindOf(EGenericType))->isEmpty())]
-		suite.addTestSuite([genClass.ecoreClass.name.toUpperFirst()/]Test.class);
-		[/for]
-		[for (genEnum : GenEnum | pack.genEnums)]
-		suite.addTestSuite([genEnum.ecoreEnum.name.toUpperFirst()/]Test.class);
-		[/for]
-		suite.addTestSuite([pack.prefix.toUpperFirst()/]AdapterFactoryTest.class);
-		suite.addTestSuite([pack.prefix.toUpperFirst()/]FactoryTest.class);
-		suite.addTestSuite([pack.prefix.toUpperFirst()/]SwitchTest.class);
-
-		return suite;
+		return new JUnit4TestAdapter([pack.prefix.toUpperFirst()/]TestSuite.class);
 	}
 }
 [/file]

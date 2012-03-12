@@ -16,7 +16,13 @@
 [file ('src-gen/'.concat(pack.testPackage().substituteAll('.', '/').concat('/unit/')).concat(pack.prefix.toUpperFirst()).concat('FactoryTest.java'), false)]
 package [pack.testPackage().concat('.unit')/];
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
+import org.junit.Test;
 
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EClass;
@@ -38,13 +44,14 @@ import [pack.modelPackage()/].[eEnum.name/];
  * @generated
  */
 @SuppressWarnings("nls")
-public class [pack.modelFactoryClassName()/]Test extends TestCase {
+public class [pack.modelFactoryClassName()/]Test {
 	[for (genClass : GenClass | pack.genClasses->select(not ecoreClass.abstract)) separator('\n')]
 	/**
 	 * Ensures that creating {@link [genClass.ecoreClass.name.toUpperFirst()/]} can be done through the factory.
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testCreate[genClass.ecoreClass.name.toUpperFirst()/]() {
 		Object result = [pack.modelFactoryClassName()/].eINSTANCE.create[genClass.ecoreClass.name.toUpperFirst()/]();
 		assertNotNull(result);
@@ -61,6 +68,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testCreateUnknownEClass() {
 		try {
 			EClass eClass = EcoreFactory.eINSTANCE.createEClass();
@@ -78,6 +86,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testConvert[genEnum.ecoreEnum.name.toUpperFirst()/]ToString() {
 		for ([genEnum.ecoreEnum.name.toUpperFirst()/] value : [genEnum.ecoreEnum.name.toUpperFirst()/].VALUES) {
 			Object result = [pack.modelFactoryClassName()/].eINSTANCE.convertToString([pack.modelPackageClassName()/].Literals.[genEnum.ecoreEnum.name.toUpperFirst().convertToPackageString()/], value);
@@ -93,6 +102,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testConvertUnknownEEnumToString() {
 		try {
 			EEnum eEnum = EcoreFactory.eINSTANCE.createEEnum();
@@ -110,6 +120,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testCreate[genEnum.ecoreEnum.name.toUpperFirst()/]FromString() {
 		for ([genEnum.ecoreEnum.name.toUpperFirst()/] value : [genEnum.ecoreEnum.name.toUpperFirst()/].VALUES) {
 			Object result = [pack.modelFactoryClassName()/].eINSTANCE.createFromString([pack.modelPackageClassName()/].Literals.[genEnum.ecoreEnum.name.toUpperFirst().convertToPackageString()/], value.getLiteral());
@@ -132,6 +143,7 @@ public class [pack.modelFactoryClassName()/]Test extends TestCase {
 	 *
 	 * @generated
 	 */
+	@Test
 	public void testCreateUnknownEEnumFromString() {
 		try {
 			EEnum eEnum = EcoreFactory.eINSTANCE.createEEnum();

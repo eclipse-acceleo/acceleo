@@ -9,7 +9,7 @@
 [/comment]
 [module common('http://www.eclipse.org/emf/2002/GenModel', 'http://www.eclipse.org/emf/2002/Ecore')/]
 
-[query public testPackage(pack : GenPackage) : String = pack.basePackage.concat('.tests')/]
+[query public testPackage(pack : GenPackage) : String = pack.basePackage.concat('.').concat(pack.prefix.toLower()).concat('.tests')/]
 
 [query public testPackage(classifier : GenClassifier) : String = classifier.genPackage.testPackage()/]
 
