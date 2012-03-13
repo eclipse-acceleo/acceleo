@@ -37,6 +37,7 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -147,6 +148,25 @@ public class LoadingTests {
 		}
 
 		resourceSet.setResourceFactoryRegistry(resourceFactoryRegistry);
+	}
+
+	/**
+	 * Tests the loading of an ".xmi" model in stand alone.
+	 */
+	@Test
+	public void loadXMIModel() {
+		ResourceSet rs = new ResourceSetImpl();
+
+		String path = System.getProperty(USERDIR);
+		path = path + "/data/model.xmi";
+
+		URI moduleURI = URI.createFileURI(URI.decode(path));
+		try {
+			EObject eObject = ModelUtils.load(moduleURI, rs);
+			assertNotNull(eObject);
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 	}
 
 	/**
