@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 /**
  * Utility class for model loading/saving and serialization.
@@ -506,6 +507,12 @@ public final class ModelUtils {
 				resourceSet.getResourceFactoryRegistry().getContentTypeToFactoryMap().put(
 						IAcceleoConstants.XMI_CONTENT_TYPE, xmiResourceFactory);
 			}
+		}
+
+		final String xmi = "xmi"; //$NON-NLS-1$
+		if (resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(xmi) == null) {
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(xmi,
+					new XMIResourceFactoryImpl());
 		}
 	}
 }
