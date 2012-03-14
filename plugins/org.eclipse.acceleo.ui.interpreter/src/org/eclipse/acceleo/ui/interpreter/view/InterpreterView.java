@@ -379,6 +379,11 @@ public class InterpreterView extends ViewPart {
 	 * </p>
 	 */
 	public void compileExpression() {
+		if (this.expressionViewer == null || this.expressionViewer.getTextWidget() == null
+				|| this.expressionViewer.getTextWidget().isDisposed()) {
+			return;
+		}
+
 		final InterpreterContext context = getInterpreterContext();
 		final Callable<CompilationResult> compilationTask = getCurrentLanguageInterpreter()
 				.getCompilationTask(context);
@@ -434,6 +439,13 @@ public class InterpreterView extends ViewPart {
 	 */
 	@Override
 	public void dispose() {
+		if (this.compilationThread != null && !this.compilationThread.isInterrupted()) {
+			this.compilationThread.interrupt();
+		}
+		if (this.evaluationThread != null && !this.evaluationThread.isInterrupted()) {
+			this.evaluationThread.interrupt();
+		}
+
 		if (contextActivationToken != null) {
 			IContextService contextService = (IContextService)getSite().getService(IContextService.class);
 			contextService.deactivateContext(contextActivationToken);
