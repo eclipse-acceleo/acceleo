@@ -331,7 +331,7 @@ public class AcceleoSourceViewer extends SourceViewer implements IInterpreterSou
 			if (queryName == null) {
 				querySignature = DUMMY_QUERY;
 			} else {
-				querySignature = "[query public " + queryName + "(target : {0}, model : {1}{2}) : OclAny = " + LINE_SEPARATOR; //$NON-NLS-1$ //$NON-NLS-2$
+				querySignature = "[query public " + queryName + "(thisEObject : {0}, currentModel : {1}{2}) : OclAny = " + LINE_SEPARATOR; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			List<EObject> target = context.getTargetEObjects();
 
