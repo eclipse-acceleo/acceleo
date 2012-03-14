@@ -983,6 +983,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				} else {
 					template1SpecificArgumentCount++;
 				}
+			} else if (actualArgumentType instanceof Collection<?>) {
+				template1SpecificArgumentCount++;
 			} else {
 				// are there any chance the argument would not be an EObject?
 				throw new AcceleoEvaluationException(AcceleoEngineMessages
