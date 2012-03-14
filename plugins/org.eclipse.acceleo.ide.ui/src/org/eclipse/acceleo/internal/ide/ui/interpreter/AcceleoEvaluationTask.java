@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
@@ -30,6 +31,7 @@ import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.internal.debug.IDebugAST;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
+import org.eclipse.acceleo.engine.service.AcceleoModulePropertiesAdapter;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -214,6 +216,28 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 
 		assert compilationResult != null;
 		Object compiledExpression = compilationResult.getCompiledExpression();
+		if (compiledExpression instanceof EObject) {
+			Module module = null;
+			EObject eObject = (EObject)compiledExpression;
+			if (eObject instanceof Module) {
+				module = (Module)eObject;
+			} else {
+				EObject parent = eObject.eContainer();
+				while (parent != null && !(parent instanceof Module)) {
+					parent = parent.eContainer();
+				}
+
+				if (parent instanceof Module) {
+					module = (Module)parent;
+				}
+			}
+
+			if (module != null) {
+				AcceleoModulePropertiesAdapter adapter = new AcceleoModulePropertiesAdapter();
+				adapter.addProperty(IAcceleoConstants.DISABLE_DYNAMIC_MODULES);
+				module.eAdapters().add(adapter);
+			}
+		}
 
 		List<EObject> target = context.getTargetEObjects();
 		if (target == null) {

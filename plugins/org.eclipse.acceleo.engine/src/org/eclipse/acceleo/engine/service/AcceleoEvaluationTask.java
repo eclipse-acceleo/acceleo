@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.interpreter.CompilationResult;
 import org.eclipse.acceleo.common.interpreter.EvaluationResult;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
@@ -31,6 +32,7 @@ import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
+import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
@@ -243,6 +245,30 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 
 		// We would have returned already if this was false
 		assert compilationResult != null;
+
+		Object compiledExpression = compilationResult.getCompiledExpression();
+		if (compiledExpression instanceof EObject) {
+			Module module = null;
+			EObject eObject = (EObject)compiledExpression;
+			if (eObject instanceof Module) {
+				module = (Module)eObject;
+			} else {
+				EObject parent = eObject.eContainer();
+				while (parent != null && !(parent instanceof Module)) {
+					parent = parent.eContainer();
+				}
+
+				if (parent instanceof Module) {
+					module = (Module)parent;
+				}
+			}
+
+			if (module != null) {
+				AcceleoModulePropertiesAdapter adapter = new AcceleoModulePropertiesAdapter();
+				adapter.addProperty(IAcceleoConstants.DISABLE_DYNAMIC_MODULES);
+				module.eAdapters().add(adapter);
+			}
+		}
 
 		// Disable Acceleo notifications and debug messages
 		final boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();

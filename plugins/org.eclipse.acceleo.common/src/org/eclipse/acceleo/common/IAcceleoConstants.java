@@ -498,4 +498,11 @@ public interface IAcceleoConstants {
 	 * @since 3.1
 	 */
 	String ECORE_FILE_EXTENSION = "ecore"; //$NON-NLS-1$
+
+	/**
+	 * The name of the annotation used to disable dynamic modules.
+	 * 
+	 * @since 3.2
+	 */
+	String DISABLE_DYNAMIC_MODULES = "DISABLE_DYNAMIC_MODULES"; //$NON-NLS-1$
 }

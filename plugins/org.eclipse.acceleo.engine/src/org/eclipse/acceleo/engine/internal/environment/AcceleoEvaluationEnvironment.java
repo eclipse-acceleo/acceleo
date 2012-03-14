@@ -35,6 +35,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.AcceleoCollections;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
@@ -46,6 +47,7 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
+import org.eclipse.acceleo.engine.service.AcceleoModulePropertiesAdapter;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
 import org.eclipse.acceleo.model.mtl.Template;
@@ -138,7 +140,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		super(parent);
 		scopedVariableMap.add(AcceleoCollections.<String, Object> newCircularArrayDequeMultimap());
 		mapAllTemplates(module);
-		mapDynamicOverrides();
+
+		AcceleoModulePropertiesAdapter adapter = (AcceleoModulePropertiesAdapter)EcoreUtil.getAdapter(module
+				.eAdapters(), AcceleoModulePropertiesAdapter.class);
+		if (adapter == null || !adapter.getProperties().contains(IAcceleoConstants.DISABLE_DYNAMIC_MODULES)) {
+			mapDynamicOverrides();
+		}
+
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
 		propertiesLookup = properties;
 	}
@@ -156,7 +164,13 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 		super();
 		scopedVariableMap.add(AcceleoCollections.<String, Object> newCircularArrayDequeMultimap());
 		mapAllTemplates(module);
-		mapDynamicOverrides();
+
+		AcceleoModulePropertiesAdapter adapter = (AcceleoModulePropertiesAdapter)EcoreUtil.getAdapter(module
+				.eAdapters(), AcceleoModulePropertiesAdapter.class);
+		if (adapter == null || !adapter.getProperties().contains(IAcceleoConstants.DISABLE_DYNAMIC_MODULES)) {
+			mapDynamicOverrides();
+		}
+
 		setOption(EvaluationOptions.LAX_NULL_HANDLING, Boolean.FALSE);
 		propertiesLookup = properties;
 	}
@@ -913,6 +927,10 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Maps dynamic overriding templates for smoother polymorphic resolution.
 	 */
 	private void mapDynamicOverrides() {
+		if (AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules().isEmpty()) {
+			return;
+		}
+
 		Set<Module> dynamicModules = loadDynamicModules();
 
 		for (Module module : dynamicModules) {
