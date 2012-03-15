@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
@@ -33,6 +35,12 @@ import org.osgi.framework.Bundle;
 public final class AcceleoServicesEclipseUtil {
 	/** Services are cached within {@link AcceleoWorkspaceUtil}. This will only store their qualified names. */
 	private static final Set<String> REGISTERED_SERVICES = new CompactLinkedHashSet<String>();
+
+	/**
+	 * If we need to load services that are not in the workspace, but instead in the plugins, we'll have to
+	 * cache them separately.
+	 */
+	private static final Map<String, Class<?>> REGISTERED_CLASSES = new HashMap<String, Class<?>>();
 
 	/**
 	 * Utility classes don't need a default constructor.
@@ -76,11 +84,16 @@ public final class AcceleoServicesEclipseUtil {
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
 	public static Class<?> registerService(Bundle bundle, String qualifiedName) {
-		Class<?> clazz = null;
+		Class<?> clazz = REGISTERED_CLASSES.get(qualifiedName);
+		if (clazz != null) {
+			return clazz;
+		}
+
 		try {
 			clazz = bundle.loadClass(qualifiedName);
 			if (clazz != null) {
 				REGISTERED_SERVICES.add(qualifiedName);
+				REGISTERED_CLASSES.put(qualifiedName, clazz);
 			}
 		} catch (ClassNotFoundException e) {
 			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
@@ -122,7 +135,11 @@ public final class AcceleoServicesEclipseUtil {
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
 	public static Class<?> registerService(String bundleName, String qualifiedName) {
-		Class<?> clazz = null;
+		Class<?> clazz = REGISTERED_CLASSES.get(qualifiedName);
+		if (clazz != null) {
+			return clazz;
+		}
+
 		final IProject project = AcceleoWorkspaceUtil.getProject(bundleName);
 		if (project != null) {
 			clazz = registerService(project, qualifiedName);
@@ -148,7 +165,11 @@ public final class AcceleoServicesEclipseUtil {
 	 * @return An instance of the loaded service. Loaded services are stored as singleton instances.
 	 */
 	public static Class<?> registerService(URI uri, String qualifiedName) {
-		Class<?> clazz = null;
+		Class<?> clazz = REGISTERED_CLASSES.get(qualifiedName);
+		if (clazz != null) {
+			return clazz;
+		}
+
 		if (uri.isPlatformPlugin()) {
 			final String bundleName = uri.segment(1);
 			final Bundle bundle = Platform.getBundle(bundleName);
@@ -184,7 +205,7 @@ public final class AcceleoServicesEclipseUtil {
 		// This is our last, most costly ... but most effective test
 		if (clazz == null) {
 			BundleURLConverter converter = new BundleURLConverter(uri.toString());
-			Bundle bundle = converter.resolveBundle();
+			Bundle bundle = converter.resolveInBundle(qualifiedName);
 			if (bundle != null) {
 				clazz = registerService(bundle, qualifiedName);
 			}

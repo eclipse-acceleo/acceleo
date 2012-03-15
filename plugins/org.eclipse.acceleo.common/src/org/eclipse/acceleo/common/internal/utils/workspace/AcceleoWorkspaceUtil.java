@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import com.google.common.collect.Sets;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -117,6 +119,9 @@ public final class AcceleoWorkspaceUtil {
 
 	/** This will allow us to react to project additions/removals in the running workspace. */
 	private final IResourceChangeListener workspaceListener = new WorkspaceResourcesListener();
+
+	/** This will allow us to only load once the "duplicate project" warnings. */
+	private final Set<String> logOnceProjectLoad = Sets.newHashSet();
 
 	/**
 	 * This class is a singleton. Access instance through {@link #INSTANCE}.
@@ -898,7 +903,7 @@ public final class AcceleoWorkspaceUtil {
 					URI uri = project.getLocationURI();
 					IFileStore store = EFS.getStore(uri);
 					File file = store.toLocalFile(0, null);
-					if (file != null) {						
+					if (file != null) {
 						url = file.toURI().toURL();
 					}
 				} catch (CoreException ex) {
@@ -929,9 +934,13 @@ public final class AcceleoWorkspaceUtil {
 				refreshPackages(new Bundle[] {bundle, });
 			}
 		} catch (BundleException e) {
-			AcceleoCommonPlugin.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
-					AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", model //$NON-NLS-1$
-							.getBundleDescription().getName()), e));
+			String bundleName = model.getBundleDescription().getName();
+			if (!logOnceProjectLoad.contains(bundleName)) {
+				logOnceProjectLoad.add(bundleName);
+				AcceleoCommonPlugin.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
+						AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", //$NON-NLS-1$
+								bundleName, e.getMessage()), e));
+			}
 		} catch (MalformedURLException e) {
 			AcceleoCommonPlugin.log(e, false);
 		} catch (UnsupportedEncodingException e) {
