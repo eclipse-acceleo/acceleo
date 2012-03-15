@@ -145,25 +145,21 @@ public class BundleURLConverter {
 	}
 
 	/**
-	 * This will try and resolve the {@link #baseURL} in an installed bundle and return it if any,
-	 * <code>null</code> otherwise.
+	 * Tries and resolve a java class going by the given qualified name in the bundle denoted by the
+	 * {@link #baseURL}.
 	 * 
-	 * @return The OSGi bundle in which could be located {@link #baseURL}.
+	 * @param qualifiedName
+	 *            The qualified name of the class we seek to find.
+	 * @return The OSGi bundle containing the class going by the given qualified name.
 	 */
-	public Bundle resolveBundle() {
+	public Bundle resolveInBundle(String qualifiedName) {
 		if (bundle != null) {
 			return bundle;
 		}
 
 		String actualPath = baseURL;
 		if (actualPath.startsWith(JAR_PROTOCOL)) {
-			actualPath = actualPath.substring(JAR_PROTOCOL.length());
-			// If the jar file has a qualifier, delete it along with the last ".jar!"
-			if (actualPath.contains("_")) { //$NON-NLS-1$
-				actualPath = actualPath.replaceFirst("(?:/|\\\\)([^/]*?)_[^_]*\\.jar!/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
-			} else {
-				actualPath = actualPath.replaceFirst("\\.jar!", ""); //$NON-NLS-1$  //$NON-NLS-2$
-			}
+			actualPath = trimJarAffixAndQualifier(actualPath);
 		}
 		if (actualPath.startsWith(FILE_PROTOCOL + '/')) {
 			actualPath = actualPath.substring(FILE_PROTOCOL.length() + 1);
@@ -186,7 +182,7 @@ public class BundleURLConverter {
 				tempBundle = Platform.getBundle(segments[i]);
 			}
 
-			if (tempBundle != null) {
+			if (tempBundle != null && qualifiedName == null) {
 				tempPath = ""; //$NON-NLS-1$
 
 				int pathStart = i + 1;
@@ -229,9 +225,45 @@ public class BundleURLConverter {
 						AcceleoCommonPlugin.log(e, true);
 					}
 				}
+			} else if (tempBundle != null) {
+				try {
+					tempBundle.loadClass(qualifiedName);
+					// If we're here, we found the class.
+					bundle = tempBundle;
+				} catch (ClassNotFoundException e) {
+					// Swallow
+				}
 			}
 		}
 
 		return bundle;
+	}
+
+	/**
+	 * This will try and resolve the {@link #baseURL} in an installed bundle and return it if any,
+	 * <code>null</code> otherwise.
+	 * 
+	 * @return The OSGi bundle in which could be located {@link #baseURL}.
+	 */
+	public Bundle resolveBundle() {
+		return resolveInBundle(null);
+	}
+
+	/**
+	 * Removes the jar prefix (protocol) and suffix (jar!), as well as the qualifier if any.
+	 * 
+	 * @param path
+	 *            The path to trim out.
+	 * @return The trimmed path.
+	 */
+	private String trimJarAffixAndQualifier(String path) {
+		String actualPath = path.substring(JAR_PROTOCOL.length());
+		// If the jar file has a qualifier, delete it along with the last ".jar!"
+		if (actualPath.contains("_")) { //$NON-NLS-1$
+			actualPath = actualPath.replaceFirst("(?:/|\\\\)([^/]*?)_[^_]*\\.jar!/", "/$1/"); //$NON-NLS-1$  //$NON-NLS-2$
+		} else {
+			actualPath = actualPath.replaceFirst("\\.jar!", ""); //$NON-NLS-1$  //$NON-NLS-2$
+		}
+		return actualPath;
 	}
 }
