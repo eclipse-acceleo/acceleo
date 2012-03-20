@@ -133,6 +133,11 @@ public final class AcceleoUIGenerator {
 	private static Module acceleoCompiler;
 
 	/**
+	 * The Acceleo module that will generate the acceleo .project.
+	 */
+	private static Module dotProject;
+
+	/**
 	 * The sole instance.
 	 */
 	private static AcceleoUIGenerator instance;
@@ -330,6 +335,20 @@ public final class AcceleoUIGenerator {
 		args.add(parentName);
 		generate(pom, acceleoPom, outputContainer, IAcceleoGenerationConstants.PROJECT_POM_XML_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_POM_XML_TEMPLATE_URI, args);
+	}
+
+	/**
+	 * Generates the activator file.
+	 * 
+	 * @param acceleoProject
+	 *            the Acceleo project
+	 * @param outputContainer
+	 *            The output container.
+	 */
+	public void generateDotProject(AcceleoProject acceleoProject, IContainer outputContainer) {
+		generate(dotProject, acceleoProject, outputContainer,
+				IAcceleoGenerationConstants.PROJECT_DOT_PROJECT_GENERATOR_URI,
+				IAcceleoGenerationConstants.PROJECT_DOT_PROJECT_TEMPLATE_URI);
 	}
 
 	/**
