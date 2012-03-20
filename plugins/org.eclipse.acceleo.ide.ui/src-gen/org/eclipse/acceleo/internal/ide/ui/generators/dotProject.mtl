@@ -1,0 +1,55 @@
+[comment encoding = UTF-8 /]
+
+[**
+ * Copyright (c) 2008, 2012 Obeo.<br/>
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ * @author sbegaudeau
+ */]
+[module dotProject('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')]
+
+[template public generateElement(anAcceleoProject : AcceleoProject)]
+[comment @main/]
+[file ('.project', false, 'UTF-8')]
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>[anAcceleoProject.name/]</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.acceleo.ide.ui.acceleoBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.acceleo.ide.ui.acceleoNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.pde.PluginNature</nature>
+	</natures>
+</projectDescription>
+
+[/file]
+[/template]

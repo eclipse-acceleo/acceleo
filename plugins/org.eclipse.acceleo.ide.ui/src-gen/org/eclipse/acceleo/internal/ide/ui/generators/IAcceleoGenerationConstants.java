@@ -166,4 +166,14 @@ public interface IAcceleoGenerationConstants {
 	 * The name of the main template in the acceleo compiler generator.
 	 */
 	String PROJECT_ACCELEO_COMPILER_TEMPLATE_URI = "generateElement"; //$NON-NLS-1$
+
+	/**
+	 * The uri of the acceleo .project generator.
+	 */
+	String PROJECT_DOT_PROJECT_GENERATOR_URI = "dotProject.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template in the acceleo .project generator.
+	 */
+	String PROJECT_DOT_PROJECT_TEMPLATE_URI = "generateElement"; //$NON-NLS-1$
 }

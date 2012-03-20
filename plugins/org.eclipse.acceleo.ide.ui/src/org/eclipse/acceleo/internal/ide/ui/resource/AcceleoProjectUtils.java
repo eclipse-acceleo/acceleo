@@ -87,6 +87,14 @@ public final class AcceleoProjectUtils {
 		AcceleoUIGenerator.getDefault().generateBuildProperties(acceleoProject, project);
 		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateActivator(acceleoProject, project);
+		monitor.worked(10);
+		AcceleoUIGenerator.getDefault().generateDotProject(acceleoProject, project);
+		try {
+			project.close(monitor);
+			project.open(monitor);
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
 
 		if (!generateModules) {
 			return null;
