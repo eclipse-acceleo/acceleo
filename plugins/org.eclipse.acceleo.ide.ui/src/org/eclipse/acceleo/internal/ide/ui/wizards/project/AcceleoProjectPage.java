@@ -240,15 +240,15 @@ public class AcceleoProjectPage extends WizardNewProjectCreationPage {
 	private void checkCompatibleEnvironment() {
 		if (executionEnvJREButton.getSelection()) {
 			String text = executionEnvJRECombo.getText();
-			if (!"J2SE-1.5".equals(text) && !"JavaSE-1.6".equals(text)) { //$NON-NLS-1$ //$NON-NLS-2$
+			if (!"J2SE-1.5".equals(text) && !"JavaSE-1.6".equals(text) && !"JavaSE-1.7".equals(text)) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				this.setMessage(
-						AcceleoUIMessages.getString("AcceleoProjectPage.NotJava5or6"), IMessageProvider.WARNING); //$NON-NLS-1$
+						AcceleoUIMessages.getString("AcceleoProjectPage.NotJava5or6or7"), IMessageProvider.WARNING); //$NON-NLS-1$
 			} else {
 				this.setMessage(null);
 			}
 		} else {
 			this.setMessage(
-					AcceleoUIMessages.getString("AcceleoProjectPage.NotJava5or6"), IMessageProvider.WARNING); //$NON-NLS-1$
+					AcceleoUIMessages.getString("AcceleoProjectPage.NotJava5or6or7"), IMessageProvider.WARNING); //$NON-NLS-1$
 		}
 	}
 
