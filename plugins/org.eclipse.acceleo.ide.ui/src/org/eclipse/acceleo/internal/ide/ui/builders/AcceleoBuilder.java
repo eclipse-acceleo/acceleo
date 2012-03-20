@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	private Set<File> outputFolders = new LinkedHashSet<File>();
 
 	/**
+	 * The projects mapped by the builder.
+	 */
+	private Map<IJavaProject, org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> mappedProjects = new HashMap<IJavaProject, org.eclipse.acceleo.internal.parser.compiler.AcceleoProject>();
+
+	/**
 	 * Constructor.
 	 */
 	public AcceleoBuilder() {
@@ -95,6 +101,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (project == null || !project.isAccessible()) {
 			return new IProject[] {};
 		}
+
+		this.mappedProjects.clear();
 
 		File projectRoot = project.getLocation().toFile();
 		org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
@@ -278,6 +286,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	private org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectDependencies(
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
 			IJavaProject javaProject) {
+		this.mappedProjects.put(javaProject, acceleoProject);
 		try {
 			// Required projects
 			String[] requiredProjectNames = javaProject.getRequiredProjectNames();
@@ -290,14 +299,21 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						IJavaProject requiredJavaProject = JavaCore.create(requiredProject);
 						File projectRoot = requiredProject.getLocation().toFile();
 
-						org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiredAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
-								projectRoot);
-						requiredAcceleoProject = this.computeProjectClassPath(requiredAcceleoProject,
-								requiredJavaProject);
-						if (!acceleoProject.getProjectDependencies().contains(requiredAcceleoProject)) {
-							acceleoProject.addProjectDependencies(Sets.newHashSet(requiredAcceleoProject));
-							requiredAcceleoProject = this.computeProjectDependencies(requiredAcceleoProject,
+						org.eclipse.acceleo.internal.parser.compiler.AcceleoProject mappedProject = this.mappedProjects
+								.get(requiredJavaProject);
+						if (mappedProject != null) {
+							acceleoProject.addProjectDependencies(Sets.newHashSet(mappedProject));
+						} else {
+							org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiredAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
+									projectRoot);
+							requiredAcceleoProject = this.computeProjectClassPath(requiredAcceleoProject,
 									requiredJavaProject);
+							if (!acceleoProject.getProjectDependencies().contains(requiredAcceleoProject)) {
+								acceleoProject
+										.addProjectDependencies(Sets.newHashSet(requiredAcceleoProject));
+								requiredAcceleoProject = this.computeProjectDependencies(
+										requiredAcceleoProject, requiredJavaProject);
+							}
 						}
 
 					}
@@ -324,7 +340,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 							}
 						}
 
-						if (requiring) {
+						org.eclipse.acceleo.internal.parser.compiler.AcceleoProject mappedProject = this.mappedProjects
+								.get(iJavaProject);
+						if (requiring && mappedProject != null) {
+							acceleoProject.addDependentProjects(Sets.newHashSet(mappedProject));
+						} else if (requiring && mappedProject == null) {
 							org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiringAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
 									iProject.getLocation().toFile());
 							requiringAcceleoProject = this.computeProjectClassPath(requiringAcceleoProject,
