@@ -458,11 +458,13 @@ public class AcceleoProject {
 	public static Set<File> getChildren(File directory, String extension) {
 		Set<File> result = new LinkedHashSet<File>();
 		File[] files = directory.listFiles();
-		for (File subfile : files) {
-			if (subfile.isFile() && subfile.getName().endsWith(extension)) {
-				result.add(subfile);
-			} else if (subfile.isDirectory()) {
-				result.addAll(AcceleoProject.getChildren(subfile, extension));
+		if (files != null) {
+			for (File subfile : files) {
+				if (subfile.isFile() && subfile.getName().endsWith(extension)) {
+					result.add(subfile);
+				} else if (subfile.isDirectory()) {
+					result.addAll(AcceleoProject.getChildren(subfile, extension));
+				}
 			}
 		}
 		return result;
@@ -576,6 +578,6 @@ public class AcceleoProject {
 
 	@Override
 	public String toString() {
-		return "P/" + this.projectRoot.getName(); //$NON-NLS-1$
+		return "AP/" + this.projectRoot.getName(); //$NON-NLS-1$
 	}
 }
