@@ -26,6 +26,7 @@
       <import feature="org.eclipse.emf" version="2.4.0.v200806091234"/>
       <import plugin="org.eclipse.ocl"/>
       <import plugin="org.eclipse.ocl.ecore"/>
+      <import plugin="com.google.guava"/>
    </requires>
 
    <plugin
@@ -58,13 +59,6 @@
 
    <plugin
          id="org.eclipse.acceleo.profiler"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"
