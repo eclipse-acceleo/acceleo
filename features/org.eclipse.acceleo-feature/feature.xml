@@ -33,6 +33,10 @@ Contributors:
       <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
    </url>
 
+   <requires>
+      <import plugin="com.google.guava"/>
+   </requires>
+
    <plugin
          id="org.eclipse.acceleo.engine"
          download-size="0"
@@ -140,13 +144,6 @@ Contributors:
 
    <plugin
          id="org.eclipse.acceleo.ui.interpreter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.guava"
          download-size="0"
          install-size="0"
          version="0.0.0"
