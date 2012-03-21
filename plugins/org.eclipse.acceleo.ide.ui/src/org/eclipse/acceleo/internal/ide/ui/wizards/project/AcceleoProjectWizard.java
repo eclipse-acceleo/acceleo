@@ -12,11 +12,14 @@ package org.eclipse.acceleo.internal.ide.ui.wizards.project;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -26,9 +29,12 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilder;
 import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoProjectUtils;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -133,6 +139,29 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	public void init(IWorkbench iWorkbench, IStructuredSelection iSelection) {
 		this.workbench = iWorkbench;
 		this.selection = iSelection;
+
+		// load the ecore models from the workspace to ensure that all models are available in the wizard
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for (IProject iProject : projects) {
+			try {
+				if (iProject.isAccessible()) {
+					List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
+					for (IFile iFile : members) {
+						Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
+								.getDynamicEcorePackagePaths();
+						Collection<String> values = dynamicEcorePackagePaths.values();
+						boolean contains = values.contains(iFile.getFullPath().toString());
+						if (!contains) {
+							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(iFile.getFullPath()
+									.toString(),
+									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+						}
+					}
+				}
+			} catch (CoreException e) {
+				AcceleoUIActivator.log(e, false);
+			}
+		}
 	}
 
 	/**
@@ -387,6 +416,35 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 			}
 		}
 		return generatorName;
+	}
+
+	/**
+	 * Returns a list of existing member files (that validate the file extension) in this resource.
+	 * 
+	 * @param iContainer
+	 *            The container to browse for files with the given extension.
+	 * @param extension
+	 *            The file extension to browse for.
+	 * @return The List of files of the given extension contained by <code>container</code>.
+	 * @throws CoreException
+	 *             Thrown if we couldn't retrieve the children of <code>container</code>.
+	 */
+	private List<IFile> members(IContainer iContainer, String extension) throws CoreException {
+		List<IFile> output = new ArrayList<IFile>();
+		if (iContainer != null) {
+			IResource[] children = iContainer.members();
+			if (children != null) {
+				for (int i = 0; i < children.length; ++i) {
+					IResource resource = children[i];
+					if (resource instanceof IFile && extension.equals(((IFile)resource).getFileExtension())) {
+						output.add((IFile)resource);
+					} else if (resource instanceof IContainer) {
+						output.addAll(members((IContainer)resource, extension));
+					}
+				}
+			}
+		}
+		return output;
 	}
 
 	/**

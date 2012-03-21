@@ -354,10 +354,10 @@ Contributors:
         id="org.eclipse.acceleo.ide.ui.configure.antStandAlone"
         name="%acceleoGenerateAnt.Label">
   </command>
-  <command
-        id="org.eclipse.acceleo.ide.ui.interpreter.load.module"
-        name="%LoadModuleInterpreter">
-  </command>
+  <category
+        id="org.eclipse.acceleo.ide.ui.category"
+        name="%acceleoCommandCategory">
+  </category>
    </extension>
 
    <extension
