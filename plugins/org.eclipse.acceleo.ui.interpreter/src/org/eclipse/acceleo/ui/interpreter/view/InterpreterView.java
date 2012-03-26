@@ -622,8 +622,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
-					.isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
+					Boolean.valueOf(variableViewer.getControl().isVisible()));
 		}
 	}
 
@@ -2136,7 +2136,6 @@ public class InterpreterView extends ViewPart {
 						public void run() {
 							clearEvaluationMessages();
 							if (result.getStatus() != null) {
-								checkCancelled();
 								addStatusMessages(result.getStatus(), EVALUATION_MESSAGE_PREFIX);
 							}
 							// whether there were problems or not, try and update the result viewer.
@@ -2165,7 +2164,6 @@ public class InterpreterView extends ViewPart {
 					 */
 					public void run() {
 						clearEvaluationMessages();
-						checkCancelled();
 						addStatusMessages(status, EVALUATION_MESSAGE_PREFIX);
 						setEvaluationResult(result);
 					}
