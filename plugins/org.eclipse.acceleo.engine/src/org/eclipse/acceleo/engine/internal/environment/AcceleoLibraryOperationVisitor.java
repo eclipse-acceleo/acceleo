@@ -846,8 +846,14 @@ public final class AcceleoLibraryOperationVisitor {
 				int nextCommaIndex = parameterTypesString.indexOf(',');
 				int previousComma = 0;
 				while (nextCommaIndex != -1) {
-					final String parameterType = parameterTypesString
-							.substring(previousComma, nextCommaIndex).trim();
+					String parameterType = parameterTypesString.substring(previousComma, nextCommaIndex)
+							.trim();
+					// Only retain the erasure
+					int parameterIndex = parameterType.indexOf('<');
+					if (parameterIndex != -1) {
+						parameterType = parameterType.substring(parameterIndex + 1, parameterType
+								.indexOf('>'));
+					}
 					if (PRIMITIVE_TYPES.containsKey(parameterType)) {
 						parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
 					} else if (serviceClass.getClassLoader() != null) {
@@ -861,8 +867,13 @@ public final class AcceleoLibraryOperationVisitor {
 				/*
 				 * The last (or only) parameter type is not followed by a comma and not handled in the while
 				 */
-				final String parameterType = parameterTypesString.substring(previousComma,
+				String parameterType = parameterTypesString.substring(previousComma,
 						parameterTypesString.length()).trim();
+				// Only retain the erasure
+				int parameterIndex = parameterType.indexOf('<');
+				if (parameterIndex != -1) {
+					parameterType = parameterType.substring(parameterIndex + 1, parameterType.indexOf('>'));
+				}
 				if (PRIMITIVE_TYPES.containsKey(parameterType)) {
 					parameterTypes.add(PRIMITIVE_TYPES.get(parameterType));
 				} else if (serviceClass.getClassLoader() != null) {

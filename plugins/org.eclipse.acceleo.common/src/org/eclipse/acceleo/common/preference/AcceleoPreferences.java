@@ -164,6 +164,8 @@ public final class AcceleoPreferences {
 
 	/**
 	 * This will be called at plugin stopping in order to flush the preference scope.
+	 * 
+	 * @since 3.2
 	 */
 	public static void save() {
 		try {

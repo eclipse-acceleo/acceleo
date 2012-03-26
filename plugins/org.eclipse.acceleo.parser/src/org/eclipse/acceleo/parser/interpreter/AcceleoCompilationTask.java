@@ -41,7 +41,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This class allows adopters to compile the String representation of a module in an asynchronous way. The
@@ -213,6 +212,5 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		for (URI dependency : dependencies) {
 			resourceSet.getResource(dependency, true);
 		}
-		EcoreUtil.resolveAll(resourceSet);
 	}
 }

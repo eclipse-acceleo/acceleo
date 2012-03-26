@@ -22,7 +22,7 @@ public class SequenceTests {
 	@Test
 	public void testSequence() {
 		StringBuffer buffer = new StringBuffer("g.abcde"); //$NON-NLS-1$
-		assertEquals(new Sequence("a").search(buffer).b(), -1); //$NON-NLS-1$
+		assertEquals(new Sequence("a").search(buffer).b(), 2); //$NON-NLS-1$
 		assertEquals(new Sequence("abcde").search(buffer).b(), 2); //$NON-NLS-1$
 		assertEquals(new Sequence("f").search(buffer).b(), -1); //$NON-NLS-1$
 
