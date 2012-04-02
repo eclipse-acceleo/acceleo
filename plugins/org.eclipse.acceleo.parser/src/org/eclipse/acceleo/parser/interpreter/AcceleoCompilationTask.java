@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.eclipse.acceleo.common.interpreter.CompilationResult;
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.Query;
@@ -175,7 +174,11 @@ public class AcceleoCompilationTask implements Callable<CompilationResult> {
 		if (resourceSet == null) {
 			resourceSet = new ResourceSetImpl();
 		}
-		final Resource resource = ModelUtils.createResource(moduleDescriptor.getModuleURI(), resourceSet);
+		final Resource old = resourceSet.getResource(moduleDescriptor.getModuleURI(), false);
+		if (old != null) {
+			resourceSet.getResources().remove(old);
+		}
+		final Resource resource = resourceSet.createResource(moduleDescriptor.getModuleURI());
 
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(new StringBuffer(moduleDescriptor
 				.getModuleContent()));

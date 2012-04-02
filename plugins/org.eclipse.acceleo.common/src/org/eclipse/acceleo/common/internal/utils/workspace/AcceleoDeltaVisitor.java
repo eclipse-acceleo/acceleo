@@ -73,11 +73,12 @@ final class AcceleoDeltaVisitor implements IResourceDeltaVisitor {
 					if ("class".equals(resource.getFullPath().getFileExtension())) { //$NON-NLS-1$
 						final IClassFileReader reader = ToolFactory.createDefaultClassFileReader(resource
 								.getLocation().toOSString(), IClassFileReader.CLASSFILE_ATTRIBUTES);
-						changedClasses.add(new String(reader.getClassName()));
+						changedClasses.add(new String(reader.getClassName()).replace("/", ".")); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					break;
 				case IResource.PROJECT:
 					changedProjects.add((IProject)resource);
+					visit = true;
 					break;
 				default:
 					visit = true;
