@@ -87,8 +87,9 @@ public class ModuleDescriptor {
 			equal = true;
 		} else {
 			ModuleDescriptor other = (ModuleDescriptor)obj;
-			equal = moduleURI.equals(other.moduleURI) && qualifiedName.equals(other.qualifiedName)
-					&& moduleContent.equals(other.moduleContent);
+			equal = getModuleURI().equals(other.getModuleURI())
+					&& getQualifiedName().equals(other.getQualifiedName())
+					&& getModuleContent().equals(other.getModuleContent());
 		}
 
 		return equal;
@@ -101,6 +102,6 @@ public class ModuleDescriptor {
 	 */
 	@Override
 	public int hashCode() {
-		return moduleURI.hashCode() + qualifiedName.hashCode() + moduleContent.hashCode();
+		return getModuleURI().hashCode() + getQualifiedName().hashCode() + getModuleContent().hashCode();
 	}
 }
