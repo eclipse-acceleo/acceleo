@@ -267,7 +267,7 @@ public final class ModelUtils {
 		for (Diagnostic diagnostic : errors) {
 			if (diagnostic != null) {
 				String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, fileName);
-				errorMessage += '\n' + diagnostic.toString();
+				errorMessage += '\n' + diagnosticString(diagnostic);
 				AcceleoCommonPlugin.log(errorMessage, false);
 			}
 		}
@@ -329,7 +329,7 @@ public final class ModelUtils {
 			for (Diagnostic diagnostic : errors) {
 				if (diagnostic != null) {
 					String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, path);
-					errorMessage += '\n' + diagnostic.toString();
+					errorMessage += '\n' + diagnosticString(diagnostic);
 					AcceleoCommonPlugin.log(errorMessage, false);
 				}
 			}
@@ -364,11 +364,29 @@ public final class ModelUtils {
 		for (Diagnostic diagnostic : errors) {
 			if (diagnostic != null) {
 				String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, modelURI.toString());
-				errorMessage += '\n' + diagnostic.toString();
+				errorMessage += '\n' + diagnosticString(diagnostic);
 				AcceleoCommonPlugin.log(errorMessage, false);
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Returns a string representation of the given diagnostic object.
+	 * 
+	 * @param diagnostic
+	 *            The diagnostic
+	 * @return a string representation of the given diagnostic object.
+	 */
+	private static String diagnosticString(Diagnostic diagnostic) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(AcceleoCommonMessages
+				.getString("ModelUtils.DiagnosticMessage", diagnostic.getMessage())); //$NON-NLS-1$
+		buffer.append('\n');
+		buffer.append(AcceleoCommonMessages.getString("ModelUtils.DiagnosticLocation", diagnostic //$NON-NLS-1$
+				.getLocation(), Integer.valueOf(diagnostic.getLine()), Integer
+				.valueOf(diagnostic.getColumn())));
+		return buffer.toString();
 	}
 
 	/**
