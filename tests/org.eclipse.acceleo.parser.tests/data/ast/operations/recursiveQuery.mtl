@@ -1,0 +1,18 @@
+[module recursiveQuery('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)]
+    [comment @main/]
+    [file (eClass.name + '.txt', false, 'UTF-8')]
+        [eClass.recurse(0)/]
+    [/file]
+[/template]
+
+[query public recurse(eClass : EClass, i : Integer) : String =
+    if (i = 2)
+    then 'world'
+    else
+        if (i = 1)
+        then ',' + eClass.recurse(i + 1)
+        else 'hello' + eClass.recurse(i + 1)
+        endif
+    endif/]
