@@ -707,6 +707,9 @@ public class AcceleoModuleComposite extends Composite {
 			}
 
 			Collections.sort(typeValues);
+
+			// We add OclAny to make it available for all metamodels.
+			typeValues.add(0, "OclAny"); //$NON-NLS-1$
 			metamodelTypes = typeValues.toArray(new String[typeValues.size()]);
 			metamodelType.setItems(metamodelTypes);
 			final int visibleItemCount = 15;
@@ -755,8 +758,17 @@ public class AcceleoModuleComposite extends Composite {
 		metamodelType.setText("Class"); //$NON-NLS-1$
 
 		if (metamodelType.getText() == null || "".equals(metamodelType.getText())) { //$NON-NLS-1$
-			// Empty combo box, so select the first one.
-			metamodelType.select(0);
+			// Empty combo box, so select the second one if the first one is OclAny.
+			if (metamodelType.getItemCount() > 1) {
+				String item = metamodelType.getItem(0);
+				if ("OclAny".equals(item)) { //$NON-NLS-1$
+					metamodelType.select(1);
+				} else {
+					metamodelType.select(0);
+				}
+			} else if (metamodelType.getItemCount() == 1) {
+				metamodelType.select(0);
+			}
 		}
 	}
 
