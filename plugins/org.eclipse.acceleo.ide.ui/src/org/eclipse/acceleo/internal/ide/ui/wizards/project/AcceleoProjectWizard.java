@@ -363,7 +363,9 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 			// Sets the input / output folders
 			IFolder target = project.getFolder("src"); //$NON-NLS-1$
-			target.create(true, true, monitor);
+			if (!target.exists()) {
+				target.create(true, true, monitor);
+			}
 
 			IFolder classes = project.getFolder("bin"); //$NON-NLS-1$
 			if (!classes.exists()) {
