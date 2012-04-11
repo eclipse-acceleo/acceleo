@@ -1085,7 +1085,7 @@ public class OCLParser {
 			if (cstQuery.getStartPosition() == astModuleElement.getStartPosition()
 					&& cstQuery.getEndPosition() == astModuleElement.getEndPosition()) {
 				result = eCall.getArgument().size() < cstQuery.getParameter().size();
-				result = result && variables.size() != 0;
+				result = result && cstQuery.getParameter().size() != 0;
 			}
 		} else if (eContainer instanceof org.eclipse.acceleo.parser.cst.Macro) {
 			// We have the module of the CST, we need to look for the correct template or query
@@ -1093,7 +1093,7 @@ public class OCLParser {
 			if (cstMacro.getStartPosition() == astModuleElement.getStartPosition()
 					&& cstMacro.getEndPosition() == astModuleElement.getEndPosition()) {
 				result = eCall.getArgument().size() < cstMacro.getParameter().size();
-				result = result && variables.size() != 0;
+				result = result && cstMacro.getParameter().size() != 0;
 			}
 		}
 		return result;
