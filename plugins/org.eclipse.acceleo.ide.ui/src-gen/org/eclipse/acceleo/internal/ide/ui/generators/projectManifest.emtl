@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="projectManifest" nsURI="org::eclipse::acceleo::module::sample::main::projectManifest" startHeaderPosition="412" endHeaderPosition="495">
+  <mtl:Module name="projectManifest" nsURI="org::eclipse::acceleo::module::sample::common::projectManifest" startHeaderPosition="412" endHeaderPosition="495">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
       <body startPosition="33" endPosition="409" value="&#xD;&#xA;Copyright (c) 2008, 2012 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
     </documentation>
@@ -50,7 +50,7 @@
             <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoProject/pluginDependencies"/>
           </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" org.eclipse.emf.ecore,&#xA; org.eclipse.emf.ecore.xmi,&#xA; org.eclipse.ocl,&#xA; org.eclipse.ocl.ecore,&#xA; org.eclipse.acceleo.common;bundle-version=&quot;3.2.1&quot;,&#xA; org.eclipse.acceleo.parser;bundle-version=&quot;3.2.1&quot;;resolution:=optional,&#xA; org.eclipse.acceleo.model;bundle-version=&quot;3.2.1&quot;,&#xA; org.eclipse.acceleo.profiler;bundle-version=&quot;3.2.1&quot;,&#xA; org.eclipse.acceleo.engine;bundle-version=&quot;3.2.1&quot;,&#xA; com.google.guava&#xA;Bundle-RequiredExecutionEnvironment: "/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=" org.eclipse.emf.ecore,&#xA; org.eclipse.emf.ecore.xmi,&#xA; org.eclipse.ocl,&#xA; org.eclipse.ocl.ecore,&#xA; org.eclipse.acceleo.common;bundle-version=&quot;3.3.0&quot;,&#xA; org.eclipse.acceleo.model;bundle-version=&quot;3.3.0&quot;,&#xA; org.eclipse.acceleo.profiler;bundle-version=&quot;3.3.0&quot;,&#xA; org.eclipse.acceleo.engine;bundle-version=&quot;3.3.0&quot;,&#xA; com.google.guava&#xA;Bundle-RequiredExecutionEnvironment: "/>
         <body xsi:type="ocl.ecore:PropertyCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:VariableExp" name="acceleoProject" referredVariable="/0/genManifestMF/acceleoProject">
@@ -275,12 +275,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genManifestMF">
       <details key="start" value="607"/>
-      <details key="end" value="1839"/>
+      <details key="end" value="1766"/>
       <details key="line" value="20"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genManifestMF/@body.0">
       <details key="start" value="690"/>
-      <details key="end" value="1827"/>
+      <details key="end" value="1754"/>
       <details key="line" value="22"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genManifestMF/@body.0/@body.0">
@@ -370,52 +370,52 @@
     </eAnnotations>
     <eAnnotations source="positions.20" references="/0/genManifestMF/@body.0/@body.8">
       <details key="start" value="1100"/>
-      <details key="end" value="1531"/>
+      <details key="end" value="1458"/>
       <details key="line" value="34"/>
     </eAnnotations>
     <eAnnotations source="positions.21" references="/0/genManifestMF/@body.0/@body.9">
-      <details key="start" value="1532"/>
-      <details key="end" value="1550"/>
+      <details key="start" value="1459"/>
+      <details key="end" value="1477"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.22" references="/0/genManifestMF/@body.0/@body.9/acceleoProject">
-      <details key="start" value="1532"/>
-      <details key="end" value="1546"/>
+      <details key="start" value="1459"/>
+      <details key="end" value="1473"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.23" references="/0/genManifestMF/@body.0/@body.10">
-      <details key="start" value="1552"/>
-      <details key="end" value="1607"/>
-      <details key="line" value="45"/>
+      <details key="start" value="1479"/>
+      <details key="end" value="1534"/>
+      <details key="line" value="44"/>
     </eAnnotations>
     <eAnnotations source="positions.24" references="/0/genManifestMF/@body.0/@body.11">
-      <details key="start" value="1607"/>
-      <details key="end" value="1818"/>
-      <details key="line" value="47"/>
+      <details key="start" value="1534"/>
+      <details key="end" value="1745"/>
+      <details key="line" value="46"/>
     </eAnnotations>
     <eAnnotations source="positions.25" references="/0/genManifestMF/@body.0/@body.11/@body.0">
-      <details key="start" value="1703"/>
-      <details key="end" value="1719"/>
-      <details key="line" value="47"/>
+      <details key="start" value="1630"/>
+      <details key="end" value="1646"/>
+      <details key="line" value="46"/>
     </eAnnotations>
     <eAnnotations source="positions.26" references="/0/genManifestMF/@body.0/@body.11/@body.1">
-      <details key="start" value="1719"/>
-      <details key="end" value="1812"/>
-      <details key="line" value="48"/>
+      <details key="start" value="1646"/>
+      <details key="end" value="1739"/>
+      <details key="line" value="47"/>
     </eAnnotations>
     <eAnnotations source="positions.27" references="/0/genManifestMF/@body.0/@body.11/@body.1/exportedPackage">
-      <details key="start" value="1789"/>
-      <details key="end" value="1804"/>
+      <details key="start" value="1716"/>
+      <details key="end" value="1731"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.28" references="/0/genManifestMF/@body.0/@body.11/@body.1/exportedPackage.1">
-      <details key="start" value="1725"/>
-      <details key="end" value="1749"/>
-      <details key="line" value="48"/>
+      <details key="start" value="1652"/>
+      <details key="end" value="1676"/>
+      <details key="line" value="47"/>
     </eAnnotations>
     <eAnnotations source="positions.29" references="/0/genManifestMF/@body.0/@body.11/@body.1/@iterSet">
-      <details key="start" value="1752"/>
-      <details key="end" value="1768"/>
+      <details key="start" value="1679"/>
+      <details key="end" value="1695"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.30" references="/0/genManifestMF/@body.0/@body.11/@body.1/@iterSet/self">
@@ -424,69 +424,69 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.31" references="/0/genManifestMF/@body.0/@body.11/@body.1/@each">
-      <details key="start" value="1780"/>
-      <details key="end" value="1786"/>
+      <details key="start" value="1707"/>
+      <details key="end" value="1713"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.32" references="/0/genManifestMF/@body.0/@body.11/@body.2">
-      <details key="start" value="1812"/>
-      <details key="end" value="1813"/>
-      <details key="line" value="49"/>
+      <details key="start" value="1739"/>
+      <details key="end" value="1740"/>
+      <details key="line" value="48"/>
     </eAnnotations>
     <eAnnotations source="positions.33" references="/0/genManifestMF/@body.0/@body.11/@ifExpr">
-      <details key="start" value="1611"/>
-      <details key="end" value="1700"/>
+      <details key="start" value="1538"/>
+      <details key="end" value="1627"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.34" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@source">
-      <details key="start" value="1612"/>
-      <details key="end" value="1651"/>
+      <details key="start" value="1539"/>
+      <details key="end" value="1578"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.35" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@source/@source">
-      <details key="start" value="1612"/>
-      <details key="end" value="1643"/>
+      <details key="start" value="1539"/>
+      <details key="end" value="1570"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.36" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@source/@source/acceleoProject">
-      <details key="start" value="1612"/>
-      <details key="end" value="1626"/>
+      <details key="start" value="1539"/>
+      <details key="end" value="1553"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.37" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@source/@argument.0">
-      <details key="start" value="1647"/>
-      <details key="end" value="1651"/>
+      <details key="start" value="1574"/>
+      <details key="end" value="1578"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.38" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@argument.0">
-      <details key="start" value="1656"/>
-      <details key="end" value="1699"/>
+      <details key="start" value="1583"/>
+      <details key="end" value="1626"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.39" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@argument.0/@source">
-      <details key="start" value="1656"/>
-      <details key="end" value="1695"/>
+      <details key="start" value="1583"/>
+      <details key="end" value="1622"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.40" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@argument.0/@source/@source">
-      <details key="start" value="1656"/>
-      <details key="end" value="1687"/>
+      <details key="start" value="1583"/>
+      <details key="end" value="1614"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.41" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@argument.0/@source/@source/acceleoProject">
-      <details key="start" value="1656"/>
-      <details key="end" value="1670"/>
+      <details key="start" value="1583"/>
+      <details key="end" value="1597"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.42" references="/0/genManifestMF/@body.0/@body.11/@ifExpr/@argument.0/@argument.0">
-      <details key="start" value="1698"/>
-      <details key="end" value="1699"/>
+      <details key="start" value="1625"/>
+      <details key="end" value="1626"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.43" references="/0/genManifestMF/@body.0/@body.12">
-      <details key="start" value="1819"/>
-      <details key="end" value="1820"/>
-      <details key="line" value="50"/>
+      <details key="start" value="1746"/>
+      <details key="end" value="1747"/>
+      <details key="line" value="49"/>
     </eAnnotations>
     <eAnnotations source="positions.44" references="/0/genManifestMF/@body.0/@fileUrl">
       <details key="start" value="697"/>
