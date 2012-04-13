@@ -400,13 +400,13 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		public EClassifier getResultType(Object problemObject, EClassifier owner, EOperation operation,
 				List<? extends TypedElement<EClassifier>> args) {
 			EClassifier type = super.getResultType(problemObject, owner, operation, args);
-			if (args.size() == 0 || operation.getEAnnotation("MTL non-standard") == null) { //$NON-NLS-1$
+			if (operation.getEAnnotation("MTL non-standard") == null) { //$NON-NLS-1$
 				return type;
 			}
 
 			final String operationName = operation.getName();
 			// Handles all operations which can return a typed sequence as their result.
-			if (args.get(0) instanceof TypeExp) {
+			if (args.size() > 0 && args.get(0) instanceof TypeExp) {
 				boolean isParameterizedCollection = AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS
 						.equals(operationName);
 				isParameterizedCollection = isParameterizedCollection
@@ -448,7 +448,7 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 						|| AcceleoNonStandardLibrary.OPERATION_EOBJECT_ECONTAINER.equals(operationName)) {
 					type = ((TypeExp)args.get(0)).getReferredType();
 				}
-			} else if (args.get(0) instanceof StringLiteralExp
+			} else if (args.size() > 0 && args.get(0) instanceof StringLiteralExp
 					&& AcceleoNonStandardLibrary.OPERATION_EOBJECT_EGET.equals(operationName)) {
 				final String featureName = ((StringLiteralExp)args.get(0)).getStringSymbol();
 
@@ -474,6 +474,40 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 					if (!hierarchyFeatureCache.containsKey(key)) {
 						hierarchyFeatureCache.put(key, feature);
 					}
+				}
+			} else if (AcceleoNonStandardLibrary.OPERATION_COLLECTION_REVERSE.equals(operationName)) {
+				// the special case of reverse
+				// the return type is the same as the type of the owner
+				final org.eclipse.ocl.ecore.CollectionType alteredSequence;
+				if (type instanceof SequenceType || type instanceof OrderedSetType) {
+					alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil.copy(owner);
+					Set<EClassifier> altered = alteredTypes.get(type);
+					if (altered == null) {
+						altered = new CompactHashSet<EClassifier>();
+						alteredTypes.put(type, altered);
+					}
+					altered.add(alteredSequence);
+					type = alteredSequence;
+				}
+			} else if (args.size() > 0) {
+				boolean shouldBeConsidered = AcceleoNonStandardLibrary.OPERATION_COLLECTION_REMOVE_ALL
+						.equals(operationName)
+						|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_ADD_ALL.equals(operationName)
+						|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_DROP.equals(operationName)
+						|| AcceleoNonStandardLibrary.OPERATION_COLLECTION_DROP_RIGHT.equals(operationName);
+
+				if (shouldBeConsidered) {
+					// The special case of add all, remove all, drop and drop right
+					// the return type is the same as the type of the owner
+					final org.eclipse.ocl.ecore.CollectionType alteredSequence;
+					alteredSequence = (org.eclipse.ocl.ecore.CollectionType)EcoreUtil.copy(owner);
+					Set<EClassifier> altered = alteredTypes.get(type);
+					if (altered == null) {
+						altered = new CompactHashSet<EClassifier>();
+						alteredTypes.put(type, altered);
+					}
+					altered.add(alteredSequence);
+					type = alteredSequence;
 				}
 			}
 

@@ -1,0 +1,37 @@
+[comment encoding = UTF-8 /]
+[module acceleoOperationReturnType('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public generate(eClass : EClass)]
+
+String
+[eClass.name.replace('a', 'b').substring(1, 2)/]
+[eClass.name.replaceAll('a', 'b').substring(1, 2)/]
+[eClass.name.substituteAll('a', 'b').substring(1, 2)/]
+[eClass.name.trim().substring(1, 2)/]
+[eClass.name.tokenize('a').trim()/]
+[eClass.name.substring(1).trim()/]
+[eClass.name.tokenize().trim()/]
+[eClass.name.tokenizeLine().trim()/]
+[eClass.name.prefix('a').trim()/]
+
+Collection
+[eClass.eAllAttributes->filter(EAttribute).eAttributeType/]
+[eClass.eAllAttributes->addAll(eClass.eAllAttributes)/]
+[eClass.eAllAttributes->removeAll(eClass.eAllAttributes)/]
+[eClass.eAllAttributes->addAll(eClass.eAllAttributes).eAttributeType/]
+[eClass.eAllAttributes->removeAll(eClass.eAllAttributes).eAttributeType/]
+
+Sequence
+[eClass.eAllAttributes->asSequence().eAttributeType/]
+[eClass.eAllAttributes->asSequence()->reverse().eAttributeType/]
+[eClass.eAllAttributes->asSequence()->drop(2).eAttributeType/]
+[eClass.eAllAttributes->asSequence()->dropRight(2).eAttributeType/]
+
+OrderedSet
+[eClass.eAllAttributes->asOrderedSet().eAttributeType/]
+[eClass.eAllAttributes->asOrderedSet()->reverse().eAttributeType/]
+[eClass.eAllAttributes->asOrderedSet()->drop(2).eAttributeType/]
+[eClass.eAllAttributes->asOrderedSet()->dropRight(2).eAttributeType/]
+
+[/template]
+
