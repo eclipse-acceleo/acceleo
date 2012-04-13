@@ -37,13 +37,13 @@
 [if (anAcceleoModule.generateDocumentation)]
 ['['/]**
  * The documentation of the template [anAcceleoModule.moduleElement.name/].
- * @param a[anAcceleoModule.moduleElement.parameterType/]
+ * @param [anAcceleoModule.moduleElement.parameterType.variableName()/]
  */[']'/]
 [/if]
-['['/]template public [anAcceleoModule.moduleElement.name/](a[anAcceleoModule.moduleElement.parameterType/] : [anAcceleoModule.moduleElement.parameterType/])[']'/]
+['['/]template public [anAcceleoModule.moduleElement.name/]([anAcceleoModule.moduleElement.parameterType.variableName()/] : [anAcceleoModule.moduleElement.parameterType/])[']'/]
 [if (anAcceleoModule.moduleElement.isMain)]['['/]comment @main/[']'/][/if]
 [if (anAcceleoModule.moduleElement.generateFile)]
-['['/]file (a[anAcceleoModule.moduleElement.parameterType/].name, false, 'UTF-8')[']'/]
+['['/]file ([anAcceleoModule.moduleElement.parameterType.variableName()/].name, false, 'UTF-8')[']'/]
 
 ['['/]/file[']'/]
 [/if]
@@ -58,8 +58,16 @@
 [if (anAcceleoModule.generateDocumentation)]
 ['['/]**
  * The documentation of the query [anAcceleoModule.moduleElement.name/].
- * @param a[anAcceleoModule.moduleElement.parameterType/]
+ * @param [anAcceleoModule.moduleElement.parameterType.variableName()/]
  */[']'/]
 [/if]
-['['/]query public [anAcceleoModule.moduleElement.name/] (a[anAcceleoModule.moduleElement.parameterType/] : [anAcceleoModule.moduleElement.parameterType/]) : OclAny = self/[']'/]
+['['/]query public [anAcceleoModule.moduleElement.name/] ([anAcceleoModule.moduleElement.parameterType.variableName()/] : [anAcceleoModule.moduleElement.parameterType/]) : OclAny = self/[']'/]
+[/template]
+
+[template private variableName(aVariableName : String) post(trim())]
+[if (aVariableName.toLowerFirst().startsWith('a') or aVariableName.toLowerFirst().startsWith('e') or aVariableName.toLowerFirst().startsWith('i') or aVariableName.toLowerFirst().startsWith('o') or aVariableName.toLowerFirst().startsWith('u') or aVariableName.toLowerFirst().startsWith('y'))]
+an[aVariableName/]
+[else]
+a[aVariableName/]
+[/if]
 [/template]
