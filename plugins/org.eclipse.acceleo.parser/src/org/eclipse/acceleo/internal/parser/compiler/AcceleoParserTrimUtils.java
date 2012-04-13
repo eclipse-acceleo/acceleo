@@ -170,10 +170,12 @@ public final class AcceleoParserTrimUtils {
 				}
 			} else if (astNode instanceof TemplateInvocation) {
 				final TemplateInvocation templateInvocation = (TemplateInvocation)astNode;
-				final EObject definitionContainer = templateInvocation.getDefinition().eContainer();
-				if (definitionContainer == module || importedModules.contains(definitionContainer)
-						|| extendedModules.contains(definitionContainer)) {
-					result = templateEqual(templateInvocation.getDefinition(), operation);
+				if (templateInvocation.getDefinition() != null) {
+					final EObject definitionContainer = templateInvocation.getDefinition().eContainer();
+					if (definitionContainer == module || importedModules.contains(definitionContainer)
+							|| extendedModules.contains(definitionContainer)) {
+						result = templateEqual(templateInvocation.getDefinition(), operation);
+					}
 				}
 			} else if (astNode instanceof Template) {
 				final EObject astNodeContainer = astNode.eContainer();
