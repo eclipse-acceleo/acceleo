@@ -709,7 +709,8 @@ public class AcceleoModuleComposite extends Composite {
 			Collections.sort(typeValues);
 
 			// We add OclAny to make it available for all metamodels.
-			typeValues.add(0, "OclAny"); //$NON-NLS-1$
+			final String oclAny = "OclAny"; //$NON-NLS-1$
+			typeValues.add(0, oclAny);
 			metamodelTypes = typeValues.toArray(new String[typeValues.size()]);
 			metamodelType.setItems(metamodelTypes);
 			final int visibleItemCount = 15;
@@ -718,9 +719,13 @@ public class AcceleoModuleComposite extends Composite {
 			} else {
 				metamodelType.setVisibleItemCount(visibleItemCount);
 			}
-			metamodelType.setText(oldSelection);
-			if (metamodelType.getText().length() == 0) {
+			if (oclAny.equals(oldSelection)) {
 				updateDefaultTypes();
+			} else {
+				metamodelType.setText(oldSelection);
+				if (metamodelType.getText().length() == 0) {
+					updateDefaultTypes();
+				}
 			}
 		}
 	}
