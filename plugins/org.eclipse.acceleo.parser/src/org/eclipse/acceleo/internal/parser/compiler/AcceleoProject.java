@@ -341,21 +341,23 @@ public class AcceleoProject {
 	public String getPackageName(File file) {
 		for (AcceleoProjectClasspathEntry entry : this.entries) {
 			File inputDirectory = entry.getInputDirectory();
-			String path = file.getAbsolutePath().substring(inputDirectory.getAbsolutePath().length());
-			String packageName = path;
-			if (packageName.endsWith(file.getName())) {
-				packageName = packageName.substring(0, packageName.length() - file.getName().length());
-			}
-			String slash = "/"; //$NON-NLS-1$
+			if (file.getAbsolutePath().startsWith(inputDirectory.getAbsolutePath())) {
+				String path = file.getAbsolutePath().substring(inputDirectory.getAbsolutePath().length());
+				String packageName = path;
+				if (packageName.endsWith(file.getName())) {
+					packageName = packageName.substring(0, packageName.length() - file.getName().length());
+				}
+				String slash = "/"; //$NON-NLS-1$
 
-			packageName = packageName.replace("\\", slash); //$NON-NLS-1$
-			if (packageName.startsWith(slash)) {
-				packageName = packageName.substring(1);
+				packageName = packageName.replace("\\", slash); //$NON-NLS-1$
+				if (packageName.startsWith(slash)) {
+					packageName = packageName.substring(1);
+				}
+				if (packageName.endsWith(slash)) {
+					packageName = packageName.substring(0, packageName.length() - 1);
+				}
+				return packageName;
 			}
-			if (packageName.endsWith(slash)) {
-				packageName = packageName.substring(0, packageName.length() - 1);
-			}
-			return packageName;
 		}
 		return ""; //$NON-NLS-1$
 	}
@@ -406,14 +408,17 @@ public class AcceleoProject {
 	public File getInputFile(File outputFile) {
 		for (AcceleoProjectClasspathEntry entry : this.entries) {
 			File outputDirectory = entry.getOutputDirectory();
-			String path = outputFile.getAbsolutePath().substring(outputDirectory.getAbsolutePath().length());
-			File inputDirectory = entry.getInputDirectory();
-			if (path.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
-				path = path.substring(0, path.length() - IAcceleoConstants.EMTL_FILE_EXTENSION.length());
-				path = path + IAcceleoConstants.MTL_FILE_EXTENSION;
+			if (outputFile.getAbsolutePath().startsWith(outputDirectory.getAbsolutePath())) {
+				String path = outputFile.getAbsolutePath().substring(
+						outputDirectory.getAbsolutePath().length());
+				File inputDirectory = entry.getInputDirectory();
+				if (path.endsWith(IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+					path = path.substring(0, path.length() - IAcceleoConstants.EMTL_FILE_EXTENSION.length());
+					path = path + IAcceleoConstants.MTL_FILE_EXTENSION;
+				}
+				File inputFile = new File(inputDirectory, path);
+				return inputFile;
 			}
-			File inputFile = new File(inputDirectory, path);
-			return inputFile;
 		}
 		return null;
 	}
