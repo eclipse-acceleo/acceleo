@@ -2,14 +2,14 @@
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
   <mtl:Module name="acceleoJavaClassGenerator" nsURI="org::eclipse::acceleo::module::sample::main::acceleoJavaClassGenerator" startHeaderPosition="412" endHeaderPosition="505">
     <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
-      <body startPosition="33" endPosition="409" value="&#xD;&#xA;Copyright (c) 2008, 2011 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
+      <body startPosition="33" endPosition="409" value="&#xD;&#xA;Copyright (c) 2008, 2012 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
     </documentation>
     <input>
       <takesTypesFrom href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#/"/>
     </input>
     <ownedModuleElement xsi:type="mtl:Template" name="genAbstractAcceleoGenerator" visibility="Public" main="true">
       <body xsi:type="mtl:FileBlock" openMode="OverWrite">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="/*******************************************************************************&#xA; * Copyright (c) 2008, 2011 Obeo.&#xA; * All rights reserved. This program and the accompanying materials&#xA; * are made available under the terms of the Eclipse Public License v1.0&#xA; * which accompanies this distribution, and is available at&#xA; * http://www.eclipse.org/legal/epl-v10.html&#xA; * &#xA; * Contributors:&#xA; *     Obeo - initial API and implementation&#xA; *******************************************************************************/&#xA;package "/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="/*******************************************************************************&#xA; * Copyright (c) 2008, 2012 Obeo.&#xA; * All rights reserved. This program and the accompanying materials&#xA; * are made available under the terms of the Eclipse Public License v1.0&#xA; * which accompanies this distribution, and is available at&#xA; * http://www.eclipse.org/legal/epl-v10.html&#xA; * &#xA; * Contributors:&#xA; *     Obeo - initial API and implementation&#xA; *******************************************************************************/&#xA;package "/>
         <body xsi:type="ocl.ecore:PropertyCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/8">
@@ -113,7 +113,7 @@
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[1]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                &#xA;                List&lt;String> arguments = new ArrayList&lt;String>();&#xA;                &#xA;                /*&#xA;                 * Add in this list all the arguments used by the starting point of the generation&#xA;                 * If your main template is called on an element of your model and a String, you can&#xA;                 * add in &quot;arguments&quot; this &quot;String&quot; attribute.&#xA;                 */&#xA;                &#xA;                "/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                &#xA;                List&lt;String> arguments = new ArrayList&lt;String>();&#xA;                &#xA;                /*&#xA;                 * If you want to change the content of this method, do NOT forget to change the &quot;@generated&quot;&#xA;                 * tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag, any compilation&#xA;                 * of the Acceleo module with the main template that has caused the creation of this class will&#xA;                 * revert your modifications.&#xA;                 */&#xA;&#xA;                /*&#xA;                 * Add in this list all the arguments used by the starting point of the generation&#xA;                 * If your main template is called on an element of your model and a String, you can&#xA;                 * add in &quot;arguments&quot; this &quot;String&quot; attribute.&#xA;                 */&#xA;                &#xA;                "/>
         <body xsi:type="ocl.ecore:PropertyCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:VariableExp" name="self" referredVariable="/21">
@@ -133,7 +133,7 @@
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[i]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                }&#xA;                &#xA;                generator.doGenerate(new BasicMonitor());&#xA;            }&#xA;        } catch (IOException e) {&#xA;            e.printStackTrace();&#xA;        }&#xA;    }&#xA;&#xA;    /**&#xA;     * Launches the generation described by this instance.&#xA;     * &#xA;     * @param monitor&#xA;     *            This will be used to display progress information to the user.&#xA;     * @throws IOException&#xA;     *             This will be thrown if any of the output files cannot be saved to disk.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void doGenerate(Monitor monitor) throws IOException {&#xA;        /*&#xA;         * TODO if you wish to change the generation as a whole, override this. The default behavior should&#xA;         * be sufficient in most cases. If you want to change the content of this method, do NOT forget to&#xA;         * change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag,&#xA;         * any compilation of the Acceleo module with the main template that has caused the creation of this&#xA;         * class will revert your modifications. If you encounter a problem with an unresolved proxy during the&#xA;         * generation, you can remove the comments in the following instructions to check for problems. Please&#xA;         * note that those instructions may have a significant impact on the performances.&#xA;         */&#xA;&#xA;        //org.eclipse.emf.ecore.util.EcoreUtil.resolveAll(model);&#xA;&#xA;        //if (model != null &amp;&amp; model.eResource() != null) {&#xA;        //    List&lt;org.eclipse.emf.ecore.resource.Resource.Diagnostic> errors = model.eResource().getErrors();&#xA;        //    for (org.eclipse.emf.ecore.resource.Resource.Diagnostic diagnostic : errors) {&#xA;        //        System.err.println(diagnostic.toString());&#xA;        //    }&#xA;        //}&#xA;&#xA;        super.doGenerate(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * If this generator needs to listen to text generation events, listeners can be returned from here.&#xA;     * &#xA;     * @return List of listeners that are to be notified when text is generated through this launch.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;IAcceleoTextGenerationListener> getGenerationListeners() {&#xA;        List&lt;IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();&#xA;        /*&#xA;         * TODO if you need to listen to generation event, add listeners to the list here. If you want to change&#xA;         * the content of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method&#xA;         * to &quot;@generated NOT&quot;. Without this new tag, any compilation of the Acceleo module with the main template&#xA;         * that has caused the creation of this class will revert your modifications.&#xA;         */&#xA;        return listeners;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If you need to change the way files are generated, this is your entry point.&#xA;     * &lt;p>&#xA;     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates&#xA;     * files on the fly. If you only need to preview the results, return a new&#xA;     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of&#xA;     * the running Eclipse and can be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * If you need the file generation to be aware of the workspace (A typical example is when you wanna&#xA;     * override files that are under clear case or any other VCS that could forbid the overriding), then&#xA;     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.&#xA;     * &lt;b>Note&lt;/b>, however, that this &lt;b>cannot&lt;/b> be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * All three of these default strategies support merging through JMerge.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The generation strategy that is to be used for generations launched through this launcher.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public IAcceleoGenerationStrategy getGenerationStrategy() {&#xA;        return super.getGenerationStrategy();&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be called in order to find and load the module that will be launched through this launcher.&#xA;     * We expect this name not to contain file extension, and the module to be located beside the launcher.&#xA;     * &#xA;     * @return The name of the module that is to be launched.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String getModuleName() {&#xA;        return MODULE_FILE_NAME;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If the module(s) called by this launcher require properties files, return their qualified path from&#xA;     * here.Take note that the first added properties files will take precedence over subsequent ones if they&#xA;     * contain conflicting keys.&#xA;     * &#xA;     * @return The list of properties file we need to add to the generation context.&#xA;     * @see java.util.ResourceBundle#getBundle(String)&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;String> getProperties() {&#xA;        /*&#xA;         * TODO if your generation module requires access to properties files, add their qualified path to the list here.&#xA;         * Properties files are expected to be in source folders, and the path here to be the qualified path as if referring&#xA;         * to a Java class. For example, if you have a file named &quot;messages.properties&quot; in package &quot;org.eclipse.acceleo.sample&quot;,&#xA;         * the path that needs be added to this list is &quot;/org/eclipse/acceleo/sample/messages.properties&quot;. If you want to change the&#xA;         * contentof this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;.&#xA;         * Without this new tag, any compilation of the Acceleo module with the main template that has caused the creation of &#xA;         * this class will revert your modifications.&#xA;         * &#xA;         * To learn more about Properties Files, have a look at the Acceleo Launcher documentation (Help -> Help Contents).&#xA;         */&#xA;        return propertiesFiles;&#xA;    }&#xA;    &#xA;    /**&#xA;     * Adds a properties file in the list of properties files.&#xA;     * &#xA;     * @param propertiesFile&#xA;     *            The properties file to add.&#xA;     * @generated&#xA;     * @since 3.1&#xA;     */&#xA;    @Override&#xA;    public void addPropertiesFile(String propertiesFile) {&#xA;        this.propertiesFiles.add(propertiesFile);&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be used to get the list of templates that are to be launched by this launcher.&#xA;     * &#xA;     * @return The list of templates to call on the module {@link #getModuleName()}.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=");&#xA;                }&#xA;                &#xA;                generator.doGenerate(new BasicMonitor());&#xA;            }&#xA;        } catch (IOException e) {&#xA;            e.printStackTrace();&#xA;        }&#xA;    }&#xA;&#xA;    /**&#xA;     * Launches the generation described by this instance.&#xA;     * &#xA;     * @param monitor&#xA;     *            This will be used to display progress information to the user.&#xA;     * @throws IOException&#xA;     *             This will be thrown if any of the output files cannot be saved to disk.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void doGenerate(Monitor monitor) throws IOException {&#xA;        /*&#xA;         * TODO if you wish to change the generation as a whole, override this. The default behavior should&#xA;         * be sufficient in most cases. If you want to change the content of this method, do NOT forget to&#xA;         * change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag,&#xA;         * any compilation of the Acceleo module with the main template that has caused the creation of this&#xA;         * class will revert your modifications. If you encounter a problem with an unresolved proxy during the&#xA;         * generation, you can remove the comments in the following instructions to check for problems. Please&#xA;         * note that those instructions may have a significant impact on the performances.&#xA;         */&#xA;&#xA;        //org.eclipse.emf.ecore.util.EcoreUtil.resolveAll(model);&#xA;&#xA;        /*&#xA;         * If you want to check for potential errors in your models before the launch of the generation, you&#xA;         * use the code below.&#xA;         */&#xA;&#xA;        //if (model != null &amp;&amp; model.eResource() != null) {&#xA;        //    List&lt;org.eclipse.emf.ecore.resource.Resource.Diagnostic> errors = model.eResource().getErrors();&#xA;        //    for (org.eclipse.emf.ecore.resource.Resource.Diagnostic diagnostic : errors) {&#xA;        //        System.err.println(diagnostic.toString());&#xA;        //    }&#xA;        //}&#xA;&#xA;        super.doGenerate(monitor);&#xA;    }&#xA;    &#xA;    /**&#xA;     * If this generator needs to listen to text generation events, listeners can be returned from here.&#xA;     * &#xA;     * @return List of listeners that are to be notified when text is generated through this launch.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;IAcceleoTextGenerationListener> getGenerationListeners() {&#xA;        List&lt;IAcceleoTextGenerationListener> listeners = super.getGenerationListeners();&#xA;        /*&#xA;         * TODO if you need to listen to generation event, add listeners to the list here. If you want to change&#xA;         * the content of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method&#xA;         * to &quot;@generated NOT&quot;. Without this new tag, any compilation of the Acceleo module with the main template&#xA;         * that has caused the creation of this class will revert your modifications.&#xA;         */&#xA;        return listeners;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If you need to change the way files are generated, this is your entry point.&#xA;     * &lt;p>&#xA;     * The default is {@link org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy}; it generates&#xA;     * files on the fly. If you only need to preview the results, return a new&#xA;     * {@link org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy}. Both of these aren't aware of&#xA;     * the running Eclipse and can be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * If you need the file generation to be aware of the workspace (A typical example is when you wanna&#xA;     * override files that are under clear case or any other VCS that could forbid the overriding), then&#xA;     * return a new {@link org.eclipse.acceleo.engine.generation.strategy.WorkspaceAwareStrategy}.&#xA;     * &lt;b>Note&lt;/b>, however, that this &lt;b>cannot&lt;/b> be used standalone.&#xA;     * &lt;/p>&#xA;     * &lt;p>&#xA;     * All three of these default strategies support merging through JMerge.&#xA;     * &lt;/p>&#xA;     * &#xA;     * @return The generation strategy that is to be used for generations launched through this launcher.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public IAcceleoGenerationStrategy getGenerationStrategy() {&#xA;        return super.getGenerationStrategy();&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be called in order to find and load the module that will be launched through this launcher.&#xA;     * We expect this name not to contain file extension, and the module to be located beside the launcher.&#xA;     * &#xA;     * @return The name of the module that is to be launched.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String getModuleName() {&#xA;        return MODULE_FILE_NAME;&#xA;    }&#xA;    &#xA;    /**&#xA;     * If the module(s) called by this launcher require properties files, return their qualified path from&#xA;     * here.Take note that the first added properties files will take precedence over subsequent ones if they&#xA;     * contain conflicting keys.&#xA;     * &#xA;     * @return The list of properties file we need to add to the generation context.&#xA;     * @see java.util.ResourceBundle#getBundle(String)&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public List&lt;String> getProperties() {&#xA;        /*&#xA;         * If you want to change the content of this method, do NOT forget to change the &quot;@generated&quot;&#xA;         * tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag, any compilation&#xA;         * of the Acceleo module with the main template that has caused the creation of this class will&#xA;         * revert your modifications.&#xA;         */&#xA;&#xA;        /*&#xA;         * TODO if your generation module requires access to properties files, add their qualified path to the list here.&#xA;         * &#xA;         * Properties files can be located in an Eclipse plug-in or in the file system (all Acceleo projects are Eclipse&#xA;         * plug-in). In order to use properties files located in an Eclipse plugin, you need to add the path of the properties&#xA;         * files to the &quot;propertiesFiles&quot; list:&#xA;         * &#xA;         * final String prefix = &quot;platform:/plugin/&quot;;&#xA;         * final String pluginName = &quot;org.eclipse.acceleo.module.sample&quot;;&#xA;         * final String packagePath = &quot;/org/eclipse/acceleo/module/sample/properties/&quot;;&#xA;         * final String fileName = &quot;default.properties&quot;;&#xA;         * propertiesFiles.add(prefix + pluginName + packagePath + fileName);&#xA;         * &#xA;         * With this mechanism, you can load properties files from your plugin or from another plugin.&#xA;         * &#xA;         * You may want to load properties files from the file system, for that you need to add the absolute path of the file:&#xA;         * &#xA;         * propertiesFiles.add(&quot;C:\Users\MyName\MyFile.properties&quot;);&#xA;         * &#xA;         * If you want to let your users add properties files located in the same folder as the model:&#xA;         *&#xA;         * if (EMFPlugin.IS_ECLIPSE_RUNNING &amp;&amp; model != null &amp;&amp; model.eResource() != null) { &#xA;         *     propertiesFiles.addAll(AcceleoEngineUtils.getPropertiesFilesNearModel(model.eResource()));&#xA;         * }&#xA;         * &#xA;         * To learn more about Properties Files, have a look at the Acceleo documentation (Help -> Help Contents).&#xA;         */&#xA;        return propertiesFiles;&#xA;    }&#xA;    &#xA;    /**&#xA;     * Adds a properties file in the list of properties files.&#xA;     * &#xA;     * @param propertiesFile&#xA;     *            The properties file to add.&#xA;     * @generated&#xA;     * @since 3.1&#xA;     */&#xA;    @Override&#xA;    public void addPropertiesFile(String propertiesFile) {&#xA;        this.propertiesFiles.add(propertiesFile);&#xA;    }&#xA;    &#xA;    /**&#xA;     * This will be used to get the list of templates that are to be launched by this launcher.&#xA;     * &#xA;     * @return The list of templates to call on the module {@link #getModuleName()}.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public String"/>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="[]">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
@@ -174,7 +174,7 @@
             <referredProperty xsi:type="ecore:EReference" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoMainClass/packages"/>
           </iterSet>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="        &#xA;        /*&#xA;         * TODO If you need additional package registrations, you can register them here. The following line&#xA;         * (in comment) is an example of the package registration for UML. If you want to change the content&#xA;         * of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method to&#xA;         * &quot;@generated NOT&quot;. Without this new tag, any compilation of the Acceleo module with the main template&#xA;         * that has caused the creation of this class will revert your modifications. You can use the method&#xA;         * &quot;isInWorkspace(Class c)&quot; to check if the package that you are about to register is in the workspace.&#xA;         * To register a package properly, please follow the following conventions:&#xA;         * &#xA;         * if (!isInWorkspace(UMLPackage.class)) {&#xA;         *     // The normal package registration if your metamodel is in a plugin.&#xA;         *     resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);&#xA;         * } else {&#xA;         *     // The package registration that will be used if the metamodel is not deployed in a plugin.&#xA;         *     // This should be used if your metamodel is in your workspace and if you are using binary resource serialization.&#xA;         *     resourceSet.getPackageRegistry().put(&quot;/myproject/myfolder/mysubfolder/MyUMLMetamodel.ecore&quot;, UMLPackage.eINSTANCE);&#xA;         * }&#xA;         * &#xA;         * To learn more about Package Registration, have a look at the Acceleo Launcher documentation (Help -> Help Contents).&#xA;         */&#xA;    }&#xA;&#xA;    /**&#xA;     * This can be used to update the resource set's resource factory registry with all needed factories.&#xA;     * &#xA;     * @param resourceSet&#xA;     *            The resource set which registry has to be updated.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void registerResourceFactories(ResourceSet resourceSet) {&#xA;        super.registerResourceFactories(resourceSet);&#xA;        /*&#xA;         * TODO If you need additional resource factories registrations, you can register them here. the following line&#xA;         * (in comment) is an example of the resource factory registration for UML. If you want to change the content&#xA;         * of this method, do NOT forget to change the &quot;@generated&quot; tag in the Javadoc of this method to &quot;@generated NOT&quot;.&#xA;         * Without this new tag, any compilation of the Acceleo module with the main template that has caused the creation&#xA;         * of this class will revert your modifications.&#xA;         * &#xA;         * To learn more about the registration of Resource Factories, have a look at the Acceleo Launcher documentation (Help -> Help Contents). &#xA;         */ &#xA;        &#xA;        // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);&#xA;    }&#xA;    &#xA;}&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="        &#xA;        /*&#xA;         * If you want to change the content of this method, do NOT forget to change the &quot;@generated&quot;&#xA;         * tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag, any compilation&#xA;         * of the Acceleo module with the main template that has caused the creation of this class will&#xA;         * revert your modifications.&#xA;         */&#xA;        &#xA;        /*&#xA;         * If you need additional package registrations, you can register them here. The following line&#xA;         * (in comment) is an example of the package registration for UML.&#xA;         * &#xA;         * You can use the method  &quot;isInWorkspace(Class c)&quot; to check if the package that you are about to&#xA;         * register is in the workspace.&#xA;         * &#xA;         * To register a package properly, please follow the following conventions:&#xA;         *&#xA;         * If the package is located in another plug-in, already installed in Eclipse. The following content should&#xA;         * have been generated at the beginning of this method. Do not register the package using this mechanism if&#xA;         * the metamodel is located in the workspace.&#xA;         *  &#xA;         * if (!isInWorkspace(UMLPackage.class)) {&#xA;         *     // The normal package registration if your metamodel is in a plugin.&#xA;         *     resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);&#xA;         * }&#xA;         * &#xA;         * If the package is located in another project in your workspace, the plugin containing the package has not&#xA;         * been register by EMF and Acceleo should register it automatically. If you want to use the generator in&#xA;         * stand alone, the regular registration (seen a couple lines before) is needed.&#xA;         * &#xA;         * To learn more about Package Registration, have a look at the Acceleo documentation (Help -> Help Contents).&#xA;         */&#xA;    }&#xA;&#xA;    /**&#xA;     * This can be used to update the resource set's resource factory registry with all needed factories.&#xA;     * &#xA;     * @param resourceSet&#xA;     *            The resource set which registry has to be updated.&#xA;     * @generated&#xA;     */&#xA;    @Override&#xA;    public void registerResourceFactories(ResourceSet resourceSet) {&#xA;        super.registerResourceFactories(resourceSet);&#xA;        /*&#xA;         * If you want to change the content of this method, do NOT forget to change the &quot;@generated&quot;&#xA;         * tag in the Javadoc of this method to &quot;@generated NOT&quot;. Without this new tag, any compilation&#xA;         * of the Acceleo module with the main template that has caused the creation of this class will&#xA;         * revert your modifications.&#xA;         */&#xA;        &#xA;        /*&#xA;         * TODO If you need additional resource factories registrations, you can register them here. the following line&#xA;         * (in comment) is an example of the resource factory registration for UML.&#xA;         *&#xA;         * If you want to use the generator in stand alone, the resource factory registration will be required.&#xA;         *  &#xA;         * To learn more about the registration of Resource Factories, have a look at the Acceleo documentation (Help -> Help Contents). &#xA;         */ &#xA;        &#xA;        // resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);&#xA;    }&#xA;    &#xA;}&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:OperationCallExp" referredOperation="/1/String_Class/+">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
           <source xsi:type="ocl.ecore:PropertyCallExp">
@@ -202,167 +202,6 @@
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
       </eAnnotations>
-      <eOperations name="substitute">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="r">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="t">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="index">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        <eParameters name="r">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="first">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="n">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="last">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="n">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="strstr">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-        <eParameters name="r">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="strtok">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="s1">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="flag">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="strcmp">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        <eParameters name="s1">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="isAlpha">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-      </eOperations>
-      <eOperations name="isAlphanum">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-      </eOperations>
-      <eOperations name="toUpperFirst">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
-      <eOperations name="toLowerFirst">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
-      <eOperations name="replace">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="replacement">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="replaceAll">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="replacement">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="substituteAll">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="replacement">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="startsWith">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="endsWith">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="trim">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
-      <eOperations name="tokenize">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(String)"/>
-        <eParameters name="delimiters">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="contains">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="matches">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-        <eParameters name="regex">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="lastIndex">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        <eParameters name="substring">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="equalsIgnoreCase">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Boolean"/>
-        <eParameters name="other">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="substring">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="startIndex">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        </eParameters>
-      </eOperations>
       <eOperations name="+">
         <eAnnotations source="MTL non-standard"/>
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
@@ -375,111 +214,16 @@
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
       </eAnnotations>
-      <eOperations name="toString">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Real_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Real"/>
       </eAnnotations>
-      <eOperations name="toString">
-        <eAnnotations source="MTL"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EObject_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eAnnotations>
-      <eOperations name="eAllContents">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-      </eOperations>
-      <eOperations name="eAllContents">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="ancestors">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-      </eOperations>
-      <eOperations name="ancestors">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="siblings">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-      </eOperations>
-      <eOperations name="siblings">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="eInverse">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OrderedSet(OclAny)"/>
-      </eOperations>
-      <eOperations name="eInverse">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OrderedSet(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="precedingSiblings">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-      </eOperations>
-      <eOperations name="precedingSiblings">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="followingSiblings">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-      </eOperations>
-      <eOperations name="followingSiblings">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="eContainer">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="eContents">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="eGet">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
-        <eParameters name="featureName">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
       <eOperations name="genAbstractAcceleoGenerator">
         <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
           <contents xsi:type="ocl.ecore:Constraint"/>
@@ -495,84 +239,6 @@
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
       </eAnnotations>
-      <eOperations name="toString">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
-      <eOperations name="invoke">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclAny"/>
-        <eParameters name="class">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="method">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="arguments">
-          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="current">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
-        <eParameters name="index">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="current">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//OclAny"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="getProperty">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="key">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="getProperty">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="key">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="arguments">
-          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="getProperty">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="propertiesFileName">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="key">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="getProperty">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="propertiesFileName">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="key">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-        <eParameters name="arguments">
-          <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/acceleo/mtl/3.0/mtlnonstdlib.ecore#//Sequence(OclAny)"/>
-        </eParameters>
-      </eOperations>
-      <eOperations name="+">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        <eParameters name="other">
-          <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-        </eParameters>
-      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Collection(T)_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
@@ -585,57 +251,21 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </eParameters>
       </eOperations>
-      <eOperations name="filter">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:CollectionType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Collection(T)"/>
-        <eParameters name="filter">
-          <eType xsi:type="ocl.ecore:TypeType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OclType"/>
-        </eParameters>
-      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Sequence(T)_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
       </eAnnotations>
-      <eOperations name="reverse">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:SequenceType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Sequence(T)"/>
-      </eOperations>
-      <eOperations name="lastIndexOf">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        <eParameters name="element">
-          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
-        </eParameters>
-      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="OrderedSet(T)_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
       </eAnnotations>
-      <eOperations name="reverse">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:OrderedSetType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/OrderedSet(T)"/>
-      </eOperations>
-      <eOperations name="lastIndexOf">
-        <eAnnotations source="MTL non-standard"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
-        <eParameters name="element">
-          <eType xsi:type="ocl.ecore:AnyType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/T"/>
-        </eParameters>
-      </eOperations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="AcceleoMainClass_Class">
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoMainClass"/>
       </eAnnotations>
-      <eOperations name="genAbstractAcceleoGenerator">
-        <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
-          <contents xsi:type="ocl.ecore:Constraint"/>
-        </eAnnotations>
-        <eAnnotations source="MTL" references="/0/genAbstractAcceleoGenerator"/>
-        <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-      </eOperations>
     </eClassifiers>
   </ecore:EPackage>
   <ocl.ecore:Variable name="self">
@@ -736,6 +366,9 @@
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoMainClass"/>
   </ocl.ecore:Variable>
+  <ocl.ecore:Variable name="i">
+    <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/Integer"/>
+  </ocl.ecore:Variable>
   <ocl.ecore:Variable name="self">
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
@@ -747,12 +380,12 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genAbstractAcceleoGenerator">
       <details key="start" value="509"/>
-      <details key="end" value="16959"/>
+      <details key="end" value="19019"/>
       <details key="line" value="16"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genAbstractAcceleoGenerator/@body.0">
       <details key="start" value="610"/>
-      <details key="end" value="16947"/>
+      <details key="end" value="19007"/>
       <details key="line" value="18"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genAbstractAcceleoGenerator/@body.0/@body.0">
@@ -962,12 +595,12 @@
     </eAnnotations>
     <eAnnotations source="positions.44" references="/0/genAbstractAcceleoGenerator/@body.0/@body.24">
       <details key="start" value="5590"/>
-      <details key="end" value="6028"/>
+      <details key="end" value="6448"/>
       <details key="line" value="145"/>
     </eAnnotations>
     <eAnnotations source="positions.45" references="/0/genAbstractAcceleoGenerator/@body.0/@body.25">
-      <details key="start" value="6029"/>
-      <details key="end" value="6043"/>
+      <details key="start" value="6449"/>
+      <details key="end" value="6463"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.46" references="/0/genAbstractAcceleoGenerator/@body.0/@body.25/self">
@@ -976,13 +609,13 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.47" references="/0/genAbstractAcceleoGenerator/@body.0/@body.26">
-      <details key="start" value="6045"/>
-      <details key="end" value="6062"/>
-      <details key="line" value="155"/>
+      <details key="start" value="6465"/>
+      <details key="end" value="6482"/>
+      <details key="line" value="162"/>
     </eAnnotations>
     <eAnnotations source="positions.48" references="/0/genAbstractAcceleoGenerator/@body.0/@body.27">
-      <details key="start" value="6063"/>
-      <details key="end" value="6077"/>
+      <details key="start" value="6483"/>
+      <details key="end" value="6497"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.49" references="/0/genAbstractAcceleoGenerator/@body.0/@body.27/self">
@@ -991,93 +624,93 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.50" references="/0/genAbstractAcceleoGenerator/@body.0/@body.28">
-      <details key="start" value="6079"/>
-      <details key="end" value="6921"/>
-      <details key="line" value="155"/>
+      <details key="start" value="6499"/>
+      <details key="end" value="7341"/>
+      <details key="line" value="162"/>
     </eAnnotations>
     <eAnnotations source="positions.51" references="/0/genAbstractAcceleoGenerator/@body.0/@body.29">
-      <details key="start" value="6922"/>
-      <details key="end" value="6927"/>
+      <details key="start" value="7342"/>
+      <details key="end" value="7347"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.52" references="/0/genAbstractAcceleoGenerator/@body.0/@body.30">
-      <details key="start" value="6929"/>
-      <details key="end" value="13435"/>
-      <details key="line" value="168"/>
+      <details key="start" value="7349"/>
+      <details key="end" value="15029"/>
+      <details key="line" value="175"/>
     </eAnnotations>
     <eAnnotations source="positions.53" references="/0/genAbstractAcceleoGenerator/@body.0/@body.31">
-      <details key="start" value="13436"/>
-      <details key="end" value="13440"/>
+      <details key="start" value="15030"/>
+      <details key="end" value="15034"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.54" references="/0/genAbstractAcceleoGenerator/@body.0/@body.32">
-      <details key="start" value="13442"/>
-      <details key="end" value="13859"/>
-      <details key="line" value="312"/>
+      <details key="start" value="15036"/>
+      <details key="end" value="15453"/>
+      <details key="line" value="347"/>
     </eAnnotations>
     <eAnnotations source="positions.55" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33">
-      <details key="start" value="13867"/>
-      <details key="end" value="14110"/>
-      <details key="line" value="326"/>
+      <details key="start" value="15461"/>
+      <details key="end" value="15704"/>
+      <details key="line" value="361"/>
     </eAnnotations>
     <eAnnotations source="positions.56" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.0">
-      <details key="start" value="13912"/>
-      <details key="end" value="13939"/>
-      <details key="line" value="327"/>
+      <details key="start" value="15506"/>
+      <details key="end" value="15533"/>
+      <details key="line" value="362"/>
     </eAnnotations>
     <eAnnotations source="positions.57" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.1">
-      <details key="start" value="13940"/>
-      <details key="end" value="13954"/>
+      <details key="start" value="15534"/>
+      <details key="end" value="15548"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.58" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.1/aPackage">
-      <details key="start" value="13940"/>
-      <details key="end" value="13948"/>
+      <details key="start" value="15534"/>
+      <details key="end" value="15542"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.59" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.2">
-      <details key="start" value="13956"/>
-      <details key="end" value="14016"/>
-      <details key="line" value="327"/>
+      <details key="start" value="15550"/>
+      <details key="end" value="15610"/>
+      <details key="line" value="362"/>
     </eAnnotations>
     <eAnnotations source="positions.60" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.3">
-      <details key="start" value="14017"/>
-      <details key="end" value="14031"/>
+      <details key="start" value="15611"/>
+      <details key="end" value="15625"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.61" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.3/aPackage">
-      <details key="start" value="14017"/>
-      <details key="end" value="14025"/>
+      <details key="start" value="15611"/>
+      <details key="end" value="15619"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.62" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.4">
-      <details key="start" value="14033"/>
-      <details key="end" value="14056"/>
-      <details key="line" value="328"/>
+      <details key="start" value="15627"/>
+      <details key="end" value="15650"/>
+      <details key="line" value="363"/>
     </eAnnotations>
     <eAnnotations source="positions.63" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.5">
-      <details key="start" value="14057"/>
-      <details key="end" value="14071"/>
+      <details key="start" value="15651"/>
+      <details key="end" value="15665"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.64" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.5/aPackage">
-      <details key="start" value="14057"/>
-      <details key="end" value="14065"/>
+      <details key="start" value="15651"/>
+      <details key="end" value="15659"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.65" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@body.6">
-      <details key="start" value="14073"/>
-      <details key="end" value="14096"/>
-      <details key="line" value="328"/>
+      <details key="start" value="15667"/>
+      <details key="end" value="15690"/>
+      <details key="line" value="363"/>
     </eAnnotations>
     <eAnnotations source="positions.66" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/aPackage">
-      <details key="start" value="13873"/>
-      <details key="end" value="13898"/>
-      <details key="line" value="326"/>
+      <details key="start" value="15467"/>
+      <details key="end" value="15492"/>
+      <details key="line" value="361"/>
     </eAnnotations>
     <eAnnotations source="positions.67" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@iterSet">
-      <details key="start" value="13901"/>
-      <details key="end" value="13909"/>
+      <details key="start" value="15495"/>
+      <details key="end" value="15503"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.68" references="/0/genAbstractAcceleoGenerator/@body.0/@body.33/@iterSet/self">
@@ -1086,9 +719,9 @@
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.69" references="/0/genAbstractAcceleoGenerator/@body.0/@body.34">
-      <details key="start" value="14111"/>
-      <details key="end" value="16940"/>
-      <details key="line" value="331"/>
+      <details key="start" value="15705"/>
+      <details key="end" value="19000"/>
+      <details key="line" value="366"/>
     </eAnnotations>
     <eAnnotations source="positions.70" references="/0/genAbstractAcceleoGenerator/@body.0/@fileUrl">
       <details key="start" value="617"/>
