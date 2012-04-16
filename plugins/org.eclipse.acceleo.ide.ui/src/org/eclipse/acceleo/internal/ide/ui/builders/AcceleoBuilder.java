@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.builders;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.io.File;
@@ -101,7 +102,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (project == null || !project.isAccessible()) {
 			return new IProject[] {};
 		}
-
 		this.mappedProjects.clear();
 
 		File projectRoot = project.getLocation().toFile();
@@ -115,7 +115,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		// Check that all ".ecore" models in accessible projects have been loaded.
 		AcceleoProject aProject = new AcceleoProject(project);
 		List<IProject> accessibleProjects = aProject.getRecursivelyAccessibleProjects();
-		for (IProject iProject : accessibleProjects) {
+		for (IProject iProject : Lists.reverse(accessibleProjects)) {
 			List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
 			for (IFile iFile : members) {
 				Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
@@ -131,7 +131,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 		List<URI> accessibleOutputFiles = AcceleoProject.computeAcceleoModuleInRequiredPlugins(project);
 		acceleoProject.addDependencies(Sets.newHashSet(accessibleOutputFiles));
-
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		String resourceKind = settings.getResourceKind();
 		boolean useBinaryResources = !AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind);
@@ -212,6 +211,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				}
 			}
 		}
+
+		generateAcceleoBuildFile(monitor);
 		monitor.done();
 
 		return null;
@@ -475,7 +476,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				}
 			}
 		}
-		for (IFile ecoreFile : ecoreFiles) {
+		for (IFile ecoreFile : Lists.reverse(ecoreFiles)) {
 			AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreFile.getFullPath().toString(),
 					AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 		}
