@@ -140,4 +140,44 @@ public class ForBlockTest extends AbstractAcceleoTest {
 			fail(errorMessageForCompareDirectoriesMethod);
 		}
 	}
+
+	/**
+	 * Test For statement with the "i" variable.
+	 * 
+	 * @throws IOException
+	 *             Thrown when the output cannot be saved.
+	 */
+	public void testForStatementIVariable() throws IOException {
+		generationRoot = new File(getGenerationRootPath("IVariable")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("IVariable")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("testingI", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+	}
+
+	/**
+	 * Test For statement with the "i" variable.
+	 * 
+	 * @throws IOException
+	 *             Thrown when the output cannot be saved.
+	 */
+	public void testForStatementIVariableSeparator() throws IOException {
+		generationRoot = new File(getGenerationRootPath("IVariableSeparator")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("IVariableSeparator")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("testingISeparator", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+	}
 }
