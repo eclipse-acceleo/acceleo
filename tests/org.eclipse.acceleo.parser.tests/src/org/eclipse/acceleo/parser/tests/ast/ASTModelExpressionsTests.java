@@ -44,7 +44,7 @@ public class ASTModelExpressionsTests extends AbstractASTParserTests {
 			}
 			bundle = null;
 		} catch (CoreException e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 

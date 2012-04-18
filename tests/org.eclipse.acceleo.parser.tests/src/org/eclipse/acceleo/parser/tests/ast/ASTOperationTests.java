@@ -44,7 +44,7 @@ public class ASTOperationTests extends AbstractASTParserTests {
 				resource.unload();
 			}
 		} catch (CoreException e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 

@@ -1227,13 +1227,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 			transformStepResolve(iBefore);
 
-			org.eclipse.acceleo.parser.cst.ModelExpression iEach = iForBlock.getEach();
-			org.eclipse.ocl.ecore.OCLExpression oEach = factory.getOrCreateOCLExpression(iEach);
-			if (oEach != null) {
-				oForBlock.setEach(oEach);
-			}
-			transformStepResolve(iEach);
-
 			org.eclipse.acceleo.parser.cst.ModelExpression iAfter = iForBlock.getAfter();
 			org.eclipse.ocl.ecore.OCLExpression oAfter = factory.getOrCreateOCLExpression(iAfter);
 			if (oAfter != null) {
@@ -1242,6 +1235,27 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			transformStepResolve(iAfter);
 
 			org.eclipse.acceleo.parser.cst.Variable iLoopVariable = iForBlock.getLoopVariable();
+			org.eclipse.ocl.ecore.Variable iterationCount = null;
+			if (iLoopVariable == null || !"i".equals(iLoopVariable.getName())) { //$NON-NLS-1$
+				// Implicit "i" variable for the iteration count
+				iterationCount = org.eclipse.ocl.ecore.EcoreFactory.eINSTANCE.createVariable();
+				iterationCount.setName("i"); //$NON-NLS-1$
+				iterationCount.setType(factory.getOCL().getIntegerType());
+
+				// Necessary container for the "i" variable
+				ForBlock iterationCountForBlock = MtlFactory.eINSTANCE.createForBlock();
+				iterationCountForBlock.setLoopVariable(iterationCount);
+
+				factory.getOCL().addVariableToScope(iterationCount);
+			}
+
+			org.eclipse.acceleo.parser.cst.ModelExpression iEach = iForBlock.getEach();
+			org.eclipse.ocl.ecore.OCLExpression oEach = factory.getOrCreateOCLExpression(iEach);
+			if (oEach != null) {
+				oForBlock.setEach(oEach);
+			}
+			transformStepResolve(iEach);
+
 			org.eclipse.ocl.ecore.Variable oLoopVariable;
 			if (iLoopVariable != null) {
 				oLoopVariable = factory.getOrCreateVariable(iLoopVariable);
@@ -1260,20 +1274,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			}
 			if (context != null) {
 				factory.getOCL().pushContext(context);
-			}
-
-			org.eclipse.ocl.ecore.Variable iterationCount = null;
-			if (oLoopVariable == null || !"i".equals(oLoopVariable.getName())) { //$NON-NLS-1$
-				// Implicit "i" variable for the iteration count
-				iterationCount = org.eclipse.ocl.ecore.EcoreFactory.eINSTANCE.createVariable();
-				iterationCount.setName("i"); //$NON-NLS-1$
-				iterationCount.setType(factory.getOCL().getIntegerType());
-
-				// Necessary container for the "i" variable
-				ForBlock iterationCountForBlock = MtlFactory.eINSTANCE.createForBlock();
-				iterationCountForBlock.setLoopVariable(iterationCount);
-
-				factory.getOCL().addVariableToScope(iterationCount);
 			}
 
 			try {
