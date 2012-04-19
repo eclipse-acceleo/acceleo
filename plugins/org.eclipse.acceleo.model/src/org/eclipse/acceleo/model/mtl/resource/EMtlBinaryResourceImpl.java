@@ -231,16 +231,20 @@ public class EMtlBinaryResourceImpl extends BinaryResourceImpl {
 			EAnnotation position = positionsIt.next();
 			ASTNode node = (ASTNode)position.getReferences().get(0);
 			if (node.getStartPosition() == -1 && node.getEndPosition() == -1) {
-				int start = Integer.parseInt(position.getDetails().get("start")); //$NON-NLS-1$
-				int end = Integer.parseInt(position.getDetails().get("end")); //$NON-NLS-1$
-				String lineValue = position.getDetails().get("line"); //$NON-NLS-1$
-				int line = 0;
-				if (lineValue != null) {
-					line = Integer.parseInt(lineValue);
+				try {
+					int start = Integer.parseInt(position.getDetails().get("start")); //$NON-NLS-1$
+					int end = Integer.parseInt(position.getDetails().get("end")); //$NON-NLS-1$
+					String lineValue = position.getDetails().get("line"); //$NON-NLS-1$
+					int line = 0;
+					if (lineValue != null) {
+						line = Integer.parseInt(lineValue);
+					}
+					node.setStartPosition(start);
+					node.setEndPosition(end);
+					node.eAdapters().add(new AcceleoASTNodeAdapter(line));
+				} catch (NumberFormatException e) {
+					// odd but not critical
 				}
-				node.setStartPosition(start);
-				node.setEndPosition(end);
-				node.eAdapters().add(new AcceleoASTNodeAdapter(line));
 			}
 		}
 	}
