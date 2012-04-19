@@ -549,10 +549,8 @@ public class AcceleoSourceContent {
 				EcoreUtil.replace(oldModuleElement, newModuleElement);
 				return newModuleElement;
 			} catch (ClassCastException e) {
-				AcceleoUIActivator.log(e, true);
 				// continue
 			} catch (ArrayStoreException e) {
-				AcceleoUIActivator.log(e, true);
 				// continue
 			}
 		}
@@ -624,10 +622,8 @@ public class AcceleoSourceContent {
 				EcoreUtil.replace(oldVariable, newVariable);
 				return newVariable;
 			} catch (ClassCastException e) {
-				AcceleoUIActivator.log(e, true);
 				// continue
 			} catch (ArrayStoreException e) {
-				AcceleoUIActivator.log(e, true);
 				// continue
 			}
 		}
