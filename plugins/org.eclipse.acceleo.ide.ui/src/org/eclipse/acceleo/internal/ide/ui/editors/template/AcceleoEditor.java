@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -271,7 +273,7 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 					members(ecoreFiles, project, "ecore"); //$NON-NLS-1$
 				}
 			}
-			for (IFile ecoreFile : ecoreFiles) {
+			for (IFile ecoreFile : Lists.reverse(ecoreFiles)) {
 				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreFile.getFullPath().toString(),
 						AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 			}
