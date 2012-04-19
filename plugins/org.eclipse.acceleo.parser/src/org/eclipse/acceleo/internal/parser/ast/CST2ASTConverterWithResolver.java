@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.AnyType;
+import org.eclipse.ocl.ecore.BooleanLiteralExp;
 import org.eclipse.ocl.ecore.CollectionType;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.Variable;
@@ -878,6 +879,11 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 							.getDefinition().getName()), macroInvocation.getStartPosition(), macroInvocation
 							.getEndPosition());
 				}
+			} else if (oOCLExpression instanceof BooleanLiteralExp) {
+				// If we are here, there is a problem
+				this.logProblem(AcceleoParserMessages
+						.getString("CST2ASTConverterWithResolver.InvalidModelExpression"), iModelExpression //$NON-NLS-1$
+						.getStartPosition(), iModelExpression.getEndPosition());
 			}
 		}
 	}
