@@ -507,6 +507,11 @@
         <p>
           You can see that we will call the operation "myMethod" from the class "MyJavaClass" with the argument "aParam".
         </p>
+        <p>
+          If your Java service is returning a collection, the return type of your query should match the type of the return type of
+          your collection. We are recommending that in the case of a Java service returning an ArrayList<Type>, you should use a
+          Sequence(Type) and if you a returning a LinkedHashSet<type>, you should use an OrderedSet(Type). 
+        </p>
       </section>
       
       <footer class="footer">
