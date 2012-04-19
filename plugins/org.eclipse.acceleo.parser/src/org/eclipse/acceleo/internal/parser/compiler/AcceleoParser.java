@@ -38,6 +38,7 @@ import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -560,7 +561,31 @@ public class AcceleoParser {
 				for (IParserListener listener : this.listeners) {
 					listener.loadDependency(dependingModule);
 				}
-				ModelUtils.load(dependingModule, resourceSet);
+				if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+					AcceleoProject dependingModuleAcceleoProject = null;
+					if (this.acceleoProject.getAllCompiledAcceleoModules().contains(dependingModule)) {
+						dependingModuleAcceleoProject = this.acceleoProject;
+					} else {
+						// Look in project dependencies
+						for (AcceleoProject anAcceleoProject : this.acceleoProject.getProjectDependencies()) {
+							if (anAcceleoProject.getAllCompiledAcceleoModules().contains(dependingModule)) {
+								dependingModuleAcceleoProject = anAcceleoProject;
+								break;
+							}
+						}
+					}
+
+					if (dependingModuleAcceleoProject != null) {
+						URI dependingModuleURI = URI.createPlatformResourceURI(dependingModuleAcceleoProject
+								.getProjectRoot().getName()
+								+ dependingModule.getAbsolutePath().substring(
+										dependingModuleAcceleoProject.getProjectRoot().getAbsolutePath()
+												.length()), true);
+						ModelUtils.load(dependingModuleURI, resourceSet);
+					}
+				} else {
+					ModelUtils.load(dependingModule, resourceSet);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
