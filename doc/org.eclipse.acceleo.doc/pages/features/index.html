@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+/********************************************************************************
+** Copyright (c) 2012 Obeo.
+** All rights reserved. This program and the accompanying materials
+** are made available under the terms of the Eclipse Public License v1.0
+** which accompanies this distribution, and is available at
+** http://www.eclipse.org/legal/epl-v10.html
+**
+** Contributors:
+**    Stephane Begaudeau (Obeo) - initial API and implementation
+*********************************************************************************/
+-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="St&eacute;phane B&eacute;gaudeau">    
+
+    <!-- IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link href="../../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../../assets/css/docs.css" rel="stylesheet">
+    
+    <title>Acceleo</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="jumbotron subhead" id="overview">
+        <h1>Features</h1>
+        <p class="lead">Discover the features available in Acceleo</p>
+        <div class="subnav">
+          <ul class="nav nav-pills">
+            <li><a href="#domainfree">Domain Free</a></li>
+            <li><a href="#standalone">Stand Alone</a></li>
+            <li><a href="#tooling">Eclipse Tooling</a></li>
+            <li><a href="#javaservices">Java Services</a></li>
+            <li><a href="#debugger">Debug</a></li>
+            <li><a href="#interpreter">Interpreter</a></li>
+            <li><a href="#override">Override</a></li>
+            <li><a href="#traceability">Traceability</a></li>
+            <li><a href="#incremental">Incremental</a></li>
+            <li><a href="#userinterface">UI</a></li>
+            <li><a href="#build">Build</a></li>
+          </ul>
+        </div>
+      </header>
+      
+      <section id="domainfree">
+        <div class="page-header">
+          <h1>Domain Free <small>generate anything from any EMF models</small></h1>
+        </div>
+        <h2>Any kind of EMF model...</h2>
+        <p>
+          Most code generators are either generating one kind of technology (e.g. Java) or using only one kind of models
+          (e.g. UML). Acceleo does not restrict you to a specific domain, you want to generate code from:
+        </p>
+        <ul>
+          <li>UML models? supported!</li>
+          <li>Ecore models? supported!</li>
+          <li>Meta-models in your workspace with dynamic instances (".xmi")? supported!</li>
+          <li>A custom made meta-model? supported!</li>
+          <li>A custom made meta-model with depencencies to UML? supported!</li>
+          <li>UML models with profils? supported!</li>
+          <li>Several custom made meta-models with depencencies from one to the other? supported!</li>
+        </ul>
+        
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> put the cursor of your mouse hover the pictures to see the legend.
+        </div>
+        
+        <ul class="thumbnails">
+          <li class="span8">
+            <a href="../../assets/img/features/domain-free-uml-gen.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-uml-gen_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-uml-gen_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-uml-gen_th.png'">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-scalamodel-gen.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-scalamodel-gen_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-scalamodel-gen_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-scalamodel-gen_th.png'">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-ecore-gen.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-ecore-gen_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-ecore-gen_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-ecore-gen_th.png'">
+            </a>
+          </li>
+        </ul>
+        
+        <h2>Built with the tools of your choice...</h2>
+        <p>
+          Since Acceleo is based on the popular framework EMF, you can create your model with any kind of EMF based tool
+          and use it as the input of your generation. You want to generate code from a model created with:
+        </p>
+        <ul>
+          <li>The good ol' EMF tree based editor? supported!</li>
+          <li>A graphical modeler? supported!</li>
+          <li>A text based editor realized with Xtext? supported!</li>
+          <li>A CDO based application used to create remote models? supported!</li>
+        </ul>
+        <ul class="thumbnails">
+          <li class="span6">
+            <a href="../../assets/img/features/domain-free-graphical-model.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-graphical-model_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-graphical-model_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-graphical-model_th.png'">
+            </a>
+          </li>
+          <li class="span6">
+            <a href="../../assets/img/features/domain-free-treebased-model.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-treebased-model_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-treebased-model_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-treebased-model_th.png'">
+            </a>
+          </li>
+        </ul>
+        <ul class="thumbnails">
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-textbased-model.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-textbased-model_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-textbased-model_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-textbased-model_th.png'">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-graphical-model-2.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-graphical-model-2_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-graphical-model-2_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-graphical-model-2_th.png'">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-cdo-model.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-cdo-model_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-cdo-model_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-cdo-model_th.png'">
+            </a>
+          </li>
+        </ul>
+        
+        <h2>To generate anything you want...</h2>
+        <p>
+          Now that you have your input model, what kind of technology do you want to generate? With its template based approach
+          you can defined the kind of code generated, and you can customize it to respect your own style of coding. Do you want
+          to generate:
+        </p>
+        <ul>
+          <li>Java? supported!
+          <li>Scala? supported!</li>
+          <li>Javascript? supported!</li>
+          <li>HTML? supported!</li>
+          <li>Python? supported!</li>
+        </ul>
+        <p>
+          Acceleo does not restrict the kind of code generated, there is only one rule:
+        </p>
+        <div class="well"><h2><b>If you can write it, Acceleo can generate it!</b></h2></div>
+        <ul class="thumbnails">
+          <li class="span8">
+            <a href="../../assets/img/features/domain-free-scala-code.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-scala-code_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-scala-code_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-scala-code_th.png'">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-python-code.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-python-code_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-python-code_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-python-code_th.png'">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="../../assets/img/features/domain-free-javascript-code.png" class="thumbnail">
+              <img src="../../assets/img/features/domain-free-javascript-code_th.png" alt="" onmouseover="this.src='../../assets/img/features/domain-free-javascript-code_th-hover.png'" onmouseout="this.src='../../assets/img/features/domain-free-javascript-code_th.png'">
+            </a>
+          </li>
+        </ul>
+      </section>
+      
+      <section id="standalone">
+        <div class="page-header">
+          <h1>Stand Alone <small>get free of Eclipse</small></h1>
+        </div>
+        <h2><b>Launch your Acceleo generator from any Java based application!</b></h2>
+        <ul class="thumbnails">
+          <li class="span5">
+          In the beginning, you will want to write quickly an efficient generator but once you'll be done, you will need to
+          deliver it to your customers and for that you will have to build it and to embed it inside an application.
+          If you are aiming to use your generator within Eclipse, Acceleo can create an Eclipse based UI to integrate your
+          generator in an Eclipse instance and it also let you build easily you generator to use it as an Eclipse plugins
+          but some of your end-users may need to use your generator out of Eclipse. For those use cases, Acceleo also supports
+          the compilation and the launch of an Acceleo generator out of Eclipse. If you can call Java source code, you can
+          launch an Acceleo generator.
+          </li>
+          <li class="span7">
+            <img src="../../assets/img/features/stand-alone-lib.png" alt="" class="thumbnail">
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Learn how to configure your generator to use it out of Eclipse 
+          <a href="../reference/standalone.html">here</a>.
+        </div>
+      </section>
+      
+      <section id="tooling">
+        <div class="page-header">
+          <h1>Eclipse Tooling <small>integrated in your favorite IDE</small></h1>
+        </div>
+        <h2>Acceleo Project</h2>
+        <ul class="thumbnails">
+          <li class="span5">
+            <p>
+              When you want to start a code generation project with Acceleo, your first action is to create an Acceleo project.
+              Inside of an Acceleo project, you can place Acceleo modules and the builder that comes with the Acceleo project will
+              automatically compile the modules for you. The Acceleo project is also a container for several key preferences like
+              the kind of serialization wanted for Acceleo modules or the severity of the error detection during the compilation.
+            </p>
+          </li>
+          <li class="span7">
+            <img src="../../assets/img/features/eclipse-tooling-acceleo-project.png" alt="" class="thumbnail">
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> All the details of the configuration of an Acceleo project (Obeo Network).
+        </div>
+        
+        <h2>Acceleo Perspective</h2>
+        <p>
+          The Acceleo perspective defines the ideal workbench to work on an Acceleo generator. It contains at its center the Acceleo
+          editor surrounded by several views dedicated to the edition of a code generator. You can find in the Acceleo perspective
+          the following views:
+        </p>
+        <ul>
+          <li>The "Package Explorer" view</li>
+          <li>The "Outline" view</li>
+          <li>The "Interpreter" view</li>
+          <li>The "Problems" view</li>
+          <li>The "Error Log" view</li>
+          <li>The "Result" view</li>
+          <li>The "Overrides" view</li>
+          <li>The "Generation Patterns" view</li>
+        </ul>
+        <p>
+          Those view will let you test manipulate the files in your Acceleo project, test Acceleo expressions, have a look at the
+          problems and errors found in your project, see the traceability of your generated code and use code generation design
+          patterns.
+        </p>
+        <ul class="thumbnails">
+          <li class="span8">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/720x536" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        <p>
+          The Acceleo tooling features a code search system that let's you find out all the references to a selected
+          template or query.
+        </p>
+        <ul class="thumbnails">
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> The Acceleo perspective in video (Obeo Network).
+        </div>
+        
+        <h2>Acceleo Editor</h2>
+        <p>
+          The Acceleo editor is the center of the Acceleo tooling. It is associated with Acceleo modules (".mtl" files) and provides
+          all the features of a modern programming editor to make you more productive when developing a code generator. As such, you
+          can find in the Acceleo editor features like real time error detection, syntax highlighting, code completion,
+          code navigation, a dynamic outline, etc.
+        </p>
+        <ul class="thumbnails">
+          <li class="span8">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/720x536" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        
+        <h2>Quick fixes</h2>
+        <ul class="thumbnails">
+          <li class="span4">
+            The Acceleo editor also features support for "quick fixes". Thanks to the "Ctrl+1" shortcut, you can have access to
+            solutions to basic problems in a few seconds. Those quick fixes will let you for example define a new template or a new
+            query to replace an unknown operation that you may be trying to call in your module.
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        
+        <h2>Refactoring</h2>
+        <p>
+          The Acceleo tooling provides several refactoring tools to help you rename or move your modules, templates and
+          queries within your project easily.
+        </p>
+        <ul class="thumbnails">
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> in depth review of the Acceleo editor (Obeo Network).
+        </div>
+      </section>
+      
+      <section id="javaservices">
+        <div class="page-header">
+          <h1>Java Services</h1>
+        </div>
+        <p>
+          Acceleo lets you use Java source code to compute complexe operation that may be impossible to realize using the
+          Acceleo language. As such, you can be sure that you will be able to generate even the most complex requests.
+        </p>
+        <ul class="thumbnails">
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> How to use Java services.
+        </div>
+      </section>
+      
+      <section id="debugger">
+        <div class="page-header">
+          <h1>Debug <small>let's hunt bugs!</small></h1>
+        </div>
+        <p>
+          In order to catch bugs, Acceleo contains a debugger that can be used easily to monitor a generation and stop at user defined
+          breakpoints. This debugger can let you move instructions by instructions in the execution of your module and you can even have
+          a look at the state of your variable.
+        </p>
+        <ul class="thumbnails">
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+        </ul>
+      </section>
+      
+      <section id="interpreter">
+        <div class="page-header">
+          <h1>Interpreter <small>evaluate all your Acceleo expressions in real time</small></h1>
+        </div>
+        <p>
+          Starting with Acceleo 3.2.0, you will be able to find the Interpreter view in the Acceleo tooling. Thanks to this view, you can use
+          the Acceleo language to test and evaluate directly Acceleo expressions without having to build and run a whole code generator. This
+          view is also extensible and as such, you can contribute your own evaluation language very easily.
+        </p>
+        <ul class="thumbnails">
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Detailed explanations of the Acceleo interpreter (Eclipse Wiki).
+        </div>
+      </section>
+      
+      <section id="override">
+        <div class="page-header">
+          <h1>Override <small>static and dynamic override</small></h1>
+        </div>
+        <p>
+          With static override, you can easily re-use the content of an existing module and change a piece of its original behavior.
+          Dynamic override is on a whole different level as it let you change the behavior of an existing generator by defining templates
+          that will replace existing templates of the generator. This way, like with aspect oriented programming, you can patch an existing
+          generator built, certified and deployed on your customers computer without having to change the original generator.
+        </p>
+        <ul class="thumbnails">
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Have a look at the recommended structure and naming convention of an Acceleo
+          generator (Obeo Network).
+        </div>
+      </section>
+      
+      <section id="traceability">
+        <div class="page-header">
+          <h1>Traceability <small>locate the origins of your generated code</small></h1>
+        </div>
+        <p>
+          One of the most important feature of Acceleo is its ability to compute the traceability of the generated code during the generation.
+          Thanks to its traceability generation engine, you can have a look at the model elements and the part of your generator that have been
+          used to generate every single pieces of text.
+        </p>
+        <ul class="thumbnails">
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Building an enterprise scale project? See how to master the traceability
+          of your code (Obeo Network).
+        </div>
+      </section>
+      
+      <section id="incremental">
+        <div class="page-header">
+          <h1>Incremental Generation <small>protect your changes to the generated code</small></h1>
+        </div>
+        <p>
+          Acceleo let you define protected area to give your end users specific areas where they can modify the generated code.
+        </p>
+        <ul class="thumbnails">
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+          <li class="span6">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/540x402" alt="">
+            </a>
+          </li>
+        </ul>
+      </section>
+      
+      <section id="userinterface">
+        <div class="page-header">
+          <h1>User Interface <small>create an user interface for your generator in 30s</small></h1>
+        </div>
+        <p>
+          If you wish to integrate your Acceleo generator inside of Eclipse for your customers, so that they won't have to manipulate an Acceleo
+          project, you can use a wizard provided by Acceleo to create a basic Eclipse user interface for your generator.
+        </p>
+        <ul class="thumbnails">
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Learn more about Acceleo API to integrate your generator in Eclipse (Obeo Network).
+        </div>
+      </section>
+      
+      <section id="build">
+        <div class="page-header">
+          <h1>Build <small>continuous integration</small></h1>
+        </div>
+        <p>
+          Within Eclipse, an Acceleo project automatically builds your modules but you may want to have your Acceleo generators inside of
+          a continuous integration system. In order to do that, Acceleo provides support for stand alone maven compilation that can be
+          plugged easily inside any maven based build. 
+        </p>
+        <ul class="thumbnails">
+          <li class="span8">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/720x536" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+          <li class="span4">
+            <a href="#" class="thumbnail">
+              <img src="http://placehold.it/360x268" alt="">
+            </a>
+          </li>
+        </ul>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Detailed guide to setup a maven build for Acceleo (Obeo Network).
+        </div>
+      </section>
+      
+      <footer class="footer">
+        <p>
+          The material in these guides are Copyright (c) 2008, 2012 Obeo. <a href="">Terms and Conditions</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

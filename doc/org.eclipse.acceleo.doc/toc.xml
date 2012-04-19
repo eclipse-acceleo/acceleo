@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="Acceleo Model To Text Transformation Language (MTL)">
- <topic href="doc/textile/overview.html" label="User Guide">
-    <topic href="doc/html/plugin_overview.html" label="Plugin overview">
-    </topic>
-    <topic href="doc/html/acceleo_quickstart.html" label="Quick Start">
-    </topic>
-    <topic href="doc/textile/getting_started.html" label="First Generator Module">
-    </topic>
-    <topic href="doc/html/acceleo_tutorial_android_example.html" label="Android Tutorial">
-    </topic>
-    <topic href="doc/textile/acceleo_launcher.html" label="Acceleo Launcher Documentation">
-    </topic>
-    <topic href="doc/html/ocl_operation_reference.html" label="OCL operations reference">
-    </topic>
-    <topic href="doc/html/acceleo_operation_reference.html" label="Acceleo operations reference">
-    </topic>
-    <topic href="doc/html/acceleo_equivalence.html" label="Acceleo migration equivalences">
-    </topic>
-    <topic href="doc/html/acceleo_text_production_rules.html" label="Text Production Rules">
-    </topic>
-    <anchor id="org.eclipse.acceleo.doc.userguide.anchor"/>
-    <topic href="doc/textile/faq.html" label="FAQ">
-    </topic>
+<toc label="Acceleo Documentation" topic="pages/index.html">
+ <topic href="pages/overview.html" label="Overview">
+ </topic>
+ <anchor id="org.eclipse.acceleo.doc.overview.anchor"/>
+ <topic href="pages/gettingstarted/index.html" label="Getting Started">
+  <link toc="toc_gettingstarted.xml" />
+ </topic>
+ <anchor id="org.eclipse.acceleo.doc.gettingstarted.anchor"/>
+ <topic href="pages/features/index.html" label="Features">
+ </topic>
+ <anchor id="org.eclipse.acceleo.doc.concepts.anchor"/>
+ <topic href="pages/reference/index.html" label="Reference">
+  <link toc="toc_reference.xml" />
+ </topic>
+ <anchor id="org.eclipse.acceleo.doc.reference.anchor"/>
+ <topic href="pages/whatsnew/index.html" label="What&apos;s new">
+  <link toc="toc_new.xml" />
+ </topic>
+ <topic label="Legal" href="pages/legal.html">
  </topic>
  <anchor id="org.eclipse.acceleo.doc.anchor"/>
- <topic href="doc/Legal.html" label="Legal">
- </topic>
+ <enablement>
+  <test property="org.eclipse.core.runtime.isBundleInstalled" args="org.eclipse.acceleo.ide.ui"/>
+ </enablement>
 </toc>

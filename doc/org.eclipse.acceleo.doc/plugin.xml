@@ -15,5 +15,17 @@ Contributors:
 <plugin>
   <extension point="org.eclipse.help.toc">
     <toc file="toc.xml" primary="true"/>
+    <toc
+          file="toc_gettingstarted.xml"
+          primary="false">
+    </toc>
+    <toc
+          file="toc_new.xml"
+          primary="false">
+    </toc>
+    <toc
+          file="toc_reference.xml"
+          primary="false">
+    </toc>
    </extension>
 </plugin>
