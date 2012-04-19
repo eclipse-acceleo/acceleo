@@ -45,6 +45,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.BooleanLiteralExp;
 import org.eclipse.ocl.ecore.CollectionType;
+import org.eclipse.ocl.ecore.Constraint;
+import org.eclipse.ocl.ecore.ExpressionInOCL;
 import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VoidType;
@@ -786,7 +788,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				OperationCallExp oOperationCallExp = (OperationCallExp)oOCLExpression;
 				List<OCLExpression<EClassifier>> argument = oOperationCallExp.getArgument();
 				OCLExpression<EClassifier> source = oOperationCallExp.getSource();
-
 				boolean sourceIsCollection = false;
 				boolean argumentIsCollection = false;
 				if (argument.size() > 0) {
@@ -856,7 +857,6 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 							IAcceleoConstants.AFTER), iAfter.getStartPosition(), iAfter.getEndPosition());
 				}
 			}
-
 			if (oOCLExpression instanceof TemplateInvocation) {
 				TemplateInvocation templateInvocation = (TemplateInvocation)oOCLExpression;
 				if (templateInvocation.getDefinition() != null
@@ -879,7 +879,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 							.getDefinition().getName()), macroInvocation.getStartPosition(), macroInvocation
 							.getEndPosition());
 				}
-			} else if (oOCLExpression instanceof BooleanLiteralExp) {
+			} else if (oOCLExpression instanceof BooleanLiteralExp
+					&& oOCLExpression.eContainer() instanceof ExpressionInOCL
+					&& oOCLExpression.eContainer().eContainer() instanceof Constraint) {
 				// If we are here, there is a problem
 				this.logProblem(AcceleoParserMessages
 						.getString("CST2ASTConverterWithResolver.InvalidModelExpression"), iModelExpression //$NON-NLS-1$
