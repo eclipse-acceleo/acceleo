@@ -67,7 +67,10 @@ public class TemplateInvocationSpec extends TemplateInvocationImpl {
 		final Template temp = getDefinition();
 		final List<OCLExpression> args = getArgument();
 
-		final StringBuilder toString = new StringBuilder(temp.getName());
+		final StringBuilder toString = new StringBuilder(""); //$NON-NLS-1$
+		if (temp != null) {
+			toString.append(temp.getName());
+		}
 		toString.append('(');
 		for (int i = 0; i < args.size(); i++) {
 			toString.append(args.get(i).toString());
