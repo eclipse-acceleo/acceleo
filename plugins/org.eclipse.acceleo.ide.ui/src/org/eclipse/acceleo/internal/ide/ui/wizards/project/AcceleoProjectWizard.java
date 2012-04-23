@@ -386,7 +386,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 			// Default settings
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
-			settings.setCompilationKind(AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE);
+			settings.setCompilationKind(AcceleoBuilderSettings.COMPILATION_ABSOLUTE_PATH);
 			settings.setResourceKind(AcceleoBuilderSettings.BUILD_XMI_RESOURCE);
 			settings.save();
 
