@@ -8,6 +8,7 @@ Bundle-Activator: org.eclipse.acceleo.profiler.presentation.ProfilerEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.profiler.editor";tag=R3_3_0
 Export-Package: org.eclipse.acceleo.profiler.editor;x-internal:=true,
  org.eclipse.acceleo.profiler.presentation
 Require-Bundle: org.eclipse.core.runtime,

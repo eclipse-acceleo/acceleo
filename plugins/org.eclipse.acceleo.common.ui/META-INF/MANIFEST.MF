@@ -9,6 +9,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Localization: plugin
 Bundle-Vendor: %providerName
+Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.common.ui";tag=R3_3_0
 Export-Package: org.eclipse.acceleo.common.ui,
  org.eclipse.acceleo.common.ui.internal.notification;x-internal:=true,
  org.eclipse.acceleo.common.ui.notification

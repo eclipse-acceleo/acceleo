@@ -7,6 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.traceability.model";tag=R3_3_0
 Export-Package: org.eclipse.acceleo.traceability,
  org.eclipse.acceleo.traceability.impl,
  org.eclipse.acceleo.traceability.minimal;x-internal:=true,
