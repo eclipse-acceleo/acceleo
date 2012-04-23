@@ -354,6 +354,8 @@ public final class ModelUtils {
 	 */
 	public static EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
 		ensureResourceFactoryPresent(resourceSet);
+		String fileExtension = modelURI.fileExtension();
+		ensureDefaultResourceFactoryPresent(resourceSet, fileExtension);
 
 		EObject result = null;
 		final Resource modelResource = resourceSet.getResource(modelURI, true);
@@ -491,6 +493,46 @@ public final class ModelUtils {
 	/**
 	 * This will make sure that a resource factory is registered in the ResourceSet for the given file
 	 * extension.
+	 * <p>
+	 * We'll first search the resource set to check that a resource factory exists. If not, we'll search
+	 * within the global factory registry for one. If found, we'll register this factory in the resource set;
+	 * if not, we'll register a new XMI resource factory in the resource set. A call to
+	 * resourceSet#createResource() will never fail in {@link NullPointerException} after a call to this
+	 * method.
+	 * </p>
+	 * 
+	 * @param resourceSet
+	 *            The resource set in which to make sure a resource factory for extension
+	 *            <code>extension</code> exists.
+	 * @param extension
+	 *            The file extension of the file to load
+	 */
+	private static void ensureDefaultResourceFactoryPresent(ResourceSet resourceSet, String extension) {
+		if (IAcceleoConstants.EMTL_FILE_EXTENSION.equals(extension)) {
+			// don't handle EMTL files here, it can create conflict with binary resources...
+			return;
+		}
+		String fileExtension = extension;
+		if (fileExtension == null || fileExtension.length() == 0) {
+			fileExtension = Resource.Factory.Registry.DEFAULT_EXTENSION;
+		}
+		Object resourceFactory = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().get(
+				fileExtension);
+		if (resourceFactory == null) {
+			resourceFactory = Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+					.get(fileExtension);
+			if (resourceFactory != null) {
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+						resourceFactory);
+			} else {
+				resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExtension,
+						new XMIResourceFactoryImpl());
+			}
+		}
+	}
+
+	/**
+	 * This will make sure that a resource factory is registered in the ResourceSet.
 	 * <p>
 	 * We'll first search the resource set to check that a resource factory exists. If not, we'll search
 	 * within the global factory registry for one. If found, we'll register this factory in the resource set;
