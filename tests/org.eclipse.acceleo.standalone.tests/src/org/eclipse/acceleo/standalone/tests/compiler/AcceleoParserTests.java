@@ -70,7 +70,7 @@ public class AcceleoParserTests {
 				"src/org/eclipse/acceleo/project/first/file/genClassifier.mtl");
 		File services = new File(projectRoot, "src/org/eclipse/acceleo/project/first/common/services.mtl");
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(projectRoot, "bin/org/eclipse/acceleo/project/first/main/main.emtl");
@@ -146,7 +146,7 @@ public class AcceleoParserTests {
 				"src/org/eclipse/acceleo/project/second/file/genClassifier.mtl");
 		File services = new File(projectRoot, "src/org/eclipse/acceleo/project/second/common/services.mtl");
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(projectRoot,
@@ -226,7 +226,7 @@ public class AcceleoParserTests {
 		File services = new File(projectRoot,
 				"src/main/java/org/eclipse/acceleo/project/third/common/services.mtl");
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(projectRoot,
@@ -308,7 +308,7 @@ public class AcceleoParserTests {
 		File services = new File(javaProjectRoot,
 				"src/org/eclipse/acceleo/project/fourth/java/common/services.mtl");
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(javaProjectRoot,
@@ -385,7 +385,7 @@ public class AcceleoParserTests {
 		services = new File(mavenProjectRoot,
 				"src/main/java/org/eclipse/acceleo/project/fourth/maven/common/services.mtl");
 
-		parser = new AcceleoParser(project, false);
+		parser = new AcceleoParser(project, false, true);
 		parser.buildFile(main, new BasicMonitor());
 
 		builtMain = new File(mavenProjectRoot,
@@ -458,7 +458,7 @@ public class AcceleoParserTests {
 		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
 
 		ParserListener parserListener = new ParserListener();
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildFile(main, new BasicMonitor());
 
@@ -612,7 +612,7 @@ public class AcceleoParserTests {
 		project.addClasspathEntries(entries);
 
 		ParserListener parserListener = new ParserListener();
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildAll(new BasicMonitor());
 
@@ -770,14 +770,14 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		project.addClasspathEntries(entries);
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
 
 		// Now let's rebuild the main module
 		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
 
 		ParserListener parserListener = new ParserListener();
-		parser = new AcceleoParser(project, false);
+		parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildFile(main, new BasicMonitor());
 
@@ -823,7 +823,7 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		project.addClasspathEntries(entries);
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
 
 		// Now let's delete the main module and rebuild it
@@ -832,7 +832,7 @@ public class AcceleoParserTests {
 		outputFile.delete();
 
 		ParserListener parserListener = new ParserListener();
-		parser = new AcceleoParser(project, false);
+		parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildFile(main, new BasicMonitor());
 
@@ -878,7 +878,7 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		project.addClasspathEntries(entries);
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
 
 		// Now let's rebuild common
@@ -886,7 +886,7 @@ public class AcceleoParserTests {
 				"src/main/java/org/eclipse/acceleo/project/fifth/common/common.mtl");
 
 		ParserListener parserListener = new ParserListener();
-		parser = new AcceleoParser(project, false);
+		parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildFile(commonMTL, new BasicMonitor());
 
@@ -932,7 +932,7 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		project.addClasspathEntries(entries);
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
 
 		// Now let's rebuild common
@@ -964,7 +964,7 @@ public class AcceleoParserTests {
 		outputFile.delete();
 
 		ParserListener parserListener = new ParserListener();
-		parser = new AcceleoParser(project, false);
+		parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildFile(commonMTL, new BasicMonitor());
 
@@ -1014,7 +1014,7 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		project.addClasspathEntries(entries);
 
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
 
 		Set<File> allAcceleoModules = project.getAllAcceleoModules();
@@ -1023,7 +1023,7 @@ public class AcceleoParserTests {
 			outputFile.delete();
 
 			ParserListener parserListener = new ParserListener();
-			parser = new AcceleoParser(project, false);
+			parser = new AcceleoParser(project, false, true);
 			parser.addListeners(parserListener);
 			parser.buildFile(module, new BasicMonitor());
 
@@ -1119,7 +1119,7 @@ public class AcceleoParserTests {
 		File servicesSix = new File(projectSixRoot,
 				"src/main/acceleo/org/eclipse/acceleo/project/sixth/common/services.mtl");
 
-		AcceleoParser parser = new AcceleoParser(projectSix, false);
+		AcceleoParser parser = new AcceleoParser(projectSix, false, true);
 		ParserListener parserListener = new ParserListener();
 		parser.addListeners(parserListener);
 		parser.buildFile(mainSix, new BasicMonitor());
@@ -1184,7 +1184,7 @@ public class AcceleoParserTests {
 
 		projectSeven.addProjectDependencies(Sets.newHashSet(projectSix));
 
-		AcceleoParser parser = new AcceleoParser(projectSeven, false);
+		AcceleoParser parser = new AcceleoParser(projectSeven, false, true);
 		ParserListener parserListener = new ParserListener();
 		parser.addListeners(parserListener);
 		parser.buildAll(new BasicMonitor());
@@ -1234,7 +1234,7 @@ public class AcceleoParserTests {
 		project.addClasspathEntries(entries);
 
 		ParserListener parserListener = new ParserListener();
-		AcceleoParser parser = new AcceleoParser(project, false);
+		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.addListeners(parserListener);
 		parser.buildAll(new BasicMonitor());
 

@@ -118,14 +118,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		for (IProject iProject : Lists.reverse(accessibleProjects)) {
 			List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
 			for (IFile iFile : members) {
-				Map<String, String> dynamicEcorePackagePaths = AcceleoPackageRegistry.INSTANCE
-						.getDynamicEcorePackagePaths();
-				Collection<String> values = dynamicEcorePackagePaths.values();
-				boolean contains = values.contains(iFile.getFullPath().toString());
-				if (!contains) {
-					AcceleoPackageRegistry.INSTANCE.registerEcorePackages(iFile.getFullPath().toString(),
-							AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
-				}
+				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(iFile.getFullPath().toString(),
+						AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 			}
 		}
 
@@ -134,13 +128,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 		String resourceKind = settings.getResourceKind();
 		boolean useBinaryResources = !AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind);
+		boolean usePlatformResourcePath = AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE
+				.equals(settings.getCompilationKind());
 
 		Set<File> mainFiles = new LinkedHashSet<File>();
 		if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
 				|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
 			List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources);
+					acceleoProject, useBinaryResources, usePlatformResourcePath);
 			for (IFile iFile : deltaMembers) {
 				File fileToBuild = iFile.getLocation().toFile();
 				Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
@@ -156,7 +152,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			acceleoProject.clean();
 			this.cleanAcceleoMarkers(project);
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources);
+					acceleoProject, useBinaryResources, usePlatformResourcePath);
 			Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
 			for (File builtFile : builtFiles) {
 				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
@@ -176,7 +172,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		Set<File> fileNotCompiled = acceleoProject.getFileNotCompiled();
 		for (File fileToBuild : fileNotCompiled) {
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources);
+					acceleoProject, useBinaryResources, usePlatformResourcePath);
 			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 			this.addAcceleoMarkers(builtFiles, acceleoParser);
 			mainFiles.addAll(acceleoParser.getMainFiles());
