@@ -52,6 +52,20 @@ public class AcceleoBuilderSettings {
 	public static final String BUILD_PRAGMATIC_COMPLIANCE = "pragmatic"; //$NON-NLS-1$
 
 	/**
+	 * Indicates that we should use platform:/resource uris during the compilation.
+	 * 
+	 * @since 3.3
+	 */
+	public static final String COMPILATION_PLATFORM_RESOURCE = "compilation.platform.resource"; //$NON-NLS-1$
+
+	/**
+	 * Indicates that we should use the absolute path of the file during the compilation.
+	 * 
+	 * @since 3.3
+	 */
+	public static final String COMPILATION_ABSOLUTE_PATH = "compilation.absolute.path"; //$NON-NLS-1$
+
+	/**
 	 * Build compliance keyword in the Acceleo builder arguments list of the '.project' file.
 	 */
 	private static final String BUILD_COMPLIANCE_KEYWORD = "compliance"; //$NON-NLS-1$
@@ -62,6 +76,11 @@ public class AcceleoBuilderSettings {
 	 * @since 3.2
 	 */
 	private static final String TRIM_POSITION_RESOURCE_KEYWORD = "trim-position"; //$NON-NLS-1$
+
+	/**
+	 * The compilation path kind key.
+	 */
+	private static final String COMPILATION_PATH_KIND_KEYWORD = "compilation.kind"; //$NON-NLS-1$
 
 	/**
 	 * The project.
@@ -84,6 +103,11 @@ public class AcceleoBuilderSettings {
 	 * @since 3.2
 	 */
 	private boolean trimmedPositions;
+
+	/**
+	 * The compilation kind of the project.
+	 */
+	private String compilationKind;
 
 	/**
 	 * Constructor.
@@ -117,14 +141,23 @@ public class AcceleoBuilderSettings {
 					trimmedPositions = true;
 				}
 
+				arg = command.getArguments().get(COMPILATION_PATH_KIND_KEYWORD);
+				if (COMPILATION_PLATFORM_RESOURCE.equals(arg)) {
+					compilationKind = COMPILATION_PLATFORM_RESOURCE;
+				} else {
+					compilationKind = COMPILATION_ABSOLUTE_PATH;
+				}
+
 			} else {
 				compliance = BUILD_PRAGMATIC_COMPLIANCE;
 				resourceKind = BUILD_XMI_RESOURCE;
+				compilationKind = COMPILATION_ABSOLUTE_PATH;
 				trimmedPositions = false;
 			}
 		} catch (CoreException e) {
 			compliance = BUILD_PRAGMATIC_COMPLIANCE;
 			resourceKind = BUILD_XMI_RESOURCE;
+			compilationKind = COMPILATION_ABSOLUTE_PATH;
 			trimmedPositions = false;
 		}
 	}
@@ -187,6 +220,25 @@ public class AcceleoBuilderSettings {
 	}
 
 	/**
+	 * Returns the compilation kind setting of this project.
+	 * 
+	 * @return The compilation kind setting of this project.
+	 */
+	public String getCompilationKind() {
+		return compilationKind;
+	}
+
+	/**
+	 * Sets the compilation kind setting of this project.
+	 * 
+	 * @param compilationKind
+	 *            The compilation kind setting
+	 */
+	public void setCompilationKind(String compilationKind) {
+		this.compilationKind = compilationKind;
+	}
+
+	/**
 	 * To write the new settings in the '.project' file.
 	 * 
 	 * @throws CoreException
@@ -200,6 +252,7 @@ public class AcceleoBuilderSettings {
 			Map<String, String> args = new HashMap<String, String>();
 			args.put(BUILD_COMPLIANCE_KEYWORD, compliance);
 			args.put(BUILD_RESOURCE_KIND, resourceKind);
+			args.put(COMPILATION_PATH_KIND_KEYWORD, compilationKind);
 			command.setArguments(args);
 			desc.setBuildSpec(commands);
 			project.setDescription(desc, null);

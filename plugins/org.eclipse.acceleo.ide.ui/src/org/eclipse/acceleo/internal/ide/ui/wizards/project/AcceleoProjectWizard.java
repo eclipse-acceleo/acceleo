@@ -28,6 +28,7 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModule;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilder;
+import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderSettings;
 import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoProjectUtils;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -382,6 +383,12 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 			boolean generateModules = !(currentPage instanceof WizardNewProjectCreationPage);
 			AcceleoProjectUtils.generateFiles(acceleoProject, allModules, project, generateModules, monitor);
+
+			// Default settings
+			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+			settings.setCompilationKind(AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE);
+			settings.setResourceKind(AcceleoBuilderSettings.BUILD_XMI_RESOURCE);
+			settings.save();
 
 			IWorkingSet[] workingSets = newProjectPage.getSelectedWorkingSets();
 			getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);

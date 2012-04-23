@@ -14,8 +14,10 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.builders.AcceleoBuilderSettings;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -67,6 +69,16 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	private Button trimmedPositionButton;
 
 	/**
+	 * The platform:/resource radio button.
+	 */
+	private Button platformResourceButton;
+
+	/**
+	 * The absolute path radio button.
+	 */
+	private Button absolutePathButton;
+
+	/**
 	 * Constructor.
 	 */
 	public AcceleoCompilerPage() {
@@ -103,9 +115,20 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 			} else {
 				settings.setResourceKind(AcceleoBuilderSettings.BUILD_BINARY_RESOURCE);
 			}
+			if (platformResourceButton.getSelection()) {
+				settings.setCompilationKind(AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE);
+			} else {
+				settings.setCompilationKind(AcceleoBuilderSettings.COMPILATION_ABSOLUTE_PATH);
+			}
 			settings.setTrimmedPositions(trimmedPositionButton.getSelection());
 			try {
 				settings.save();
+			} catch (CoreException e) {
+				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
+			}
+
+			try {
+				project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 			} catch (CoreException e) {
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
@@ -145,6 +168,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		createResourceKindGroup(composite);
 		createComplianceGroup(composite);
 		createTrimmmedPositionGroup(composite);
+		createCompilationPathGroup(composite);
 		return composite;
 	}
 
@@ -163,9 +187,9 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		if (element instanceof IProject) {
 			IProject project = (IProject)element;
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
-			if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE == settings.getCompliance()) {
+			if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE.equals(settings.getCompliance())) {
 				strictCompliance.setSelection(true);
-			} else if (AcceleoBuilderSettings.BUILD_PRAGMATIC_COMPLIANCE == settings.getCompliance()) {
+			} else if (AcceleoBuilderSettings.BUILD_PRAGMATIC_COMPLIANCE.equals(settings.getCompliance())) {
 				strictCompliance.setSelection(false);
 			} else {
 				strictCompliance.setSelection(false);
@@ -199,7 +223,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		group.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.ResourceKind")); //$NON-NLS-1$
 		GridLayout layout = new GridLayout();
 		group.setLayout(layout);
-		layout.numColumns = 2;
+		layout.numColumns = 1;
 
 		binaryResourceButton = new Button(group, SWT.RADIO);
 		binaryResourceButton.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.BinaryResourceKind")); //$NON-NLS-1$
@@ -212,10 +236,10 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		if (element instanceof IProject) {
 			IProject project = (IProject)element;
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
-			if (AcceleoBuilderSettings.BUILD_XMI_RESOURCE == settings.getResourceKind()) {
+			if (AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(settings.getResourceKind())) {
 				xmiResourceButton.setSelection(true);
 				binaryResourceButton.setSelection(false);
-			} else if (AcceleoBuilderSettings.BUILD_BINARY_RESOURCE == settings.getResourceKind()) {
+			} else if (AcceleoBuilderSettings.BUILD_BINARY_RESOURCE.equals(settings.getResourceKind())) {
 				xmiResourceButton.setSelection(false);
 				binaryResourceButton.setSelection(true);
 			} else {
@@ -266,6 +290,61 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 		item.setImage(image);
 
 		String helpMessage = AcceleoUIMessages.getString("AcceleoCompilerPage.TrimmedPositionHelp"); //$NON-NLS-1$
+		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
+			item.setToolTipText(helpMessage);
+		}
+	}
+
+	/**
+	 * Creates a group for the compilation path kind settings.
+	 * 
+	 * @param parent
+	 *            The parent composite
+	 */
+	private void createCompilationPathGroup(Composite parent) {
+		Group group = new Group(parent, SWT.NONE);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		group.setLayoutData(gridData);
+		group.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.CompilationKind")); //$NON-NLS-1$
+		GridLayout layout = new GridLayout();
+		group.setLayout(layout);
+		layout.numColumns = 1;
+
+		this.platformResourceButton = new Button(group, SWT.RADIO);
+		this.platformResourceButton.setText(AcceleoUIMessages
+				.getString("AcceleoCompilerPage.PlatformResourcePath")); //$NON-NLS-1$
+		this.platformResourceButton.setLayoutData(new GridData());
+
+		this.absolutePathButton = new Button(group, SWT.RADIO);
+		this.absolutePathButton.setText(AcceleoUIMessages.getString("AcceleoCompilerPage.AbsolutePath")); //$NON-NLS-1$
+		this.absolutePathButton.setLayoutData(new GridData());
+
+		if (element instanceof IProject) {
+			IProject project = (IProject)element;
+			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
+			if (AcceleoBuilderSettings.COMPILATION_ABSOLUTE_PATH.equals(settings.getCompilationKind())) {
+				this.absolutePathButton.setSelection(true);
+				this.platformResourceButton.setSelection(false);
+			} else if (AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE.equals(settings
+					.getCompilationKind())) {
+				this.absolutePathButton.setSelection(false);
+				this.platformResourceButton.setSelection(true);
+			} else {
+				this.absolutePathButton.setSelection(true);
+				this.platformResourceButton.setSelection(false);
+			}
+		} else {
+			this.absolutePathButton.setSelection(true);
+			this.platformResourceButton.setSelection(false);
+		}
+
+		Image image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_LCL_LINKTO_HELP);
+		ToolBar result = new ToolBar(parent, SWT.FLAT | SWT.NO_FOCUS);
+		result.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_CENTER));
+		ToolItem item = new ToolItem(result, SWT.NONE);
+		item.setImage(image);
+
+		String helpMessage = AcceleoUIMessages.getString("AcceleoCompilerPage.CompilationPathHelp"); //$NON-NLS-1$
 		if (helpMessage != null && !"".equals(helpMessage)) { //$NON-NLS-1$
 			item.setToolTipText(helpMessage);
 		}

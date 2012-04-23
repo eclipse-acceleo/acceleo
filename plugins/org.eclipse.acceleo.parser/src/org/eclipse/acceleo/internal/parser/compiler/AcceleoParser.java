@@ -139,20 +139,29 @@ public class AcceleoParser {
 	private Set<File> dependenciesToBuild = new LinkedHashSet<File>();
 
 	/**
+	 * Indicates that we will use platform:/resource uris for the dependencies.
+	 */
+	private boolean usePlatformResourcePath;
+
+	/**
 	 * Constructs a new instance of an AcceleoParser for the given project.
 	 * 
 	 * @param acceleoProject
 	 *            The project in which we will build files.
 	 * @param useBinaryResources
 	 *            Indicates if we will use binary resources.
+	 * @param usePlatformResourcePath
+	 *            Indicates if we will use platform:/resource paths to load our dependencies.
 	 */
-	public AcceleoParser(AcceleoProject acceleoProject, boolean useBinaryResources) {
+	public AcceleoParser(AcceleoProject acceleoProject, boolean useBinaryResources,
+			boolean usePlatformResourcePath) {
 		this.resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 		AcceleoParserUtils.registerResourceFactories(resourceSet);
 		AcceleoParserUtils.registerPackages(resourceSet);
 		AcceleoParserUtils.registerLibraries(resourceSet);
 		this.acceleoProject = acceleoProject;
 		this.usebinaryResources = useBinaryResources;
+		this.usePlatformResourcePath = usePlatformResourcePath;
 	}
 
 	/**
@@ -492,7 +501,8 @@ public class AcceleoParser {
 			if (dependingModule != null) {
 				File output = dependingAcceleoProject.getOutputFile(dependingModule);
 				if (output != null && !output.exists() && !this.dependenciesToBuild.contains(dependingModule)) {
-					AcceleoParser parser = new AcceleoParser(dependingAcceleoProject, this.usebinaryResources);
+					AcceleoParser parser = new AcceleoParser(dependingAcceleoProject,
+							this.usebinaryResources, this.usePlatformResourcePath);
 					parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners.size()]));
 					parser.setURIHandler(this.uriHandler);
 					parser.addDependencyToBuild(dependingModule);
@@ -561,7 +571,7 @@ public class AcceleoParser {
 				for (IParserListener listener : this.listeners) {
 					listener.loadDependency(dependingModule);
 				}
-				if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+				if (EMFPlugin.IS_ECLIPSE_RUNNING && this.usePlatformResourcePath) {
 					AcceleoProject dependingModuleAcceleoProject = null;
 					if (this.acceleoProject.getAllCompiledAcceleoModules().contains(dependingModule)) {
 						dependingModuleAcceleoProject = this.acceleoProject;
@@ -730,7 +740,8 @@ public class AcceleoParser {
 				if (!fileToBuild.equals(dependingBuiltFile) && !fileBuiltByPropagation.contains(fileToBuild)) {
 					fileBuiltByPropagation.clear();
 
-					AcceleoParser parser = new AcceleoParser(dependentAcceleoProject, this.usebinaryResources);
+					AcceleoParser parser = new AcceleoParser(dependentAcceleoProject,
+							this.usebinaryResources, this.usePlatformResourcePath);
 					parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners.size()]));
 					parser.setURIHandler(this.uriHandler);
 					parser.clearDependencyToBuild();
