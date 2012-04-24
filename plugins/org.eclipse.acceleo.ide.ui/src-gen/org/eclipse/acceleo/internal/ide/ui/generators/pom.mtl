@@ -37,13 +37,16 @@
   <name>Acceleo Generator Project</name>
 
   <modules>
-    <module>[anAcceleoPom.artifactId/]</module>
+    <module>../[anAcceleoPom.artifactId/]</module>
+    <module>../[anAcceleoPom.artifactId/].feature</module>
+    <module>../[anAcceleoPom.artifactId/].updatesite</module>
   </modules>
 
   <properties>
-    <acceleo-version>3.2.0-SNAPSHOT</acceleo-version>
-    <tycho-version>0.12.0</tycho-version>
-    <acceleo-site>http://download.eclipse.org/modeling/m2t/acceleo/updates/releases/3.2</acceleo-site>
+    <acceleo-version>3.3.0</acceleo-version>
+    <tycho-version>0.14.1</tycho-version>
+    <acceleo-site>https://hudson.eclipse.org/hudson/job/m2t-acceleo-master/lastSuccessfulBuild/artifact/Acceleo.p2.repository/</acceleo-site>
+    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20120308061416/repository/</orbit-site>
   </properties>
 
   <profiles>
@@ -61,6 +64,20 @@
         <platform-version>['['/]3.7,3.8)</platform-version>
       </properties>
     </profile>
+    <profile>
+      <id>platform-juno</id>
+      <activation>
+         <activeByDefault>false</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>juno</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
+        <platform-version>['['/]3.8,4.2)</platform-version>
+      </properties>
+    </profile>
   </profiles>
 
   <repositories>
@@ -74,11 +91,15 @@
       <layout>p2</layout>
       <url>${acceleo-site}</url>
     </repository>
+    <repository>
+      <id>orbit</id>
+      <layout>p2</layout>
+      <url>${orbit-site}</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
-      <!-- need maven-findbugs-2.3.2-SNAPSHOT, see http://jira.codehaus.org/browse/MFINDBUGS-122 remove this when this version is released -->
       <id>codehaus.snapshots</id>
       <url>http://snapshots.repository.codehaus.org/</url>
     </pluginRepository>
@@ -113,7 +134,6 @@
           </configuration>
         </plugin>
         <plugin>
-          <!-- TODO remove workaround when https://issues.sonatype.org/browse/TYCHO-473 is fixed -->
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-source-plugin</artifactId>
           <version>${tycho-version}</version>

@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:mtl="http://www.eclipse.org/acceleo/mtl/3.0" xmlns:ocl.ecore="http://www.eclipse.org/ocl/1.1.0/Ecore">
-  <mtl:Module name="pomChild" nsURI="org::eclipse::acceleo::module::sample::main::pomChild" startHeaderPosition="411" endHeaderPosition="567">
-    <documentation xsi:type="mtl:ModuleDocumentation" author="sbegaudeau">
-      <body startPosition="32" endPosition="408" value="&#xD;&#xA;Copyright (c) 2008, 2012 Obeo.&lt;br/>&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;Obeo - initial API and implementation&#xD;&#xA;@author sbegaudeau&#xD;&#xA;&#xD;&#xA;"/>
-    </documentation>
+  <mtl:Module name="pomUpdateSite" nsURI="org::eclipse::acceleo::module::sample::main::pomUpdateSite" startHeaderPosition="440" endHeaderPosition="617">
     <input>
       <takesTypesFrom href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#/"/>
     </input>
-    <ownedModuleElement xsi:type="mtl:Template" name="genPom" visibility="Public" main="true">
+    <ownedModuleElement xsi:type="mtl:Template" name="genPomUpdateSite" visibility="Public" main="true">
       <body xsi:type="mtl:FileBlock" openMode="OverWrite">
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;project xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot; xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;&#xA;    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;>&#xA;  &lt;modelVersion>4.0.0&lt;/modelVersion>&#xA;&#xA;  &lt;parent>&#xA;    &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;    &lt;artifactId>"/>
-        <body xsi:type="ocl.ecore:VariableExp" name="parent" referredVariable="/0/genPom/parent">
+        <body xsi:type="ocl.ecore:VariableExp" name="parent" referredVariable="/0/genPomUpdateSite/parent">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;    &lt;version>1.0.0.qualifier&lt;/version>&#xA;    &lt;relativePath>../"/>
-        <body xsi:type="ocl.ecore:VariableExp" name="parent" referredVariable="/0/genPom/parent">
+        <body xsi:type="ocl.ecore:VariableExp" name="parent" referredVariable="/0/genPomUpdateSite/parent">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
         <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="/pom.xml&lt;/relativePath>&#xA;  &lt;/parent>&#xA;&#xA;  &lt;groupId>acceleo&lt;/groupId>&#xA;  &lt;artifactId>"/>
         <body xsi:type="ocl.ecore:PropertyCallExp">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
-          <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPom" referredVariable="/0/genPom/anAcceleoPom">
+          <source xsi:type="ocl.ecore:VariableExp" name="anAcceleoPom" referredVariable="/0/genPomUpdateSite/anAcceleoPom">
             <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
           </source>
           <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/artifactId"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;  &lt;version>1.0.0.qualifier&lt;/version> &lt;!-- This version should match the version of your project in the MANIFEST.MF-->&#xA;  &lt;packaging>eclipse-plugin&lt;/packaging>&#xA;&#xA;&lt;/project>&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol=".updatesite&lt;/artifactId>&#xA;  &lt;packaging>eclipse-update-site&lt;/packaging>&#xA;&#xA;&lt;/project>&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="pom.xml">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -33,12 +30,6 @@
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </charset>
       </body>
-      <documentation xsi:type="mtl:ModuleElementDocumentation">
-        <body startPosition="494" endPosition="567" value="&#xD;&#xA;Generates the pom.xml file.&#xD;&#xA;@param anAcceleoPom The Acceleo Pom&#xD;&#xA;&#xD;&#xA;"/>
-        <parametersDocumentation name="anAcceleoPom">
-          <body value=" The Acceleo Pom"/>
-        </parametersDocumentation>
-      </documentation>
       <parameter name="anAcceleoPom">
         <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
       </parameter>
@@ -67,11 +58,11 @@
       <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
         <references href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
       </eAnnotations>
-      <eOperations name="genPom">
+      <eOperations name="genPomUpdateSite">
         <eAnnotations source="http://www.eclipse.org/ocl/1.1.0/OCL">
           <contents xsi:type="ocl.ecore:Constraint"/>
         </eAnnotations>
-        <eAnnotations source="MTL" references="/0/genPom"/>
+        <eAnnotations source="MTL" references="/0/genPomUpdateSite"/>
         <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         <eParameters name="anAcceleoPom">
           <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom"/>
@@ -138,90 +129,75 @@
     <eType xsi:type="ecore:EClass" href="http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
   </ocl.ecore:Variable>
   <ecore:EAnnotation source="positions">
-    <eAnnotations source="positions.0" references="/0/@documentation">
-      <details key="start" value="29"/>
-      <details key="end" value="410"/>
-      <details key="line" value="0"/>
+    <eAnnotations source="positions.0" references="/0/genPomUpdateSite">
+      <details key="start" value="525"/>
+      <details key="end" value="1310"/>
+      <details key="line" value="17"/>
     </eAnnotations>
-    <eAnnotations source="positions.1" references="/0/genPom">
-      <details key="start" value="570"/>
-      <details key="end" value="1449"/>
+    <eAnnotations source="positions.1" references="/0/genPomUpdateSite/@body.0">
+      <details key="start" value="620"/>
+      <details key="end" value="1298"/>
+      <details key="line" value="19"/>
+    </eAnnotations>
+    <eAnnotations source="positions.2" references="/0/genPomUpdateSite/@body.0/@body.0">
+      <details key="start" value="655"/>
+      <details key="end" value="1011"/>
       <details key="line" value="20"/>
     </eAnnotations>
-    <eAnnotations source="positions.2" references="/0/genPom/@body.0">
-      <details key="start" value="657"/>
-      <details key="end" value="1437"/>
-      <details key="line" value="22"/>
-    </eAnnotations>
-    <eAnnotations source="positions.3" references="/0/genPom/@body.0/@body.0">
-      <details key="start" value="692"/>
-      <details key="end" value="1048"/>
-      <details key="line" value="23"/>
-    </eAnnotations>
-    <eAnnotations source="positions.4" references="/0/genPom/@body.0/parent">
-      <details key="start" value="1049"/>
-      <details key="end" value="1055"/>
+    <eAnnotations source="positions.3" references="/0/genPomUpdateSite/@body.0/parent">
+      <details key="start" value="1012"/>
+      <details key="end" value="1018"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.5" references="/0/genPom/@body.0/@body.2">
-      <details key="start" value="1057"/>
-      <details key="end" value="1131"/>
-      <details key="line" value="30"/>
+    <eAnnotations source="positions.4" references="/0/genPomUpdateSite/@body.0/@body.2">
+      <details key="start" value="1020"/>
+      <details key="end" value="1094"/>
+      <details key="line" value="27"/>
     </eAnnotations>
-    <eAnnotations source="positions.6" references="/0/genPom/@body.0/parent.1">
-      <details key="start" value="1132"/>
-      <details key="end" value="1138"/>
+    <eAnnotations source="positions.5" references="/0/genPomUpdateSite/@body.0/parent.1">
+      <details key="start" value="1095"/>
+      <details key="end" value="1101"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.7" references="/0/genPom/@body.0/@body.4">
-      <details key="start" value="1140"/>
-      <details key="end" value="1220"/>
-      <details key="line" value="32"/>
+    <eAnnotations source="positions.6" references="/0/genPomUpdateSite/@body.0/@body.4">
+      <details key="start" value="1103"/>
+      <details key="end" value="1183"/>
+      <details key="line" value="29"/>
     </eAnnotations>
-    <eAnnotations source="positions.8" references="/0/genPom/@body.0/@body.5">
-      <details key="start" value="1221"/>
-      <details key="end" value="1244"/>
+    <eAnnotations source="positions.7" references="/0/genPomUpdateSite/@body.0/@body.5">
+      <details key="start" value="1184"/>
+      <details key="end" value="1207"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.9" references="/0/genPom/@body.0/@body.5/anAcceleoPom">
-      <details key="start" value="1221"/>
-      <details key="end" value="1233"/>
+    <eAnnotations source="positions.8" references="/0/genPomUpdateSite/@body.0/@body.5/anAcceleoPom">
+      <details key="start" value="1184"/>
+      <details key="end" value="1196"/>
       <details key="line" value="0"/>
     </eAnnotations>
-    <eAnnotations source="positions.10" references="/0/genPom/@body.0/@body.6">
-      <details key="start" value="1246"/>
-      <details key="end" value="1430"/>
-      <details key="line" value="36"/>
+    <eAnnotations source="positions.9" references="/0/genPomUpdateSite/@body.0/@body.6">
+      <details key="start" value="1209"/>
+      <details key="end" value="1291"/>
+      <details key="line" value="33"/>
     </eAnnotations>
-    <eAnnotations source="positions.11" references="/0/genPom/@body.0/@fileUrl">
-      <details key="start" value="664"/>
-      <details key="end" value="673"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.12" references="/0/genPom/@body.0/@charset">
-      <details key="start" value="682"/>
-      <details key="end" value="689"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.13" references="/0/genPom/@documentation">
-      <details key="start" value="491"/>
-      <details key="end" value="569"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.14" references="/0/genPom/@documentation/anAcceleoPom">
-      <details key="start" value="-1"/>
-      <details key="end" value="-1"/>
-      <details key="line" value="0"/>
-    </eAnnotations>
-    <eAnnotations source="positions.15" references="/0/genPom/anAcceleoPom">
-      <details key="start" value="594"/>
-      <details key="end" value="619"/>
-      <details key="line" value="20"/>
-    </eAnnotations>
-    <eAnnotations source="positions.16" references="/0/genPom/parent">
-      <details key="start" value="621"/>
+    <eAnnotations source="positions.10" references="/0/genPomUpdateSite/@body.0/@fileUrl">
+      <details key="start" value="627"/>
       <details key="end" value="636"/>
-      <details key="line" value="20"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.11" references="/0/genPomUpdateSite/@body.0/@charset">
+      <details key="start" value="645"/>
+      <details key="end" value="652"/>
+      <details key="line" value="0"/>
+    </eAnnotations>
+    <eAnnotations source="positions.12" references="/0/genPomUpdateSite/anAcceleoPom">
+      <details key="start" value="559"/>
+      <details key="end" value="584"/>
+      <details key="line" value="17"/>
+    </eAnnotations>
+    <eAnnotations source="positions.13" references="/0/genPomUpdateSite/parent">
+      <details key="start" value="586"/>
+      <details key="end" value="600"/>
+      <details key="line" value="17"/>
     </eAnnotations>
   </ecore:EAnnotation>
 </xmi:XMI>

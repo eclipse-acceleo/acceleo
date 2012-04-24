@@ -10,15 +10,12 @@
  *     Obeo - initial API and implementation
  * @author sbegaudeau
  */]
-[module pomChild('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')]
+[comment encoding = UTF-8 /]
+[module pomFeature('http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1')]
 
 
-[**
- * Generates the pom.xml file.
- * @param anAcceleoPom The Acceleo Pom
- */]
-[template public genPom(anAcceleoPom : AcceleoPom, parent : String)]
-[comment @main /]
+[template public genPomFeature(anAcceleoPom : AcceleoPom, parent: String)]
+[comment @main/]
 [file ('pom.xml', false, 'UTF-8')]
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
@@ -33,9 +30,9 @@
   </parent>
 
   <groupId>acceleo</groupId>
-  <artifactId>[anAcceleoPom.artifactId/]</artifactId>
-  <version>1.0.0.qualifier</version> <!-- This version should match the version of your project in the MANIFEST.MF-->
-  <packaging>eclipse-plugin</packaging>
+  <artifactId>[anAcceleoPom.artifactId/].feature</artifactId>
+  <version>1.0.0.qualifier</version> <!-- This version should match the version of your project in the feature.xml-->
+  <packaging>eclipse-feature</packaging>
 
 </project>
 [/file]

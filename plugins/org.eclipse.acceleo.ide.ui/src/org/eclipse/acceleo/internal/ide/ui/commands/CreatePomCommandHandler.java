@@ -10,37 +10,28 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.commands;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
-import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
-import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPomDependency;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
-import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.EvaluationContext;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
 
 /**
  * The handler of the command used to create the pom.xml file.
@@ -103,101 +94,135 @@ public class CreatePomCommandHandler extends AbstractHandler {
 	 *            The project.
 	 */
 	private void generatePom(IProject project) {
-		AcceleoProject acceleoProject = new AcceleoProject(project);
+		IProgressMonitor monitor = new NullProgressMonitor();
+		final String lr = System.getProperty("line.separator"); //$NON-NLS-1$
 		AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
 		acceleoPom.setArtifactId(project.getName());
-		EList<AcceleoPomDependency> pomDependencies = acceleoPom.getDependencies();
 
-		IPath eclipseWorkspace = ResourcesPlugin.getWorkspace().getRoot().getLocation();
-		IPath eclipseHome = new Path(Platform.getInstallLocation().getURL().getPath());
+		// Compute the dependencies that need to be built
 
-		IPath eclipsePathRelativeToFile = CreateRunnableAcceleoOperation.computeEclipsePath();
+		// Generate feature project
+		IProject featureProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				project.getName() + ".feature"); //$NON-NLS-1$
+		if (!featureProject.exists()) {
+			try {
+				// Creation of the project
+				featureProject.create(monitor);
+				featureProject.open(monitor);
+				IProjectDescription description = featureProject.getDescription();
+				String[] oldNatureIds = description.getNatureIds();
+				String[] newNatureIds = new String[oldNatureIds.length + 1];
+				System.arraycopy(oldNatureIds, 0, newNatureIds, 0, oldNatureIds.length);
+				newNatureIds[oldNatureIds.length] = "org.eclipse.pde.FeatureNature"; //$NON-NLS-1$
+				description.setNatureIds(newNatureIds);
+				featureProject.setDescription(description, monitor);
 
-		Iterator<IPath> entries = acceleoProject.getResolvedClasspath().iterator();
-		while (entries.hasNext()) {
-			IPath iPath = entries.next();
-			String classpathEntry = null;
-			if (eclipseWorkspace.isPrefixOf(iPath)) {
-				classpathEntry = iPath.toString().substring(eclipseWorkspace.toString().length());
-			} else if (eclipseHome.isPrefixOf(iPath)) {
-				classpathEntry = iPath.toString().substring(eclipseHome.toString().length());
+				// Creation of the file build.properties
+				IFile buildProperties = featureProject.getFile("build.properties"); //$NON-NLS-1$
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(
+						("bin.includes = feature.xml" + lr).getBytes()); //$NON-NLS-1$
+				buildProperties.create(inputStream, true, monitor);
+
+				// Creation of the file feature.xml
+				IFile featureXML = featureProject.getFile("feature.xml"); //$NON-NLS-1$
+				StringBuffer buffer = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + lr); //$NON-NLS-1$
+				buffer.append("<feature" + lr); //$NON-NLS-1$
+				buffer.append("      id=\"" + project.getName() + ".feature\"" + lr); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append("      label=\"Feature\"" + lr); //$NON-NLS-1$
+				buffer.append("      version=\"1.0.0.qualifier\">" + lr); //$NON-NLS-1$
+				buffer.append(lr);
+				buffer.append("   <description url=\"http://www.example.com/description\">" + lr); //$NON-NLS-1$
+				buffer.append("      [Enter Feature Description here.]" + lr); //$NON-NLS-1$
+				buffer.append("   </description>" + lr); //$NON-NLS-1$
+				buffer.append(lr);
+				buffer.append("   <copyright url=\"http://www.example.com/copyright\">" + lr); //$NON-NLS-1$
+				buffer.append("      [Enter Copyright Description here.]" + lr); //$NON-NLS-1$
+				buffer.append("   </copyright>" + lr); //$NON-NLS-1$
+				buffer.append(lr);
+				buffer.append("   <license url=\"http://www.example.com/license\">" + lr); //$NON-NLS-1$
+				buffer.append("      [Enter License Description here.]" + lr); //$NON-NLS-1$
+				buffer.append("   </license>" + lr); //$NON-NLS-1$
+				buffer.append(lr);
+				buffer.append("   <plugin" + lr); //$NON-NLS-1$
+				buffer.append("         id=\"" + project.getName() + "\"" + lr); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append("         download-size=\"0\"" + lr); //$NON-NLS-1$
+				buffer.append("         install-size=\"0\"" + lr); //$NON-NLS-1$
+				buffer.append("         version=\"0.0.0\"" + lr); //$NON-NLS-1$
+				buffer.append("         unpack=\"false\"/>" + lr); //$NON-NLS-1$
+				buffer.append(lr);
+				buffer.append("</feature>" + lr); //$NON-NLS-1$
+				inputStream = new ByteArrayInputStream(buffer.toString().getBytes());
+				featureXML.create(inputStream, true, monitor);
+
+				AcceleoUIGenerator.getDefault().generatePomFeature(acceleoPom, featureProject,
+						project.getName() + ".parent"); //$NON-NLS-1$
+			} catch (CoreException e) {
+				AcceleoUIActivator.log(e, true);
 			}
 
-			if (classpathEntry == null) {
-				continue;
-			}
+			// Generate update site project
+			IProject updateSiteProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+					project.getName() + ".updatesite"); //$NON-NLS-1$
+			if (!updateSiteProject.exists()) {
+				try {
+					// Creation of the project
+					updateSiteProject.create(monitor);
+					updateSiteProject.open(monitor);
+					IProjectDescription description = updateSiteProject.getDescription();
+					String[] oldNatureIds = description.getNatureIds();
+					String[] newNatureIds = new String[oldNatureIds.length + 1];
+					System.arraycopy(oldNatureIds, 0, newNatureIds, 0, oldNatureIds.length);
+					newNatureIds[oldNatureIds.length] = "org.eclipse.pde.UpdateSiteNature"; //$NON-NLS-1$
+					description.setNatureIds(newNatureIds);
+					updateSiteProject.setDescription(description, monitor);
 
-			AcceleoPomDependency acceleoPomDependency = AcceleowizardmodelFactory.eINSTANCE
-					.createAcceleoPomDependency();
+					// Creation of the file category.xml
+					IFile categoryXML = updateSiteProject.getFile("category.xml"); //$NON-NLS-1$
+					StringBuffer buffer = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + lr); //$NON-NLS-1$
+					buffer.append("<site>" + lr); //$NON-NLS-1$
+					buffer.append("   <feature url=\"features/" + project.getName() //$NON-NLS-1$
+							+ ".feature_1.0.0.qualifier.jar\" id=\"" + project.getName() //$NON-NLS-1$
+							+ ".feature\" version=\"1.0.0.qualifier\">" + lr); //$NON-NLS-1$
+					buffer.append("      <category name=\"" + project.getName() + ".category.id\"/>" + lr); //$NON-NLS-1$//$NON-NLS-2$
+					buffer.append("   </feature>" + lr); //$NON-NLS-1$
+					buffer.append("   <category-def name=\"" + project.getName() //$NON-NLS-1$
+							+ ".category.id\" label=\"Acceleo\"/>" + lr); //$NON-NLS-1$
+					buffer.append("</site>" + lr); //$NON-NLS-1$
+					ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer.toString().getBytes());
+					categoryXML.create(inputStream, true, monitor);
 
-			String artifactId = classpathEntry;
-			if (artifactId.contains("_")) { //$NON-NLS-1$
-				artifactId = artifactId.substring(0, artifactId.indexOf('_'));
-			}
-			if (artifactId.startsWith("plugins/")) { //$NON-NLS-1$
-				artifactId = artifactId.substring("plugins/".length()); //$NON-NLS-1$
-			}
-			acceleoPomDependency.setArtifactId(artifactId);
-			acceleoPomDependency.setGroupId("eclipse"); //$NON-NLS-1$
+					IFile siteXML = updateSiteProject.getFile("site.xml"); //$NON-NLS-1$
+					buffer = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + lr); //$NON-NLS-1$
+					buffer.append("<site>" + lr); //$NON-NLS-1$
+					buffer.append("</site>" + lr); //$NON-NLS-1$
+					siteXML.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
 
-			String version = classpathEntry;
-			if (version.contains("_") && version.indexOf('_') <= version.length()) { //$NON-NLS-1$
-				version = version.substring(version.indexOf('_') + 1);
-			}
-			if (version.endsWith(".jar")) { //$NON-NLS-1$
-				version = version.substring(0, version.length() - ".jar".length()); //$NON-NLS-1$
-			}
-			acceleoPomDependency.setVersion(version);
-			acceleoPomDependency.setSystemPath("${basedir}/" //$NON-NLS-1$
-					+ AcceleoProject.makeRelativeTo(eclipsePathRelativeToFile, project.getLocation())
-							.toString() + '/' + classpathEntry);
-			pomDependencies.add(acceleoPomDependency);
-		}
-		if (project.getParent() != null) {
-			String parentName = project.getParent().getName();
-			if (project.getParent() instanceof IWorkspaceRoot) {
-				IWorkspaceRoot workspaceRoot = (IWorkspaceRoot)project.getParent();
-				parentName = workspaceRoot.getLocation().lastSegment();
-			}
-			AcceleoUIGenerator.getDefault().generatePomChild(acceleoPom, project, parentName);
-			AcceleoUIGenerator.getDefault().generatePom(acceleoPom, project.getParent(), parentName);
-		}
-
-		try {
-			// Add the dependency to org.eclipse.acceleo.parser
-			// IPluginModelBase plugin = PluginRegistry.findModel(project);
-			// IPluginModelFactory factory = plugin.getPluginFactory();
-			// IPluginImport importNode = factory.createImport();
-			//importNode.setId("org.eclipse.acceleo.parser"); //$NON-NLS-1$
-			// IPluginBase pluginBase = plugin.getPluginBase();
-			// pluginBase.add(importNode);
-
-			IJavaProject javaProject = JavaCore.create(project);
-			IFolder sourceFolder = project.getFolder("src-acceleo-build"); //$NON-NLS-1$
-			sourceFolder.create(false, true, null);
-			IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
-			IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-			IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-			System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-			newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
-			javaProject.setRawClasspath(newEntries, null);
-
-			StringTokenizer tokenizer = new StringTokenizer(project.getName(), "."); //$NON-NLS-1$
-			while (tokenizer.hasMoreTokens()) {
-				String nextToken = tokenizer.nextToken();
-				sourceFolder = sourceFolder.getFolder(nextToken);
-				if (!sourceFolder.exists()) {
-					sourceFolder.create(true, true, new NullProgressMonitor());
+					AcceleoUIGenerator.getDefault().generatePomUpdateSite(acceleoPom, updateSiteProject,
+							project.getName() + ".parent"); //$NON-NLS-1$
+				} catch (CoreException e) {
+					AcceleoUIActivator.log(e, true);
 				}
 			}
 
-			org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoProject acceleoModelProject = AcceleowizardmodelFactory.eINSTANCE
-					.createAcceleoProject();
-			acceleoModelProject.setName(project.getName());
-			AcceleoUIGenerator.getDefault().generateAcceleoCompiler(acceleoModelProject, sourceFolder);
-		} catch (CoreException e) {
-			AcceleoUIActivator.log(e, true);
+			// Creation of the parent project
+			IProject parentProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+					project.getName() + ".parent"); //$NON-NLS-1$
+			if (!parentProject.exists()) {
+				try {
+					parentProject.create(monitor);
+					parentProject.open(monitor);
+
+					// Generates parent pom.xml
+					AcceleoUIGenerator.getDefault().generatePom(acceleoPom, parentProject,
+							project.getName() + ".parent"); //$NON-NLS-1$
+
+				} catch (CoreException e) {
+					AcceleoUIActivator.log(e, true);
+				}
+			}
 		}
+		// Generates regular pom.xml
+		AcceleoUIGenerator.getDefault().generatePomChild(acceleoPom, project, project.getName() + ".parent"); //$NON-NLS-1$
 	}
 
 	/**

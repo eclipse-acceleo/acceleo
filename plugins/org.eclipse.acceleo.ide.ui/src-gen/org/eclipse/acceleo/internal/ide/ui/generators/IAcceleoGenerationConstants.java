@@ -176,4 +176,24 @@ public interface IAcceleoGenerationConstants {
 	 * The name of the main template in the acceleo .project generator.
 	 */
 	String PROJECT_DOT_PROJECT_TEMPLATE_URI = "generateElement"; //$NON-NLS-1$
+
+	/**
+	 * The name of the acceleo pom.xml generator for the features.
+	 */
+	String POM_FEATURE_GENERATOR_URI = "pomFeature.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the main template.
+	 */
+	String POM_FEATURE_TEMPLATE_URI = "genPomFeature"; //$NON-NLS-1$
+
+	/**
+	 * The name of the Acceleo module.
+	 */
+	String POM_UPDATE_SITE_GENERATOR_URI = "pomUpdateSite.emtl"; //$NON-NLS-1$
+
+	/**
+	 * The name of the template.
+	 */
+	String POM_UPDATE_SITE_TEMPLATE_URI = "genPomUpdateSite"; //$NON-NLS-1$
 }

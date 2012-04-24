@@ -138,6 +138,16 @@ public final class AcceleoUIGenerator {
 	private static Module dotProject;
 
 	/**
+	 * The Acceleo module that will generate the pom.xml of the feature.
+	 */
+	private static Module pomFeature;
+
+	/**
+	 * The Acceleo module that will generate the pom.xml of the update site.
+	 */
+	private static Module pomUpdateSite;
+
+	/**
 	 * The sole instance.
 	 */
 	private static AcceleoUIGenerator instance;
@@ -381,6 +391,42 @@ public final class AcceleoUIGenerator {
 		generate(acceleoCompiler, acceleoProject, outputContainer,
 				IAcceleoGenerationConstants.PROJECT_ACCELEO_COMPILER_GENERATOR_URI,
 				IAcceleoGenerationConstants.PROJECT_ACCELEO_COMPILER_TEMPLATE_URI);
+	}
+
+	/**
+	 * Generates the pom.xml feature file.
+	 * 
+	 * @param acceleoPom
+	 *            The Acceleo pom.
+	 * @param outputContainer
+	 *            The output container.
+	 * @param parentName
+	 *            The name of the parent.
+	 */
+	public void generatePomFeature(AcceleoPom acceleoPom, IContainer outputContainer, String parentName) {
+		List<String> args = new ArrayList<String>();
+		args.add(parentName);
+		generate(pomFeature, acceleoPom, outputContainer,
+				IAcceleoGenerationConstants.POM_FEATURE_GENERATOR_URI,
+				IAcceleoGenerationConstants.POM_FEATURE_TEMPLATE_URI, args);
+	}
+
+	/**
+	 * Generates the pom.xml site file.
+	 * 
+	 * @param acceleoPom
+	 *            The Acceleo pom.
+	 * @param outputContainer
+	 *            The output container.
+	 * @param parentName
+	 *            The name of the parent.
+	 */
+	public void generatePomUpdateSite(AcceleoPom acceleoPom, IContainer outputContainer, String parentName) {
+		List<String> args = new ArrayList<String>();
+		args.add(parentName);
+		generate(pomUpdateSite, acceleoPom, outputContainer,
+				IAcceleoGenerationConstants.POM_UPDATE_SITE_GENERATOR_URI,
+				IAcceleoGenerationConstants.POM_UPDATE_SITE_TEMPLATE_URI, args);
 	}
 
 	/**
