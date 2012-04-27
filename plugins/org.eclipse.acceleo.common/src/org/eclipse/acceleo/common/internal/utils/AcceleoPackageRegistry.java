@@ -399,7 +399,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 			// The MTL ecore file mustn't be dynamic!!!
 			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
 			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix()) //$NON-NLS-1$ //$NON-NLS-2$
-					&& !"mtlstdlib".equals(ePackage.getNsPrefix()) && !!"oclstdlib".equals(ePackage.getNsPrefix())) { //$NON-NLS-1$ //$NON-NLS-2$
+					&& !"mtlstdlib".equals(ePackage.getNsPrefix()) && !"oclstdlib".equals(ePackage.getNsPrefix())) { //$NON-NLS-1$ //$NON-NLS-2$
 				if (ePackage.eResource() != null) {
 					dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI()
 							.toString());
