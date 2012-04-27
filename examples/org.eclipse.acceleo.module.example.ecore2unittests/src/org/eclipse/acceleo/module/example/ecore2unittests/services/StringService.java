@@ -10,8 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.module.example.ecore2unittests.services;
 
+import java.util.List;
+
+
 public class StringService {
 	public String convertToPackageString(String s) {
+		if (s == null) {
+			return "";
+		}
 		StringBuffer result = new StringBuffer(String.valueOf(s.charAt(0)));
 		for (int i = 1; i < s.length(); i++) {
 			final char next = s.charAt(i);
@@ -21,5 +27,12 @@ public class StringService {
 			result.append(Character.toUpperCase(next));
 		}
 		return result.toString();
+	}
+	public int sum(List<Integer> myInts) {
+		int sum = 0;
+		for (Integer i : myInts) {
+			sum += i.intValue();
+		}
+		return sum;
 	}
 }

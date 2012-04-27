@@ -4,3 +4,6 @@
 [query public convertToPackageString(aString : String) : String
 	= invoke('org.eclipse.acceleo.module.example.ecore2unittests.services.StringService', 'convertToPackageString(java.lang.String)', Sequence{aString}) /]
 
+[query public sum(list : Sequence(Integer)) : String
+	= invoke('org.eclipse.acceleo.module.example.ecore2unittests.services.StringService', 'sum(java.util.List)', Sequence{list}) /]
+
