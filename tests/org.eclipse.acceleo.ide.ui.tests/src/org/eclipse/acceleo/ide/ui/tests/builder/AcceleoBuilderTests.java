@@ -263,9 +263,13 @@ public class AcceleoBuilderTests {
 			}
 
 			project.delete(true, monitor);
+		} catch (CoreException e) {
+			fail(e.getMessage());
+		}
+		try {
 			metamodelProject.delete(true, monitor);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 
@@ -356,9 +360,13 @@ public class AcceleoBuilderTests {
 			}
 
 			project.delete(true, monitor);
+		} catch (CoreException e) {
+			fail(e.getMessage());
+		}
+		try {
 			metamodelProject.delete(true, monitor);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 
@@ -464,9 +472,13 @@ public class AcceleoBuilderTests {
 			}
 
 			project.delete(true, monitor);
+		} catch (CoreException e) {
+			fail(e.getMessage());
+		}
+		try {
 			metamodelProject.delete(true, monitor);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			fail(e.getMessage());
 		}
 	}
 }
