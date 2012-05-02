@@ -465,7 +465,7 @@ public class AcceleoProject {
 		File[] files = directory.listFiles();
 		if (files != null) {
 			for (File subfile : files) {
-				if (subfile.isFile() && subfile.getName().endsWith(extension)) {
+				if (subfile.isFile() && subfile.getName().endsWith("." + extension)) { //$NON-NLS-1$
 					result.add(subfile);
 				} else if (subfile.isDirectory()) {
 					result.addAll(AcceleoProject.getChildren(subfile, extension));
