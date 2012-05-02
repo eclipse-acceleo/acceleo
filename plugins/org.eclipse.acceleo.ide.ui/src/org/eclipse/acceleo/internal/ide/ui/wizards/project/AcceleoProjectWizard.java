@@ -251,26 +251,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 			IRunnableWithProgress projectCreation = new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) {
-					try {
-						IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
-								newProjectPage.getProjectName());
-						IPath location = newProjectPage.getLocationPath();
-						if (!project.exists()) {
-							IProjectDescription desc = project.getWorkspace().newProjectDescription(
-									newProjectPage.getProjectName());
-							if (ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
-								location = null;
-							}
-							desc.setLocation(location);
-							project.create(desc, monitor);
-							project.open(monitor);
-							convert(project, monitor);
-							project.build(IncrementalProjectBuilder.FULL_BUILD, AcceleoBuilder.BUILDER_ID,
-									new HashMap<String, String>(), monitor);
-						}
-					} catch (CoreException e) {
-						AcceleoUIActivator.log(e, true);
-					}
+					createProject(monitor);
 				}
 			};
 			iWizardContainer.run(false, false, projectCreation);
@@ -287,30 +268,70 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	}
 
 	/**
+	 * Creates the Acceleo project.
+	 * 
+	 * @param monitor
+	 *            The progress monitor.
+	 */
+	private void createProject(IProgressMonitor monitor) {
+		try {
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(
+					newProjectPage.getProjectName());
+			IPath location = newProjectPage.getLocationPath();
+			if (!project.exists()) {
+				IProjectDescription desc = project.getWorkspace().newProjectDescription(
+						newProjectPage.getProjectName());
+				if (ResourcesPlugin.getWorkspace().getRoot().getLocation().equals(location)) {
+					location = null;
+				}
+				desc.setLocation(location);
+				project.create(desc, monitor);
+				project.open(monitor);
+
+				boolean shouldGenerateModules = !(getContainer().getCurrentPage() instanceof WizardNewProjectCreationPage);
+				convert(project, newProjectPage.getSelectedJVM(), newAcceleoModulesCreationPage
+						.getAllModules(), shouldGenerateModules, monitor);
+
+				IWorkingSet[] workingSets = newProjectPage.getSelectedWorkingSets();
+				getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
+
+				project.build(IncrementalProjectBuilder.FULL_BUILD, AcceleoBuilder.BUILDER_ID,
+						new HashMap<String, String>(), monitor);
+			}
+		} catch (CoreException e) {
+			AcceleoUIActivator.log(e, true);
+		}
+	}
+
+	/**
 	 * Convert the empty project to an Acceleo project.
 	 * 
 	 * @param project
 	 *            The newly created project.
+	 * @param selectedJVM
+	 *            The name of the selected JVM (J2SE-1.5 or JavaSE-1.6 recommended).
+	 * @param allModules
+	 *            The description of the module that need to be created.
+	 * @param shouldGenerateModules
+	 *            Indicates if we should generate the modules in the project or not. The wizard container to
+	 *            display the progress monitor
 	 * @param monitor
 	 *            The monitor.
 	 */
-	private void convert(IProject project, IProgressMonitor monitor) {
-		String projectName = this.newProjectPage.getProjectName();
-		String generatorName = this.computeGeneratorName(projectName);
+	public static void convert(IProject project, String selectedJVM, List<AcceleoModule> allModules,
+			boolean shouldGenerateModules, IProgressMonitor monitor) {
+		String generatorName = computeGeneratorName(project.getName());
 		AcceleoProject acceleoProject = AcceleowizardmodelFactory.eINSTANCE.createAcceleoProject();
-		acceleoProject.setName(projectName);
+		acceleoProject.setName(project.getName());
 		acceleoProject.setGeneratorName(generatorName);
 
 		// Default JRE value
-		acceleoProject.setJre(newProjectPage.getSelectedJVM());
+		acceleoProject.setJre(selectedJVM);
 		if (acceleoProject.getJre() == null && acceleoProject.getJre().length() == 0) {
 			acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$			
 		}
 
-		List<AcceleoModule> allModules = this.newAcceleoModulesCreationPage.getAllModules();
-		IWizardContainer iWizardContainer = this.getContainer();
-		IWizardPage currentPage = iWizardContainer.getCurrentPage();
-		if (!(currentPage instanceof WizardNewProjectCreationPage)) {
+		if (shouldGenerateModules) {
 			for (AcceleoModule acceleoModule : allModules) {
 				String parentFolder = acceleoModule.getParentFolder();
 				IProject moduleProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
@@ -381,17 +402,14 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 			iJavaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
 			iJavaProject.open(monitor);
 
-			boolean generateModules = !(currentPage instanceof WizardNewProjectCreationPage);
-			AcceleoProjectUtils.generateFiles(acceleoProject, allModules, project, generateModules, monitor);
+			AcceleoProjectUtils.generateFiles(acceleoProject, allModules, project, shouldGenerateModules,
+					monitor);
 
 			// Default settings
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 			settings.setCompilationKind(AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE);
 			settings.setResourceKind(AcceleoBuilderSettings.BUILD_XMI_RESOURCE);
 			settings.save();
-
-			IWorkingSet[] workingSets = newProjectPage.getSelectedWorkingSets();
-			getWorkbench().getWorkingSetManager().addToWorkingSets(project, workingSets);
 		} catch (CoreException e) {
 			AcceleoUIActivator.log(e, true);
 		}
@@ -404,7 +422,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 	 *            The project name
 	 * @return The name of the generator
 	 */
-	private String computeGeneratorName(String projectName) {
+	private static String computeGeneratorName(String projectName) {
 		String generatorName = projectName;
 		if (generatorName.startsWith(AcceleoProjectWizard.MODULE_NAME_PREFIX)) {
 			generatorName = generatorName.substring(AcceleoProjectWizard.MODULE_NAME_PREFIX.length());
