@@ -1131,7 +1131,7 @@ public class AcceleoEvaluationContext<C> {
 							lastEOL = "\n"; //$NON-NLS-1$
 							nextChar++;
 						} else if (c == '\r') {
-							if (characterBuffer[nextChar + 1] == '\n') {
+							if (characterBuffer.length >= nextChar && characterBuffer[nextChar + 1] == '\n') {
 								lastEOL = "\r\n"; //$NON-NLS-1$
 								nextChar += 2;
 							} else {
