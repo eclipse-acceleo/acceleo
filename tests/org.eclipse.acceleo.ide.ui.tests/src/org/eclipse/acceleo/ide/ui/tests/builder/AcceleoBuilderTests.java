@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -53,13 +54,17 @@ public class AcceleoBuilderTests {
 
 	@BeforeClass
 	public static void setUp() {
-		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart();
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().getActivePart();
 
-		if (activePart instanceof IViewPart && activePart.getTitle().equals("Welcome")) { //$NON-NLS-1$
-			IViewPart view = (IViewPart)activePart;
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(view);
-		}
+				if (activePart instanceof IViewPart && activePart.getTitle().equals("Welcome")) { //$NON-NLS-1$
+					IViewPart view = (IViewPart)activePart;
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(view);
+				}
+			}
+		});
 	}
 
 	@Test
