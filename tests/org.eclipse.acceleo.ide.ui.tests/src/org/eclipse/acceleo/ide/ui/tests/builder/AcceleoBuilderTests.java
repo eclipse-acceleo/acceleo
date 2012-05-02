@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -65,6 +66,18 @@ public class AcceleoBuilderTests {
 				}
 			}
 		});
+	}
+
+	@AfterClass
+	public static void tearDown() {
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for (IProject iProject : projects) {
+			try {
+				iProject.delete(true, new NullProgressMonitor());
+			} catch (CoreException e) {
+				fail(e.getMessage());
+			}
+		}
 	}
 
 	@Test
