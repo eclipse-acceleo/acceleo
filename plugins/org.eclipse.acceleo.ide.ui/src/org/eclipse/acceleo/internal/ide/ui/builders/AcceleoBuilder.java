@@ -114,7 +114,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 		// Check that all ".ecore" models in accessible projects have been loaded.
 		AcceleoProject aProject = new AcceleoProject(project);
-		List<IProject> accessibleProjects = aProject.getRecursivelyAccessibleProjects();
+		List<IProject> accessibleProjects = new ArrayList<IProject>();
+		accessibleProjects.add(project);
+		accessibleProjects = aProject.getRecursivelyAccessibleProjects();
 		for (IProject iProject : Lists.reverse(accessibleProjects)) {
 			List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
 			for (IFile iFile : members) {
