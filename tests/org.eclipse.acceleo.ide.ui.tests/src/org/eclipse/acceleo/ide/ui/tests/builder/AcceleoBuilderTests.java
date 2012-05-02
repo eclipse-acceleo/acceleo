@@ -92,7 +92,7 @@ public class AcceleoBuilderTests {
 					.createAcceleoProject();
 			acceleoProject.setName("acceleoproject"); //$NON-NLS-1$
 			acceleoProject.setGeneratorName("generator"); //$NON-NLS-1$
-			acceleoProject.setJre("JavaSE-1.6"); //$NON-NLS-1$
+			acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$
 
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("acceleoproject"); //$NON-NLS-1$
 			project.create(monitor);
@@ -133,7 +133,7 @@ public class AcceleoBuilderTests {
 	public void testBuildWithMetamodelInPlugin() {
 		// Creates the Acceleo project
 		String projectName = "org.eclipse.acceleo.ide.ui.tests.builder.metamodelinplugin"; //$NON-NLS-1$
-		String selectedJVM = "JavaSE-1.6"; //$NON-NLS-1$
+		String selectedJVM = "J2SE-1.5"; //$NON-NLS-1$
 		List<AcceleoModule> allModules = new ArrayList<AcceleoModule>();
 
 		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
@@ -179,7 +179,7 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
 			if (markers.length > 0) {
 				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
 			}
@@ -225,7 +225,7 @@ public class AcceleoBuilderTests {
 
 		// Creates the Acceleo project
 		String projectName = "org.eclipse.acceleo.ide.ui.tests.builder.metamodelinworkspace"; //$NON-NLS-1$
-		String selectedJVM = "JavaSE-1.6"; //$NON-NLS-1$
+		String selectedJVM = "J2SE-1.5"; //$NON-NLS-1$
 		List<AcceleoModule> allModules = new ArrayList<AcceleoModule>();
 
 		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
@@ -270,7 +270,7 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
 			if (markers.length > 0) {
 				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
 			}
@@ -320,7 +320,7 @@ public class AcceleoBuilderTests {
 
 		// Creates the Acceleo project
 		String projectName = "org.eclipse.acceleo.ide.ui.tests.builder.metamodelinworkspacedependingonmetamodelinplugin"; //$NON-NLS-1$
-		String selectedJVM = "JavaSE-1.6"; //$NON-NLS-1$
+		String selectedJVM = "J2SE-1.5"; //$NON-NLS-1$
 		List<AcceleoModule> allModules = new ArrayList<AcceleoModule>();
 
 		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
@@ -367,7 +367,7 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
 			if (markers.length > 0) {
 				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
 			}
@@ -432,7 +432,7 @@ public class AcceleoBuilderTests {
 
 		// Creates the Acceleo project
 		String projectName = "org.eclipse.acceleo.ide.ui.tests.builder.metamodelinworkspacedependingonmetamodelinworkspace"; //$NON-NLS-1$
-		String selectedJVM = "JavaSE-1.6"; //$NON-NLS-1$
+		String selectedJVM = "J2SE-1.5"; //$NON-NLS-1$
 		List<AcceleoModule> allModules = new ArrayList<AcceleoModule>();
 
 		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
@@ -479,7 +479,7 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
 			if (markers.length > 0) {
 				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
 			}
