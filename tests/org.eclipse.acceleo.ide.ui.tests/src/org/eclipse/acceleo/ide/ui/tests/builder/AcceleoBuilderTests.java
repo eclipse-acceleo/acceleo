@@ -128,7 +128,6 @@ public class AcceleoBuilderTests {
 		}
 	}
 
-	@SuppressWarnings("restriction")
 	@Test
 	public void testBuildWithMetamodelInPlugin() {
 		// Creates the Acceleo project
@@ -179,9 +178,81 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
-			if (markers.length > 0) {
-				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			for (IMarker iMarker : markers) {
+				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
+				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
+				}
+			}
+
+			project.delete(true, monitor);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testErrorBuildWithMetamodelInPlugin() {
+		// Creates the Acceleo project
+		String projectName = "org.eclipse.acceleo.ide.ui.tests.builder.metamodelinplugin"; //$NON-NLS-1$
+		String selectedJVM = "J2SE-1.5"; //$NON-NLS-1$
+		List<AcceleoModule> allModules = new ArrayList<AcceleoModule>();
+
+		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
+		acceleoModule.setName("commonModule"); //$NON-NLS-1$
+		acceleoModule.setProjectName(projectName);
+		acceleoModule.setParentFolder(projectName
+				+ "/src/org/eclipse/acceleo/ide/ui/tests/builder/metamodelinplugin/common"); //$NON-NLS-1$
+		acceleoModule.setIsInitialized(false);
+		acceleoModule.setGenerateDocumentation(true);
+		acceleoModule.getMetamodelURIs().add("http://www.eclipse.org/emf/2002/Ecore"); //$NON-NLS-1$
+
+		AcceleoModuleElement acceleoModuleElement = AcceleowizardmodelFactory.eINSTANCE
+				.createAcceleoModuleElement();
+		acceleoModuleElement.setName("genCommon"); //$NON-NLS-1$
+		acceleoModuleElement.setGenerateFile(false);
+		acceleoModuleElement.setIsMain(false);
+		acceleoModuleElement.setKind(ModuleElementKind.TEMPLATE);
+		acceleoModuleElement.setParameterType("MyClass"); //$NON-NLS-1$
+		acceleoModule.setModuleElement(acceleoModuleElement);
+
+		allModules.add(acceleoModule);
+
+		boolean shouldGenerateModules = true;
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		IProgressMonitor monitor = new NullProgressMonitor();
+		try {
+			project.create(monitor);
+			project.open(monitor);
+			AcceleoProjectWizard.convert(project, selectedJVM, allModules, shouldGenerateModules, monitor);
+
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException("Could not sleep", e); //$NON-NLS-1$
+			}
+
+			// Check the existence of the output files
+			File src = project.getFolder("src").getLocation().toFile(); //$NON-NLS-1$
+			File bin = project.getFolder("bin").getLocation().toFile(); //$NON-NLS-1$
+			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), Sets
+					.newHashSet(new AcceleoProjectClasspathEntry(src, bin)));
+			Set<File> compiledAcceleoModules = acceleoProject.getAllCompiledAcceleoModules();
+			assertEquals(1, compiledAcceleoModules.size());
+			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
+
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			boolean foundError = false;
+			for (IMarker iMarker : markers) {
+				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
+				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+					foundError = true;
+				}
+			}
+
+			if (!foundError) {
+				fail("There should be at least one error."); //$NON-NLS-1$
 			}
 
 			project.delete(true, monitor);
@@ -191,7 +262,6 @@ public class AcceleoBuilderTests {
 
 	}
 
-	@SuppressWarnings("restriction")
 	@Test
 	public void testBuildWithMetamodelInWorkspace() {
 		// Creates the project containing the meta-model
@@ -270,9 +340,12 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
-			if (markers.length > 0) {
-				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			for (IMarker iMarker : markers) {
+				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
+				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
+				}
 			}
 
 			project.delete(true, monitor);
@@ -286,7 +359,6 @@ public class AcceleoBuilderTests {
 		}
 	}
 
-	@SuppressWarnings("restriction")
 	@Test
 	public void testBuildWithMetamodelInWorkspaceDependingOnMetamodelInPlugin() {
 		// Creates the project containing the meta-model
@@ -367,9 +439,12 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
-			if (markers.length > 0) {
-				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			for (IMarker iMarker : markers) {
+				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
+				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
+				}
 			}
 
 			project.delete(true, monitor);
@@ -383,7 +458,6 @@ public class AcceleoBuilderTests {
 		}
 	}
 
-	@SuppressWarnings("restriction")
 	@Test
 	public void testBuildWithMetamodelInWorkspaceDependingOnMetamodelInWorkspace() {
 		// Creates the project containing the meta-model
@@ -479,9 +553,12 @@ public class AcceleoBuilderTests {
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
 
-			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, false, IResource.DEPTH_INFINITE);
-			if (markers.length > 0) {
-				fail(markers[0].getAttribute(IMarker.MESSAGE).toString());
+			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			for (IMarker iMarker : markers) {
+				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
+				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
+				}
 			}
 
 			project.delete(true, monitor);
