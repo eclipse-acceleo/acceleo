@@ -20,7 +20,7 @@ Export-Package: org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.enviro
  org.eclipse.acceleo.internal.parser.ast;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.ast.ocl;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.ast.ocl.environment;x-friends:="org.eclipse.acceleo.ide.ui",
- org.eclipse.acceleo.internal.parser.compiler;x-friends:="org.eclipse.acceleo.standalone.tests,org.eclipse.acceleo.ide.ui",
+ org.eclipse.acceleo.internal.parser.compiler;x-friends:="org.eclipse.acceleo.standalone.tests,org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.parser.cst;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.cst.utils;
   x-friends:="org.eclipse.acceleo.ide.ui,
