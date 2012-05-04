@@ -164,7 +164,7 @@ public class AcceleoBuilderTests {
 			AcceleoProjectWizard.convert(project, selectedJVM, allModules, shouldGenerateModules, monitor);
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				throw new RuntimeException("Could not sleep", e); //$NON-NLS-1$
 			}
@@ -228,7 +228,7 @@ public class AcceleoBuilderTests {
 			AcceleoProjectWizard.convert(project, selectedJVM, allModules, shouldGenerateModules, monitor);
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				throw new RuntimeException("Could not sleep", e); //$NON-NLS-1$
 			}
@@ -326,7 +326,7 @@ public class AcceleoBuilderTests {
 			AcceleoProjectWizard.convert(project, selectedJVM, allModules, shouldGenerateModules, monitor);
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				throw new RuntimeException("Could not sleep", e); //$NON-NLS-1$
 			}
@@ -425,7 +425,7 @@ public class AcceleoBuilderTests {
 			AcceleoProjectWizard.convert(project, selectedJVM, allModules, shouldGenerateModules, monitor);
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				throw new RuntimeException("Could not sleep", e); //$NON-NLS-1$
 			}
@@ -539,7 +539,7 @@ public class AcceleoBuilderTests {
 			AcceleoProjectWizard.convert(project, selectedJVM, allModules, shouldGenerateModules, monitor);
 
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				throw new RuntimeException("Could not sleep", e); //$NON-NLS-1$
 			}
