@@ -113,6 +113,12 @@ public class Sequence implements ISequence {
 	 */
 	private int indexOf(StringBuffer buffer, String tag, int posBegin, int posEnd) {
 		int index = buffer.substring(posBegin, posEnd).indexOf(tag);
+		if ((index + posBegin) > 1 && IAcceleoConstants.LITERAL_ESCAPE.equals(tag)
+				&& "\\".equals(buffer.substring(posBegin + index - 1, posBegin + index))) { //$NON-NLS-1$
+			// Ensure that "\'" does not count
+			index = -1;
+		}
+
 		if (index >= 0) {
 			return index + posBegin;
 		}
