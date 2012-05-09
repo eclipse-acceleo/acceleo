@@ -181,6 +181,11 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 			InputStream containingStream = null;
 			try {
 				String jarPrefix = "jar:file:/"; //$NON-NLS-1$
+				String os = System.getProperty("os.name").toLowerCase(); //$NON-NLS-1$
+				if (os.indexOf("win") == -1) { //$NON-NLS-1$
+					// We are not on windows, let's assume that we are on a unix based system
+					jarPrefix = "jar:file:"; //$NON-NLS-1$
+				}
 				String jarSeparator = "!/"; //$NON-NLS-1$
 
 				if (path.startsWith(jarPrefix) && path.contains(jarSeparator)) {
