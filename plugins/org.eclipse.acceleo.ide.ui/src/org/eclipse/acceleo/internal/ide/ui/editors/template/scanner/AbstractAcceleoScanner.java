@@ -38,6 +38,9 @@ public abstract class AbstractAcceleoScanner extends RuleBasedScanner {
 	/** Keeps track of the rules used by this scanner. */
 	private IRule[] rules;
 
+	/** Keeps track of the default token used by this scanner. */
+	private IToken defaultToken;
+
 	/**
 	 * Instantiates our scanner given the order into which we should seek the colors for syntax coloring.
 	 * 
@@ -86,6 +89,12 @@ public abstract class AbstractAcceleoScanner extends RuleBasedScanner {
 	public void setRules(IRule[] rules) {
 		super.setRules(rules);
 		this.rules = rules;
+	}
+
+	@Override
+	public void setDefaultReturnToken(IToken defaultReturnToken) {
+		super.setDefaultReturnToken(defaultReturnToken);
+		this.defaultToken = defaultReturnToken;
 	}
 
 	/**
@@ -160,6 +169,14 @@ public abstract class AbstractAcceleoScanner extends RuleBasedScanner {
 				}
 			}
 		}
+
+		if (this.defaultToken instanceof AcceleoToken) {
+			String tokenKey = ((AcceleoToken)this.defaultToken).getColorKey();
+			if (tokenKey != null && tokenKey.equals(preferenceKey)) {
+				affectedTokens.add((AcceleoToken)this.defaultToken);
+			}
+		}
+
 		return affectedTokens;
 	}
 }
