@@ -168,7 +168,6 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 
 		// Unknown content and uri of an emtl file.
 		String path = uri.toFileString();
-		path = URI.decode(path);
 
 		if (path == null) {
 			path = uri.toString();
@@ -178,6 +177,8 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 		}
 
 		if (path != null) {
+			path = URI.decode(path);
+
 			InputStream stream = null;
 			InputStream containingStream = null;
 			try {
