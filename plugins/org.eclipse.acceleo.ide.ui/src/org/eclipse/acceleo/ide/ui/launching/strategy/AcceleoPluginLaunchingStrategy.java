@@ -124,10 +124,15 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 				if (container != null) {
 					final String qualifiedName = getMainType(configuration);
 					File targetFolder = null;
-					if (container.isVirtual()) {
-						AcceleoUIActivator.log(AcceleoUIMessages
-								.getString("AcceleoPluginLaunchStrategy.VirtualFolder"), true); //$NON-NLS-1$
-					} else {
+					try {
+						if (container.isVirtual()) {
+							AcceleoUIActivator.log(AcceleoUIMessages
+									.getString("AcceleoPluginLaunchStrategy.VirtualFolder"), true); //$NON-NLS-1$
+						} else {
+							targetFolder = container.getLocation().toFile();
+						}
+					} catch (NoSuchMethodError e) {
+						// Eclipse 3.5 does not have "isVirtual"
 						targetFolder = container.getLocation().toFile();
 					}
 					final List<String> args = getArguments(configuration);
