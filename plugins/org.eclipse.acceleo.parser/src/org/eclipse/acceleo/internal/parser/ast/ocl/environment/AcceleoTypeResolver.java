@@ -35,7 +35,6 @@ import org.eclipse.ocl.AbstractTypeResolver;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
 import org.eclipse.ocl.ecore.internal.OCLEcorePlugin;
 import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
-import org.eclipse.ocl.ecore.internal.TupleFactory;
 import org.eclipse.ocl.util.TypeUtil;
 import org.eclipse.ocl.utilities.UMLReflection;
 
@@ -250,7 +249,7 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	protected EPackage createTuplePackage() {
 		EPackage result = super.createTuplePackage();
 
-		result.setEFactoryInstance(new TupleFactory());
+		// result.setEFactoryInstance(new TupleFactory());
 
 		return result;
 	}
