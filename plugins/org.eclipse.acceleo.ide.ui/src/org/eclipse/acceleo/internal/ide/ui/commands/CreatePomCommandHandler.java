@@ -41,6 +41,21 @@ import org.eclipse.jdt.core.IJavaProject;
  */
 public class CreatePomCommandHandler extends AbstractHandler {
 	/**
+	 * The parent suffix.
+	 */
+	private static final String PARENT_SUFFIX = ".parent"; //$NON-NLS-1$
+
+	/**
+	 * The line separator.
+	 */
+	private static final String LS = System.getProperty("line.separator"); //$NON-NLS-1$
+
+	/**
+	 * The XML header.
+	 */
+	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"; //$NON-NLS-1$
+
+	/**
 	 * Indicating if the action is enabled.
 	 */
 	private boolean enabled;
@@ -95,12 +110,30 @@ public class CreatePomCommandHandler extends AbstractHandler {
 	 */
 	private void generatePom(IProject project) {
 		IProgressMonitor monitor = new NullProgressMonitor();
-		final String lr = System.getProperty("line.separator"); //$NON-NLS-1$
+
 		AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
 		acceleoPom.setArtifactId(project.getName());
 
-		// Compute the dependencies that need to be built
+		this.generateFeatureProject(project, acceleoPom, monitor);
+		this.generateUpdateSiteProject(project, acceleoPom, monitor);
+		this.generateParentProject(project, acceleoPom, monitor);
 
+		// Generates regular pom.xml
+		AcceleoUIGenerator.getDefault().generatePomChild(acceleoPom, project,
+				project.getName() + PARENT_SUFFIX);
+	}
+
+	/**
+	 * Generate the feature project.
+	 * 
+	 * @param project
+	 *            The project
+	 * @param acceleoPom
+	 *            The pom.xml
+	 * @param monitor
+	 *            The progress monitor
+	 */
+	private void generateFeatureProject(IProject project, AcceleoPom acceleoPom, IProgressMonitor monitor) {
 		// Generate feature project
 		IProject featureProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
 				project.getName() + ".feature"); //$NON-NLS-1$
@@ -120,109 +153,132 @@ public class CreatePomCommandHandler extends AbstractHandler {
 				// Creation of the file build.properties
 				IFile buildProperties = featureProject.getFile("build.properties"); //$NON-NLS-1$
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(
-						("bin.includes = feature.xml" + lr).getBytes()); //$NON-NLS-1$
+						("bin.includes = feature.xml" + LS).getBytes()); //$NON-NLS-1$
 				buildProperties.create(inputStream, true, monitor);
 
 				// Creation of the file feature.xml
 				IFile featureXML = featureProject.getFile("feature.xml"); //$NON-NLS-1$
-				StringBuffer buffer = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + lr); //$NON-NLS-1$
-				buffer.append("<feature" + lr); //$NON-NLS-1$
-				buffer.append("      id=\"" + project.getName() + ".feature\"" + lr); //$NON-NLS-1$ //$NON-NLS-2$
-				buffer.append("      label=\"Feature\"" + lr); //$NON-NLS-1$
-				buffer.append("      version=\"1.0.0.qualifier\">" + lr); //$NON-NLS-1$
-				buffer.append(lr);
-				buffer.append("   <description url=\"http://www.example.com/description\">" + lr); //$NON-NLS-1$
-				buffer.append("      [Enter Feature Description here.]" + lr); //$NON-NLS-1$
-				buffer.append("   </description>" + lr); //$NON-NLS-1$
-				buffer.append(lr);
-				buffer.append("   <copyright url=\"http://www.example.com/copyright\">" + lr); //$NON-NLS-1$
-				buffer.append("      [Enter Copyright Description here.]" + lr); //$NON-NLS-1$
-				buffer.append("   </copyright>" + lr); //$NON-NLS-1$
-				buffer.append(lr);
-				buffer.append("   <license url=\"http://www.example.com/license\">" + lr); //$NON-NLS-1$
-				buffer.append("      [Enter License Description here.]" + lr); //$NON-NLS-1$
-				buffer.append("   </license>" + lr); //$NON-NLS-1$
-				buffer.append(lr);
-				buffer.append("   <plugin" + lr); //$NON-NLS-1$
-				buffer.append("         id=\"" + project.getName() + "\"" + lr); //$NON-NLS-1$ //$NON-NLS-2$
-				buffer.append("         download-size=\"0\"" + lr); //$NON-NLS-1$
-				buffer.append("         install-size=\"0\"" + lr); //$NON-NLS-1$
-				buffer.append("         version=\"0.0.0\"" + lr); //$NON-NLS-1$
-				buffer.append("         unpack=\"false\"/>" + lr); //$NON-NLS-1$
-				buffer.append(lr);
-				buffer.append("</feature>" + lr); //$NON-NLS-1$
+				StringBuffer buffer = new StringBuffer(XML_HEADER + LS);
+				buffer.append("<feature" + LS); //$NON-NLS-1$
+				buffer.append("      id=\"" + project.getName() + ".feature\"" + LS); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append("      label=\"Feature\"" + LS); //$NON-NLS-1$
+				buffer.append("      version=\"1.0.0.qualifier\">" + LS); //$NON-NLS-1$
+				buffer.append(LS);
+				buffer.append("   <description url=\"http://www.example.com/description\">" + LS); //$NON-NLS-1$
+				buffer.append("      [Enter Feature Description here.]" + LS); //$NON-NLS-1$
+				buffer.append("   </description>" + LS); //$NON-NLS-1$
+				buffer.append(LS);
+				buffer.append("   <copyright url=\"http://www.example.com/copyright\">" + LS); //$NON-NLS-1$
+				buffer.append("      [Enter Copyright Description here.]" + LS); //$NON-NLS-1$
+				buffer.append("   </copyright>" + LS); //$NON-NLS-1$
+				buffer.append(LS);
+				buffer.append("   <license url=\"http://www.example.com/license\">" + LS); //$NON-NLS-1$
+				buffer.append("      [Enter License Description here.]" + LS); //$NON-NLS-1$
+				buffer.append("   </license>" + LS); //$NON-NLS-1$
+				buffer.append(LS);
+				buffer.append("   <plugin" + LS); //$NON-NLS-1$
+				buffer.append("         id=\"" + project.getName() + "\"" + LS); //$NON-NLS-1$ //$NON-NLS-2$
+				buffer.append("         download-size=\"0\"" + LS); //$NON-NLS-1$
+				buffer.append("         install-size=\"0\"" + LS); //$NON-NLS-1$
+				buffer.append("         version=\"0.0.0\"" + LS); //$NON-NLS-1$
+				buffer.append("         unpack=\"false\"/>" + LS); //$NON-NLS-1$
+				buffer.append(LS);
+				buffer.append("</feature>" + LS); //$NON-NLS-1$
 				inputStream = new ByteArrayInputStream(buffer.toString().getBytes());
 				featureXML.create(inputStream, true, monitor);
 
 				AcceleoUIGenerator.getDefault().generatePomFeature(acceleoPom, featureProject,
-						project.getName() + ".parent"); //$NON-NLS-1$
+						project.getName() + PARENT_SUFFIX);
 			} catch (CoreException e) {
 				AcceleoUIActivator.log(e, true);
 			}
 
-			// Generate update site project
-			IProject updateSiteProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
-					project.getName() + ".updatesite"); //$NON-NLS-1$
-			if (!updateSiteProject.exists()) {
-				try {
-					// Creation of the project
-					updateSiteProject.create(monitor);
-					updateSiteProject.open(monitor);
-					IProjectDescription description = updateSiteProject.getDescription();
-					String[] oldNatureIds = description.getNatureIds();
-					String[] newNatureIds = new String[oldNatureIds.length + 1];
-					System.arraycopy(oldNatureIds, 0, newNatureIds, 0, oldNatureIds.length);
-					newNatureIds[oldNatureIds.length] = "org.eclipse.pde.UpdateSiteNature"; //$NON-NLS-1$
-					description.setNatureIds(newNatureIds);
-					updateSiteProject.setDescription(description, monitor);
+		}
+	}
 
-					// Creation of the file category.xml
-					IFile categoryXML = updateSiteProject.getFile("category.xml"); //$NON-NLS-1$
-					StringBuffer buffer = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + lr); //$NON-NLS-1$
-					buffer.append("<site>" + lr); //$NON-NLS-1$
-					buffer.append("   <feature url=\"features/" + project.getName() //$NON-NLS-1$
-							+ ".feature_1.0.0.qualifier.jar\" id=\"" + project.getName() //$NON-NLS-1$
-							+ ".feature\" version=\"1.0.0.qualifier\">" + lr); //$NON-NLS-1$
-					buffer.append("      <category name=\"" + project.getName() + ".category.id\"/>" + lr); //$NON-NLS-1$//$NON-NLS-2$
-					buffer.append("   </feature>" + lr); //$NON-NLS-1$
-					buffer.append("   <category-def name=\"" + project.getName() //$NON-NLS-1$
-							+ ".category.id\" label=\"Acceleo\"/>" + lr); //$NON-NLS-1$
-					buffer.append("</site>" + lr); //$NON-NLS-1$
-					ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer.toString().getBytes());
-					categoryXML.create(inputStream, true, monitor);
+	/**
+	 * Generates the update site project.
+	 * 
+	 * @param project
+	 *            The project.
+	 * @param acceleoPom
+	 *            The pom.xml.
+	 * @param monitor
+	 *            the progress monitor.
+	 */
+	private void generateUpdateSiteProject(IProject project, AcceleoPom acceleoPom, IProgressMonitor monitor) {
+		// Generate update site project
+		IProject updateSiteProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				project.getName() + ".updatesite"); //$NON-NLS-1$
+		if (!updateSiteProject.exists()) {
+			try {
+				// Creation of the project
+				updateSiteProject.create(monitor);
+				updateSiteProject.open(monitor);
+				IProjectDescription description = updateSiteProject.getDescription();
+				String[] oldNatureIds = description.getNatureIds();
+				String[] newNatureIds = new String[oldNatureIds.length + 1];
+				System.arraycopy(oldNatureIds, 0, newNatureIds, 0, oldNatureIds.length);
+				newNatureIds[oldNatureIds.length] = "org.eclipse.pde.UpdateSiteNature"; //$NON-NLS-1$
+				description.setNatureIds(newNatureIds);
+				updateSiteProject.setDescription(description, monitor);
 
-					IFile siteXML = updateSiteProject.getFile("site.xml"); //$NON-NLS-1$
-					buffer = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + lr); //$NON-NLS-1$
-					buffer.append("<site>" + lr); //$NON-NLS-1$
-					buffer.append("</site>" + lr); //$NON-NLS-1$
-					siteXML.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
+				// Creation of the file category.xml
+				IFile categoryXML = updateSiteProject.getFile("category.xml"); //$NON-NLS-1$
+				StringBuffer buffer = new StringBuffer(XML_HEADER + LS);
+				buffer.append("<site>" + LS); //$NON-NLS-1$
+				buffer.append("   <feature url=\"features/" + project.getName() //$NON-NLS-1$
+						+ ".feature_1.0.0.qualifier.jar\" id=\"" + project.getName() //$NON-NLS-1$
+						+ ".feature\" version=\"1.0.0.qualifier\">" + LS); //$NON-NLS-1$
+				buffer.append("      <category name=\"" + project.getName() + ".category.id\"/>" + LS); //$NON-NLS-1$//$NON-NLS-2$
+				buffer.append("   </feature>" + LS); //$NON-NLS-1$
+				buffer.append("   <category-def name=\"" + project.getName() //$NON-NLS-1$
+						+ ".category.id\" label=\"Acceleo\"/>" + LS); //$NON-NLS-1$
+				buffer.append("</site>" + LS); //$NON-NLS-1$
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer.toString().getBytes());
+				categoryXML.create(inputStream, true, monitor);
 
-					AcceleoUIGenerator.getDefault().generatePomUpdateSite(acceleoPom, updateSiteProject,
-							project.getName() + ".parent"); //$NON-NLS-1$
-				} catch (CoreException e) {
-					AcceleoUIActivator.log(e, true);
-				}
-			}
+				IFile siteXML = updateSiteProject.getFile("site.xml"); //$NON-NLS-1$
+				buffer = new StringBuffer(XML_HEADER + LS);
+				buffer.append("<site>" + LS); //$NON-NLS-1$
+				buffer.append("</site>" + LS); //$NON-NLS-1$
+				siteXML.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
 
-			// Creation of the parent project
-			IProject parentProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
-					project.getName() + ".parent"); //$NON-NLS-1$
-			if (!parentProject.exists()) {
-				try {
-					parentProject.create(monitor);
-					parentProject.open(monitor);
-
-					// Generates parent pom.xml
-					AcceleoUIGenerator.getDefault().generatePom(acceleoPom, parentProject,
-							project.getName() + ".parent"); //$NON-NLS-1$
-
-				} catch (CoreException e) {
-					AcceleoUIActivator.log(e, true);
-				}
+				AcceleoUIGenerator.getDefault().generatePomUpdateSite(acceleoPom, updateSiteProject,
+						project.getName() + PARENT_SUFFIX);
+			} catch (CoreException e) {
+				AcceleoUIActivator.log(e, true);
 			}
 		}
-		// Generates regular pom.xml
-		AcceleoUIGenerator.getDefault().generatePomChild(acceleoPom, project, project.getName() + ".parent"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Generates the parent project with its pom.xml file.
+	 * 
+	 * @param project
+	 *            The project
+	 * @param acceleoPom
+	 *            The pom.xml file
+	 * @param monitor
+	 *            The progress monitor
+	 */
+	private void generateParentProject(IProject project, AcceleoPom acceleoPom, IProgressMonitor monitor) {
+		// Creation of the parent project
+		IProject parentProject = ResourcesPlugin.getWorkspace().getRoot().getProject(
+				project.getName() + PARENT_SUFFIX);
+		if (!parentProject.exists()) {
+			try {
+				parentProject.create(monitor);
+				parentProject.open(monitor);
+
+				// Generates parent pom.xml
+				AcceleoUIGenerator.getDefault().generatePom(acceleoPom, parentProject,
+						project.getName() + PARENT_SUFFIX);
+
+			} catch (CoreException e) {
+				AcceleoUIActivator.log(e, true);
+			}
+		}
 	}
 
 	/**
