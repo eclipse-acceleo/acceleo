@@ -1,0 +1,45 @@
+[comment encoding = UTF-8 /]
+[module interfaceJavaFile('http://www.eclipse.org/uml2/4.0.0/UML')]
+
+[import org::eclipse::acceleo::examples::uml2java::common::fileUtils /]
+
+[**
+ * The documentation of the template genInterfaceJavaFile.
+ * @param aInterface
+ */]
+[template public genInterfaceJavaFile(anInterface : Interface)]
+[file (anInterface.genFilePath(), false, 'UTF-8')]
+[anInterface.genCopyrightHeader()/]
+package [anInterface.genPackageValue()/];
+
+[anInterface.genDefaultImport()/]
+
+/**
+ * The documentation of the interface [anInterface.name.toUpperFirst()/].
+ * 
+ * @generated
+ */
+public interface [anInterface.name.toUpperFirst()/] {
+	[for (anOperation : Operation | anInterface.ownedOperation)]
+	/**
+	 * The documentation of the method [anOperation.name.toLowerFirst()/].
+	 * [for (aComment : Comment | anOperation.ownedComment)] [aComment._body/][/for]
+	[for (aParameter : Parameter | anOperation.ownedParameter) ? (aParameter.direction <> ParameterDirectionKind::return)]
+	 * @param [aParameter.name/]
+	[/for]
+	[if (not anOperation.type.oclIsUndefined())]
+	 * @return
+	[/if]
+	 * 
+	 * @generated
+	 */
+	public [if (anOperation.type.oclIsUndefined())]void[else][anOperation.type.name/][/if] [anOperation.name.toLowerFirst()/]([anOperation.parameters()/]);
+	
+	[/for]
+}
+[/file]
+[/template]
+
+[template private parameters(anOperation : Operation)]
+[for (aParameter : Parameter | anOperation.ownedParameter->reject(aParameter : Parameter | aParameter.direction = ParameterDirectionKind::return)) separator(', ')][aParameter.type.name.toUpperFirst()/] [aParameter.name.toLowerFirst()/][/for]
+[/template]
