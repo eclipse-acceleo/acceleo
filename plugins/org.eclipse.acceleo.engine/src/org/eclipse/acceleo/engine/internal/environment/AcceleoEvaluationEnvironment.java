@@ -987,8 +987,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 				template1SpecificArgumentCount++;
 			} else {
 				// are there any chance the argument would not be an EObject?
-				throw new AcceleoEvaluationException(AcceleoEngineMessages
-						.getString("AcceleoEvaluationVisitor.UnresolvedCompilationError")); //$NON-NLS-1$
+				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+						"AcceleoEvaluationVisitor.ArgumentNotEObjectOrCollection", actualArgumentType)); //$NON-NLS-1$
 			}
 		}
 		if (template1SpecificArgumentCount >= template2SpecificArgumentCount) {
