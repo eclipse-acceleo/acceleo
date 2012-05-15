@@ -21,6 +21,7 @@ import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.service.AcceleoModulePropertiesAdapter;
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoMainClass;
@@ -463,6 +464,10 @@ public final class AcceleoUIGenerator {
 			}
 
 			if (moduleTmp != null) {
+				AcceleoModulePropertiesAdapter adapter = new AcceleoModulePropertiesAdapter();
+				adapter.addProperty(IAcceleoConstants.DISABLE_DYNAMIC_MODULES);
+				moduleTmp.eAdapters().add(adapter);
+
 				String templateName = templateURI;
 				File generationRoot = outputContainer.getLocation().toFile();
 
@@ -523,6 +528,10 @@ public final class AcceleoUIGenerator {
 			}
 
 			if (moduleTmp != null) {
+				AcceleoModulePropertiesAdapter adapter = new AcceleoModulePropertiesAdapter();
+				adapter.addProperty(IAcceleoConstants.DISABLE_DYNAMIC_MODULES);
+				moduleTmp.eAdapters().add(adapter);
+
 				boolean traceabilityEnabled = AcceleoPreferences.isTraceabilityEnabled();
 				if (traceabilityEnabled) {
 					AcceleoPreferences.switchTraceability(false);
