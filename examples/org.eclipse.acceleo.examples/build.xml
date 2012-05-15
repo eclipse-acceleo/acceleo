@@ -25,6 +25,9 @@
 	<property name="uml2java.ui.plugin" value="org.eclipse.acceleo.module.example.uml2java.ui" />
 	<property name="uml2java.helios.plugin" value="org.eclipse.acceleo.module.example.uml2java.helios" />
 	<property name="uml2java.helios.ui.plugin" value="org.eclipse.acceleo.module.example.uml2java.helios.ui" />
+	<property name="uml2java.juno.plugin" value="org.eclipse.acceleo.examples.uml2java" />
+	<property name="uml2java.juno.model.plugin" value="org.eclipse.acceleo.examples.uml2java.model" />
+	<property name="uml2java.juno.ui.plugin" value="org.eclipse.acceleo.examples.uml2java.ui" />
 
 	<!-- Clean -->
 	<target name="clean">
@@ -56,6 +59,16 @@
 		</zip>
 		<zip destfile="${dest.dir}/${uml2java.helios.ui.plugin}.zip">
 			<zipfileset dir="${plugins.base.dir}/${uml2java.helios.ui.plugin}" />
+		</zip>
+		
+		<zip destfile="${dest.dir}/${uml2java.juno.plugin}.zip">
+			<zipfileset dir="${plugins.base.dir}/${uml2java.juno.plugin}" />
+		</zip>
+		<zip destfile="${dest.dir}/${uml2java.juno.model.plugin}.zip">
+			<zipfileset dir="${plugins.base.dir}/${uml2java.juno.model.plugin}" />
+		</zip>
+		<zip destfile="${dest.dir}/${uml2java.juno.ui.plugin}.zip">
+			<zipfileset dir="${plugins.base.dir}/${uml2java.juno.ui.plugin}" />
 		</zip>
 	</target>
 </project>

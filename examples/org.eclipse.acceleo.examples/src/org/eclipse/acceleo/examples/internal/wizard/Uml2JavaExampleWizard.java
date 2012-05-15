@@ -19,7 +19,10 @@ import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.examples.internal.AcceleoExamplesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 /**
  * This will allow the user to unzip the uml2java example module.
@@ -36,15 +39,36 @@ public class Uml2JavaExampleWizard extends AbstractExampleWizard {
 	protected Collection<ProjectDescriptor> getProjectDescriptors() {
 		final List<ProjectDescriptor> projects = new ArrayList<ProjectDescriptor>(2);
 
-		// Assume the version of OCL is an indication of the Eclipse version
-		final String bundleName = "org.eclipse.acceleo.examples";
-		String baseName = "org.eclipse.acceleo.module.example.uml2java";
-		if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
-			baseName += ".helios"; //$NON-NLS-1$
+		// Assume the UML version is the indicator of the Eclipse version
+		Bundle bundle = Platform.getBundle("org.eclipse.uml2.uml");
+		if (bundle == null) {
+			AcceleoExamplesPlugin.getDefault().getLog().log(
+					new Status(IStatus.ERROR, AcceleoExamplesPlugin.PLUGIN_ID, "UML2 is not installed"));
+		} else {
+			final String bundleName = "org.eclipse.acceleo.examples";
+			Version version = bundle.getVersion();
+			if (version.getMajor() >= 4) {
+				// Juno
+				String baseName = "org.eclipse.acceleo.examples.uml2java";
+				projects.add(new ProjectDescriptor(bundleName, "examples/" + baseName + ".zip", baseName)); //$NON-NLS-1$ //$NON-NLS-2$
+				projects.add(new ProjectDescriptor(bundleName,
+						"examples/" + baseName + ".model" + ".zip", baseName + ".model")); //$NON-NLS-1$ //$NON-NLS-2$
+				projects.add(new ProjectDescriptor(bundleName,
+						"examples/" + baseName + ".ui" + ".zip", baseName //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								+ ".ui")); //$NON-NLS-1$
+			} else {
+				// Old mechanism
+				// Assume the version of OCL is an indication of the Eclipse version
+				String baseName = "org.eclipse.acceleo.module.example.uml2java";
+				if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
+					baseName += ".helios"; //$NON-NLS-1$
+				}
+				projects.add(new ProjectDescriptor(bundleName, "examples/" + baseName + ".zip", baseName)); //$NON-NLS-1$ //$NON-NLS-2$ 
+				projects.add(new ProjectDescriptor(bundleName,
+						"examples/" + baseName + ".ui" + ".zip", baseName //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+								+ ".ui")); //$NON-NLS-1$
+			}
 		}
-		projects.add(new ProjectDescriptor(bundleName, "examples/" + baseName + ".zip", baseName)); //$NON-NLS-1$ //$NON-NLS-2$ 
-		projects.add(new ProjectDescriptor(bundleName, "examples/" + baseName + ".ui" + ".zip", baseName //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				+ ".ui")); //$NON-NLS-1$
 
 		return projects;
 	}
