@@ -1941,7 +1941,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			default:
 				// Note that we'll never be here : isTraceabilityImpactingOperation limits us to known
 				// operations
-				throw new UnsupportedOperationException();
+				if (callExp.eResource() != null) {
+					URI uri = callExp.eResource().getURI();
+					int startPosition = callExp.getStartPosition();
+					int endPosition = callExp.getEndPosition();
+					throw new UnsupportedOperationException(AcceleoTraceabilityMessages.getString(
+							"AcceleoTraceabilityVisitor.OperationNotFound", callExp.toString(), source, uri, //$NON-NLS-1$
+							Integer.valueOf(startPosition), Integer.valueOf(endPosition)));
+				}
+
+				throw new UnsupportedOperationException(callExp.toString());
 		}
 
 		return result;
