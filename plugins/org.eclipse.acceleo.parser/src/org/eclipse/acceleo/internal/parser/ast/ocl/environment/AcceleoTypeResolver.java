@@ -249,7 +249,7 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	protected EPackage createTuplePackage() {
 		EPackage result = super.createTuplePackage();
 
-		// result.setEFactoryInstance(new TupleFactory());
+		result.setEFactoryInstance(new TupleFactory());
 
 		return result;
 	}
