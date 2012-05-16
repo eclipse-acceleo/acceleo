@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.maven;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
@@ -41,6 +38,9 @@ import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 
 /**
  * The Acceleo Parser MOJO is used to call the Acceleo Parser from Maven.
@@ -90,6 +90,14 @@ public class AcceleoParserMojo extends AbstractMojo {
 	 * @required
 	 */
 	private AcceleoProject acceleoProject;
+
+	/**
+	 * Indicates if we are compiling the Acceleo modules as binary resources.
+	 * 
+	 * @parameter expression = "${acceleo-compile.usePlatformResourcePath}"
+	 * @required
+	 */
+	private boolean usePlatformResourcePath;
 
 	/**
 	 * {@inheritDoc}
@@ -287,7 +295,8 @@ public class AcceleoParserMojo extends AbstractMojo {
 		}
 
 		log.info("Starting parsing...");
-		AcceleoParser parser = new AcceleoParser(aProject, this.useBinaryResources);
+		AcceleoParser parser = new AcceleoParser(aProject, this.useBinaryResources,
+				this.usePlatformResourcePath);
 		AcceleoParserListener listener = new AcceleoParserListener();
 		parser.addListeners(listener);
 

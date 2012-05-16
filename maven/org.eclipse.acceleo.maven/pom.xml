@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>maven</artifactId>
-  <version>3.2.1-SNAPSHOT</version>
+  <version>3.2.1</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
@@ -75,17 +75,14 @@
     <dependency>
     	<groupId>com.google.guava</groupId>
     	<artifactId>guava</artifactId>
-    	<version>11.0.1</version>
+    	<version>10.0.1</version>
 	</dependency>
   </dependencies>
   <repositories>
     <repository>
-      <id>github snapshot</id>
-      <url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>
-    </repository>
-    <repository>
-      <id>github release</id>
-      <url>https://github.com/sbegaudeau/maven-repository/raw/master/releases</url>
+      <id>Indigo Release</id>
+      <!--<url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>-->
+      <url>https://github.com/eclipse/acceleo/raw/master/maven/repository/releases/indigo</url>
     </repository>
  </repositories>
 </project>
