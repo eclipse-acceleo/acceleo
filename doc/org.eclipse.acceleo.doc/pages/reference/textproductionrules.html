@@ -83,24 +83,16 @@
           Nothing relevant for generation between the line start and the block head, nothing relevant between the block
           tail and the line end; both head and tail on the same line. All of the following are in this category.
         </p>
-        <code>
-          [for (Sequence{false, false, false})][self/][/for]
-        </code>
+        <pre>[for (Sequence{false, false, false})][self/][/for]</pre>
         <br />
         <br />
-        <code>
-          [if (true)]output[/if]
-        </code>
+        <pre>[if (true)]output[/if]</pre>
         <br />
         <br />
-        <code>
-          [/if] [comment .../]  [if (true)]output[/if]
-        </code>
+        <pre>[/if] [comment .../]  [if (true)]output[/if]</pre>
         <br />
         <br />
-        <code>
-          [/if]         [if (true)]output[/if]
-        </code>
+        <pre>[/if]         [if (true)]output[/if]</pre>
         <br />
         <br />
         
@@ -109,19 +101,13 @@
           Head and tail of the block are on the same line, but there is something relevant to the generation other than
           the block on that same line.
         </p>
-        <code>
-          Some text[for (Sequence{false, false, false})]output[/for]
-        </code>
+        <pre>Some text[for (Sequence{false, false, false})]output[/for]</pre>
         <br />
         <br />
-        <code>
-          [if (true)]output[/if] and some text
-        </code>
+        <pre>[if (true)]output[/if] and some text</pre>
         <br />
         <br />
-        <code>
-          [for (Sequence{false, false, false})]   [self/][/for] and some text.
-        </code>
+        <pre>[for (Sequence{false, false, false})]   [self/][/for] and some text.</pre>
         <br />
         <br />
         
