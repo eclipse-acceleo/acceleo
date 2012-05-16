@@ -43,7 +43,7 @@
   </rm:searchPath>
   <rm:searchPath name="juno">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/releases/juno">
+      <rm:uri format="http://download.eclipse.org/releases/juno">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
@@ -66,7 +66,7 @@
   </rm:searchPath>
   <rm:searchPath name="platform">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/eclipse/updates/4.2">
+      <rm:uri format="http://download.eclipse.org/eclipse/updates/4.2">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
