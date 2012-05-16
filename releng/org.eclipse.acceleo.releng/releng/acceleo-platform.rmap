@@ -6,7 +6,7 @@
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="juno"/>
-  <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="indigo"/>
+  <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.apache(?:\..+)?$" searchPathRef="orbit"/>
@@ -30,13 +30,6 @@
   <rm:searchPath name="ocl">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/modeling/mdt/ocl/updates/releases/3.2.0">
-        <bc:propertyRef key="eclipse.download"/>
-      </rm:uri>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="indigo">
-    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/releases/indigo">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
