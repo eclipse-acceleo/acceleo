@@ -948,9 +948,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				case PredefinedType.COLLECT:
 				case PredefinedType.COLLECT_NESTED:
 					// Merge the iteration body trace with the remainder of the iteration traces
-					ExpressionTrace<C> last = recordedTraces.removeLast();
-					recordedTraces.getLast().addTraceCopy(last);
-					last.dispose();
+					if (recordedTraces.size() > 1) {
+						ExpressionTrace<C> last = recordedTraces.removeLast();
+						recordedTraces.getLast().addTraceCopy(last);
+						last.dispose();
+					}
 					break;
 				case PredefinedType.SELECT:
 					if (result instanceof Boolean && ((Boolean)result).booleanValue()
@@ -1019,19 +1021,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			result = super.visitIteratorExp(callExp);
 		} finally {
 			evaluatingOperationCall = oldOperationEvaluationState;
-			ExpressionTrace<C> traces = recordedTraces.removeLast();
-			IterationTrace<C, PM> iterTrace = iterationTraces.removeLast();
-			if (!iterationTraces.isEmpty()
-					&& (iterationTraces.getLast().getReferredExpression() == callExp || iterationTraces
-							.getLast().getReferredExpression() == callExp.eContainer())) {
-				iterationTraces.getLast().addTraceCopy(traces);
-			} else {
-				recordedTraces.getLast().addTraceCopy(traces);
+			if (recordedTraces.size() > 0) {
+				ExpressionTrace<C> traces = recordedTraces.removeLast();
+				IterationTrace<C, PM> iterTrace = iterationTraces.removeLast();
+				if (!iterationTraces.isEmpty()
+						&& (iterationTraces.getLast().getReferredExpression() == callExp || iterationTraces
+								.getLast().getReferredExpression() == callExp.eContainer())) {
+					iterationTraces.getLast().addTraceCopy(traces);
+				} else if (recordedTraces.size() > 0) {
+					recordedTraces.getLast().addTraceCopy(traces);
+				}
+				traces.dispose();
+				iterTrace.dispose();
+				iterationBody = oldIterationBody;
+				iterationCount.removeLast();
 			}
-			traces.dispose();
-			iterTrace.dispose();
-			iterationBody = oldIterationBody;
-			iterationCount.removeLast();
 		}
 
 		scopeEObjects.removeLast();
