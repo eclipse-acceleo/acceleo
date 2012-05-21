@@ -12,7 +12,7 @@
  <topic href="pages/features/index.html" label="Features">
  </topic>
  <anchor id="org.eclipse.acceleo.doc.concepts.anchor"/>
- <topic href="pages/reference/index.html" label="Reference">
+ <topic label="Reference">
   <link toc="toc_reference.xml" />
  </topic>
  <anchor id="org.eclipse.acceleo.doc.reference.anchor"/>

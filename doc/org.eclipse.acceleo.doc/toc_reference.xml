@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<toc label="Reference" topic="pages/reference/index.html">
+<toc label="Reference">
    <topic href="pages/reference/language.html" label="Language">
    </topic>
    <topic href="pages/reference/project.html" label="Acceleo Project">
