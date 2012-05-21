@@ -301,8 +301,8 @@ public final class AcceleoDebugTarget extends AbstractDebugElement implements ID
 	public void terminate() throws DebugException {
 		thread = null;
 		terminated = true;
-		fireTerminateEvent();
 		debugger.terminate();
+		fireTerminateEvent();
 		debugger.removeListener(debuggerListener);
 		IBreakpointManager breakpointManager = getBreakpointManager();
 		breakpointManager.removeBreakpointListener(this);
