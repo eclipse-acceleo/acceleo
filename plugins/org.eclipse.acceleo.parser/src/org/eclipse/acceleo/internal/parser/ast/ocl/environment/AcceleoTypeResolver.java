@@ -243,20 +243,6 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.ocl.AbstractTypeResolver#createTuplePackage()
-	 */
-	@Override
-	protected EPackage createTuplePackage() {
-		EPackage result = super.createTuplePackage();
-
-		result.setEFactoryInstance(new TupleFactory());
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
 	 * @see org.eclipse.ocl.AbstractTypeResolver#findMatchingOperation(java.lang.Object, java.lang.Object)
 	 */
 	@Override
