@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoPom;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
@@ -130,6 +131,10 @@ public class CreatePomCommandHandler extends AbstractHandler {
 		AcceleoPom acceleoPom = AcceleowizardmodelFactory.eINSTANCE.createAcceleoPom();
 		acceleoPom.setArtifactId(project.getName());
 
+		boolean areNotificationsForcedDisabled = AcceleoPreferences.areNotificationsForcedDisabled();
+		if (!areNotificationsForcedDisabled) {
+			AcceleoPreferences.switchForceDeactivationNotifications(true);
+		}
 		this.generateFeatureProject(project, acceleoPom, monitor);
 		this.generateUpdateSiteProject(project, acceleoPom, monitor);
 		this.generateParentProject(project, acceleoPom, monitor);
@@ -137,6 +142,8 @@ public class CreatePomCommandHandler extends AbstractHandler {
 		// Generates regular pom.xml
 		AcceleoUIGenerator.getDefault().generatePomChild(acceleoPom, project,
 				project.getName() + PARENT_SUFFIX);
+
+		AcceleoPreferences.switchForceDeactivationNotifications(areNotificationsForcedDisabled);
 	}
 
 	/**
