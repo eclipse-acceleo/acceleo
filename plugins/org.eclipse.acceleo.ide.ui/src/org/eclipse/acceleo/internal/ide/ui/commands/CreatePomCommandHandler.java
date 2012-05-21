@@ -22,7 +22,7 @@ import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.viewers.TreeSelection;
 
 /**
  * The handler of the command used to create the pom.xml file.
@@ -68,12 +69,12 @@ public class CreatePomCommandHandler extends AbstractHandler {
 	@SuppressWarnings("unchecked")
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Object applicationContext = event.getApplicationContext();
-		if (applicationContext instanceof EvaluationContext) {
-			EvaluationContext context = (EvaluationContext)applicationContext;
+		if (applicationContext instanceof IEvaluationContext) {
+			IEvaluationContext context = (IEvaluationContext)applicationContext;
 			Object defaultVariable = context.getDefaultVariable();
+			List<IProject> projects = new ArrayList<IProject>();
 			if (defaultVariable instanceof List) {
 				List<Object> variables = (List<Object>)defaultVariable;
-				List<IProject> projects = new ArrayList<IProject>();
 				for (Object object : variables) {
 					if (object instanceof IProject) {
 						IProject project = (IProject)object;
@@ -86,16 +87,31 @@ public class CreatePomCommandHandler extends AbstractHandler {
 								.getAdapter(object, IProject.class));
 					}
 				}
-
-				for (IProject iProject : projects) {
-					try {
-						if (iProject.isAccessible()
-								&& iProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
-							generatePom(iProject);
-						}
-					} catch (CoreException e) {
-						AcceleoUIActivator.log(e, true);
+			} else if (defaultVariable instanceof TreeSelection
+					&& ((TreeSelection)defaultVariable).size() > 0) {
+				TreeSelection selection = (TreeSelection)defaultVariable;
+				List<?> list = selection.toList();
+				for (Object object : list) {
+					if (object instanceof IProject) {
+						IProject project = (IProject)object;
+						projects.add(project);
+					} else if (object instanceof IJavaProject) {
+						IJavaProject javaProject = (IJavaProject)object;
+						projects.add(javaProject.getProject());
+					} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
+						projects.add((IProject)Platform.getAdapterManager()
+								.getAdapter(object, IProject.class));
 					}
+				}
+			}
+
+			for (IProject iProject : projects) {
+				try {
+					if (iProject.isAccessible() && iProject.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID)) {
+						generatePom(iProject);
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.log(e, true);
 				}
 			}
 		}
@@ -289,8 +305,8 @@ public class CreatePomCommandHandler extends AbstractHandler {
 	@SuppressWarnings({"unchecked", "rawtypes" })
 	@Override
 	public void setEnabled(Object evaluationContext) {
-		if (evaluationContext instanceof EvaluationContext) {
-			EvaluationContext context = (EvaluationContext)evaluationContext;
+		if (evaluationContext instanceof IEvaluationContext) {
+			IEvaluationContext context = (IEvaluationContext)evaluationContext;
 			Object defaultVariable = context.getDefaultVariable();
 			if (defaultVariable instanceof List && ((List)defaultVariable).size() > 0) {
 				List<Object> variables = (List<Object>)defaultVariable;
@@ -314,7 +330,34 @@ public class CreatePomCommandHandler extends AbstractHandler {
 						AcceleoUIActivator.log(e, true);
 					}
 				}
+			} else if (defaultVariable instanceof TreeSelection
+					&& ((TreeSelection)defaultVariable).size() > 0) {
+				TreeSelection selection = (TreeSelection)defaultVariable;
+				List<?> list = selection.toList();
+				for (Object object : list) {
+					try {
+						if (object instanceof IProject) {
+							IProject project = (IProject)object;
+							enabled = project.isAccessible()
+									&& project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
+						} else if (object instanceof IJavaProject) {
+							IProject project = ((IJavaProject)object).getProject();
+							enabled = project.isAccessible()
+									&& project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
+						} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
+							IProject project = (IProject)Platform.getAdapterManager().getAdapter(object,
+									IProject.class);
+							enabled = project.isAccessible()
+									&& project.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
+						}
+					} catch (CoreException e) {
+						AcceleoUIActivator.log(e, true);
+					}
+				}
 			}
+		} else {
+			// Eclipse 4, let's consider that it's true.
+			enabled = true;
 		}
 	}
 

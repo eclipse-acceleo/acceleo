@@ -26,7 +26,7 @@ import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -38,10 +38,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 
 /**
  * The action to toggle (add/remove) the Acceleo nature.
@@ -71,12 +73,12 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 		if (event != null) {
 			applicationContext = event.getApplicationContext();
 		}
-		if (applicationContext instanceof EvaluationContext) {
-			EvaluationContext context = (EvaluationContext)applicationContext;
+		List<IProject> projects = new ArrayList<IProject>();
+		if (applicationContext instanceof IEvaluationContext) {
+			IEvaluationContext context = (IEvaluationContext)applicationContext;
 			Object defaultVariable = context.getDefaultVariable();
 			if (defaultVariable instanceof List) {
 				List<Object> variables = (List<Object>)defaultVariable;
-				List<IProject> projects = new ArrayList<IProject>();
 				for (Object object : variables) {
 					if (object instanceof IProject) {
 						IProject project = (IProject)object;
@@ -89,11 +91,29 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 								.getAdapter(object, IProject.class));
 					}
 				}
-				if (!projects.isEmpty()) {
-					selection = new StructuredSelection(projects);
+			} else if (defaultVariable instanceof TreeSelection
+					&& ((TreeSelection)defaultVariable).size() > 0) {
+				TreeSelection tSelection = (TreeSelection)defaultVariable;
+				List<?> list = tSelection.toList();
+				for (Object object : list) {
+					if (object instanceof IProject) {
+						IProject project = (IProject)object;
+						projects.add(project);
+					} else if (object instanceof JavaProject) {
+						JavaProject javaProject = (JavaProject)object;
+						projects.add(javaProject.getProject());
+					} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
+						projects.add((IProject)Platform.getAdapterManager()
+								.getAdapter(object, IProject.class));
+					}
 				}
 			}
 		}
+
+		if (!projects.isEmpty()) {
+			selection = new StructuredSelection(projects);
+		}
+
 		if (selection instanceof IStructuredSelection) {
 			for (Iterator<?> it = ((IStructuredSelection)selection).iterator(); it.hasNext();) {
 				Object element = it.next();
@@ -232,8 +252,8 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 	 */
 	@Override
 	public void setEnabled(Object evaluationContext) {
-		if (evaluationContext instanceof EvaluationContext) {
-			EvaluationContext context = (EvaluationContext)evaluationContext;
+		if (evaluationContext instanceof IEvaluationContext) {
+			IEvaluationContext context = (IEvaluationContext)evaluationContext;
 			Object defaultVariable = context.getDefaultVariable();
 			if (defaultVariable instanceof List && ((List)defaultVariable).size() > 0) {
 				List<Object> variables = (List<Object>)defaultVariable;
@@ -246,7 +266,22 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 						enabled = true;
 					}
 				}
+			} else if (defaultVariable instanceof TreeSelection
+					&& ((TreeSelection)defaultVariable).size() > 0) {
+				TreeSelection tSelection = (TreeSelection)defaultVariable;
+				List<?> list = tSelection.toList();
+				for (Object object : list) {
+					if (object instanceof IProject) {
+						enabled = true;
+					} else if (object instanceof IJavaProject) {
+						enabled = true;
+					} else if (Platform.getAdapterManager().getAdapter(object, IProject.class) instanceof IProject) {
+						enabled = true;
+					}
+				}
 			}
+		} else {
+			this.enabled = true;
 		}
 	}
 
