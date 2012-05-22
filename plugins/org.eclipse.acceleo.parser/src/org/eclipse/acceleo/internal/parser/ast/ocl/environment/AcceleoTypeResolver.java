@@ -258,14 +258,26 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 			candidates = umlReflection.getOperations(shadow);
 		}
 
+		List<EOperation> foundOperations = new ArrayList<EOperation>();
 		for (EOperation next : candidates) {
 			if (next == operation
 					|| (umlReflection.getName(next).equals(operationName) && matchParameters(next, operation))) {
-				return next;
+				foundOperations.add(next);
 			}
 		}
 
-		return null;
+		EOperation result = null;
+		for (EOperation eOperation : foundOperations) {
+			if (eOperation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
+				result = eOperation;
+			}
+		}
+
+		if (result == null && foundOperations.size() > 0) {
+			result = foundOperations.get(0);
+		}
+
+		return result;
 	}
 
 	/**
