@@ -3,11 +3,11 @@
   <rm:property key="checkout.location" value="${workspace.root}/"/>
   <rm:property key="eclipse.download" value="http://download.eclipse.org"/>
   <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
-  <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="juno"/>
-  <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="juno"/>
+  <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf"/>
+  <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.jdt(?:\..+)?$" searchPathRef="platform"/>
-  <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="juno"/>
+  <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.apache(?:\..+)?$" searchPathRef="orbit"/>
@@ -31,6 +31,13 @@
   <rm:searchPath name="ocl">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/modeling/mdt/ocl/updates/releases/3.2.0">
+        <bc:propertyRef key="eclipse.download"/>
+      </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="uml">
+    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
+      <rm:uri format="{0}/modeling/mdt/uml2/updates/4.0milestones/">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
