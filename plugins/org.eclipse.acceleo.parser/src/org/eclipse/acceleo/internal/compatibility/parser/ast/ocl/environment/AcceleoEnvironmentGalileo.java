@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
-import com.google.common.collect.Iterables;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,6 +61,8 @@ import org.eclipse.ocl.types.TypeType;
 import org.eclipse.ocl.utilities.PredefinedType;
 import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
+
+import com.google.common.collect.Iterables;
 
 /**
  * This class will not compile under Eclipse Ganymede with OCL 1.2 installed. It requires OCL 1.3 and
@@ -287,13 +287,14 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 				List<EOperation> operations = getOperations(owner, name);
 				List<EOperation> matches = null;
 
+				List<EOperation> perfectMatches = new ArrayList<EOperation>();
+
 				for (EOperation oper : operations) {
 					if (name.equals(uml.getName(oper))
 							&& matchArgs(owner, uml.getParameters(oper), arguments)) {
 
 						if (uml.getOwningClassifier(oper) == owner) {
-							eOperationCache.put(operationSignatureElement, oper);
-							return oper; // obviously the most specific definition
+							perfectMatches.add(oper);
 						}
 
 						if (matches == null) {
@@ -305,11 +306,22 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 					}
 				}
 
-				if (matches != null) {
-					if (matches.size() == 1) {
-						operation = matches.get(0);
-					} else if (!matches.isEmpty()) {
-						operation = mostSpecificRedefinition(matches, uml);
+				for (EOperation eOperation : perfectMatches) {
+					if (eOperation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
+						eOperationCache.put(operationSignatureElement, eOperation);
+						return eOperation; // obviously the most specific definition
+					}
+				}
+
+				if (perfectMatches.size() > 0) {
+					operation = perfectMatches.get(0);
+				} else {
+					if (matches != null) {
+						if (matches.size() == 1) {
+							operation = matches.get(0);
+						} else if (!matches.isEmpty()) {
+							operation = mostSpecificRedefinition(matches, uml);
+						}
 					}
 				}
 
