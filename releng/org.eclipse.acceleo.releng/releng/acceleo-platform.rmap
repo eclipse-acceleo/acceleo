@@ -6,7 +6,7 @@
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="juno"/>
-  <rm:locator pattern="^org\.eclipse\.objectteams(?:\..+)?$" searchPathRef="objectteam-juno"/>
+  <rm:locator pattern="^org\.eclipse\.jdt(?:\..+)?$" searchPathRef="platform"/>
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="juno"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
@@ -67,7 +67,7 @@
   </rm:searchPath>
   <rm:searchPath name="platform">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/releases/juno">
+      <rm:uri format="{0}/eclipse/updates/4.2milestones/">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
