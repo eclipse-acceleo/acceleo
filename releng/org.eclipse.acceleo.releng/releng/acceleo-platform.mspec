@@ -5,4 +5,5 @@
 	<mspec:property key="target.ws" value="*"/>
 
 	<mspec:mspecNode namePattern="^org\.eclipse\.acceleo\.releng$" exclude="true"/>
+	<mspec:mspecNode namePattern="^org\.eclipse\.acceleo\.maven$" exclude="true"/>
 </mspec:mspec>
