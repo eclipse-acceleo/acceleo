@@ -30,7 +30,7 @@
   </rm:searchPath>
   <rm:searchPath name="ocl">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/modeling/mdt/ocl/updates/releases/3.2.0">
+      <rm:uri format="{0}/modeling/mdt/ocl/updates/milestones">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
