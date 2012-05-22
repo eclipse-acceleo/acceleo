@@ -5,7 +5,7 @@
   <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf"/>
   <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl"/>
-  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="juno"/>
+  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="uml"/>
   <rm:locator pattern="^org\.eclipse\.jdt(?:\..+)?$" searchPathRef="platform"/>
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
