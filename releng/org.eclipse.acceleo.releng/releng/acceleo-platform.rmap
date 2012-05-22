@@ -10,7 +10,7 @@
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
   <rm:locator pattern="^org\.hamcrest(?:\..+)?$" searchPathRef="swtbot"/>
-  <rm:locator pattern="^org\.apache(?:\..+)?$" searchPathRef="orbit"/>
+  <rm:locator pattern="^org\.apache(?:\..+)?$" searchPathRef="oldorbit"/>
   <rm:locator pattern="^com\.google(?:\..+)?$" searchPathRef="orbit"/>
   <rm:locator searchPathRef="platform"/>
   <rm:searchPath name="local.releng">
