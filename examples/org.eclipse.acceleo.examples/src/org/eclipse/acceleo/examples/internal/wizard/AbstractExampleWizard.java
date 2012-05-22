@@ -215,6 +215,11 @@ public abstract class AbstractExampleWizard extends Wizard implements INewWizard
 							os.close();
 						}
 					}
+				} else {
+					// Create the repository
+					if (!file.exists()) {
+						file.mkdir();
+					}
 				}
 
 				zipFileStream.closeEntry();
