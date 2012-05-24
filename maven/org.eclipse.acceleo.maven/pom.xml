@@ -6,6 +6,23 @@
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
+  
+  <repositories>
+    <repository>
+      <id>Indigo Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+    </repository>
+	<repository>
+      <id>Juno Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
+    </repository>
+	<repository>
+      <id>Snapshots</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+    </repository>
+  </repositories>
+  
+  
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -78,11 +95,4 @@
     	<version>10.0.1</version>
 	</dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>Indigo Release</id>
-      <!--<url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>-->
-      <url>https://github.com/eclipse/acceleo/raw/master/maven/repository/releases/indigo</url>
-    </repository>
- </repositories>
 </project>
