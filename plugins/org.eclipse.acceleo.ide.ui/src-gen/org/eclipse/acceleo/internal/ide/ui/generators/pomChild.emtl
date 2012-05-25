@@ -9,7 +9,7 @@
     </input>
     <ownedModuleElement xsi:type="mtl:Template" name="genPom" visibility="Public" main="true">
       <body xsi:type="mtl:FileBlock" openMode="OverWrite">
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;project xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot; xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;&#xA;    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;>&#xA;  &lt;modelVersion>4.0.0&lt;/modelVersion>&#xA;&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &#xA;  &lt;!-- The maven integration will be continuously improved so keep an eye on the Acceleo wiki for more information: http://wiki.eclipse.org/Acceleo/Maven -->&#xA;  &#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &#xA;  &#xA;  &lt;parent>&#xA;    &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;    &lt;artifactId>"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;project xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot; xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;&#xA;    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;>&#xA;  &lt;modelVersion>4.0.0&lt;/modelVersion>&#xA;&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &#xA;  &lt;!-- The maven integration will be improved so keep an eye on the Acceleo wiki: http://wiki.eclipse.org/Acceleo/Maven -->&#xA;&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &lt;!-- ###################################################################################################### -->&#xA;  &#xA;  &#xA;  &lt;parent>&#xA;    &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;    &lt;artifactId>"/>
         <body xsi:type="ocl.ecore:VariableExp" name="parent" referredVariable="/0/genPom/parent">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </body>
@@ -25,7 +25,7 @@
           </source>
           <referredProperty xsi:type="ecore:EAttribute" href="http://www.eclipse.org/acceleo/ui/acceleowizardmodel/3.1#//AcceleoPom/artifactId"/>
         </body>
-        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;  &lt;version>1.0.0.qualifier&lt;/version> &lt;!-- This version should match the version of your project in the MANIFEST.MF-->&#xA;  &lt;packaging>eclipse-plugin&lt;/packaging>&#xA;&#xA;&lt;dependencies>&#xA;    &lt;dependency>&#xA;      &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;      &lt;artifactId>maven&lt;/artifactId>&#xA;      &lt;version>3.3.0&lt;/version>&#xA;    &lt;/dependency>&#xA;  &lt;/dependencies>&#xA;  &#xA;  &lt;repositories>&#xA;    &lt;repository>&#xA;      &lt;id>Indigo Release&lt;/id>&#xA;      &lt;url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo&lt;/url>&#xA;    &lt;/repository>&#xA;&#x9;&lt;repository>&#xA;      &lt;id>Juno Release&lt;/id>&#xA;      &lt;url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno&lt;/url>&#xA;    &lt;/repository>&#xA;&#x9;&lt;repository>&#xA;      &lt;id>Snapshots&lt;/id>&#xA;      &lt;url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots&lt;/url>&#xA;    &lt;/repository>&#xA; &lt;/repositories>&#xA; &#xA; &lt;build>&#xA;   &lt;plugins>&#xA;     &lt;plugin>&#xA;       &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;       &lt;artifactId>maven&lt;/artifactId>&#xA;       &lt;version>3.3.0&lt;/version>&#xA;       &lt;executions>&#xA;          &lt;execution>&#xA;            &lt;phase>compile&lt;/phase>&#xA;          &lt;/execution>&#xA;        &lt;/executions>&#xA;        &lt;configuration>&#xA;          &lt;useBinaryResources>false&lt;/useBinaryResources>&#xA;          &lt;acceleoProject>&#xA;            &lt;root>${project.basedir}&lt;/root>&#xA;            &lt;entries>&#xA;              &lt;entry>&#xA;                &lt;input>src&lt;/input>&#xA;                &lt;output>target/classes&lt;/output>&#xA;              &lt;/entry>&#xA;            &lt;/entries>&#xA;            &lt;jars>&#xA;              &lt;!-- The dependencies of your project should also be referrenced. For example, to find the UML meta-model, you need to link the Jar of the UML project. -->&#xA;              &lt;!-- The maven repositories of the Acceleo project are hosting some of the common meta-model of the Eclipse Foundation, like UML -->&#xA;              &lt;!-- &lt;jar>${project.basedir}/lib/org.eclipse.uml2.uml.VERSION.jar&lt;/jar> -->&#xA;            &lt;/jars>&#xA;          &lt;/acceleoProject>&#xA;          &lt;packagesToRegister>&#xA;&#x9;&#x9;    &lt;!-- Please add the name of the Java class of the packages that are needed for the compilation of your module. For an UML generator, use the following code -->&#xA;&#x9;&#x9;&#x9;&lt;!-- For more information, please visit http://wiki.eclipse.org/Acceleo/Maven -->&#xA;            &lt;!--&lt;packageToRegister>org.eclipse.uml2.uml.UMLPackage&lt;/packageToRegister>-->&#xA;          &lt;/packagesToRegister>&#xA;        &lt;/configuration>&#xA;     &lt;/plugin>&#xA;   &lt;/plugins>&#xA; &lt;/build>&#xA;&lt;/project>&#xA;"/>
+        <body xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="&lt;/artifactId>&#xA;  &lt;version>1.0.0.qualifier&lt;/version> &lt;!-- This version should match the version of your project in the MANIFEST.MF-->&#xA;  &lt;packaging>eclipse-plugin&lt;/packaging>&#xA;&#xA;  &lt;dependencies>&#xA;    &lt;dependency>&#xA;      &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;      &lt;artifactId>maven&lt;/artifactId>&#xA;      &lt;version>3.3.0&lt;/version>&#xA;    &lt;/dependency>&#xA;  &lt;/dependencies>&#xA;  &#xA; &lt;repositories>&#xA;    &lt;repository>&#xA;      &lt;id>Indigo Release&lt;/id>&#xA;      &lt;url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo&lt;/url>&#xA;    &lt;/repository>&#xA;&#x9;&lt;repository>&#xA;      &lt;id>Juno Release&lt;/id>&#xA;      &lt;url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno&lt;/url>&#xA;    &lt;/repository>&#xA;&#x9;&lt;repository>&#xA;      &lt;id>Snapshots&lt;/id>&#xA;      &lt;url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots&lt;/url>&#xA;    &lt;/repository>&#xA; &lt;/repositories>&#xA; &#xA; &lt;build>&#xA;   &lt;plugins>&#xA;     &lt;plugin>&#xA;       &lt;groupId>org.eclipse.acceleo&lt;/groupId>&#xA;       &lt;artifactId>maven&lt;/artifactId>&#xA;       &lt;version>3.3.0&lt;/version>&#xA;       &lt;executions>&#xA;          &lt;execution>&#xA;            &lt;phase>compile&lt;/phase>&#xA;          &lt;/execution>&#xA;        &lt;/executions>&#xA;        &lt;configuration>&#xA;          &lt;useBinaryResources>false&lt;/useBinaryResources>&#xA;          &lt;acceleoProject>&#xA;            &lt;root>${project.basedir}&lt;/root>&#xA;            &lt;entries>&#xA;              &lt;entry>&#xA;                &lt;input>src&lt;/input>&#xA;                &lt;output>target/classes&lt;/output>&#xA;              &lt;/entry>&#xA;            &lt;/entries>&#xA;          &lt;/acceleoProject>&#xA;          &lt;packagesToRegister>&#xA;&#x9;&#x9;    &lt;!-- Please add the name of the Java class of the packages that are needed for the compilation of your module. For an UML generator, use the following code -->&#xA;&#x9;&#x9;&#x9;&lt;!-- For more information, please visit http://wiki.eclipse.org/Acceleo/Maven -->&#xA;            &lt;!--&lt;packageToRegister>org.eclipse.uml2.uml.UMLPackage&lt;/packageToRegister>-->&#xA;          &lt;/packagesToRegister>&#xA;        &lt;/configuration>&#xA;     &lt;/plugin>&#xA;   &lt;/plugins>&#xA; &lt;/build>&#xA;&lt;/project>&#xA;"/>
         <fileUrl xsi:type="ocl.ecore:StringLiteralExp" stringSymbol="pom.xml">
           <eType xsi:type="ocl.ecore:PrimitiveType" href="http://www.eclipse.org/ocl/1.1.0/oclstdlib.ecore#/0/String"/>
         </fileUrl>
@@ -145,52 +145,52 @@
     </eAnnotations>
     <eAnnotations source="positions.1" references="/0/genPom">
       <details key="start" value="570"/>
-      <details key="end" value="4640"/>
+      <details key="end" value="4159"/>
       <details key="line" value="20"/>
     </eAnnotations>
     <eAnnotations source="positions.2" references="/0/genPom/@body.0">
       <details key="start" value="657"/>
-      <details key="end" value="4628"/>
+      <details key="end" value="4147"/>
       <details key="line" value="22"/>
     </eAnnotations>
     <eAnnotations source="positions.3" references="/0/genPom/@body.0/@body.0">
       <details key="start" value="692"/>
-      <details key="end" value="2016"/>
+      <details key="end" value="1980"/>
       <details key="line" value="23"/>
     </eAnnotations>
     <eAnnotations source="positions.4" references="/0/genPom/@body.0/parent">
-      <details key="start" value="2017"/>
-      <details key="end" value="2023"/>
+      <details key="start" value="1981"/>
+      <details key="end" value="1987"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.5" references="/0/genPom/@body.0/@body.2">
-      <details key="start" value="2025"/>
-      <details key="end" value="2099"/>
+      <details key="start" value="1989"/>
+      <details key="end" value="2063"/>
       <details key="line" value="42"/>
     </eAnnotations>
     <eAnnotations source="positions.6" references="/0/genPom/@body.0/parent.1">
-      <details key="start" value="2100"/>
-      <details key="end" value="2106"/>
+      <details key="start" value="2064"/>
+      <details key="end" value="2070"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.7" references="/0/genPom/@body.0/@body.4">
-      <details key="start" value="2108"/>
-      <details key="end" value="2188"/>
+      <details key="start" value="2072"/>
+      <details key="end" value="2152"/>
       <details key="line" value="44"/>
     </eAnnotations>
     <eAnnotations source="positions.8" references="/0/genPom/@body.0/@body.5">
-      <details key="start" value="2189"/>
-      <details key="end" value="2212"/>
+      <details key="start" value="2153"/>
+      <details key="end" value="2176"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.9" references="/0/genPom/@body.0/@body.5/anAcceleoPom">
-      <details key="start" value="2189"/>
-      <details key="end" value="2201"/>
+      <details key="start" value="2153"/>
+      <details key="end" value="2165"/>
       <details key="line" value="0"/>
     </eAnnotations>
     <eAnnotations source="positions.10" references="/0/genPom/@body.0/@body.6">
-      <details key="start" value="2214"/>
-      <details key="end" value="4621"/>
+      <details key="start" value="2178"/>
+      <details key="end" value="4140"/>
       <details key="line" value="48"/>
     </eAnnotations>
     <eAnnotations source="positions.11" references="/0/genPom/@body.0/@fileUrl">

@@ -30,8 +30,8 @@
   <!-- ###################################################################################################### -->
   <!-- ###################################################################################################### -->
   
-  <!-- The maven integration will be continuously improved so keep an eye on the Acceleo wiki for more information: http://wiki.eclipse.org/Acceleo/Maven -->
-  
+  <!-- The maven integration will be improved so keep an eye on the Acceleo wiki: http://wiki.eclipse.org/Acceleo/Maven -->
+
   <!-- ###################################################################################################### -->
   <!-- ###################################################################################################### -->
   <!-- ###################################################################################################### -->
@@ -49,7 +49,7 @@
   <version>1.0.0.qualifier</version> <!-- This version should match the version of your project in the MANIFEST.MF-->
   <packaging>eclipse-plugin</packaging>
 
-<dependencies>
+  <dependencies>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>maven</artifactId>
@@ -57,7 +57,7 @@
     </dependency>
   </dependencies>
   
-  <repositories>
+ <repositories>
     <repository>
       <id>Indigo Release</id>
       <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
@@ -93,11 +93,6 @@
                 <output>target/classes</output>
               </entry>
             </entries>
-            <jars>
-              <!-- The dependencies of your project should also be referrenced. For example, to find the UML meta-model, you need to link the Jar of the UML project. -->
-              <!-- The maven repositories of the Acceleo project are hosting some of the common meta-model of the Eclipse Foundation, like UML -->
-              <!-- <jar>${project.basedir}/lib/org.eclipse.uml2.uml.VERSION.jar</jar> -->
-            </jars>
           </acceleoProject>
           <packagesToRegister>
 		    <!-- Please add the name of the Java class of the packages that are needed for the compilation of your module. For an UML generator, use the following code -->
