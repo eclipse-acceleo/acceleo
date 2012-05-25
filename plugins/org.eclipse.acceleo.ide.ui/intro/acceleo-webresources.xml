@@ -12,11 +12,11 @@
        </link>
     </group>
     <group label="Acceleo Generators" id="acceleo-generators" style-id="content-group">
-       <text style-id="group-description">Open source code generators available on the Obeo Marketplace. (Internet connection required)</text>
-       <link label="UML to Java generator" url="http://marketplace.obeonetwork.com/module/uml2java-generator" id="generators" style-id="content-link">
+       <text style-id="group-description">Open source code generators available on the Github. (Internet connection required)</text>
+       <link label="UML to Java generator" url="https://github.com/ObeoNetwork/UML-Java-Generation" id="generators" style-id="content-link">
           <text>An open source UML to Java generator.</text>
        </link>
-       <link label="Ecore to Scala generator" url="http://marketplace.obeonetwork.com/module/ecore2scala-generator" id="generators" style-id="content-link">
+       <link label="Ecore to Scala generator" url="https://github.com/sbegaudeau/Ecore-Scala-Generation" id="generators" style-id="content-link">
           <text>Generate Scala source code with this open source generator.</text>
        </link>
     </group>
