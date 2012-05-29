@@ -54,10 +54,8 @@ public class AcceleoLaunchDelegateStandalone extends org.eclipse.jdt.launching.J
 				IWorkspaceRunnable operation = new IWorkspaceRunnable() {
 					public void run(final IProgressMonitor progressMonitor) throws CoreException {
 						try {
-							int i = 0;
-							while (!launch.isTerminated() && i < 100 && !progressMonitor.isCanceled()) {
+							while (!launch.isTerminated() && !progressMonitor.isCanceled()) {
 								Thread.sleep(100);
-								i++;
 							}
 						} catch (InterruptedException e) {
 							AcceleoUIActivator.log(e, true);
