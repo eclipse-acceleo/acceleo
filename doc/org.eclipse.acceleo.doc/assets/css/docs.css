@@ -221,3 +221,7 @@ form.well {
   margin: 18px 0;
 }
 
+.recommended {
+  color: #468847;
+  background-color: #DFF0D8;
+}

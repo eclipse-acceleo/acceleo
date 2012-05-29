@@ -31,20 +31,6 @@
   </head>
   <body>
     <div class="container">
-      <header class="jumbotron subhead" id="overview">
-        <h1>Language</h1>
-        <p class="lead">The concepts of the Acceleo language</p>
-        <!--<div class="subnav">
-          <ul class="nav nav-pills">
-            <li><a href="#project">Project</a></li>
-            <li><a href="#module">Module</a></li>
-            <li><a href="#template">Template</a></li>
-            <li><a href="#query">Query</a></li>
-            <li><a href="#additional">Additional Concepts</a></li>
-          </ul>
-        </div>-->
-      </header>
-      
       <section id="project">
         <div class="page-header">
           <h1>Acceleo Project <small>where everything is contained</small></h1>
@@ -197,7 +183,7 @@
   [aParam.eAllContents(EClass).doSomething()/]
   [/template]</pre>
         <p>
-          You can define multiple main template in one or several modules if you want even if we recommend to only have one main template
+          You can define multiple main templates in one or several modules if you want even if we recommend to only have one main template
           defined on the type of the root of your models.
         </p>
         <div class="alert alert-info">
@@ -208,7 +194,7 @@
         
         <h2>Generating Files</h2>
         <p>
-          Some template can use the "file block" to generate files.
+          Some templates can use the "file block" to generate files.
         </p>
         <pre>
   [module randomJavaFile('http://www.eclipse.org/emf/2002/Ecore')/]
@@ -337,9 +323,10 @@
   [/for]
   [/template]</pre>
         <div class="alert alert-info">
-          <strong>Tips and tricks:</strong> The code in the separator will be called before each turn only if the turn as a
+          <strong>Tips and tricks:</strong> The code in the separator will be called before each turn only if the turn has a
           preceding turn. If you are using the variable "i" inside of the separator expression, the first value of "i" will be
-          "2" as it will be called at the beginning of the second turn.
+          "2" as it will be called at the beginning of the second turn. It is not called at the end of a turn but at the beginning
+          of the next iteration.
         </div>
         
         <h3>Let</h3>
