@@ -20,10 +20,6 @@ Contributors:
           primary="false">
     </toc>
     <toc
-          file="toc_new.xml"
-          primary="false">
-    </toc>
-    <toc
           file="toc_reference.xml"
           primary="false">
     </toc>
