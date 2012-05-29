@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;
 
+import com.google.common.collect.Iterables;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,8 +63,6 @@ import org.eclipse.ocl.types.TypeType;
 import org.eclipse.ocl.utilities.PredefinedType;
 import org.eclipse.ocl.utilities.TypedElement;
 import org.eclipse.ocl.utilities.UMLReflection;
-
-import com.google.common.collect.Iterables;
 
 /**
  * This class will not compile under Eclipse Ganymede with OCL 1.2 installed. It requires OCL 1.3 and
