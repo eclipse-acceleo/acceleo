@@ -716,8 +716,13 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 		 * @see org.eclipse.ocl.AbstractTypeChecker#getImplicitRootClass()
 		 */
 		private EClassifier getImplicitRootClass() {
-			EClassifier result = ParsingOptions.getValue(getEnvironment(), ParsingOptions
+			EClassifier result = null;
+
+			Object value = ParsingOptions.getValue(getEnvironment(), ParsingOptions
 					.implicitRootClass(getEnvironment()));
+			if (value instanceof EClassifier) {
+				result = (EClassifier)value;
+			}
 
 			// check that, if there is a value for this option, it is a class
 			if ((result != null) && !getEnvironment().getUMLReflection().isClass(result)) {
