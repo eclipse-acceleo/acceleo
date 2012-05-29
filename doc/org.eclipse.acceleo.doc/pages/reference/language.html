@@ -44,7 +44,7 @@
         </p>
         <p>
           Inside the Acceleo project, the file used for the generation, which are named "modules", should be placed in the Java
-          packages just like Java classes.
+          packages just like Java classes. This behavior is the default behavior of Acceleo wizards.
         </p>
       </section>
       
@@ -53,14 +53,14 @@
           <h1>Module <small>the files of the generator</small></h1>
         </div>
         <p>
-          An Acceleo generator is composed of several files named modules. A module is parameterized by the URIs of the meta-model
+          An Acceleo generator is composed of several files named modules. A module is parameterized by the URIs of the meta-models
           instantiating the models that you want to generate code from. Here you can see a module parameterized by the URI of the
           Ecore meta-model.
         </p>
         <pre>
   [module moduleName('http://www.eclipse.org/emf/2002/Ecore')/]</pre>
         <p>
-          An Acceleo module can extends another one in order to gain access to its public and protected elements. Acceleo modules
+          An Acceleo module can extend another one in order to gain access to its public and protected elements. Acceleo modules
           contains two kind of elements: templates, that are generating the code, and queries, that are used to encapsulate complex
           expressions. Only single inheritance is supported in Acceleo.
         </p>
@@ -72,15 +72,20 @@
         <pre>
   [module moduleName('http://www.eclipse.org/emf/2002/Ecore')/]
   [import org::eclipse::acceleo:examples::uml2java::otherModule/]</pre>
+        
+        <p>
+          It is recommended to use mostly "imports" and to keep "extends" for dynamic overriding which will be detailed below.
+        </p>
+        <br />
       </section>
       
       <section id="template">
         <div class="page-header">
-          <h1>Template <small>where the code is generated</small></h1>
+          <h1>Template <small>generating the code</small></h1>
         </div>
         <p>
           Templates are the most used structure in Acceleo as they are used to directly generate the code. You can have a look at the
-          basic signature of an Acceleo template.
+          basic signature of an Acceleo module with one template.
         </p>
         <pre>
   [module moduleName('http://www.eclipse.org/emf/2002/Ecore')/]
@@ -89,8 +94,8 @@
         <p>
           As you can see it, a template has a visibility (public | protected | private) with a scope similar to the visibility in
           object oriented programming languages. After the visibility, you can find the name of the template and its parameters. The
-          parameters are declared following this convention "&lt;name&gt;: &lt;type&gt;". The type of the parameter must be one of
-          the following:
+          parameters are declared following this convention "&lt;name&gt;: &lt;type&gt;". It is recommended to name your parameters
+          with the following convention "a&lt;Type&gt;". The type of the parameter must be one of the following:
         </p>
         <ul>
           <li>Types provided by the meta-model (ex: Class, Property, Operation... for UML)</li>
@@ -119,7 +124,7 @@
   [/template]</pre>
         <p>
           A template can also have a post condition that will be executed on the result of the execution of the template. You can for
-          example, trim the result of the execution of the template eaisly.
+          example, trim the result of the execution of the template easily.
         </p>
         <pre>
   [module moduleName('http://www.eclipse.org/emf/2002/Ecore')/]
@@ -133,7 +138,7 @@
   [template public genMyTemplate(aParam: EClass) {aName: String = aParam.name; abstract: Boolean = aParam.isAbstract;}]
   [/template]</pre>
         <p>
-          Finaly, a template can also override another template if this template is coming from a module extended by the current
+          Finally, a template can also override another template if this template is coming from a module extended by the current
           module.
         </p>
         <pre>
@@ -141,7 +146,7 @@
   [template public genMyTemplate(aParam: EClass) overrides myTemplate]
   [/template]</pre>
         <p>
-          Overriding in Acceleo does <b>bot</b> behave in the same way as it does in most object oriented programming (Acceleo is not
+          Overriding in Acceleo does <b>not</b> behave in the same way as it does in most object oriented programming (Acceleo is not
           object oriented). If a module A imports a module B that extends C and if the module C defines a template tC overridden in
           the module B and the module C also defines a template tC1 that calls tC. If from the module A we are calling tC1, in Java
           and in most object oriented programming this call to tC1 would call tC in the module B since it is overridden and even if
@@ -170,7 +175,7 @@
         </p>
         <p>
           We will try to launch the generation of your template on all model elements that are matching the type required by the parameter
-          of your main template, in the previous example where the main template requires an intance of "EClass", we will navigate in the
+          of your main template, in the previous example where the main template requires an instance of "EClass", we will navigate in the
           whole model to find all the available "EClass" to use them as argument. While powerful, this mechanism is not without any
           impacts on the performances of the generation. We recommend that you use as the type of the parameter of your main template the
           type of the root element of your models. In the case of a module defined for the meta-model Ecore, we would use the concept
@@ -182,12 +187,16 @@
   [comment @main/]
   [aParam.eAllContents(EClass).doSomething()/]
   [/template]</pre>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> The generated Java launcher has been created to let you override pretty much every parts of its
+          behavior, as such you can change all the details of the previously explained mechanism.
+        </div>
         <p>
           You can define multiple main templates in one or several modules if you want even if we recommend to only have one main template
           defined on the type of the root of your models.
         </p>
         <div class="alert alert-info">
-          <strong>Tips and tricks:</strong> Main modules in the ".main" package
+          <strong>Tips and tricks:</strong> Main modules should be located in the ".main" package
         </div>
         
         <br />
@@ -203,12 +212,15 @@
   Hello World
   [/file]  
   [/template]</pre>
+        <div class="alert alert-info">
+          <strong>Tips and tricks:</strong> Only templates can create files.
+        </div>
         <p>
           The file block contains three parameters:
         </p>
         <ul>
           <li>An expression returning a string for the name of the file</li>
-          <li>A boolean indicating if existing files should be overwritten</li>
+          <li>A boolean indicating if existing files should be overwritten or if the newly generated content should be appended at the end of the existing file</li>
           <li>The encoding of the file</li>
         </ul>
         <p>
@@ -231,8 +243,8 @@
         <div class="alert alert-info">
           <strong>Tips and tricks:</strong> You can use a prefix to separate easily your public templates and queries from your private
           and protected ones. Here we often use the prefix "gen" for public templates and "req" for public queries. Try to keep your API
-          minimal by using a maximum of private and protected templates and queries as it helps with the maintenance and the evolution
-          of your generator.
+          minimal by using a maximum of private and protected templates and queries as it helps with the maintenance, the evolution and the
+          performances of your generator.
         </div>
         
         <p>
@@ -241,9 +253,9 @@
         </p>
         
         <p>
-          We are strongly recommended to only have one template generating a file in a given module as we recommened to have one module
+          We are <b>strongly</b> recommending to only have one template generating a file in a given module as we recommended to have one module
           to generate one kind of file. This does not mean, that you should have one module to generate all Java files but you should
-          have something like this:
+          separate your modules to keep your domain separated and have something like this:
         </p>
         <ul>
           <li>org::eclipse::acceleo::module::sample::main::mainModule</li>
@@ -260,7 +272,8 @@
         </p>
         
         <div class="alert alert-info">
-          <strong>Tips and tricks:</strong> Modules generating files in the ".files" package.
+          <strong>Tips and tricks:</strong> Modules generating files should be located in the ".files" package. Do not hesitate to create sub-packages within
+          if you need it.
         </div>
         
         <br />
@@ -276,7 +289,7 @@
         
         <h3>If</h3>
         <p>
-          Acceleo template can use if blocks.
+          Acceleo template can use if blocks to specify blocks of code that should be executed only if a given condition is fulfilled.
         </p>
         <pre>
   [module moduleName('http://www.eclipse.org/emf/2002/Ecore')/]
@@ -357,6 +370,8 @@
           <strong>Tips and tricks:</strong> A let block in Acceleo can be seen as an equivalent to the Java code
           "if (x instanceof Type) { Type var = (Type)x; ...}"
         </div>
+        
+        <br />
       </section>
       
       <section id="query">
@@ -382,10 +397,10 @@
       
       <section id="additional">
         <div class="page-header">
-          <h1>Additional Concepts <small>elements to improve the generator</small></h1>
+          <h1>Additional Concepts <small>elements to improve your generator</small></h1>
         </div>
         <p>
-          Acceleo features other mechanism like dynamic overriding, properties files or even the ability to call Java services.
+          Acceleo features other mechanisms like dynamic overriding, properties files or even the ability to call Java services.
         </p>
         
         <h2>Dynamic Overriding</h2>
