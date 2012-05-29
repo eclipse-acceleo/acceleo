@@ -39,14 +39,13 @@
           First of all, an Acceleo project is an Eclipse plug-in project and as such an OSGI bundle too. This concept is
           important because strongly encourage you to follow Eclipse conventions when managing and Acceleo project. An
           Acceleo project should follow the same naming convention as  an Eclipse plug-in project:<br />
-          &lt;domain_url&gt;.&lt;project_name&gt;.&lt;metamodel_name&gt;.gen.&lt;target&gt;<br />
-          Example: org.eclipse.acceleo.uml.gen.java<br />
+          &lt;domain_url&gt;.&lt;project_name&gt;.&lt;metamodel_name&gt;.gen.&lt;target&gt; (ex: org.eclipse.acceleo.uml.gen.java).
           <br />
           You can of course adopt another kind of naming convention but try to keep the spirit of Acceleo naming convention.
         </p>
         <p>
           The name of the project is directly used to determine the name of several elements starting with the name of the
-          root package of the Acceleo modules (one of the reason why "My Generation Project" is not considered a great name).
+          root package of the Acceleo modules (one of the reason why "My Generation Project" would create problems).
         </p>
       </section>
       
@@ -60,7 +59,7 @@
           META-INF folder. This file should be opened by default by the Plug-in Manifest Editor. Once open, you can go to the
           "dependencies" tab to add a dependency to another Eclipse plug-in required for your generator. One of the first plug-in
           required is the plug-in containing your meta-model. If you are creating a generator using UML models, you need to
-          referenced the UML meta-model, since it is located in the plugin-in "org.eclipse.uml2.uml", you need to find or add the
+          referenced the UML meta-model, since it is located in the plug-in "org.eclipse.uml2.uml", you need to find or add the
           dependency to "org.eclipse.uml2.uml" in the dependency tab of the MANIFEST.MF of your generator.
         </p>
         <p>

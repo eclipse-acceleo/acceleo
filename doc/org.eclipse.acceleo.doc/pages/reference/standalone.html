@@ -49,13 +49,13 @@
           <h1>Compilation <small>build your generator!</small></h1>
         </div>
         <p>
-          In order to compile your Acceleo generator, you can use the maven plugin or or can do it programmatically.
+          In order to compile your Acceleo generator, you can use the maven plug-in or or can do it programmatically.
         </p>
         
         <h2>Programmatically</h2>
         <p>
           You can use the Java class, org.eclipse.acceleo.internal.parser.compiler.AcceleoParser to launch the compilation
-          programmatically, its use being straightforward, it is not explained here. You just need to instanciate an
+          programmatically, its use being straightforward, it is not explained here. You just need to instantiate an
           AcceleoProject and then you need to call "buildAll(new BasicMonitor())".
         </p>
         
@@ -66,7 +66,7 @@
         </p>
         <p>
           An action is available by right clicking on an Acceleo generator and selecting "Configure" and then "Generate pom.xml" to generate
-          the squelleton of the pom.xml files necessary for the build. Some changes need to be done manually in order to have a valid build
+          the skeleton of the pom.xml files necessary for the build. Some changes need to be done manually in order to have a valid build
           since some information cannot be computed by Acceleo.
         </p>
         
@@ -85,7 +85,7 @@
         <h2>Registration</h2>
         <p>
           If you want to use your generator out of Eclipse, first you need to make sure that all the necessary elements are
-          registered. There are two kinds of elements that need to be registered:         
+          registered. There are two kinds of elements that need to be registered:
         </p>
         <ul>
           <li>EMF packages</li>
@@ -120,7 +120,7 @@
           Acceleo also needs to have a resource factory in order to load your model. By default, Acceleo knows how to load
           ".xmi" files but if you are using models with a different extension, for example ".uml", you need to tell Acceleo
           how to read those files. In order to do that, you need to have a look at the method named "registerResourceFactories"
-          in the Java launcher to add the following piece of code for your metamodel. The following example is necessary for
+          in the Java launcher to add the following piece of code for your meta-model. The following example is necessary for
           the use in stand alone of ".uml" models.
         </p>
         <pre>
@@ -144,7 +144,7 @@
         
         <h2>Dependencies</h2>
         <p>
-          Here is the list of the dependencies that you need to have in your buildpath to run an Acceleo generator out
+          Here is the list of the dependencies that you need to have in your build-path to run an Acceleo generator out
           of Eclipse:
         </p>
         <ul>
@@ -159,7 +159,7 @@
           <li>com.google.guava (version 10.0.1)</li>
         </ul>
         <p>
-          And you need the following Acceleo components:        
+          Those jars can be found in the plug-ins folder of your Eclipse installation. And you need the following Acceleo components:        
         </p>
         <ul>
           <li>org.eclipse.acceleo.common</li>
@@ -170,14 +170,14 @@
         <p>
           On top of those jars, you will also need the jar of your generator (you can obtain it by right clicking on it
           and selecting "Export..." and then in the "Plug-In Development" category choose "Deployable Plug-In and Fragment").
-          You will also need the jar of the metamodels that your generator are using and their dependencies. For example, for
-          the UML to Java example available in Acceleo (File -&gt; New -&gt; Example -&gt; Acceleo Model to Text -&gt;
-          UML to Java):
+          You can also build it thanks to maven. You will also need the jar of the meta-models that your generator are using and
+          their dependencies. For example, for the UML to Java example available in Acceleo (File -&gt; New -&gt;
+          Example -&gt; Acceleo Model to Text -&gt; UML to Java):
         </p>
         <ul>
           <li>org.eclipse.acceleo.module.example.uml2java.helios (generator)</li>
-          <li>org.eclipse.uml2.common (a dependency of the UML metamodel)</li>
-          <li>org.eclipse.uml2.uml (the metamodel)</li>
+          <li>org.eclipse.uml2.common (a dependency of the UML meta-model)</li>
+          <li>org.eclipse.uml2.uml (the meta-model)</li>
         </ul>
         
         <h2>Run</h2>
