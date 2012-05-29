@@ -17,3 +17,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %providerName
+Export-Package: org.eclipse.acceleo.examples.internal;x-internal:=true,
+ org.eclipse.acceleo.examples.internal.intro;x-internal:=true,
+ org.eclipse.acceleo.examples.internal.wizard;x-internal:=true

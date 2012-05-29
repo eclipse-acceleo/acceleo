@@ -19,7 +19,10 @@ Bundle-Localization: plugin
 Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.ui.interpreter,
  org.eclipse.acceleo.ui.interpreter.internal;x-friends:="org.eclipse.acceleo.ide.ui",
+ org.eclipse.acceleo.ui.interpreter.internal.compatibility.view;x-internal:=true,
  org.eclipse.acceleo.ui.interpreter.internal.language;x-internal:=true,
+ org.eclipse.acceleo.ui.interpreter.internal.optional;x-internal:=true,
+ org.eclipse.acceleo.ui.interpreter.internal.optional.debug;x-internal:=true,
  org.eclipse.acceleo.ui.interpreter.internal.view;x-internal:=true,
  org.eclipse.acceleo.ui.interpreter.internal.view.actions;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.ui.interpreter.internal.view.wizards;x-internal:=true,
