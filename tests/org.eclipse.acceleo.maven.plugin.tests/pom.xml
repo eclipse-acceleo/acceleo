@@ -1,12 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
-  <artifactId>maven.plugin.tests</artifactId>
+  <artifactId>org.eclipse.acceleo.maven.plugin.tests</artifactId>
   <version>1.0.0.qualifier</version>
   <packaging>eclipse-plugin</packaging>
   
+  <!-- Launched with the following command: mvn clean org.eclipse.acceleo:maven:3.2.1:acceleo-compile compile verify -->
+  
   <properties>
-    <tycho-version>0.12.0</tycho-version>
+    <tycho-version>0.14.1</tycho-version>
   </properties>
 
   <profiles>
@@ -39,20 +41,35 @@
       <url>${uml-to-java-site}</url>
     </repository>
     <repository>
-      <id>github snapshot</id>
-      <url>https://github.com/sbegaudeau/maven-repository/raw/master/snapshots</url>
+      <id>Indigo Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
     </repository>
-    <repository>
-      <id>github release</id>
-      <url>https://github.com/sbegaudeau/maven-repository/raw/master/releases</url>
+	<repository>
+      <id>Juno Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
+    </repository>
+	<repository>
+      <id>Snapshots</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
     </repository>
   </repositories>
   
   <pluginRepositories>
     <pluginRepository>
-      <!-- need maven-findbugs-2.3.2-SNAPSHOT, see http://jira.codehaus.org/browse/MFINDBUGS-122 remove this when this version is released -->
       <id>codehaus.snapshots</id>
       <url>http://snapshots.repository.codehaus.org/</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Indigo Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Juno Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Snapshots</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
     </pluginRepository>
   </pluginRepositories>
   
@@ -60,7 +77,7 @@
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>maven</artifactId>
-      <version>3.2.1-SNAPSHOT</version>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
@@ -104,7 +121,7 @@
       <plugin>
        <groupId>org.eclipse.acceleo</groupId>
        <artifactId>maven</artifactId>
-       <version>3.2.1-SNAPSHOT</version>
+       <version>3.2.1</version>
        <executions>
           <execution>
             <phase>compile</phase>
@@ -112,6 +129,7 @@
         </executions>
         <configuration>
           <useBinaryResources>false</useBinaryResources>
+          <usePlatformResourcePath>true</usePlatformResourcePath>
           <acceleoProject>
             <root>${project.basedir}</root>
             <entries>
@@ -121,11 +139,7 @@
               </entry>
             </entries>
             <jars>
-            	<jar>p2.eclipse-plugin:org.obeonetwork.pim.uml2.gen.java:1.0.0.201112151044</jar>
-            	<jar>org.eclipse.acceleo:engine:3.2.1</jar>
-            	<jar>org.eclipse.acceleo:common</jar>
-            	<jar>C:\Users\sbegaudeau\.m2\repository\com\google\collections\google-collections\1.0\google-collections-1.0.jar</jar>
-            	<jar>${project.basedir}\lib\myFile.jar</jar>
+            	<jar>p2.eclipse-plugin:org.obeonetwork.pim.uml2.gen.java</jar>
             </jars>
           </acceleoProject>
           <packagesToRegister>
