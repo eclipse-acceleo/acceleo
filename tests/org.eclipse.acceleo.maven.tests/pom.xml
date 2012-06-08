@@ -9,6 +9,36 @@
   
   <!-- Launch this with the following command: mvn clean org.eclipse.acceleo:maven:3.2.1:acceleo-compile compile -->
   
+  <repositories>
+    <repository>
+      <id>Indigo Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+    </repository>
+	<repository>
+      <id>Juno Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
+    </repository>
+	<repository>
+      <id>Snapshots</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+    </repository>
+  </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>Indigo Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>Juno Release</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
+    </pluginRepository>
+	<pluginRepository>
+      <id>Snapshots</id>
+      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
+  
   <dependencies>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
@@ -36,20 +66,7 @@
       <version>1.6.4</version>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <id>Indigo Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
-    </repository>
-	<repository>
-      <id>Juno Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
-    </repository>
-	<repository>
-      <id>Snapshots</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
-    </repository>
-  </repositories>
+  
   <build>
     <plugins>
       <plugin>
