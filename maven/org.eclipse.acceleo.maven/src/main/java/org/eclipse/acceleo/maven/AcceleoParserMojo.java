@@ -47,7 +47,7 @@ import com.google.common.collect.Sets;
  * 
  * @goal acceleo-compile
  * @phase compile
- * @requiresDependencyResolution runtime
+ * @requiresDependencyResolution compile+runtime
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.2
  */
