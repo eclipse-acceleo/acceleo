@@ -3,10 +3,11 @@
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>maven</artifactId>
   <versioning>
+    <latest>3.2.1</latest>
     <release>3.2.1</release>
     <versions>
       <version>3.2.1</version>
     </versions>
-    <lastUpdated>20120524135155</lastUpdated>
+    <lastUpdated>20120608094553</lastUpdated>
   </versioning>
 </metadata>
