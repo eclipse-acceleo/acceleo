@@ -47,6 +47,7 @@ import org.eclipse.acceleo.engine.generation.writers.AcceleoFileWriter;
 import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -306,7 +307,10 @@ public class AcceleoEvaluationContext<C> {
 	public AcceleoRuntimeException createAcceleoRuntimeException(Throwable cause) {
 		AcceleoRuntimeException exception = new AcceleoRuntimeException(cause);
 		if (expressionStack.size() > 0) {
-			exception.setStackTrace(createAcceleoStackTrace());
+			StackTraceElement[] traceElements = createAcceleoStackTrace();
+			if (traceElements.length > 0) {
+				exception.setStackTrace(traceElements);
+			}
 		}
 		return exception;
 	}
@@ -321,25 +325,32 @@ public class AcceleoEvaluationContext<C> {
 		StackTraceElement[] stackTrace = new StackTraceElement[expressionStack.size()];
 		for (int i = expressionStack.size() - 1; i >= 0; i--) {
 			OCLExpression<C> expression = expressionStack.get(i);
-			Module containingModule = (Module)EcoreUtil.getRootContainer(expression);
-			String moduleFile;
-			if (containingModule.eResource() != null && containingModule.eResource().getURI() != null) {
-				moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment() + '.'
-						+ IAcceleoConstants.MTL_FILE_EXTENSION;
-			} else {
-				moduleFile = containingModule.getName() + '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
+
+			EObject rootContainer = EcoreUtil.getRootContainer(expression);
+			if (rootContainer instanceof Module) {
+				Module containingModule = (Module)rootContainer;
+				String moduleFile;
+				if (containingModule.eResource() != null && containingModule.eResource().getURI() != null) {
+					moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment()
+							+ '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
+				} else {
+					moduleFile = containingModule.getName() + '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
+				}
+				EObject containingModuleElement = expression;
+				while (!(containingModuleElement instanceof ModuleElement)) {
+					containingModuleElement = containingModuleElement.eContainer();
+				}
+				Adapter adapter = EcoreUtil.getAdapter(expression.eAdapters(), AcceleoASTNodeAdapter.class);
+				int line = 0;
+				if (adapter instanceof AcceleoASTNodeAdapter) {
+					line = ((AcceleoASTNodeAdapter)adapter).getLine();
+				}
+				stackTrace[expressionStack.size() - i - 1] = new StackTraceElement(
+						containingModule.getName(), containingModuleElement.toString(), moduleFile, line);
+			} else if (rootContainer instanceof ProtectedAreaBlock) {
+				// Let's not handle this now...
+				stackTrace = new StackTraceElement[0];
 			}
-			EObject containingModuleElement = expression;
-			while (!(containingModuleElement instanceof ModuleElement)) {
-				containingModuleElement = containingModuleElement.eContainer();
-			}
-			Adapter adapter = EcoreUtil.getAdapter(expression.eAdapters(), AcceleoASTNodeAdapter.class);
-			int line = 0;
-			if (adapter instanceof AcceleoASTNodeAdapter) {
-				line = ((AcceleoASTNodeAdapter)adapter).getLine();
-			}
-			stackTrace[expressionStack.size() - i - 1] = new StackTraceElement(containingModule.getName(),
-					containingModuleElement.toString(), moduleFile, line);
 		}
 		return stackTrace;
 	}
@@ -498,6 +509,10 @@ public class AcceleoEvaluationContext<C> {
 			lastBlock = (Block)previous;
 		}
 		return lastBlock;
+	}
+
+	public Deque<OCLExpression<C>> getExpressionStack() {
+		return expressionStack;
 	}
 
 	/**
@@ -970,7 +985,7 @@ public class AcceleoEvaluationContext<C> {
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	private final class LineReader extends Reader {
+	public final class LineReader extends Reader {
 		/** Size of our read buffer. */
 		private static final int BUFFER_SIZE = 8192;
 
@@ -987,13 +1002,13 @@ public class AcceleoEvaluationContext<C> {
 		private int nextChar;
 
 		/** Last EOL sequence encountered by {@link #readLine(boolean)}. */
-		private String lastEOL;
+		private String lastEOL = DOS_LINE_SEPARATOR;
 
 		/**
 		 * Constructs our buffered reader given its underlying reader.
 		 * 
 		 * @param in
-		 *            The reader from which to retrive input.
+		 *            The reader from which to retrieve input.
 		 */
 		public LineReader(Reader in) {
 			super(in);
@@ -1131,11 +1146,17 @@ public class AcceleoEvaluationContext<C> {
 							lastEOL = "\n"; //$NON-NLS-1$
 							nextChar++;
 						} else if (c == '\r') {
-							if (characterBuffer.length >= nextChar && characterBuffer[nextChar + 1] == '\n') {
-								lastEOL = "\r\n"; //$NON-NLS-1$
+							final int max = 8191;
+							if (nextChar != max && characterBuffer.length >= nextChar
+									&& characterBuffer[nextChar + 1] == '\n') {
+								lastEOL = DOS_LINE_SEPARATOR;
 								nextChar += 2;
-							} else {
+							} else if (nextChar != max) {
 								lastEOL = "\r"; //$NON-NLS-1$
+								nextChar++;
+							} else if (nextChar == max && DOS_LINE_SEPARATOR.equals(lastEOL)) {
+								nextChar += 2;
+							} else if (nextChar == max) {
 								nextChar++;
 							}
 						}
