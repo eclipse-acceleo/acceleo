@@ -96,19 +96,26 @@ public final class AcceleoParserUtils {
 		try {
 			String jarPath = jar.toString();
 			String osName = System.getProperty("os.name"); //$NON-NLS-1$
+			final String file = "file:"; //$NON-NLS-1$
+
 			if (osName.indexOf("win") >= 0) { //$NON-NLS-1$
 				// Windows
 				if (jarPath.startsWith("file:\\") || jarPath.startsWith("file:/")) { //$NON-NLS-1$ //$NON-NLS-2$
 					jarPath = jarPath.substring(6);
 				}
-			} else if (osName.indexOf("mac") >= 0) { //$NON-NLS-1$
+			} else if (osName.indexOf("Mac") >= 0) { //$NON-NLS-1$
 				// Mac
-				if (jarPath.startsWith("file:")) { //$NON-NLS-1$
+				if (jarPath.startsWith(file)) {
 					jarPath = jarPath.substring(5);
 				}
 			} else if (osName.indexOf("nux") >= 0 || osName.indexOf("nix") >= 0) { //$NON-NLS-1$ //$NON-NLS-2$
 				// Unix / Linux
-				if (jarPath.startsWith("file:")) { //$NON-NLS-1$
+				if (jarPath.startsWith(file)) {
+					jarPath = jarPath.substring(5);
+				}
+			} else {
+				// Unix / Linux
+				if (jarPath.startsWith(file)) {
 					jarPath = jarPath.substring(5);
 				}
 			}
