@@ -1834,6 +1834,1193 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 	}
 
 	@Test
+	public void testTraceabilityBlockTemplateFile() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateFile.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals("Hello World".length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(219, propertyCallExp.getStartPosition());
+			assertEquals(219 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(233, string.getStartPosition());
+			assertEquals(233 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals("Hello World".length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			string = (StringLiteralExp)element;
+			assertEquals("Hello World", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(257, string.getStartPosition());
+			assertEquals(257 + "Hello World".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals(1, generatedRegions.size());
+			assertEquals(("class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(283, propertyCallExp.getStartPosition());
+			assertEquals(283 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(297, string.getStartPosition());
+			assertEquals(297 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(322, propertyCallExp.getStartPosition());
+			assertEquals(322 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile2() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile2.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 1, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(284, propertyCallExp.getStartPosition());
+			assertEquals(284 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(298, string.getStartPosition());
+			assertEquals(298 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(418, propertyCallExp.getStartPosition());
+			assertEquals(418 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile3() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile3.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 3, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(284, propertyCallExp.getStartPosition());
+			assertEquals(284 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(298, string.getStartPosition());
+			assertEquals(298 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(418, propertyCallExp.getStartPosition());
+			assertEquals(418 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(431, stringLiteralExp.getStartPosition());
+			assertEquals(431 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(438, propertyCallExp.getStartPosition());
+			assertEquals(438 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile4() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile4.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 3, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(284, propertyCallExp.getStartPosition());
+			assertEquals(284 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(298, string.getStartPosition());
+			assertEquals(298 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(449, propertyCallExp.getStartPosition());
+			assertEquals(449 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(347, stringLiteralExp.getStartPosition());
+			assertEquals(347 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(449, propertyCallExp.getStartPosition());
+			assertEquals(449 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile5() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile5.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 3, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(284, propertyCallExp.getStartPosition());
+			assertEquals(284 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(298, string.getStartPosition());
+			assertEquals(298 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(621, propertyCallExp.getStartPosition());
+			assertEquals(621 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(347, stringLiteralExp.getStartPosition());
+			assertEquals(347 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(621, propertyCallExp.getStartPosition());
+			assertEquals(621 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile6() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile6.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 7, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(284, propertyCallExp.getStartPosition());
+			assertEquals(284 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(298, string.getStartPosition());
+			assertEquals(298 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(683, propertyCallExp.getStartPosition());
+			assertEquals(683 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(347, stringLiteralExp.getStartPosition());
+			assertEquals(347 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(683, propertyCallExp.getStartPosition());
+			assertEquals(683 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(378, stringLiteralExp.getStartPosition());
+			assertEquals(378 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(4);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(683, propertyCallExp.getStartPosition());
+			assertEquals(683 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(5);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(409, stringLiteralExp.getStartPosition());
+			assertEquals(409 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(683, propertyCallExp.getStartPosition());
+			assertEquals(683 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFile7() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFile7.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 7, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(284, propertyCallExp.getStartPosition());
+			assertEquals(284 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(298, string.getStartPosition());
+			assertEquals(298 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(893, propertyCallExp.getStartPosition());
+			assertEquals(893 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(347, stringLiteralExp.getStartPosition());
+			assertEquals(347 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(893, propertyCallExp.getStartPosition());
+			assertEquals(893 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(378, stringLiteralExp.getStartPosition());
+			assertEquals(378 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(4);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(893, propertyCallExp.getStartPosition());
+			assertEquals(893 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(5);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(409, stringLiteralExp.getStartPosition());
+			assertEquals(409 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(893, propertyCallExp.getStartPosition());
+			assertEquals(893 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFileFor() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFileFor.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 7, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(286, propertyCallExp.getStartPosition());
+			assertEquals(286 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(300, string.getStartPosition());
+			assertEquals(300 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(937, propertyCallExp.getStartPosition());
+			assertEquals(937 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(385, stringLiteralExp.getStartPosition());
+			assertEquals(385 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(937, propertyCallExp.getStartPosition());
+			assertEquals(937 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(416, stringLiteralExp.getStartPosition());
+			assertEquals(416 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(4);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(937, propertyCallExp.getStartPosition());
+			assertEquals(937 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(5);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(447, stringLiteralExp.getStartPosition());
+			assertEquals(447 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(937, propertyCallExp.getStartPosition());
+			assertEquals(937 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFileIf() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFileIf.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 7, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(285, propertyCallExp.getStartPosition());
+			assertEquals(285 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(299, string.getStartPosition());
+			assertEquals(299 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(910, propertyCallExp.getStartPosition());
+			assertEquals(910 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(359, stringLiteralExp.getStartPosition());
+			assertEquals(359 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(910, propertyCallExp.getStartPosition());
+			assertEquals(910 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(390, stringLiteralExp.getStartPosition());
+			assertEquals(390 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(4);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(910, propertyCallExp.getStartPosition());
+			assertEquals(910 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(5);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(421, stringLiteralExp.getStartPosition());
+			assertEquals(421 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(910, propertyCallExp.getStartPosition());
+			assertEquals(910 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
+	public void testTraceabilityBlockTemplateCollectFileIf2() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFileIf2.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 7, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(2, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(286, propertyCallExp.getStartPosition());
+			assertEquals(286 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = nameRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + ".txt").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp string = (StringLiteralExp)element;
+			assertEquals(".txt", string.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(300, string.getStartPosition());
+			assertEquals(300 + "'.txt'".length(), string.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(927, propertyCallExp.getStartPosition());
+			assertEquals(927 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(371, stringLiteralExp.getStartPosition());
+			assertEquals(371 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(2);
+			assertEquals(("class" + cpt + "yopyop").length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(927, propertyCallExp.getStartPosition());
+			assertEquals(927 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(3);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt).length(), generatedText.getStartOffset()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(402, stringLiteralExp.getStartPosition());
+			assertEquals(402 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(4);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop").length(), generatedText //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(927, propertyCallExp.getStartPosition());
+			assertEquals(927 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(5);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt).length(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+					generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getEndOffset());
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("yopyop", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(433, stringLiteralExp.getStartPosition());
+			assertEquals(433 + "yopyop".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(6);
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					.length(), generatedText.getStartOffset());
+			assertEquals(("class" + cpt + "yopyop" + "class" + cpt + "yopyop" + "class" + cpt + "yopyop" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+					+ "class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			propertyCallExp = (PropertyCallExp)element;
+			assertEquals("eClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(927, propertyCallExp.getStartPosition());
+			assertEquals(927 + "eClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(2, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, sourceElements.get(1).toString()); //$NON-NLS-1$
+			assertEquals("class" + cpt + ".txt", generatedFile.getPath()); //$NON-NLS-1$ //$NON-NLS-2$
+			cpt++;
+		}
+	}
+
+	@Test
 	public void testTraceabilityBlockTemplateFor() {
 		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
 				"data/block/blockTemplateFor.mtl", //$NON-NLS-1$

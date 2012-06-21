@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.AcceleoASTNodeAdapter;
+import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
@@ -1067,9 +1068,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					lastEObjectSelfValue = (EObject)source;
 				}
 				if (result != null) {
-					final boolean fireEvent = fireGenerationEvent
-							&& !(expression instanceof TemplateInvocation)
-							&& !(expression instanceof Template);
+					boolean fireEvent = fireEvent(expression);
 					delegateAppend(toString(result), generatedBlock, lastEObjectSelfValue, fireEvent);
 				}
 			}
@@ -1116,6 +1115,44 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		return result;
+	}
+
+	/**
+	 * Fire (or not) a generation event for the given expression evaluated.
+	 * 
+	 * @param expression
+	 *            The expression evaluated
+	 * @return <code>true</code> if a generation has been fired, <code>false</code> otherwise.
+	 */
+	private boolean fireEvent(OCLExpression<C> expression) {
+		boolean fireEvent = fireGenerationEvent && !(expression instanceof Template);
+		boolean preventTemplateInvocation = true;
+
+		if (expression.eContainingFeature().equals(MtlPackage.eINSTANCE.getBlock_Body())) {
+			EObject eContainer = expression.eContainer();
+			while (eContainer != null && !(eContainer instanceof FileBlock)
+					&& MtlPackage.eINSTANCE.getBlock_Body().equals(eContainer.eContainingFeature())) {
+				eContainer = eContainer.eContainer();
+			}
+
+			if (eContainer instanceof FileBlock) {
+				// If this file block has been called by another template, fire an event
+				Deque<OCLExpression<C>> expressionStack = this.context.getExpressionStack();
+				for (int i = expressionStack.size() - 1; i >= 0; i--) {
+					OCLExpression<C> oclExpression = expressionStack.get(i);
+					if (oclExpression instanceof TemplateInvocation
+							&& expressionStack.indexOf(eContainer) > expressionStack.indexOf(oclExpression)) {
+						preventTemplateInvocation = false;
+						break;
+					}
+				}
+			}
+		}
+
+		if (preventTemplateInvocation) {
+			fireEvent = fireEvent && !(expression instanceof TemplateInvocation);
+		}
+		return fireEvent;
 	}
 
 	/**

@@ -1,0 +1,35 @@
+[comment encoding = UTF-8 /]
+[module blockTemplateCollectFile7('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(aPackage : EPackage)]
+[comment @main /]
+[aPackage.eContents(EClass).generateClass()/]
+[/template]
+
+[template public generateClass(eClass : EClass)]
+[file (eClass.name + '.txt', false, 'UTF-8')][eClass.otherTemplate()/]yopyop[eClass.otherTemplate()/]yopyop[eClass.otherTemplate()/]yopyop[eClass.otherTemplate()/][/file]
+[/template]
+
+[template public otherTemplate(eClass : EClass)]
+[eClass.moreStuff()/]
+[/template]
+
+[template public moreStuff(eClass : EClass)]
+[eClass.yeahMoreComplex()/]
+[/template]
+
+[template public yeahMoreComplex(eClass : EClass)]
+[eClass.one()/]
+[/template]
+
+[template public one(eClass : EClass)]
+[eClass.more()/]
+[/template]
+
+[template public more(eClass : EClass)]
+[eClass.thing()/]
+[/template]
+
+[template public thing(eClass : EClass)]
+[eClass.name/]
+[/template]

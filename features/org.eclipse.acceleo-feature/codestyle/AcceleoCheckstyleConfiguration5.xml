@@ -12,7 +12,7 @@ Acceleo Checkstyle 5 Configuration
 <module name="Checker">
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
-  	<property name="cacheFile" value="$\{cachefile\}"/> 
+    <property name="cacheFile" value="$\{cachefile\}"/>
     <module name="FileContentsHolder"/>
     <module name="JavadocMethod">
       <property name="severity" value="error"/>
@@ -88,7 +88,7 @@ Acceleo Checkstyle 5 Configuration
     </module>
     <module name="MethodLength">
       <property name="severity" value="error"/>
-      <property name="max" value="120"/>
+      <property name="max" value="140"/>
     </module>
     <module name="ParameterNumber">
       <property name="severity" value="error"/>
@@ -338,7 +338,7 @@ Acceleo Checkstyle 5 Configuration
   </module>
   <module name="FileLength">
     <property name="severity" value="error"/>
-    <property name="max" value="2500"/>
+    <property name="max" value="3000"/>
   </module>
   <module name="SuppressionCommentFilter"/>
 </module>

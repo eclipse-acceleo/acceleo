@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module blockTemplateCollectFile('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(aPackage : EPackage)]
+[comment @main /]
+[aPackage.eContents(EClass).generateClass()/]
+[/template]
+
+[template public generateClass(eClass : EClass)]
+[file (eClass.name + '.txt', false, 'UTF-8')][eClass.name/][/file]
+[/template]
