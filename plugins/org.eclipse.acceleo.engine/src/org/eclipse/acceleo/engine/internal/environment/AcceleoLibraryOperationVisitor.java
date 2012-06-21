@@ -36,6 +36,7 @@ import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.IAcceleoCrossReferenceProvider;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.EMFPlugin;
@@ -632,7 +633,13 @@ public final class AcceleoLibraryOperationVisitor {
 				}
 			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTRING.equals(operationName)) {
-			result = source.substring(((Integer)args[0]).intValue() - 1);
+			try {
+				result = source.substring(((Integer)args[0]).intValue() - 1);
+			} catch (IndexOutOfBoundsException e) {
+				AcceleoEnginePlugin.log(new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+						"AcceleoLibraryOperationVisitor.IndexOutOfBoundsSubstring", source, args[0]), e), //$NON-NLS-1$
+						true);
+			}
 		} else if (AcceleoNonStandardLibrary.OPERATION_STRING_INDEX.equals(operationName)) {
 			// If we are here, it should be for index(String, Integer) not for index(String)
 			if (args.length == 2) {
