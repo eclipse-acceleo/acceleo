@@ -138,4 +138,12 @@ public abstract class AbstractTrace {
 	public void setOffset(int offset) {
 		currentOffset = offset;
 	}
+
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Current offset: " + this.currentOffset); //$NON-NLS-1$
+		buffer.append(" --- Traces: " + this.traces); //$NON-NLS-1$
+		return buffer.toString();
+	}
 }
