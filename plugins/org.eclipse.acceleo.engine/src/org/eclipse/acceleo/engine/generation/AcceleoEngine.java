@@ -32,6 +32,7 @@ import org.eclipse.acceleo.model.mtl.Query;
 import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.util.Monitor;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.ocl.ecore.AnyType;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.Variable;
@@ -314,7 +315,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 			for (int i = 0; i < template.getParameter().size(); i++) {
 				Variable param = template.getParameter().get(i);
 				Object value = arguments.get(i);
-				if (param.getType().isInstance(value)) {
+				if (isInstance(param.getType(), value)) {
 					guard.getEvaluationEnvironment().add(param.getName(), value);
 				} else {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
@@ -344,7 +345,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 			for (int i = 0; i < template.getParameter().size(); i++) {
 				Variable param = template.getParameter().get(i);
 				Object value = arguments.get(i);
-				if (param.getType() instanceof AnyType || param.getType().isInstance(value)) {
+				if (param.getType() instanceof AnyType || isInstance(param.getType(), value)) {
 					query.getEvaluationEnvironment().add(param.getName(), value);
 				} else {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
@@ -390,7 +391,7 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 		for (int i = 0; i < acceleoQuery.getParameter().size(); i++) {
 			Variable param = acceleoQuery.getParameter().get(i);
 			Object value = arguments.get(i);
-			if (value == null || param.getType().isInstance(value)) {
+			if (value == null || isInstance(param.getType(), value)) {
 				query.getEvaluationEnvironment().add(param.getName(), value);
 			} else {
 				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(ARGUMENT_MISMATCH_KEY,
@@ -414,5 +415,26 @@ public class AcceleoEngine implements IAcceleoEngine2 {
 				query.getEvaluationEnvironment().remove(SELF_CONTEXT_VARIABLE_NAME);
 			}
 		}
+	}
+
+	/**
+	 * In the context of Acceleo, we assume that "classifier" is more often a "normal" classifier than a
+	 * primitive. We'll delegate to classifier.isInstance if not.
+	 * 
+	 * @param classifier
+	 *            The classifier we need <code>value</code> to be an instance of.
+	 * @param value
+	 *            The value which class is to be checked.
+	 * @return <code>true</code> if value is an instance of the given classifier.
+	 */
+	private boolean isInstance(EClassifier classifier, Object value) {
+		boolean isInstance = false;
+		if (classifier.getInstanceClass() != null) {
+			isInstance = classifier.getInstanceClass().isInstance(value);
+		}
+		if (!isInstance) {
+			isInstance = classifier.isInstance(value);
+		}
+		return isInstance;
 	}
 }
