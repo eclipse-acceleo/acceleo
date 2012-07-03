@@ -42,7 +42,7 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * This map will be populated with the factories towards which we'll need to restore broken links. See
 	 * {@link #restoreBrokenEnvironmentPackages(Resource)}.
 	 */
-	private final Map<String, EFactory> factories = new HashMap<String, EFactory>(4);
+	private final Map<String, EFactory> factories = new HashMap<String, EFactory>();
 
 	/** Instance of the OCL standard library reflection for this environment. */
 	private AcceleoOCLReflection oclStdLibReflection;
