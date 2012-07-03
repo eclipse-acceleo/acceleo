@@ -29,6 +29,12 @@ public class AcceleoOCLReflection {
 	/** Whole set of reserved keywords for the current OCL version. */
 	private static Set<String> reservedKeywords;
 
+	/**
+	 * Once we've found this, there is no need to look it up again. The OCL Version won't change in one given
+	 * lifespan of this Class.
+	 */
+	private static Method oclInvalidMethod;
+
 	/** Parent environment of this reflection. */
 	private EcoreEnvironment environment;
 
@@ -60,12 +66,15 @@ public class AcceleoOCLReflection {
 			if (AcceleoCompatibilityHelper.getCurrentVersion() == OCLVersion.HELIOS) {
 				methodName = "getInvalid"; //$NON-NLS-1$
 			}
+			if (oclInvalidMethod == null) {
+				try {
+					oclInvalidMethod = stdLib.getClass().getMethod(methodName);
+				} catch (NoSuchMethodException e) {
+					AcceleoCommonPlugin.log(e, true);
+				}
+			}
 			try {
-				final Method method = stdLib.getClass().getMethod(methodName);
-				invalid = method.invoke(stdLib);
-			} catch (NoSuchMethodException e) {
-				// Shouldn't happen
-				AcceleoCommonPlugin.log(e, true);
+				invalid = oclInvalidMethod.invoke(stdLib);
 			} catch (InvocationTargetException e) {
 				// cannot happen
 				AcceleoCommonPlugin.log(e, true);
