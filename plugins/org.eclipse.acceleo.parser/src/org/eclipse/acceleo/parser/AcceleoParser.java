@@ -733,8 +733,18 @@ public class AcceleoParser {
 				for (EOperation eOperation : eOperations) {
 					EcoreUtil.remove(eOperation);
 				}
+
+				// We no longer need this
+				emptyCache();
 			}
 		}
+	}
+
+	/**
+	 * Clears up the cache we created.
+	 */
+	private void emptyCache() {
+		operationsInModule.clear();
 	}
 
 	/**
