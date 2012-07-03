@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -415,14 +414,15 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	 * @return the meta-model objects, or an empty list
 	 */
 	public List<EClassifier> getTypes() {
-		if (types.size() == 0) {
-			final Iterator<EPackage> ePackageIt = getMetamodels().iterator();
-			while (ePackageIt.hasNext()) {
-				final EPackage ePackage = ePackageIt.next();
-				Iterator<EClassifier> eClassifierIt = ePackage.getEClassifiers().iterator();
-				while (eClassifierIt.hasNext()) {
-					EClassifier eClassifier = eClassifierIt.next();
-					computeOCLType(types, eClassifier);
+		if (types.isEmpty()) {
+			final List<EPackage> packages = getMetamodels();
+			final int size = packages.size();
+			for (int i = 0; i < size; i++) {
+				final EPackage ePackage = packages.get(i);
+				final List<EClassifier> classifiers = ePackage.getEClassifiers();
+				final int classCount = classifiers.size();
+				for (int j = 0; j < classCount; j++) {
+					computeOCLType(types, classifiers.get(j));
 				}
 			}
 			computeOCLType(types, getOCLStandardLibrary().getBag());
@@ -515,12 +515,14 @@ public class AcceleoEnvironment extends EcoreEnvironment {
 	@Override
 	public EClassifier lookupClassifier(List<String> names) {
 		EClassifier classifier = null;
-		if (names.size() > 0) {
-			Iterator<EClassifier> eClassifierIt = getTypes().iterator();
-			while (classifier == null && eClassifierIt.hasNext()) {
-				EClassifier eClassifier = eClassifierIt.next();
-				if (names.get(names.size() - 1).equals(eClassifier.getName())
-						&& (names.size() < 2 || names.get(names.size() - 2).equals(
+		final int nameCount = names.size();
+		if (nameCount > 0) {
+			final List<EClassifier> classifiers = getTypes();
+			final int size = classifiers.size();
+			for (int i = 0; i < size && classifier == null; i++) {
+				EClassifier eClassifier = classifiers.get(i);
+				if (names.get(nameCount - 1).equals(eClassifier.getName())
+						&& (nameCount < 2 || names.get(nameCount - 2).equals(
 								eClassifier.getEPackage().getName()))) {
 					classifier = eClassifier;
 				}
