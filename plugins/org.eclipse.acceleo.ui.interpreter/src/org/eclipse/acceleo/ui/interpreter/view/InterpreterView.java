@@ -82,6 +82,7 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.ITextSelection;
@@ -861,8 +862,8 @@ public class InterpreterView extends ViewPart {
 	protected SourceViewer createExpressionViewer(Composite parent) {
 		SourceViewer viewer = getCurrentLanguageInterpreter().createSourceViewer(parent);
 		if (viewer == null) {
-			viewer = SWTUtil.createScrollableSourceViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI
-					| SWT.BORDER);
+			viewer = SWTUtil.createScrollableSourceViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+			viewer.setDocument(new Document());
 		}
 		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
 
