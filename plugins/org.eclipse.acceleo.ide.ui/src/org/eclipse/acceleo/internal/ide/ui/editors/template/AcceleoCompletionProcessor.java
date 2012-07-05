@@ -67,7 +67,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
@@ -1802,7 +1801,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	protected ICompletionProposal createCompletionProposal(String replacementString, int replacementOffset,
 			int replacementLength, int cursorPosition, Image image, String displayString,
 			IContextInformation contextInformation, String additionalProposalInfo) {
-		return new CompletionProposal(replacementString, replacementOffset, replacementLength,
+		return new AcceleoCompletionProposal(replacementString, replacementOffset, replacementLength,
 				cursorPosition, image, displayString, contextInformation, additionalProposalInfo);
 	}
 
