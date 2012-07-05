@@ -1387,6 +1387,11 @@ public class InterpreterView extends ViewPart {
 	 *            The viewer we need content assist on.
 	 */
 	protected final void setUpContentAssist(final IInterpreterSourceViewer viewer) {
+		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
+		if (activationTokenContentAssist != null) {
+			service.deactivateHandler(activationTokenContentAssist);
+		}
+
 		IAction contentAssistAction = new Action() {
 			@Override
 			public void run() {
@@ -1395,7 +1400,6 @@ public class InterpreterView extends ViewPart {
 		};
 		IHandler contentAssistHandler = new ActionHandler(contentAssistAction);
 
-		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
 		activationTokenContentAssist = service.activateHandler(
 				ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS, contentAssistHandler);
 	}
@@ -1556,6 +1560,14 @@ public class InterpreterView extends ViewPart {
 	 *            The viewer on which to activate default text actions.
 	 */
 	private void setUpDefaultTextAction(final SourceViewer viewer) {
+		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
+		if (activationTokenRedo != null) {
+			service.deactivateHandler(activationTokenRedo);
+		}
+		if (activationTokenUndo != null) {
+			service.deactivateHandler(activationTokenUndo);
+		}
+
 		IAction redoAction = new Action() {
 			@Override
 			public void run() {
@@ -1572,7 +1584,6 @@ public class InterpreterView extends ViewPart {
 		};
 		IHandler undoHandler = new ActionHandler(undoAction);
 
-		IHandlerService service = (IHandlerService)getSite().getService(IHandlerService.class);
 		activationTokenRedo = service.activateHandler(WORKBENCH_CONSTANT_EDIT_REDO, redoHandler);
 		activationTokenUndo = service.activateHandler(WORKBENCH_CONSTANT_EDIT_UNDO, undoHandler);
 	}
