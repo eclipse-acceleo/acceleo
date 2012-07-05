@@ -188,8 +188,8 @@ public class AcceleoCompletionProposal implements ICompletionProposal, ICompleti
 		final IDocument doc = viewer.getDocument();
 
 		try {
-			doc.replace(offset, fReplacementLength - (offset - fReplacementOffset), fReplacementString
-					.substring(offset - fReplacementOffset));
+			// Replace the whole string, this will avoid case-sensitive issues.
+			doc.replace(fReplacementOffset, fReplacementLength, fReplacementString);
 		} catch (BadLocationException e) {
 			Throwables.propagate(e);
 		}
@@ -222,14 +222,42 @@ public class AcceleoCompletionProposal implements ICompletionProposal, ICompleti
 	 *      int, org.eclipse.jface.text.DocumentEvent)
 	 */
 	public boolean validate(IDocument document, int offset, DocumentEvent event) {
+		boolean valid = false;
 		if (offset >= fReplacementOffset && offset < fReplacementOffset + fReplacementString.length()) {
 			try {
 				final String start = document.get(fReplacementOffset, offset - fReplacementOffset);
-				return start.equals(fReplacementString.substring(0, offset - fReplacementOffset));
+				valid = start.equalsIgnoreCase(fReplacementString.substring(0, offset - fReplacementOffset));
 			} catch (BadLocationException x) {
 				// return false
 			}
 		}
-		return false;
+		if (valid && event != null) {
+			// adapt replacement range to document change
+			int delta = 0;
+			if (event.fText != null) {
+				delta = event.fText.length();
+			}
+			delta -= event.fLength;
+			fReplacementLength = Math.max(fReplacementLength + delta, 0);
+		}
+		return valid;
+	}
+
+	/**
+	 * Offers a getter for the replacement string.
+	 * 
+	 * @return The replacement string.
+	 */
+	public String getReplacementString() {
+		return fReplacementString;
+	}
+
+	/**
+	 * Offers a getter for the replacement length.
+	 * 
+	 * @return The replacement length.
+	 */
+	public int getReplacementLength() {
+		return fReplacementLength;
 	}
 }
