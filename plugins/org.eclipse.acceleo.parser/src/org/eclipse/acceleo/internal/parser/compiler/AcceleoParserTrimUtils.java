@@ -106,6 +106,9 @@ public final class AcceleoParserTrimUtils {
 				for (EOperation eOperation : eOperations) {
 					EcoreUtil.remove(eOperation);
 				}
+
+				// Empty the cache
+				operationsInModule.clear();
 			}
 		}
 	}
