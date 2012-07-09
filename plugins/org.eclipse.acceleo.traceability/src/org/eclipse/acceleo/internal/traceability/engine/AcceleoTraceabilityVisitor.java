@@ -333,7 +333,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				 * length of the file to grow the length of the String. Should we log anything? This
 				 * information would be interesting if a user encounters such a failure.
 				 */
-				generatedFile.setLength(fileLength + stringLength);
+				// generatedFile.setLength(fileLength + stringLength);
 				addedLength = stringLength;
 			} else {
 				generatedFile.setLength(fileLength + addedLength);
@@ -428,7 +428,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public String fitIndentationTo(String source, String indentation) {
-		if ("".equals(indentation)) { //$NON-NLS-1$
+		boolean shouldBeIndented = source.trim().contains("\r\n") || source.trim().contains("\r") //$NON-NLS-1$ //$NON-NLS-2$
+				|| source.trim().contains("\n"); //$NON-NLS-1$
+		if ("".equals(indentation) || !shouldBeIndented) { //$NON-NLS-1$
 			return source;
 		}
 		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
