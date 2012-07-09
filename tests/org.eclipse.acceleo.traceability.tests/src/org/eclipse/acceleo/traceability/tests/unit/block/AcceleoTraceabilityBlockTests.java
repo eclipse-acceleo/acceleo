@@ -3021,6 +3021,70 @@ public class AcceleoTraceabilityBlockTests extends AbstractTraceabilityTest {
 	}
 
 	@Test
+	public void testTraceabilityBlockTemplateCollectFileIfTrim() {
+		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
+				"data/block/blockTemplateCollectFileIfTrim.mtl", //$NON-NLS-1$
+				"main", "data/block/model.ecore", true); //$NON-NLS-1$ //$NON-NLS-2$
+		List<GeneratedFile> generatedFiles = traceabilityListener.getGeneratedFiles();
+		assertEquals(4, generatedFiles.size());
+
+		int cpt = 1;
+		for (GeneratedFile generatedFile : generatedFiles) {
+			List<GeneratedText> generatedRegions = generatedFile.getGeneratedRegions();
+			assertEquals("Error with the file " + generatedFile.getPath(), 2, generatedRegions.size()); //$NON-NLS-1$
+			assertEquals("/**\n * stuff".length(), generatedFile.getLength()); //$NON-NLS-1$
+
+			List<GeneratedText> nameRegions = generatedFile.getNameRegions();
+			assertEquals(1, nameRegions.size());
+			assertEquals("class" + cpt, generatedFile.getName()); //$NON-NLS-1$
+
+			GeneratedText generatedText = nameRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("class" + cpt).length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			ModuleElement moduleElement = generatedText.getModuleElement();
+			EObject element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof PropertyCallExp);
+			PropertyCallExp propertyCallExp = (PropertyCallExp)element;
+			EGenericType eGenericType = propertyCallExp.getEGenericType();
+			assertTrue(eGenericType.getERawType().getInstanceClass().equals(String.class));
+			assertEquals("aClass.name", propertyCallExp.toString()); //$NON-NLS-1$
+			assertEquals(289, propertyCallExp.getStartPosition());
+			assertEquals(289 + "aClass.name".length(), propertyCallExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(0);
+			assertEquals(0, generatedText.getStartOffset());
+			assertEquals(("/**\n * ").length(), generatedText.getEndOffset()); //$NON-NLS-1$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			StringLiteralExp stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("/**\n * ", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(418, stringLiteralExp.getStartPosition());
+			assertEquals(418 + "/**\n * ".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			generatedText = generatedRegions.get(1);
+			assertEquals(("/**\n * ").length(), generatedText.getStartOffset()); //$NON-NLS-1$
+			assertEquals(("/**\n * " + "stuff").length(), generatedText.getEndOffset()); //$NON-NLS-1$ //$NON-NLS-2$
+			moduleElement = generatedText.getModuleElement();
+			element = moduleElement.getModuleElement();
+			assertTrue(element instanceof ASTNode);
+			assertTrue(element instanceof StringLiteralExp);
+			stringLiteralExp = (StringLiteralExp)element;
+			assertEquals("stuff\n", stringLiteralExp.getStringSymbol()); //$NON-NLS-1$
+			assertEquals(539, stringLiteralExp.getStartPosition());
+			assertEquals(539 + "stuff\n".length(), stringLiteralExp.getEndPosition()); //$NON-NLS-1$
+
+			List<InputElement> sourceElements = generatedFile.getSourceElements();
+			assertEquals(1, sourceElements.size()); // the class and its name
+			assertEquals("class" + cpt + ", feature='name'", sourceElements.get(0).toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals("class" + cpt, generatedFile.getPath()); //$NON-NLS-1$ 
+			cpt++;
+		}
+	}
+
+	@Test
 	public void testTraceabilityBlockTemplateFor() {
 		AcceleoTraceabilityListener traceabilityListener = this.parseAndGenerate(
 				"data/block/blockTemplateFor.mtl", //$NON-NLS-1$

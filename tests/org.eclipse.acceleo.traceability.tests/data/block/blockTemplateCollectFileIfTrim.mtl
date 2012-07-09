@@ -1,0 +1,22 @@
+[comment encoding = UTF-8 /]
+[module blockTemplateCollectFileIfTrim('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(aPackage : EPackage)]
+[comment @main /]
+[aPackage.eContents(EClass).generateClass()/]
+[/template]
+
+[template public generateClass(aClass : EClass)]
+[file (aClass.name, false, 'UTF-8')][genFileHeader() /][/file]
+[/template]
+
+[template public genFileHeader (aClassifier : EClassifier)]
+/**
+ * [genFullPathFile().trim()/]
+[/template]
+
+[template public genFullPathFile(aClassifier : EClassifier)]
+[if (true)]
+stuff
+[/if]
+[/template]
