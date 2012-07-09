@@ -1092,9 +1092,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 				int initEndPosition = oProtectedAreaBlock.getBody().get(0).getStartPosition();
 				if (this.astProvider instanceof AcceleoSourceBuffer) {
 					AcceleoSourceBuffer buffer = (AcceleoSourceBuffer)this.astProvider;
-					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition, UNIX_LINE_SEPARATOR);
-					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition, DOS_LINE_SEPARATOR);
-					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition, MAC_LINE_SEPARATOR);
+					this.parseWhitespaceAfterProtectedArea(buffer, initEndPosition);
 				}
 			}
 		}
@@ -1107,16 +1105,31 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 	 *            The acceleo source buffer.
 	 * @param startPosition
 	 *            The position of the end of the protected area block.
-	 * @param delimiter
-	 *            The delimiter.
 	 */
-	private void parseWhitespaceAfterProtectedArea(AcceleoSourceBuffer buffer, int startPosition,
-			String delimiter) {
+	private void parseWhitespaceAfterProtectedArea(AcceleoSourceBuffer buffer, int startPosition) {
 		int startNonWhiteSpace = -1;
 		int endNonWhiteSpace = -1;
 
 		StringBuffer strBuffer = buffer.getBuffer();
-		int indexOfLineDelimiter = strBuffer.indexOf(delimiter, startPosition);
+
+		int winIndex = strBuffer.indexOf(DOS_LINE_SEPARATOR, startPosition);
+		int unixIndex = strBuffer.indexOf(UNIX_LINE_SEPARATOR, startPosition);
+		int osxClassicIndex = strBuffer.indexOf(MAC_LINE_SEPARATOR, startPosition);
+
+		int indexOfLineDelimiter = strBuffer.length();
+
+		if (winIndex != -1 && winIndex < indexOfLineDelimiter) {
+			indexOfLineDelimiter = winIndex;
+		}
+
+		if (unixIndex != -1 && unixIndex < indexOfLineDelimiter) {
+			indexOfLineDelimiter = unixIndex;
+		}
+
+		if (osxClassicIndex != -1 && osxClassicIndex < indexOfLineDelimiter) {
+			indexOfLineDelimiter = osxClassicIndex;
+		}
+
 		if (indexOfLineDelimiter != strBuffer.length()) {
 			for (int i = startPosition; i < indexOfLineDelimiter; i++) {
 				char charAt = strBuffer.charAt(i);
