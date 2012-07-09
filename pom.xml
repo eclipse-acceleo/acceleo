@@ -204,9 +204,24 @@
   
   <profiles>
     <profile>
-      <id>platform-indigo</id>
+      <id>platform-juno</id>
       <activation>
          <activeByDefault>true</activeByDefault>
+        <property>
+          <name>platform-version-name</name>
+          <value>juno</value>
+        </property>
+      </activation>
+      <properties>
+        <eclipse-site>http://download.eclipse.org/releases/juno</eclipse-site>
+        <platform-version>[3.7,3.8)</platform-version>
+        <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
+      </properties>
+    </profile>
+    <profile>
+      <id>platform-indigo</id>
+      <activation>
+         <activeByDefault>false</activeByDefault>
         <property>
           <name>platform-version-name</name>
           <value>indigo</value>
@@ -310,6 +325,39 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+	    <id>quality</id>
+	    <activation>
+		    <activeByDefault>true</activeByDefault>
+	    </activation>
+	    <properties>
+		    <!-- Sonar properties -->
+		    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		    <!-- Points to the target folder of the global parent project -->
+		    <sonar.jacoco.reportPath>${baseDir}/target/jacoco.exec</sonar.jacoco.reportPath>
+	    </properties>
+	    <build>
+		    <plugins>
+			    <plugin>
+				    <groupId>org.jacoco</groupId>
+				    <artifactId>jacoco-maven-plugin</artifactId>
+				    <version>0.5.6.201201232323</version>
+				    <executions>
+					    <execution>
+						    <goals>
+							    <goal>prepare-agent</goal>
+						    </goals>
+						    <configuration>
+							    <append>true</append>
+							    <destFile>${sonar.jacoco.reportPath}</destFile>
+						    </configuration>
+					    </execution>
+				    </executions>
+			    </plugin>
+		    </plugins>
+	    </build>
+    </profile>
   </profiles>
-  
+
 </project>
