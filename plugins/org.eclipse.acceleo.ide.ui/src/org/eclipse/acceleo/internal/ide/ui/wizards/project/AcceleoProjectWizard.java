@@ -327,7 +327,7 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 
 		// Default JRE value
 		acceleoProject.setJre(selectedJVM);
-		if (acceleoProject.getJre() == null && acceleoProject.getJre().length() == 0) {
+		if (acceleoProject.getJre() == null || acceleoProject.getJre().length() == 0) {
 			acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$			
 		}
 
