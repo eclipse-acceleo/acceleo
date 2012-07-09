@@ -113,10 +113,28 @@ public class AcceleoParserMojo extends AbstractMojo {
 		URLClassLoader newLoader = null;
 		try {
 			List<?> runtimeClasspathElements = project.getRuntimeClasspathElements();
-			URL[] runtimeUrls = new URL[runtimeClasspathElements.size()];
-			for (int i = 0; i < runtimeClasspathElements.size(); i++) {
-				String element = (String)runtimeClasspathElements.get(i);
-				runtimeUrls[i] = new File(element).toURI().toURL();
+			List<?> compileClasspathElements = project.getCompileClasspathElements();
+			URL[] runtimeUrls = new URL[runtimeClasspathElements.size() + compileClasspathElements.size()];
+			int i = 0;
+			for (Object object : runtimeClasspathElements) {
+				if (object instanceof String) {
+					String str = (String)object;
+					log.debug("Adding the runtime dependency " + str + " to the classloader for the package resolution");
+					runtimeUrls[i] = new File(str).toURI().toURL();
+					i++;
+				} else {
+					log.debug("Runtime classpath entry is not a string: " + object);
+				}
+			}
+			for (Object object : compileClasspathElements) {
+				if (object instanceof String) {
+					String str = (String)object;
+					log.debug("Adding the compilation dependency " + str + " to the classloader for the package resolution");
+					runtimeUrls[i] = new File(str).toURI().toURL();
+					i++;
+				} else {
+					log.debug("Runtime classpath entry is not a string: " + object);
+				}
 			}
 			newLoader = new URLClassLoader(runtimeUrls, Thread.currentThread().getContextClassLoader());
 		} catch (DependencyResolutionRequiredException e) {
@@ -356,7 +374,7 @@ public class AcceleoParserMojo extends AbstractMojo {
 		 * @see org.eclipse.acceleo.internal.parser.compiler.IParserListener#fileSaved(java.io.File)
 		 */
 		public void fileSaved(File arg0) {
-			getLog().info("Saving file '" + arg0.getAbsolutePath() + "'.");
+			getLog().info("Saving ouput file for '" + arg0.getAbsolutePath() + "'.");
 		}
 
 		/**
