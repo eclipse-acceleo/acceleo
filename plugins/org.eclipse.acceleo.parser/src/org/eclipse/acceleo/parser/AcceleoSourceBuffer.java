@@ -168,7 +168,7 @@ public class AcceleoSourceBuffer implements IASTProvider, IDocumentationProvider
 				lines.add(Integer.valueOf(offset));
 			} else if (buffer.charAt(offset) == '\r') {
 				lines.add(Integer.valueOf(offset));
-				if (buffer.charAt(offset + 1) == '\n') {
+				if (buffer.length() > offset + 1 && buffer.charAt(offset + 1) == '\n') {
 					offset++;
 				}
 			}
