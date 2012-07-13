@@ -241,7 +241,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 		}
 		try {
 			AcceleoCommonPlugin.log(new Status(IStatus.INFO, AcceleoCommonPlugin.PLUGIN_ID,
-					"DEBUG - Acceleo has decided to save the built state."));
+					"DEBUG - Acceleo has decided to save the built state of " + info.getProject() + "."));
 
 			DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 			try {
