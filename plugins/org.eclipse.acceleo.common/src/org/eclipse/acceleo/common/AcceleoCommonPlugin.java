@@ -17,6 +17,7 @@ import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResource
 import org.eclipse.acceleo.common.internal.utils.AcceleoLibrariesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoModelManager;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.library.connector.ILibrary;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
@@ -248,6 +249,8 @@ public class AcceleoCommonPlugin extends Plugin {
 		registry.addListener(librariesConnectorListener, LIBRARY_CONNECTORS_EXTENSION_POINT);
 		registry.addListener(librariesListener, LIBRARIES_EXTENSION_POINT);
 		parseInitialContributions();
+
+		AcceleoModelManager.getManager().startup();
 	}
 
 	/**
@@ -257,18 +260,23 @@ public class AcceleoCommonPlugin extends Plugin {
 	 */
 	@Override
 	public void stop(final BundleContext bundleContext) throws Exception {
-		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		registry.removeListener(librariesConnectorListener);
-		registry.removeListener(librariesListener);
-		ResourcesPlugin.getWorkspace().removeResourceChangeListener(workspaceEcoreListener);
-		AcceleoServicesEclipseUtil.clearRegistry();
-		AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
-		AcceleoLibrariesEclipseUtil.clearRegistry();
-		AcceleoWorkspaceUtil.INSTANCE.dispose();
-		AcceleoPreferences.save();
-		plugin = null;
-		context = null;
-		super.stop(bundleContext);
+		try {
+			final IExtensionRegistry registry = Platform.getExtensionRegistry();
+			registry.removeListener(librariesConnectorListener);
+			registry.removeListener(librariesListener);
+			ResourcesPlugin.getWorkspace().removeResourceChangeListener(workspaceEcoreListener);
+			AcceleoServicesEclipseUtil.clearRegistry();
+			AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
+			AcceleoLibrariesEclipseUtil.clearRegistry();
+			AcceleoWorkspaceUtil.INSTANCE.dispose();
+			AcceleoPreferences.save();
+			plugin = null;
+			context = null;
+
+			AcceleoModelManager.getManager().shutdown();
+		} finally {
+			super.stop(bundleContext);
+		}
 	}
 
 	/**
