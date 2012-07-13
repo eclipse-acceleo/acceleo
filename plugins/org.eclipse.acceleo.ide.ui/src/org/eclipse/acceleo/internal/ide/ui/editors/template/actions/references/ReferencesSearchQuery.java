@@ -44,6 +44,7 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
@@ -237,11 +238,10 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			}
 		}
 
-		EObject eObject = null;
 		for (URI uri : allURIs) {
 			try {
 				if (!monitor.isCanceled() && this.resourceAtURIExist(uri)) {
-					eObject = AcceleoUIResourceSet.getResource(uri);
+					AcceleoUIResourceSet.getResource(uri);
 				}
 			} catch (IOException e) {
 				// do nothing
@@ -249,10 +249,12 @@ public class ReferencesSearchQuery implements ISearchQuery {
 				// do nothing
 			}
 		}
-		if (!monitor.isCanceled() && eObject != null) {
-			EcoreUtil.resolveAll(eObject.eResource());
-			if (eObject instanceof Module) {
-				scanModuleForDeclaration((Module)eObject);
+		if (!monitor.isCanceled()) {
+			List<Resource> resources = AcceleoUIResourceSet.getResources();
+			for (Resource resource : resources) {
+				if (resource.getContents().size() > 0 && resource.getContents().get(0) instanceof Module) {
+					scanModuleForDeclaration((Module)resource.getContents().get(0));
+				}
 			}
 		}
 	}
