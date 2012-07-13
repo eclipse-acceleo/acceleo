@@ -27,6 +27,8 @@ import java.util.Set;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoModelManager;
+import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoProjectState;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -41,15 +43,18 @@ import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
@@ -81,6 +86,11 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 * The projects mapped by the builder.
 	 */
 	private Map<IJavaProject, org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> mappedProjects = new HashMap<IJavaProject, org.eclipse.acceleo.internal.parser.compiler.AcceleoProject>();
+
+	/**
+	 * The state of the current Acceleo project.
+	 */
+	private AcceleoProjectState lastState;
 
 	/**
 	 * Constructor.
@@ -115,7 +125,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		// Check that all ".ecore" models in accessible projects have been loaded.
 		AcceleoProject aProject = new AcceleoProject(project);
 		List<IProject> accessibleProjects = new ArrayList<IProject>();
-		accessibleProjects.add(project);
 		accessibleProjects = aProject.getRecursivelyAccessibleProjects();
 		for (IProject iProject : Lists.reverse(accessibleProjects)) {
 			List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
@@ -134,86 +143,210 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				.equals(settings.getCompilationKind());
 
 		Set<File> mainFiles = new LinkedHashSet<File>();
-		if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
-				|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
-			List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
-			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources, usePlatformResourcePath);
-			for (IFile iFile : deltaMembers) {
-				File fileToBuild = iFile.getLocation().toFile();
-				Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
-				for (File builtFile : builtFiles) {
-					IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-							new Path(builtFile.getAbsolutePath()));
-					this.cleanAcceleoMarkers(workspaceFile);
+
+		if (this.isWorthBuilding(Sets.newLinkedHashSet(accessibleProjects))) {
+			this.lastState = this.getLastState(this.getProject());
+
+			if (kind == IncrementalProjectBuilder.FULL_BUILD) {
+				// Full build -> build all
+				mainFiles.addAll(buildAll(acceleoProject, project, useBinaryResources,
+						usePlatformResourcePath, monitor));
+			} else {
+				if (this.lastState == null) {
+					// No state -> build all
+					mainFiles.addAll(buildAll(acceleoProject, project, useBinaryResources,
+							usePlatformResourcePath, monitor));
+				} else if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
+						|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
+					mainFiles.addAll(this.incrementalBuild(acceleoProject, project, useBinaryResources,
+							usePlatformResourcePath, monitor));
+				} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
+					acceleoProject.clean();
+					this.cleanAcceleoMarkers(project);
 				}
+			}
+
+			// Ensure that we didn't forget to build a file out of the dependency graph of the file(s)
+			// currently
+			// built, this can occur if two files are not related at all and we force the build of only one of
+			// those files.
+			Set<File> fileNotCompiled = acceleoProject.getFileNotCompiled();
+			for (File fileToBuild : fileNotCompiled) {
+				org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
+						acceleoProject, useBinaryResources, usePlatformResourcePath);
+				Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 				this.addAcceleoMarkers(builtFiles, acceleoParser);
 				mainFiles.addAll(acceleoParser.getMainFiles());
 			}
-		} else if (kind == IncrementalProjectBuilder.FULL_BUILD) {
-			acceleoProject.clean();
-			this.cleanAcceleoMarkers(project);
-			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources, usePlatformResourcePath);
-			Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
+
+			// Launch the build of the MANIFEST.MF, Java launcher, build.acceleo etc.
+			List<IFile> filesWithMainTag = new ArrayList<IFile>();
+			for (File mainFile : mainFiles) {
+				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+						new Path(mainFile.getAbsolutePath()));
+				filesWithMainTag.add(workspaceFile);
+			}
+			if (filesWithMainTag.size() > 0) {
+				monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.GeneratingAcceleoFiles")); //$NON-NLS-1$
+				CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
+						new AcceleoProject(project), filesWithMainTag);
+				createRunnableAcceleoOperation.run(monitor);
+			}
+
+			monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.RefreshingProjects")); //$NON-NLS-1$
+			// Refresh all the projects potentially containing files.
+			Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets
+					.newHashSet(acceleoProject);
+			projectsToRefresh.addAll(acceleoProject.getProjectDependencies());
+			projectsToRefresh.addAll(acceleoProject.getDependentProjects());
+			for (org.eclipse.acceleo.internal.parser.compiler.AcceleoProject projectToRefresh : projectsToRefresh) {
+				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+				for (IProject iProject : projects) {
+					if (iProject.isAccessible()
+							&& projectToRefresh.getProjectRoot().equals(iProject.getLocation().toFile())) {
+						iProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+					}
+				}
+			}
+
+			generateAcceleoBuildFile(monitor);
+			monitor.done();
+		}
+
+		return accessibleProjects.toArray(new IProject[accessibleProjects.size()]);
+	}
+
+	/**
+	 * Indicates if we should even try to build the project or not.
+	 * 
+	 * @param projects
+	 *            The projects used for the build
+	 * @return <code>true</code> if we should build, <code>false</code> otherwise.
+	 */
+	private boolean isWorthBuilding(Set<IProject> projects) {
+		boolean isWorthBuilding = false;
+
+		AcceleoProjectState state = this.getLastState(this.getProject());
+		if (state == null) {
+			isWorthBuilding = true;
+			AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
+					"DEBUG - Acceleo has decided to build since there are no previous state saved."));
+		} else {
+			for (IProject iProject : projects) {
+				try {
+					ITimestampResourceVisitor visitor = new ITimestampResourceVisitor();
+					iProject.accept(visitor);
+					long ts = visitor.getTimestamp();
+
+					if (state.getLaststructuralBuildTime() < ts) {
+						isWorthBuilding = true;
+						AcceleoUIActivator
+								.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
+										"DEBUG - Acceleo has decided to build since a file seems to have been modified."));
+					}
+				} catch (CoreException e) {
+					AcceleoUIActivator.log(e, true);
+				}
+			}
+		}
+
+		if (!isWorthBuilding) {
+			AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
+					"DEBUG - Acceleo has decided NOT to build since the data shows that it is unnecessary."));
+		}
+
+		return isWorthBuilding;
+	}
+
+	/**
+	 * Build all the files in the project.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo project
+	 * @param project
+	 *            The Eclipse IProject
+	 * @param useBinaryResources
+	 *            Indicates if we should use the binary resources serialization
+	 * @param usePlatformResourcePath
+	 *            Indicates if we should use platform:/resource paths
+	 * @param monitor
+	 *            The progress monitor
+	 * @return The files built
+	 */
+	private Set<File> buildAll(org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
+			IProject project, boolean useBinaryResources, boolean usePlatformResourcePath,
+			IProgressMonitor monitor) {
+		Set<File> filesBuilt = new LinkedHashSet<File>();
+
+		this.clearLastState();
+
+		acceleoProject.clean();
+		this.cleanAcceleoMarkers(project);
+		org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
+				acceleoProject, useBinaryResources, usePlatformResourcePath);
+		Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
+		for (File builtFile : builtFiles) {
+			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
+					new Path(builtFile.getAbsolutePath()));
+			this.cleanAcceleoMarkers(workspaceFile);
+		}
+		this.addAcceleoMarkers(builtFiles, acceleoParser);
+		filesBuilt.addAll(acceleoParser.getMainFiles());
+
+		AcceleoProjectState state = new AcceleoProjectState();
+		state.setProjectName(this.getProject().getName());
+		state.setLastStructuralBuildTime(System.currentTimeMillis());
+		this.recordNewState(state);
+
+		return filesBuilt;
+	}
+
+	/**
+	 * Launches an incremental build of the given project.
+	 * 
+	 * @param acceleoProject
+	 *            The Acceleo project
+	 * @param project
+	 *            The Eclipse IProject
+	 * @param useBinaryResources
+	 *            Indicates if we should use binary resources serialization
+	 * @param usePlatformResourcePath
+	 *            Indicates if we should use platform:/resources paths
+	 * @param monitor
+	 *            The progress monitor
+	 * @return The list of the files built
+	 * @throws CoreException
+	 *             In case of problems during the serialization
+	 */
+	private Set<File> incrementalBuild(
+			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject, IProject project,
+			boolean useBinaryResources, boolean usePlatformResourcePath, IProgressMonitor monitor)
+			throws CoreException {
+		Set<File> filesBuilt = new LinkedHashSet<File>();
+
+		this.clearLastState();
+
+		List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
+		org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
+				acceleoProject, useBinaryResources, usePlatformResourcePath);
+		for (IFile iFile : deltaMembers) {
+			File fileToBuild = iFile.getLocation().toFile();
+			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 			for (File builtFile : builtFiles) {
 				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 						new Path(builtFile.getAbsolutePath()));
 				this.cleanAcceleoMarkers(workspaceFile);
 			}
 			this.addAcceleoMarkers(builtFiles, acceleoParser);
-			mainFiles.addAll(acceleoParser.getMainFiles());
-		} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
-			acceleoProject.clean();
-			this.cleanAcceleoMarkers(project);
+			filesBuilt.addAll(acceleoParser.getMainFiles());
 		}
 
-		// Ensure that we didn't forget to build a file out of the dependency graph of the file(s) currently
-		// built, this can occur if two files are not related at all and we force the build of only one of
-		// those files.
-		Set<File> fileNotCompiled = acceleoProject.getFileNotCompiled();
-		for (File fileToBuild : fileNotCompiled) {
-			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources, usePlatformResourcePath);
-			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
-			this.addAcceleoMarkers(builtFiles, acceleoParser);
-			mainFiles.addAll(acceleoParser.getMainFiles());
-		}
+		AcceleoProjectState state = new AcceleoProjectState();
+		state.setProjectName(this.getProject().getName());
+		state.setLastStructuralBuildTime(System.currentTimeMillis());
+		this.recordNewState(state);
 
-		// Launch the build of the MANIFEST.MF, Java launcher, build.acceleo etc.
-		List<IFile> filesWithMainTag = new ArrayList<IFile>();
-		for (File mainFile : mainFiles) {
-			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-					new Path(mainFile.getAbsolutePath()));
-			filesWithMainTag.add(workspaceFile);
-		}
-		if (filesWithMainTag.size() > 0) {
-			monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.GeneratingAcceleoFiles")); //$NON-NLS-1$
-			CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
-					new AcceleoProject(project), filesWithMainTag);
-			createRunnableAcceleoOperation.run(monitor);
-		}
-
-		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.RefreshingProjects")); //$NON-NLS-1$
-		// Refresh all the projects potentially containing files.
-		Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets
-				.newHashSet(acceleoProject);
-		projectsToRefresh.addAll(acceleoProject.getProjectDependencies());
-		projectsToRefresh.addAll(acceleoProject.getDependentProjects());
-		for (org.eclipse.acceleo.internal.parser.compiler.AcceleoProject projectToRefresh : projectsToRefresh) {
-			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-			for (IProject iProject : projects) {
-				if (iProject.isAccessible()
-						&& projectToRefresh.getProjectRoot().equals(iProject.getLocation().toFile())) {
-					iProject.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-				}
-			}
-		}
-
-		generateAcceleoBuildFile(monitor);
-		monitor.done();
-
-		return null;
+		return filesBuilt;
 	}
 
 	/**
@@ -262,11 +395,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private void cleanAcceleoMarkers(IResource resource) {
 		try {
-			resource.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
-			resource.deleteMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, true, IResource.DEPTH_INFINITE);
-			resource.deleteMarkers(AcceleoMarkerUtils.INFO_MARKER_ID, true, IResource.DEPTH_INFINITE);
-			resource.deleteMarkers(AcceleoMarkerUtils.OVERRIDE_MARKER_ID, true, IResource.DEPTH_INFINITE);
-			resource.deleteMarkers(AcceleoMarkerUtils.TASK_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			if (resource.exists() && resource.isAccessible()) {
+				resource.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, true, IResource.DEPTH_INFINITE);
+				resource.deleteMarkers(AcceleoMarkerUtils.WARNING_MARKER_ID, true, IResource.DEPTH_INFINITE);
+				resource.deleteMarkers(AcceleoMarkerUtils.INFO_MARKER_ID, true, IResource.DEPTH_INFINITE);
+				resource.deleteMarkers(AcceleoMarkerUtils.OVERRIDE_MARKER_ID, true, IResource.DEPTH_INFINITE);
+				resource.deleteMarkers(AcceleoMarkerUtils.TASK_MARKER_ID, true, IResource.DEPTH_INFINITE);
+			}
 		} catch (CoreException e) {
 			AcceleoUIActivator.log(e, true);
 		}
@@ -797,5 +932,73 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 		return output;
+	}
+
+	/**
+	 * Record a new state for the current project.
+	 * 
+	 * @param state
+	 *            The state to record
+	 */
+	private void recordNewState(AcceleoProjectState state) {
+		AcceleoModelManager.getManager().setProjectState(this.getProject(), state);
+	}
+
+	/**
+	 * Clears the last recorded state.
+	 */
+	private void clearLastState() {
+		AcceleoModelManager.getManager().setProjectState(this.getProject(), null);
+	}
+
+	/**
+	 * Returns the last saved state for the given project.
+	 * 
+	 * @param project
+	 *            The given project
+	 * @return The last saved state for the given project
+	 */
+	private AcceleoProjectState getLastState(IProject project) {
+		return AcceleoModelManager.getManager().getLastBuiltState(project, new NullProgressMonitor());
+	}
+
+	/**
+	 * A resource visitor returning the higher timestamp of the resource visited.
+	 * 
+	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+	 */
+	private class ITimestampResourceVisitor implements IResourceVisitor {
+
+		/**
+		 * The current highest timestamp.
+		 */
+		private long timestamp;
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
+		 */
+		public boolean visit(IResource resource) throws CoreException {
+			if (resource.exists() && resource.isAccessible()) {
+				if (resource instanceof IFolder
+						|| (resource instanceof IFile && IAcceleoConstants.MTL_FILE_EXTENSION
+								.equals(((IFile)resource).getFileExtension()))) {
+					if (resource.getLocation().toFile().lastModified() > timestamp) {
+						timestamp = resource.getLocation().toFile().lastModified();
+					}
+				}
+			}
+			return true;
+		}
+
+		/**
+		 * Returns the higher timestamp.
+		 * 
+		 * @return The higher timestamp.
+		 */
+		public long getTimestamp() {
+			return timestamp;
+		}
 	}
 }
