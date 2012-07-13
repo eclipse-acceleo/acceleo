@@ -1043,6 +1043,13 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		Object result = null;
 		try {
 			result = super.visitIteratorExp(callExp);
+			// CHECKSTYLE:OFF
+		} catch (Throwable t) {
+			// CHECKSTYLE:ON
+
+			// Yeah, I know it's dirty
+			throw new AcceleoEvaluationException(AcceleoTraceabilityMessages.getString(
+					"AcceleoTraceabilityVisitor.NullEvaluation", callExp), t); //$NON-NLS-1$
 		} finally {
 			evaluatingOperationCall = oldOperationEvaluationState;
 			if (recordedTraces.size() > 0) {
@@ -1337,14 +1344,16 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (isSelf || variableExp.getReferredVariable() == trace.getVariable()) {
 				tracesFound = true;
 
-				if (trace.getLastIteration() != iterationCount.getLast().intValue()) {
+				if (trace.getLastIteration() != iterationCount.getLast().intValue() && result != null) {
 					trace.advanceIteration(result.toString());
 				}
 
 				referredVarTrace = new VariableTrace<C, PM>(variableExp.getReferredVariable());
-				for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTracesForIteration()
-						.entrySet()) {
-					referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
+				if (trace.getTracesForIteration() != null) {
+					for (Map.Entry<InputElement, Set<GeneratedText>> entry : trace.getTracesForIteration()
+							.entrySet()) {
+						referredVarTrace.getTraces().put(entry.getKey(), entry.getValue());
+					}
 				}
 			}
 		}
@@ -2024,13 +2033,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 
 		// Collection::sep also requires that its separator traces be recorded
 		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
-			ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
-			operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
-			Object separator = super.visitExpression(callExp.getArgument().get(0));
-			result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject, (String)separator,
-					operationArgumentTrace);
-			operationArgumentTrace.dispose();
-			operationArgumentTrace = oldArgTrace;
+			if (sourceObject instanceof Collection) {
+				ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
+				operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
+				Object separator = super.visitExpression(callExp.getArgument().get(0));
+				result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject,
+						(String)separator, operationArgumentTrace);
+				operationArgumentTrace.dispose();
+				operationArgumentTrace = oldArgTrace;
+			} else {
+				result = null;
+			}
+
 		} else if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
 			result = internalVisitStandardOperation(callExp, sourceObject);
 		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
