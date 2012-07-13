@@ -88,4 +88,15 @@ public final class AcceleoUIResourceSet {
 			}
 		}
 	}
+
+	/**
+	 * Returns the list of the resources of this resource set.
+	 * 
+	 * @return The list of the resources of this resource set.
+	 */
+	public static List<Resource> getResources() {
+		synchronized(RESOURCE_SET) {
+			return RESOURCE_SET.getResources();
+		}
+	}
 }
