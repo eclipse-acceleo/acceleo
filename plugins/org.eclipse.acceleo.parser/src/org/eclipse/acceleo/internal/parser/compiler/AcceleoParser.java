@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -39,8 +38,6 @@ import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.acceleo.parser.AcceleoSourceBuffer;
 import org.eclipse.acceleo.parser.cst.ModuleExtendsValue;
 import org.eclipse.acceleo.parser.cst.ModuleImportsValue;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -645,9 +642,6 @@ public class AcceleoParser {
 			for (IParserListener listener : this.listeners) {
 				listener.fileSaved(file);
 			}
-
-			AcceleoCommonPlugin.log(new Status(IStatus.INFO, AcceleoCommonPlugin.PLUGIN_ID,
-					"DEBUG - Acceleo has decided to build the following file: " + file));
 
 			oResource.save(options);
 			monitor.worked(10);

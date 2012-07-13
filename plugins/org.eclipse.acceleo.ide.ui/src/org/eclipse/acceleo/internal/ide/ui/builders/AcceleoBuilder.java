@@ -230,7 +230,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (state == null) {
 			isWorthBuilding = true;
 			AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
-					"DEBUG - Acceleo has decided to build since there are no previous state saved."));
+					"DEBUG - Acceleo has decided to build " + projects
+							+ " since there are no previous state saved."));
 		} else {
 			for (IProject iProject : projects) {
 				try {
@@ -240,9 +241,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 					if (state.getLaststructuralBuildTime() < ts) {
 						isWorthBuilding = true;
-						AcceleoUIActivator
-								.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
-										"DEBUG - Acceleo has decided to build since a file seems to have been modified."));
+						AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
+								"DEBUG - Acceleo has decided to build " + projects
+										+ " since at leats a file seems to have been modified."));
 					}
 				} catch (CoreException e) {
 					AcceleoUIActivator.log(e, true);
@@ -252,7 +253,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 		if (!isWorthBuilding) {
 			AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
-					"DEBUG - Acceleo has decided NOT to build since the data shows that it is unnecessary."));
+					"DEBUG - Acceleo has decided NOT to build " + projects
+							+ " since the data shows that it is unnecessary."));
 		}
 
 		return isWorthBuilding;
