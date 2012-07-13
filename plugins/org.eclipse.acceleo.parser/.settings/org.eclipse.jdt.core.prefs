@@ -1,4 +1,3 @@
-#Mon Apr 11 10:18:04 CEST 2011
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
@@ -39,7 +38,7 @@ org.eclipse.jdt.core.compiler.problem.missingSerialVersion=warning
 org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod=warning
 org.eclipse.jdt.core.compiler.problem.noEffectAssignment=error
 org.eclipse.jdt.core.compiler.problem.noImplicitStringConversion=error
-org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=error
+org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral=warning
 org.eclipse.jdt.core.compiler.problem.nullReference=error
 org.eclipse.jdt.core.compiler.problem.overridingPackageDefaultMethod=warning
 org.eclipse.jdt.core.compiler.problem.parameterAssignment=warning
@@ -47,6 +46,7 @@ org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment=error
 org.eclipse.jdt.core.compiler.problem.potentialNullReference=error
 org.eclipse.jdt.core.compiler.problem.rawTypeReference=warning
 org.eclipse.jdt.core.compiler.problem.redundantNullCheck=error
+org.eclipse.jdt.core.compiler.problem.redundantSpecificationOfTypeArguments=ignore
 org.eclipse.jdt.core.compiler.problem.redundantSuperinterface=warning
 org.eclipse.jdt.core.compiler.problem.reportMethodCanBePotentiallyStatic=ignore
 org.eclipse.jdt.core.compiler.problem.reportMethodCanBeStatic=ignore
