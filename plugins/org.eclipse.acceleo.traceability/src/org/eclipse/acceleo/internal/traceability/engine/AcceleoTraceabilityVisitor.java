@@ -286,8 +286,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent) {
-		System.out.println("PRINTING: " + string); //$NON-NLS-1$
-
 		// Check whether we should consider these traces
 		boolean considerTrace = true;
 		// If we don't need an event or if the generated String is empty, no need to carry on
@@ -777,6 +775,20 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	public Object visitExpression(OCLExpression<C> expression) {
 		OCLExpression<C> oldExpression = currentExpression;
 		currentExpression = expression;
+
+		// We are evaluating a main template's guard
+		boolean isEvaluatingMainTemplateGuard = scopeEObjects.isEmpty() && expression != null
+				&& expression.eContainer() instanceof Template
+				&& expression.eContainingFeature() == MtlPackage.eINSTANCE.getTemplate_Guard();
+		if (isEvaluatingMainTemplateGuard) {
+			for (org.eclipse.ocl.ecore.Variable var : ((Template)expression.eContainer()).getParameter()) {
+				Object value = getEvaluationEnvironment().getValueOf(var.getName());
+				if (value instanceof EObject) {
+					scopeEObjects.add((EObject)value);
+					break;
+				}
+			}
+		}
 
 		// Very first call of a template comes from IAcceleoEngine#doEvaluate()
 		if (scopeEObjects.isEmpty() && expression instanceof Template) {
