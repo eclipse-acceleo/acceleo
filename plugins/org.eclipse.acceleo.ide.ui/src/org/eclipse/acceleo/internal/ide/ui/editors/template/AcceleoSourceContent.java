@@ -818,12 +818,8 @@ public class AcceleoSourceContent {
 					if (syntaxHelpResourceSet == null) {
 						syntaxHelpResourceSet = new ResourceSetImpl();
 					}
-					Resource resource;
-					if (syntaxHelpResourceSet.getResources().size() > 0) {
-						resource = syntaxHelpResourceSet.getResources().get(0);
-						// FIXME ?
-						resource.unload();
-					} else {
+					Resource resource = syntaxHelpResourceSet.getResource(uri, false);
+					if (resource == null) {
 						resource = syntaxHelpResourceSet.createResource(uri);
 					}
 					resource.getContents().add(vAST);
