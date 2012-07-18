@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ocl.ecore.internal.OCLStandardLibraryImpl;
 
 /**
  * This will define additional operations on OCL types as defined in the Acceleo specification.
@@ -190,6 +191,12 @@ public final class AcceleoStandardLibrary {
 	 */
 	public AcceleoStandardLibrary() {
 		final ResourceSet resourceSet = new ResourceSetImpl();
+		/*
+		 * Crude workaround : We try not to reload the std lib for no reason, but that means the OCL standard
+		 * lib used for our references must be the sole instance used by OCL. FIXME : For now, use internals
+		 * ... try and find a way to use it without restricted access.
+		 */
+		resourceSet.getResources().add(OCLStandardLibraryImpl.INSTANCE.getString().eResource());
 
 		try {
 			if (stdLibPackage == null) {
