@@ -135,6 +135,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.editors.text.EditorsUI;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -863,6 +864,7 @@ public class InterpreterView extends ViewPart {
 		SourceViewer viewer = getCurrentLanguageInterpreter().createSourceViewer(parent);
 		if (viewer == null) {
 			viewer = SWTUtil.createScrollableSourceViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+			viewer.configure(new TextSourceViewerConfiguration());
 			viewer.setDocument(new Document());
 		}
 		getCurrentLanguageInterpreter().configureSourceViewer(viewer);
