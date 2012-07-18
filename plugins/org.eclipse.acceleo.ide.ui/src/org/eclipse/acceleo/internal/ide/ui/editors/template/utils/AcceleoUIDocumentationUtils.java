@@ -198,7 +198,12 @@ public final class AcceleoUIDocumentationUtils {
 		// No use trying to load http schemes
 		if (eResource != null && !"http".equals(eResource.getURI().scheme())) { //$NON-NLS-1$
 			try {
-				EObject eObject = AcceleoUIResourceSet.getResource(eResource.getURI());
+				final EObject eObject;
+				if (!element.eIsProxy()) {
+					eObject = EcoreUtil.getRootContainer(element);
+				} else {
+					eObject = AcceleoUIResourceSet.getResource(eResource.getURI());
+				}
 				if (eObject instanceof Module) {
 					Module module = (Module)eObject;
 					if (element instanceof Module) {
