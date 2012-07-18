@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This will define additional convenience operations on OCL types. Those were not defined in the
@@ -537,13 +538,15 @@ public final class AcceleoNonStandardLibrary {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 
 		try {
-			nonStdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
-			collectionType = (EClass)nonStdLibPackage.getEClassifier(TYPE_COLLECTION_NAME);
-			eObjectType = (EClass)nonStdLibPackage.getEClassifier(TYPE_EOBJECT_NAME);
-			oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
-			orderedSetType = (EClass)nonStdLibPackage.getEClassifier(TYPE_ORDEREDSET_NAME);
-			sequenceType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SEQUENCE_NAME);
-			stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
+			if (nonStdLibPackage == null) {
+				nonStdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
+				collectionType = (EClass)nonStdLibPackage.getEClassifier(TYPE_COLLECTION_NAME);
+				eObjectType = (EClass)nonStdLibPackage.getEClassifier(TYPE_EOBJECT_NAME);
+				oclAnyType = (EClass)nonStdLibPackage.getEClassifier(TYPE_OCLANY_NAME);
+				orderedSetType = (EClass)nonStdLibPackage.getEClassifier(TYPE_ORDEREDSET_NAME);
+				sequenceType = (EClass)nonStdLibPackage.getEClassifier(TYPE_SEQUENCE_NAME);
+				stringType = (EClass)nonStdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
+			}
 		} catch (IOException e) {
 			AcceleoCommonPlugin.log(
 					AcceleoCommonMessages.getString("AcceleoNonStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
@@ -572,17 +575,17 @@ public final class AcceleoNonStandardLibrary {
 		EList<EOperation> result = new BasicEList<EOperation>();
 
 		if (PRIMITIVE_STRING_NAME.equals(classifierName)) {
-			result.addAll(stringType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(stringType.getEOperations()));
 		} else if (TYPE_OCLANY_NAME.equals(classifierName)) {
-			result.addAll(oclAnyType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(oclAnyType.getEOperations()));
 		} else if (TYPE_EOBJECT_NAME.equals(classifierName)) {
-			result.addAll(eObjectType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(eObjectType.getEOperations()));
 		} else if (TYPE_COLLECTION_NAME.equals(classifierName)) {
-			result.addAll(collectionType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(collectionType.getEOperations()));
 		} else if (TYPE_ORDEREDSET_NAME.equals(classifierName)) {
-			result.addAll(orderedSetType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(orderedSetType.getEOperations()));
 		} else if (TYPE_SEQUENCE_NAME.equals(classifierName)) {
-			result.addAll(sequenceType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(sequenceType.getEOperations()));
 		}
 		return result;
 	}

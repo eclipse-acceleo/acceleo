@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This will define additional operations on OCL types as defined in the Acceleo specification.
@@ -191,10 +192,12 @@ public final class AcceleoStandardLibrary {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 
 		try {
-			stdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
-			stringType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
-			integerType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_INTEGER_NAME);
-			realType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_REAL_NAME);
+			if (stdLibPackage == null) {
+				stdLibPackage = (EPackage)ModelUtils.load(URI.createURI(NS_URI), resourceSet);
+				stringType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_STRING_NAME);
+				integerType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_INTEGER_NAME);
+				realType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_REAL_NAME);
+			}
 		} catch (IOException e) {
 			AcceleoCommonPlugin.log(
 					AcceleoCommonMessages.getString("AcceleoStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
@@ -223,11 +226,11 @@ public final class AcceleoStandardLibrary {
 		EList<EOperation> result = new BasicEList<EOperation>();
 
 		if (PRIMITIVE_STRING_NAME.equals(classifierName)) {
-			result.addAll(stringType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(stringType.getEOperations()));
 		} else if (PRIMITIVE_INTEGER_NAME.equals(classifierName)) {
-			result.addAll(integerType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(integerType.getEOperations()));
 		} else if (PRIMITIVE_REAL_NAME.equals(classifierName)) {
-			result.addAll(realType.getEOperations());
+			result.addAll(EcoreUtil.copyAll(realType.getEOperations()));
 		}
 
 		return result;
