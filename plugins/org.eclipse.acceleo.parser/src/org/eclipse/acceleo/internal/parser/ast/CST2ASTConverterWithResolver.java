@@ -1584,7 +1584,9 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 			org.eclipse.ocl.ecore.OCLExpression oFileUrl = factory.getOrCreateOCLExpression(iFileUrl);
 			if (oFileUrl != null) {
 				oFileBlock.setFileUrl(oFileUrl);
-				if (oFileUrl.getEType() != null && !oFileUrl.getEType().equals(getOCL().getStringType())) {
+				if (oFileUrl.getEType() != null
+						&& !(oFileUrl.getEType().equals(getOCL().getStringType()) || EcoreUtil.getURI(
+								oFileUrl.getEType()).equals(EcoreUtil.getURI(getOCL().getStringType())))) {
 					logProblem(AcceleoParserMessages.getString(
 							"IAcceleoParserProblemsConstants.InvalidUrlType", //$NON-NLS-1$
 							oFileUrl.getEType().getName()), oFileUrl.getStartPosition(), oFileUrl

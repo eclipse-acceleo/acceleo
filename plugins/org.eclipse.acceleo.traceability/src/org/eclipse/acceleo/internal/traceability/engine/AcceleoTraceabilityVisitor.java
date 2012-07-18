@@ -134,6 +134,9 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	/** Initial size of our "cache" maps. */
 	private static final int INITIAL_CACHE_SIZE = 128;
 
+	/** Initial size of our recorded traces collection. */
+	private static final int RECORDED_TRACE_SIZE = 32;
+
 	/**
 	 * As we add and remove the "scope" object for templates at a different times, we need to remember whether
 	 * the template actually had a scope or not.
@@ -243,7 +246,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	private boolean record = true;
 
 	/** This will hold the stack of all created traceability contexts. */
-	private final Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(32);
+	private Deque<ExpressionTrace<C>> recordedTraces = new CircularArrayDeque<ExpressionTrace<C>>(
+			RECORDED_TRACE_SIZE);
 
 	/** This will be updated each time we enter a for/template/query/... with the scope variable. */
 	private Deque<EObject> scopeEObjects = new CircularArrayDeque<EObject>();
@@ -252,6 +256,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 * Records all variable traces for this session. Note that only primitive type variables will be recorded.
 	 */
 	private final Map<Variable<C, PM>, VariableTrace<C, PM>> variableTraces = new HashMap<Variable<C, PM>, VariableTrace<C, PM>>();
+
+	/**
+	 * The evaluation visitor.
+	 */
+	private AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> evaluationVisitor;
 
 	/**
 	 * Default constructor.
@@ -265,6 +274,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> decoratedVisitor,
 			TraceabilityModel trace) {
 		super(decoratedVisitor);
+		this.evaluationVisitor = decoratedVisitor;
 		evaluationTrace = trace;
 	}
 
@@ -276,6 +286,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	@Override
 	public void append(String string, Block sourceBlock, EObject source, boolean fireEvent) {
+		System.out.println("PRINTING: " + string); //$NON-NLS-1$
+
 		// Check whether we should consider these traces
 		boolean considerTrace = true;
 		// If we don't need an event or if the generated String is empty, no need to carry on
@@ -286,12 +298,18 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// Lastly, we need to ignore those events corresponding to TemplateInvocation nested in OperationCalls
 		// We will look for the root source block to ensure the same condition for nested if/let/for.
 		Block rootSourceBlock = sourceBlock;
-		if (!(rootSourceBlock instanceof Template)) {
-			while (rootSourceBlock.eContainer() instanceof Block) {
+		if (!(rootSourceBlock instanceof Template) && !(rootSourceBlock instanceof FileBlock)) {
+			while (rootSourceBlock.eContainer() instanceof Block
+					&& !(rootSourceBlock.eContainer() instanceof FileBlock)) {
 				rootSourceBlock = (Block)rootSourceBlock.eContainer();
 			}
 		}
-		considerTrace = considerTrace && (!(rootSourceBlock instanceof Template) || !evaluatingOperationCall);
+
+		// If we have a template call in an evaluation call we don't consider it
+		// If this template call contains a template, we will consider it
+		boolean isTemplateInOperationCall = (rootSourceBlock instanceof Template || rootSourceBlock instanceof FileBlock)
+				&& evaluatingOperationCall;
+		considerTrace = considerTrace && (rootSourceBlock instanceof FileBlock || !isTemplateInOperationCall);
 		if (considerTrace && fireEvent) {
 			GeneratedFile generatedFile = currentFiles.getLast();
 			ExpressionTrace<C> trace;
@@ -406,6 +424,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		file.setFileBlock(getModuleElement(fileBlock));
 		currentFiles.add(file);
 
+		// Remove the traceability information of the path of the file
 		ExpressionTrace<C> traceContext = recordedTraces.removeLast();
 		for (Map.Entry<InputElement, Set<GeneratedText>> entry : traceContext.getTraces().entrySet()) {
 			file.getSourceElements().add(entry.getKey());
@@ -482,7 +501,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	@Override
 	public void visitAcceleoFileBlock(FileBlock fileBlock) {
 		Deque<ExpressionTrace<C>> oldInvocationTraces = invocationTraces;
-		invocationTraces = null;
+		invocationTraces = new CircularArrayDeque<ExpressionTrace<C>>();
 
 		super.visitAcceleoFileBlock(fileBlock);
 
@@ -770,6 +789,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			}
 		}
 
+		Deque<OCLExpression<C>> expressionStack = this.evaluationVisitor.getContext().getExpressionStack();
+		if ((expression instanceof TemplateInvocation || expression instanceof org.eclipse.ocl.ecore.StringLiteralExp)
+				&& expressionStack.getLast() instanceof FileBlock) {
+			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
+			recordedTraces.add(trace);
+		}
+
+		if (expression.eContainer() instanceof FileBlock
+				&& expression.eContainingFeature().equals(MtlPackage.eINSTANCE.getBlock_Body())
+				&& ((FileBlock)expression.eContainer()).getBody().indexOf(expression) == 0) {
+			// If we have the first expression of a block, let's create a trace
+			ExpressionTrace<C> trace = new ExpressionTrace<C>(expression);
+			recordedTraces.add(trace);
+		}
+
 		boolean oldRecordingValue = switchRecordState(expression);
 		boolean oldIterSet = evaluatingIterationSet;
 		evaluatingIterationSet = expression.eContainingFeature() == MtlPackage.eINSTANCE
@@ -785,7 +819,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			if (invocationTraces != null) {
 				invocationTraces.add(trace);
 			}
-		} else if (shouldRecordTrace(containingFeature) && invocationTraces != null) {
+		} else if (shouldRecordTrace(containingFeature) && invocationTraces != null
+				&& recordedTraces.size() > 0) {
 			final ExpressionTrace<C> trace = recordedTraces.getLast();
 			if (!invocationTraces.contains(trace)) {
 				invocationTraces.add(trace);
@@ -808,7 +843,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			evaluatingIterationSet = oldIterSet;
 			evaluatingPostCall = oldEvaluatingPostCall;
 			// move back the argument trace into its corresponding operation's
-			if (isOperationArgumentTrace) {
+			if (isOperationArgumentTrace && recordedTraces.size() > 1) {
 				ExpressionTrace<C> argTrace = recordedTraces.removeLast();
 				recordedTraces.getLast().addTraceCopy(argTrace);
 				if (invocationTraces != null
@@ -824,7 +859,8 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				iterationCount.add(Integer.valueOf(current.intValue() + 1));
 			}
 			// protected area markers will be evaluated twice. The first traces must be ignored
-			if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker()) {
+			if (expression.eContainingFeature() == MtlPackage.eINSTANCE.getProtectedAreaBlock_Marker()
+					&& recordedTraces.size() >= 2) {
 				if (recordedTraces.get(recordedTraces.size() - 2).getReferredExpression() instanceof ProtectedAreaBlock) {
 					final ExpressionTrace<C> firstMarkerTrace = recordedTraces.removeLast();
 					if (invocationTraces != null) {
@@ -1366,6 +1402,10 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 */
 	Deque<GeneratedFile> getCurrentFiles() {
 		return currentFiles;
+	}
+
+	public Deque<ExpressionTrace<C>> getRecordedTraces() {
+		return recordedTraces;
 	}
 
 	/**

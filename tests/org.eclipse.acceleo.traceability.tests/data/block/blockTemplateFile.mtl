@@ -1,0 +1,6 @@
+[comment encoding = UTF-8 /]
+[module blockTemplateFile('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public main(eClass : EClass)][eClass.genfile()/][/template]
+
+[template public genfile(eClass : EClass)][file (eClass.name + '.txt', false, 'UTF-8')]Hello World[/file][/template]
