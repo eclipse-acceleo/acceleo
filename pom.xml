@@ -9,7 +9,7 @@
 
   <groupId>org.eclipse.modeling.m2t</groupId>
   <artifactId>org.eclipse.acceleo.parent</artifactId>
-  <version>3.3.0.qualifier</version>
+  <version>3.3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Acceleo Parent</name>
 
@@ -56,14 +56,14 @@
 	<module>tests/org.eclipse.acceleo.model.tests</module>
 	<module>tests/org.eclipse.acceleo.parser.tests</module>
 	<module>tests/org.eclipse.acceleo.traceability.tests</module>
-	<!-- <module>tests/org.eclipse.acceleo.ide.ui.tests</module> SWTBot update site problem -->
-	<!-- <module>tests/org.eclipse.acceleo.tests</module> Unit tests need to be fixed for jar files (FileContent.getFileContent(...))-->
+	<module>tests/org.eclipse.acceleo.ide.ui.tests</module>
+	<module>tests/org.eclipse.acceleo.tests</module>
 	
 	<module>features/org.eclipse.acceleo.doc-feature</module>
 	<module>features/org.eclipse.acceleo.examples-feature</module>
 	<module>features/org.eclipse.acceleo.runtime-feature</module>
 	<!-- <module>features/org.eclipse.acceleo.sdk-feature</module> Problem with missing source feature-->
-	<!-- <module>features/org.eclipse.acceleo.tests-feature</module> SWTBot update site problem -->
+	<module>features/org.eclipse.acceleo.tests-feature</module>
 	<module>features/org.eclipse.acceleo.ui.capabilities-feature</module>
 	<!-- <module>features/org.eclipse.acceleo.releng-feature</module> Problem with missing source feature-->
 	<module>features/org.eclipse.acceleo-feature</module>
@@ -73,7 +73,7 @@
 
   <properties>
     <acceleo-version>3.3.0-SNAPSHOT</acceleo-version>
-    <tycho-version>0.12.0</tycho-version>
+    <tycho-version>0.15.0</tycho-version>
     <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/</orbit-site>

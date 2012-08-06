@@ -15,31 +15,31 @@
   <parent>
     <groupId>org.eclipse.modeling.m2t</groupId>
     <artifactId>org.eclipse.acceleo.parent</artifactId>
-    <version>3.3.0.qualifier</version>
+    <version>3.3.0-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.dynamic.tests</artifactId>
-  <version>3.3.0.qualifier</version>
-  <packaging>eclipse-plugin</packaging>
+  <version>3.3.0-SNAPSHOT</version>
+  <packaging>eclipse-test-plugin</packaging>
 
   <name>Acceleo Dynamic Tests</name>
 
-  <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
   <build>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <excludes>
+            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
+            <exclude>**/Test*.class</exclude>
+          </excludes>
+          <useUIHarness>false</useUIHarness>
+          <useUIThread>false</useUIThread>
+        </configuration>
       </plugin>
-    </plugins>
-  </build> 
+     </plugins>
+    </build>
 </project>
