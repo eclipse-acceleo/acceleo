@@ -34,6 +34,10 @@ public class AcceleoURIHandler implements IAcceleoParserURIHandler {
 				String name = newURI.toString();
 				name = name.substring(0, indexOf);
 				name = name.substring("jar:file:".length() + 1);
+				if (name.endsWith("-SNAPSHOT")) {
+					name = name.substring(0, name.length() - "-SNAPSHOT".length());
+				}
+
 				name = name.substring(0, name.lastIndexOf("-"));
 				if (name.contains("/")) {
 					name = name.substring(name.lastIndexOf("/"));
