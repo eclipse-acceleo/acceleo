@@ -221,7 +221,8 @@ public final class AcceleoParserTrimUtils {
 	 */
 	private boolean queryEqual(Query definition, EOperation operation) {
 		boolean result = true;
-		if (definition != null && operation != null) {
+		if (definition != null && definition.getName() != null && operation != null
+				&& operation.getName() != null) {
 			result = result && definition.getName().equals(operation.getName());
 			List<Variable> parameters = definition.getParameter();
 			List<EParameter> eParameters = operation.getEParameters();
@@ -255,7 +256,8 @@ public final class AcceleoParserTrimUtils {
 	 */
 	private boolean templateEqual(Template definition, EOperation operation) {
 		boolean result = true;
-		if (definition != null && operation != null) {
+		if (definition != null && definition.getName() != null && operation != null
+				&& operation.getName() != null) {
 			result = result && definition.getName().equals(operation.getName());
 			List<Variable> parameters = definition.getParameter();
 			List<EParameter> eParameters = operation.getEParameters();
