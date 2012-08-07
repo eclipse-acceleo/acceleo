@@ -12,6 +12,7 @@ package org.eclipse.acceleo.internal.parser.compiler;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 import java.io.File;
 import java.io.IOException;
@@ -386,7 +387,7 @@ public class AcceleoParser {
 		for (String moduleDependency : moduleDependencies) {
 			boolean found = false;
 			File acceleoModule = this.acceleoProject.getFileDependency(moduleDependency);
-			if (acceleoModule != null) {
+			if (acceleoModule != null && !monitor.isCanceled()) {
 				int originalSize = dependingModulesFiles.size();
 				dependingModulesFiles = computeModuleFileDependency(file, filesBuilt, dependingModulesFiles,
 						acceleoModule, monitor);
@@ -394,7 +395,7 @@ public class AcceleoParser {
 			}
 
 			// Find the dependencies in another project
-			if (!found) {
+			if (!found && !monitor.isCanceled()) {
 				int originalSize = dependingModulesFiles.size();
 				dependingModulesFiles = computeModuleFileDependencyInOtherProjects(file, filesBuilt,
 						dependingAcceleoProjects, dependingModulesFiles, moduleDependency, monitor);
@@ -402,7 +403,7 @@ public class AcceleoParser {
 			}
 
 			// Find the dependencies in the jars
-			if (!found) {
+			if (!found && !monitor.isCanceled()) {
 				URI moduleURI = this.acceleoProject.getURIDependency(moduleDependency);
 				if (moduleURI != null) {
 					dependingModulesURI.add(moduleURI);
@@ -716,44 +717,51 @@ public class AcceleoParser {
 	 * @return The set of files built (includes filesBuilt).
 	 */
 	private Set<File> buildImpactedModules(File file, Monitor monitor, Set<File> filesBuilt) {
-		// Compute the files that are depending on "file".
-		List<Sequence> sequencesToSearch = AcceleoParserUtils.getImportSequencesToSearch(this.acceleoProject,
-				file);
-		Set<File> filesToBuild = this.acceleoProject.getFilesDependingOn(sequencesToSearch);
+		Set<File> filesToBuild = Sets.newLinkedHashSet();
+		if (!monitor.isCanceled()) {
+			// Compute the files that are depending on "file".
+			List<Sequence> sequencesToSearch = AcceleoParserUtils.getImportSequencesToSearch(
+					this.acceleoProject, file);
+			filesToBuild = this.acceleoProject.getFilesDependingOn(sequencesToSearch);
 
-		Set<File> fileBuiltByPropagation = new LinkedHashSet<File>();
-		for (File fileToBuild : filesToBuild) {
-			if (!fileToBuild.equals(dependingBuiltFile) && !fileBuiltByPropagation.contains(fileToBuild)) {
-				fileBuiltByPropagation.clear();
-				this.clearDependencyToBuild();
-				filesBuilt.addAll(this.build(fileToBuild, monitor));
-				filesBuilt.add(fileToBuild);
-
-				fileBuiltByPropagation.addAll(filesBuilt);
-			}
-		}
-
-		filesToBuild = new LinkedHashSet<File>();
-
-		// Same thing but for the dependent projects
-		for (AcceleoProject dependentAcceleoProject : this.acceleoProject.getDependentProjects()) {
-			filesToBuild.addAll(dependentAcceleoProject.getFilesDependingOn(sequencesToSearch));
-			fileBuiltByPropagation = new LinkedHashSet<File>();
+			Set<File> fileBuiltByPropagation = new LinkedHashSet<File>();
 			for (File fileToBuild : filesToBuild) {
-				if (!fileToBuild.equals(dependingBuiltFile) && !fileBuiltByPropagation.contains(fileToBuild)) {
+				if (!fileToBuild.equals(dependingBuiltFile) && !fileBuiltByPropagation.contains(fileToBuild)
+						&& !monitor.isCanceled()) {
 					fileBuiltByPropagation.clear();
-
-					AcceleoParser parser = new AcceleoParser(dependentAcceleoProject,
-							this.usebinaryResources, this.usePlatformResourcePath);
-					parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners.size()]));
-					parser.setURIHandler(this.uriHandler);
-					parser.clearDependencyToBuild();
-					filesBuilt.addAll(parser.build(fileToBuild, monitor));
+					this.clearDependencyToBuild();
+					filesBuilt.addAll(this.build(fileToBuild, monitor));
 					filesBuilt.add(fileToBuild);
 
 					fileBuiltByPropagation.addAll(filesBuilt);
 				}
 			}
+
+			filesToBuild = new LinkedHashSet<File>();
+
+			// Same thing but for the dependent projects
+			for (AcceleoProject dependentAcceleoProject : this.acceleoProject.getDependentProjects()) {
+				filesToBuild.addAll(dependentAcceleoProject.getFilesDependingOn(sequencesToSearch));
+				fileBuiltByPropagation = new LinkedHashSet<File>();
+				for (File fileToBuild : filesToBuild) {
+					if (!fileToBuild.equals(dependingBuiltFile)
+							&& !fileBuiltByPropagation.contains(fileToBuild) && !monitor.isCanceled()) {
+						fileBuiltByPropagation.clear();
+
+						AcceleoParser parser = new AcceleoParser(dependentAcceleoProject,
+								this.usebinaryResources, this.usePlatformResourcePath);
+						parser.addListeners(this.listeners
+								.toArray(new IParserListener[this.listeners.size()]));
+						parser.setURIHandler(this.uriHandler);
+						parser.clearDependencyToBuild();
+						filesBuilt.addAll(parser.build(fileToBuild, monitor));
+						filesBuilt.add(fileToBuild);
+
+						fileBuiltByPropagation.addAll(filesBuilt);
+					}
+				}
+			}
+
 		}
 
 		return filesBuilt;
