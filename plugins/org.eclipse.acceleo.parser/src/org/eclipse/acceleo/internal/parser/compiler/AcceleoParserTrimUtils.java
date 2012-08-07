@@ -221,20 +221,22 @@ public final class AcceleoParserTrimUtils {
 	 */
 	private boolean queryEqual(Query definition, EOperation operation) {
 		boolean result = true;
-		result = result && definition.getName().equals(operation.getName());
-		List<Variable> parameters = definition.getParameter();
-		List<EParameter> eParameters = operation.getEParameters();
+		if (definition != null && operation != null) {
+			result = result && definition.getName().equals(operation.getName());
+			List<Variable> parameters = definition.getParameter();
+			List<EParameter> eParameters = operation.getEParameters();
 
-		result = result && parameters.size() == eParameters.size();
-		if (result) {
-			for (int i = 0; i < parameters.size(); i++) {
-				Variable variable = parameters.get(i);
-				EParameter eParameter = eParameters.get(i);
-				if (variable.getName() != null) {
-					result = result && variable.getName().equals(eParameter.getName());
-				}
-				if (variable.getEType() != null) {
-					result = result && variable.getEType().equals(eParameter.getEType());
+			result = result && parameters.size() == eParameters.size();
+			if (result) {
+				for (int i = 0; i < parameters.size(); i++) {
+					Variable variable = parameters.get(i);
+					EParameter eParameter = eParameters.get(i);
+					if (variable.getName() != null) {
+						result = result && variable.getName().equals(eParameter.getName());
+					}
+					if (variable.getEType() != null) {
+						result = result && variable.getEType().equals(eParameter.getEType());
+					}
 				}
 			}
 		}
@@ -253,20 +255,22 @@ public final class AcceleoParserTrimUtils {
 	 */
 	private boolean templateEqual(Template definition, EOperation operation) {
 		boolean result = true;
-		result = result && definition.getName().equals(operation.getName());
-		List<Variable> parameters = definition.getParameter();
-		List<EParameter> eParameters = operation.getEParameters();
+		if (definition != null && operation != null) {
+			result = result && definition.getName().equals(operation.getName());
+			List<Variable> parameters = definition.getParameter();
+			List<EParameter> eParameters = operation.getEParameters();
 
-		result = result && parameters.size() == eParameters.size();
-		if (result) {
-			for (int i = 0; i < parameters.size(); i++) {
-				Variable variable = parameters.get(i);
-				EParameter eParameter = eParameters.get(i);
-				if (variable.getName() != null) {
-					result = result && variable.getName().equals(eParameter.getName());
-				}
-				if (variable.getEType() != null) {
-					result = result && variable.getEType().equals(eParameter.getEType());
+			result = result && parameters.size() == eParameters.size();
+			if (result) {
+				for (int i = 0; i < parameters.size(); i++) {
+					Variable variable = parameters.get(i);
+					EParameter eParameter = eParameters.get(i);
+					if (variable.getName() != null) {
+						result = result && variable.getName().equals(eParameter.getName());
+					}
+					if (variable.getEType() != null) {
+						result = result && variable.getEType().equals(eParameter.getEType());
+					}
 				}
 			}
 		}
