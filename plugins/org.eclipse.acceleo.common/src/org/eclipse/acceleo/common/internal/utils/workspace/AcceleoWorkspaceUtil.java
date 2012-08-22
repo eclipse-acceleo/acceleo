@@ -1112,7 +1112,7 @@ public final class AcceleoWorkspaceUtil {
 					}
 					for (IProject changed : visitor.getChangedProjects()) {
 						IPluginModelBase model = PluginRegistry.findModel(changed);
-						if (model != null) {
+						if (model != null && workspaceInstalledBundles.keySet().contains(model)) {
 							changedContributions.add(model);
 						}
 					}
