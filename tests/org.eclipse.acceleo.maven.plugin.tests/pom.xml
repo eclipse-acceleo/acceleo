@@ -60,17 +60,17 @@
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>maven</artifactId>
-      <version>3.2.2-SNAPSHOT</version>
+      <version>3.2.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>engine</artifactId>
-      <version>3.2.2</version>
+      <version>3.2.3</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
       <artifactId>uml</artifactId>
-      <version>3.2.2</version>
+      <version>3.2.3</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
@@ -122,7 +122,7 @@
             </entries>
             <jars>
             	<jar>p2.eclipse-plugin:org.obeonetwork.pim.uml2.gen.java:1.0.0.201112151044</jar>
-            	<jar>org.eclipse.acceleo:engine:3.2.2</jar>
+            	<jar>org.eclipse.acceleo:engine:3.2.3</jar>
             	<jar>org.eclipse.acceleo:common</jar>
             	<jar>C:\Users\sbegaudeau\.m2\repository\com\google\collections\google-collections\1.0\google-collections-1.0.jar</jar>
             	<jar>${project.basedir}\lib\myFile.jar</jar>

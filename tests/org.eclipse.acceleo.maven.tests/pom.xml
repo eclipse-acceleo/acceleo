@@ -10,17 +10,17 @@
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>maven</artifactId>
-      <version>3.2.2-SNAPSHOT</version>
+      <version>3.2.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>engine</artifactId>
-      <version>3.2.2</version>
+      <version>3.2.3</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
       <artifactId>uml</artifactId>
-      <version>3.2.2</version>
+      <version>3.2.3</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
@@ -48,7 +48,7 @@
      <plugin>
        <groupId>org.eclipse.acceleo</groupId>
        <artifactId>maven</artifactId>
-       <version>3.2.2-SNAPSHOT</version>
+       <version>3.2.3-SNAPSHOT</version>
        <executions>
           <execution>
             <phase>compile</phase>
