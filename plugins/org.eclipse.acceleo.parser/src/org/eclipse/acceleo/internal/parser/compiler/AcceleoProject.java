@@ -60,6 +60,11 @@ public class AcceleoProject {
 	private Set<AcceleoProject> dependentProjects = new LinkedHashSet<AcceleoProject>();
 
 	/**
+	 * The cache of the modules in the project.
+	 */
+	private Set<File> acceleoModulesCache = new LinkedHashSet<File>();
+
+	/**
 	 * The constructor.
 	 * 
 	 * @param projectRoot
@@ -430,9 +435,20 @@ public class AcceleoProject {
 	 */
 	public Set<File> getAllAcceleoModules() {
 		Set<File> result = new LinkedHashSet<File>();
-		for (AcceleoProjectClasspathEntry entry : this.entries) {
-			File inputDirectory = entry.getInputDirectory();
-			result.addAll(AcceleoProject.getChildren(inputDirectory, IAcceleoConstants.MTL_FILE_EXTENSION));
+
+		boolean shouldUpdate = this.acceleoModulesCache.isEmpty();
+
+		if (shouldUpdate) {
+			for (AcceleoProjectClasspathEntry entry : this.entries) {
+				File inputDirectory = entry.getInputDirectory();
+				result.addAll(AcceleoProject
+						.getChildren(inputDirectory, IAcceleoConstants.MTL_FILE_EXTENSION));
+			}
+
+			this.acceleoModulesCache.clear();
+			this.acceleoModulesCache.addAll(result);
+		} else {
+			result.addAll(this.acceleoModulesCache);
 		}
 		return result;
 	}
@@ -555,6 +571,10 @@ public class AcceleoProject {
 	 */
 	public File getProjectRoot() {
 		return this.projectRoot;
+	}
+
+	/* package */Set<AcceleoProjectClasspathEntry> getEntries() {
+		return Collections.unmodifiableSet(entries);
 	}
 
 	/**
