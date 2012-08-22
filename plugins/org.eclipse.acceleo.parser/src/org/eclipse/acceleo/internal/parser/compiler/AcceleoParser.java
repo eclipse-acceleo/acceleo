@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
@@ -143,6 +144,11 @@ public class AcceleoParser {
 	 * Indicates that we will use platform:/resource uris for the dependencies.
 	 */
 	private boolean usePlatformResourcePath;
+
+	/**
+	 * Cache of the input file to output file mapping.
+	 */
+	private Map<File, File> input2output = new HashMap<File, File>();
 
 	/**
 	 * Constructs a new instance of an AcceleoParser for the given project.
@@ -333,35 +339,36 @@ public class AcceleoParser {
 		Set<File> filesBuilt = new LinkedHashSet<File>();
 		Set<AcceleoProject> dependingAcceleoProjects = this.acceleoProject.getProjectDependencies();
 
+		monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", file.getAbsolutePath())); //$NON-NLS-1$
+		AcceleoFile acceleoFile = new AcceleoFile(file, this.acceleoProject.getModuleQualifiedName(file));
+		// Compute the imported / extended modules
+		AcceleoSourceBuffer acceleoSourceBuffer = new AcceleoSourceBuffer(acceleoFile);
+		acceleoSourceBuffer.createCST();
+		org.eclipse.acceleo.parser.cst.Module module = acceleoSourceBuffer.getCST();
+		monitor.worked(1);
+
 		boolean isImpactingBuild = false;
 		List<String> signature = Collections.emptyList();
 		File outputFile = this.acceleoProject.getOutputFile(file);
 		if (outputFile != null && !outputFile.exists()) {
 			isImpactingBuild = true;
+		}
+		if (outputFile != null && !outputFile.exists() && file.lastModified() < outputFile.lastModified()) {
+			isImpactingBuild = false;
 		} else {
 			ResourceSet resourceSetTMP = new AcceleoResourceSetImpl();
 			AcceleoParserUtils.registerLibraries(resourceSetTMP);
 			AcceleoParserUtils.registerResourceFactories(resourceSetTMP);
 			AcceleoParserUtils.registerPackages(resourceSetTMP);
 			signature = AcceleoParserSignatureUtils.signature(outputFile, resourceSetTMP);
+
+			List<String> newSignature = AcceleoParserSignatureUtils.signature(module);
+			isImpactingBuild = isImpactingBuild || !signature.equals(newSignature);
 		}
 
 		if (outputFile == null || monitor.isCanceled()) {
 			return filesBuilt;
 		}
-
-		monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", file.getAbsolutePath())); //$NON-NLS-1$
-
-		// Compute the imported / extended modules
-		AcceleoFile acceleoFile = new AcceleoFile(file, this.acceleoProject.getModuleQualifiedName(file));
-		AcceleoSourceBuffer acceleoSourceBuffer = new AcceleoSourceBuffer(acceleoFile);
-		acceleoSourceBuffer.createCST();
-
-		monitor.worked(1);
-
-		org.eclipse.acceleo.parser.cst.Module module = acceleoSourceBuffer.getCST();
-		List<String> newSignature = AcceleoParserSignatureUtils.signature(module);
-		isImpactingBuild = isImpactingBuild || !signature.equals(newSignature);
 
 		List<org.eclipse.acceleo.parser.cst.ModuleImportsValue> importedModules = module.getImports();
 		List<org.eclipse.acceleo.parser.cst.ModuleExtendsValue> extendedModules = module.getExtends();
@@ -470,6 +477,7 @@ public class AcceleoParser {
 							.getModuleQualifiedName(acceleoModule)), 0, 0, 0));
 		}
 		if (output != null && output.exists()) {
+			this.input2output.put(acceleoModule, output);
 			dependingModulesFiles.add(output);
 		}
 		return dependingModulesFiles;
@@ -520,6 +528,7 @@ public class AcceleoParser {
 				}
 				output = dependingAcceleoProject.getOutputFile(dependingModule);
 				if (output != null && output.exists()) {
+					this.input2output.put(dependingModule, output);
 					dependingModulesFiles.add(output);
 					found = true;
 				}
@@ -549,6 +558,27 @@ public class AcceleoParser {
 	private void doBuild(File file, Set<File> filesBuilt, File outputFile,
 			AcceleoSourceBuffer acceleoSourceBuffer, Set<URI> dependingModulesURI,
 			Set<File> dependingModulesFiles, Monitor monitor) {
+		// If the file has been built and all its dependencies too, do nothing
+		boolean shouldBuild = false;
+		if (outputFile.exists() && file.lastModified() < outputFile.lastModified()) {
+			Set<Entry<File, File>> entrySet = this.input2output.entrySet();
+			for (Entry<File, File> entry : entrySet) {
+				File input = entry.getKey();
+				File output = entry.getValue();
+				if (input.lastModified() > output.lastModified()
+						|| output.lastModified() > outputFile.lastModified()) {
+					shouldBuild = true;
+					break;
+				}
+			}
+		} else {
+			shouldBuild = true;
+		}
+
+		if (!shouldBuild) {
+			return;
+		}
+
 		// Create the AST
 		URI fileURI = URI.createFileURI(outputFile.getAbsolutePath());
 		Resource oResource = createResource(fileURI, resourceSet);
@@ -643,7 +673,7 @@ public class AcceleoParser {
 			for (IParserListener listener : this.listeners) {
 				listener.fileSaved(file);
 			}
-
+			
 			oResource.save(options);
 			monitor.worked(10);
 			filesBuilt.add(file);
