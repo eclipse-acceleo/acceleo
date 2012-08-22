@@ -472,13 +472,12 @@ public class AcceleoProjectTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());

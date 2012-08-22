@@ -104,12 +104,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		}
 		this.mappedProjects.clear();
 
+		IJavaProject javaProject = JavaCore.create(project);
+		Set<AcceleoProjectClasspathEntry> entries = this.computeProjectClassPath(javaProject);
+
 		File projectRoot = project.getLocation().toFile();
 		org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
-				projectRoot);
+				projectRoot, entries);
 
-		IJavaProject javaProject = JavaCore.create(project);
-		acceleoProject = this.computeProjectClassPath(acceleoProject, javaProject);
 		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
 
 		// Check that all ".ecore" models in accessible projects have been loaded.
@@ -303,10 +304,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						if (mappedProject != null) {
 							acceleoProject.addProjectDependencies(Sets.newHashSet(mappedProject));
 						} else {
+							Set<AcceleoProjectClasspathEntry> entries = this
+									.computeProjectClassPath(requiredJavaProject);
 							org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiredAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
-									projectRoot);
-							requiredAcceleoProject = this.computeProjectClassPath(requiredAcceleoProject,
-									requiredJavaProject);
+									projectRoot, entries);
 							if (!acceleoProject.getProjectDependencies().contains(requiredAcceleoProject)) {
 								acceleoProject
 										.addProjectDependencies(Sets.newHashSet(requiredAcceleoProject));
@@ -344,10 +345,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						if (requiring && mappedProject != null) {
 							acceleoProject.addDependentProjects(Sets.newHashSet(mappedProject));
 						} else if (requiring && mappedProject == null) {
+							Set<AcceleoProjectClasspathEntry> entries = this
+									.computeProjectClassPath(iJavaProject);
 							org.eclipse.acceleo.internal.parser.compiler.AcceleoProject requiringAcceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
-									iProject.getLocation().toFile());
-							requiringAcceleoProject = this.computeProjectClassPath(requiringAcceleoProject,
-									iJavaProject);
+									iProject.getLocation().toFile(), entries);
 							if (!acceleoProject.getDependentProjects().contains(requiringAcceleoProject)) {
 								acceleoProject.addDependentProjects(Sets.newHashSet(requiringAcceleoProject));
 								requiringAcceleoProject = this.computeProjectDependencies(
@@ -367,17 +368,13 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * Computes the classpath for the given Acceleo project from the given java project.
+	 * Computes the classpath for the given java project.
 	 * 
-	 * @param acceleoProject
-	 *            The Acceleo project
 	 * @param javaProject
 	 *            The Java project
-	 * @return The Acceleo project matching the given Java project with its classpath set.
+	 * @return The classpath entries
 	 */
-	private org.eclipse.acceleo.internal.parser.compiler.AcceleoProject computeProjectClassPath(
-			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
-			IJavaProject javaProject) {
+	private Set<AcceleoProjectClasspathEntry> computeProjectClassPath(IJavaProject javaProject) {
 		Set<AcceleoProjectClasspathEntry> classpathEntries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 
 		// Compute the classpath of the acceleo project
@@ -415,11 +412,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					}
 				}
 			}
-			acceleoProject.addClasspathEntries(classpathEntries);
 		} catch (JavaModelException e) {
 			AcceleoUIActivator.log(e, true);
 		}
-		return acceleoProject;
+		return classpathEntries;
 	}
 
 	/**
@@ -664,9 +660,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		IProject project = getProject();
 		IJavaProject javaProject = JavaCore.create(project);
 		File projectRoot = project.getLocation().toFile();
+		Set<AcceleoProjectClasspathEntry> entries = this.computeProjectClassPath(javaProject);
 		org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject = new org.eclipse.acceleo.internal.parser.compiler.AcceleoProject(
-				projectRoot);
-		acceleoProject = this.computeProjectClassPath(acceleoProject, javaProject);
+				projectRoot, entries);
+
 		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
 		acceleoProject.clean();
 		this.cleanAcceleoMarkers(project);

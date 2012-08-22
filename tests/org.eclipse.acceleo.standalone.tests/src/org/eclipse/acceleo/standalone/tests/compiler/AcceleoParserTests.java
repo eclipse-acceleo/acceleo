@@ -54,13 +54,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src");
 		File outputDirectory = new File(projectRoot, "bin");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		File main = new File(projectRoot, "src/org/eclipse/acceleo/project/first/main/main.mtl");
 		File genClass = new File(projectRoot, "src/org/eclipse/acceleo/project/first/file/genClass.mtl");
@@ -130,13 +129,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		File main = new File(projectRoot, "src/org/eclipse/acceleo/project/second/main/main.mtl");
 		File genClass = new File(projectRoot, "src/org/eclipse/acceleo/project/second/file/genClass.mtl");
@@ -208,13 +206,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/third/main/main.mtl");
 		File genClass = new File(projectRoot,
@@ -290,13 +287,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(javaProjectRoot);
 		File inputDirectory = new File(javaProjectRoot, "src/");
 		File outputDirectory = new File(javaProjectRoot, "bin");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(javaProjectRoot, entries);
 
 		File main = new File(javaProjectRoot, "src/org/eclipse/acceleo/project/fourth/java/main/main.mtl");
 		File genClass = new File(javaProjectRoot,
@@ -366,13 +362,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		project = new AcceleoProject(mavenProjectRoot);
 		inputDirectory = new File(mavenProjectRoot, "src/main/java");
 		outputDirectory = new File(mavenProjectRoot, "target/classes");
 		entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		project = new AcceleoProject(mavenProjectRoot, entries);
 
 		main = new File(mavenProjectRoot,
 				"src/main/java/org/eclipse/acceleo/project/fourth/maven/main/main.mtl");
@@ -447,13 +442,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
 
@@ -603,13 +597,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		ParserListener parserListener = new ParserListener();
 		AcceleoParser parser = new AcceleoParser(project, false, true);
@@ -762,13 +755,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
@@ -815,13 +807,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
@@ -870,13 +861,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
@@ -924,13 +914,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
@@ -1006,13 +995,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src/main/java");
 		File outputDirectory = new File(projectRoot, "target/classes");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		AcceleoParser parser = new AcceleoParser(project, false, true);
 		parser.buildAll(new BasicMonitor());
@@ -1066,13 +1054,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot);
 		File inputDirectory = new File(projectSevenRoot, "src");
 		File outputDirectory = new File(projectSevenRoot, "bin");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		projectSeven.addClasspathEntries(entries);
+		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot, entries);
 
 		File commonSeven = new File(projectSevenRoot,
 				"src/org/eclipse/acceleo/project/seventh/common/common.mtl");
@@ -1098,13 +1085,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject projectSix = new AcceleoProject(projectSixRoot);
 		inputDirectory = new File(projectSixRoot, "src/main/acceleo");
 		outputDirectory = new File(projectSixRoot, "target/modules");
 		entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		projectSix.addClasspathEntries(entries);
+		AcceleoProject projectSix = new AcceleoProject(projectSixRoot, entries);
 
 		projectSeven.addProjectDependencies(Sets.newHashSet(projectSix));
 
@@ -1165,22 +1151,20 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot);
 		File inputDirectory = new File(projectSevenRoot, "src");
 		File outputDirectory = new File(projectSevenRoot, "bin");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		projectSeven.addClasspathEntries(entries);
+		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot, entries);
 
 		File projectSixRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.sixth");
-		AcceleoProject projectSix = new AcceleoProject(projectSixRoot);
 		inputDirectory = new File(projectSixRoot, "src/main/acceleo");
 		outputDirectory = new File(projectSixRoot, "target/modules");
 		entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		projectSix.addClasspathEntries(entries);
+		AcceleoProject projectSix = new AcceleoProject(projectSixRoot, entries);
 
 		projectSeven.addProjectDependencies(Sets.newHashSet(projectSix));
 
@@ -1225,13 +1209,12 @@ public class AcceleoParserTests {
 			}
 		}
 
-		AcceleoProject project = new AcceleoProject(projectRoot);
 		File inputDirectory = new File(projectRoot, "src");
 		File outputDirectory = new File(projectRoot, "bin");
 		AcceleoProjectClasspathEntry entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
 		Set<AcceleoProjectClasspathEntry> entries = new LinkedHashSet<AcceleoProjectClasspathEntry>();
 		entries.add(entry);
-		project.addClasspathEntries(entries);
+		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
 		ParserListener parserListener = new ParserListener();
 		AcceleoParser parser = new AcceleoParser(project, false, true);
