@@ -15,34 +15,14 @@
   <parent>
     <groupId>org.eclipse.modeling.m2t</groupId>
     <artifactId>org.eclipse.acceleo.parent</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.1-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.tests</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
-  <packaging>eclipse-test-plugin</packaging>
+  <version>3.3.1-SNAPSHOT</version>
+  <packaging>eclipse-plugin</packaging>
 
   <name>Acceleo Tests</name>
 
-  <build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<includes>
-						<!-- test mojo matches TestProject be default and treats it as PojoTest -->
-						<include>**/*.class</include>
-					</includes>
-					<useUIHarness>false</useUIHarness>
-					<useUIThread>false</useUIThread>
-					<argLine>-Xms100m -Xmx512m -XX:MaxPermSize=900M</argLine>
-					<testSuite>org.eclipse.acceleo.tests</testSuite>
-					<testClass>org.eclipse.acceleo.tests.suite.AllTests</testClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

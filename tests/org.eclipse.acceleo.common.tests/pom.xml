@@ -15,12 +15,12 @@
   <parent>
     <groupId>org.eclipse.modeling.m2t</groupId>
     <artifactId>org.eclipse.acceleo.parent</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.1-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>org.eclipse.acceleo.common.tests</artifactId>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.3.1-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 
   <name>Acceleo Common Tests</name>
@@ -38,6 +38,7 @@
           </excludes>
           <useUIHarness>false</useUIHarness>
           <useUIThread>false</useUIThread>
+          <testFailureIgnore>true</testFailureIgnore>
         </configuration>
       </plugin>
      </plugins>
