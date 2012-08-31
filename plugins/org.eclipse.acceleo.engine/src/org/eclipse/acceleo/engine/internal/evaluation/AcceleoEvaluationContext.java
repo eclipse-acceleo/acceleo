@@ -862,9 +862,12 @@ public class AcceleoEvaluationContext<C> {
 				 * TODO If there is no "end of user code", or if the protected content is too large, this will
 				 * fail in OutOfMemoryErrors. Could we use a temp File (java.nio?) instead of a StringBuffer?
 				 */
+				String lastEOF = reader.getLastEOLSequence();
+				areaContent.append(lastEOF);
+
 				line = reader.readLine();
+				lastEOF = reader.getLastEOLSequence();
 				while (line != null) {
-					areaContent.append(reader.getLastEOLSequence());
 					if (!hasJMergeTag && line.contains(JMERGE_TAG)) {
 						hasJMergeTag = true;
 					}
@@ -875,7 +878,10 @@ public class AcceleoEvaluationContext<C> {
 						break;
 					}
 					areaContent.append(line);
+					areaContent.append(lastEOF);
+
 					line = reader.readLine();
+					lastEOF = reader.getLastEOLSequence();
 				}
 				protectedAreas.put(marker, areaContent.toString());
 			}
