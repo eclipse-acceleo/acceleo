@@ -240,9 +240,6 @@ public final class AcceleoModelManager implements ISaveParticipant {
 			return;
 		}
 		try {
-			AcceleoCommonPlugin.log(new Status(IStatus.INFO, AcceleoCommonPlugin.PLUGIN_ID,
-					"DEBUG - Acceleo has decided to save the built state of " + info.getProject() + "."));
-
 			DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 			try {
 				out.writeUTF(AcceleoCommonPlugin.PLUGIN_ID);
@@ -264,16 +261,12 @@ public final class AcceleoModelManager implements ISaveParticipant {
 			} catch (SecurityException se) {
 				// could not delete file: cannot do much more
 			}
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("AcceleoModelManager.CannotSaveState"), //$NON-NLS-1$
-					true);
 		} catch (IOException e) {
 			try {
 				file.delete();
 			} catch (SecurityException se) {
 				// could not delete file: cannot do much more
 			}
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("AcceleoModelManager.CannotSaveState"), //$NON-NLS-1$
-					true);
 		}
 	}
 
@@ -336,16 +329,6 @@ public final class AcceleoModelManager implements ISaveParticipant {
 			} catch (Exception e) {
 				// CHECKSTYLE:ON
 				AcceleoCommonPlugin.log(e, true);
-			}
-		} else {
-			if (file == null) {
-				AcceleoCommonPlugin.log(new Status(IStatus.INFO, AcceleoCommonPlugin.PLUGIN_ID,
-						AcceleoCommonMessages.getString("AcceleoModelManager.ProjectDoesNotExists", project
-								.getName())));
-			} else {
-				AcceleoCommonPlugin.log(new Status(IStatus.INFO, AcceleoCommonPlugin.PLUGIN_ID,
-						AcceleoCommonMessages.getString("AcceleoModelManager.BuildStateFileDoesNotExists",
-								file.getPath())));
 			}
 		}
 		return null;
