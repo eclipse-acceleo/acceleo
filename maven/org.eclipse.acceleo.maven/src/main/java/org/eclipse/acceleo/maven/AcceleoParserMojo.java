@@ -100,6 +100,13 @@ public class AcceleoParserMojo extends AbstractMojo {
 	private boolean usePlatformResourcePath;
 
 	/**
+	 * Indicates if we should fail on errors.
+	 * 
+	 * @parameter expression = "${acceleo-compile.failOnError}"
+	 */
+	private boolean failOnError;
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.apache.maven.plugin.AbstractMojo#execute()
@@ -340,15 +347,22 @@ public class AcceleoParserMojo extends AbstractMojo {
 
 		Set<File> builtFiles = parser.buildAll(new BasicMonitor());
 
+		boolean errorFound = false;
 		for (File builtFile : builtFiles) {
 			Collection<AcceleoParserProblem> problems = parser.getProblems(builtFile);
 			Collection<AcceleoParserWarning> warnings = parser.getWarnings(builtFile);
+
 			if (problems.size() > 0) {
 				log.info("Errors for file '" + builtFile.getName() + "': " + problems);
+				errorFound = true;
 			}
 			if (warnings.size() > 0) {
 				log.info("Warnings for file '" + builtFile.getName() + "': " + warnings);
 			}
+		}
+
+		if (errorFound && failOnError) {
+			throw new MojoExecutionException("Errors have been found during the build of the generator");
 		}
 
 		// Removing everything
