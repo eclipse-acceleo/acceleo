@@ -119,7 +119,8 @@ public class AcceleoParserMojo extends AbstractMojo {
 			for (Object object : runtimeClasspathElements) {
 				if (object instanceof String) {
 					String str = (String)object;
-					log.debug("Adding the runtime dependency " + str + " to the classloader for the package resolution");
+					log.debug("Adding the runtime dependency " + str
+							+ " to the classloader for the package resolution");
 					runtimeUrls[i] = new File(str).toURI().toURL();
 					i++;
 				} else {
@@ -129,7 +130,8 @@ public class AcceleoParserMojo extends AbstractMojo {
 			for (Object object : compileClasspathElements) {
 				if (object instanceof String) {
 					String str = (String)object;
-					log.debug("Adding the compilation dependency " + str + " to the classloader for the package resolution");
+					log.debug("Adding the compilation dependency " + str
+							+ " to the classloader for the package resolution");
 					runtimeUrls[i] = new File(str).toURI().toURL();
 					i++;
 				} else {
@@ -349,6 +351,8 @@ public class AcceleoParserMojo extends AbstractMojo {
 			}
 		}
 
+		// Removing everything
+		AcceleoPackageRegistry.INSTANCE.clear();
 		log.info("Build completed.");
 	}
 
