@@ -17,7 +17,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -103,7 +106,7 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 	@Override
 	public boolean performOk() {
 		if (element instanceof IProject) {
-			IProject project = (IProject)element;
+			final IProject project = (IProject)element;
 			AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
 			if (strictCompliance.getSelection()) {
 				settings.setCompliance(AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE);
@@ -127,11 +130,20 @@ public class AcceleoCompilerPage extends PreferencePage implements IWorkbenchPre
 				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 			}
 
-			try {
-				project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
-			} catch (CoreException e) {
-				AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
-			}
+			Job job = new Job(AcceleoUIMessages.getString("AcceleoCompilerPage.BuildingProject", project //$NON-NLS-1$
+					.getName())) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+					} catch (CoreException e) {
+						AcceleoUIActivator.log(e, true);
+						return new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			job.schedule();
 		}
 		return super.performOk();
 	}
