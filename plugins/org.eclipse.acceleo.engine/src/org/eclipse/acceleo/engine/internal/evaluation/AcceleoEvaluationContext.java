@@ -1011,11 +1011,6 @@ public class AcceleoEvaluationContext<C> {
 		private String lastEOL = DOS_LINE_SEPARATOR;
 
 		/**
-		 * The gap until the next line.
-		 */
-		private int gap;
-
-		/**
 		 * Constructs our buffered reader given its underlying reader.
 		 * 
 		 * @param in
@@ -1121,8 +1116,9 @@ public class AcceleoEvaluationContext<C> {
 				ensureOpen();
 
 				while (line == null) {
-					int previousGap = gap;
+					int bufferGap = 0;
 					if (nextChar >= nChars) {
+						bufferGap = nextChar - nChars;
 						fill();
 					}
 					if (nextChar >= nChars) {
@@ -1132,11 +1128,14 @@ public class AcceleoEvaluationContext<C> {
 						}
 						break;
 					}
+
+					nextChar = nextChar + bufferGap;
+
 					boolean eol = false;
 					char c = 0;
 					int i;
 
-					for (i = nextChar + gap; i < nChars; i++) {
+					for (i = nextChar; i < nChars; i++) {
 						c = characterBuffer[i];
 						if (c == '\n' || c == '\r') {
 							eol = true;
@@ -1163,17 +1162,13 @@ public class AcceleoEvaluationContext<C> {
 									&& characterBuffer[nextChar + 1] == '\n') {
 								lastEOL = DOS_LINE_SEPARATOR;
 								nextChar += 2;
-								gap = 0;
 							} else if (nextChar != max) {
 								lastEOL = "\r"; //$NON-NLS-1$
 								nextChar++;
-								gap = 0;
 							} else if (nextChar == max && DOS_LINE_SEPARATOR.equals(lastEOL)) {
 								nextChar += 2;
-								gap = 1;
 							} else if (nextChar == max) {
 								nextChar++;
-								gap = 0;
 							}
 						}
 					}
@@ -1181,8 +1176,7 @@ public class AcceleoEvaluationContext<C> {
 					if (lineBuffer == null) {
 						lineBuffer = new StringBuilder();
 					}
-					lineBuffer
-							.append(characterBuffer, startChar + previousGap, i - (startChar + previousGap));
+					lineBuffer.append(characterBuffer, startChar, i - startChar);
 				}
 			}
 			return line;
