@@ -5,9 +5,6 @@
 	<locator pattern="^org\.eclipse\.acceleo\.releng(?:\..+)?$" searchPathRef="releng" />
 	<locator pattern="^org\.eclipse\.acceleo(?:\..+)?$" searchPathRef="acceleo" />
 
-	<locator pattern="^org\.eclipse\.test$" searchPathRef="eclipse.test" />
-	<locator pattern="^org\.eclipse\.ant\.optional\.junit$" searchPathRef="eclipse.test" />
-
 	<searchPath name="acceleo">
 		<provider componentTypes="osgi.bundle" readerType="git" mutable="false">
 			<uri format="{0},plugins/{1}">
@@ -56,16 +53,4 @@
 		</provider>
 	</searchPath>
 
-	<searchPath name="eclipse.test">
-		<provider componentTypes="osgi.bundle" readerType="cvs" source="true" mutable="false">
-			<uri format=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,{0}">
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-		<provider componentTypes="eclipse.feature" readerType="cvs" source="true" mutable="false">
-			<uri format=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,{0}-feature">
-				<bc:propertyRef key="buckminster.component" />
-			</uri>
-		</provider>
-	</searchPath>
 </rmap>
