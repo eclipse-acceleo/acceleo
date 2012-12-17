@@ -5,7 +5,7 @@
   <rm:locator pattern="^org\.eclipse\.acceleo\.releng$" searchPathRef="local.releng"/>
   <rm:locator pattern="^org\.eclipse\.emf(?:\..+)?$" searchPathRef="emf"/>
   <rm:locator pattern="^org\.eclipse\.ocl(?:\..+)?$" searchPathRef="ocl"/>
-  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="uml"/>
+  <rm:locator pattern="^org\.eclipse\.uml2(?:\..+)?$" searchPathRef="kepler"/>
   <rm:locator pattern="^org\.eclipse\.jdt(?:\..+)?$" searchPathRef="platform"/>
   <rm:locator pattern="^lpg\.runtime\.java?$" searchPathRef="ocl"/>
   <rm:locator pattern="^org\.eclipse\.swtbot(?:\..+)?$" searchPathRef="swtbot"/>
@@ -35,16 +35,9 @@
       </rm:uri>
     </rm:provider>
   </rm:searchPath>
-  <rm:searchPath name="uml">
+  <rm:searchPath name="kepler">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/modeling/mdt/uml2/updates/4.0milestones/">
-        <bc:propertyRef key="eclipse.download"/>
-      </rm:uri>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="juno">
-    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/releases/juno">
+      <rm:uri format="{0}/releases/kepler">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
@@ -82,13 +75,6 @@
   <rm:searchPath name="orbit">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
       <rm:uri format="{0}/tools/orbit/downloads/drops/R20120526062928/repository/">
-        <bc:propertyRef key="eclipse.download"/>
-      </rm:uri>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="oldorbit">
-    <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="p2" source="false" mutable="false">
-      <rm:uri format="{0}/tools/orbit/downloads/drops/R20120119162704/repository/">
         <bc:propertyRef key="eclipse.download"/>
       </rm:uri>
     </rm:provider>
