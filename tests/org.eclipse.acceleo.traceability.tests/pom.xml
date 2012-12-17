@@ -13,8 +13,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.modeling.m2t</groupId>
-    <artifactId>org.eclipse.acceleo.parent</artifactId>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>org.eclipse.acceleo-parent</artifactId>
     <version>3.3.1-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
@@ -41,10 +41,9 @@
         <artifactId>tycho-surefire-plugin</artifactId>
         <version>${tycho-version}</version>
         <configuration>
-          <excludes>
-            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
-            <exclude>**/Test*.class</exclude>
-          </excludes>
+          <includes>
+            <include>org/eclipse/acceleo/traceability/tests/suite/AllTests.class</include>
+          </includes>	
           <useUIHarness>false</useUIHarness>
           <useUIThread>false</useUIThread>
           <testFailureIgnore>true</testFailureIgnore>

@@ -14,8 +14,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.modeling.m2t</groupId>
-    <artifactId>org.eclipse.acceleo.parent</artifactId>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>org.eclipse.acceleo-parent</artifactId>
     <version>3.3.1-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
@@ -30,6 +30,16 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <createArtifactRepository>true</createArtifactRepository>
+          <finalName>${project.artifactId}</finalName>
+          <compress>true</compress>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -54,7 +64,124 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare_promotion</id>
+            <phase>verify</phase>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <tasks>
+                  <mkdir dir="${project.build.directory}/promotion"/>
+                  <echo file="${project.build.directory}/promotion/promote.properties"
+                      message="#Acceleo promotion process.${line.separator}
+build.alias=${BUILD_ALIAS}${line.separator}
+build.qualifier=${env.BUILD_TYPE}${buildQualifier}${line.separator}
+version=${unqualifiedVersion}"/>
+                  <copy file="p2.xsl" todir="${project.build.directory}/promotion"/>
+                  <copy file="promoter.xml" todir="${project.build.directory}/promotion" />
+                </tasks>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
     </plugins>
   </build>
+  
+  <profiles>
+    <profile>
+      <id>sign</id>
+      <activation>
+        <property>
+          <name>BUILD_SIGN</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.dash.maven</groupId>
+            <artifactId>eclipse-signing-maven-plugin</artifactId>
+            <version>1.0.5</version>
+            <executions>
+              <execution>
+                <!-- Pack the p2 repository. -->
+                <id>pack</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>pack</goal>
+                </goals>
+              </execution>
+              <execution>
+                <!-- Sign the p2 repository -->
+                <id>sign</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
+                  <signerInputDirectory>/home/data/httpd/download-staging.priv/m2t/acceleo</signerInputDirectory>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+              <execution>
+                <!-- Repack the p2 repository -->
+                <id>repack</id>
+                <configuration>
+                  <inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
+                </configuration>
+                <phase>package</phase>
+                <goals>
+                  <goal>pack</goal>
+                </goals>
+              </execution>
+              <execution>
+                <!-- Signing and packing alters checksums so fix them -->
+                <id>fixCheckSums</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>fixCheckSums</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>replace-unsigned-repository-by-signed-one</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <!-- prepare zip repo and repo for archiving -->
+                    <move file="${project.build.directory}/repository" tofile="${project.build.directory}/repository-not-signed"/>
+                    <move file="${project.build.directory}/checksumFix" tofile="${project.build.directory}/repository"/>
+                    <move file="${project.build.directory}/${project.artifactId}.zip" tofile="${project.build.directory}/${project.artifactId}-not-signed.zip"/>
+                    <zip destfile="${project.build.directory}/${project.artifactId}.zip" basedir="${project.build.directory}/repository"/>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+
+      <pluginRepositories>
+        <pluginRepository>
+          <id>maven.eclipse.org</id>
+          <url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 
 </project>

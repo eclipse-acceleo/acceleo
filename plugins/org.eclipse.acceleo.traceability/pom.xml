@@ -14,8 +14,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.modeling.m2t</groupId>
-    <artifactId>org.eclipse.acceleo.parent</artifactId>
+    <groupId>org.eclipse.acceleo</groupId>
+    <artifactId>org.eclipse.acceleo-parent</artifactId>
     <version>3.3.1-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
@@ -26,22 +26,13 @@
 
   <name>Acceleo Traceability</name>
 
-  <!-- workaround for https://issues.sonatype.org/browse/TYCHO-168 -->
   <build>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    <plugins>
+   <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
       </plugin>
     </plugins>
-  </build>  
+  </build>
   
 </project>
