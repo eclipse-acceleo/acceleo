@@ -69,14 +69,12 @@
 	
 	<module>doc/org.eclipse.acceleo.doc</module>
 	
-	<!-- Disabling tests for now
 	<module>tests/org.eclipse.acceleo.common.tests</module>
 	<module>tests/org.eclipse.acceleo.compatibility.tests</module>
 	<module>tests/org.eclipse.acceleo.engine.tests</module>
 	<module>tests/org.eclipse.acceleo.model.tests</module>
 	<module>tests/org.eclipse.acceleo.parser.tests</module>
 	<module>tests/org.eclipse.acceleo.traceability.tests</module>
-	-->
 	
 	<module>features/org.eclipse.acceleo.doc-feature</module>
 	<module>features/org.eclipse.acceleo.examples-feature</module>
