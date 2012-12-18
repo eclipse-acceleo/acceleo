@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.eclipse.modeling.m2t</groupId>
     <artifactId>org.eclipse.acceleo.parent</artifactId>
-    <version>3.3.1-SNAPSHOT</version>
+    <version>3.3.100-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 

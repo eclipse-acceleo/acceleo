@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.sdk"
       label="%featureName"
-      version="3.3.1.qualifier"
+      version="3.3.100.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.acceleo.common">
 
