@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.releng"
       label="Acceleo 3.3"
-      version="3.3.100.qualifier"
+      version="3.3.2.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 

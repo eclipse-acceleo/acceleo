@@ -19,7 +19,7 @@
 
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo-parent</artifactId>
-  <version>3.3.100-SNAPSHOT</version>
+  <version>3.3.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Acceleo Parent</name>
 
@@ -40,7 +40,7 @@
   <properties>
     <tycho-version>0.16.0</tycho-version>
     <tycho-extras-version>0.16.0</tycho-extras-version>
-    <acceleo-version>3.3.0-SNAPSHOT</acceleo-version>
+    <acceleo-version>3.3.2-SNAPSHOT</acceleo-version>
     <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/</orbit-site>
