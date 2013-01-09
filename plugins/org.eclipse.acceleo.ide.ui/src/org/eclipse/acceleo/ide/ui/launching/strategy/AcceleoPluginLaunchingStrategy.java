@@ -41,6 +41,10 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Default Acceleo Plug-in launching strategy. It is used to launch an Acceleo application in the current
@@ -95,15 +99,31 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			final String target = getTargetPath(configuration);
 			String message;
 			if (model.length() == 0) {
-				message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingModel"); //$NON-NLS-1$
+				message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingModel", configuration //$NON-NLS-1$
+						.getName());
 			} else if (target.length() == 0) {
-				message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingTarget"); //$NON-NLS-1$
+				message = AcceleoUIMessages.getString("AcceleoLaunchDelegate.MissingTarget", configuration //$NON-NLS-1$
+						.getName());
 			} else {
 				message = null;
 			}
 			if (message != null) {
 				AcceleoUIActivator.getDefault().getLog().log(
 						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message));
+
+				final String dialogMessage = message;
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						Shell parentShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+						String dialogTitle = AcceleoUIMessages
+								.getString("AcceleoPluginLaunchingStrategy.ErrorDialogTitle"); //$NON-NLS-1$
+						String[] dialogButtonLabels = new String[] {AcceleoUIMessages
+								.getString("AcceleoPluginLaunchingStrategy.ErrorDialogOkButton"), }; //$NON-NLS-1$
+						MessageDialog messageDialog = new MessageDialog(parentShell, dialogTitle, null,
+								dialogMessage, MessageDialog.ERROR, dialogButtonLabels, 0);
+						messageDialog.open();
+					}
+				});
 			} else {
 				IPath targetPath = new Path(target);
 				IContainer container;
