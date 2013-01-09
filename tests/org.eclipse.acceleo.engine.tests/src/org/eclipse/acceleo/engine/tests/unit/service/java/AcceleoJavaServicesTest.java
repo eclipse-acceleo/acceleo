@@ -193,4 +193,31 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 			assertTrue(content.contains("true")); //$NON-NLS-1$
 		}
 	}
+
+	/**
+	 * Test that methods are using the best choice of source & parameters.
+	 * 
+	 * @throws IOException
+	 *             Thrown when the output cannot be saved.
+	 */
+	public void testSourceAndParametersChoice() throws IOException {
+		generationRoot = new File(getGenerationRootPath("SourceAndParameters")); //$NON-NLS-1$
+		referenceRoot = new File(getReferenceRootPath("SourceAndParameters")); //$NON-NLS-1$
+
+		cleanGenerationRoot();
+
+		generate("test_call_source_and_parameters", defaultStrategy); //$NON-NLS-1$
+		try {
+			compareDirectories(referenceRoot, generationRoot);
+		} catch (IOException e) {
+			fail(errorMessageForCompareDirectoriesMethod);
+		}
+
+		for (File generated : getFiles(generationRoot)) {
+			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
+					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
+			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
+			assertTrue(content.contains("true")); //$NON-NLS-1$
+		}
+	}
 }

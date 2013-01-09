@@ -46,3 +46,13 @@
 		[invoke('org.eclipse.acceleo.engine.tests.mock.MockService', 'serviceClassInstanceOf(org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject)', Sequence{c, c.ePackage})/]
 	[/file]
 [/template]
+
+[template public test_call_source_and_parameters(c:EClass)]
+[file ('no_parameters_valid_source_no_parameter')]['TRUE'.invoke('java.lang.String', 'toLowerCase()', Sequence{})/][/file]
+[file ('no_parameters_invalid_source_valid_parameter')][c.invoke('java.lang.String', 'toLowerCase()', Sequence{'TRUE'})/][/file]
+[file ('no_parameters_valid_source_valid_parameter')]['FALSE'.invoke('java.lang.String', 'toLowerCase()', Sequence{'TRUE'})/][/file]
+
+[file ('parameters_valid_source_no_parameter')]['foo'.invoke('java.lang.String', 'matches(java.lang.String)', Sequence{'foo'})/][/file]
+[file ('parameters_invalid_source_valid_parameter')][invoke('java.lang.String', 'matches(java.lang.String)', Sequence{'foo', 'foo'})/][/file]
+[file ('parameters_valid_source_valid_parameter')]['foo'.invoke('java.lang.String', 'matches(java.lang.String)', Sequence{'foo', 'foo'})/][/file]
+[/template]

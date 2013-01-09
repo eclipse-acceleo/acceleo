@@ -1181,25 +1181,27 @@ public final class AcceleoLibraryOperationVisitor {
 				// If we can use the method from the Java service on the current EObject we do it
 				if (Modifier.isStatic(method.getModifiers())) {
 					result = method.invoke(null);
-				} else if (serviceClass.isInstance(source)) {
-					if (invocationArguments.size() == 0) {
-						result = method.invoke(source);
-					} else {
-						result = method.invoke(invocationArguments.get(0));
-					}
+				} else if (serviceClass.isInstance(source) && invocationArguments.size() == 0) {
+					result = method.invoke(source);
+				} else if (invocationArguments.size() == 1
+						&& serviceClass.isInstance(invocationArguments.get(0))) {
+					result = method.invoke(invocationArguments.get(0));
 				} else {
 					result = method.invoke(AcceleoServicesRegistry.INSTANCE.getServiceInstance(serviceClass));
 				}
 			} else {
-				if (method.getParameterTypes().length - invocationArguments.size() == 1) {
-					invocationArguments.add(0, source);
-				}
 				if (Modifier.isStatic(method.getModifiers())) {
 					result = method.invoke(null, invocationArguments.toArray(new Object[invocationArguments
 							.size()]));
-				} else if (method.getParameterTypes().length - invocationArguments.size() == -1) {
-					final Object swappedSource = invocationArguments.remove(0);
-					result = method.invoke(swappedSource, invocationArguments
+				} else if (method.getParameterTypes().length == invocationArguments.size()
+						&& serviceClass.isInstance(source)) {
+					result = method.invoke(source, invocationArguments.toArray(new Object[invocationArguments
+							.size()]));
+				} else if (invocationArguments.size() > 0
+						&& (invocationArguments.size() - method.getParameterTypes().length > 0)
+						&& serviceClass.isInstance(invocationArguments.get(0))) {
+					Object newSource = invocationArguments.remove(0);
+					result = method.invoke(newSource, invocationArguments
 							.toArray(new Object[invocationArguments.size()]));
 				} else {
 					result = method.invoke(AcceleoServicesRegistry.INSTANCE.getServiceInstance(serviceClass),
