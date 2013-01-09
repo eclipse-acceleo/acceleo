@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.acceleo.traceability.model,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.engine,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ com.google.guava
 Bundle-Vendor: %providerName
 Bundle-Localization: traceability
 Bundle-Activator: org.eclipse.acceleo.internal.traceability.AcceleoTraceabilityPlugin

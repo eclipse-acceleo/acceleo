@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.evaluation;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -174,6 +177,12 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 	/** My decorating visitor. */
 	private EvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> visitor;
+
+	/**
+	 * The map of the path of the generated files and the markers of the protected areas generated in those
+	 * files.
+	 */
+	private Multimap<String, String> file2protectedAreasMarker = ArrayListMultimap.create();
 
 	/**
 	 * Default constructor.
@@ -737,6 +746,14 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		final String marker = toString(markerValue).trim();
+		String filePath = this.context.getCurrentlyGeneratedFile();
+		Collection<String> markerForFile = this.file2protectedAreasMarker.get(filePath);
+		if (markerForFile != null && markerForFile.contains(marker)) {
+			AcceleoEnginePlugin.log(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationVisitor.DuplicateProtectedAreaMarker", marker, filePath), true); //$NON-NLS-1$
+		}
+		file2protectedAreasMarker.put(filePath, marker);
+
 		final String areaContent = getContext().getProtectedAreaContent(marker);
 		if (source instanceof EObject) {
 			lastEObjectSelfValue = (EObject)source;
