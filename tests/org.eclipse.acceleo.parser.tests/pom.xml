@@ -21,7 +21,7 @@
 
   <artifactId>org.eclipse.acceleo.parser.tests</artifactId>
   <version>3.3.2-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>eclipse-test-plugin</packaging>
 
   <name>Acceleo Parser Tests</name>
 

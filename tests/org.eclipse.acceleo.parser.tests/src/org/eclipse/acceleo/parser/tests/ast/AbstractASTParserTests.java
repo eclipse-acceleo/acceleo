@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +45,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.osgi.framework.Bundle;
+
+import static org.junit.Assert.fail;
 
 /**
  * The common superclass of all the AST tests.
@@ -185,7 +185,7 @@ public abstract class AbstractASTParserTests {
 				try {
 					folder.create(true, true, new NullProgressMonitor());
 				} catch (CoreException e) {
-					fail();
+					fail(e.getMessage());
 					return null;
 				}
 			}
@@ -193,18 +193,43 @@ public abstract class AbstractASTParserTests {
 		}
 
 		IFile file = currentContainer.getFile(new Path(name));
-		try {
-			ByteArrayInputStream source = new ByteArrayInputStream(buffer.toString().getBytes("UTF8")); //$NON-NLS-1$
-			file.create(source, true, new NullProgressMonitor());
-		} catch (UnsupportedEncodingException e) {
-			fail();
-			return null;
-		} catch (CoreException e) {
-			fail();
-			return null;
+		if (!file.exists()) {
+			try {
+				ByteArrayInputStream source = new ByteArrayInputStream(buffer.toString().getBytes("UTF8")); //$NON-NLS-1$
+				file.create(source, true, new NullProgressMonitor());
+			} catch (UnsupportedEncodingException e) {
+				fail(e.getMessage());
+				return null;
+			} catch (CoreException e) {
+				fail(e.getMessage());
+				return null;
+			}
 		}
 
 		return file;
+	}
+
+	protected void parseAndLoadModule(IFile file) {
+		AcceleoFile acceleoFile = new AcceleoFile(file.getLocation().toFile(), AcceleoFile
+				.relativePathToFullModuleName(file.getProjectRelativePath().toString()));
+		AcceleoSourceBuffer aSourceBuffer = new AcceleoSourceBuffer(acceleoFile);
+		aSourceBuffer.createCST();
+
+		AcceleoProject anAcceleoProject = new AcceleoProject(file.getProject());
+		IFile aMtlFile = file;
+
+		URI fileURI = null;
+		IPath outputPath = anAcceleoProject.getOutputFilePath(aMtlFile);
+		if (outputPath != null) {
+			fileURI = URI.createPlatformResourceURI(outputPath.toString(), false);
+		} else {
+			fileURI = URI.createPlatformResourceURI(aMtlFile.getFullPath().removeFileExtension()
+					.addFileExtension(IAcceleoConstants.EMTL_FILE_EXTENSION).toString(), false);
+		}
+
+		Resource resource = ModelUtils.createResource(fileURI, oResourceSet);
+		System.out.println(resource.getURI());
+		resourceSetURIs.add(fileURI);
 	}
 
 	protected void checkCSTParsing(IFile file, int infosCount, int warningsCount, int problemsCount) {

@@ -20,7 +20,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,6 +37,12 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@BeforeClass
 	public static void setUp() {
+		if (EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI) == null) {
+			EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		}
+		if (EPackage.Registry.INSTANCE.getEPackage(GenModelPackage.eNS_URI) == null) {
+			EPackage.Registry.INSTANCE.put(GenModelPackage.eNS_URI, GenModelPackage.eINSTANCE);
+		}
 		bundle = Platform.getBundle("org.eclipse.acceleo.parser.tests"); //$NON-NLS-1$
 		project = createAcceleoProject("org.eclipse.acceleo.parser.tests.module"); //$NON-NLS-1$
 	}
@@ -176,11 +185,20 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleExtendsOtherModule() {
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
+		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
+				"moduleValid.mtl"); //$NON-NLS-1$
+
+		this.parseAndLoadModule(moduleValidIFile);
+
 		File file = this.getFileFromPath("/data/ast/module/moduleExtendsOtherModule.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
 		IFile moduleFile = createFile(buffer,
 				new Path("/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
 				"moduleExtendsOtherModule.mtl"); //$NON-NLS-1$
+
 		if (moduleFile.exists() && buffer.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
@@ -227,6 +245,14 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleMultipleExtends() {
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
+		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
+				"moduleValid.mtl"); //$NON-NLS-1$
+
+		this.parseAndLoadModule(moduleValidIFile);
+
 		File file = this.getFileFromPath("/data/ast/module/moduleMultipleExtends.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
 		IFile moduleFile = createFile(buffer,
@@ -295,6 +321,14 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleExtendsIncompatibleMetaModel() {
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
+		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
+				"moduleValid.mtl"); //$NON-NLS-1$
+
+		this.parseAndLoadModule(moduleValidIFile);
+
 		File file = this.getFileFromPath("/data/ast/module/moduleExtendsIncompatibleMetaModel.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
 		IFile moduleFile = createFile(buffer,
@@ -380,6 +414,14 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleImport() {
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
+		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
+				"moduleValid.mtl"); //$NON-NLS-1$
+
+		this.parseAndLoadModule(moduleValidIFile);
+
 		File file = this.getFileFromPath("/data/ast/module/moduleImport.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
 		IFile moduleFile = createFile(buffer,
@@ -397,6 +439,14 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleMultipleImport() {
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
+		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
+				"moduleValid.mtl"); //$NON-NLS-1$
+
+		this.parseAndLoadModule(moduleValidIFile);
+
 		File file = this.getFileFromPath("/data/ast/module/moduleMultipleImport.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
 		IFile moduleFile = createFile(buffer,
