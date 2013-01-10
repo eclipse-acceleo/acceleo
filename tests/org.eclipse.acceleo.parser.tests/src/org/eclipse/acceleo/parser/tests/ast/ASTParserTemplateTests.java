@@ -169,11 +169,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleOverride() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
@@ -194,11 +194,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleOverrideQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
@@ -219,11 +219,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleOverrideSameValue() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
@@ -244,11 +244,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleOverrideSameValueQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
@@ -270,11 +270,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleOverrideInSameModule() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
@@ -295,11 +295,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleOverrideInSameModuleQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
@@ -389,11 +389,11 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplatePostGuardVariableInitOverridesQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
+		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
 		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
 		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
-				"/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
-				"moduleValid.mtl"); //$NON-NLS-1$
+				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
+				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
