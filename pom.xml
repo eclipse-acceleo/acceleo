@@ -75,6 +75,7 @@
 	<module>tests/org.eclipse.acceleo.model.tests</module>
 	<module>tests/org.eclipse.acceleo.parser.tests</module>
 	<module>tests/org.eclipse.acceleo.traceability.tests</module>
+	<module>tests/org.eclipse.acceleo.tests</module>
 	
 	<module>features/org.eclipse.acceleo.doc-feature</module>
 	<module>features/org.eclipse.acceleo.examples-feature</module>
