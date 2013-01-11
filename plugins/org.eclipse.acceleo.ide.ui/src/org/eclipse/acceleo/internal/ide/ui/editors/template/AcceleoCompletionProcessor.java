@@ -109,6 +109,11 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	protected String text;
 
 	/**
+	 * The default start for the completion proposal.
+	 */
+	private final String defaultStart = " ${"; //$NON-NLS-1$
+
+	/**
 	 * An offset within the text for which completions should be computed.
 	 */
 	private int offset;
@@ -1036,7 +1041,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (IAcceleoConstants.ELSE_LET.startsWith(start.toLowerCase())
 						|| ('[' + IAcceleoConstants.ELSE_LET).startsWith(start.toLowerCase())) {
 					String replacementStringBefore = '[' + IAcceleoConstants.ELSE_LET + ' ';
-					String replacementStringAfter = "${var} " + ":" + " ${" + defaultVariableType + "} = ${self}]" + '\n' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+					String replacementStringAfter = "${var} " + ":" + defaultStart + defaultVariableType + "} = ${self}]" + '\n' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
 							+ tab + '\t';
 					String replacementString = replacementStringBefore + replacementStringAfter;
 					proposals.add(createTemplateProposal(replacementString, offset - start.length(), start
@@ -1115,8 +1120,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			String tab, Image patternImage) {
 		if (IAcceleoConstants.TEMPLATE.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.TEMPLATE).startsWith(start.toLowerCase())) {
-			String replacementStringBefore = '[' + IAcceleoConstants.TEMPLATE + ' '
-					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + ' ';
+			String replacementStringBefore = '[' + IAcceleoConstants.TEMPLATE + defaultStart
+					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + "} "; //$NON-NLS-1$
 			String replacementStringAfter = "${name}(" + "${arg}" + " : ${" + defaultVariableType + "})]\n" + tab //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					+ '\t'
 					+ "${template_expression}" + '\n' + tab + '[' + '/' + IAcceleoConstants.TEMPLATE + ']'; //$NON-NLS-1$
@@ -1127,8 +1132,8 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 		if (IAcceleoConstants.QUERY.startsWith(start.toLowerCase())
 				|| ('[' + IAcceleoConstants.QUERY).startsWith(start.toLowerCase())) {
-			String replacementStringBefore = '[' + IAcceleoConstants.QUERY + ' '
-					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + ' ';
+			String replacementStringBefore = '[' + IAcceleoConstants.QUERY + defaultStart
+					+ IAcceleoConstants.VISIBILITY_KIND_PUBLIC + "} "; //$NON-NLS-1$
 			String replacementStringAfter = "${name}(${arg} : ${" + defaultVariableType + "}) : ${OclAny} = ${self} /]\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			String replacementString = replacementStringBefore + replacementStringAfter;
 			proposals.add(createTemplateProposal(replacementString, offset - start.length(), start.length(),
