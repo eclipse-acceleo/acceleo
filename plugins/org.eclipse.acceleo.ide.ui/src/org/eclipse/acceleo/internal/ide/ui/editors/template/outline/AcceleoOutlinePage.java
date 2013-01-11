@@ -358,12 +358,14 @@ public class AcceleoOutlinePage extends Page implements IContentOutlinePage, ISe
 					&& ((Scrollable)getTreeViewer().getControl()).getVerticalBar() != null) {
 				selection = ((Scrollable)getTreeViewer().getControl()).getVerticalBar().getSelection();
 			}
-			TreePath[] treePaths = getTreeViewer().getExpandedTreePaths();
-			getTreeViewer().setInput(element);
-			getTreeViewer().setExpandedTreePaths(treePaths);
-			if (selection > -1 && getTreeViewer().getControl() instanceof Scrollable
-					&& ((Scrollable)getTreeViewer().getControl()).getVerticalBar() != null) {
-				((Scrollable)getTreeViewer().getControl()).getVerticalBar().setSelection(selection);
+			if (!this.getTreeViewer().getTree().isDisposed()) {
+				TreePath[] treePaths = getTreeViewer().getExpandedTreePaths();
+				getTreeViewer().setInput(element);
+				getTreeViewer().setExpandedTreePaths(treePaths);
+				if (selection > -1 && getTreeViewer().getControl() instanceof Scrollable
+						&& ((Scrollable)getTreeViewer().getControl()).getVerticalBar() != null) {
+					((Scrollable)getTreeViewer().getControl()).getVerticalBar().setSelection(selection);
+				}
 			}
 		} else {
 			if (!getTreeViewer().getTree().isDisposed()) {
