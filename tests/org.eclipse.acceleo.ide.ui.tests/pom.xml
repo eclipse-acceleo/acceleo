@@ -13,7 +13,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.modeling.m2t</groupId>
+    <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo.parent</artifactId>
     <version>3.3.2-SNAPSHOT</version>
     <relativePath>../..</relativePath>
