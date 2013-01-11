@@ -21,7 +21,7 @@
 
   <artifactId>org.eclipse.acceleo.ide.ui.tests</artifactId>
   <version>3.3.2-SNAPSHOT</version>
-  <packaging>eclipse-plugin</packaging>
+  <packaging>eclipse-test-plugin</packaging>
 
   <name>Acceleo IDE UI Tests</name>
 

@@ -70,8 +70,10 @@
 	<module>doc/org.eclipse.acceleo.doc</module>
 	
 	<module>tests/org.eclipse.acceleo.common.tests</module>
+	<module>tests/org.eclipse.acceleo.dynamic.tests</module>
 	<module>tests/org.eclipse.acceleo.compatibility.tests</module>
 	<module>tests/org.eclipse.acceleo.engine.tests</module>
+	<module>tests/org.eclipse.acceleo.ide.ui.tests</module>
 	<module>tests/org.eclipse.acceleo.model.tests</module>
 	<module>tests/org.eclipse.acceleo.parser.tests</module>
 	<module>tests/org.eclipse.acceleo.traceability.tests</module>
