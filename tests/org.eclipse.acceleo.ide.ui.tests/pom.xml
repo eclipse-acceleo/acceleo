@@ -25,23 +25,4 @@
 
   <name>Acceleo IDE UI Tests</name>
 
-  <!--<build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <excludes>
-            <!-- test mojo matches TestProject be default and treats it as PojoTest -->
-            <exclude>**/Test*.class</exclude>
-          </excludes>
-          <useUIHarness>false</useUIHarness>
-          <useUIThread>false</useUIThread>
-          <testFailureIgnore>true</testFailureIgnore>
-          <failIfNoTests>false</failIfNoTests>
-        </configuration>
-      </plugin>
-     </plugins>
-    </build>-->
 </project>
