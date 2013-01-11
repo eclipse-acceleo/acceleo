@@ -58,6 +58,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -725,6 +726,8 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			} else {
 				isApplicable = ((EDataType)expectedType).getInstanceClass() == argumentType;
 			}
+		} else if (expectedType instanceof EEnum && argumentType instanceof EClass) {
+			isApplicable = argumentType.equals(EcorePackage.eINSTANCE.getEEnumLiteral());
 		} else if (expectedType instanceof AnyType) {
 			isApplicable = true;
 		} else {
