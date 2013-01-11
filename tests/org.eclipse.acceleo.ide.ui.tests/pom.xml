@@ -21,11 +21,11 @@
 
   <artifactId>org.eclipse.acceleo.ide.ui.tests</artifactId>
   <version>3.3.2-SNAPSHOT</version>
-  <packaging>eclipse-test-plugin</packaging>
+  <packaging>eclipse-plugin</packaging>
 
   <name>Acceleo IDE UI Tests</name>
 
-  <build>
+  <!--<build>
     <plugins>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -43,5 +43,5 @@
         </configuration>
       </plugin>
      </plugins>
-    </build>
+    </build>-->
 </project>
