@@ -76,6 +76,9 @@ public class AcceleoParserTests {
 	private URI createFileURI(String pathName) {
 		try {
 			String fileLocation = FileLocator.resolve(bundle.getEntry(pathName)).getPath();
+			if (fileLocation.startsWith("file:")) { //$NON-NLS-1$
+				fileLocation = fileLocation.substring("file:".length()); //$NON-NLS-1$
+			}
 			return URI.createFileURI(fileLocation);
 		} catch (IOException e) {
 			fail(e.getMessage());
