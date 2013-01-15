@@ -736,7 +736,8 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleAlternateComment() {
-		File file = this.getFileFromPath("/data/ast/module/moduleAlternateComment.mtl"); //$NON-NLS-1$
+		File file = this
+				.getFileFromPath("../org.eclipse.acceleo.parser.tests/data/ast/module/moduleAlternateComment.mtl"); //$NON-NLS-1$
 		StringBuffer buffer = FileContent.getFileContent(file);
 		IFile moduleFile = createFile(buffer,
 				new Path("/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
