@@ -15,11 +15,12 @@
 
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
-    <artifactId>org.eclipse.acceleo.parent</artifactId>
+    <artifactId>org.eclipse.acceleo-parent</artifactId>
     <version>3.3.2-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
+  <groupId>org.eclipse.acceleo.features</groupId>
   <artifactId>org.eclipse.acceleo.sdk-feature</artifactId>
   <packaging>eclipse-feature</packaging>
 

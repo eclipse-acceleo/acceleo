@@ -84,6 +84,7 @@
 	<module>features/org.eclipse.acceleo.runtime-feature</module>
 	<module>features/org.eclipse.acceleo.ui.capabilities-feature</module>
 	<module>features/org.eclipse.acceleo-feature</module>
+	<module>features/org.eclipse.acceleo.sdk-feature</module>
 	
 	<module>releng/org.eclipse.acceleo-updatesite</module>
   </modules>
