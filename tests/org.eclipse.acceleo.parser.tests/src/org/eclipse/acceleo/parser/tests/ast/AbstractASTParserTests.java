@@ -183,6 +183,7 @@ public abstract class AbstractASTParserTests {
 			IFolder folder = currentContainer.getFolder(new Path(string));
 			if (!folder.exists()) {
 				try {
+					System.out.println("folder: " + folder.getLocation());
 					folder.create(true, true, new NullProgressMonitor());
 				} catch (CoreException e) {
 					fail(e.getMessage());
@@ -192,11 +193,13 @@ public abstract class AbstractASTParserTests {
 			currentContainer = folder;
 		}
 
+		System.out.println("Current container: " + currentContainer.getLocation());
 		IFile file = currentContainer.getFile(new Path(name));
 		if (!file.exists()) {
 			try {
 				ByteArrayInputStream source = new ByteArrayInputStream(buffer.toString().getBytes("UTF8")); //$NON-NLS-1$
 				file.create(source, true, new NullProgressMonitor());
+				System.out.println("File created: " + file.getLocation());
 			} catch (UnsupportedEncodingException e) {
 				fail(e.getMessage());
 				return null;
@@ -205,7 +208,6 @@ public abstract class AbstractASTParserTests {
 				return null;
 			}
 		}
-
 		return file;
 	}
 
