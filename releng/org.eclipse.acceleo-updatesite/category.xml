@@ -12,6 +12,9 @@
    <feature id="org.eclipse.acceleo.runtime.source" version="0.0.0">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.sdk" version="0.0.0">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.doc" version="0.0.0">
       <category name="org.eclipse.acceleo"/>
    </feature>
