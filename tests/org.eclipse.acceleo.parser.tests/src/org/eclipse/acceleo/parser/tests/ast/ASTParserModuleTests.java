@@ -747,7 +747,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 			checkASTResolution(0, 0, 0);
 			checkASTDocumentationResolution(0, 0, 0);
 		} else {
-			fail();
+			fail("Path: " + moduleFile.getLocation().toString());
 		}
 	}
 
