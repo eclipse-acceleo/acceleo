@@ -505,4 +505,11 @@ public interface IAcceleoConstants {
 	 * @since 3.2
 	 */
 	String DISABLE_DYNAMIC_MODULES = "DISABLE_DYNAMIC_MODULES"; //$NON-NLS-1$
+
+	/**
+	 * The javadoc tag used by Java services classes to specify the nsURI.
+	 * 
+	 * @since 3.4
+	 */
+	String JAVADOC_TAG_NS_URI = "@nsURI";
 }

@@ -268,6 +268,13 @@ Contributors:
               style="push"
               tooltip="%acceleoEditorCommandsPullUp.Tooltip">
         </action>
+        <action
+              class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.GenerateJavaServicesModuleAction"
+              definitionId="org.eclipse.acceleo.ide.ui.generatejavaservicesmodule"
+              id="org.eclipse.acceleo.ide.ui.generatejavaservicesmoduleaction"
+              label="%generateJavaServicesModule"
+              style="push">
+        </action>
       </actionSet>
    </extension>
 
@@ -358,6 +365,11 @@ Contributors:
         id="org.eclipse.acceleo.ide.ui.category"
         name="%acceleoCommandCategory">
   </category>
+  <command
+        categoryId="org.eclipse.ui.category.file"
+        id="org.eclipse.acceleo.ide.ui.generatejavaservicesmodule"
+        name="%generateJavaServicesModule">
+  </command>
    </extension>
 
    <extension
@@ -551,6 +563,29 @@ Contributors:
               </iterate>
            </visibleWhen>
         </command>
+     </menuContribution>
+     <menuContribution
+           allPopups="false"
+           locationURI="popup:org.eclipse.ui.popup.any?endof=additions">
+        <menu
+              id="org.eclipse.acceleo.menu"
+              label="%acceleoMenuLabel">
+           <command
+                 commandId="org.eclipse.acceleo.ide.ui.generatejavaservicesmodule"
+                 label="%generateJavaServicesModule"
+                 style="push">
+              <visibleWhen
+                    checkEnabled="false">
+                 <with
+                       variable="activePart">
+                    <test
+                          forcePluginActivation="true"
+                          property="org.eclipse.acceleo.ide.ui.canGenerateJavaServicesModule">
+                    </test>
+                 </with>
+              </visibleWhen>
+           </command>
+        </menu>
      </menuContribution>
     </extension>
     <extension point="org.eclipse.core.expressions.definitions">
@@ -1271,5 +1306,15 @@ Contributors:
              configId="org.eclipse.ui.intro.universalConfig"
              content="intro/acceleo-migrate.xml">
        </configExtension>
+    </extension>
+    <extension
+          point="org.eclipse.core.expressions.propertyTesters">
+       <propertyTester
+             class="org.eclipse.acceleo.internal.ide.ui.editors.template.actions.CanGenerateJavaServicesModulePropertyTester"
+             id="org.eclipse.acceleo.ide.ui.canGenerateJavaServicesPropertyTester"
+             namespace="org.eclipse.acceleo.ide.ui"
+             properties="canGenerateJavaServicesModule"
+             type="org.eclipse.ui.IWorkbenchPart">
+       </propertyTester>
     </extension>
 </plugin>

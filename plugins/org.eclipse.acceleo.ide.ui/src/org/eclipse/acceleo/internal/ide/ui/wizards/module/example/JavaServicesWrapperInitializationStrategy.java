@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.wizards.module.example;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.wizards.module.example.IAcceleoInitializationStrategy;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -22,6 +20,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -193,26 +192,17 @@ public class JavaServicesWrapperInitializationStrategy implements IAcceleoInitia
 				AcceleoUIActivator.log(e, true);
 				types = new IType[0];
 			}
-			for (int i = 0; i < types.length; i++) {
-				String typeQualifiedName = types[i].getFullyQualifiedName();
-				AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(exampleFile.getProject());
-				AcceleoWorkspaceUtil.INSTANCE.refreshContributions();
+			for (IType iType : types) {
 				try {
-					final Class<?> javaClass = AcceleoWorkspaceUtil.INSTANCE.getClass(typeQualifiedName,
-							false);
-					if (javaClass != null) {
-						Method[] javaMethods = javaClass.getDeclaredMethods();
-						for (int j = 0; j < javaMethods.length; j++) {
-							Method javaMethod = javaMethods[j];
-							buffer.append(JavaServicesUtils.createQuery(javaMethod,
-									shouldGenerateDocumentation));
-						}
+					IMethod[] methods = iType.getMethods();
+					for (IMethod iMethod : methods) {
+						buffer.append(JavaServicesUtils.createQuery(iType, iMethod,
+								this.shouldGenerateDocumentation));
 					}
-				} finally {
-					AcceleoWorkspaceUtil.INSTANCE.reset();
+				} catch (JavaModelException e) {
+					AcceleoUIActivator.log(e, true);
 				}
 			}
-
 		}
 		return buffer.toString();
 	}

@@ -34,6 +34,7 @@ import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
+import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -60,6 +61,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -113,6 +116,18 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			return new IProject[] {};
 		}
 		this.mappedProjects.clear();
+
+		// Generate all Acceleo Java Services modules
+		List<IFile> javaFiles = this.members(getProject(), "java"); //$NON-NLS-1$
+		for (IFile iFile : javaFiles) {
+			IJavaElement iJavaElement = JavaCore.create(iFile);
+			if (iJavaElement instanceof ICompilationUnit) {
+				ICompilationUnit iCompilationUnit = (ICompilationUnit)iJavaElement;
+				if (JavaServicesUtils.isAcceleoJavaServicesClass(iCompilationUnit)) {
+					JavaServicesUtils.generateAcceleoServicesModule(iCompilationUnit, monitor);
+				}
+			}
+		}
 
 		IJavaProject javaProject = JavaCore.create(project);
 		Set<AcceleoProjectClasspathEntry> entries = this.computeProjectClassPath(javaProject);

@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
@@ -24,10 +22,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -158,45 +155,17 @@ public class AcceleoCreateJavaServiceWrapperResolutionAfterLastMember extends Ab
 			try {
 				types = classFile.getTypes();
 			} catch (JavaModelException e) {
+				AcceleoUIActivator.log(e, true);
 				types = new IType[0];
 			}
-			for (int i = 0; i < types.length; i++) {
-				String typeQualifiedName = types[i].getFullyQualifiedName();
-				AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(javaFile.getProject());
+			for (IType iType : types) {
 				try {
-					final Class<?> javaClass = AcceleoWorkspaceUtil.INSTANCE.getClass(typeQualifiedName,
-							false);
-					// Java utilities only - We don't browse the main Java files (with the main method)
-					boolean browseFile;
-					if (javaClass != null) {
-						try {
-							javaClass.getMethod("main", String[].class); //$NON-NLS-1$
-							browseFile = false;
-						} catch (SecurityException e) {
-							browseFile = false;
-						} catch (NoSuchMethodException e) {
-							browseFile = true;
-						}
-					} else {
-						browseFile = false;
+					IMethod[] methods = iType.getMethods();
+					for (IMethod iMethod : methods) {
+						buffer.append(JavaServicesUtils.createQuery(iType, iMethod, true));
 					}
-					if (browseFile) {
-						assert javaClass != null;
-						Method[] javaMethods = javaClass.getDeclaredMethods();
-						for (int j = 0; j < javaMethods.length; j++) {
-							Method javaMethod = javaMethods[j];
-							if (javaMethod.getName() != null
-									&& javaMethod.getName().toLowerCase().startsWith(
-											serviceName.toLowerCase())) {
-								buffer.append(JavaServicesUtils.createQuery(javaMethod));
-							}
-						}
-					}
-				} catch (NoClassDefFoundError e) {
-					Status status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e);
-					AcceleoUIActivator.getDefault().getLog().log(status);
-				} finally {
-					AcceleoWorkspaceUtil.INSTANCE.reset();
+				} catch (JavaModelException e) {
+					AcceleoUIActivator.log(e, true);
 				}
 			}
 		}
