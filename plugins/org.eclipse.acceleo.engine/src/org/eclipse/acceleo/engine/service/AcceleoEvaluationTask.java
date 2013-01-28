@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.service;
 
-import com.google.common.collect.Lists;
-
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,6 +46,8 @@ import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.types.OCLStandardLibrary;
 import org.eclipse.ocl.util.Bag;
+
+import com.google.common.collect.Lists;
 
 /**
  * This class aims at providing the necessary API to evaluate an Acceleo query that was compiled from a simple
@@ -278,7 +278,9 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 
 		// Add our log listener so as to "remember" the Acceleo errors
 		final EvaluationLogListener evaluationListener = new EvaluationLogListener();
-		Platform.addLogListener(evaluationListener);
+		if (Platform.isRunning()) {
+			Platform.addLogListener(evaluationListener);
+		}
 
 		try {
 			final Object result = evaluateQuery(context);
@@ -301,7 +303,9 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		} finally {
 			AcceleoPreferences.switchNotifications(notificationsState);
 			AcceleoPreferences.switchDebugMessages(debugMessagesState);
-			Platform.removeLogListener(evaluationListener);
+			if (Platform.isRunning()) {
+				Platform.removeLogListener(evaluationListener);
+			}
 		}
 	}
 
