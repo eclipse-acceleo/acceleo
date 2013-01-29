@@ -23,7 +23,7 @@
 	-->
 
 	<property name="downloads.project.root" value="modeling/m2t/acceleo" />
-	<property name="build.root" value="/shared/jobs/m2t-acceleo-master/lastSuccessful/archive/releng/org.eclipse.acceleo-updatesite/target/" />
+	<property name="build.root" value="/shared/jobs/m2t-acceleo-3.3/lastSuccessful/archive/releng/org.eclipse.acceleo-updatesite/target/" />
 	<property name="project.name" value="Acceleo" />
 	<property name="final.updatesite.name" value="acceleo-update" />
 	<property name="build.root.updatesite.name" value="org.eclipse.acceleo-updatesite.zip" />
