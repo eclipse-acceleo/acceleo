@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.service;
 
+import com.google.common.collect.Lists;
+
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.HashSet;
@@ -46,8 +48,6 @@ import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.expressions.CollectionKind;
 import org.eclipse.ocl.types.OCLStandardLibrary;
 import org.eclipse.ocl.util.Bag;
-
-import com.google.common.collect.Lists;
 
 /**
  * This class aims at providing the necessary API to evaluate an Acceleo query that was compiled from a simple
