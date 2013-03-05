@@ -24,6 +24,7 @@ import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.emf.common.EMFPlugin;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EFactory;
@@ -31,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * This registry will act as an extension of the global package registry : dynamic models will be registered
@@ -298,6 +300,25 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 				&& !"".equals(((EPackage)eObject).getNsURI())) { //$NON-NLS-1$
 			EPackage ePackage = (EPackage)eObject;
 			registerEcorePackageHierarchy(ePackage);
+
+			// Force the loading of all its dependencies
+			EcoreUtil.resolveAll(eObject.eResource());
+
+			// Find all the resources in the resource set that are using a "platform:/plugin" URI
+			List<Resource> resources = resourceSet.getResources();
+			for (Resource resource : resources) {
+				if (resource.getURI().isPlatformPlugin()) {
+					// A metamodel has been loaded with a platform:/plugin URI as a side effect!
+					TreeIterator<EObject> allContents = resource.getAllContents();
+					while (allContents.hasNext()) {
+						EObject next = allContents.next();
+						if (next instanceof EPackage) {
+							this.registerEcorePackageHierarchy((EPackage)next);
+						}
+					}
+				}
+			}
+
 			return ePackage.getNsURI();
 		}
 		return pathName;
