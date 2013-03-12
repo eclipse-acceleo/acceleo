@@ -274,7 +274,8 @@ public class AcceleoEditor extends TextEditor implements IResourceChangeListener
 				}
 			}
 			for (IFile ecoreFile : Lists.reverse(ecoreFiles)) {
-				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreFile.getFullPath().toString(),
+				URI uri = URI.createPlatformResourceURI(ecoreFile.getFullPath().toString(), true);
+				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
 						AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 			}
 		}

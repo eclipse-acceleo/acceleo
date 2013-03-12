@@ -304,17 +304,14 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 			// Force the loading of all its dependencies
 			EcoreUtil.resolveAll(eObject.eResource());
 
-			// Find all the resources in the resource set that are using a "platform:/plugin" URI
+			// Register all potential packages
 			List<Resource> resources = resourceSet.getResources();
 			for (Resource resource : resources) {
-				if (resource.getURI().isPlatformPlugin()) {
-					// A metamodel has been loaded with a platform:/plugin URI as a side effect!
-					TreeIterator<EObject> allContents = resource.getAllContents();
-					while (allContents.hasNext()) {
-						EObject next = allContents.next();
-						if (next instanceof EPackage) {
-							this.registerEcorePackageHierarchy((EPackage)next);
-						}
+				TreeIterator<EObject> allContents = resource.getAllContents();
+				while (allContents.hasNext()) {
+					EObject next = allContents.next();
+					if (next instanceof EPackage) {
+						this.registerEcorePackageHierarchy((EPackage)next);
 					}
 				}
 			}
