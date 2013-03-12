@@ -505,8 +505,8 @@ public class AcceleoCommonPlugin extends Plugin {
 					}
 					if (resource != null && resource.isAccessible() && resource.getFileExtension() != null
 							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
-						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(resource.getFullPath()
-								.toString(),
+						URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
+						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
 								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 					}
 					break;

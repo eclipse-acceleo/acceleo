@@ -145,7 +145,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		for (IProject iProject : Lists.reverse(accessibleProjects)) {
 			List<IFile> members = this.members(iProject, IAcceleoConstants.ECORE_FILE_EXTENSION);
 			for (IFile iFile : members) {
-				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(iFile.getFullPath().toString(),
+				URI uri = URI.createPlatformResourceURI(iFile.getFullPath().toString(), true);
+				AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
 						AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 			}
 		}
@@ -621,7 +622,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 		for (IFile ecoreFile : Lists.reverse(ecoreFiles)) {
-			AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ecoreFile.getFullPath().toString(),
+			URI uri = URI.createPlatformResourceURI(ecoreFile.getFullPath().toString(), true);
+			AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
 					AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 		}
 	}

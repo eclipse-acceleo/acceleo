@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -153,8 +154,8 @@ public class AcceleoProjectWizard extends Wizard implements INewWizard, IExecuta
 						Collection<String> values = dynamicEcorePackagePaths.values();
 						boolean contains = values.contains(iFile.getFullPath().toString());
 						if (!contains) {
-							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(iFile.getFullPath()
-									.toString(),
+							URI uri = URI.createPlatformResourceURI(iFile.getFullPath().toString(), true);
+							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
 									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
 						}
 					}
