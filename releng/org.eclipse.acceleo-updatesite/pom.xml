@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.eclipse.acceleo</groupId>
     <artifactId>org.eclipse.acceleo-parent</artifactId>
-    <version>3.3.2-SNAPSHOT</version>
+    <version>3.3.3-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
@@ -26,7 +26,7 @@
   <name>Acceleo Repository</name>
   
   <!-- see http://issues.sonatype.org/browse/TYCHO-313 -->
-  <version>3.3.2-SNAPSHOT</version>
+  <version>3.3.3-SNAPSHOT</version>
 
   <build>
     <plugins>
