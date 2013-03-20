@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
@@ -471,26 +470,6 @@ public class AcceleoEvaluationContext<C> {
 			timesGenerated = Integer.valueOf(timesGenerated.intValue() + 1);
 		}
 		generateFiles.put(filePath, timesGenerated);
-	}
-
-	/**
-	 * Returns the path of the file currently generated.
-	 * 
-	 * @return The path of the file currently generated.
-	 */
-	public String getCurrentlyGeneratedFile() {
-		Entry<String, Integer> currentlyGeneratedFile = null;
-		for (Entry<String, Integer> entry : this.generateFiles.entrySet()) {
-			if (currentlyGeneratedFile == null) {
-				currentlyGeneratedFile = entry;
-			} else if (entry.getValue().intValue() > currentlyGeneratedFile.getValue().intValue()) {
-				currentlyGeneratedFile = entry;
-			}
-		}
-		if (currentlyGeneratedFile != null) {
-			return currentlyGeneratedFile.getKey();
-		}
-		return null;
 	}
 
 	/**
