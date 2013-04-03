@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
+import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -85,6 +86,7 @@ public final class JavaServicesUtils {
 	 */
 	public static void generateAcceleoServicesModule(ICompilationUnit iCompilationUnit,
 			IProgressMonitor monitor) {
+		monitor.subTask(AcceleoUIMessages.getString("JavaServiceUtils.GenerateAcceleoModuleWrapper")); //$NON-NLS-1$
 		List<String> nsURIs = new ArrayList<String>();
 		try {
 			IType[] types = iCompilationUnit.getTypes();
@@ -105,6 +107,7 @@ public final class JavaServicesUtils {
 							}
 						}
 					}
+					scanner.close();
 				}
 			}
 

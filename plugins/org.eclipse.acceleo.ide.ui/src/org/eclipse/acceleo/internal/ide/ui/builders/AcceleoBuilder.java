@@ -44,11 +44,9 @@ import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -117,6 +115,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		}
 		this.mappedProjects.clear();
 
+		monitor.subTask(AcceleoUIMessages.getString(
+				"AcceleoBuilder.StartingBuild", project.getName(), Integer.valueOf(0))); //$NON-NLS-1$
+		long currentTimeMillis = System.currentTimeMillis();
+
 		// Generate all Acceleo Java Services modules
 		List<IFile> javaFiles = this.members(getProject(), "java"); //$NON-NLS-1$
 		for (IFile iFile : javaFiles) {
@@ -129,6 +131,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.ComputeAccessibleEcores", Long //$NON-NLS-1$
+				.valueOf(System.currentTimeMillis() - currentTimeMillis)));
 		IJavaProject javaProject = JavaCore.create(project);
 		Set<AcceleoProjectClasspathEntry> entries = this.computeProjectClassPath(javaProject);
 
@@ -138,6 +142,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 		acceleoProject = this.computeProjectDependencies(acceleoProject, javaProject);
 
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.LoadAccessibleEcores", Long //$NON-NLS-1$
+				.valueOf(System.currentTimeMillis() - currentTimeMillis)));
 		// Check that all ".ecore" models in accessible projects have been loaded.
 		AcceleoProject aProject = new AcceleoProject(project);
 		List<IProject> accessibleProjects = new ArrayList<IProject>();
@@ -151,6 +157,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.ComputeAccessibleAcceleoModules", Long //$NON-NLS-1$
+				.valueOf(System.currentTimeMillis() - currentTimeMillis)));
 		List<URI> accessibleOutputFiles = AcceleoProject.computeAcceleoModuleInRequiredPlugins(project);
 		acceleoProject.addDependencies(Sets.newHashSet(accessibleOutputFiles));
 		AcceleoBuilderSettings settings = new AcceleoBuilderSettings(project);
@@ -162,6 +170,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		Set<File> mainFiles = new LinkedHashSet<File>();
 
 		this.lastState = this.getLastState(this.getProject());
+
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.CompilationStart", Long.valueOf(System //$NON-NLS-1$
+				.currentTimeMillis() - currentTimeMillis)));
 
 		if (kind == IncrementalProjectBuilder.FULL_BUILD) {
 			// Full build -> build all
@@ -182,6 +193,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.BuildFileNotCompiled", Long //$NON-NLS-1$
+				.valueOf(System.currentTimeMillis() - currentTimeMillis)));
 		// Ensure that we didn't forget to build a file out of the dependency graph of the file(s)
 		// currently
 		// built, this can occur if two files are not related at all and we force the build of only one of
@@ -203,13 +216,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			filesWithMainTag.add(workspaceFile);
 		}
 		if (filesWithMainTag.size() > 0) {
-			monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.GeneratingAcceleoFiles")); //$NON-NLS-1$
+			monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.GeneratingAcceleoFiles", Long //$NON-NLS-1$
+					.valueOf(System.currentTimeMillis() - currentTimeMillis)));
 			CreateRunnableAcceleoOperation createRunnableAcceleoOperation = new CreateRunnableAcceleoOperation(
 					new AcceleoProject(project), filesWithMainTag);
 			createRunnableAcceleoOperation.run(monitor);
 		}
 
-		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.RefreshingProjects")); //$NON-NLS-1$
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.RefreshingProjects", Long.valueOf(System //$NON-NLS-1$
+				.currentTimeMillis() - currentTimeMillis)));
 		// Refresh all the projects potentially containing files.
 		Set<org.eclipse.acceleo.internal.parser.compiler.AcceleoProject> projectsToRefresh = Sets
 				.newHashSet(acceleoProject);
@@ -225,54 +240,12 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
+		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.GenerateBuildFiles", Long.valueOf(System //$NON-NLS-1$
+				.currentTimeMillis() - currentTimeMillis)));
 		generateAcceleoBuildFile(monitor);
 		monitor.done();
 
 		return accessibleProjects.toArray(new IProject[accessibleProjects.size()]);
-	}
-
-	/**
-	 * Indicates if we should even try to build the project or not.
-	 * 
-	 * @param projects
-	 *            The projects used for the build
-	 * @return <code>true</code> if we should build, <code>false</code> otherwise.
-	 */
-	private boolean isWorthBuilding(Set<IProject> projects) {
-		boolean isWorthBuilding = false;
-
-		AcceleoProjectState state = this.getLastState(this.getProject());
-		if (state == null) {
-			isWorthBuilding = true;
-			AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
-					"DEBUG - Acceleo has decided to build " + projects
-							+ " since there are no previous state saved."));
-		} else {
-			for (IProject iProject : projects) {
-				try {
-					ITimestampResourceVisitor visitor = new ITimestampResourceVisitor();
-					iProject.accept(visitor);
-					long ts = visitor.getTimestamp();
-
-					if (state.getLaststructuralBuildTime() < ts) {
-						isWorthBuilding = true;
-						AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
-								"DEBUG - Acceleo has decided to build " + projects
-										+ " since at leats a file seems to have been modified."));
-					}
-				} catch (CoreException e) {
-					AcceleoUIActivator.log(e, true);
-				}
-			}
-		}
-
-		if (!isWorthBuilding) {
-			AcceleoUIActivator.log(new Status(IStatus.INFO, AcceleoUIActivator.PLUGIN_ID,
-					"DEBUG - Acceleo has decided NOT to build " + projects
-							+ " since the data shows that it is unnecessary."));
-		}
-
-		return isWorthBuilding;
 	}
 
 	/**
@@ -974,45 +947,5 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private AcceleoProjectState getLastState(IProject project) {
 		return AcceleoModelManager.getManager().getLastBuiltState(project, new NullProgressMonitor());
-	}
-
-	/**
-	 * A resource visitor returning the higher timestamp of the resource visited.
-	 * 
-	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
-	 */
-	private class ITimestampResourceVisitor implements IResourceVisitor {
-
-		/**
-		 * The current highest timestamp.
-		 */
-		private long timestamp;
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.resources.IResourceVisitor#visit(org.eclipse.core.resources.IResource)
-		 */
-		public boolean visit(IResource resource) throws CoreException {
-			if (resource.exists() && resource.isAccessible()) {
-				if (resource instanceof IFolder
-						|| (resource instanceof IFile && IAcceleoConstants.MTL_FILE_EXTENSION
-								.equals(((IFile)resource).getFileExtension()))) {
-					if (resource.getLocation().toFile().lastModified() > timestamp) {
-						timestamp = resource.getLocation().toFile().lastModified();
-					}
-				}
-			}
-			return true;
-		}
-
-		/**
-		 * Returns the higher timestamp.
-		 * 
-		 * @return The higher timestamp.
-		 */
-		public long getTimestamp() {
-			return timestamp;
-		}
 	}
 }
