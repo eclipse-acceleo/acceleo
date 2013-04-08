@@ -267,7 +267,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://") //$NON-NLS-1$ //$NON-NLS-2$
 				&& !pathName.endsWith("Ecore.ecore")) { //$NON-NLS-1$
 			// Try and load the ecore file with its URI as-is
-			URI metaURI = URI.createURI(pathName, false);
+			URI metaURI = URI.createURI(URI.decode(pathName));
 
 			List<Resource> resources = resourceSet.getResources();
 			for (Resource resource : resources) {
