@@ -28,15 +28,6 @@ Contributors:
       %license
    </license>
 
-   <url>
-      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-   </url>
-
-   <requires>
-      <import plugin="com.google.guava"/>
-   </requires>
-
    <plugin
          id="org.eclipse.acceleo.engine"
          download-size="0"

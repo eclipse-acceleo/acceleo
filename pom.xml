@@ -38,12 +38,12 @@
   </licenses>
   
   <properties>
-    <tycho-version>0.16.0</tycho-version>
-    <tycho-extras-version>0.16.0</tycho-extras-version>
+    <tycho-version>0.17.0</tycho-version>
+    <tycho-extras-version>0.17.0</tycho-extras-version>
     <acceleo-version>3.4.0-SNAPSHOT</acceleo-version>
     <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
-    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/</orbit-site>
+    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20130308121626/repository/</orbit-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
   </properties>
   

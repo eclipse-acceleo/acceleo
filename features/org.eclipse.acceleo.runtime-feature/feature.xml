@@ -17,11 +17,6 @@
       %license
    </license>
 
-   <url>
-      <update label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-      <discovery label="%ModelingUpdateSiteName" url="http://www.eclipse.org/modeling/updates/"/>
-   </url>
-
    <requires>
       <import feature="org.eclipse.emf" version="2.4.0.v200806091234"/>
       <import plugin="org.eclipse.ocl"/>
