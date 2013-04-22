@@ -176,11 +176,6 @@
             <goals>
               <goal>source-feature</goal>
             </goals>
-            <configuration>
-              <excludes>
-                <feature id="org.eclipse.acceleo.sdk"/>
-              </excludes>
-            </configuration>
           </execution>
         </executions>
       </plugin>

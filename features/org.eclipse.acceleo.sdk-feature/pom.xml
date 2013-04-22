@@ -26,4 +26,27 @@
 
   <name>Acceleo SDK Feature</name>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-source-feature-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <id>source-feature</id>
+            <goals>
+              <goal>source-feature</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <feature id="org.eclipse.acceleo.source"/>
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>
