@@ -140,7 +140,18 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 				writer.append(LINE_SEPARATOR);
 			}
 		} else {
-			writer = new AcceleoFileWriter(file.getPath());
+			if (charset != null) {
+				if (Charset.isSupported(charset)) {
+					writer = new AcceleoFileWriter(file.getPath(), charset);
+				} else {
+					final String message = AcceleoEngineMessages.getString(
+							"AcceleoGenerationStrategy.UnsupportedCharset", charset); //$NON-NLS-1$
+					AcceleoEnginePlugin.log(message, false);
+					writer = new AcceleoFileWriter(file.getPath());
+				}
+			} else {
+				writer = new AcceleoFileWriter(file.getPath());
+			}
 		}
 		return writer;
 	}
