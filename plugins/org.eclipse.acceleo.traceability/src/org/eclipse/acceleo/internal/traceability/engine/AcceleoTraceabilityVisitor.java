@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2013 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,10 @@ package org.eclipse.acceleo.internal.traceability.engine;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -417,7 +419,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			String charset) throws AcceleoEvaluationException {
 		boolean fileExisted = generatedFile.exists();
 
-		GeneratedFile file = getGeneratedFile(generatedFile, appendMode);
+		GeneratedFile file = getGeneratedFile(generatedFile, appendMode, charset);
 		file.setCharset(charset);
 		file.setFileBlock(getModuleElement(fileBlock));
 		currentFiles.add(file);
@@ -1656,9 +1658,11 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 	 *            File that is to be created.
 	 * @param appendMode
 	 *            If <code>true</code>, we need to retrieve the current file length if it exists.
+	 * @param charset
+	 *            Charset of the file.
 	 * @return {@link GeneratedFile} contained in the {@link #evaluationTrace} model.
 	 */
-	private GeneratedFile getGeneratedFile(File generatedFile, boolean appendMode) {
+	private GeneratedFile getGeneratedFile(File generatedFile, boolean appendMode, String charset) {
 		GeneratedFile soughtFile = evaluationTrace.getGeneratedFile(generatedFile.getPath());
 		if (soughtFile == null) {
 			soughtFile = TraceabilityFactory.eINSTANCE.createGeneratedFile();
@@ -1668,7 +1672,12 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				int length = 0;
 				BufferedReader reader = null;
 				try {
-					reader = new BufferedReader(new FileReader(generatedFile));
+					if (charset == null) {
+						reader = new BufferedReader(new FileReader(generatedFile));
+					} else {
+						reader = new BufferedReader(new InputStreamReader(new FileInputStream(generatedFile),
+								charset));
+					}
 					String line = reader.readLine();
 					while (line != null) {
 						// add 1 for the carriage return
