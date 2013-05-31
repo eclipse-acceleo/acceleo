@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2013 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,10 +14,12 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -712,7 +714,7 @@ public class AcceleoEvaluationContext<C> {
 			}
 			final Map<String, String> savedCodeBlocks = new HashMap<String, String>();
 			if (generatedFile.exists()) {
-				savedCodeBlocks.putAll(saveProtectedAreas(generatedFile));
+				savedCodeBlocks.putAll(saveProtectedAreas(generatedFile, charset));
 			}
 			// If the current preview contains overlapping blocks, give them priority
 			if (generationPreview.containsKey(generatedFile.getPath())) {
@@ -896,15 +898,21 @@ public class AcceleoEvaluationContext<C> {
 	 * 
 	 * @param file
 	 *            File which protected areas are to be saved.
+	 * @param charset
+	 *            Charset of the file.
 	 * @return The list of saved protected areas.
 	 * @throws IOException
 	 *             Thrown if we cannot read through <tt>file</tt>.
 	 */
-	private Map<String, String> saveProtectedAreas(File file) throws IOException {
+	private Map<String, String> saveProtectedAreas(File file, String charset) throws IOException {
 		Map<String, String> protectedAreas = new HashMap<String, String>();
 		LineReader reader = null;
 		try {
-			reader = new LineReader(new FileReader(file));
+			if (charset == null) {
+				reader = new LineReader(new FileReader(file));
+			} else {
+				reader = new LineReader(new InputStreamReader(new FileInputStream(file), charset));
+			}
 			protectedAreas = internalSaveProtectedAreas(reader);
 		} catch (final FileNotFoundException e) {
 			// cannot be thrown here, we were called after testing that the file indeed existed.
