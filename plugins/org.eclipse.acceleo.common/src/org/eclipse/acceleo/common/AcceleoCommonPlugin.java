@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -244,6 +245,22 @@ public class AcceleoCommonPlugin extends Plugin {
 				workspaceEcoreListener,
 				IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE
 						| IResourceChangeEvent.POST_CHANGE);
+		ResourcesPlugin.getWorkspace().getRoot().accept(new IResourceVisitor() {
+
+			public boolean visit(IResource resource) throws CoreException {
+				if (resource instanceof IFile) {
+					if (resource instanceof IFile
+							&& ((IFile)resource).getFileExtension() != null
+							&& ((IFile)resource).getFileExtension().equals(
+									IAcceleoConstants.ECORE_FILE_EXTENSION)) {
+						URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
+						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
+								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+					}
+				}
+				return true;
+			}
+		});
 		context = bundleContext;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addListener(librariesConnectorListener, LIBRARY_CONNECTORS_EXTENSION_POINT);

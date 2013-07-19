@@ -457,6 +457,29 @@ public final class ModelUtils {
 	}
 
 	/**
+	 * Looks up the value in the EMF Registry without resolving LazyEPackageDescriptor. This avoid loading
+	 * models if all the information the client need is an attribute of the EPackage instance. It catches an
+	 * EMF WrappedException. It is very useful if the EMF registry is corrupted by other contributions.
+	 * 
+	 * @param nsURI
+	 *            is the NsURI key to search
+	 * @return an Object being either an {@link EPackage} a LazyEPackageDescriptor. Clients have to check for
+	 *         these types.
+	 * @since 3.0
+	 */
+	public static Object getEPackageOrDescriptor(String nsURI) {
+		try {
+			Object found = AcceleoPackageRegistry.INSTANCE.get(nsURI);
+			if (found == null) {
+				found = AcceleoPackageRegistry.INSTANCE.getEPackage(nsURI);
+			}
+			return found;
+		} catch (WrappedException e) {
+			return null;
+		}
+	}
+
+	/**
 	 * Register the given ecore file in the EMF Package Registry. It loads the ecore file and browses the
 	 * elements, it means the root EPackage and its descendants.
 	 * 

@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.io.IOException;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
@@ -18,21 +21,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 
 /**
  * This registry will act as an extension of the global package registry : dynamic models will be registered
@@ -165,27 +167,46 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 * @see org.eclipse.emf.ecore.EPackage.Registry#getEPackage(java.lang.String)
 	 */
 	public EPackage getEPackage(String nsURI) {
+		EPackage found = null;
 		if (containsKey(nsURI)) {
 			Object ePackage = get(nsURI);
 			if (ePackage instanceof EPackage) {
-				return (EPackage)ePackage;
+				found = (EPackage)ePackage;
+			} else if (ePackage instanceof EPackage.Descriptor) {
+				found = ((EPackage.Descriptor)ePackage).getEPackage();
 			}
 		}
-		EPackage result = delegate.getEPackage(nsURI);
-		if (result == null && nsURI != null && !nsURI.startsWith(IAcceleoConstants.LITERAL_BEGIN)) {
-			Collection<Object> values = this.values();
-			for (Object object : values) {
-				if (object instanceof EPackage && ((EPackage)object).eResource() != null) {
-					EPackage ePackage = (EPackage)object;
-					Resource eResource = ePackage.eResource();
-					URI uri = eResource.getURI();
-					if (uri != null && nsURI.equals(uri.toString())) {
-						result = ePackage;
-					}
+		if (found == null) {
+			found = delegate.getEPackage(nsURI);
+			if (found == null && nsURI != null && !nsURI.startsWith(IAcceleoConstants.LITERAL_BEGIN)) {
+				found = searchInRegisteredEPackageInstances(nsURI);
+			}
+		}
+		return found;
+	}
+
+	/**
+	 * Search the nsURI by browsing through the registerd EPackage instances and looking up their nsURI
+	 * attribute. This case might arise when for instance, the plugin.xml registration of the nsURI does not
+	 * match the EPackage nsURI.
+	 * 
+	 * @param nsURI
+	 *            the nsURI we are looking for.
+	 * @return a matching {@link EPackage} if found, null otherwise.
+	 */
+	private EPackage searchInRegisteredEPackageInstances(String nsURI) {
+		Collection<Object> values = this.values();
+		for (Object object : values) {
+			if (object instanceof EPackage && ((EPackage)object).eResource() != null) {
+				EPackage ePackage = (EPackage)object;
+				Resource eResource = ePackage.eResource();
+				URI uri = eResource.getURI();
+				if (uri != null && nsURI.equals(uri.toString())) {
+					return ePackage;
 				}
 			}
 		}
-		return result;
+		return null;
 	}
 
 	/**
@@ -262,13 +283,22 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 *         corresponding NsURI
 	 */
 	public String registerEcorePackages(String pathName, ResourceSet resourceSet) {
-		EObject eObject = null;
+		LazyEPackageDescriptor descriptor = null;
+		URIConverter converter = resourceSet.getURIConverter();
+		if (converter == null) {
+			converter = new ExtensibleURIConverterImpl();
+		}
 		// Specifically get rid of Ecore.ecore so that we never dynamically register it
 		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://") //$NON-NLS-1$ //$NON-NLS-2$
 				&& !pathName.endsWith("Ecore.ecore")) { //$NON-NLS-1$
-			// Try and load the ecore file with its URI as-is
+			// Try and load the ecore file with its URI as-is or fall back to platform resource URI.
 			URI metaURI = URI.createURI(URI.decode(pathName));
-
+			if (!metaURI.isPlatform()) {
+				metaURI = URI.createPlatformResourceURI(pathName, true);
+			}
+			/*
+			 * If the resourceset already have the EPackage loaded as a model, lets reload it.
+			 */
 			List<Resource> resources = resourceSet.getResources();
 			for (Resource resource : resources) {
 				if (resource.getURI() != null && resource.getURI().equals(metaURI)) {
@@ -280,45 +310,89 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 					}
 				}
 			}
-
-			eObject = safeLoad(metaURI, resourceSet);
+			descriptor = LazyEPackageDescriptor.create(metaURI, resourceSet, this);
 
 			// If that failed, try and load the ecore file with a platform:/resource URI
-			if (!(eObject instanceof EPackage)) {
+			if (descriptor == null) {
 				metaURI = URI.createPlatformResourceURI(pathName, false);
-				eObject = safeLoad(metaURI, resourceSet);
+				descriptor = LazyEPackageDescriptor.create(metaURI, resourceSet, this);
 			}
 
 			// If all failed, try and load the model with a platform:/plugin URI
-			if (!(eObject instanceof EPackage)) {
+			if (descriptor == null) {
 				metaURI = URI.createPlatformPluginURI(pathName, false);
-				eObject = safeLoad(metaURI, resourceSet);
+				descriptor = LazyEPackageDescriptor.create(metaURI, resourceSet, this);
 			}
 		}
 
-		if (eObject instanceof EPackage && ((EPackage)eObject).getNsURI() != null
-				&& !"".equals(((EPackage)eObject).getNsURI())) { //$NON-NLS-1$
-			EPackage ePackage = (EPackage)eObject;
-			registerEcorePackageHierarchy(ePackage);
-
-			// Force the loading of all its dependencies
-			EcoreUtil.resolveAll(eObject.eResource());
-
-			// Register all potential packages
-			List<Resource> resources = resourceSet.getResources();
-			for (Resource resource : resources) {
-				TreeIterator<EObject> allContents = resource.getAllContents();
-				while (allContents.hasNext()) {
-					EObject next = allContents.next();
-					if (next instanceof EPackage) {
-						this.registerEcorePackageHierarchy((EPackage)next);
-					}
-				}
-			}
-
-			return ePackage.getNsURI();
+		if (descriptor != null && !"".equals(descriptor.getNsURI())) { //$NON-NLS-1$
+			/*
+			 * If there is already a LazyEPackageDescriptor for this uri, lets start by removing it.
+			 */
+			registerOrReplaceInRegistry(this, descriptor);
+			return descriptor.getNsURI();
 		}
 		return pathName;
+	}
+
+	/**
+	 * Register the given descriptor in the registry but first de-registering any instance which might have
+	 * been previously registered with an equivalent resource URI. This is done to support cases where for
+	 * instance, the end user changed the nsURI of an {@link EPackage} in its workspace. We don't want the old
+	 * nsURI to stay around.
+	 * 
+	 * @param registry
+	 *            registry to update.
+	 * @param descriptor
+	 *            the descriptor to register.
+	 */
+	private void registerOrReplaceInRegistry(Registry registry, LazyEPackageDescriptor descriptor) {
+
+		List<String> toRemove = Lists.newArrayList();
+		Set<LazyEPackageDescriptor> toUnload = Sets.newLinkedHashSet();
+		for (Entry<String, Object> entry : registry.entrySet()) {
+			/*
+			 * I only take care of my own instances to avoid unpredictable side effects on other tools.
+			 */
+			if (entry.getValue() instanceof LazyEPackageDescriptor) {
+				LazyEPackageDescriptor registered = (LazyEPackageDescriptor)entry.getValue();
+				if (registered.getResourceURI().equals(descriptor.getResourceURI())) {
+					toRemove.add(entry.getKey());
+				}
+				toUnload.add(registered);
+			}
+		}
+		for (String nsURI : toRemove) {
+			registry.remove(nsURI);
+		}
+		registerDescriptorsHierarchy(registry, descriptor);
+
+	}
+
+	/**
+	 * Register the given descriptor and its sub descriptors in the given registry.
+	 * 
+	 * @param registry
+	 *            registry to update.
+	 * @param descriptor
+	 *            the descriptor to register.
+	 */
+	private void registerDescriptorsHierarchy(Registry registry, LazyEPackageDescriptor descriptor) {
+		if (descriptor.getNsURI() != null) {
+			// The MTL ecore file mustn't be dynamic!!!
+			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
+			if (!"mtl".equals(descriptor.getNsPrefix()) && !"mtlnonstdlib".equals(descriptor.getNsPrefix()) //$NON-NLS-1$ //$NON-NLS-2$
+					&& !"mtlstdlib".equals(descriptor.getNsPrefix()) && !"oclstdlib".equals(descriptor.getNsPrefix())) { //$NON-NLS-1$ //$NON-NLS-2$
+				dynamicEcorePackagePaths.put(descriptor.getNsURI(), descriptor.getResourceURI().toString());
+
+				registry.put(descriptor.getNsURI(), descriptor);
+			}
+		}
+
+		for (LazyEPackageDescriptor child : descriptor.getESubpackages()) {
+			registerDescriptorsHierarchy(registry, child);
+		}
+
 	}
 
 	/**
@@ -348,6 +422,11 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 					}
 				}
 			}
+		}
+		Object value = get(key);
+		if (value instanceof LazyEPackageDescriptor) {
+			super.remove(key);
+			hasBeenRemoved = true;
 		}
 		if (!hasBeenRemoved) {
 			// if we found it in this package registry, it means that it was in the workspace.
@@ -403,60 +482,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 *            The EPackage to register.
 	 */
 	public void registerEcorePackage(EPackage loadedEPackage) {
-		this.registerEcorePackageHierarchy(loadedEPackage);
-	}
-
-	/**
-	 * Register the given EPackage and its descendants.
-	 * 
-	 * @param ePackage
-	 *            is the root package to register
-	 */
-	private void registerEcorePackageHierarchy(EPackage ePackage) {
-		if (ePackage.getNsURI() != null) {
-			// The MTL ecore file mustn't be dynamic!!!
-			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
-			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix()) //$NON-NLS-1$ //$NON-NLS-2$
-					&& !"mtlstdlib".equals(ePackage.getNsPrefix()) && !"oclstdlib".equals(ePackage.getNsPrefix())) { //$NON-NLS-1$ //$NON-NLS-2$
-				if (ePackage.eResource() != null) {
-					dynamicEcorePackagePaths.put(ePackage.getNsURI(), ePackage.eResource().getURI()
-							.toString());
-				}
-
-				// LGO : ?
-				// if (ePackage.getESuperPackage() == null && ePackage.eResource() != null) {
-				// ePackage.eResource().setURI(URI.createURI(ePackage.getNsURI()));
-				// }
-
-				put(ePackage.getNsURI(), ePackage);
-			}
-		}
-
-		for (EPackage subPackage : ePackage.getESubpackages()) {
-			registerEcorePackageHierarchy(subPackage);
-		}
-	}
-
-	/**
-	 * This will try and load the given uri as a model. This is mainly used from
-	 * {@link #registerEcorePackages(String)} in order to avoid redundant try/catch blocks.
-	 * 
-	 * @param uri
-	 *            The URI to try and load.
-	 * @param resourceSet
-	 *            The resource set.
-	 * @return The loaded {@link EPackage} if any, <code>null</code> otherwise.
-	 */
-	private EObject safeLoad(URI uri, ResourceSet resourceSet) {
-		EObject result = null;
-		try {
-			result = ModelUtils.load(uri, resourceSet);
-		} catch (IOException e) {
-			// swallow and return null
-		} catch (WrappedException e) {
-			// swallow and return null
-		}
-		return result;
+		this.registerDescriptorsHierarchy(this, LazyEPackageDescriptor.create(loadedEPackage, this));
 	}
 
 	/**
@@ -636,4 +662,5 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 			current.remove();
 		}
 	}
+
 }

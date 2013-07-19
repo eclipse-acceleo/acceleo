@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
+import org.eclipse.acceleo.common.internal.utils.LazyEPackageDescriptor;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoOCLReflection;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
@@ -766,14 +767,22 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			entries = new CompactLinkedHashSet<String>(AcceleoPackageRegistry.INSTANCE.keySet()).iterator();
 			while (entries.hasNext()) {
 				String pURI = entries.next();
-				EPackage ePackage = ModelUtils.getEPackage(pURI);
-				if (ePackage != null) {
-					String shortName = ePackage.getName();
-					if (shortName.startsWith(start.toLowerCase())) {
-						proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(),
-								pURI.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI,
-								null, pURI));
+				Object obj = ModelUtils.getEPackageOrDescriptor(pURI);
+				String shortName = ""; //$NON-NLS-1$
+				if (obj instanceof LazyEPackageDescriptor) {
+					shortName = ((LazyEPackageDescriptor)obj).getName();
+				} else if (obj instanceof EPackage) {
+					shortName = ((EPackage)obj).getName();
+				} else {
+					EPackage resolved = ModelUtils.getEPackage(pURI);
+					if (resolved != null) {
+						shortName = resolved.getName();
 					}
+				}
+				if (shortName.startsWith(start.toLowerCase())) {
+					proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(),
+							pURI.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI,
+							null, pURI));
 				}
 			}
 		}
