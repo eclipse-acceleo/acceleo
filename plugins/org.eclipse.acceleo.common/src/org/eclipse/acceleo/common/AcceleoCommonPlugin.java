@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -240,10 +241,15 @@ public class AcceleoCommonPlugin extends Plugin {
 	public void start(final BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
 		AcceleoWorkspaceUtil.INSTANCE.initialize();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(
-				workspaceEcoreListener,
-				IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE
-						| IResourceChangeEvent.POST_CHANGE);
+
+		Bundle pdeCoreBundle = Platform.getBundle("org.eclipse.pde.core"); //$NON-NLS-1$
+		if (pdeCoreBundle != null) {
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(
+					workspaceEcoreListener,
+					IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE
+							| IResourceChangeEvent.POST_CHANGE);
+		}
+
 		context = bundleContext;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addListener(librariesConnectorListener, LIBRARY_CONNECTORS_EXTENSION_POINT);
@@ -264,7 +270,12 @@ public class AcceleoCommonPlugin extends Plugin {
 			final IExtensionRegistry registry = Platform.getExtensionRegistry();
 			registry.removeListener(librariesConnectorListener);
 			registry.removeListener(librariesListener);
-			ResourcesPlugin.getWorkspace().removeResourceChangeListener(workspaceEcoreListener);
+
+			Bundle pdeCoreBundle = Platform.getBundle("org.eclipse.pde.core"); //$NON-NLS-1$
+			if (pdeCoreBundle != null) {
+				ResourcesPlugin.getWorkspace().removeResourceChangeListener(workspaceEcoreListener);
+
+			}
 			AcceleoServicesEclipseUtil.clearRegistry();
 			AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
 			AcceleoLibrariesEclipseUtil.clearRegistry();
