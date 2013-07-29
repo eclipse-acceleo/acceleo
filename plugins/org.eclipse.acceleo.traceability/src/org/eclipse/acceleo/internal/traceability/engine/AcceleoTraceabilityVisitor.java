@@ -2055,17 +2055,21 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		// Collection::sep also requires that its separator traces be recorded
 		if (operationName.equals(AcceleoNonStandardLibrary.OPERATION_COLLECTION_SEP)) {
 			if (sourceObject instanceof Collection) {
-				ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
-				operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
-				Object separator = super.visitExpression(callExp.getArgument().get(0));
-				result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject,
-						(String)separator, operationArgumentTrace);
-				operationArgumentTrace.dispose();
-				operationArgumentTrace = oldArgTrace;
+				if (callExp.getArgument().size() == 1) {
+					ExpressionTrace<C> oldArgTrace = operationArgumentTrace;
+					operationArgumentTrace = new ExpressionTrace<C>(callExp.getArgument().get(0));
+					Object separator = super.visitExpression(callExp.getArgument().get(0));
+					result = operationVisitor.visitSepOperation((Collection<Object>)sourceObject,
+							(String)separator, operationArgumentTrace);
+					operationArgumentTrace.dispose();
+					operationArgumentTrace = oldArgTrace;
+				} else {
+					// collection->sep(start, separator, end)
+					result = visitSepThreeOperation(callExp, sourceObject);
+				}
 			} else {
 				result = null;
 			}
-
 		} else if (operation.getEAnnotation("MTL") != null) { //$NON-NLS-1$
 			result = internalVisitStandardOperation(callExp, sourceObject);
 		} else if (operation.getEAnnotation("MTL non-standard") != null) { //$NON-NLS-1$
@@ -2075,6 +2079,42 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 			result = internalVisitOCLOperation(callExp, sourceObject);
 		}
 
+		return result;
+	}
+
+	/**
+	 * Runs the operation sep(start, separator, end) on the given source object. Traceability information will
+	 * not be computed here.
+	 * 
+	 * @param callExp
+	 *            The operation
+	 * @param sourceObject
+	 *            The source object
+	 * @return The result of the operation.
+	 */
+	private Object visitSepThreeOperation(OperationCallExp<C, O> callExp, Object sourceObject) {
+		final Object result;
+		Object start = super.visitExpression(callExp.getArgument().get(0));
+		Object separator = super.visitExpression(callExp.getArgument().get(1));
+		Object end = super.visitExpression(callExp.getArgument().get(2));
+
+		Collection<?> source = (Collection<?>)sourceObject;
+		final Collection<Object> temp = new ArrayList<Object>();
+		temp.add(start);
+
+		final List<String> stringSource = new ArrayList<String>();
+		final Iterator<?> sourceIterator = source.iterator();
+		while (sourceIterator.hasNext()) {
+			Object nextSource = sourceIterator.next();
+			temp.add(nextSource);
+			stringSource.add(nextSource.toString());
+			if (sourceIterator.hasNext()) {
+				temp.add(separator);
+			}
+		}
+
+		temp.add(end);
+		result = temp;
 		return result;
 	}
 
