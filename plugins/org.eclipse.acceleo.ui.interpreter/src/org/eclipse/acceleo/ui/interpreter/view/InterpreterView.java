@@ -489,8 +489,11 @@ public class InterpreterView extends ViewPart {
 
 		clearEvaluationMessages();
 
-		evaluationThread = new EvaluationThread(getInterpreterContext());
-		evaluationThread.start();
+		InterpreterContext interpreterContext = getInterpreterContext();
+		if (interpreterContext != null) {
+			evaluationThread = new EvaluationThread(interpreterContext);
+			evaluationThread.start();
+		}
 	}
 
 	/**
@@ -517,6 +520,10 @@ public class InterpreterView extends ViewPart {
 	 */
 	@SuppressWarnings("unchecked")
 	public InterpreterContext getInterpreterContext() {
+		if (expressionViewer == null || expressionViewer.getTextWidget() == null) {
+			return null;
+		}
+
 		String fullExpression = expressionViewer.getTextWidget().getText();
 
 		List<EObject> targetEObjects = selectedEObjects;
@@ -624,8 +631,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
-					Boolean.valueOf(variableViewer.getControl().isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
+					.isVisible()));
 		}
 	}
 
@@ -1379,7 +1386,10 @@ public class InterpreterView extends ViewPart {
 		} else if (evaluationResult != null) {
 			input.add(evaluationResult);
 		}
-		resultViewer.setInput(input);
+
+		if (!resultViewer.getControl().isDisposed()) {
+			resultViewer.setInput(input);
+		}
 	}
 
 	/**
