@@ -511,5 +511,12 @@ public interface IAcceleoConstants {
 	 * 
 	 * @since 3.4
 	 */
-	String JAVADOC_TAG_NS_URI = "@nsURI";
+	String JAVADOC_TAG_NS_URI = "@nsURI"; //$NON-NLS-1$
+
+	/**
+	 * The name of the file where the full path of the file not to generate is located.
+	 * 
+	 * @since 3.4
+	 */
+	String DO_NOT_GENERATE_FILENAME = ".do_not_generate"; //$NON-NLS-1$
 }

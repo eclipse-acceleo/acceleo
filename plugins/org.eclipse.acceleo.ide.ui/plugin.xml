@@ -137,6 +137,31 @@ Contributors:
                label="%OpenDeclarationActionLabel"
                menubarPath="additionsAcceleo"/>
       </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="org.eclipse.acceleo.ide.ui.popupMenus.contribution.Acceleo"
+            objectClass="org.eclipse.core.resources.IResource">
+         <menu
+               id="org.eclipse.acceleo.ide.ui.menu.acceleo"
+               label="%AcceleoMenuLabel"
+               path="additions">
+            <groupMarker
+                  name="org.eclipse.acceleo.ide.ui.groupMarker">
+            </groupMarker>
+         </menu>
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.actions.ComputeGenerationStatisticsAction"
+               id="org.eclipse.acceleo.ide.ui.popupMenus.GenerateStatisticReport"
+               label="%AcceleoStatisticGenerationLabel"
+               menubarPath="org.eclipse.acceleo.ide.ui.menu.acceleo/org.eclipse.acceleo.ide.ui.groupMarker">
+         </action>
+         <action
+               class="org.eclipse.acceleo.internal.ide.ui.actions.DoNotGenerateFilesAction"
+               id="org.eclipse.acceleo.ide.ui.popupMenus.DoNotGenerate"
+               label="%AcceleoIgnoreSelectedFilesLabel"
+               menubarPath="org.eclipse.acceleo.ide.ui.menu.acceleo/org.eclipse.acceleo.ide.ui.groupMarker">
+         </action>
+      </objectContribution>
    </extension>
 
    <extension

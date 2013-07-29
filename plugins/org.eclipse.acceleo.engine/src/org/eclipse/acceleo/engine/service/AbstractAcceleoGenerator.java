@@ -34,6 +34,7 @@ import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
+import org.eclipse.acceleo.engine.generation.strategy.DoNotGenerateGenerationStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.service.properties.AbstractAcceleoPropertiesLoaderService;
 import org.eclipse.acceleo.engine.service.properties.BasicAcceleoPropertiesLoaderService;
@@ -565,7 +566,10 @@ public abstract class AbstractAcceleoGenerator {
 	 * @return The Acceleo service that is to be used for generations launched through this launcher.
 	 */
 	protected AcceleoService createAcceleoService() {
-		AcceleoService service = new AcceleoService(getGenerationStrategy());
+		IAcceleoGenerationStrategy generationStrategy = getGenerationStrategy();
+		DoNotGenerateGenerationStrategy doNotGenerateGenerationStrategy = new DoNotGenerateGenerationStrategy(
+				generationStrategy);
+		AcceleoService service = new AcceleoService(doNotGenerateGenerationStrategy);
 		for (IAcceleoTextGenerationListener listener : getGenerationListeners()) {
 			service.addListener(listener);
 		}
