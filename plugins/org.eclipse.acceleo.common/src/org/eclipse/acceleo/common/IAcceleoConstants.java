@@ -505,4 +505,11 @@ public interface IAcceleoConstants {
 	 * @since 3.2
 	 */
 	String DISABLE_DYNAMIC_MODULES = "DISABLE_DYNAMIC_MODULES"; //$NON-NLS-1$
+
+	/**
+	 * The name of the file where the full path of the file not to generate is located.
+	 * 
+	 * @since 3.3
+	 */
+	String DO_NOT_GENERATE_FILENAME = ".do_not_generate"; //$NON-NLS-1$
 }
