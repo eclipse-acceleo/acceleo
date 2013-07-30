@@ -18,6 +18,7 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IMethod;
@@ -196,8 +197,10 @@ public class JavaServicesWrapperInitializationStrategy implements IAcceleoInitia
 				try {
 					IMethod[] methods = iType.getMethods();
 					for (IMethod iMethod : methods) {
-						buffer.append(JavaServicesUtils.createQuery(iType, iMethod,
-								this.shouldGenerateDocumentation));
+						if (Flags.isPublic(iMethod.getFlags())) {
+							buffer.append(JavaServicesUtils.createQuery(iType, iMethod,
+									this.shouldGenerateDocumentation));
+						}
 					}
 				} catch (JavaModelException e) {
 					AcceleoUIActivator.log(e, true);
