@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.internal.ide.ui.wizards.module.example;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
@@ -204,8 +205,11 @@ public class JavaServicesWrapperInitializationStrategy implements IAcceleoInitia
 						Method[] javaMethods = javaClass.getDeclaredMethods();
 						for (int j = 0; j < javaMethods.length; j++) {
 							Method javaMethod = javaMethods[j];
-							buffer.append(JavaServicesUtils.createQuery(javaMethod,
-									shouldGenerateDocumentation));
+							int modifiers = javaMethod.getModifiers();
+							if (Modifier.isPublic(modifiers)) {
+								buffer.append(JavaServicesUtils.createQuery(javaMethod,
+										shouldGenerateDocumentation));
+							}
 						}
 					}
 				} finally {
