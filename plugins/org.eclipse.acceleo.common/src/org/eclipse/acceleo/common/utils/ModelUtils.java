@@ -465,7 +465,7 @@ public final class ModelUtils {
 	 *            is the NsURI key to search
 	 * @return an Object being either an {@link EPackage} a LazyEPackageDescriptor. Clients have to check for
 	 *         these types.
-	 * @since 3.0
+	 * @since 3.4
 	 */
 	public static Object getEPackageOrDescriptor(String nsURI) {
 		try {
