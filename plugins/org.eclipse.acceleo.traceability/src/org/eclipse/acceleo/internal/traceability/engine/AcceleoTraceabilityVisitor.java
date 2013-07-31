@@ -29,7 +29,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
-import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.common.utils.AcceleoNonStandardLibrary;
 import org.eclipse.acceleo.common.utils.AcceleoStandardLibrary;
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
@@ -37,7 +36,6 @@ import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationCancelledException;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
@@ -520,9 +518,7 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 				break;
 			}
 		}
-		if (hasProblems && AcceleoPreferences.isDebugMessagesEnabled()) {
-			AcceleoEnginePlugin.log("Traceability problems with file " + file.getName(), false); //$NON-NLS-1$
-		}
+
 		if (!recordedTraces.isEmpty() && recordedTraces.getLast().getReferredExpression() == fileBlock
 				&& recordedTraces.getLast().getTraces().isEmpty()) {
 			recordedTraces.removeLast().dispose();
@@ -1179,11 +1175,6 @@ public class AcceleoTraceabilityVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CL
 		} finally {
 			record = oldRecordingValue;
 			evaluatingOperationCall = oldOperationEvaluationState;
-		}
-
-		if (result == null && AcceleoPreferences.isDebugMessagesEnabled()) {
-			AcceleoTraceabilityPlugin.log(AcceleoTraceabilityMessages.getString(
-					"AcceleoTraceabilityVisitor.NullEvaluation", callExp.toString()), false); //$NON-NLS-1$
 		}
 
 		operationCallSource = null;
