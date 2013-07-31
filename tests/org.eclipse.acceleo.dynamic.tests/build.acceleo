@@ -18,7 +18,7 @@
         <acceleoCompiler 
             sourceFolder="${target.folder}"
             outputFolder="${target.folder}"
-            dependencies="${target.folder}/../../org.eclipse.acceleo.module.example.android.model;${target.folder}/../../org.eclipse.acceleo.model;${target.folder}/../../org.eclipse.acceleo.common;${target.folder}/../../org.eclipse.acceleo.engine;${target.folder}/../../org.eclipse.acceleo.profiler;"
+            dependencies="${target.folder}/../../org.eclipse.acceleo.engine;${target.folder}/../../org.eclipse.acceleo.common;${target.folder}/../../org.eclipse.acceleo.model;${target.folder}/../../org.eclipse.acceleo.profiler;${target.folder}/../../org.eclipse.acceleo.engine.tests;${target.folder}/../../org.eclipse.acceleo.parser;"
             binaryResource="false"
             packagesToRegister="">
         </acceleoCompiler>
