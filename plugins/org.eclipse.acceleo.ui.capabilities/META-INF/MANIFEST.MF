@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.ui.capabilities;singleton:=true
-Bundle-Version: 3.3.4.qualifier
+Bundle-Version: 3.3.5.qualifier
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.ui.capabilities";tag=R3_3_0
