@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.compiler;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.io.File;
@@ -176,19 +178,8 @@ public class AcceleoProject {
 				String uriStr = uri.toString();
 				String[] segments = uri.segments();
 				if (uriStr.startsWith("platform:/plugin/") && segments.length > 1 && "plugin".equals(segments[0])) { //$NON-NLS-1$ //$NON-NLS-2$
-					String moduleQualifiedName = ""; //$NON-NLS-1$
-					for (int cpt = 2; cpt < segments.length; cpt++) {
-						String segment = segments[cpt];
-						if (cpt > 2) {
-							moduleQualifiedName = moduleQualifiedName + IAcceleoConstants.NAMESPACE_SEPARATOR;
-						}
-						moduleQualifiedName = moduleQualifiedName + segment;
-					}
-					if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.EMTL_FILE_EXTENSION)) {
-						moduleQualifiedName = moduleQualifiedName.substring(0, moduleQualifiedName
-								.lastIndexOf('.'));
-					}
-					if (dependency.equals(moduleQualifiedName)) {
+					Set<String> moduleQualifiedName = computeQualifiedNames(segments);
+					if (moduleQualifiedName.contains(dependency)) {
 						result = uri;
 						break;
 					}
@@ -197,17 +188,8 @@ public class AcceleoProject {
 				String uriStr = uri.toString();
 				String[] segments = uri.segments();
 				if (uriStr.startsWith("platform:/resource/") && segments.length > 1 && "resource".equals(segments[0])) { //$NON-NLS-1$ //$NON-NLS-2$
-					String moduleQualifiedName = ""; //$NON-NLS-1$
-					for (int cpt = 2; cpt < segments.length; cpt++) {
-						String segment = segments[cpt];
-						moduleQualifiedName = moduleQualifiedName + IAcceleoConstants.NAMESPACE_SEPARATOR
-								+ segment;
-					}
-					if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.MTL_FILE_EXTENSION)) {
-						moduleQualifiedName = moduleQualifiedName.substring(0, moduleQualifiedName
-								.lastIndexOf('.'));
-					}
-					if (dependency.equals(moduleQualifiedName)) {
+					Set<String> moduleQualifiedName = computeQualifiedNames(segments);
+					if (moduleQualifiedName.contains(dependency)) {
 						result = uri;
 						break;
 					}
@@ -225,6 +207,46 @@ public class AcceleoProject {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * This method compute the possible qualified names from path segments. There might be several
+	 * possibilities depending on the way the segments are interpreted.
+	 * 
+	 * @param segments
+	 *            path segments
+	 * @return the MTL syntax corresponding qualified names.
+	 */
+	private Set<String> computeQualifiedNames(String[] segments) {
+		Set<String> names = new LinkedHashSet<String>(2);
+		names.add(qualifiedNameFromSegment(segments, true));
+		names.add(qualifiedNameFromSegment(segments, false));
+		return names;
+	}
+
+	/**
+	 * This method compute a qualified name from path segments.
+	 * 
+	 * @param segments
+	 *            path segments.
+	 * @param trimBinOutputFolder
+	 *            whether the computation should trim segments named "bin" or not.
+	 * @return a qualified name valid in the MTL syntax.
+	 */
+	private String qualifiedNameFromSegment(String[] segments, boolean trimBinOutputFolder) {
+		String moduleQualifiedName = ""; //$NON-NLS-1$
+		List<String> qualifiedNameSegments = Lists.newArrayList();
+		for (int cpt = 2; cpt < segments.length; cpt++) {
+			String segment = segments[cpt];
+			if (!"bin".equals(segment) && !trimBinOutputFolder) { //$NON-NLS-1$
+				qualifiedNameSegments.add(segment);
+			}
+		}
+		moduleQualifiedName = Joiner.on(IAcceleoConstants.NAMESPACE_SEPARATOR).join(qualifiedNameSegments);
+		if (moduleQualifiedName.endsWith('.' + IAcceleoConstants.EMTL_FILE_EXTENSION)) {
+			moduleQualifiedName = moduleQualifiedName.substring(0, moduleQualifiedName.lastIndexOf('.'));
+		}
+		return moduleQualifiedName;
 	}
 
 	/**
