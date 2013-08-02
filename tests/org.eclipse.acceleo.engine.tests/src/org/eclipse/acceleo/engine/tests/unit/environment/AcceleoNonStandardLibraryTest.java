@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2013 Obeo and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,11 +7,13 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Christian W. Damus - Bug 424214 siblings() of resource roots
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -393,6 +395,74 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 		children = ((Collection<?>)result).iterator();
 		assertSame("The sibling should have been the second added EClass.", clazz2, children.next());
 		assertSame("The sibling should have been the third added EClass.", clazz3, children.next());
+	}
+
+	/**
+	 * Tests the behavior of the non standard "siblings()" operation on OclAny with an object that is a root
+	 * (in the resource contents, no container).
+	 * <p>
+	 * Expects the result to contain all of the other roots of the given object's resource, excluding self.
+	 * </p>
+	 */
+	public void testOclAnySiblingsUnparameterizableResourceRoot() {
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
+
+		final Resource resource = new ResourceImpl(URI.createURI("junk://test"));
+		final EPackage p1 = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage p2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage p3 = EcoreFactory.eINSTANCE.createEPackage();
+		resource.getContents().addAll(Arrays.asList(p1, p2, p3));
+
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, p2);
+		assertSame("Unexpected count of siblings returned", 2, ((Collection<?>)result).size());
+		Iterator<?> children = ((Collection<?>)result).iterator();
+		assertSame("The sibling should have been the first added EPackage.", p1, children.next());
+		assertSame("The sibling should have been the third added EPackage.", p3, children.next());
+
+		result = AcceleoLibraryOperationVisitor
+				.callNonStandardOperation(evaluationEnvironment, operation, p1);
+		assertSame("Unexpected count of siblings returned", 2, ((Collection<?>)result).size());
+		children = ((Collection<?>)result).iterator();
+		assertSame("The sibling should have been the second added EPackage.", p2, children.next());
+		assertSame("The sibling should have been the third added EPackage.", p3, children.next());
+	}
+
+	/**
+	 * Tests the behavior of the non standard "siblings()" operation on OclAny with an object that is a root
+	 * (in the resource contents, no container) but whose containing resource has cross-resource-contained
+	 * objects.
+	 * <p>
+	 * Expects the result to contain all of the other roots of the given object's resource, excluding self.
+	 * </p>
+	 */
+	public void testOclAnySiblingsUnparameterizableResourceRootWithCrossContainment() {
+		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
+				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
+
+		final Resource resource = new ResourceImpl(URI.createURI("junk://test"));
+		final EPackage p1 = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage p2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage p3 = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub1 = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub2 = EcoreFactory.eINSTANCE.createEPackage();
+		p1.getESubpackages().addAll(Arrays.asList(sub1, sub2));
+		resource.getContents().addAll(Arrays.asList(p1, sub1, p2, sub2, p3));
+
+		Object result = AcceleoLibraryOperationVisitor.callNonStandardOperation(evaluationEnvironment,
+				operation, p2);
+		assertSame("Unexpected count of siblings returned", 2, ((Collection<?>)result).size());
+		Iterator<?> children = ((Collection<?>)result).iterator();
+		assertSame("The sibling should have been the first added EPackage.", p1, children.next());
+		assertSame("The sibling should have been the third added EPackage.", p3, children.next());
+
+		result = AcceleoLibraryOperationVisitor
+				.callNonStandardOperation(evaluationEnvironment, operation, p1);
+		assertSame("Unexpected count of siblings returned", 2, ((Collection<?>)result).size());
+		children = ((Collection<?>)result).iterator();
+		assertSame("The sibling should have been the second added EPackage.", p2, children.next());
+		assertSame("The sibling should have been the third added EPackage.", p3, children.next());
 	}
 
 	/**

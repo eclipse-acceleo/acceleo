@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2013 Obeo and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Obeo - initial API and implementation
+ *     Christian W. Damus - Bug 414214 siblings() of resource roots
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.environment;
 
@@ -22,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -49,6 +51,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -1277,7 +1280,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 */
 	private static List<EObject> siblings(EObject source, EClassifier filter) {
 		final List<EObject> result = new ArrayList<EObject>();
-		EObject container = source.eContainer();
+		Object container = getContainer(source);
 		if (container != null) {
 			for (EObject child : getContents(container)) {
 				if (child != source && (filter == null || filter.isInstance(child))) {
@@ -1303,7 +1306,7 @@ public final class AcceleoLibraryOperationVisitor {
 	 */
 	private static List<EObject> siblings(EObject source, EClassifier filter, boolean preceding) {
 		final List<EObject> result = new ArrayList<EObject>();
-		final EObject container = source.eContainer();
+		final Object container = getContainer(source);
 		if (container != null) {
 			final List<EObject> siblings = getContents(container);
 			int startIndex = 0;
@@ -1486,6 +1489,83 @@ public final class AcceleoLibraryOperationVisitor {
 				}
 			}
 		}
+		return result;
+	}
+
+	/**
+	 * Obtains the container of an object for the purpose of accessing its siblings. This is often the
+	 * {@link EObject#eContainer() eContainer}, but for top-level objects it may be the
+	 * {@link EObject#eResource() eResource}.
+	 * 
+	 * @param object
+	 *            an object
+	 * @return its logical container
+	 */
+	private static Object getContainer(EObject object) {
+		Object result = object.eContainer();
+
+		if (result == null && object instanceof InternalEObject) {
+			// maybe it's a resource root
+			result = ((InternalEObject)object).eDirectResource();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Obtains the contents of a container, as determined by {@link #getContainer(EObject)}.
+	 * 
+	 * @param container
+	 *            a container of objects
+	 * @return the contained objects. <b>Note</b> that, for efficiency, the resulting list may be the
+	 *         {@code container}'s actual contents list. Callers must treat the result as unmodifiable
+	 */
+	private static List<EObject> getContents(Object container) {
+		List<EObject> contents = Collections.<EObject> emptyList();
+		if (container instanceof EObject) {
+			contents = getContents((EObject)container);
+		} else if (container instanceof Resource) {
+			contents = getRoots((Resource)container);
+		}
+		return contents;
+	}
+
+	/**
+	 * Like the standard {@link Resource#getContents()} method except that we retrieve only objects that do
+	 * not have containers (i.e., they are not cross-resource-contained). This is an important distinction
+	 * because we want only peers (or "siblings") of an object that is a root (having no container), and those
+	 * are defined as the other objects that are also roots.
+	 * 
+	 * @param resource
+	 *            a resource from which to get root objects
+	 * @return the root objects. <b>Note</b> that, for efficiency, the resulting list may be the
+	 *         {@code resource}'s actual contents list. Callers must treat the result as unmodifiable
+	 */
+	private static List<EObject> getRoots(Resource resource) {
+		// optimize for the vast majority of cases in which none of the objects are cross-resource-contained
+		// (i.e., they are all roots)
+		List<EObject> result = resource.getContents();
+
+		for (ListIterator<EObject> iter = result.listIterator(); iter.hasNext();) {
+			if (iter.next().eContainer() != null) {
+				// don't include this in the result
+
+				// need to copy the result so that we don't modify the resource
+				int where = iter.previousIndex();
+				List<EObject> newResult = new ArrayList<EObject>(result.size() - 1);
+				newResult.addAll(result.subList(0, where));
+				result = newResult;
+
+				// continue adding roots
+				while (iter.hasNext()) {
+					EObject next = iter.next();
+					if (next.eContainer() == null) {
+						result.add(next);
+					}
+				}
+			}
+		}
+
 		return result;
 	}
 }
