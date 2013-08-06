@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -319,8 +320,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
 		org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
 				acceleoProject, useBinaryResources, usePlatformResourcePath);
-		for (IFile iFile : deltaMembers) {
-			File fileToBuild = iFile.getLocation().toFile();
+		Iterator<IFile> it = deltaMembers.iterator();
+		while (it.hasNext() && !monitor.isCanceled()) {
+			File fileToBuild = it.next().getLocation().toFile();
 			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 			for (File builtFile : builtFiles) {
 				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
@@ -814,7 +816,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 						&& IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension())) {
 					removeOutputFile((IFile)resource, monitor);
 				}
-				if (delta.getKind() != IResourceDelta.REMOVED
+				if (contentChanged(delta)
 						&& (IAcceleoConstants.MTL_FILE_EXTENSION.equals(resource.getFileExtension()) || "MANIFEST.MF" //$NON-NLS-1$
 						.equals(resource.getName())) || "plugin.xml".equals(resource.getName())) { //$NON-NLS-1$
 					deltaFilesOutput.add((IFile)resource);
@@ -837,6 +839,21 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		}
 
 		return deltaFilesOutput;
+	}
+
+	/**
+	 * return true if the delta indicates a change of file content.
+	 * 
+	 * @param delta
+	 *            a resource delta.
+	 * @return true if the delta indicates a change of file content.
+	 */
+	private boolean contentChanged(IResourceDelta delta) {
+		if (delta.getKind() != IResourceDelta.REMOVED) {
+			return (delta.getFlags() & IResourceDelta.CONTENT) != 0
+					|| (delta.getFlags() & IResourceDelta.REPLACED) != 0;
+		}
+		return false;
 	}
 
 	/**
