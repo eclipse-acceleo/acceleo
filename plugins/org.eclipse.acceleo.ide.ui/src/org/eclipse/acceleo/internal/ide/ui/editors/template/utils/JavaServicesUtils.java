@@ -10,9 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.utils;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Closeables;
+
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -127,9 +132,24 @@ public final class JavaServicesUtils {
 
 				String content = JavaServicesUtils.getFileContent(iCompilationUnit, fileName, nsURIs);
 
-				InputStream source = new ByteArrayInputStream(content.getBytes());
+				ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes());
 				if (file.exists()) {
-					file.setContents(source, true, false, monitor);
+					InputStream prevVersionStream = file.getContents();
+					boolean sameContent = false;
+					byte[] oldContent;
+					try {
+						oldContent = ByteStreams.toByteArray(prevVersionStream);
+						sameContent = Arrays.equals(content.getBytes(), oldContent);
+					} catch (IOException e) {
+						/*
+						 * If we have an IOException we'll consider the content is not the same.
+						 */
+					} finally {
+						Closeables.closeQuietly(prevVersionStream);
+					}
+					if (!sameContent) {
+						file.setContents(source, true, false, monitor);
+					}
 				} else {
 					file.create(source, true, monitor);
 				}
