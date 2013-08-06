@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.parser.ast;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterators;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -633,9 +636,10 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 						&& paramTypes.size() == otherTemplate.getParameter().size()
 						&& otherTemplate.getVisibility().getValue() >= VisibilityKind.PROTECTED_VALUE) {
 					boolean parameterMatches = true;
-					Iterator<EClassifier> itTypes = paramTypes.iterator();
-					Iterator<org.eclipse.ocl.ecore.Variable> itParameters = otherTemplate.getParameter()
-							.iterator();
+					Iterator<EClassifier> itTypes = Iterators.filter(paramTypes.iterator(), Predicates
+							.notNull());
+					Iterator<org.eclipse.ocl.ecore.Variable> itParameters = Iterators.filter(otherTemplate
+							.getParameter().iterator(), Predicates.notNull());
 					while (parameterMatches && itParameters.hasNext()) {
 						EClassifier eParameterType = itParameters.next().getType();
 						EClassifier type = itTypes.next();
