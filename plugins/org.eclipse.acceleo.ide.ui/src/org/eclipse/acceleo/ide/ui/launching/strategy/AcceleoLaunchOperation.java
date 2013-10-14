@@ -98,18 +98,18 @@ public class AcceleoLaunchOperation implements IWorkspaceRunnable {
 	 */
 
 	public void run(IProgressMonitor monitor) throws CoreException {
-		AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
-		final Class<?> generatorClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName, false);
-
-		if (generatorClass == null) {
-			final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-					.getString("AcceleoLaunchOperation.ClassNotFound", qualifiedName, //$NON-NLS-1$
-							project.getName()));
-			AcceleoUIActivator.getDefault().getLog().log(status);
-			return;
-		}
-
 		try {
+			AcceleoWorkspaceUtil.INSTANCE.addWorkspaceContribution(project);
+			final Class<?> generatorClass = AcceleoWorkspaceUtil.INSTANCE.getClass(qualifiedName, false);
+
+			if (generatorClass == null) {
+				final IStatus status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID,
+						AcceleoUIMessages.getString("AcceleoLaunchOperation.ClassNotFound", qualifiedName, //$NON-NLS-1$
+								project.getName()));
+				AcceleoUIActivator.getDefault().getLog().log(status);
+				return;
+			}
+
 			AbstractAcceleoGenerator generator = null;
 			if (AbstractAcceleoGenerator.class.isAssignableFrom(generatorClass)) {
 				generator = safeInstantiate(generatorClass);
