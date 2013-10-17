@@ -17,6 +17,7 @@ import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
+import org.eclipse.acceleo.ui.interpreter.language.SplitExpression;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
@@ -70,6 +71,16 @@ public class OCLInterpreter extends AbstractLanguageInterpreter {
 		}
 		return new OCLEvaluationTask(context, contextManager);
 
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter#getExpressionSplittingTask(EvaluationContext)
+	 */
+	@Override
+	public Callable<SplitExpression> getExpressionSplittingTask(EvaluationContext context) {
+		return new OCLExpressionSplittingTask(context);
 	}
 
 	/**

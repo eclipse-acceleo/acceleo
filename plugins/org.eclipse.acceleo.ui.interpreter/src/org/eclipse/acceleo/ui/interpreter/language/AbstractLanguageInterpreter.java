@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Obeo.
+ * Copyright (c) 2010, 2013 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -158,6 +158,26 @@ public abstract class AbstractLanguageInterpreter {
 	 *         evaluation. Cannot be <code>null</code>.
 	 */
 	public abstract Callable<EvaluationResult> getEvaluationTask(EvaluationContext context);
+
+	/**
+	 * If this language knows how to split its expressions into sub-expressions, this should return a task
+	 * capable of doing so. Note that this will be executed in parallel to the evaluation task and will not
+	 * block the results from being displayed. This can thus be a long running task.
+	 * <p>
+	 * The returned task must be cancellable. A new evaluation may be launched by the user of by the real-time
+	 * thread before this task can reach completion. Do note that this task must be thread-safe as it will be
+	 * called asynchronously and we do not guarantee that each task will be canceled before the subsequent is
+	 * started.
+	 * </p>
+	 * 
+	 * @param context
+	 *            The current interpreter context.
+	 * @return Cancellable task that can be run by the interpreter to split an expression into its
+	 *         sub-components. Can be <code>null</code> if the language cannot be split.
+	 */
+	public Callable<SplitExpression> getExpressionSplittingTask(EvaluationContext context) {
+		return null;
+	}
 
 	/**
 	 * This will be called by the interpreter view when the "work in editor context" action is run by the

@@ -45,4 +45,7 @@ public interface IInterpreterConstants {
 
 	/** Path to the icon for the "toggle variable visibility" action. */
 	String VARIABLE_VISIBILITY_TOGGLE_ICON = "variable_action.gif"; //$NON-NLS-1$
+
+	/** Path to the icon for the "toggle step-by-step visibility" action. */
+	String STEP_BY_STEP_VISIBILITY_TOGGLE_ICON = "stepbystep_action.gif"; //$NON-NLS-1$
 }

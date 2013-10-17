@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Obeo.
+ * Copyright (c) 2010, 2013 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableActio
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableWizardAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.RenameVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleRealTimeAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleStepByStepVisibilityAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ToggleVariableVisibilityAction;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
@@ -58,6 +59,12 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.language.IInterpreterSourceViewer;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
+import org.eclipse.acceleo.ui.interpreter.language.SplitExpression;
+import org.eclipse.acceleo.ui.interpreter.language.SubExpression;
+import org.eclipse.acceleo.ui.interpreter.view.providers.ResultContentProvider;
+import org.eclipse.acceleo.ui.interpreter.view.providers.ResultLabelProvider;
+import org.eclipse.acceleo.ui.interpreter.view.providers.StepByStepContentProvider;
+import org.eclipse.acceleo.ui.interpreter.view.providers.StepLabelProvider;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IAdaptable;
@@ -93,7 +100,9 @@ import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -188,6 +197,9 @@ public class InterpreterView extends ViewPart {
 	/** Key for the hidden state of the variable viewer as stored in this view's memento. */
 	private static final String MEMENTO_VARIABLES_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.variables.hide"; //$NON-NLS-1$
 
+	/** Key for the hidden state of the Sub-Expressions viewer as stored in this view's memento. */
+	private static final String MEMENTO_SUB_EXPRESSIONS_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.subexpressions.hide"; //$NON-NLS-1$
+
 	/** We'll use this as the id of our viewers' menus. */
 	private static final String MENU_ID = "#PopupMenu"; //$NON-NLS-1$
 
@@ -219,6 +231,9 @@ public class InterpreterView extends ViewPart {
 
 	/** This executor service will be used in order to launch the evaluation tasks of this interpreter. */
 	/* package */ExecutorService evaluationPool = Executors.newSingleThreadExecutor();
+
+	/** This executor service will be used in order to launch the splitting tasks of this interpreter. */
+	/* package */ExecutorService splittingPool = Executors.newSingleThreadExecutor();
 
 	/** This will hold the real-time evaluation thread. */
 	/* package */RealTimeThread realTimeThread;
@@ -253,6 +268,9 @@ public class InterpreterView extends ViewPart {
 	/** Thread which purpose is to evaluate the expression and update the view with the result. */
 	private EvaluationThread evaluationThread;
 
+	/** Thread which purpose is to split the expression and update the view with the sub-expressions tree. */
+	private ExpressionSplittingThread expressionSplittingThread;
+
 	/**
 	 * Keeps a reference to the "expression" section of the interpreter form. This will be used to re-create
 	 * the result viewer when changing language.
@@ -267,6 +285,12 @@ public class InterpreterView extends ViewPart {
 
 	/** We'll create this {@link SashForm} as the main body of the interpreter form. */
 	private SashForm formBody;
+
+	/** We'll create this {@link SashForm} as the sub-expression and result body of the interpreter form. */
+	private SashForm bottomLeftColumn;
+
+	/** The composite that will display the sub-expressions. */
+	private Composite subExpressionComposite;
 
 	/** Keeps a reference to the toolkit used to create our form. This will be used when switching languages. */
 	private FormToolkit formToolkit;
@@ -298,6 +322,9 @@ public class InterpreterView extends ViewPart {
 	/** Viewer in which we'll display the result of the evaluations. */
 	private Viewer resultViewer;
 
+	/** Viewer in which we'll display sub-expressions if the current language has a splitter. */
+	private Viewer subExpressionViewer;
+
 	/** This will hold the current selection of EObjects (in the workspace). */
 	private List<EObject> selectedEObjects;
 
@@ -309,6 +336,9 @@ public class InterpreterView extends ViewPart {
 
 	/** Indicates whether the variable viewer is visible. */
 	private boolean variableVisible;
+
+	/** Indicates whether the step-by-step viewer is visible. */
+	private boolean subExpressionsVisible;
 
 	/**
 	 * Creates a tool bar for the given section.
@@ -391,6 +421,44 @@ public class InterpreterView extends ViewPart {
 			Future<CompilationResult> compilationFuture = compilationPool.submit(compilationTask);
 			compilationThread = new CompilationThread(compilationFuture);
 			compilationThread.start();
+		}
+	}
+
+	/**
+	 * This evaluates the selected sub-step.
+	 * 
+	 * @param expression
+	 *            The expression to evaluate.
+	 */
+	protected void evaluateSubExpression(final Object expression) {
+		if (this.expressionViewer == null || this.expressionViewer.getTextWidget() == null
+				|| this.expressionViewer.getTextWidget().isDisposed()) {
+			return;
+		}
+
+		// Cancel previous compilation task
+		if (compilationThread != null && !compilationThread.isInterrupted()) {
+			compilationThread.interrupt();
+		}
+		// Cancel running evaluation task
+		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
+			evaluationThread.interrupt();
+		}
+
+		clearCompilationMessages();
+		Future<CompilationResult> compilationFuture = compilationPool
+				.submit(new Callable<CompilationResult>() {
+					public CompilationResult call() throws Exception {
+						return new CompilationResult(expression);
+					}
+				});
+		compilationThread = new CompilationThread(compilationFuture);
+		compilationThread.start();
+
+		InterpreterContext interpreterContext = getInterpreterContext();
+		if (interpreterContext != null) {
+			evaluationThread = new EvaluationThread(interpreterContext);
+			evaluationThread.start();
 		}
 	}
 
@@ -490,9 +558,13 @@ public class InterpreterView extends ViewPart {
 		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
 			evaluationThread.interrupt();
 		}
+		if (expressionSplittingThread != null && !expressionSplittingThread.isInterrupted()) {
+			expressionSplittingThread.interrupt();
+		}
 
 		compileExpression();
 		evaluate();
+		splitExpression();
 	}
 
 	/**
@@ -505,6 +577,36 @@ public class InterpreterView extends ViewPart {
 		if (interpreterContext != null) {
 			evaluationThread = new EvaluationThread(interpreterContext);
 			evaluationThread.start();
+		}
+	}
+
+	/**
+	 * This split the expressions into sub-steps.
+	 */
+	private void splitExpression() {
+		// populates the sub-expressions tree viewer
+		InterpreterContext interpreterContext = getInterpreterContext();
+		if (interpreterContext != null) {
+			expressionSplittingThread = new ExpressionSplittingThread(interpreterContext);
+			expressionSplittingThread.start();
+		}
+	}
+
+	/**
+	 * This sets sub expressions in the expected viewer.
+	 * 
+	 * @param splitExpression
+	 *            The split expression.
+	 */
+	protected final void setSubExpressions(SplitExpression splitExpression) {
+		TreeViewer viewer = (TreeViewer)subExpressionViewer;
+		if (splitExpression != null) {
+			viewer.getControl().setRedraw(false);
+			viewer.setInput(Collections.singleton(splitExpression));
+			viewer.expandAll();
+			viewer.getControl().setRedraw(true);
+		} else {
+			viewer.setInput(null);
 		}
 	}
 
@@ -645,6 +747,8 @@ public class InterpreterView extends ViewPart {
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
 			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
 					Boolean.valueOf(variableViewer.getControl().isVisible()));
+			memento.putBoolean(MEMENTO_SUB_EXPRESSIONS_VISIBLE_KEY,
+					Boolean.valueOf(subExpressionViewer.getControl().isVisible()));
 		}
 	}
 
@@ -692,6 +796,24 @@ public class InterpreterView extends ViewPart {
 				newWeights = new int[] {1, 0, };
 			}
 			formBody.setWeights(newWeights);
+			getForm().layout();
+		}
+	}
+
+	/**
+	 * Shows or hides the step-by-step viewer.
+	 */
+	public void toggleStepByStepVisibility() {
+		if (subExpressionComposite != null && !subExpressionComposite.isDisposed()) {
+			subExpressionsVisible = !subExpressionsVisible;
+			subExpressionComposite.setVisible(subExpressionsVisible);
+			final int[] newWeights;
+			if (subExpressionsVisible) {
+				newWeights = new int[] {1, 1, };
+			} else {
+				newWeights = new int[] {0, 1, };
+			}
+			bottomLeftColumn.setWeights(newWeights);
 			getForm().layout();
 		}
 	}
@@ -950,7 +1072,20 @@ public class InterpreterView extends ViewPart {
 		toolkit.adapt(leftColumn);
 
 		createExpressionSection(toolkit, leftColumn);
-		createResultSection(toolkit, leftColumn);
+
+		bottomLeftColumn = new SashForm(leftColumn, SWT.HORIZONTAL | SWT.SMOOTH);
+		toolkit.adapt(bottomLeftColumn);
+
+		subExpressionComposite = toolkit.createComposite(bottomLeftColumn);
+		subExpressionComposite.setLayout(new FillLayout());
+		subExpressionComposite.setVisible(false);
+		Composite resultComposite = toolkit.createComposite(bottomLeftColumn);
+		resultComposite.setLayout(new FillLayout());
+
+		createSubExpressionsSection(toolkit, subExpressionComposite);
+		createResultSection(toolkit, resultComposite);
+
+		bottomLeftColumn.setWeights(new int[] {1, 1, });
 
 		leftColumn.setWeights(new int[] {2, 3, });
 
@@ -1083,10 +1218,20 @@ public class InterpreterView extends ViewPart {
 			}
 		}
 
+		IAction subExpressionsVisibilityAction = new ToggleStepByStepVisibilityAction(this);
+		if (partMemento != null) {
+			Boolean isSubExpressionsVisible = partMemento.getBoolean(MEMENTO_SUB_EXPRESSIONS_VISIBLE_KEY);
+			if (isSubExpressionsVisible != null && isSubExpressionsVisible.booleanValue()) {
+				toggleStepByStepVisibility();
+				subExpressionsVisibilityAction.setChecked(subExpressionsVisible);
+			}
+		}
+
 		IToolBarManager toolBarManager = form.getToolBarManager();
 		toolBarManager.add(linkWithEditorContextAction);
 		toolBarManager.add(realTimeAction);
 		toolBarManager.add(variableVisibilityAction);
+		toolBarManager.add(subExpressionsVisibilityAction);
 
 		toolBarManager.add(new Separator(LANGUAGE_SPECIFIC_ACTION_GROUP));
 
@@ -1155,6 +1300,55 @@ public class InterpreterView extends ViewPart {
 		setUpVariableActions(viewer);
 
 		viewer.setInput(new ArrayList<Variable>());
+
+		return viewer;
+	}
+
+	/**
+	 * This will be called in order to create the "Sub-Expressions" section (bottom left column) of the form.
+	 * 
+	 * @param toolkit
+	 *            Toolkit that can be used to create form parts.
+	 * @param parentComposite
+	 *            The sub-expression composite.
+	 */
+	protected void createSubExpressionsSection(FormToolkit toolkit, Composite parentComposite) {
+		Section subExpressionsSection = toolkit.createSection(parentComposite, ExpandableComposite.TITLE_BAR);
+		subExpressionsSection.setText(InterpreterMessages
+				.getString("interpreter.view.subexpression.section.name")); //$NON-NLS-1$
+
+		Composite subExpressionsSectionBody = toolkit.createComposite(subExpressionsSection);
+		subExpressionsSectionBody.setLayout(new GridLayout());
+
+		subExpressionViewer = createSubExpressionsViewer(toolkit, subExpressionsSectionBody);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		subExpressionViewer.getControl().setLayoutData(gridData);
+
+		ToolBarManager toolBarManager = createSectionToolBar(subExpressionsSection);
+		toolBarManager.update(true);
+
+		toolkit.paintBordersFor(subExpressionsSectionBody);
+		subExpressionsSection.setClient(subExpressionsSectionBody);
+	}
+
+	/**
+	 * This will be called in order to create the TreeViewer used to display Sub-Expressions.
+	 * 
+	 * @param toolkit
+	 *            Toolkit that can be used to create form parts.
+	 * @param sectionBody
+	 *            Parent composite of the TreeViewer.
+	 * @return The newly created viewer.
+	 */
+	protected TreeViewer createSubExpressionsViewer(FormToolkit toolkit, Composite sectionBody) {
+		Tree subExpressionsTree = toolkit.createTree(sectionBody, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
+
+		TreeViewer viewer = new TreeViewer(subExpressionsTree);
+		ColumnViewerToolTipSupport.enableFor(viewer);
+		AdapterFactory adapterFactory = createAdapterFactory();
+		viewer.setContentProvider(new StepByStepContentProvider(adapterFactory));
+		viewer.setLabelProvider(new StepLabelProvider());
+		viewer.addSelectionChangedListener(new SubExpressionListener());
 
 		return viewer;
 	}
@@ -1262,6 +1456,9 @@ public class InterpreterView extends ViewPart {
 		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
 			evaluationThread.interrupt();
 		}
+		if (expressionSplittingThread != null && !expressionSplittingThread.isInterrupted()) {
+			expressionSplittingThread.interrupt();
+		}
 
 		getMessageManager().removeAllMessages();
 
@@ -1329,6 +1526,10 @@ public class InterpreterView extends ViewPart {
 
 			resultSectionBody.layout();
 			resultSection.layout();
+		}
+
+		if (subExpressionViewer != null) {
+			subExpressionViewer.setInput(null);
 		}
 
 		// re-fill the sections' toolbars
@@ -2218,6 +2419,119 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
+	 * This implementation of a Thread will be used to wrap a splitting task as returned by the
+	 * LanguageInterpreter, then asynchronously update the form with all error messages (if any) that were
+	 * raised by this compilation task. Afterwards, this Thread will update the sub-expressions view of the
+	 * interpreter form.
+	 * 
+	 * @author <a href="mailto:marwa.rostren@obeo.fr">Marwa Rostren</a>
+	 */
+	private class ExpressionSplittingThread extends Thread {
+		/**
+		 * We will set this flag on {@link #interrupt()} in order to determine whether the thread was
+		 * cancelled (which could happen <b>after</b> the thread has completed, which would make the
+		 * "interrupted" flag quiet.
+		 */
+		private boolean cancelled;
+
+		/** The splitting thread which result we are to wait for. */
+		private Future<SplitExpression> splittingTask;
+
+		/** Context of the interpreter as it was when this Thread has been created. */
+		private final InterpreterContext interpreterContext;
+
+		/**
+		 * Instantiates our Thread given the initial interpreter context.
+		 * 
+		 * @param interpreterContext
+		 *            The initial interpreter context.
+		 */
+		public ExpressionSplittingThread(InterpreterContext interpreterContext) {
+			super("InterpreterExpressionSplittingThread"); //$NON-NLS-1$
+			this.interpreterContext = interpreterContext;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Thread#interrupt()
+		 */
+		@Override
+		public void interrupt() {
+			cancelled = true;
+			if (splittingTask != null) {
+				splittingTask.cancel(true);
+			}
+			super.interrupt();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
+		@Override
+		public void run() {
+			try {
+				checkCancelled();
+				// Cannot do anything before the current compilation thread stops.
+				if (compilationThread != null) {
+					compilationThread.join();
+				}
+				checkCancelled();
+
+				Callable<SplitExpression> splitExpressionCallable = getCurrentLanguageInterpreter()
+						.getExpressionSplittingTask(
+								new EvaluationContext(interpreterContext, compilationResult));
+
+				if (splitExpressionCallable == null) {
+					return;
+				}
+
+				splittingTask = splittingPool.submit(splitExpressionCallable);
+
+				final SplitExpression splitExpression = splittingTask.get();
+				checkCancelled();
+
+				Display.getDefault().asyncExec(new Runnable() {
+					/**
+					 * {@inheritDoc}
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					public void run() {
+						setSubExpressions(splitExpression);
+					}
+				});
+			} catch (InterruptedException e) {
+				// Thread is expected to be cancelled if another is started
+			} catch (CancellationException e) {
+				// Thread is expected to be cancelled if another is started
+			} catch (ExecutionException e) {
+				Display.getDefault().asyncExec(new Runnable() {
+					/**
+					 * {@inheritDoc}
+					 * 
+					 * @see java.lang.Runnable#run()
+					 */
+					public void run() {
+						setSubExpressions(null);
+					}
+				});
+			}
+		}
+
+		/**
+		 * Throws a new {@link CancellationException} if the current thread has been cancelled.
+		 */
+		protected void checkCancelled() {
+			if (cancelled) {
+				throw new CancellationException();
+			}
+		}
+	}
+
+	/**
 	 * This daemon thread will be launched whenever the "real-time" toggle is activated, and will only be
 	 * stopped when the view is disposed or the "real-time" toggle is disabled.
 	 * <p>
@@ -2307,6 +2621,30 @@ public class InterpreterView extends ViewPart {
 		public void setDirty() {
 			synchronized(this) {
 				dirty = true;
+			}
+		}
+	}
+
+	/**
+	 * This will be added to the sub-expression viewer in order to launch evaluation of parts of the
+	 * expression entered by the user as split through the expression splitting thread.
+	 * 
+	 * @author <a href="mailto:marwa.rostren@obeo.fr">Marwa Rostren</a>
+	 */
+	protected class SubExpressionListener implements ISelectionChangedListener {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
+		 */
+		public void selectionChanged(SelectionChangedEvent event) {
+			if (event.getSelection() instanceof IStructuredSelection) {
+				Object selection = ((IStructuredSelection)event.getSelection()).getFirstElement();
+				if (selection instanceof SubExpression) {
+					evaluateSubExpression(((SubExpression)selection).getExpression());
+				} else if (selection instanceof SplitExpression) {
+					evaluateSubExpression(((SplitExpression)selection).getFullExpression());
+				}
 			}
 		}
 	}

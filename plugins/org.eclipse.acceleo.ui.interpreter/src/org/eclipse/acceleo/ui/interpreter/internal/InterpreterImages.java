@@ -107,5 +107,7 @@ public final class InterpreterImages {
 		createImage(IInterpreterConstants.REALTIME_TOGGLE_ICON, IInterpreterConstants.REALTIME_TOGGLE_ICON);
 		createImage(IInterpreterConstants.VARIABLE_VISIBILITY_TOGGLE_ICON,
 				IInterpreterConstants.VARIABLE_VISIBILITY_TOGGLE_ICON);
+		createImage(IInterpreterConstants.STEP_BY_STEP_VISIBILITY_TOGGLE_ICON,
+				IInterpreterConstants.STEP_BY_STEP_VISIBILITY_TOGGLE_ICON);
 	}
 }
