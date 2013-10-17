@@ -380,24 +380,10 @@ public class InterpreterView extends ViewPart {
 	 * compilation. This thread can and will be cancelled whenever a new compilation is required.
 	 * </p>
 	 */
-	public void compileExpression() {
-		if (this.expressionViewer == null || this.expressionViewer.getTextWidget() == null
-				|| this.expressionViewer.getTextWidget().isDisposed()) {
-			return;
-		}
-
+	private void compileExpression() {
 		final InterpreterContext context = getInterpreterContext();
 		final Callable<CompilationResult> compilationTask = getCurrentLanguageInterpreter()
 				.getCompilationTask(context);
-
-		// Cancel previous compilation task
-		if (compilationThread != null && !compilationThread.isInterrupted()) {
-			compilationThread.interrupt();
-		}
-		// Cancel running evaluation task
-		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
-			evaluationThread.interrupt();
-		}
 
 		clearCompilationMessages();
 
@@ -480,13 +466,39 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
-	 * Evaluates the currently entered expression with the current context.
+	 * Compiles the current expression and launches its evaluation.
 	 */
-	public void evaluate() {
+	public void compileAndEvaluate() {
+		boolean cancelRequest = false;
+		if (this.expressionViewer == null || this.expressionViewer.getTextWidget() == null
+				|| this.expressionViewer.getTextWidget().isDisposed()) {
+			cancelRequest = true;
+		} else {
+			final String text = this.expressionViewer.getTextWidget().getText();
+			if (text == null || text.length() == 0) {
+				cancelRequest = true;
+			}
+		}
+		if (cancelRequest) {
+			return;
+		}
+
+		// Cancel previously running threads
+		if (compilationThread != null && !compilationThread.isInterrupted()) {
+			compilationThread.interrupt();
+		}
 		if (evaluationThread != null && !evaluationThread.isInterrupted()) {
 			evaluationThread.interrupt();
 		}
 
+		compileExpression();
+		evaluate();
+	}
+
+	/**
+	 * Evaluates the currently entered expression with the current context.
+	 */
+	private void evaluate() {
 		clearEvaluationMessages();
 
 		InterpreterContext interpreterContext = getInterpreterContext();
@@ -631,8 +643,8 @@ public class InterpreterView extends ViewPart {
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
-			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY, Boolean.valueOf(variableViewer.getControl()
-					.isVisible()));
+			memento.putBoolean(MEMENTO_VARIABLES_VISIBLE_KEY,
+					Boolean.valueOf(variableViewer.getControl().isVisible()));
 		}
 	}
 
@@ -654,12 +666,8 @@ public class InterpreterView extends ViewPart {
 		if (realTime) {
 			realTimeThread = new RealTimeThread();
 
-			final String text = expressionViewer.getTextWidget().getText();
-			if (text != null && text.length() > 0) {
-				// Launch a compilation right from the get-go
-				compileExpression();
-				evaluate();
-			}
+			// Launch a compilation right from the get-go
+			compileAndEvaluate();
 
 			realTimeThread.start();
 		} else {
@@ -887,7 +895,7 @@ public class InterpreterView extends ViewPart {
 		if (partMemento != null) {
 			String expression = partMemento.getString(MEMENTO_EXPRESSION_KEY);
 			if (expression != null) {
-				viewer.getTextWidget().setText(expression);
+				viewer.getDocument().set(expression);
 			}
 		}
 		return viewer;
@@ -986,8 +994,7 @@ public class InterpreterView extends ViewPart {
 		resultSection.setText(InterpreterMessages.getString("interpreter.view.result.section.name")); //$NON-NLS-1$
 
 		Composite resultSectionBody = toolkit.createComposite(resultSection);
-		GridLayout resultLayout = new GridLayout();
-		resultSectionBody.setLayout(resultLayout);
+		resultSectionBody.setLayout(new GridLayout());
 
 		resultViewer = createResultViewer(resultSectionBody);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
@@ -1238,8 +1245,8 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
-	 * Switch this intepreter to the given language. This will also re-title and re-create the viewers of this
-	 * view.
+	 * Switch this interpreter to the given language. This will also re-title and re-create the viewers of
+	 * this view.
 	 * 
 	 * @param selectedLanguage
 	 *            The language to which this interpreter should be switched.
@@ -1256,11 +1263,6 @@ public class InterpreterView extends ViewPart {
 			evaluationThread.interrupt();
 		}
 
-		/*
-		 * We need to remove all actions from the menu : it somehow freeze if we do not. The "trigger" for
-		 * this menu freeze is when we remove all messages from the message manager.
-		 */
-		IContributionItem[] changeLanguageActions = getForm().getMenuManager().getItems();
 		getMessageManager().removeAllMessages();
 
 		// Dispose of the language specific actions
@@ -1311,13 +1313,10 @@ public class InterpreterView extends ViewPart {
 
 			expressionViewer = createExpressionViewer(expressionSectionBody);
 			GridData gridData = new GridData(GridData.FILL_BOTH);
-			final int expressionHeight = 80;
-			gridData.heightHint = expressionHeight;
 			expressionViewer.getControl().setLayoutData(gridData);
 
-			formToolkit.paintBordersFor(expressionSectionBody);
-
 			expressionSectionBody.layout();
+			expressionSection.layout();
 		}
 
 		if (resultSection != null) {
@@ -1328,15 +1327,10 @@ public class InterpreterView extends ViewPart {
 			GridData gridData = new GridData(GridData.FILL_BOTH);
 			resultViewer.getControl().setLayoutData(gridData);
 
-			formToolkit.paintBordersFor(resultSectionBody);
-
 			resultSectionBody.layout();
+			resultSection.layout();
 		}
 
-		// Re-fill the menu now
-		for (IContributionItem action : changeLanguageActions) {
-			getForm().getMenuManager().add(action);
-		}
 		// re-fill the sections' toolbars
 		populateExpressionSectionToolbar(expressionSection);
 		populateResultSectionToolbar(resultSection);
@@ -1424,12 +1418,24 @@ public class InterpreterView extends ViewPart {
 	 * @param viewer
 	 *            The viewer for which to set up the real-time compilation thread.
 	 */
-	protected void setUpRealTimeCompilation(SourceViewer viewer) {
+	protected void setUpRealTimeCompilation(final SourceViewer viewer) {
+		// XText tends to throw us into an infinite loop.
+		// Double-check that text actually changed.
 		viewer.addTextListener(new ITextListener() {
+			private String lastText;
+
 			public void textChanged(TextEvent event) {
 				if (realTimeThread != null) {
-					realTimeThread.reset();
-					realTimeThread.setDirty();
+					boolean ignore = false;
+					String currentText = viewer.getDocument().get();
+					if (lastText != null) {
+						ignore = lastText.equals(currentText);
+					}
+					if (!ignore) {
+						lastText = currentText;
+						realTimeThread.reset();
+						realTimeThread.setDirty();
+					}
 				}
 			}
 		});
@@ -1747,7 +1753,7 @@ public class InterpreterView extends ViewPart {
 			} else if (target instanceof String
 					&& (((String)target).indexOf('\n') >= 0 || ((String)target).indexOf('\r') >= 0)) {
 				GeneratedTextDialog dialog = new GeneratedTextDialog(Display.getCurrent().getActiveShell(),
-						"Evaluation result", (String)target); //$NON-NLS-1$
+						"Evaluation Result", (String)target); //$NON-NLS-1$
 				dialog.open();
 			}
 		}
@@ -2289,8 +2295,7 @@ public class InterpreterView extends ViewPart {
 					 * @see java.lang.Runnable#run()
 					 */
 					public void run() {
-						compileExpression();
-						evaluate();
+						compileAndEvaluate();
 					}
 				});
 			}

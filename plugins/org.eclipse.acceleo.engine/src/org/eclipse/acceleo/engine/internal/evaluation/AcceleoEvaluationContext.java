@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.internal.evaluation;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Maps;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,9 +59,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.expressions.OCLExpression;
 import org.eclipse.ocl.utilities.ASTNode;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Maps;
 
 /**
  * This will hold all necessary variables for the evaluation of an Acceleo module.

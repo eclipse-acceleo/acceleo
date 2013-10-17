@@ -76,8 +76,7 @@ public final class EvaluateAction extends Action {
 	@Override
 	public void run() {
 		if (interpreterView != null) {
-			interpreterView.compileExpression();
-			interpreterView.evaluate();
+			interpreterView.compileAndEvaluate();
 		}
 	}
 }
