@@ -1019,22 +1019,27 @@ public final class AcceleoWorkspaceUtil {
 	 * equinox team has no plan to open it. We're suppressing the warning until plans change. Details in bug
 	 * 271761.
 	 */
+	/*
+	 * FIXME This now fails with Luna... and there is no available workaround. Commenting everything out,
+	 * though this means we no longer support workspace launch of generators.
+	 */
 	private void setBundleClasspath(IProject plugin, Bundle bundle) {
-		final Set<String> classpathEntries = getOutputFolders(plugin);
-		if (classpathEntries.size() > 0) {
-			final org.eclipse.osgi.baseadaptor.BaseData bundleData = (org.eclipse.osgi.baseadaptor.BaseData)((org.eclipse.osgi.framework.internal.core.AbstractBundle)bundle)
-					.getBundleData();
-			final StringBuilder classpath = new StringBuilder();
-			classpath.append(bundleData.getClassPathString()).append(',');
-			final Iterator<String> entryIterator = classpathEntries.iterator();
-			while (entryIterator.hasNext()) {
-				classpath.append(entryIterator.next());
-				if (entryIterator.hasNext()) {
-					classpath.append(',');
-				}
-			}
-			bundleData.setClassPathString(classpath.toString());
-		}
+		// final Set<String> classpathEntries = getOutputFolders(plugin);
+		// if (classpathEntries.size() > 0) {
+		// final org.eclipse.osgi.baseadaptor.BaseData bundleData =
+		// (org.eclipse.osgi.baseadaptor.BaseData)((org.eclipse.osgi.framework.internal.core.AbstractBundle)bundle)
+		// .getBundleData();
+		// final StringBuilder classpath = new StringBuilder();
+		// classpath.append(bundleData.getClassPathString()).append(',');
+		// final Iterator<String> entryIterator = classpathEntries.iterator();
+		// while (entryIterator.hasNext()) {
+		// classpath.append(entryIterator.next());
+		// if (entryIterator.hasNext()) {
+		// classpath.append(',');
+		// }
+		// }
+		// bundleData.setClassPathString(classpath.toString());
+		// }
 	}
 
 	/**
