@@ -130,6 +130,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewSite;
@@ -237,6 +238,9 @@ public class InterpreterView extends ViewPart {
 
 	/** This will hold the real-time evaluation thread. */
 	/* package */RealTimeThread realTimeThread;
+
+	/** Listener reacting to activations of this view. */
+	private IPartListener activationListener;
 
 	/** Content assist activation token. This will be needed to deactivate our handler. */
 	private IHandlerActivation activationTokenContentAssist;
@@ -530,6 +534,8 @@ public class InterpreterView extends ViewPart {
 			currentPage.removePartListener(editorPartListener);
 		}
 
+		getSite().getPage().removePartListener(activationListener);
+
 		super.dispose();
 	}
 
@@ -690,6 +696,8 @@ public class InterpreterView extends ViewPart {
 		contextActivationToken = contextService.activateContext(INTERPRETER_VIEW_CONTEXT_ID);
 
 		eobjectSelectionListener = new EObjectSelectionListener();
+		activationListener = new ActivationListener(this);
+		site.getPage().addPartListener(activationListener);
 		site.getPage().addSelectionListener(eobjectSelectionListener);
 	}
 
@@ -986,8 +994,10 @@ public class InterpreterView extends ViewPart {
 		createSectionToolBar(expressionSection);
 		populateExpressionSectionToolbar(expressionSection);
 
-		toolkit.paintBordersFor(expressionSectionBody);
 		expressionSection.setClient(expressionSectionBody);
+
+		expressionSectionBody.layout();
+		expressionSection.layout();
 	}
 
 	/**
@@ -1102,6 +1112,17 @@ public class InterpreterView extends ViewPart {
 		formBody.setWeights(new int[] {3, 1, });
 
 		createToolBar(getForm());
+	}
+
+	/**
+	 * This allows us to avoid a visual glitch on windows where the expression section has no borders and a
+	 * "black square" in place of its vertical scroll bar. This glitch happened when closing and reopening the
+	 * view without restarting the runtime.
+	 */
+	protected void refreshExpressionSection() {
+		if (!expressionSection.isDisposed()) {
+			expressionSection.layout();
+		}
 	}
 
 	/**
@@ -2622,6 +2643,74 @@ public class InterpreterView extends ViewPart {
 			synchronized(this) {
 				dirty = true;
 			}
+		}
+	}
+
+	/**
+	 * This listener will react to activation events on this view in order to avoid some visual glitches
+	 * appearing when closing then reopening the view.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private static class ActivationListener implements IPartListener {
+		/** This interpreter view. */
+		private final InterpreterView view;
+
+		/**
+		 * Constructs this listener.
+		 * 
+		 * @param view
+		 *            The view which activation we are interested in.
+		 */
+		public ActivationListener(InterpreterView view) {
+			this.view = view;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see IPartListener#partActivated(IWorkbenchPart)
+		 */
+		public void partActivated(IWorkbenchPart part) {
+			if (part == view) {
+				view.refreshExpressionSection();
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see IPartListener#partDeactivated(IWorkbenchPart)
+		 */
+		public void partDeactivated(IWorkbenchPart part) {
+			// Empty implementation
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see IPartListener#partClosed(IWorkbenchPart)
+		 */
+		public void partClosed(IWorkbenchPart part) {
+			// Empty implementation
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see IPartListener#partBroughtToTop(IWorkbenchPart)
+		 */
+		public void partBroughtToTop(IWorkbenchPart part) {
+			// Empty implementation
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see IPartListener#partOpened(IWorkbenchPart)
+		 */
+		public void partOpened(IWorkbenchPart part) {
+			// Empty implementation
 		}
 	}
 
