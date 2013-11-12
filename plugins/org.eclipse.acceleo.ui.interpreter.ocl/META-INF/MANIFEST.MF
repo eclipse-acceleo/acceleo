@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.acceleo.ui.interpreter.ocl;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 3.5.0.qualifier
 Bundle-Activator: org.eclipse.acceleo.ui.interpreter.ocl.OCLInterpreterActivator
 Require-Bundle: org.eclipse.acceleo.ui.interpreter;bundle-version="3.4.1",
  org.eclipse.ocl.examples.xtext.console;bundle-version="3.4.0"
