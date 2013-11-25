@@ -133,9 +133,11 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 				final String str = ((ReferenceEntry)match.getElement()).getMessage();
 				int offset = str.indexOf(this.fVariable.getVariableName());
 
-				edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fVariable.getVariableName()
-						.length(), this.fNewVariableName));
-				this.fChanges.put(file, tfc);
+				if (edit != null) {
+					edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fVariable
+							.getVariableName().length(), this.fNewVariableName));
+					this.fChanges.put(file, tfc);
+				}
 			}
 		}
 
