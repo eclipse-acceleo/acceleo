@@ -122,7 +122,7 @@ public class AcceleoBuilderSettings {
 			ICommand[] commands = desc.getBuildSpec();
 			ICommand command = getCommand(commands);
 			if (command != null) {
-				Object arg = command.getArguments().get(BUILD_COMPLIANCE_KEYWORD);
+				String arg = command.getArguments().get(BUILD_COMPLIANCE_KEYWORD);
 				if (BUILD_STRICT_MTL_COMPLIANCE.equals(arg)) {
 					compliance = BUILD_STRICT_MTL_COMPLIANCE;
 				} else {
@@ -137,7 +137,7 @@ public class AcceleoBuilderSettings {
 				}
 
 				arg = command.getArguments().get(TRIM_POSITION_RESOURCE_KEYWORD);
-				if (arg instanceof Boolean && ((Boolean)arg).booleanValue()) {
+				if (Boolean.parseBoolean(arg)) {
 					trimmedPositions = true;
 				}
 
@@ -253,6 +253,7 @@ public class AcceleoBuilderSettings {
 			args.put(BUILD_COMPLIANCE_KEYWORD, compliance);
 			args.put(BUILD_RESOURCE_KIND, resourceKind);
 			args.put(COMPILATION_PATH_KIND_KEYWORD, compilationKind);
+			args.put(TRIM_POSITION_RESOURCE_KEYWORD, String.valueOf(trimmedPositions));
 			command.setArguments(args);
 			desc.setBuildSpec(commands);
 			project.setDescription(desc, null);
