@@ -33,6 +33,8 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.model.mtl.resource.AcceleoResourceSetImpl;
+import org.eclipse.acceleo.model.mtl.resource.EMtlBinaryResourceImpl;
+import org.eclipse.acceleo.model.mtl.resource.EMtlResourceImpl;
 import org.eclipse.acceleo.parser.AcceleoFile;
 import org.eclipse.acceleo.parser.AcceleoParserInfo;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
@@ -146,6 +148,11 @@ public class AcceleoParser {
 	private boolean usePlatformResourcePath;
 
 	/**
+	 * Indicates that we should trim the position from the emtl files.
+	 */
+	private boolean trimPosition;
+
+	/**
 	 * Cache of the input file to output file mapping.
 	 */
 	private Map<File, File> input2output = new HashMap<File, File>();
@@ -159,9 +166,11 @@ public class AcceleoParser {
 	 *            Indicates if we will use binary resources.
 	 * @param usePlatformResourcePath
 	 *            Indicates if we will use platform:/resource paths to load our dependencies.
+	 * @param trimPosition
+	 *            Indicates if we will trim the positions from the emtl files
 	 */
 	public AcceleoParser(AcceleoProject acceleoProject, boolean useBinaryResources,
-			boolean usePlatformResourcePath) {
+			boolean usePlatformResourcePath, boolean trimPosition) {
 		this.resourceSet.setPackageRegistry(AcceleoPackageRegistry.INSTANCE);
 		AcceleoParserUtils.registerResourceFactories(resourceSet);
 		AcceleoParserUtils.registerPackages(resourceSet);
@@ -169,6 +178,7 @@ public class AcceleoParser {
 		this.acceleoProject = acceleoProject;
 		this.usebinaryResources = useBinaryResources;
 		this.usePlatformResourcePath = usePlatformResourcePath;
+		this.trimPosition = trimPosition;
 	}
 
 	/**
@@ -513,7 +523,7 @@ public class AcceleoParser {
 				File output = dependingAcceleoProject.getOutputFile(dependingModule);
 				if (output != null && !output.exists() && !this.dependenciesToBuild.contains(dependingModule)) {
 					AcceleoParser parser = new AcceleoParser(dependingAcceleoProject,
-							this.usebinaryResources, this.usePlatformResourcePath);
+							this.usebinaryResources, this.usePlatformResourcePath, this.trimPosition);
 					parser.addListeners(this.listeners.toArray(new IParserListener[this.listeners.size()]));
 					parser.setURIHandler(this.uriHandler);
 					parser.addDependencyToBuild(dependingModule);
@@ -673,7 +683,7 @@ public class AcceleoParser {
 			for (IParserListener listener : this.listeners) {
 				listener.fileSaved(file);
 			}
-			
+
 			oResource.save(options);
 			monitor.worked(10);
 			filesBuilt.add(file);
@@ -779,7 +789,7 @@ public class AcceleoParser {
 						fileBuiltByPropagation.clear();
 
 						AcceleoParser parser = new AcceleoParser(dependentAcceleoProject,
-								this.usebinaryResources, this.usePlatformResourcePath);
+								this.usebinaryResources, this.usePlatformResourcePath, this.trimPosition);
 						parser.addListeners(this.listeners
 								.toArray(new IParserListener[this.listeners.size()]));
 						parser.setURIHandler(this.uriHandler);
@@ -807,10 +817,18 @@ public class AcceleoParser {
 	 * @return The resource that will be used for the serialization.
 	 */
 	private Resource createResource(URI oURI, ResourceSet oResourceSet) {
+		Resource resource = null;
 		if (this.usebinaryResources) {
-			return ModelUtils.createBinaryResource(oURI, oResourceSet);
+			resource = ModelUtils.createBinaryResource(oURI, oResourceSet);
+			if (resource instanceof EMtlBinaryResourceImpl) {
+				((EMtlBinaryResourceImpl)resource).setTrimPosition(trimPosition);
+			}
 		}
-		return ModelUtils.createResource(oURI, oResourceSet);
+		resource = ModelUtils.createResource(oURI, oResourceSet);
+		if (resource instanceof EMtlResourceImpl) {
+			((EMtlResourceImpl)resource).setTrimPosition(trimPosition);
+		}
+		return resource;
 	}
 
 	/**

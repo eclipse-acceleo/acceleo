@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
 
@@ -490,7 +490,7 @@ public class AcceleoProjectTests {
 		entries.add(entry);
 		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
-		AcceleoParser parser = new AcceleoParser(project, false, true);
+		AcceleoParser parser = new AcceleoParser(project, false, true, false);
 		parser.buildAll(new BasicMonitor());
 
 		Set<File> emptyFileSet = new LinkedHashSet<File>();

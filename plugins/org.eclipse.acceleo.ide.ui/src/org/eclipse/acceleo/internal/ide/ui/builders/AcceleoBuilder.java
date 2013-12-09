@@ -37,6 +37,7 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.Acceleowizardmodel
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
 import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
+import org.eclipse.acceleo.internal.parser.compiler.AcceleoParser;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
@@ -167,6 +168,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		boolean useBinaryResources = !AcceleoBuilderSettings.BUILD_XMI_RESOURCE.equals(resourceKind);
 		boolean usePlatformResourcePath = AcceleoBuilderSettings.COMPILATION_PLATFORM_RESOURCE
 				.equals(settings.getCompilationKind());
+		boolean trimmedPositions = settings.isTrimmedPositions();
 
 		Set<File> mainFiles = new LinkedHashSet<File>();
 
@@ -178,16 +180,16 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		if (kind == IncrementalProjectBuilder.FULL_BUILD) {
 			// Full build -> build all
 			mainFiles.addAll(buildAll(acceleoProject, project, useBinaryResources, usePlatformResourcePath,
-					monitor));
+					trimmedPositions, monitor));
 		} else {
 			if (this.lastState == null) {
 				// No state -> build all
 				mainFiles.addAll(buildAll(acceleoProject, project, useBinaryResources,
-						usePlatformResourcePath, monitor));
+						usePlatformResourcePath, trimmedPositions, monitor));
 			} else if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
 					|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
 				mainFiles.addAll(this.incrementalBuild(acceleoProject, project, useBinaryResources,
-						usePlatformResourcePath, monitor));
+						usePlatformResourcePath, trimmedPositions, monitor));
 			} else if (kind == IncrementalProjectBuilder.CLEAN_BUILD) {
 				acceleoProject.clean();
 				this.cleanAcceleoMarkers(project);
@@ -202,8 +204,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		// those files.
 		Set<File> fileNotCompiled = acceleoProject.getFileNotCompiled();
 		for (File fileToBuild : fileNotCompiled) {
-			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-					acceleoProject, useBinaryResources, usePlatformResourcePath);
+			AcceleoParser acceleoParser = new AcceleoParser(acceleoProject, useBinaryResources,
+					usePlatformResourcePath, trimmedPositions);
 			Set<File> builtFiles = acceleoParser.buildFile(fileToBuild, BasicMonitor.toMonitor(monitor));
 			this.addAcceleoMarkers(builtFiles, acceleoParser);
 			mainFiles.addAll(acceleoParser.getMainFiles());
@@ -260,21 +262,23 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *            Indicates if we should use the binary resources serialization
 	 * @param usePlatformResourcePath
 	 *            Indicates if we should use platform:/resource paths
+	 * @param trimPosition
+	 *            Indicates that we will trim the positions from the emtl files.
 	 * @param monitor
 	 *            The progress monitor
 	 * @return The files built
 	 */
 	private Set<File> buildAll(org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject,
 			IProject project, boolean useBinaryResources, boolean usePlatformResourcePath,
-			IProgressMonitor monitor) {
+			boolean trimPosition, IProgressMonitor monitor) {
 		Set<File> filesBuilt = new LinkedHashSet<File>();
 
 		this.clearLastState();
 
 		// acceleoProject.clean();
 		this.cleanAcceleoMarkers(project);
-		org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-				acceleoProject, useBinaryResources, usePlatformResourcePath);
+		AcceleoParser acceleoParser = new AcceleoParser(acceleoProject, useBinaryResources,
+				usePlatformResourcePath, trimPosition);
 		Set<File> builtFiles = acceleoParser.buildAll(BasicMonitor.toMonitor(monitor));
 		for (File builtFile : builtFiles) {
 			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
@@ -303,6 +307,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *            Indicates if we should use binary resources serialization
 	 * @param usePlatformResourcePath
 	 *            Indicates if we should use platform:/resources paths
+	 * @param trimPosition
+	 *            Indicates that we will trim the positions from the emtl files.
 	 * @param monitor
 	 *            The progress monitor
 	 * @return The list of the files built
@@ -311,15 +317,15 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 */
 	private Set<File> incrementalBuild(
 			org.eclipse.acceleo.internal.parser.compiler.AcceleoProject acceleoProject, IProject project,
-			boolean useBinaryResources, boolean usePlatformResourcePath, IProgressMonitor monitor)
-			throws CoreException {
+			boolean useBinaryResources, boolean usePlatformResourcePath, boolean trimPosition,
+			IProgressMonitor monitor) throws CoreException {
 		Set<File> filesBuilt = new LinkedHashSet<File>();
 
 		this.clearLastState();
 
 		List<IFile> deltaMembers = this.deltaMembers(getDelta(project), monitor);
-		org.eclipse.acceleo.internal.parser.compiler.AcceleoParser acceleoParser = new org.eclipse.acceleo.internal.parser.compiler.AcceleoParser(
-				acceleoProject, useBinaryResources, usePlatformResourcePath);
+		AcceleoParser acceleoParser = new AcceleoParser(acceleoProject, useBinaryResources,
+				usePlatformResourcePath, trimPosition);
 		Iterator<IFile> it = deltaMembers.iterator();
 		while (it.hasNext() && !monitor.isCanceled()) {
 			File fileToBuild = it.next().getLocation().toFile();
@@ -349,8 +355,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 * @param parser
 	 *            The parser.
 	 */
-	private void addAcceleoMarkers(Set<File> builtFiles,
-			org.eclipse.acceleo.internal.parser.compiler.AcceleoParser parser) {
+	private void addAcceleoMarkers(Set<File> builtFiles, AcceleoParser parser) {
 		for (File builtFile : builtFiles) {
 			try {
 				IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
