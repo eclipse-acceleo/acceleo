@@ -823,7 +823,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 			dynamicModuleFiles.addAll(dynamicAcceleoModulesFiles);
 		}
 		for (File moduleFile : dynamicModuleFiles) {
-			if (moduleFile.exists() && moduleFile.canRead()) {
+			if ((moduleFile.exists() && moduleFile.canRead()) || moduleFile.getPath().startsWith("jar:file:")) { //$NON-NLS-1$
 				try {
 					Resource res = ModelUtils.load(moduleFile, resourceSet).eResource();
 					for (EObject root : res.getContents()) {
