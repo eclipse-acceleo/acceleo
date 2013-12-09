@@ -871,7 +871,7 @@ call : The particular call that is to be converted to an equivalent.
 		/]
 
 [query private followingSibling(object : ecore::EObject) : OclAny =
-	let siblings : Sequence(OclAny) =
+	let siblings : Sequence(ecore::EObject) =
 		object.eContainer().eContents()
 	in
 		if siblings->indexOf(object) = siblings->size() then
