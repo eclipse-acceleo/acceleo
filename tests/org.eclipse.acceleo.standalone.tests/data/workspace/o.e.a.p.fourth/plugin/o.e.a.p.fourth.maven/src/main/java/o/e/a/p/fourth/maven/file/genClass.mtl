@@ -1,0 +1,11 @@
+[module genClass('http://www.eclipse.org/emf/2002/Ecore') extends o::e::a::p::fourth::maven::file::genClassifier/]
+
+[import o::e::a::p::fourth::maven::common::services /]
+
+[template public genFile(anEClass : EClass) ? (not (anEClass.interface))]
+[anEClass.genName()/]
+[/template]
+
+[template public genName(anEClass : EClass) overrides genName]
+yop [anEClass.name/] [anEClass.genService()/]
+[/template]

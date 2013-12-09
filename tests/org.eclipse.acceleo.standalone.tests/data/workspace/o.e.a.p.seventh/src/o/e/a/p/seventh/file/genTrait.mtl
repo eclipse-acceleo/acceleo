@@ -1,0 +1,11 @@
+[module genTrait('http://www.eclipse.org/emf/2002/Ecore') extends o::e::a::p::sixth::file::genClassifier/]
+
+[import o::e::a::p::seventh::common::request/]
+
+[template public genTrait(anEClass : EClass)]
+[anEClass.genName()/]
+[/template]
+
+[template public genName(anEClass : EClass) overrides genName]
+trait [anEClass.name/] [anEClass.genRequest()/]
+[/template]

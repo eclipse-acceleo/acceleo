@@ -1,0 +1,7 @@
+[module request('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import o::e::a::p::seventh::common::common/]
+
+[template public genRequest(anEClass : EClass)]
+my request [anEClass.genCommon()/]
+[/template]

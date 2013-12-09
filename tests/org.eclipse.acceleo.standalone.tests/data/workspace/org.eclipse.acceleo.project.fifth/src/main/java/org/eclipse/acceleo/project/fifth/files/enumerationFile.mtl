@@ -1,4 +1,0 @@
-[module enumerationFile('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::project::fifth::files::commonFile]
-
-[import org::eclipse::acceleo::project::fifth::common::common /]
-[import org::eclipse::acceleo::project::fifth::common::declaration /]

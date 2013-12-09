@@ -1,0 +1,6 @@
+[module operations('http://www.eclipse.org/emf/2002/Ecore')]
+
+[import o::e::a::p::fifth::common::behavior /]
+[import o::e::a::p::fifth::common::common /]
+[import o::e::a::p::fifth::common::declaration /]
+[import o::e::a::p::fifth::request::request /]

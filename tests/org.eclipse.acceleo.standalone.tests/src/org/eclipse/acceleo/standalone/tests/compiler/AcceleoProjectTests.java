@@ -28,7 +28,6 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.collection.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertTrue;
 
@@ -45,7 +44,7 @@ public class AcceleoProjectTests {
 	@BeforeClass
 	public static void setUp() {
 		String curDir = System.getProperty("user.dir");
-		firstProjectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.first");
+		firstProjectRoot = new File(curDir, "data/workspace/o.e.a.p.first");
 		assertTrue(firstProjectRoot.exists());
 
 		File inputDirectory = new File(firstProjectRoot, "src");
@@ -55,7 +54,7 @@ public class AcceleoProjectTests {
 		entries.add(entry);
 		firstProject = new AcceleoProject(firstProjectRoot, entries);
 
-		fifthProjectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		fifthProjectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		assertTrue(fifthProjectRoot.exists());
 
 		inputDirectory = new File(fifthProjectRoot, "src/main/java");
@@ -75,8 +74,11 @@ public class AcceleoProjectTests {
 		for (File module : allAcceleoModules) {
 			moduleNames.add(module.getName());
 		}
-		assertThat(moduleNames, hasItems("main.mtl", "genInterface.mtl", "genClassifier.mtl", "genClass.mtl",
-				"services.mtl"));
+		assertTrue(moduleNames.contains("main.mtl"));
+		assertTrue(moduleNames.contains("genInterface.mtl"));
+		assertTrue(moduleNames.contains("genClassifier.mtl"));
+		assertTrue(moduleNames.contains("genClass.mtl"));
+		assertTrue(moduleNames.contains("services.mtl"));
 	}
 
 	@Test
@@ -205,7 +207,11 @@ public class AcceleoProjectTests {
 		File services = new File(firstProjectRoot,
 				"src/org/eclipse/acceleo/project/first/common/services.mtl");
 
-		assertThat(children, hasItems(main, genClass, genClassifier, genInterface, services));
+		assertTrue(children.contains(main));
+		assertTrue(children.contains(genClass));
+		assertTrue(children.contains(genClassifier));
+		assertTrue(children.contains(genInterface));
+		assertTrue(children.contains(services));
 	}
 
 	@Test
@@ -404,56 +410,61 @@ public class AcceleoProjectTests {
 
 		Set<File> filesDependingOnAttributes = fifthProject.getFilesDependingOn(attributes);
 		assertThat(filesDependingOnAttributes.size(), is(2));
-		assertThat(filesDependingOnAttributes, hasItems(classFile, interfaceFile));
+		testContainsItems(filesDependingOnAttributes, classFile, interfaceFile);
 
 		Set<File> filesDependingOnBehavior = fifthProject.getFilesDependingOn(behavior);
 		assertThat(filesDependingOnBehavior.size(), is(2));
-		assertThat(filesDependingOnBehavior, hasItems(operations, classFile));
+		testContainsItems(filesDependingOnBehavior, operations, classFile);
 
 		Set<File> filesDependingOnCommon = fifthProject.getFilesDependingOn(common);
 		assertThat(filesDependingOnCommon.size(), is(10));
-		assertThat(filesDependingOnCommon, hasItems(attributes, behavior, declaration, imports, operations,
-				type, classFile, commonFile, enumerationFile, interfaceFile));
+		testContainsItems(filesDependingOnCommon, attributes, behavior, declaration, imports, operations, type, classFile, commonFile, enumerationFile, interfaceFile);
 
 		Set<File> filesDependingOnDeclaration = fifthProject.getFilesDependingOn(declaration);
 		assertThat(filesDependingOnDeclaration.size(), is(6));
-		assertThat(filesDependingOnDeclaration, hasItems(attributes, behavior, operations, classFile,
-				enumerationFile, interfaceFile));
+		testContainsItems(filesDependingOnDeclaration, attributes, behavior, operations, classFile,
+				enumerationFile, interfaceFile);
 
 		Set<File> filesDependingOnImports = fifthProject.getFilesDependingOn(imports);
 		assertThat(filesDependingOnImports.size(), is(2));
-		assertThat(filesDependingOnImports, hasItems(classFile, interfaceFile));
+		testContainsItems(filesDependingOnImports, classFile, interfaceFile);
 
 		Set<File> filesDependingOnOperations = fifthProject.getFilesDependingOn(operations);
 		assertThat(filesDependingOnOperations.size(), is(2));
-		assertThat(filesDependingOnOperations, hasItems(classFile, interfaceFile));
+		testContainsItems(filesDependingOnOperations, classFile, interfaceFile);
 
 		Set<File> filesDependingOnProperties = fifthProject.getFilesDependingOn(properties);
 		assertThat(filesDependingOnProperties.size(), is(2));
-		assertThat(filesDependingOnProperties, hasItems(imports, type));
+		testContainsItems(filesDependingOnProperties, imports, type);
 
 		Set<File> filesDependingOnType = fifthProject.getFilesDependingOn(type);
 		assertThat(filesDependingOnType.size(), is(6));
-		assertThat(filesDependingOnType, hasItems(attributes, behavior, declaration, imports, classFile,
-				interfaceFile));
+		testContainsItems(filesDependingOnType, attributes, behavior, declaration, imports, classFile,
+				interfaceFile);
 
 		Set<File> filesDependingOnWorkflow = fifthProject.getFilesDependingOn(workflow);
 		assertThat(filesDependingOnWorkflow.size(), is(0));
 
 		Set<File> filesDependingOnRequest = fifthProject.getFilesDependingOn(request);
 		assertThat(filesDependingOnRequest.size(), is(5));
-		assertThat(filesDependingOnRequest, hasItems(declaration, imports, operations, classFile, validator));
+		testContainsItems(filesDependingOnRequest, declaration, imports, operations, classFile, validator);
 
 		Set<File> filesDependingOnCommonServices = fifthProject.getFilesDependingOn(commonServices);
 		assertThat(filesDependingOnCommonServices.size(), is(5));
-		assertThat(filesDependingOnCommonServices, hasItems(common, declaration, imports, classFile,
-				commonFile));
+		testContainsItems(filesDependingOnCommonServices, common, declaration, imports, classFile,
+				commonFile);
 
 		Set<File> filesDependingOnLogger = fifthProject.getFilesDependingOn(logger);
 		assertThat(filesDependingOnLogger.size(), is(0));
 
 		Set<File> filesDependingOnValidator = fifthProject.getFilesDependingOn(validator);
 		assertThat(filesDependingOnValidator.size(), is(0));
+	}
+	
+	private void testContainsItems(Set<File> collection, File... files) {
+		for (File file : files) {
+			assertTrue(collection.contains(file));
+		}
 	}
 
 	@Test

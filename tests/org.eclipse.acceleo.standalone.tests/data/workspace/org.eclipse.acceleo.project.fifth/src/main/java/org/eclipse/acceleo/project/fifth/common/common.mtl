@@ -1,3 +1,0 @@
-[module common('http://www.eclipse.org/emf/2002/Ecore')]
-
-[import org::eclipse::acceleo::project::fifth::services::commonServices /]

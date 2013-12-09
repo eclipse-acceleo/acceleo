@@ -1,0 +1,13 @@
+[module workflow('http://www.eclipse.org/emf/2002/Ecore')]
+
+[import o::e::a::p::fifth::files::classFile /]
+[import o::e::a::p::fifth::files::commonFile /]
+[import o::e::a::p::fifth::files::enumerationFile /]
+[import o::e::a::p::fifth::files::interfaceFile /]
+
+[template public generateClass(anEClass : EClass)]
+[comment @main /]
+[file ('result.txt', false, 'UTF-8')]
+
+[/file]
+[/template]

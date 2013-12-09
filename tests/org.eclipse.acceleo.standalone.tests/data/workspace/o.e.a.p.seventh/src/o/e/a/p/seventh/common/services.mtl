@@ -1,0 +1,5 @@
+[module services('http://www.eclipse.org/emf/2002/Ecore') extends o::e::a::p::sixth::common::services/]
+
+[template public genService(anEClass : EClass) overrides genService]
+overridden my service
+[/template]

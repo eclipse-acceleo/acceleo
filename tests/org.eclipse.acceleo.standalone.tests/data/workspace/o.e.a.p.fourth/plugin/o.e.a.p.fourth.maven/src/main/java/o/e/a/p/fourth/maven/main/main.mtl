@@ -1,0 +1,8 @@
+[module main('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import o::e::a::p::fourth::maven::file::genClass/]
+[import o::e::a::p::fourth::maven::file::genInterface/]
+
+[template public main(anEClass : EClass)]
+[anEClass.genFile()/]
+[/template]

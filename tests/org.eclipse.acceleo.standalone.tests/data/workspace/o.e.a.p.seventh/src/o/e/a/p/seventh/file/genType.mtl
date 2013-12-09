@@ -1,0 +1,11 @@
+[module genType('http://www.eclipse.org/emf/2002/Ecore') extends o::e::a::p::sixth::file::genInterface/]
+
+[import o::e::a::p::seventh::file::genTrait/]
+
+[template public genFile(anEClass : EClass) overrides genInterface]
+[anEClass.genName()/] overridden [/anEClass.genTrait()]
+[/template]
+
+[template public genName(anEClass : EClass) overrides genName]
+overriden [anEClass.name/]
+[/template]

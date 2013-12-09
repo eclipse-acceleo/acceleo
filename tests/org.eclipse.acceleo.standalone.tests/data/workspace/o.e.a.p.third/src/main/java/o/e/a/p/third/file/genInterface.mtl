@@ -1,0 +1,9 @@
+[module genInterface('http://www.eclipse.org/emf/2002/Ecore') extends o::e::a::p::third::file::genClassifier/]
+
+[template public genFile(anEClass : EClass) ? (anEClass.interface)]
+[anEClass.genName()/]
+[/template]
+
+[template public genName(anEClass : EClass) overrides genName]
+yopyop [anEClass.name/]
+[/template]
