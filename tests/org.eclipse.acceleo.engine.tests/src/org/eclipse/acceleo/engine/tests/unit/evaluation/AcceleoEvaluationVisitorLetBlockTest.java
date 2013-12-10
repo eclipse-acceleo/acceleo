@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import java.io.File;
 import java.util.Map;
 
@@ -21,6 +24,7 @@ import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.Variable;
+import org.junit.Test;
 
 /**
  * This will test the behavior of let blocks evaluation.
@@ -52,6 +56,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a let block with its condition being a valid instanceof.
 	 */
+	@Test
 	public void testLetBlockBody() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEObject());
@@ -85,6 +90,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let has
 	 * been set for the let, its condition also being an invalid instanceof.
 	 */
+	@Test
 	public void testLetBlockElse() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
@@ -118,6 +124,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let hasn't
 	 * been set for the let.
 	 */
+	@Test
 	public void testLetBlockElseNoElseLet() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
@@ -141,6 +148,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let has
 	 * been set for the let, its condition being a valid instanceof.
 	 */
+	@Test
 	public void testLetBlockElseLet() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
@@ -174,6 +182,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let has
 	 * been set for the let, its condition being null.
 	 */
+	@Test
 	public void testLetBlockElseLetNullCondition() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
@@ -206,6 +215,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a let block with its condition being an invalid instanceof. An else let has
 	 * been set for the let, its condition being undefined.
 	 */
+	@Test
 	public void testLetBlockElseLetUndefinedCondition() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
@@ -238,6 +248,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a let block with its condition being null.
 	 */
+	@Test
 	public void testLetBlockNullCondition() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());
@@ -259,6 +270,7 @@ public class AcceleoEvaluationVisitorLetBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a let block with its condition being undefined.
 	 */
+	@Test
 	public void testLetBlockUndefinedCondition() {
 		final LetBlock letBlock = getDummyLetBlock();
 		letBlock.getLetVariable().setType(EcorePackage.eINSTANCE.getEAttribute());

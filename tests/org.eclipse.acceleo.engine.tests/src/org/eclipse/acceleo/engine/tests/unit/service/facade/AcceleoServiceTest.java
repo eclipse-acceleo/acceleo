@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.service.facade;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,8 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -33,6 +38,8 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will be used to test the behavior of the Acceleo engine facade.
@@ -94,6 +101,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * {@link AcceleoService#doGenerate(java.util.Map, EObject, java.io.File, boolean, org.eclipse.emf.common.util.Monitor)}
 	 * in generation mode (preview = false).
 	 */
+	@Test
 	public void testDoGenerateModuleMapNoPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ModuleMap"));
 		referenceRoot = new File(getReferenceRootPath("ModuleMap"));
@@ -124,6 +132,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * Checks that the behavior when sending null as the generation root when not in preview mode doesn't
 	 * change.
 	 */
+	@Test
 	public void testDoGenerateModuleMapNoPreviewNoGenerationRoot() {
 		try {
 			new AcceleoService().doGenerate(getTemplateMap(), inputModel, null, new BasicMonitor());
@@ -136,6 +145,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that the behavior when sending null input EObjects doesn't change.
 	 */
+	@Test
 	public void testDoGenerateModuleMapNullInput() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(getTemplateMap(), null, null, new BasicMonitor());
@@ -148,6 +158,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that the behavior when sending null maps doesn't change.
 	 */
+	@Test
 	public void testDoGenerateModuleMapNullMap() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate((Map<Module, Set<String>>)null, inputModel, null,
@@ -163,6 +174,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * {@link AcceleoService#doGenerate(java.util.Map, EObject, java.io.File, boolean, org.eclipse.emf.common.util.Monitor)}
 	 * in preview mode.
 	 */
+	@Test
 	public void testDoGenerateModuleMapPreview() {
 		final Map<Module, Set<String>> templates = getTemplateMap();
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(templates,
@@ -191,6 +203,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * Checks that trying to call a template which name doesn't match with any of the templates in the given
 	 * module fails.
 	 */
+	@Test
 	public void testDoGenerateModuleMapUnmatchedTemplate() {
 		try {
 			final Map<Module, Set<String>> templates = new HashMap<Module, Set<String>>(1);
@@ -209,6 +222,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * java.lang.String, EObject, List<? extends Object>, java.io.File, boolean,
 	 * org.eclipse.emf.common.util.Monitor)} in generation mode (preview = false).
 	 */
+	@Test
 	public void testDoGenerateModuleNoPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Module"));
 		referenceRoot = new File(getReferenceRootPath("Module"));
@@ -238,6 +252,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * Checks that the behavior when sending null as the generation root when not in preview mode doesn't
 	 * change.
 	 */
+	@Test
 	public void testDoGenerateModuleNoPreviewNoGenerationRoot() {
 		try {
 			new AcceleoService().doGenerate(module1, "template_1_1", inputModel, null, new BasicMonitor());
@@ -250,6 +265,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that the behavior when sending null input EObjects doesn't change.
 	 */
+	@Test
 	public void testDoGenerateModuleNullInput() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(module1, "template_1_1", null, null,
@@ -263,6 +279,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that the behavior when sending null as the module doesn't change.
 	 */
+	@Test
 	public void testDoGenerateModuleNullModule() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate((Module)null, "template_1_1", inputModel, null,
@@ -278,6 +295,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * java.lang.String, EObject, List<? extends Object>, java.io.File, boolean,
 	 * org.eclipse.emf.common.util.Monitor)} in preview mode.
 	 */
+	@Test
 	public void testDoGenerateModulePreview() {
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module1,
 				"template_1_1", inputModel, null, null);
@@ -299,6 +317,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Calls a public template which argument is not the same as the input model.
 	 */
+	@Test
 	public void testDoGenerateModulePreviewContainedTarget() {
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module1,
 				"template_1_2", inputModel, null, null);
@@ -320,6 +339,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that trying to call a private template indeed fails.
 	 */
+	@Test
 	public void testDoGenerateModulePrivateTemplate() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(module1, "template_1_3", inputModel, null,
@@ -334,6 +354,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * Checks that trying to call a template which name doesn't match with any of the templates in the given
 	 * module fails.
 	 */
+	@Test
 	public void testDoGenerateModuleUnmatchedTemplate() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(module1, "unmatched_name", inputModel, null,
@@ -347,6 +368,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that trying a direct call on an unmatched template fails.
 	 */
+	@Test
 	public void testDoGenerateTemplateModuleUnmatchedTemplate() {
 		try {
 			arguments.add("test");
@@ -363,6 +385,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * Checks that trying to call a private template with multiple arguments defined without passing them
 	 * fails.
 	 */
+	@Test
 	public void testDoGenerateTemplateMultipleArguments() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(multipleArgumentTemplate, inputModel, null,
@@ -378,6 +401,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * {@link AcceleoService#doGenerate(org.eclipse.acceleo.model.mtl.Template, EObject, java.io.File, boolean, org.eclipse.emf.common.util.Monitor)}
 	 * in generation mode (preview = false).
 	 */
+	@Test
 	public void testDoGenerateTemplateNoPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Template"));
 		referenceRoot = new File(getReferenceRootPath("Template"));
@@ -407,6 +431,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * Checks that the behavior when sending null as the generation root when not in preview mode doesn't
 	 * change.
 	 */
+	@Test
 	public void testDoGenerateTemplateNoPreviewNoGenerationRoot() {
 		try {
 			new AcceleoService().doGenerate(publicTemplate, inputModel, null, new BasicMonitor());
@@ -419,6 +444,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that the behavior when sending null input EObjects doesn't change.
 	 */
+	@Test
 	public void testDoGenerateTemplateNullInput() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(publicTemplate, null, null, new BasicMonitor());
@@ -431,6 +457,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that the behavior when sending null as the template doesn't change.
 	 */
+	@Test
 	public void testDoGenerateTemplateNullTemplate() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate((Template)null, inputModel, null,
@@ -446,6 +473,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * {@link AcceleoService#doGenerate(org.eclipse.acceleo.model.mtl.Template, EObject, java.io.File, boolean, org.eclipse.emf.common.util.Monitor)}
 	 * in preview mode.
 	 */
+	@Test
 	public void testDoGenerateTemplatePreview() {
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(publicTemplate,
 				inputModel, null, null);
@@ -467,6 +495,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that trying to call a private template indeed fails.
 	 */
+	@Test
 	public void testDoGenerateTemplatePrivateTemplate() {
 		try {
 			new AcceleoService(previewStrategy).doGenerate(privateTemplate, inputModel, null,
@@ -482,8 +511,9 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		// shortcuts inherited behavior
 		String modulePath = "data/Service/Facade/service_module_1.mtl";
 		Resource modelResource = parse(modulePath);
@@ -491,7 +521,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 		if (rootModule instanceof Module) {
 			module1 = (Module)rootModule;
 		} else {
-			Assert.fail("Couldn't load the input template " + modulePath); //$NON-NLS-1$
+			fail("Couldn't load the input template " + modulePath); //$NON-NLS-1$
 		}
 		for (ModuleElement element : module1.getOwnedModuleElement()) {
 			if (element instanceof Template) {
@@ -509,7 +539,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 		if (rootModule instanceof Module) {
 			module2 = (Module)rootModule;
 		} else {
-			Assert.fail("Couldn't load the input template " + modulePath); //$NON-NLS-1$
+			fail("Couldn't load the input template " + modulePath); //$NON-NLS-1$
 		}
 		for (ModuleElement element : module2.getOwnedModuleElement()) {
 			if (element instanceof Template) {

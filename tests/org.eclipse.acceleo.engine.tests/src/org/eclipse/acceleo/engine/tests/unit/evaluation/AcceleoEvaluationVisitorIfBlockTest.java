@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import java.io.File;
 import java.util.Map;
 
@@ -18,6 +21,7 @@ import org.eclipse.acceleo.model.mtl.IfBlock;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.Test;
 
 /**
  * This will test the behavior of if blocks evaluation.
@@ -43,6 +47,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	/**
 	 * Tests the evaluation of an if block with its condition evaluating to true.
 	 */
+	@Test
 	public void testIfBlockBody() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->size() > 0", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -72,6 +77,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	 * Tests the evaluation of an if block with its condition evaluating to false. An "Else if" has been set,
 	 * but its condition also evaluated to false.
 	 */
+	@Test
 	public void testIfBlockElse() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->size() > 0", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -101,6 +107,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	 * Tests the evaluation of an if block with its condition evaluating to false. An "Else if" has been set,
 	 * and its condition evaluates to true.
 	 */
+	@Test
 	public void testIfBlockElseIf() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->size() > 0", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -130,6 +137,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	 * Tests the evaluation of an if block with its condition evaluating to false. An "Else if" has been set,
 	 * and its condition is null.
 	 */
+	@Test
 	public void testIfBlockElseIfNullCondition() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->size() > 0", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -160,6 +168,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	 * Tests the evaluation of an if block with its condition evaluating to false. An "Else if" has been set,
 	 * and its condition is undefined.
 	 */
+	@Test
 	public void testIfBlockElseIfUndefinedCondition() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->size() > 0", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -187,6 +196,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	/**
 	 * Tests the evaluation of an if block with its condition null.
 	 */
+	@Test
 	public void testIfBlockNullCondition() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -207,6 +217,7 @@ public class AcceleoEvaluationVisitorIfBlockTest extends AbstractAcceleoEvaluati
 	/**
 	 * Tests the evaluation of an if block with its condition undefined.
 	 */
+	@Test
 	public void testIfBlockUndefinedCondition() {
 		final IfBlock ifBlock = getDummyIfBlock();
 		ifBlock.setIfExpr(createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$

@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 /**
  * Tests the behavior of template invocations.
@@ -47,6 +51,7 @@ public class DualTemplateInvocationTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testDualTemplateInvocation() throws IOException {
 		generationRoot = new File(getGenerationRootPath("DualTemplateInvocation")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("DualTemplateInvocation")); //$NON-NLS-1$

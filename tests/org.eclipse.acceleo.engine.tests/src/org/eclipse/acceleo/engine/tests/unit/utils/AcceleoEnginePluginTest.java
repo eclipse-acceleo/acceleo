@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.utils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
@@ -24,6 +25,9 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for the engine plug-in activator. Will mainly test behavior of utility methods it declares.
@@ -31,7 +35,7 @@ import org.eclipse.core.runtime.Status;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class AcceleoEnginePluginTest extends TestCase {
+public class AcceleoEnginePluginTest {
 	/** Error messages to use for these tests. */
 	private static final String[] ERROR_MESSAGES = {"NullPointerException has been thrown.",
 			"failed to build.", "\u00ec", "test", };
@@ -58,6 +62,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties with key
 	 * &quot;AcceleoEnginePlugin.JavaException&quot;.
 	 */
+	@Test
 	public void testLogExceptionArbitraryException() {
 		boolean blocker = false;
 		for (String message : ERROR_MESSAGES) {
@@ -90,6 +95,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * {@link CoreException} to be logged. Expects the exception to be logged with the specified error message
 	 * and severity.
 	 */
+	@Test
 	public void testLogExceptionCoreException() {
 		for (int severity : ERROR_SEVERITIES) {
 			for (String message : ERROR_MESSAGES) {
@@ -115,6 +121,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * Tests the behavior of {@link AcceleoEnginePlugin#log(Exception, boolean)} with <code>null</code> as the
 	 * exception argument. Expects a {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testLogExceptionNullException() {
 		try {
 			AcceleoEnginePlugin.log((Exception)null, true);
@@ -131,6 +138,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * org.eclipse.acceleo.engine.acceleoenginemessages.properties with key
 	 * &quot;AcceleoEnginePlugin.ElementNotFound&quot;.
 	 */
+	@Test
 	public void testLogExceptionNullPointerException() {
 		boolean blocker = false;
 		for (String message : ERROR_MESSAGES) {
@@ -165,6 +173,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * specified in org.eclipse.acceleo.engine.acceleoenginemessages.properties with key
 	 * &quot;AcceleoEnginePlugin.UnexpectedException&quot;.
 	 */
+	@Test
 	public void testLogMessageNullMessage() {
 		boolean blocker = false;
 		for (int i = 0; i < ERROR_MESSAGES.length; i++) {
@@ -197,6 +206,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * Tests the behavior of {@link AcceleoEnginePlugin#log(String, boolean)} with a valid message to be
 	 * logged. Expects a new entry to be logged with the given severity and message.
 	 */
+	@Test
 	public void testLogMessageValidMessage() {
 		boolean blocker = false;
 		for (String message : ERROR_MESSAGES) {
@@ -226,6 +236,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * Tests the behavior of {@link AcceleoEnginePlugin#log(IStatus)} with <code>null</code> as the status to
 	 * be logged. Expects a {@link NullPointerException} to be thrown with the given status' error message.
 	 */
+	@Test
 	public void testLogStatusNullStatus() {
 		try {
 			AcceleoEnginePlugin.log(null);
@@ -239,6 +250,7 @@ public class AcceleoEnginePluginTest extends TestCase {
 	 * Tests the behavior of {@link AcceleoEnginePlugin#log(IStatus)} with a valid status to be logged.
 	 * Expects the status to be logged with the specified severity, error message and source plugin.
 	 */
+	@Test
 	public void testLogStatusValidStatus() {
 		for (int severity : ERROR_SEVERITIES) {
 			for (String message : ERROR_MESSAGES) {
@@ -259,13 +271,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() {
+	@Before
+	public void setUp() {
 		// Creates a log listener that will update the field loggedStatus as needed
 		logListener = new ILogListener() {
 			public void logging(IStatus status, String message) {
@@ -286,13 +293,8 @@ public class AcceleoEnginePluginTest extends TestCase {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() {
+	@After
+	public void tearDown() {
 		AcceleoEnginePlugin.getDefault().getLog().removeLogListener(logListener);
 		if (temporaryErr != null) {
 			temporaryErr.close();

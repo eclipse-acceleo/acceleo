@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import java.io.File;
 import java.util.Map;
 
@@ -20,6 +23,7 @@ import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.Variable;
+import org.junit.Test;
 
 /**
  * This will test the behavior of for blocks evaluation.
@@ -48,6 +52,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block which iteration is a valid collection
 	 */
+	@Test
 	public void testForBlockCollectionIteration() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -69,6 +74,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of an "after" statement on a for block with a collection iteration.
 	 */
+	@Test
 	public void testForBlockCollectionIterationAfter() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -91,6 +97,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a "before" statement on a for block with a collection iteration.
 	 */
+	@Test
 	public void testForBlockCollectionIterationBefore() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -113,6 +120,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of an "each" statement on a for block with a collection iteration.
 	 */
+	@Test
 	public void testForBlockCollectionIterationEach() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -136,6 +144,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a for block with all possible statements filled in (each, before, after,
 	 * guard).
 	 */
+	@Test
 	public void testForBlockCollectionIterationFull() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -160,6 +169,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block on a collection iteration with a null guard.
 	 */
+	@Test
 	public void testForBlockCollectionIterationNullGuard() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -183,6 +193,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block on a collection iteration with an undefined guard.
 	 */
+	@Test
 	public void testForBlockCollectionIterationUndefinedGuard() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -207,6 +218,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block with a null iteration.
 	 */
+	@Test
 	public void testForBlockNullIteration() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -228,6 +240,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block with an undefined iteration.
 	 */
+	@Test
 	public void testForBlockUndefinedIteration() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -250,6 +263,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block with a single element as its iteration.
 	 */
+	@Test
 	public void testForBlockUniqueIteration() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -271,6 +285,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of an "after" statement on a for block with a single element iteration.
 	 */
+	@Test
 	public void testForBlockUniqueIterationAfter() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -293,6 +308,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a "before" statement on a for block with a single element iteration.
 	 */
+	@Test
 	public void testForBlockUniqueIterationBefore() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -315,6 +331,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of an "each" statement on a for block with a single element iteration.
 	 */
+	@Test
 	public void testForBlockUniqueIterationEach() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -339,6 +356,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	 * Tests the evaluation of a for block with all possible statements filled in (each, before, after,
 	 * guard).
 	 */
+	@Test
 	public void testForBlockUniqueIterationFull() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -363,6 +381,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block on a single element iteration with a null guard.
 	 */
+	@Test
 	public void testForBlockUniqueIterationNullGuard() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -386,6 +405,7 @@ public class AcceleoEvaluationVisitorForBlockTest extends AbstractAcceleoEvaluat
 	/**
 	 * Tests the evaluation of a for block on a single element iteration with an undefined guard.
 	 */
+	@Test
 	public void testForBlockUniqueIterationUndefinedGuard() {
 		final ForBlock forBlock = getDummyForBlock();
 		forBlock.setIterSet(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$

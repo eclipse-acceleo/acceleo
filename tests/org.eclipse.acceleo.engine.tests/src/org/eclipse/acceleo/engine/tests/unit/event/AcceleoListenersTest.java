@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.event;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -23,6 +27,7 @@ import org.eclipse.acceleo.model.mtl.Block;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.junit.Test;
 
 /**
  * This test allows us to check the behavior of the listeners that can be set up on the Acceleo generation
@@ -57,6 +62,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testAcceleoGenerationListener() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Listeners")); //$NON-NLS-1$
 
@@ -91,6 +97,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testAcceleoGenerationEvent() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Events")); //$NON-NLS-1$
 

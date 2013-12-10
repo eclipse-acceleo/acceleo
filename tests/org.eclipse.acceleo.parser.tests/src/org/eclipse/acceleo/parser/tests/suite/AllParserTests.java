@@ -86,7 +86,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ForBlockTest.class, IfBlockTest.class, LetBlockTest.class, FileBlockTest.class, TraceBlockTest.class,
 		MacroTest.class, QueryTest.class, VisibilityKindTest.class, OpenModeKindTest.class,
 		CstAdapterFactoryTest.class, CstFactoryTest.class, CstSwitchTest.class, })
-public class AllTests {
+public class AllParserTests {
 
 	/**
 	 * Launches the test with the given arguments.
@@ -104,7 +104,7 @@ public class AllTests {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		return new JUnit4TestAdapter(AllTests.class);
+		return new JUnit4TestAdapter(AllParserTests.class);
 	}
 
 }

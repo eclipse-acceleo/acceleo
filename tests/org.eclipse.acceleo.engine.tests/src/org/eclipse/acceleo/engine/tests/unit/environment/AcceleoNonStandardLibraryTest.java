@@ -11,7 +11,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +54,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.OCL;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo non standard library's operations.
@@ -101,11 +111,16 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
 		// only used for initialization
-		generationRoot = new File(getGenerationRootPath("NonStdLib"));
+		try {
+			generationRoot = new File(getGenerationRootPath("NonStdLib"));
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new AcceleoPropertiesLookup(),
 				previewStrategy, new BasicMonitor());
@@ -139,8 +154,9 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#tearDown()
 	 */
+	@After
 	@Override
-	protected void tearDown() {
+	public void tearDown() {
 		factory.dispose();
 	}
 
@@ -150,6 +166,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the containers of the given object.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyAncestorsUnParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS);
@@ -183,6 +200,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the containers of the given type for the given object.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyAncestorsParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_ANCESTORS);
@@ -216,6 +234,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * {@link EObject#eAllContents()}.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyEAllContentsUnparameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS);
@@ -254,6 +273,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * {@link EObject#eAllContents()} of ther given type.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyEAllContentsParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EALLCONTENTS);
@@ -297,6 +317,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the Objects that have a reference towards self.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyEInverseUnparameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE);
@@ -333,6 +354,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * of the given type.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyEInverseParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_EINVERSE);
@@ -366,6 +388,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the siblings of the given object, excluding self.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnySiblingsUnparameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
@@ -404,6 +427,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the other roots of the given object's resource, excluding self.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnySiblingsUnparameterizableResourceRoot() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
@@ -437,6 +461,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to contain all of the other roots of the given object's resource, excluding self.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnySiblingsUnparameterizableResourceRootWithCrossContainment() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
@@ -472,6 +497,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * inferred results.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyInvoke() {
 		final Resource resource = new ResourceImpl();
 		resource.setURI(URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
@@ -550,6 +576,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * self.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnySiblingsParameterizable() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_EOBJECT_NAME,
 				AcceleoNonStandardLibrary.OPERATION_EOBJECT_SIBLINGS);
@@ -586,6 +613,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to be the same as a call to Object#toString() on the receiver.
 	 * </p>
 	 */
+	@Test
 	public void testOclAnyToString() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.TYPE_OCLANY_NAME,
 				AcceleoNonStandardLibrary.OPERATION_OCLANY_TOSTRING);
@@ -630,6 +658,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to be the same as {@link String#contains(CharSequence)}.
 	 * </p>
 	 */
+	@Test
 	public void testStringContains() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_CONTAINS);
@@ -690,6 +719,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to be the same as {@link String#endsWith(String)}.
 	 * </p>
 	 */
+	@Test
 	public void testStringEndsWith() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_ENDSWITH);
@@ -748,6 +778,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to be the same as {@link String#replaceFirst(String, String)}.
 	 * </p>
 	 */
+	@Test
 	public void testStringReplace() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_REPLACE);
@@ -794,6 +825,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to be the same as {@link String#replaceAll(String, String)}.
 	 * </p>
 	 */
+	@Test
 	public void testStringReplaceAll() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_REPLACEALL);
@@ -840,6 +872,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the result to be the same as {@link String#startsWith(String)}.
 	 * </p>
 	 */
+	@Test
 	public void testStringStartsWith() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_STARTSWITH);
@@ -900,6 +933,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * {@link String#replace(CharSequence, CharSequence)}.
 	 * </p>
 	 */
+	@Test
 	public void testStringSubstituteAll() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_SUBSTITUTEALL);
@@ -944,6 +978,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects the behavior to mimic that of the {@link StringTokenizer}.
 	 * </p>
 	 */
+	@Test
 	@SuppressWarnings("unchecked")
 	public void testStringTokenize() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
@@ -973,6 +1008,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "trim()" operation on String.
 	 */
+	@Test
 	public void testStringTrim() {
 		EOperation operation = getOperation(AcceleoNonStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoNonStandardLibrary.OPERATION_STRING_TRIM);
@@ -991,6 +1027,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects an {@link UnsupportedOperationException} to be thrown with an accurate error message.
 	 * </p>
 	 */
+	@Test
 	public void testUndefinedOperation() {
 		final EOperation operation = EcoreFactory.eINSTANCE.createEOperation();
 		operation.setName("undefinedOperation");

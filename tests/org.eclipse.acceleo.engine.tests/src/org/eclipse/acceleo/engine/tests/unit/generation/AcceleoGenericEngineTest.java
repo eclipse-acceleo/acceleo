@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.generation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +34,8 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.VisibilityKind;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will be used to test the behavior of the generic Acceleo engine.
@@ -104,6 +112,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateGuardedTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("GuardedTemplate"));
 
@@ -132,6 +141,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateGuardedTemplateMismatchingArgs() throws IOException {
 		generationRoot = new File(getGenerationRootPath("GuardedTemplate"));
 		try {
@@ -160,6 +170,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateNullArgs() throws IOException {
 		generationRoot = new File(getGenerationRootPath("InvalidNullArgs"));
 		try {
@@ -188,6 +199,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateNullRootNoPreview() throws IOException {
 		try {
 			new AcceleoEngine().evaluate(publicTemplate, validArguments, null, defaultStrategy,
@@ -210,6 +222,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateNullTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("InvalidNullTemplate"));
 		try {
@@ -236,6 +249,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluatePrivateTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PrivateTemplate"));
 		try {
@@ -264,6 +278,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluatePublicTemplateMismatchingArgs() throws IOException {
 		generationRoot = new File(getGenerationRootPath("MismatchingArgs"));
 		try {
@@ -293,6 +308,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluatePublicTemplateValidArgs() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgs"));
 		referenceRoot = new File(getReferenceRootPath("PublicTemplateValidArgs"));
@@ -326,6 +342,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluatePublicTemplateValidArgsNullRootPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsNullRootPreview"));
 
@@ -354,6 +371,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluatePublicTemplateValidArgsPreview() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PublicTemplateValidArgsPreview"));
 
@@ -382,6 +400,7 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluatePublicTemplateWrongArgCount() throws IOException {
 		generationRoot = new File(getGenerationRootPath("WrongArgCount"));
 		// Too many args
@@ -410,8 +429,9 @@ public class AcceleoGenericEngineTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
 
 		for (ModuleElement element : module.getOwnedModuleElement()) {

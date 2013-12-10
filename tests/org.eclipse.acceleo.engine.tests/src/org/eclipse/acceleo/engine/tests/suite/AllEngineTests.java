@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.suite;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.engine.tests.unit.blocks.forBlock.ForBlockTest;
@@ -28,8 +27,9 @@ import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibra
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoNonStandardLibraryTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryParsedTest;
 import org.eclipse.acceleo.engine.tests.unit.environment.AcceleoStandardLibraryTest;
-import org.eclipse.acceleo.engine.tests.unit.evaluation.AcceleoEvaluationVisitorTestSuite;
+import org.eclipse.acceleo.engine.tests.unit.evaluation.AllAcceleoEvaluationVisitorTests;
 import org.eclipse.acceleo.engine.tests.unit.event.AcceleoListenersTest;
+import org.eclipse.acceleo.engine.tests.unit.extensibility.dynamicoverride.AcceleoDynamicOverridesTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoGenericEngineTest;
 import org.eclipse.acceleo.engine.tests.unit.generation.AcceleoProgressMonitorTest;
 import org.eclipse.acceleo.engine.tests.unit.resolution.namesake.NamesakeGuardResolutionTest;
@@ -43,13 +43,29 @@ import org.eclipse.acceleo.engine.tests.unit.service.java.AcceleoJavaServicesTes
 import org.eclipse.acceleo.engine.tests.unit.utils.AcceleoEnginePluginTest;
 import org.eclipse.acceleo.engine.tests.unit.utils.MessagesTest;
 import org.eclipse.acceleo.engine.tests.unit.variables.SelfTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * This suite will launch all the tests defined for the Acceleo engine.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AllTests extends TestCase {
+@RunWith(Suite.class)
+@SuiteClasses({ForBlockTest.class, IfBlockTest.class, ProtectedAreaBlockTest.class, TemplateTest.class,
+		DualTemplateInvocationTest.class, QueryPropertyInvocationTest.class,
+		RecursiveTemplateInvocation.class, QueryInvocationWrapping.class, GenerationEncodingTest.class,
+		AcceleoGenericEngineTest.class, AcceleoProgressMonitorTest.class,
+		AllAcceleoEvaluationVisitorTests.class, AcceleoServiceTest.class, AcceleoJavaServicesTest.class,
+		AcceleoListenersTest.class, SimpleNamesakeResolutionTest.class,
+		ParameterTypeNarrowingResolutionTest.class, NamesakeGuardResolutionTest.class,
+		SimpleOverridesResolutionTest.class, OverrideParameterTypeNarrowingResolutionTest.class,
+		OverrideGuardResolutionTest.class, SelfTest.class, MessagesTest.class, AcceleoEnginePluginTest.class,
+		AcceleoStandardLibraryTest.class, AcceleoStandardLibraryParsedTest.class,
+		AcceleoNonStandardLibraryTest.class, AcceleoNonStandardLibraryParsedTest.class,
+		AcceleoDynamicOverridesTest.class })
+public class AllEngineTests {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -66,69 +82,6 @@ public class AllTests extends TestCase {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo engine test suite"); //$NON-NLS-1$
-
-		// Blocks
-		suite.addTestSuite(ForBlockTest.class);
-		suite.addTestSuite(IfBlockTest.class);
-		suite.addTestSuite(ProtectedAreaBlockTest.class);
-		suite.addTestSuite(TemplateTest.class);
-		suite.addTestSuite(DualTemplateInvocationTest.class);
-		suite.addTestSuite(QueryPropertyInvocationTest.class);
-		suite.addTestSuite(RecursiveTemplateInvocation.class);
-		suite.addTestSuite(QueryInvocationWrapping.class);
-
-		// Encoding
-		suite.addTestSuite(GenerationEncodingTest.class);
-
-		// Engine
-		suite.addTestSuite(AcceleoGenericEngineTest.class);
-		suite.addTestSuite(AcceleoProgressMonitorTest.class);
-
-		// Evaluation visitor
-		suite.addTest(AcceleoEvaluationVisitorTestSuite.suite());
-
-		// Service facade
-		suite.addTestSuite(AcceleoServiceTest.class);
-
-		// Services
-		suite.addTestSuite(AcceleoJavaServicesTest.class);
-
-		// Listeners
-		suite.addTestSuite(AcceleoListenersTest.class);
-
-		// This fails on the build server.
-		// Extensibility
-		// suite.addTestSuite(AcceleoDynamicOverridesTest.class);
-
-		// Namesakes
-		suite.addTestSuite(SimpleNamesakeResolutionTest.class);
-		suite.addTestSuite(ParameterTypeNarrowingResolutionTest.class);
-		suite.addTestSuite(NamesakeGuardResolutionTest.class);
-
-		// overrides
-		suite.addTestSuite(SimpleOverridesResolutionTest.class);
-		suite.addTestSuite(OverrideParameterTypeNarrowingResolutionTest.class);
-		suite.addTestSuite(OverrideGuardResolutionTest.class);
-
-		// variables
-		suite.addTestSuite(SelfTest.class);
-
-		// utilities
-		suite.addTestSuite(MessagesTest.class);
-		suite.addTestSuite(AcceleoEnginePluginTest.class);
-
-		// operation libraries
-		suite.addTestSuite(AcceleoStandardLibraryTest.class);
-		suite.addTestSuite(AcceleoStandardLibraryParsedTest.class);
-		suite.addTestSuite(AcceleoNonStandardLibraryTest.class);
-		try {
-			Class.forName("org.eclipse.ocl.TypeChecker"); //$NON-NLS-1$
-			suite.addTestSuite(AcceleoNonStandardLibraryParsedTest.class);
-		} catch (ClassNotFoundException e) {
-			// OCL 1.3 isn't accessible in the classpath
-		}
-
-		return suite;
+		return new JUnit4TestAdapter(AllEngineTests.class);
 	}
 }

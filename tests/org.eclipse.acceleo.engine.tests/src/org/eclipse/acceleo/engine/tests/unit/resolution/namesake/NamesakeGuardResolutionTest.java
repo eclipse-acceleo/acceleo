@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.namesake;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -26,6 +27,8 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving name conflicts in guarded template calls.
@@ -70,6 +73,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * as parameters are concerned, but only the imported template has its guard evaluated to true. We then
 	 * expect the engine to use the imported template.
 	 */
+	@Test
 	public void testNamesakeGuard() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeGuard")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeGuard")); //$NON-NLS-1$
@@ -96,6 +100,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * local and imported ones, yet the local one has its guard evaluated to false. We then expect the engine
 	 * to use the imported template.
 	 */
+	@Test
 	public void testNamesakeGuardImportSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeGuardImportSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeGuardImportSpecific")); //$NON-NLS-1$
@@ -122,6 +127,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * local and extended ones, yet both have their guards evaluated to false. We then expect the engine to
 	 * use the imported template even though less specific.
 	 */
+	@Test
 	public void testNamesakeGuardedSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeGuardedSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeGuardedSpecific")); //$NON-NLS-1$
@@ -149,8 +155,9 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Resolution/Namesake/Guard/local.mtl"; //$NON-NLS-1$
 		String importedTemplateLocation = "data/Resolution/Namesake/Guard/imported.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Resolution/Namesake/Guard/extended.mtl"; //$NON-NLS-1$
@@ -163,7 +170,7 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();

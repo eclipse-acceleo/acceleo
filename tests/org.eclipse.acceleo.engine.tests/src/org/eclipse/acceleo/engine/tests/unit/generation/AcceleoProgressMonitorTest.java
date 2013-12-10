@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.generation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.common.util.BasicMonitor;
+import org.junit.Test;
 
 /**
  * This will allow us to check that the progress monitor can be properly be used to cancel the Acceleo
@@ -48,6 +53,7 @@ public class AcceleoProgressMonitorTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the evaluation engine with a progress monitor that will automatically be canceled
 	 * after a while.
 	 */
+	@Test
 	public void testCanceledEvaluation() {
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module,
 				"test_cancel", inputModel, generationRoot, new CanceledProgressMonitor());
@@ -58,6 +64,7 @@ public class AcceleoProgressMonitorTest extends AbstractAcceleoTest {
 	/**
 	 * Checks that using a null progress monitor doesn't fail : a BasicMonitor should have been created.
 	 */
+	@Test
 	public void testNullMonitor() {
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module, "test",
 				inputModel, generationRoot, null);

@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.namesake;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -24,6 +25,8 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving &quot;simple&quot; name conflicts in
@@ -68,6 +71,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
 	 * on its extended module. We expect it to select the one present on the current module.
 	 */
+	@Test
 	public void testNameResolutionConflictOnExtended() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExtendConflict")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeExtendConflict")); //$NON-NLS-1$
@@ -92,6 +96,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template with namesakes
 	 * on its imported module. We expect it to select the one present on the current module.
 	 */
+	@Test
 	public void testNameResolutionConflictOnImported() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeImportConflict")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeImportConflict")); //$NON-NLS-1$
@@ -117,6 +122,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * the current module but with namesakes on its extended and imported modules. We expect it to select the
 	 * one present on the extended module.
 	 */
+	@Test
 	public void testNameResolutionExternalConflict() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExternalConflict")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeExternalConflict")); //$NON-NLS-1$
@@ -142,6 +148,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * sharing parameters with distinct names. We expect the engine to select the most specific template
 	 * regardless of parameter names.
 	 */
+	@Test
 	public void testNameResolutionDistinctParamNames() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeDistinctParameterNames")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeDistinctParameterNames")); //$NON-NLS-1$
@@ -167,6 +174,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * on each three possible places : extended, current and imported module. We expect it to select the one
 	 * present on the current module.
 	 */
+	@Test
 	public void testNameResolutionPriority() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakePriority")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakePriority")); //$NON-NLS-1$
@@ -192,8 +200,9 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Resolution/Namesake/Simple/local.mtl"; //$NON-NLS-1$
 		String importedTemplateLocation = "data/Resolution/Namesake/Simple/imported.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Resolution/Namesake/Simple/extended.mtl"; //$NON-NLS-1$
@@ -206,7 +215,7 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();

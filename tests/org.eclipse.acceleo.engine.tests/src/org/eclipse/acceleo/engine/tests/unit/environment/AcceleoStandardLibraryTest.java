@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +38,9 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ocl.ecore.OCL;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo standard library's operations.
@@ -90,11 +98,16 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
 		// only used for initialization
-		generationRoot = new File(getGenerationRootPath("StdLib"));
+		try {
+			generationRoot = new File(getGenerationRootPath("StdLib"));
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new AcceleoPropertiesLookup(),
 				previewStrategy, new BasicMonitor());
@@ -130,8 +143,9 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#tearDown()
 	 */
+	@After
 	@Override
-	protected void tearDown() {
+	public void tearDown() {
 		factory.dispose();
 	}
 
@@ -139,6 +153,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "toString" operation on Integers. Expects the result to be that of
 	 * the source's toString method.
 	 */
+	@Test
 	public void testIntegerToString() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_INTEGER_NAME,
 				AcceleoStandardLibrary.OPERATION_INTEGER_TOSTRING);
@@ -162,6 +177,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "toString" operation on Reals. Expects the result to be that of the
 	 * source's toString method.
 	 */
+	@Test
 	public void testRealToString() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_REAL_NAME,
 				AcceleoStandardLibrary.OPERATION_REAL_TOSTRING);
@@ -185,6 +201,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "first(int)" operation on Strings. Expects the result to be the same
 	 * as source.substring(0, int).
 	 */
+	@Test
 	public void testStringFirst() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_FIRST);
@@ -236,6 +253,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "index(String)" operation on Strings. Expects the result to be the
 	 * same as source.indexOf(String).
 	 */
+	@Test
 	public void testStringIndex() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_INDEX);
@@ -269,6 +287,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * <code>true</code> if and only if {@link Character#isLetter(char)} returns <code>true</code> for each
 	 * and every character of the source value.
 	 */
+	@Test
 	public void testStringIsAlpha() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_ISALPHA);
@@ -293,6 +312,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * <code>true</code> if and only if {@link Character#isLetterOrDigit(char)} returns <code>true</code> for
 	 * each and every character of the source value.
 	 */
+	@Test
 	public void testStringIsAlphanum() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_ISALPHANUM);
@@ -316,6 +336,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "last(int)" operation on Strings. Expects the result to be the same
 	 * as source.substring(source.length() - int, source.length()).
 	 */
+	@Test
 	public void testStringLast() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_LAST);
@@ -367,6 +388,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "strcmp(String)" operation on Strings. Expects the result to be the
 	 * same as source.compareTo(String).
 	 */
+	@Test
 	public void testStringStrcmp() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_STRCMP);
@@ -394,6 +416,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "strstr(String)" operation on Strings. Expects the result to be the
 	 * same as source.contains(String).
 	 */
+	@Test
 	public void testStringStrstr() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_STRSTR);
@@ -437,6 +460,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the standard "strtok(String, int)" operation on Strings.
 	 */
+	@Test
 	public void testStringStrtok() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_STRTOK);
@@ -513,6 +537,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * both parameters as regular expressions.
 	 * </p>
 	 */
+	@Test
 	public void testStringSubstitute() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_SUBSTITUTE);
@@ -548,6 +573,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the standard String.toLowerFirst() operation.
 	 */
+	@Test
 	public void testStringToLowerFirst() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_TOLOWERFIRST);
@@ -570,6 +596,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the standard String.toUpperFirst() operation.
 	 */
+	@Test
 	public void testStringToUpperFirst() {
 		EOperation operation = getOperation(AcceleoStandardLibrary.PRIMITIVE_STRING_NAME,
 				AcceleoStandardLibrary.OPERATION_STRING_TOUPPERFIRST);
@@ -595,6 +622,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	 * Expects an {@link UnsupportedOperationException} to be thrown with an accurate error message.
 	 * </p>
 	 */
+	@Test
 	public void testUndefinedOperation() {
 		final EOperation operation = EcoreFactory.eINSTANCE.createEOperation();
 		operation.setName("undefinedOperation");

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2009, 2013 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,21 +8,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.engine.tests.suite;
+package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.engine.tests.unit.extensibility.dynamicoverride.AcceleoDynamicOverridesTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-/**
- * This suite will launch all the tests defined for the Acceleo engine. This suite will launch each and every
- * possible test, including those we need to disable on the eclipse build server.
- * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- */
-public class EngineTestSuite {
+@RunWith(Suite.class)
+@SuiteClasses({AcceleoEvaluationVisitorFileBlockTest.class, AcceleoEvaluationVisitorForBlockTest.class,
+		AcceleoEvaluationVisitorIfBlockTest.class, AcceleoEvaluationVisitorLetBlockTest.class,
+		AcceleoEvaluationVisitorProtectedAreaBlockTest.class,
+		AcceleoEvaluationVisitorQueryInvocationTest.class,
+		AcceleoEvaluationVisitorTemplateInvocationTest.class, LineReaderTest.class })
+public class AllAcceleoEvaluationVisitorTests extends TestCase {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -39,12 +42,6 @@ public class EngineTestSuite {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		// use the same test suite as what's launched on the build server, but add disabled tests to it.
-		final TestSuite suite = (TestSuite)AllTests.suite();
-
-		// Extensibility
-		suite.addTestSuite(AcceleoDynamicOverridesTest.class);
-
-		return suite;
+		return new JUnit4TestAdapter(AllAcceleoEvaluationVisitorTests.class);
 	}
 }

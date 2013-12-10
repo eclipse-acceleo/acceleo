@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.Map;
@@ -18,6 +22,7 @@ import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.Test;
 
 /**
  * This will test the behavior of file blocks evaluation.
@@ -34,6 +39,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 	/**
 	 * Tests that the visitor properly appends or overwrites according to the file block "append mode".
 	 */
+	@Test
 	public void testFileBlockAppendMode() {
 		final FileBlock mtlFileBlock = getDummyFileBlock();
 		final String fileName = "validFile.url"; //$NON-NLS-1$
@@ -77,6 +83,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 	/**
 	 * Tests the evaluation of a file block with a URL evaluating to a Collection.
 	 */
+	@Test
 	public void testFileBlockCollectionURL() {
 		final FileBlock mtlFileBlock = getDummyFileBlock();
 		mtlFileBlock.setFileUrl(createOCLExpression("eAllStructuralFeatures", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -93,6 +100,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 	/**
 	 * Tests the files containing "@generated" JMerge are properly merged.
 	 */
+	@Test
 	public void testFileBlockJMergeContent() {
 		final FileBlock mtlFileBlock = getDummyFileBlock();
 		final String fileName = "validFile.java"; //$NON-NLS-1$
@@ -160,6 +168,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 	/**
 	 * Tests the evaluation of a file block with a null URL.
 	 */
+	@Test
 	public void testFileBlockNullURL() {
 		final FileBlock mtlFileBlock = getDummyFileBlock();
 		mtlFileBlock.setFileUrl(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -176,6 +185,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 	/**
 	 * Tests that the we can effectively create file blocks generating text on the standard output stream.
 	 */
+	@Test
 	public void testFileBlockOutputStream() {
 		final FileBlock mtlFileBlock = getDummyFileBlock();
 		mtlFileBlock.setFileUrl(createOCLExpression("'stdout'")); //$NON-NLS-1$
@@ -201,6 +211,7 @@ public class AcceleoEvaluationVisitorFileBlockTest extends AbstractAcceleoEvalua
 	/**
 	 * Tests the evaluation of a file block with an incorrect URL.
 	 */
+	@Test
 	public void testFileBlockUndefinedURL() {
 		final FileBlock mtlFileBlock = getDummyFileBlock();
 		mtlFileBlock.setFileUrl(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$

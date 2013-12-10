@@ -10,10 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo non standard library's operations when called from a parsed
@@ -52,6 +58,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "ancestors()" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyAncestors() {
 		assertFileContainsOutput("test_oclany_ancestors");
 	}
@@ -59,6 +66,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "eAllContents()" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyEAllContents() {
 		assertFileContainsOutput("test_oclany_eAllContents");
 	}
@@ -66,6 +74,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "eInverse()" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyEInverse() {
 		assertFileContainsOutput("test_oclany_eInverse");
 	}
@@ -73,6 +82,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "invoke()" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyInvoke() {
 		assertFileContainsOutput("test_oclany_invoke");
 	}
@@ -80,6 +90,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "siblings()" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnySiblings() {
 		assertFileContainsOutput("test_oclany_siblings");
 	}
@@ -87,6 +98,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "toString()" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyToString() {
 		assertFileContainsOutput("test_oclany_toString");
 	}
@@ -94,6 +106,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "ancestors(OclAny)" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyTypedAncestors() {
 		assertFileContainsOutput("test_oclany_typed_eAllContents");
 	}
@@ -101,6 +114,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "eAllContents(OclAny)" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyTypedEAllContents() {
 		assertFileContainsOutput("test_oclany_typed_eAllContents");
 	}
@@ -108,6 +122,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "eInverse(OclAny)" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyTypedEInverse() {
 		assertFileContainsOutput("test_oclany_typed_eInverse");
 	}
@@ -115,6 +130,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "siblings(OclAny)" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyTypedSiblings() {
 		assertFileContainsOutput("test_oclany_typed_siblings");
 	}
@@ -122,6 +138,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "lineSeparator(OclAny)" operation on OclAny.
 	 */
+	@Test
 	public void testOclAnyLineSeparator() {
 		assertFileContainsOutput("test_oclany_line_separator");
 	}
@@ -129,6 +146,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "contains(String)" operation on Strings.
 	 */
+	@Test
 	public void testStringContains() {
 		assertFileContainsOutput("test_string_contains");
 	}
@@ -136,6 +154,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "endsWith(String)" operation on Strings.
 	 */
+	@Test
 	public void testStringEndsWith() {
 		assertFileContainsOutput("test_string_endsWith");
 	}
@@ -143,6 +162,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "replace(String, String)" operation on Strings.
 	 */
+	@Test
 	public void testStringReplace() {
 		assertFileContainsOutput("test_string_replace");
 	}
@@ -150,6 +170,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "replaceAll(String, String)" operation on Strings.
 	 */
+	@Test
 	public void testStringReplaceAll() {
 		assertFileContainsOutput("test_string_replaceAll");
 	}
@@ -157,6 +178,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "startsWith(String)" operation on Strings.
 	 */
+	@Test
 	public void testStringStartsWith() {
 		assertFileContainsOutput("test_string_startsWith");
 	}
@@ -164,6 +186,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "substituteAll(String, String)" operation on Strings.
 	 */
+	@Test
 	public void testStringSubstituteAll() {
 		assertFileContainsOutput("test_string_substituteAll");
 	}
@@ -171,6 +194,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "tokenize(String)" operation on Strings.
 	 */
+	@Test
 	public void testStringTokenize() {
 		assertFileContainsOutput("test_string_tokenize");
 	}
@@ -178,6 +202,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "trim()" operation on Strings.
 	 */
+	@Test
 	public void testStringTrim() {
 		assertFileContainsOutput("test_string_trim");
 	}
@@ -185,6 +210,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "index(String, Integer)" operation on Strings.
 	 */
+	@Test
 	public void testStringIndex() {
 		assertFileContainsOutput("test_string_index");
 	}
@@ -192,6 +218,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "lastIndex(String, Integer)" operation on Strings.
 	 */
+	@Test
 	public void testStringLastIndex() {
 		assertFileContainsOutput("test_string_last_index");
 	}
@@ -199,6 +226,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "tokenize()" operation on Strings.
 	 */
+	@Test
 	public void testStringTokenize_2() {
 		assertFileContainsOutput("test_string_tokenize_2");
 	}
@@ -206,6 +234,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "tokenizeLine()" operation on Strings.
 	 */
+	@Test
 	public void testStringTokenizeLine() {
 		assertFileContainsOutput("test_string_tokenize_line");
 	}
@@ -213,6 +242,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "sep(String, String, String)" operation on Collections.
 	 */
+	@Test
 	public void testCollectionSep() {
 		assertFileContainsOutput("test_collection_sep_3");
 	}
@@ -220,6 +250,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "addAll(Collection)" operation on Collections.
 	 */
+	@Test
 	public void testCollectionAddAll() {
 		assertFileContainsOutput("test_collection_add_all_sequence_1");
 		assertFileContainsOutput("test_collection_add_all_sequence_2");
@@ -270,6 +301,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "drop(Integer)" operation on Sequence and OrderedSet.
 	 */
+	@Test
 	public void testCollectionDrop() {
 		assertFileContainsOutput("test_collection_drop");
 	}
@@ -277,6 +309,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "dropRight(Integer)" operation on Sequence and OrderedSet.
 	 */
+	@Test
 	public void testCollectionDropRight() {
 		assertFileContainsOutput("test_collection_drop_right");
 	}
@@ -284,6 +317,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "startsWith(Collection)" operation on Sequence and OrderedSet.
 	 */
+	@Test
 	public void testCollectionStartsWith() {
 		assertFileContainsOutput("test_collection_starts_with");
 	}
@@ -291,6 +325,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "endsWith(Collection)" operation on Sequence and OrderedSet.
 	 */
+	@Test
 	public void testCollectionEndsWith() {
 		assertFileContainsOutput("test_collection_ends_with");
 	}
@@ -298,6 +333,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the non standard "indexOfSlice(Collection)" operation on Sequence and OrderedSet.
 	 */
+	@Test
 	public void testCollectionIndexOfSlice() {
 		assertFileContainsOutput("test_collection_index_of_slice");
 	}
@@ -306,6 +342,7 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the non standard "lastIndexOfSlice(Collection)" operation on Sequence and
 	 * OrderedSet.
 	 */
+	@Test
 	public void testCollectionLastIndexOfSlice() {
 		assertFileContainsOutput("test_collection_last_index_of_slice");
 	}
@@ -315,10 +352,15 @@ public class AcceleoNonStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
-		generationRoot = new File(getGenerationRootPath("NonStdLib")); //$NON-NLS-1$
+		try {
+			generationRoot = new File(getGenerationRootPath("NonStdLib")); //$NON-NLS-1$
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		generatedPreview = generate("test_nonstdlib", previewStrategy); //$NON-NLS-1$
 	}
 

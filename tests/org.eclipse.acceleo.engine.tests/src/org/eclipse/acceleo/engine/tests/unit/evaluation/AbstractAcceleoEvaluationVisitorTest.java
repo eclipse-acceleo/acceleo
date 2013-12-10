@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -44,6 +47,7 @@ import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.SendSignalAction;
 import org.eclipse.ocl.ecore.StringLiteralExp;
 import org.eclipse.ocl.helper.OCLHelper;
+import org.junit.Before;
 
 /**
  * Abstract class for the Acceleo evaluation visitor unit tests.
@@ -244,11 +248,16 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
 		// only used for initialization
-		generationRoot = new File(getGenerationRootPath("EvaluationVisitor")); //$NON-NLS-1$
+		try {
+			generationRoot = new File(getGenerationRootPath("EvaluationVisitor")); //$NON-NLS-1$
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new AcceleoPropertiesLookup(),
 				previewStrategy, new BasicMonitor());

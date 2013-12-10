@@ -6,10 +6,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 public class RecursiveTemplateInvocation extends AbstractAcceleoTest {
 
@@ -39,6 +43,7 @@ public class RecursiveTemplateInvocation extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testRecursiveTemplateInvocation() throws IOException {
 		generationRoot = new File(getGenerationRootPath("RecursiveTemplateInvocation")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("RecursiveTemplateInvocation")); //$NON-NLS-1$

@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.override;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -24,6 +25,8 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving overriding template calls. Overriding
@@ -69,6 +72,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * are the most specific, but their guard evaluates to false. We expect the imported template to be
 	 * called.
 	 */
+	@Test
 	public void testOverrideSpecificGuarded() throws IOException {
 		generationRoot = new File(getGenerationRootPath("SpecificGuarded")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("SpecificGuarded")); //$NON-NLS-1$
@@ -94,6 +98,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * exended module and overriden in the current module. The Local template is the most specific and its
 	 * super has its guard evaluated to false. We expect the local template to be called.
 	 */
+	@Test
 	public void testOverrideLocalDefinitionGuarded() throws IOException {
 		generationRoot = new File(getGenerationRootPath("LocalDefinitionGuarded")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("LocalDefinitionGuarded")); //$NON-NLS-1$
@@ -119,6 +124,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * imported module yet overriden in the extended module. The imported module's template has its guard
 	 * evaluating to false, we then expect the extended one to be called.
 	 */
+	@Test
 	public void testOverrideParameterNarrowingExternal() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ExternalDefinitionGuarded")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ExternalDefinitionGuarded")); //$NON-NLS-1$
@@ -144,8 +150,9 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Resolution/Override/Guard/local.mtl"; //$NON-NLS-1$
 		String importedTemplateLocation = "data/Resolution/Override/Guard/imported.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Resolution/Override/Guard/extended.mtl"; //$NON-NLS-1$
@@ -160,7 +167,7 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();

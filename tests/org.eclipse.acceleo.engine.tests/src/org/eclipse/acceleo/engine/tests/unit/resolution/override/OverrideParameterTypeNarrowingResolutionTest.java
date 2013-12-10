@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.override;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -26,6 +27,8 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving overriding template calls. Overriding
@@ -69,6 +72,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * imported module yet overriden in both the current module and the extended module.
 	 */
+	@Test
 	public void testOverrideParameterNarrowing() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ParameterNarrowing")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ParameterNarrowing")); //$NON-NLS-1$
@@ -93,6 +97,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * exended module and overriden in the current module.
 	 */
+	@Test
 	public void testOverrideParameterNarrowingLocal() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ParameterNarrowingLocal")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ParameterNarrowingLocal")); //$NON-NLS-1$
@@ -118,6 +123,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * imported module yet overriden in the extended module.
 	 */
+	@Test
 	public void testOverrideParameterNarrowingExternal() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ParameterNarrowingExternal")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ParameterNarrowingExternal")); //$NON-NLS-1$
@@ -143,8 +149,9 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Resolution/Override/ParameterTypeNarrowing/local.mtl"; //$NON-NLS-1$
 		String importedTemplateLocation = "data/Resolution/Override/ParameterTypeNarrowing/imported.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Resolution/Override/ParameterTypeNarrowing/extended.mtl"; //$NON-NLS-1$
@@ -159,7 +166,7 @@ public class OverrideParameterTypeNarrowingResolutionTest extends AbstractAccele
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();

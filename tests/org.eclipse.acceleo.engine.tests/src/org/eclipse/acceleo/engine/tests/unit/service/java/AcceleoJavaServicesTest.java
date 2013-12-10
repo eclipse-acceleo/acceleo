@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.service.java;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -20,6 +24,8 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.emf.common.util.URI;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * This will be used to test the invocation of Java services from Acceleo.
@@ -87,6 +93,7 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testNoArgumentServiceInvocation() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NoArgument")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NoArgument")); //$NON-NLS-1$
@@ -114,6 +121,8 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Ignore
+	@Test
 	public void testSingleArgumentServiceInvocation() throws IOException {
 		generationRoot = new File(getGenerationRootPath("SingleArgument")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("SingleArgument")); //$NON-NLS-1$
@@ -141,6 +150,8 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Ignore
+	@Test
 	public void testMultipleArgumentServiceInvocation() throws IOException {
 		if (AcceleoCompatibilityEclipseHelper.getCurrentOCLVersion() == OCLVersion.GANYMEDE) {
 			// OCL 1.2 couldn't create a Sequence containing both an EClass and a String
@@ -173,6 +184,8 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Ignore
+	@Test
 	public void testInstanceOfServiceInvocation() throws IOException {
 		generationRoot = new File(getGenerationRootPath("InstanceOf")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("InstanceOf")); //$NON-NLS-1$
@@ -200,6 +213,8 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Ignore
+	@Test
 	public void testSourceAndParametersChoice() throws IOException {
 		generationRoot = new File(getGenerationRootPath("SourceAndParameters")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("SourceAndParameters")); //$NON-NLS-1$

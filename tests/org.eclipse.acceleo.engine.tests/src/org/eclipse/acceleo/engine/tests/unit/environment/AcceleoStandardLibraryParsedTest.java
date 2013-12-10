@@ -10,10 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.environment;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo standard library's operations when called from a parsed
@@ -34,10 +40,15 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
-		generationRoot = new File(getGenerationRootPath("StdLib")); //$NON-NLS-1$
+		try {
+			generationRoot = new File(getGenerationRootPath("StdLib")); //$NON-NLS-1$
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		generatedPreview = generate("test_stdlib", previewStrategy); //$NON-NLS-1$
 	}
 
@@ -65,6 +76,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "first(int)" operation on Strings. Expects the result to be the same
 	 * as source.substring(0, int).
 	 */
+	@Test
 	public void testStringFirst() {
 		final String fileName = "test_string_first";
 		boolean fileFound = false;
@@ -83,6 +95,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "index(String)" operation on Strings. Expects the result to be the
 	 * same as source.indexOf(String).
 	 */
+	@Test
 	public void testStringIndex() {
 		final String fileName = "test_string_index";
 		boolean fileFound = false;
@@ -102,6 +115,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * <code>true</code> if and only if {@link Character#isLetter(char)} returns <code>true</code> for each
 	 * and every character of the source value.
 	 */
+	@Test
 	public void testStringIsAlpha() {
 		final String fileName = "test_string_isAlpha";
 		boolean fileFound = false;
@@ -121,6 +135,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * <code>true</code> if and only if {@link Character#isLetterOrDigit(char)} returns <code>true</code> for
 	 * each and every character of the source value.
 	 */
+	@Test
 	public void testStringIsAlphanum() {
 		final String fileName = "test_string_isAlphanum";
 		boolean fileFound = false;
@@ -139,6 +154,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "last(int)" operation on Strings. Expects the result to be the same
 	 * as source.substring(source.length() - int, source.length()).
 	 */
+	@Test
 	public void testStringLast() {
 		final String fileName = "test_string_last";
 		boolean fileFound = false;
@@ -157,6 +173,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "strcmp(String)" operation on Strings. Expects the result to be the
 	 * same as source.compareTo(String).
 	 */
+	@Test
 	public void testStringStrcmp() {
 		final String fileName = "test_string_strcmp";
 		boolean fileFound = false;
@@ -175,6 +192,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the standard "strstr(String)" operation on Strings. Expects the result to be the
 	 * same as source.contains(String).
 	 */
+	@Test
 	public void testStringStrstr() {
 		final String fileName = "test_string_strstr";
 		boolean fileFound = false;
@@ -192,6 +210,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the standard "strtok(String, int)" operation on Strings.
 	 */
+	@Test
 	public void testStringStrtok() {
 		final String fileName = "test_string_strtok";
 		boolean fileFound = false;
@@ -213,6 +232,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	 * both parameters as regular expressions.
 	 * </p>
 	 */
+	@Test
 	public void testStringSubstitute() {
 		final String fileName = "test_string_substitute";
 		boolean fileFound = false;
@@ -230,6 +250,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the standard String.toLowerFirst() operation.
 	 */
+	@Test
 	public void testStringToLowerFirst() {
 		final String fileName = "test_string_toLowerFirst";
 		boolean fileFound = false;
@@ -247,6 +268,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the standard String.toUpperFirst() operation.
 	 */
+	@Test
 	public void testStringToUpperFirst() {
 		final String fileName = "test_string_toUpperFirst";
 		boolean fileFound = false;

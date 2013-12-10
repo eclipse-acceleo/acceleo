@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.variables;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 /**
  * This test allows us to check the behavior of the Acceleo engine when dealing with the OCL "self" variable.
@@ -47,6 +51,7 @@ public class SelfTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testSelfVariableInQuery() throws IOException {
 		generationRoot = new File(getGenerationRootPath("SelfQuery")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("SelfQuery")); //$NON-NLS-1$
@@ -73,6 +78,7 @@ public class SelfTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testSelfVariableInTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("SelfTemplate")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("SelfTemplate")); //$NON-NLS-1$
@@ -99,6 +105,7 @@ public class SelfTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testImplicitSelfVariableInQuery() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ImplicitSelfQuery")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ImplicitSelfQuery")); //$NON-NLS-1$
@@ -125,6 +132,7 @@ public class SelfTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testImplicitSelfVariableInTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ImplicitSelfTemplate")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ImplicitSelfTemplate")); //$NON-NLS-1$

@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.namesake;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -26,6 +27,8 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving name conflicts in template calls.
@@ -71,6 +74,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on both its extended module and its imported module. We expect it to select the most specific one which
 	 * is here on the extended template.
 	 */
+	@Test
 	public void testNamesakeResolutionExtendMostSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExtendMostSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeExtendMostSpecific")); //$NON-NLS-1$
@@ -96,6 +100,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * same name on both its extended module and its imported module yet not present on the local module. We
 	 * expect it to select the most specific one which is here on the extended template.
 	 */
+	@Test
 	public void testNamesakeResolutionExternalExtendSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExternalExtendSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeExternalExtendSpecific")); //$NON-NLS-1$
@@ -121,6 +126,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * same name on both its extended module and its imported module yet not present on the local module. We
 	 * expect it to select the most specific one which is here on the imported template.
 	 */
+	@Test
 	public void testNamesakeResolutionExternalImportSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeExternalImportSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeExternalImportSpecific")); //$NON-NLS-1$
@@ -146,6 +152,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on both its extended module and its imported module. We expect it to select the most specific one which
 	 * is here on the imported template.
 	 */
+	@Test
 	public void testNamesakeResolutionImportMostSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeImportMostSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeImportMostSpecific")); //$NON-NLS-1$
@@ -171,6 +178,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on both its extended module and its imported module. We expect it to select the most specific one which
 	 * is here on the local template.
 	 */
+	@Test
 	public void testNamesakeResolutionLocalMostSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeLocalMostSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeLocalMostSpecific")); //$NON-NLS-1$
@@ -198,6 +206,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on its extended module. We expect it to select the most specific one which is here on the extended
 	 * template.
 	 */
+	@Test
 	public void testNamesakeResolutionOnExtendExtendSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeOnExtendExtendSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeOnExtendExtendSpecific")); //$NON-NLS-1$
@@ -223,6 +232,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on its extended module. We expect it to select the most specific one which is here on the local
 	 * template.
 	 */
+	@Test
 	public void testNamesakeResolutionOnExtendLocalSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeOnExtendLocalSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeOnExtendLocalSpecific")); //$NON-NLS-1$
@@ -248,6 +258,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on its imported module. We expect it to select the most specific one which is here on the imported
 	 * template.
 	 */
+	@Test
 	public void testNamesakeResolutionOnImportImportSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeOnImportImportSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeOnImportImportSpecific")); //$NON-NLS-1$
@@ -273,6 +284,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * on its imported module. We expect it to select the most specific one which is here on the local
 	 * template.
 	 */
+	@Test
 	public void testNamesakeResolutionOnImportLocalSpecific() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NamesakeOnImportLocalSpecific")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NamesakeOnImportLocalSpecific")); //$NON-NLS-1$
@@ -298,8 +310,9 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Resolution/Namesake/ParameterTypeNarrowing/local.mtl"; //$NON-NLS-1$
 		String importedTemplateLocation = "data/Resolution/Namesake/ParameterTypeNarrowing/imported.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Resolution/Namesake/ParameterTypeNarrowing/extended.mtl"; //$NON-NLS-1$
@@ -312,7 +325,7 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();

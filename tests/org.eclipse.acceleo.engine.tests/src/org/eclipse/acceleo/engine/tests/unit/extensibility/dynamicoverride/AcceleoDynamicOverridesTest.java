@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.extensibility.dynamicoverride;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,6 +32,9 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -78,6 +88,7 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testDynamicOverrideTemplateInvocation() throws IOException {
 		final Map<String, String> preview = new AcceleoService(previewStrategy).doGenerate(module,
 				"entryPoint", inputModel, null, null);
@@ -124,6 +135,7 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testDynamicOverrideRemovedPlugin() {
 		try {
 			dynamicOverridesBundle.uninstall();
@@ -156,6 +168,7 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testDynamicOverrideReinstalledPlugin() {
 		try {
 			dynamicOverridesBundle.uninstall();
@@ -229,12 +242,17 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#tearDown()
 	 */
+	@After
 	@Override
-	protected void tearDown() throws Exception {
+	public void tearDown() {
 		super.tearDown();
 		if (dynamicOverridesBundle.getState() == Bundle.UNINSTALLED) {
-			dynamicOverridesBundle = context.installBundle(dynamicOverridesBundle.getLocation());
-			refreshPackages(new Bundle[] {dynamicOverridesBundle, });
+			try {
+				dynamicOverridesBundle = context.installBundle(dynamicOverridesBundle.getLocation());
+				refreshPackages(new Bundle[] {dynamicOverridesBundle, });
+			} catch (BundleException e) {
+				fail(e.getMessage());
+			}
 		}
 	}
 
@@ -243,15 +261,20 @@ public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		// Shortcuts inherited behavior
 		final String mockModulePath = "data/dynamicoverride/mockModule.emtl";
 		final URI mockModuleURI = URI.createPlatformPluginURI('/' + AcceleoEngineTestPlugin.PLUGIN_ID + '/'
 				+ mockModulePath, true);
 		Resource moduleResource = ModelUtils.createResource(mockModuleURI, resourceSet);
 		final Map<String, String> options = new HashMap<String, String>();
-		moduleResource.load(options);
+		try {
+			moduleResource.load(options);
+		} catch (IOException e) {
+			fail(e.getMessage());
+		}
 		if (moduleResource.getContents().size() > 0) {
 			module = (Module)moduleResource.getContents().get(0);
 		} else {

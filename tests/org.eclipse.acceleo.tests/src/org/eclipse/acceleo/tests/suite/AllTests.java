@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2013 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,29 @@
  *******************************************************************************/
 package org.eclipse.acceleo.tests.suite;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.common.tests.suite.AllCommonTests;
 import org.eclipse.acceleo.compatibility.tests.suite.AllCompatibilityTests;
-import org.eclipse.acceleo.engine.tests.suite.EngineTestSuite;
+import org.eclipse.acceleo.engine.tests.suite.AllEngineTests;
+import org.eclipse.acceleo.parser.tests.suite.AllParserTests;
+import org.eclipse.acceleo.traceability.tests.suite.AllTraceabilityTests;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * This suite will launch all the tests defined for the Acceleo project.
  * 
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-@SuppressWarnings("nls")
+@RunWith(Suite.class)
+@SuiteClasses({AllCommonTests.class, AllCompatibilityTests.class, AllEngineTests.class, AllParserTests.class,
+		AllTraceabilityTests.class })
 public class AllTests {
-
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -42,29 +49,6 @@ public class AllTests {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo test suite");
-
-		final TestSuite classicSuite = new TestSuite("Testing Acceleo With Traceability Disabled");
-		classicSuite.addTest(AllCommonTests.suite());
-		classicSuite.addTest(AllCompatibilityTests.suite());
-		classicSuite.addTest(EngineTestSuite.suite());
-		// classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
-		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
-		classicSuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
-		//
-		// final TestSuite traceabilitySuite = new TestSuite("Testing Acceleo With Traceability Enabled");
-		// traceabilitySuite.addTestSuite(TraceabilityActivationTest.class);
-		//
-		// traceabilitySuite.addTest(CommonTestSuite.suite());
-		// traceabilitySuite.addTest(CompatibilityTestSuite.suite());
-		// traceabilitySuite.addTest(EngineTestSuite.suite());
-		// // traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
-		// traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
-		// traceabilitySuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
-
-		suite.addTest(classicSuite);
-		// suite.addTest(traceabilitySuite);
-		return suite;
+		return new JUnit4TestAdapter(AllTests.class);
 	}
-
 }

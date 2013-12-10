@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -23,9 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
-import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -46,6 +48,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.After;
+import org.junit.Before;
 import org.osgi.framework.Bundle;
 
 /**
@@ -53,7 +57,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
-public abstract class AbstractAcceleoTest extends TestCase {
+public abstract class AbstractAcceleoTest {
 	/**
 	 * EMTL extension.
 	 */
@@ -436,32 +440,22 @@ public abstract class AbstractAcceleoTest extends TestCase {
 		return modelResource;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before
+	public void setUp() {
 		Resource modelResource = parse(getModuleLocation());
 		EObject rootTemplate = modelResource.getContents().get(0);
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Couldn't load the input template."); //$NON-NLS-1$
+			fail("Couldn't load the input template."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();
 		previewStrategy = new PreviewStrategy();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-
+	@After
+	public void tearDown() {
 		// Unload all but the input model
 		for (Resource resource : resourceSet.getResources()) {
 			if (resource != inputModel.eResource()) {

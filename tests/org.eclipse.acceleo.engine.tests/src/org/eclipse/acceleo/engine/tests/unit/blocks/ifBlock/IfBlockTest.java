@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.ifBlock;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 /**
  * Class to test If block.
@@ -47,6 +50,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testIfStatementCompleteIf() throws IOException {
 		generationRoot = new File(getGenerationRootPath("CompleteIf")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("CompleteIf")); //$NON-NLS-1$
@@ -67,6 +71,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testIfStatementElse() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Else")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Else")); //$NON-NLS-1$
@@ -87,6 +92,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testIfStatementElseif() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Elseif")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Elseif")); //$NON-NLS-1$
@@ -107,6 +113,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testIfStatementIf() throws IOException {
 		generationRoot = new File(getGenerationRootPath("If")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("If")); //$NON-NLS-1$
@@ -127,6 +134,7 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testIfStatementNestedIf() throws IOException {
 		generationRoot = new File(getGenerationRootPath("NestedIf")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("NestedIf")); //$NON-NLS-1$

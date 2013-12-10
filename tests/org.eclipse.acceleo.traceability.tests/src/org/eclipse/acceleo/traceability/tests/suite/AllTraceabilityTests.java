@@ -35,7 +35,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		AcceleoTraceabilityQueryTests.class, AcceleoTraceabilityModelTests.class,
 		AcceleoTraceabilityBlockTests.class, AcceleoTraceabilityLibraryStringTests.class,
 		AcceleoTraceabilityLibraryOclTests.class })
-public class AllTests {
+public class AllTraceabilityTests {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -52,6 +52,6 @@ public class AllTests {
 	 * @return The test suite containing all the tests.
 	 */
 	public static Test suite() {
-		return new JUnit4TestAdapter(AllTests.class);
+		return new JUnit4TestAdapter(AllTraceabilityTests.class);
 	}
 }

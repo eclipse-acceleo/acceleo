@@ -10,24 +10,26 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
-import com.google.common.collect.Lists;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
 import org.eclipse.emf.ecore.EClassifier;
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
 
 /**
  * Unit tests classe to test the line reader of the evaluation context.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
-public class LineReaderTest extends TestCase {
+public class LineReaderTest {
 	private int readLine(String str, List<String> lines) {
 		AcceleoEvaluationContext<EClassifier> evaluationContext = new AcceleoEvaluationContext<EClassifier>(
 				null, Lists.<IAcceleoTextGenerationListener> newArrayList(), null, null);
@@ -53,18 +55,27 @@ public class LineReaderTest extends TestCase {
 
 		} catch (IOException e) {
 			fail(e.getMessage());
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				fail(e.getMessage());
+			}
 		}
 		return i;
 	}
 
+	@Test
 	public void testEmptyStringReadLine() {
 		assertEquals(0, readLine("", Lists.<String> newArrayList())); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testOneLineReadLine() {
 		assertEquals(1, readLine("test", Lists.newArrayList("test"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testOneBigLineReadLine() {
 		String str = "0123456789"; //$NON-NLS-1$
 		String buffer = str;
@@ -75,10 +86,12 @@ public class LineReaderTest extends TestCase {
 		assertEquals(1, readLine(buffer, Lists.newArrayList(buffer)));
 	}
 
+	@Test
 	public void testTwoLinesUnixReadLine() {
 		assertEquals(2, readLine("test\ntest", Lists.newArrayList("test", "test"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Test
 	public void testTwoBigLinesMacOsClassicReadLine() {
 		String str = "0123456789"; //$NON-NLS-1$
 		String buffer = str;
@@ -109,6 +122,7 @@ public class LineReaderTest extends TestCase {
 		assertEquals(3, readLine(finalBuffer, Lists.newArrayList("01234", "5678" + buffer + "0", "1"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
+	@Test
 	public void testTwoBigLinesDosReadLine() {
 		String str = "0123456789"; //$NON-NLS-1$
 		String buffer = str;
@@ -132,6 +146,7 @@ public class LineReaderTest extends TestCase {
 		assertEquals(2, readLine(finalBuffer, Lists.newArrayList(buffer + "0", "1"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testTwoBigLinesUnixReadLine() {
 		String str = "0123456789"; //$NON-NLS-1$
 		String buffer = str;
@@ -155,34 +170,42 @@ public class LineReaderTest extends TestCase {
 		assertEquals(2, readLine(finalBuffer, Lists.newArrayList(buffer + "0", "1"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testTwoLinesDosReadLine() {
 		assertEquals(2, readLine("test\r\ntest", Lists.newArrayList("test", "test"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Test
 	public void testTwoLinesMacOsClassicReadLine() {
 		assertEquals(2, readLine("test\rtest", Lists.newArrayList("test", "test"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Test
 	public void testTwoLinesUnixEmptyReadLine() {
 		assertEquals(2, readLine("test\ntest\n", Lists.newArrayList("test", "test"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Test
 	public void testTwoLinesDosEmptyReadLine() {
 		assertEquals(2, readLine("test\r\ntest\r\n", Lists.newArrayList("test", "test"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Test
 	public void testTwoLinesMacOsClassicEmptyReadLine() {
 		assertEquals(2, readLine("test\rtest\r", Lists.newArrayList("test", "test"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
+	@Test
 	public void testThreeLinesUnixReadLine() {
 		assertEquals(3, readLine("test\ntest\na", Lists.newArrayList("test", "test", "a"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
+	@Test
 	public void testThreeLinesDosReadLine() {
 		assertEquals(3, readLine("test\r\ntest\r\na", Lists.newArrayList("test", "test", "a"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
+	@Test
 	public void testThreeLinesMacOsClassicReadLine() {
 		assertEquals(3, readLine("test\rtest\ra", Lists.newArrayList("test", "test", "a"))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}

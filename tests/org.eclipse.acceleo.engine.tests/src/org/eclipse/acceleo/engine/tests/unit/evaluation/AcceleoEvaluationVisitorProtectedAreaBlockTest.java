@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -25,6 +30,7 @@ import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.Test;
 
 /**
  * This will test the behavior of protected area blocks evaluation.
@@ -60,6 +66,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a protected block.
 	 */
+	@Test
 	public void testProtectedBlockBody() {
 		final ProtectedAreaBlock protectedBlock = getDummyProtectedAreaBlock();
 
@@ -92,6 +99,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a protected block when the marker has changed.
 	 */
+	@Test
 	@SuppressWarnings("unchecked")
 	public void testProtectedBlockLostArea() {
 		final ProtectedAreaBlock protectedBlock = getDummyProtectedAreaBlock();
@@ -161,6 +169,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a protected block with its marker evaluating to OclInvalid.
 	 */
+	@Test
 	public void testProtectedBlockUndefinedMarker() {
 		final ProtectedAreaBlock protectedBlock = getDummyProtectedAreaBlock();
 		protectedBlock.setMarker(createOCLExpression("eSuperTypes->first()", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -182,6 +191,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a protected block with its marker evaluating to null.
 	 */
+	@Test
 	public void testProtectedBlockNullMarker() {
 		final ProtectedAreaBlock protectedBlock = getDummyProtectedAreaBlock();
 		protectedBlock.setMarker(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$

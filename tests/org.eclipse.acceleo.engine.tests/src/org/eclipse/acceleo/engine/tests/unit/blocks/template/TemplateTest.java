@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.template;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -24,6 +25,8 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine on all aspects of the "template" Acceleo block. This
@@ -66,6 +69,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the "super" call of an overriding template.
 	 */
+	@Test
 	public void testSuperCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Super")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Super")); //$NON-NLS-1$
@@ -89,6 +93,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests calls to a local protected template.
 	 */
+	@Test
 	public void testProtectedCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ProtectedVisibility")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ProtectedVisibility")); //$NON-NLS-1$
@@ -111,6 +116,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests calls to a local private template.
 	 */
+	@Test
 	public void testPrivateCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("PrivateVisibility")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("PrivateVisibility")); //$NON-NLS-1$
@@ -133,6 +139,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the effect of the "before" attribute of a template invocation.
 	 */
+	@Test
 	public void testBefore() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Before")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Before")); //$NON-NLS-1$
@@ -155,6 +162,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the effect of the "after" attribute of a template invocation.
 	 */
+	@Test
 	public void testAfter() throws IOException {
 		generationRoot = new File(getGenerationRootPath("After")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("After")); //$NON-NLS-1$
@@ -177,6 +185,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of a template call when calling a template which guard evaluates to false.
 	 */
+	@Test
 	public void testFalseGuard() throws IOException {
 		generationRoot = new File(getGenerationRootPath("FalseGuard")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("FalseGuard")); //$NON-NLS-1$
@@ -199,6 +208,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of a template call when calling a template which guard evaluates to true.
 	 */
+	@Test
 	public void testTrueGuard() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TrueGuard")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TrueGuard")); //$NON-NLS-1$
@@ -221,6 +231,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of a template call when calling a template overriding a protected one.
 	 */
+	@Test
 	public void testProtectOverride() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ProtectOverride")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ProtectOverride")); //$NON-NLS-1$
@@ -243,6 +254,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the engine when calling a template imported from an extended module.
 	 */
+	@Test
 	public void testImport() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Import")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Import")); //$NON-NLS-1$
@@ -265,6 +277,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * Tests the behavior of the engine when calling a template in a collection.
 	 */
+	@Test
 	public void testTemplateCollection() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateCollection")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateCollection")); //$NON-NLS-1$
@@ -288,6 +301,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template in a collection and then inside another
 	 * collection.
 	 */
+	@Test
 	public void testTemplateCollectionCollection() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateCollectionCollection")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateCollectionCollection")); //$NON-NLS-1$
@@ -311,6 +325,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template in a collection and then inside another
 	 * collection...
 	 */
+	@Test
 	public void testTemplateCollectionCollectionCollectionCollection() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateCollectionCollectionCollectionCollection")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateCollectionCollectionCollectionCollection")); //$NON-NLS-1$
@@ -334,6 +349,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template extending another template with a collection
 	 * as parameter.
 	 */
+	@Test
 	public void testCollectionTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateOverrideCollection")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateOverrideCollection")); //$NON-NLS-1$
@@ -357,6 +373,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template extending another template with a collection
 	 * as parameter.
 	 */
+	@Test
 	public void testSequenceTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateOverrideSequence")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateOverrideSequence")); //$NON-NLS-1$
@@ -380,6 +397,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template extending another template with a collection
 	 * as parameter.
 	 */
+	@Test
 	public void testSetTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateOverrideSet")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateOverrideSet")); //$NON-NLS-1$
@@ -403,6 +421,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template extending another template with a collection
 	 * as parameter.
 	 */
+	@Test
 	public void testBagTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateOverrideBag")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateOverrideBag")); //$NON-NLS-1$
@@ -426,6 +445,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the behavior of the engine when calling a template extending another template with a collection
 	 * as parameter.
 	 */
+	@Test
 	public void testOrderedSetTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("TemplateOverrideOrderedSet")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("TemplateOverrideOrderedSet")); //$NON-NLS-1$
@@ -445,13 +465,9 @@ public class TemplateTest extends AbstractAcceleoTest {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
-	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Template/local.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Template/extended.mtl"; //$NON-NLS-1$
 
@@ -462,7 +478,7 @@ public class TemplateTest extends AbstractAcceleoTest {
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();

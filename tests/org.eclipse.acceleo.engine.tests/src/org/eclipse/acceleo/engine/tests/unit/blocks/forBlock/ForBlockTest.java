@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.forBlock;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 /**
  * Class to test For block.
@@ -47,6 +50,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementAfterKeyword() throws IOException {
 		generationRoot = new File(getGenerationRootPath("AfterKeyword")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("AfterKeyword")); //$NON-NLS-1$
@@ -67,6 +71,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementBasicExample() throws IOException {
 		generationRoot = new File(getGenerationRootPath("BasicExample")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("BasicExample")); //$NON-NLS-1$
@@ -87,6 +92,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementBeforeKeyword() throws IOException {
 		generationRoot = new File(getGenerationRootPath("BeforeKeyword")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("BeforeKeyword")); //$NON-NLS-1$
@@ -107,6 +113,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementGuardKeyword() throws IOException {
 		generationRoot = new File(getGenerationRootPath("GuardKeyword")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("GuardKeyword")); //$NON-NLS-1$
@@ -127,6 +134,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementSeparatorKeyword() throws IOException {
 		generationRoot = new File(getGenerationRootPath("SeparatorKeyword")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("SeparatorKeyword")); //$NON-NLS-1$
@@ -147,6 +155,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementIVariable() throws IOException {
 		generationRoot = new File(getGenerationRootPath("IVariable")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("IVariable")); //$NON-NLS-1$
@@ -167,6 +176,7 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testForStatementIVariableSeparator() throws IOException {
 		generationRoot = new File(getGenerationRootPath("IVariableSeparator")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("IVariableSeparator")); //$NON-NLS-1$

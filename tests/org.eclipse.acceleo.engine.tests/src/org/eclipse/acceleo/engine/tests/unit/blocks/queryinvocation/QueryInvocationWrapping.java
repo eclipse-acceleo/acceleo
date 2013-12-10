@@ -1,9 +1,13 @@
 package org.eclipse.acceleo.engine.tests.unit.blocks.queryinvocation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 /**
  * Tests the behavior of query invocations.
@@ -38,6 +42,7 @@ public class QueryInvocationWrapping extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testQueryInvocationWrapping() throws IOException {
 		generationRoot = new File(getGenerationRootPath("QueryInvocationWrapping")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("QueryInvocationWrapping")); //$NON-NLS-1$

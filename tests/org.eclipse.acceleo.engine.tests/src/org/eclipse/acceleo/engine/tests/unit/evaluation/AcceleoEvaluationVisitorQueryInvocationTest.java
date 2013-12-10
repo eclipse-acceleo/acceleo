@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 import java.io.File;
 import java.util.Map;
 
@@ -27,6 +30,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
+import org.junit.Test;
 
 /**
  * This will test the behavior of query invocations evaluation.
@@ -46,6 +50,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	/**
 	 * Tests the evaluation of a query invocation which expression evaluates to null.
 	 */
+	@Test
 	public void testQueryInvocationNullExpression() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
 		invocation.getArgument().add(createOCLExpression("self", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -82,6 +87,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	 * Tests the evaluation of a query invocation which expression evaluates to an undefined value (through an
 	 * NPE).
 	 */
+	@Test
 	public void testQueryInvocationUndefinedExpression() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
 		invocation.getArgument().add(createOCLExpression("self", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -117,6 +123,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	/**
 	 * Tests the evaluation of a query invocation which parameter evaluates to null.
 	 */
+	@Test
 	public void testQueryInvocationNullParameter() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
 		invocation.getArgument().add(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -151,6 +158,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	 * Tests the evaluation of a query invocation which parameter evaluates to an undefined value (through an
 	 * NPE).
 	 */
+	@Test
 	public void testQueryInvocationUndefinedParameter() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
 		invocation.getArgument().add(createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -184,6 +192,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	/**
 	 * Tests the evaluation of a valid query invocation.
 	 */
+	@Test
 	public void testQueryInvocation() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
 
@@ -203,6 +212,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	 * Tests the evaluation of a valid query invocation. A query invoked twice with the same arguments should
 	 * return the same cached result.
 	 */
+	@Test
 	public void testQueryInvocationResultCache() {
 		final QueryInvocation invocation = getDummyQueryInvocation();
 		invocation.getArgument().add(createOCLExpression("self", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -228,6 +238,7 @@ public class AcceleoEvaluationVisitorQueryInvocationTest extends AbstractAcceleo
 	 * Tests that arguments of a query invocation are properly replaced with their old values when their scope
 	 * ends.
 	 */
+	@Test
 	public void testQueryInvocationArgumentScope() {
 		final Resource res = new ResourceImpl();
 		final QueryInvocation invocation = getDummyQueryInvocation();

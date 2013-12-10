@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
-import com.google.common.collect.SetMultimap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -31,6 +33,10 @@ import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.eclipse.ocl.ecore.EcoreFactory;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.common.collect.SetMultimap;
 
 /**
  * This will test the behavior of file template invocations evaluation.
@@ -53,6 +59,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a template invocation which body evaluates to null.
 	 */
+	@Test
 	public void testTemplateInvocationNullExpression() {
 		final TemplateInvocation invocation = getDummyTemplateInvocation();
 		invocation.getArgument().add(createOCLExpression("self", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -82,6 +89,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	 * Tests the evaluation of a template invocation which body evaluates to an undefined value (through an
 	 * NPE).
 	 */
+	@Test
 	public void testTemplateInvocationUndefinedExpression() {
 		final TemplateInvocation invocation = getDummyTemplateInvocation();
 		invocation.getArgument().add(createOCLExpression("self", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -110,6 +118,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a template invocation which parameter evaluates to null.
 	 */
+	@Test
 	public void testTemplateInvocationNullParameter() {
 		final TemplateInvocation invocation = getDummyTemplateInvocation();
 		invocation.getArgument().add(createOCLExpression("eIDAttribute", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -136,6 +145,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	 * Tests the evaluation of a template invocation which parameter evaluates to an undefined value (through
 	 * an NPE).
 	 */
+	@Test
 	public void testTemplateInvocationUndefinedParameter() {
 		final TemplateInvocation invocation = getDummyTemplateInvocation();
 		invocation.getArgument().add(createOCLExpression("eSuperTypes->first().name", EcorePackage.eINSTANCE //$NON-NLS-1$
@@ -161,6 +171,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	/**
 	 * Tests the evaluation of a valid template invocation.
 	 */
+	@Test
 	public void testTemplateInvocation() {
 		final TemplateInvocation invocation = getDummyTemplateInvocation();
 
@@ -181,6 +192,7 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	 * Tests that arguments of a template invocation are properly replaced with their old values when their
 	 * scope ends.
 	 */
+	@Test
 	public void testTemplateInvocationArgumentScope() {
 		final Resource res = new ResourceImpl();
 		final TemplateInvocation invocation = getDummyTemplateInvocation();
@@ -283,8 +295,9 @@ public class AcceleoEvaluationVisitorTemplateInvocationTest extends AbstractAcce
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.evaluation.AbstractAcceleoEvaluationVisitorTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		super.setUp();
 		templates = AcceleoCollections.newCompactLinkedHashSetMultimap();
 	}

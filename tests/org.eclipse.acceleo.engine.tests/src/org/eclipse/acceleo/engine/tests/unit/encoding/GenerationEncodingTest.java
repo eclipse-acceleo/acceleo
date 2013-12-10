@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.encoding;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
+import org.junit.Test;
 
 /**
  * This will be used to test the behavior of Acceleo when trying to generate text in distinct encodings.
@@ -49,6 +53,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateUTF8Template() throws IOException {
 		generationRoot = new File(getGenerationRootPath("UTF8")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("UTF8")); //$NON-NLS-1$
@@ -69,6 +74,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateLatin1Template() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Latin1")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Latin1")); //$NON-NLS-1$
@@ -89,6 +95,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateRussianTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Russian")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Russian")); //$NON-NLS-1$
@@ -109,6 +116,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateGreekTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("Greek")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("Greek")); //$NON-NLS-1$
@@ -129,6 +137,7 @@ public class GenerationEncodingTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown if the evaluation fails unexpectedly.
 	 */
+	@Test
 	public void testEvaluateWrongEncodingTemplate() throws IOException {
 		generationRoot = new File(getGenerationRootPath("WrongEncoding")); //$NON-NLS-1$
 

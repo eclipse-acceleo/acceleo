@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.override;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.Assert;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
@@ -24,6 +25,8 @@ import org.eclipse.acceleo.model.mtl.Module;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This will test the behavior of the Acceleo engine when resolving &quot;simple&quot; overriding template
@@ -67,6 +70,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * imported module but overriden in the extended module called directly.
 	 */
+	@Test
 	public void testExtendOverrideDirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ExtendOverrideDirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ExtendOverrideDirectCall")); //$NON-NLS-1$
@@ -91,6 +95,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * imported module but overriden in the extended module called indirectly.
 	 */
+	@Test
 	public void testExtendOverrideIndirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("ExtendOverrideIndirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("ExtendOverrideIndirectCall")); //$NON-NLS-1$
@@ -115,6 +120,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * extended module yet locally overriden called directly.
 	 */
+	@Test
 	public void testLocalOverrideDirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("LocalOverrideDirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("LocalOverrideDirectCall")); //$NON-NLS-1$
@@ -139,6 +145,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * This will test the behavior of the Acceleo evaluation engine when resolving a template defined in the
 	 * extended module yet locally overriden called indirectly
 	 */
+	@Test
 	public void testLocalOverrideIndirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("LocalOverrideIndirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("LocalOverrideIndirectCall")); //$NON-NLS-1$
@@ -164,6 +171,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * imported module yet overriden in both the current module and the extended module and called directly
 	 * from the current module.
 	 */
+	@Test
 	public void testOverridePriorityDirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("OverridePriorityDirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("OverridePriorityDirectCall")); //$NON-NLS-1$
@@ -189,6 +197,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * imported module yet overriden in both the current module and the extended module and called indirectly
 	 * in the imported module.
 	 */
+	@Test
 	public void testOverridePriorityIndirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("OverridePriorityIndirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("OverridePriorityIndirectCall")); //$NON-NLS-1$
@@ -214,6 +223,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * imported module yet overriden in both the current module and the extended module and called indirectly
 	 * in the extended module.
 	 */
+	@Test
 	public void testOverridePriorityMidIndirectCall() throws IOException {
 		generationRoot = new File(getGenerationRootPath("OverridePriorityMidIndirectCall")); //$NON-NLS-1$
 		referenceRoot = new File(getReferenceRootPath("OverridePriorityMidIndirectCall")); //$NON-NLS-1$
@@ -239,8 +249,9 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * 
 	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#setUp()
 	 */
+	@Before
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() {
 		String localTemplateLocation = "data/Resolution/Override/Simple/local.mtl"; //$NON-NLS-1$
 		String importedTemplateLocation = "data/Resolution/Override/Simple/imported.mtl"; //$NON-NLS-1$
 		String extendedTemplateLocation = "data/Resolution/Override/Simple/extended.mtl"; //$NON-NLS-1$
@@ -255,7 +266,7 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 		if (rootTemplate instanceof Module) {
 			module = (Module)rootTemplate;
 		} else {
-			Assert.fail("Failed to parse the templates."); //$NON-NLS-1$
+			fail("Failed to parse the templates."); //$NON-NLS-1$
 		}
 
 		defaultStrategy = new DefaultStrategy();
