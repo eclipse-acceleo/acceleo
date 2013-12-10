@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
-
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -21,6 +24,7 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.Test;
 
 /**
  * Tests the behavior of {@link ModelUtils#load(String)}.
@@ -28,7 +32,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class LoadFromStringTest extends TestCase {
+public class LoadFromStringTest {
 	/** This holds paths to unreadable or inexistant files. */
 	private static final String[] INVALID_PATHS = {"/etc/shadow", "/etc/sudoers",
 			"/inputs/attribute/attributeChange/v1.ecore",
@@ -55,6 +59,7 @@ public class LoadFromStringTest extends TestCase {
 	 * Expects an NPE to be thrown.
 	 * </p>
 	 */
+	@Test
 	public void testLoadInvalidPathNullResourceSet() {
 		for (String path : INVALID_PATHS) {
 			try {
@@ -75,6 +80,7 @@ public class LoadFromStringTest extends TestCase {
 	 * Expects an IOException to be thrown.
 	 * </p>
 	 */
+	@Test
 	public void testLoadInvalidPathValidResourceSet() {
 		for (String path : INVALID_PATHS) {
 			final ResourceSet resourceSet = new ResourceSetImpl();
@@ -100,6 +106,7 @@ public class LoadFromStringTest extends TestCase {
 	 * Expects an Illegal argument exception to be thrown.
 	 * </p>
 	 */
+	@Test
 	public void testLoadNullPath() {
 		final String errMsg = "Expected IllegalArgumentException hasn't been thrown.";
 		try {
@@ -130,6 +137,7 @@ public class LoadFromStringTest extends TestCase {
 	 * Expects an NPE to be thrown.
 	 * </p>
 	 */
+	@Test
 	public void testLoadValidPathNullResourceSet() {
 		final String errMsg = "Expected NullPointerException hasn't been thrown.";
 		for (String path : VALID_PATHS) {
@@ -151,6 +159,7 @@ public class LoadFromStringTest extends TestCase {
 	 * Expects a non-null EObject associated to the resourceSet to be returned.
 	 * </p>
 	 */
+	@Test
 	public void testLoadValidPathValidResourceSet() {
 		for (String path : VALID_PATHS) {
 			final ResourceSet resourceSet = new ResourceSetImpl();

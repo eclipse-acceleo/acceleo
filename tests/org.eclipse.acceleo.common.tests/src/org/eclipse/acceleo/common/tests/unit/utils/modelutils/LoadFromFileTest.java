@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -27,6 +29,7 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.Test;
 
 /**
  * Tests the behavior of {@link ModelUtils#load(File)}.
@@ -34,7 +37,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class LoadFromFileTest extends TestCase {
+public class LoadFromFileTest {
 	/** Full path to the directory containing the non-regression models. */
 	private static final String INPUT_DIRECTORY = "/data/modelutils";
 
@@ -79,6 +82,7 @@ public class LoadFromFileTest extends TestCase {
 	 * Tests {@link ModelUtils#load(File, ResourceSet)} with an invalid model file to be loaded and no
 	 * resourceSet. Expects a {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testLoadModelFromInvalidFileNullResourceSet() {
 		for (String modelFile : invalidFiles) {
 			try {
@@ -96,6 +100,7 @@ public class LoadFromFileTest extends TestCase {
 	 * Tests {@link ModelUtils#load(File, ResourceSet)} with an invalid model file to be loaded and a valid
 	 * resourceSet. Expects an {@link IOException} to be thrown.
 	 */
+	@Test
 	public void testLoadModelFromInvalidFileValidResourceSet() {
 		for (String modelFile : invalidFiles) {
 			final String errMsg = "Resource '" + modelFile + "' does not exist.";
@@ -123,6 +128,7 @@ public class LoadFromFileTest extends TestCase {
 	 * Tests {@link ModelUtils#load(File, ResourceSet)} with <code>null</code> as the file to be loaded.
 	 * Expects a {@link NullPointerException} to be thrown no matter the specified resourceSet.
 	 */
+	@Test
 	public void testLoadModelFromNullFile() {
 		try {
 			ModelUtils.load((File)null, null);
@@ -138,6 +144,7 @@ public class LoadFromFileTest extends TestCase {
 	 * Tests {@link ModelUtils#load(File, ResourceSet)} with a valid model file to be loaded and no
 	 * resourceSet. Expects a {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testLoadModelFromValidFileNullResourceSet() {
 		for (File modelFile : models) {
 			try {
@@ -155,6 +162,7 @@ public class LoadFromFileTest extends TestCase {
 	 * Tests {@link ModelUtils#load(File, ResourceSet)} with a valid model file and a valid resourceSet.
 	 * Expects a non-null EObject associated to the given {@link ResourceSet} to be returned.
 	 */
+	@Test
 	public void testLoadModelFromValidFileValidResourceSet() {
 		for (File modelFile : models) {
 			try {

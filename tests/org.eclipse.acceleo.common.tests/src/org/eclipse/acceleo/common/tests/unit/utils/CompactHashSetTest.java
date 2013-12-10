@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,21 +28,21 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.common.utils.Deque;
+import org.junit.Test;
 
 /**
  * Tests for the {@link CompactHashSet} behavior.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class CompactHashSetTest extends TestCase {
+public class CompactHashSetTest {
 	/**
 	 * This will test the behavior of {@link CompactHashSet#add(Object)} with random elements.
 	 */
+	@Test
 	public void testAdd() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -105,6 +113,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * This will test the behavior of {@link CompactHashSet#addAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testAddAll() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -260,6 +269,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * This will test the behavior of {@link CompactHashSet#clear()} with random elements.
 	 */
+	@Test
 	public void testClear() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -401,6 +411,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * This will test the behavior of {@link CompactHashSet#contains(Object)} with random elements.
 	 */
+	@Test
 	public void testContains() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -560,6 +571,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * This will test the behavior of {@link CompactHashSet#containsAll(Object)} with random elements.
 	 */
+	@Test
 	public void testContainsAll() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -638,6 +650,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CompactHashSet#equals(Object)} with random elements.
 	 */
+	@Test
 	public void testEquals() {
 		Set<Object> set1 = createSet();
 		Set<Object> set2 = createSet();
@@ -734,6 +747,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CompactHashSet#hashCode()} with random elements.
 	 */
+	@Test
 	public void testHashCode() {
 		Set<Object> set1 = createSet();
 		Set<Object> set2 = createSet();
@@ -830,6 +844,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the copy constructor of our set.
 	 */
+	@Test
 	public void testInstantiationCopy() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -847,7 +862,7 @@ public class CompactHashSetTest extends TestCase {
 		assertFalse(set.isEmpty());
 		assertSame(listInt10.size(), set.size());
 		assertSame(getNextPowerOfTwo(listInt10.size()), getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 		assertTrue(set.containsAll(listInt10));
 		for (Integer integer : listInt10) {
 			assertTrue(set.contains(integer));
@@ -857,7 +872,7 @@ public class CompactHashSetTest extends TestCase {
 		assertFalse(set.isEmpty());
 		assertSame(setString20.size(), set.size());
 		assertSame(getNextPowerOfTwo(setString20.size()), getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 		assertTrue(set.containsAll(setString20));
 		for (String string : setString20) {
 			assertTrue(set.contains(string));
@@ -867,7 +882,7 @@ public class CompactHashSetTest extends TestCase {
 		assertFalse(set.isEmpty());
 		assertSame(dequeString40.size(), set.size());
 		assertSame(getNextPowerOfTwo(dequeString40.size()), getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 		assertTrue(set.containsAll(dequeString40));
 		for (String string : dequeString40) {
 			assertTrue(set.contains(string));
@@ -878,7 +893,7 @@ public class CompactHashSetTest extends TestCase {
 		assertFalse(set.isEmpty());
 		assertSame(expectedSize, set.size());
 		assertEquals(getNextPowerOfTwo(duplicatesList.size()), getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 		assertTrue(set.containsAll(duplicatesList));
 		for (Object o : duplicatesList) {
 			assertTrue(set.contains(o));
@@ -889,17 +904,19 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the empty set constructor.
 	 */
+	@Test
 	public void testInstantiationEmpty() {
 		Set<Object> set = createSet();
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(16, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 	}
 
 	/**
 	 * Tests the {@link CompactHashSet#CompactHashSet(int, float)} constructor of our set.
 	 */
+	@Test
 	public void testInstantiationLoadFactor() {
 		int[] validCapacities = new int[] {10, 0, (1 << 10) - 1, 1 << 31, -10 };
 		float[] validLoadFactors = new float[] {0.000001f, 0.5f, 0.75f, 1f, Float.MIN_VALUE };
@@ -913,7 +930,7 @@ public class CompactHashSetTest extends TestCase {
 				assertTrue(set.isEmpty());
 				assertSame(0, set.size());
 				assertEquals(Math.max(4, getNextPowerOfTwo(capacity)), getInternalCapacity(set));
-				assertEquals(loadFactor, getInternalLoadFactor(set));
+				assertEquals(loadFactor, getInternalLoadFactor(set), 0.001);
 			}
 			for (float loadFactor : invalidLoadFactors) {
 				try {
@@ -960,36 +977,37 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the {@link CompactHashSet#CompactHashSet(int)} constructor of our set.
 	 */
+	@Test
 	public void testInstantiationSize() {
 		Set<Object> set = createSet(10);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(16, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 
 		set = createSet(0);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(4, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 
 		set = createSet((1 << 10) - 1);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertEquals(1 << 10, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 
 		set = createSet(1 << 31);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(4, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 
 		set = createSet(-10);
 		assertTrue(set.isEmpty());
 		assertSame(0, set.size());
 		assertSame(4, getInternalCapacity(set));
-		assertEquals(0.75f, getInternalLoadFactor(set));
+		assertEquals(0.75f, getInternalLoadFactor(set), 0.001);
 
 		try {
 			set = createSet(Integer.MAX_VALUE);
@@ -1012,6 +1030,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CompactHashSet#isEmpty()} with random elements.
 	 */
+	@Test
 	public void testIsEmpty() {
 		Set<Object> set = createSet();
 
@@ -1047,6 +1066,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CompactHashSet#iterator()} with random elements.
 	 */
+	@Test
 	public void testIterator() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -1140,6 +1160,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the removal of elements of the Set through the iterator.remove method.
 	 */
+	@Test
 	public void testIteratorRemove() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -1200,6 +1221,7 @@ public class CompactHashSetTest extends TestCase {
 	 * This will try and ensure that rehashing works properly both when we have a high count of "deleted"
 	 * entries and when no entry has been deleted.
 	 */
+	@Test
 	public void testRehashing() {
 		/*
 		 * We're using for this test values which we know the hashCode so as to prevent all collisions. We
@@ -1261,6 +1283,7 @@ public class CompactHashSetTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CompactHashSet#remove(Object)} with random elements.
 	 */
+	@Test
 	public void testRemove() {
 		Set<Object> set = createSet();
 		List<Object> objects = new ArrayList<Object>();

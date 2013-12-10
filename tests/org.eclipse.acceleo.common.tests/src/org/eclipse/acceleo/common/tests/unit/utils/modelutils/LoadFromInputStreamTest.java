@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
@@ -20,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.core.runtime.FileLocator;
@@ -29,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.junit.Test;
 
 /**
  * Tests the behavior of {@link ModelUtils#load(InputStream, String, ResourceSet)}.
@@ -36,7 +40,7 @@ import org.eclipse.emf.ecore.xmi.XMIResource;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class LoadFromInputStreamTest extends TestCase {
+public class LoadFromInputStreamTest {
 	/** Full path to the directory containing the non-regression models. */
 	private static final String INPUT_DIRECTORY = "/data/modelutils";
 
@@ -84,6 +88,7 @@ public class LoadFromInputStreamTest extends TestCase {
 	 * InputStream. Expects a {@link NullPointerException} to be thrown whatever the two other specified
 	 * arguments are.
 	 */
+	@Test
 	public void testLoadModelFromNullInputStream() {
 		for (String invalidFileName : INVALID_FILENAMES) {
 			// First try will be with null resourceSet
@@ -116,6 +121,7 @@ public class LoadFromInputStreamTest extends TestCase {
 	 * @throws IOException
 	 *             Allows us not to catch it. Test just fails if thrown.
 	 */
+	@Test
 	public void testLoadModelFromValidInputInvalidExtension() throws IOException {
 		for (File model : models) {
 			try {
@@ -148,6 +154,7 @@ public class LoadFromInputStreamTest extends TestCase {
 	 * @throws IOException
 	 *             Allows us not to catch it. Test just fails if thrown.
 	 */
+	@Test
 	public void testLoadModelFromValidInputNullResourceSet() throws IOException {
 		for (File model : models) {
 			FileInputStream fsInput = null;
@@ -192,6 +199,7 @@ public class LoadFromInputStreamTest extends TestCase {
 	 * @throws IOException
 	 *             Allows us not to catch it. Test just fails if thrown.
 	 */
+	@Test
 	public void testLoadModelFromValidInputValidExtension() throws IOException {
 		for (File model : models) {
 			try {

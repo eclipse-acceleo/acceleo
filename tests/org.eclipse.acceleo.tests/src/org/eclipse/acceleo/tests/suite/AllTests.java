@@ -14,10 +14,9 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.eclipse.acceleo.common.tests.suite.CommonTestSuite;
+import org.eclipse.acceleo.common.tests.suite.AllCommonTests;
 import org.eclipse.acceleo.compatibility.tests.suite.CompatibilityTestSuite;
 import org.eclipse.acceleo.engine.tests.suite.EngineTestSuite;
-import org.eclipse.acceleo.tests.suite.utils.TraceabilityActivationTest;
 
 /**
  * This suite will launch all the tests defined for the Acceleo project.
@@ -46,25 +45,25 @@ public class AllTests {
 		final TestSuite suite = new TestSuite("Acceleo test suite");
 
 		final TestSuite classicSuite = new TestSuite("Testing Acceleo With Traceability Disabled");
-		classicSuite.addTest(CommonTestSuite.suite());
+		classicSuite.addTest(AllCommonTests.suite());
 		classicSuite.addTest(CompatibilityTestSuite.suite());
 		classicSuite.addTest(EngineTestSuite.suite());
 		// classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
-
-		final TestSuite traceabilitySuite = new TestSuite("Testing Acceleo With Traceability Enabled");
-		traceabilitySuite.addTestSuite(TraceabilityActivationTest.class);
-
-		traceabilitySuite.addTest(CommonTestSuite.suite());
-		traceabilitySuite.addTest(CompatibilityTestSuite.suite());
-		traceabilitySuite.addTest(EngineTestSuite.suite());
-		// traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
-		traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
-		traceabilitySuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
+		//
+		// final TestSuite traceabilitySuite = new TestSuite("Testing Acceleo With Traceability Enabled");
+		// traceabilitySuite.addTestSuite(TraceabilityActivationTest.class);
+		//
+		// traceabilitySuite.addTest(CommonTestSuite.suite());
+		// traceabilitySuite.addTest(CompatibilityTestSuite.suite());
+		// traceabilitySuite.addTest(EngineTestSuite.suite());
+		// // traceabilitySuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
+		// traceabilitySuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());
+		// traceabilitySuite.addTest(org.eclipse.acceleo.traceability.tests.suite.AllTests.suite());
 
 		suite.addTest(classicSuite);
-		suite.addTest(traceabilitySuite);
+		// suite.addTest(traceabilitySuite);
 		return suite;
 	}
 

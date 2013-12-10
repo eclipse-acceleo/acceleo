@@ -10,13 +10,17 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
+import org.junit.Test;
 
 /**
  * Tests Messages class. These tests' successful completion heavily depends on
@@ -25,7 +29,7 @@ import org.eclipse.acceleo.common.AcceleoCommonMessages;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings({"unchecked", "nls", })
-public class MessagesTest extends TestCase {
+public class MessagesTest {
 	/** Expected result of the parameterisable keys (only used if locale is en). */
 	private final String[] expectedForParameterisable = {
 			"Couldn't load class {0}. Check that its containing package is exported.",
@@ -69,6 +73,7 @@ public class MessagesTest extends TestCase {
 	 * 
 	 * to be returned. Parameters won't affect result here.
 	 */
+	@Test
 	public void testFormattedGetStringInvalidKey() {
 		for (int i = 0; i < messageParameters.length; i++) {
 			for (int j = i; j < messageParameters.length; j++) {
@@ -85,6 +90,7 @@ public class MessagesTest extends TestCase {
 	 * Tests {@link AcceleoCommonMessages#getString(String, Object...)} with <code>null</code> key. Expects a
 	 * NullPointerException to be thrown. Parameters won't affect result here.
 	 */
+	@Test
 	public void testFormattedGetStringNullKey() {
 		for (int i = 0; i < messageParameters.length; i++) {
 			for (int j = i; j < messageParameters.length; j++) {
@@ -108,6 +114,7 @@ public class MessagesTest extends TestCase {
 	 * correctly substituted.
 	 * </p>
 	 */
+	@Test
 	public void testFormattedGetStringValidKey() {
 		for (int i = 0; i < messageParameters.length; i++) {
 			for (int j = i; j < messageParameters.length; j++) {
@@ -162,6 +169,7 @@ public class MessagesTest extends TestCase {
 	 * as formatting parameter. Expects the result to be the same as the
 	 * {@link AcceleoCommonMessages#getString(String)}.
 	 */
+	@Test
 	public void testFormattedGetStringValidKeyNullParameter() {
 		for (int i = 0; i < parameterisableKeys.length; i++) {
 			assertEquals("Unexpected formatted String returned by getString(String, Object...).",
@@ -179,6 +187,7 @@ public class MessagesTest extends TestCase {
 	 * 
 	 * to be returned.
 	 */
+	@Test
 	public void testUnFormattedGetStringInvalidKey() {
 		for (String invalidKey : invalidKeys) {
 			assertEquals("Unexpected result of getString() with an invalid key.", '!' + invalidKey + '!',
@@ -190,6 +199,7 @@ public class MessagesTest extends TestCase {
 	 * Tests {@link AcceleoCommonMessages#getString(String)} with <code>null</code> argument. Expects a
 	 * NullPointerException to be thrown.
 	 */
+	@Test
 	public void testUnFormattedGetStringNullKey() {
 		try {
 			AcceleoCommonMessages.getString(null);
@@ -203,6 +213,7 @@ public class MessagesTest extends TestCase {
 	 * Tests {@link AcceleoCommonMessages#getString(String)} with valid keys. Expects the String associated to
 	 * the key in the properties file to be returned.
 	 */
+	@Test
 	public void testUnFormattedGetStringValidKey() {
 		for (int i = 0; i < validKeys.length; i++) {
 			Locale previousLocale = null;

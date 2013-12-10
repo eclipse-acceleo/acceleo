@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -18,13 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.Test;
 
 /**
  * Tests the behavior of {@link ModelUtils#save(EObject, String)} and {@link ModelUtils#serialize(EObject)}.
@@ -32,7 +37,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class SaveSerializeTest extends TestCase {
+public class SaveSerializeTest {
 	/** Full path to the directory containing the non-regression models. */
 	private static final String INPUT_DIRECTORY = "/data/modelutils";
 
@@ -72,6 +77,7 @@ public class SaveSerializeTest extends TestCase {
 	 * Tests {@link ModelUtils#save(EObject, String)} with <code>null</code> as the object to save. Expects a
 	 * {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testSaveNullRoot() {
 		try {
 			ModelUtils.save(null, outputDirectory);
@@ -87,6 +93,7 @@ public class SaveSerializeTest extends TestCase {
 	 * Tests {@link ModelUtils#save(EObject, String)} with a valid EObject and a valid path where it has to be
 	 * saved. Expects a non-empty File to be created at the specified path.
 	 */
+	@Test
 	public void testSaveValidEObject() {
 		for (EObject modelRoot : models) {
 			FileInputStream fsInput = null;
@@ -125,6 +132,7 @@ public class SaveSerializeTest extends TestCase {
 	 * Tests {@link ModelUtils#save(EObject, String)} with <code>null</code> as the path where to save.
 	 * Expects a {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testSaveValidEObjectNullPath() {
 		for (EObject modelRoot : models) {
 			try {
@@ -142,6 +150,7 @@ public class SaveSerializeTest extends TestCase {
 	 * Tests {@link ModelUtils#serialize(EObject)} with <code>null</code> as the object to serialize. Expects
 	 * a {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testSerializeNullRoot() {
 		try {
 			ModelUtils.serialize(null);
@@ -157,6 +166,7 @@ public class SaveSerializeTest extends TestCase {
 	 * Tests {@link ModelUtils#serialize(EObject)} with a valid EObject to serialize. Expects a non-empty
 	 * String to be returned.
 	 */
+	@Test
 	public void testSerializeValidEObject() {
 		for (EObject modelRoot : models) {
 			try {

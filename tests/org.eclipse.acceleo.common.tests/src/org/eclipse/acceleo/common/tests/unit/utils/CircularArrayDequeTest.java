@@ -10,6 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,20 +36,20 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.common.utils.CircularArrayDeque;
 import org.eclipse.acceleo.common.utils.Deque;
+import org.junit.Test;
 
 /**
  * Tests for the {@link CircularArrayDeque} behavior.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class CircularArrayDequeTest extends TestCase {
+public class CircularArrayDequeTest {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#add(Object)} with random elements.
 	 */
+	@Test
 	public void testAdd() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -128,6 +136,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testAddAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
 		Collection<Integer> listInt10 = randomIntegerList(10);
@@ -194,6 +203,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testAddAllRandomAccess() {
 		Collection<Object> emptyCollection = Collections.emptyList();
 		Collection<Integer> listInt10 = randomIntegerList(10);
@@ -279,6 +289,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements.
 	 */
+	@Test
 	public void testAddAllRandomAccessLeftRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -294,6 +305,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements.
 	 */
+	@Test
 	public void testAddAllRandomAccessRightRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -310,6 +322,7 @@ public class CircularArrayDequeTest extends TestCase {
 	 * Tests the behavior of {@link CircularArrayDeque#addAll(int, Collection)} with random elements but with
 	 * out of bounds indices.
 	 */
+	@Test
 	public void testAddAllRandomOutOfBounds() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -338,6 +351,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addFirst(Object)} with random elements.
 	 */
+	@Test
 	public void testAddFirst() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -416,6 +430,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#addLast(Object)} with random elements.
 	 */
+	@Test
 	public void testAddLast() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -494,6 +509,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements.
 	 */
+	@Test
 	public void testAddRandomAccessLeftRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -507,6 +523,7 @@ public class CircularArrayDequeTest extends TestCase {
 	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements but with out of
 	 * bounds indices.
 	 */
+	@Test
 	public void testAddRandomAccessOutOfBounds() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -531,7 +548,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#add(int, Object)} with random elements.
 	 */
-
+	@Test
 	public void testAddRandomAccessRightRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -544,6 +561,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#clear()} with random elements.
 	 */
+	@Test
 	public void testClear() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		assertSame(0, deque.size());
@@ -579,6 +597,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#contains()} with random elements.
 	 */
+	@Test
 	public void testContains() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -607,6 +626,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#containsAll()} with random elements.
 	 */
+	@Test
 	public void testContainsAll() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -643,6 +663,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#element()} with random elements.
 	 */
+	@Test
 	public void testElement() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -688,6 +709,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#equals()} with random elements.
 	 */
+	@Test
 	public void testEquals() {
 		Deque<Object> deque1 = new CircularArrayDeque<Object>();
 		Deque<Object> deque2 = new CircularArrayDeque<Object>();
@@ -760,6 +782,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#get(int))} with random indices.
 	 */
+	@Test
 	public void testGet() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objects = new ArrayList<Object>();
@@ -801,6 +824,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#getFirst()} with random elements.
 	 */
+	@Test
 	public void testGetFirst() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -846,6 +870,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#getLast()} with random elements.
 	 */
+	@Test
 	public void testGetLast() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -891,6 +916,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#hashCode()} with random elements.
 	 */
+	@Test
 	public void testHashCode() {
 		Deque<Object> deque1 = new CircularArrayDeque<Object>();
 		Deque<Object> deque2 = new CircularArrayDeque<Object>();
@@ -969,6 +995,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#indexOf(Object)} with random elements.
 	 */
+	@Test
 	public void testIndexOf() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 5.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -1049,6 +1076,7 @@ public class CircularArrayDequeTest extends TestCase {
 	 * Tests that the copy constructor of the Deque creates a deque with all objects of the initial
 	 * collection.
 	 */
+	@Test
 	public void testInstantiationCopy() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -1076,6 +1104,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the two constructors of the Deque that initialize an empty deque.
 	 */
+	@Test
 	public void testInstantiationEmpty() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		assertTrue(deque.isEmpty());
@@ -1102,6 +1131,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the constructors of the Deque with out of bounds or erroneous values.
 	 */
+	@Test
 	public void testInstantiationError() {
 		try {
 			new CircularArrayDeque<Object>(Integer.MAX_VALUE);
@@ -1124,6 +1154,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#isEmpty()} with random elements.
 	 */
+	@Test
 	public void testIsEmpty() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		assertTrue(deque.isEmpty());
@@ -1156,6 +1187,7 @@ public class CircularArrayDequeTest extends TestCase {
 	 * Tests the behavior of the serialization and deserialization support of the {@link CircularArrayDeque}.
 	 * FIXME test deserialization from file to ensure we do not break support of older serialized deques.
 	 */
+	@Test
 	public void testIsSerializable() {
 		Collection<Object> emptyCollection = Collections.emptyList();
 		Collection<Integer> listInt10 = randomIntegerList(10);
@@ -1217,6 +1249,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#iterator()} with random elements.
 	 */
+	@Test
 	public void testIterator() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -1331,6 +1364,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the removal of elements of the Deque through the iterator.remove method.
 	 */
+	@Test
 	public void testIteratorRemove() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -1413,6 +1447,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#lastIndexOf(Object)} with random elements.
 	 */
+	@Test
 	public void testLastIndexOf() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 5.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -1492,6 +1527,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#listIterator()} with random elements.
 	 */
+	@Test
 	public void testListIterator() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -1800,6 +1836,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#listIterator(int)} with random elements.
 	 */
+	@Test
 	public void testListIteratorStartAt() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
@@ -1865,6 +1902,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#offer(Object) with random elements.
 	 */
+	@Test
 	public void testOffer() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -1943,6 +1981,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#offerAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testOfferAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
 		Collection<Integer> listInt10 = randomIntegerList(10);
@@ -2003,6 +2042,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#offerFirst(Object)} with random elements.
 	 */
+	@Test
 	public void testOfferFirst() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -2081,6 +2121,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#offerLast(Object)} with random elements.
 	 */
+	@Test
 	public void testOfferLast() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -2159,6 +2200,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#toArray(Object[])} with random elements.
 	 */
+	@Test
 	public void testParameterizedToArray() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();
@@ -2228,6 +2270,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#peek()} with random elements.
 	 */
+	@Test
 	public void testPeek() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -2262,6 +2305,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#peekFirst()} with random elements.
 	 */
+	@Test
 	public void testPeekFirst() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -2307,6 +2351,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#peekLast()} with random elements.
 	 */
+	@Test
 	public void testPeekLast() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -2352,6 +2397,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#poll()} with random elements.
 	 */
+	@Test
 	public void testPoll() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();
@@ -2398,6 +2444,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#pop()} with random elements.
 	 */
+	@Test
 	public void testPop() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();
@@ -2458,6 +2505,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#remove(Object)} with random elements.
 	 */
+	@Test
 	public void testRemove() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objects = new ArrayList<Object>();
@@ -2498,6 +2546,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#removeAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testRemoveAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
 		Collection<Integer> listInt10 = randomIntegerList(10);
@@ -2584,6 +2633,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#removeAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testRemoveAllBothRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -2599,6 +2649,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#removeAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testRemoveAllLeftRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -2614,6 +2665,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#removeAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testRemoveAllRightRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -2629,6 +2681,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#removeFirst()} with random elements.
 	 */
+	@Test
 	public void testRemoveFirst() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();
@@ -2689,6 +2742,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#removeLast()} with random elements.
 	 */
+	@Test
 	public void testRemoveLast() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();
@@ -2749,6 +2803,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#remove(Object)} with random elements.
 	 */
+	@Test
 	public void testRemoveLeftRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -2760,6 +2815,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#remove()} with random elements.
 	 */
+	@Test
 	public void testRemoveQueue() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();
@@ -2820,6 +2876,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#remove(Object)} with random elements.
 	 */
+	@Test
 	public void testRemoveRightRotate() {
 		Object[] testObjects = new Object[] {"abcd", "", "*", "?", "\n", '\'', null, 4, 4.3, 5L, 4.3d, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				new Object() };
@@ -2831,6 +2888,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#retainAll(Collection)} with random elements.
 	 */
+	@Test
 	public void testRetainAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
 		Collection<Integer> listInt10 = randomIntegerList(10);
@@ -2930,6 +2988,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#set(int, Object)} with random elements.
 	 */
+	@Test
 	public void testSet() {
 		Integer integer1 = getRandomInteger();
 		Integer integer2 = getRandomInteger();
@@ -3015,6 +3074,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#size()} with random elements.
 	 */
+	@Test
 	public void testSize() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -3040,6 +3100,7 @@ public class CircularArrayDequeTest extends TestCase {
 	 * Tests the behavior of {@link CircularArrayDeque#subList(int, int)} with random elements. As this is
 	 * fully inherited from AbstractList, we'll only test that the operation is accessible.
 	 */
+	@Test
 	public void testSubList() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);
@@ -3094,6 +3155,7 @@ public class CircularArrayDequeTest extends TestCase {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#toArray()} with random elements.
 	 */
+	@Test
 	public void testToArray() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		List<Object> objectsFirst = new ArrayList<Object>();

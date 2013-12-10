@@ -1,10 +1,15 @@
 package org.eclipse.acceleo.common.tests.unit.utils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
+import org.junit.Test;
 
 /**
  * Tests for the {@link CompactLinkedHashSet} behavior.
@@ -16,7 +21,10 @@ import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class CompactLinkedHashSetTest extends CompactHashSetTest {
-	/** Checks that this set's entries are iterated over in insertion order. */
+	/**
+	 * Checks that this set's entries are iterated over in insertion order.
+	 **/
+	@Test
 	public void testIteratorOrder() {
 		Collection<Integer> listInt10 = randomIntegerList(10);
 		Collection<String> setString20 = randomStringSet(20);

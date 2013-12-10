@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -18,14 +23,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests the behavior of {@link ModelUtils#getModelsFrom(File)}.
@@ -33,7 +39,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class GetModelsFromTest extends TestCase {
+public class GetModelsFromTest {
 	/** Full path to the directory containing the models. */
 	private static final String INPUT_DIRECTORY = "/data/modelutils";
 
@@ -56,6 +62,7 @@ public class GetModelsFromTest extends TestCase {
 	 * Tests {@link ModelUtils#getModelsFrom(File)} with invalid directories. Expects an empty list to be
 	 * returned.
 	 */
+	@Test
 	public void testGetModelsFromInvalidDirectory() {
 		List<EObject> expectedResult = Collections.emptyList();
 		for (File invalidDirectory : invalidDirectories) {
@@ -72,6 +79,7 @@ public class GetModelsFromTest extends TestCase {
 	 * Tests {@link ModelUtils#getModelsFrom(File)} with <code>null</code> directory. Expects a
 	 * {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testGetModelsFromNullDirectory() {
 		try {
 			ModelUtils.getModelsFrom(null, new ResourceSetImpl());
@@ -87,6 +95,7 @@ public class GetModelsFromTest extends TestCase {
 	 * Tests {@link ModelUtils#getModelsFrom(File)} with directories that cannot be read. Expects an empty
 	 * list to be returned.
 	 */
+	@Test
 	public void testGetModelsFromUnreadableDirectory() {
 		List<EObject> expectedResult = Collections.emptyList();
 		for (String unreadableDirectory : unreadableDirectories) {
@@ -105,6 +114,7 @@ public class GetModelsFromTest extends TestCase {
 	 * a size equal to the number of files contained by the given directory, and all of the list's objects to
 	 * have an associated resource.
 	 */
+	@Test
 	public void testGetModelsFromValidDirectory() {
 		for (File modelDirectory : modelDirectories) {
 			List<EObject> result = null;
@@ -139,6 +149,7 @@ public class GetModelsFromTest extends TestCase {
 	 * Tests {@link ModelUtils#getModelsFrom(File)} with valid directories but invalid file extensions.
 	 * Expects the returned list to be empty.
 	 */
+	@Test
 	public void testGetModelsFromValidDirectoryInvalidExtension() {
 		for (File modelDirectory : modelDirectories) {
 			List<EObject> result = null;
@@ -162,6 +173,7 @@ public class GetModelsFromTest extends TestCase {
 	 * the list's objects to have an associated resource. All resources are expected to be contained by the
 	 * same resourceSet.
 	 */
+	@Test
 	public void testGetModelsFromValidDirectoryNullResourceSet() {
 		for (File modelDirectory : modelDirectories) {
 			List<EObject> result = null;
@@ -201,6 +213,7 @@ public class GetModelsFromTest extends TestCase {
 	 * the returned list to have a size equal to the number of files of that given extension contained by the
 	 * given directory, and all of the list's objects to have an associated resource.
 	 */
+	@Test
 	public void testGetModelsFromValidDirectoryValidExtension() {
 		for (File modelDirectory : modelDirectories) {
 			List<EObject> result = null;
@@ -236,8 +249,8 @@ public class GetModelsFromTest extends TestCase {
 	/**
 	 * Default constructor. Scans for model files in {@link #INPUT_DIRECTORY}.
 	 */
-	@Override
-	protected void setUp() {
+	@Before
+	public void setUp() {
 		File inputDir = null;
 		try {
 			inputDir = new File(FileLocator.toFileURL(
@@ -260,8 +273,8 @@ public class GetModelsFromTest extends TestCase {
 	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 */
-	@Override
-	protected void tearDown() {
+	@After
+	public void tearDown() {
 		invalidDirectories.clear();
 		modelDirectories.clear();
 	}

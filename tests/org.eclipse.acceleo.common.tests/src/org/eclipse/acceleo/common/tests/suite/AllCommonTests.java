@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.suite;
 
+import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.common.tests.unit.utils.AcceleoCommonPluginTest;
@@ -20,14 +19,27 @@ import org.eclipse.acceleo.common.tests.unit.utils.CircularArrayDequeTest;
 import org.eclipse.acceleo.common.tests.unit.utils.CompactHashSetTest;
 import org.eclipse.acceleo.common.tests.unit.utils.CompactLinkedHashSetTest;
 import org.eclipse.acceleo.common.tests.unit.utils.MessagesTest;
-import org.eclipse.acceleo.common.tests.unit.utils.modelutils.ModelUtilsTestSuite;
+import org.eclipse.acceleo.common.tests.unit.utils.modelutils.AttachResourceTest;
+import org.eclipse.acceleo.common.tests.unit.utils.modelutils.GetModelsFromTest;
+import org.eclipse.acceleo.common.tests.unit.utils.modelutils.LoadFromFileTest;
+import org.eclipse.acceleo.common.tests.unit.utils.modelutils.LoadFromInputStreamTest;
+import org.eclipse.acceleo.common.tests.unit.utils.modelutils.LoadFromStringTest;
+import org.eclipse.acceleo.common.tests.unit.utils.modelutils.SaveSerializeTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * This suite will launch all the tests defined for the Acceleo common plugin.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class CommonTestSuite extends TestCase {
+@RunWith(Suite.class)
+@SuiteClasses({MessagesTest.class, AcceleoCommonPluginTest.class, CircularArrayDequeTest.class,
+		CompactHashSetTest.class, CompactLinkedHashSetTest.class, AttachResourceTest.class,
+		GetModelsFromTest.class, LoadFromFileTest.class, LoadFromInputStreamTest.class,
+		LoadFromStringTest.class, SaveSerializeTest.class })
+public class AllCommonTests {
 	/**
 	 * Launches the test with the given arguments.
 	 * 
@@ -44,15 +56,6 @@ public class CommonTestSuite extends TestCase {
 	 * @return The test suite containing all the tests
 	 */
 	public static Test suite() {
-		final TestSuite suite = new TestSuite("Acceleo common test suite"); //$NON-NLS-1$
-
-		suite.addTestSuite(MessagesTest.class);
-		suite.addTestSuite(AcceleoCommonPluginTest.class);
-		suite.addTestSuite(CircularArrayDequeTest.class);
-		suite.addTestSuite(CompactHashSetTest.class);
-		suite.addTestSuite(CompactLinkedHashSetTest.class);
-		suite.addTest(ModelUtilsTestSuite.suite());
-
-		return suite;
+		return new JUnit4TestAdapter(AllCommonTests.class);
 	}
 }

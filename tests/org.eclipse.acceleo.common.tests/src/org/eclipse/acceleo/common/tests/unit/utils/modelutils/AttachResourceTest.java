@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.tests.unit.utils.modelutils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -25,6 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.junit.Test;
 
 /**
  * Tests the behavior of
@@ -36,7 +40,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
-public class AttachResourceTest extends TestCase {
+public class AttachResourceTest {
 	/** Full path to the directory containing the models. */
 	private static final String INPUT_DIRECTORY = "/data/modelutils/testModels";
 
@@ -64,6 +68,7 @@ public class AttachResourceTest extends TestCase {
 	 * attachResource(URI, ResourceSet, EObject)} . Expects all models to be attached to a non-
 	 * <code>null</code> resource in the same resourceSet.
 	 */
+	@Test
 	public void testAttachResource() {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		for (EObject model : INPUT_MODELS) {
@@ -84,6 +89,7 @@ public class AttachResourceTest extends TestCase {
 	 * Tests {@link ModelUtils#attachResource(org.eclipse.emf.common.util.URI, org.eclipse.emf.ecore.EObject)
 	 * attachResource(URI, EObject)} . Expects all models to be attached to a non-<code>null</code> resource.
 	 */
+	@Test
 	public void testAttachResourceNoResourceSet() {
 		for (EObject model : INPUT_MODELS) {
 			for (String uriPath : TEST_URIS) {
@@ -104,6 +110,7 @@ public class AttachResourceTest extends TestCase {
 	 * attachResource(URI, ResourceSet, EObject)} with <code>null</code> as the object to attach. Expects a
 	 * {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testAttachResourceNullEObject() {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		for (String uriPath : TEST_URIS) {
@@ -128,6 +135,7 @@ public class AttachResourceTest extends TestCase {
 	 * attachResource(URI, ResourceSet, EObject)} with <code>null</code> as the resource's resourceSet.
 	 * Expects a {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testAttachResourceNullResourceSet() {
 		for (EObject model : INPUT_MODELS) {
 			for (String uriPath : TEST_URIS) {
@@ -150,6 +158,7 @@ public class AttachResourceTest extends TestCase {
 	 * attachResource(URI, ResourceSet, EObject)} with <code>null</code> as the resource URI. Expects a
 	 * {@link NullPointerException} to be thrown.
 	 */
+	@Test
 	public void testAttachResourceNullURI() {
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		for (EObject model : INPUT_MODELS) {
