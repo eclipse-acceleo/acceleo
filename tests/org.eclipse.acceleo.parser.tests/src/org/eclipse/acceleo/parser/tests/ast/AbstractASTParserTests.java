@@ -10,14 +10,17 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
+import static org.junit.Assert.fail;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.AssertionFailedError;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -45,8 +48,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.osgi.framework.Bundle;
-
-import static org.junit.Assert.fail;
 
 /**
  * The common superclass of all the AST tests.
@@ -118,7 +119,7 @@ public abstract class AbstractASTParserTests {
 				+ " org.eclipse.acceleo.engine" + eol + "Bundle-RequiredExecutionEnvironment: J2SE-1.5" + eol //$NON-NLS-1$ //$NON-NLS-2$
 				+ "Bundle-ActivationPolicy: lazy" + eol + "Eclipse-LazyStart: true" + eol //$NON-NLS-1$ //$NON-NLS-2$
 				+ "Export-Package: " + proj.getName() + ".files"); //$NON-NLS-1$ //$NON-NLS-2$
-		createFile(buffer, new Path("/META-INF"), proj, "MANIFEST.MF"); //$NON-NLS-1$ //$NON-NLS-2$
+		createFile(buffer.toString(), new Path("/META-INF"), proj, "MANIFEST.MF"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		try {
 			boolean hasNature = proj.hasNature(IAcceleoConstants.ACCELEO_NATURE_ID);
@@ -148,7 +149,7 @@ public abstract class AbstractASTParserTests {
 						+ "<classpathentry kind=\"con\" path=\"org.eclipse.pde.core.requiredPlugins\"/>" //$NON-NLS-1$
 						+ eol + "<classpathentry kind=\"src\" path=\"src\"/>" + eol //$NON-NLS-1$
 						+ "<classpathentry kind=\"output\" path=\"bin\"/>" + eol + "</classpath>"); //$NON-NLS-1$ //$NON-NLS-2$
-		createFile(buffer, new Path("/"), proj, ".classpath"); //$NON-NLS-1$//$NON-NLS-2$
+		createFile(buffer.toString(), new Path("/"), proj, ".classpath"); //$NON-NLS-1$//$NON-NLS-2$
 
 		// creates the settings
 		buffer = new StringBuffer("eclipse.preferences.version=1" + eol //$NON-NLS-1$
@@ -157,7 +158,7 @@ public abstract class AbstractASTParserTests {
 				+ "org.eclipse.jdt.core.compiler.problem.assertIdentifier=error" + eol //$NON-NLS-1$
 				+ "org.eclipse.jdt.core.compiler.problem.enumIdentifier=error" + eol //$NON-NLS-1$
 				+ "org.eclipse.jdt.core.compiler.source=1.5"); //$NON-NLS-1$
-		createFile(buffer, new Path("/.settings"), proj, "org.eclipse.jdt.core.prefs"); //$NON-NLS-1$ //$NON-NLS-2$
+		createFile(buffer.toString(), new Path("/.settings"), proj, "org.eclipse.jdt.core.prefs"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return proj;
 	}
@@ -175,7 +176,7 @@ public abstract class AbstractASTParserTests {
 	 *            The name of the file to create
 	 * @return The created file
 	 */
-	protected static IFile createFile(StringBuffer buffer, IPath path, IProject proj, String name) {
+	protected static IFile createFile(String content, IPath path, IProject proj, String name) {
 		String[] segments = path.segments();
 
 		IContainer currentContainer = proj;
@@ -197,7 +198,7 @@ public abstract class AbstractASTParserTests {
 		IFile file = currentContainer.getFile(new Path(name));
 		if (!file.exists()) {
 			try {
-				ByteArrayInputStream source = new ByteArrayInputStream(buffer.toString().getBytes("UTF8")); //$NON-NLS-1$
+				ByteArrayInputStream source = new ByteArrayInputStream(content.getBytes("UTF8")); //$NON-NLS-1$
 				file.create(source, true, new NullProgressMonitor());
 				System.out.println("File created: " + file.getLocation());
 			} catch (UnsupportedEncodingException e) {
@@ -359,18 +360,64 @@ public abstract class AbstractASTParserTests {
 		}
 	}
 
-	protected File getFileFromPath(String pathName) {
+	protected String getContentFromPath(String pathName) {
 		try {
-			String fileLocation = FileLocator.resolve(bundle.getEntry(pathName)).getPath();
-			return new File(fileLocation);
+			URL url = FileLocator.resolve(bundle.getEntry(pathName));
+			return readFileFromURL(url);
 		} catch (IOException e) {
-			throw new AssertionFailedError(e.getMessage());
-		} catch (NullPointerException e) {
-			/*
-			 * on the server the unit test fails with an NPE :S
-			 */
-			throw new AssertionFailedError(e.getMessage());
+			fail(e.getMessage());
+		}
+		return null;
+	}
+
+	private String readFileFromURL(URL url) {
+		String result = ""; //$NON-NLS-1$
+
+		InputStream openStream = null;
+		InputStreamReader inputStreamReader = null;
+		BufferedReader bufferedReader = null;
+		try {
+			openStream = url.openStream();
+		} catch (IOException e) {
+			// do nothing, openStream is null
 		}
 
+		if (openStream != null) {
+			inputStreamReader = new InputStreamReader(openStream);
+			bufferedReader = new BufferedReader(inputStreamReader);
+
+			StringBuilder stringBuilder = new StringBuilder();
+
+			String line = null;
+			try {
+				while ((line = bufferedReader.readLine()) != null) {
+					stringBuilder.append(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			try {
+				bufferedReader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					inputStreamReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						openStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			result = stringBuilder.toString();
+		}
+
+		return result;
 	}
 }

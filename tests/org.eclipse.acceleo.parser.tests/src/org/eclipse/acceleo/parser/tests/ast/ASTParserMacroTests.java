@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import java.io.File;
+import static org.junit.Assert.fail;
 
-import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -23,8 +22,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.fail;
 
 /**
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
@@ -53,12 +50,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroValid() {
-		File file = this.getFileFromPath("/data/ast/macro/macroValid.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroValid.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroValid.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -70,12 +67,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroValid2() {
-		File file = this.getFileFromPath("/data/ast/macro/macroValid2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroValid2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroValid2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -87,12 +84,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroDocumentation() {
-		File file = this.getFileFromPath("/data/ast/macro/macroDocumentation.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroDocumentation.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroDocumentation.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -104,12 +101,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroDocumentationDeprecated() {
-		File file = this.getFileFromPath("/data/ast/macro/macroDocumentationDeprecated.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroDocumentationDeprecated.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroDocumentationDeprecated.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -121,12 +118,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidName() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -138,12 +135,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroNamedMacro() {
-		File file = this.getFileFromPath("/data/ast/macro/macroNamedMacro.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroNamedMacro.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroNamedMacro.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -155,12 +152,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroNameKeyword() {
-		File file = this.getFileFromPath("/data/ast/macro/macroNameKeyword.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroNameKeyword.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroNameKeyword.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -172,12 +169,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroParamNameKeyword() {
-		File file = this.getFileFromPath("/data/ast/macro/macroParamNameKeyword.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroParamNameKeyword.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroParamNameKeyword.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -189,12 +186,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidHeader() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidHeader.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidHeader.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidHeader.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -206,12 +203,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidHeader2() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidHeader2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidHeader2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidHeader2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -223,12 +220,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidReturnType() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidReturnType.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidReturnType.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidReturnType.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -240,12 +237,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidParamType() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidParamType.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidParamType.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidParamType.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -257,12 +254,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidParamName() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidParamName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidParamName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidParamName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -274,12 +271,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingVisibility() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingVisibility.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingVisibility.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingVisibility.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -291,12 +288,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroInvalidVisibility() {
-		File file = this.getFileFromPath("/data/ast/macro/macroInvalidVisibility.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroInvalidVisibility.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroInvalidVisibility.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 1);
 			checkCST2ASTConvertion(0, 1, 1);
 			checkASTResolution(0, 1, 1);
@@ -308,12 +305,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingName() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -325,12 +322,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingReturnType() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingReturnType.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingReturnType.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingReturnType.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 2);
@@ -342,12 +339,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingParamName() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingParamName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingParamName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingParamName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -359,12 +356,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingParamType() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingParamType.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingParamType.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingParamType.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -376,12 +373,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingParenthesis() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingParenthesis.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingParenthesis.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingParenthesis.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 1);
 			checkCST2ASTConvertion(0, 1, 1);
 			checkASTResolution(0, 1, 2);
@@ -393,12 +390,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingParenthesis2() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingParenthesis2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingParenthesis2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingParenthesis2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 2);
 			checkCST2ASTConvertion(0, 0, 2);
 			checkASTResolution(0, 0, 3);
@@ -410,12 +407,12 @@ public class ASTParserMacroTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseMacroMissingParenthesis3() {
-		File file = this.getFileFromPath("/data/ast/macro/macroMissingParenthesis3.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/macro/macroMissingParenthesis3.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/macro/files"), project, //$NON-NLS-1$
 				"macroMissingParenthesis3.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);

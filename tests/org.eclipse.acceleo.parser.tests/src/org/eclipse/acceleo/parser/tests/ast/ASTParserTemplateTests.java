@@ -12,9 +12,6 @@ package org.eclipse.acceleo.parser.tests.ast;
 
 import static org.junit.Assert.fail;
 
-import java.io.File;
-
-import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -51,12 +48,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateValid() {
-		File file = this.getFileFromPath("/data/ast/template/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateValid.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -68,12 +65,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateDocumentation() {
-		File file = this.getFileFromPath("/data/ast/template/templateDocumentation.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateDocumentation.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateDocumentation.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -86,12 +83,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateOverride() {
-		File file = this.getFileFromPath("/data/ast/template/templateOverride.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateOverride.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverride.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(1, 1, 0);
 			checkASTResolution(1, 1, 0);
@@ -104,12 +101,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateOverrideQualifiedName() {
-		File file = this.getFileFromPath("/data/ast/template/templateOverrideQualifiedName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateOverrideQualifiedName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideQualifiedName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
 			checkASTResolution(1, 0, 0);
@@ -122,12 +119,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateOverrideInSameModule() {
-		File file = this.getFileFromPath("/data/ast/template/templateOverrideInSameModule.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateOverrideInSameModule.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideInSameModule.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(1, 1, 0);
 			checkASTResolution(1, 1, 1);
@@ -139,12 +136,13 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateOverrideInSameModuleQualifiedName() {
-		File file = this.getFileFromPath("/data/ast/template/templateOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this
+				.getContentFromPath("/data/ast/template/templateOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(1, 1, 0);
 			checkASTResolution(1, 1, 1);
@@ -156,12 +154,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateOverrideMissingTemplate() {
-		File file = this.getFileFromPath("/data/ast/template/templateOverrideMissingTemplate.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateOverrideMissingTemplate.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideMissingTemplate.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
 			checkASTResolution(1, 0, 1);
@@ -174,20 +172,19 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverride() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverride.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this.getContentFromPath("/data/ast/template/templateMultipleOverride.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverride.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 2, 0);
 			checkCST2ASTConvertion(1, 4, 0);
 			checkASTResolution(1, 4, 0);
@@ -200,20 +197,19 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverrideQualifiedName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this.getContentFromPath("/data/ast/template/templateMultipleOverrideQualifiedName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideQualifiedName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 2, 0);
 			checkCST2ASTConvertion(1, 4, 0);
 			checkASTResolution(1, 4, 0);
@@ -226,20 +222,19 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideSameValue() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverrideSameValue.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this.getContentFromPath("/data/ast/template/templateMultipleOverrideSameValue.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideSameValue.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 2, 0);
 			checkCST2ASTConvertion(1, 4, 0);
 			checkASTResolution(1, 5, 0);
@@ -252,21 +247,20 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideSameValueQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this
-				.getFileFromPath("/data/ast/template/templateMultipleOverrideSameValueQualifiedName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this
+				.getContentFromPath("/data/ast/template/templateMultipleOverrideSameValueQualifiedName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideSameValueQualifiedName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 2, 0);
 			checkCST2ASTConvertion(1, 4, 0);
 			checkASTResolution(1, 5, 0);
@@ -279,20 +273,19 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideInSameModule() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleOverrideInSameModule.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this.getContentFromPath("/data/ast/template/templateMultipleOverrideInSameModule.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideInSameModule.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 2, 0);
 			checkCST2ASTConvertion(1, 4, 0);
 			checkASTResolution(1, 4, 1);
@@ -305,21 +298,20 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideInSameModuleQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this
-				.getFileFromPath("/data/ast/template/templateMultipleOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this
+				.getContentFromPath("/data/ast/template/templateMultipleOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleOverrideInSameModuleQualifiedName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 2, 0);
 			checkCST2ASTConvertion(1, 4, 0);
 			checkASTResolution(1, 4, 1);
@@ -331,12 +323,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplatePost() {
-		File file = this.getFileFromPath("/data/ast/template/templatePost.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templatePost.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templatePost.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -348,12 +340,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateGuard() {
-		File file = this.getFileFromPath("/data/ast/template/templateGuard.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateGuard.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateGuard.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -365,12 +357,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateVariableInit() {
-		File file = this.getFileFromPath("/data/ast/template/templateVariableInit.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateVariableInit.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateVariableInit.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -382,12 +374,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplatePostAndGuard() {
-		File file = this.getFileFromPath("/data/ast/template/templatePostAndGuard.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templatePostAndGuard.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templatePostAndGuard.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -400,21 +392,20 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 	@Ignore
 	@Test
 	public void testParseTemplatePostGuardVariableInitOverridesQualifiedName() {
-		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
-		StringBuffer moduleValidBuffer = FileContent.getFileContent(moduleValidFile);
-		IFile moduleValidIFile = createFile(moduleValidBuffer, new Path(
+		String content = this.getContentFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
+		IFile moduleValidIFile = createFile(content, new Path(
 				"/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateValid.mtl"); //$NON-NLS-1$
 
 		this.parseAndLoadModule(moduleValidIFile);
 
-		File file = this
-				.getFileFromPath("/data/ast/template/templatePostGuardVariableInitOverridesQualifiedName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		content = this
+				.getContentFromPath("/data/ast/template/templatePostGuardVariableInitOverridesQualifiedName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templatePostGuardVariableInitOverridesQualifiedName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
 			checkASTResolution(1, 0, 0);
@@ -426,12 +417,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateDocumentationDeprecated() {
-		File file = this.getFileFromPath("/data/ast/template/templateDocumentationDeprecated.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateDocumentationDeprecated.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateDocumentationDeprecated.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -443,12 +434,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateDocumentationTODO() {
-		File file = this.getFileFromPath("/data/ast/template/templateDocumentationTODO.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateDocumentationTODO.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateDocumentationTODO.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 1, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
 			checkASTResolution(1, 0, 0);
@@ -460,12 +451,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateDocumentationFIXME() {
-		File file = this.getFileFromPath("/data/ast/template/templateDocumentationFIXME.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateDocumentationFIXME.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateDocumentationFIXME.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 1, 0, 0);
 			checkCST2ASTConvertion(1, 0, 0);
 			checkASTResolution(1, 0, 0);
@@ -477,12 +468,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateDocumentationTODOFIXME() {
-		File file = this.getFileFromPath("/data/ast/template/templateDocumentationTODOFIXME.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateDocumentationTODOFIXME.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateDocumentationTODOFIXME.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 2, 0, 0);
 			checkCST2ASTConvertion(2, 0, 0);
 			checkASTResolution(2, 0, 0);
@@ -494,12 +485,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateOverrideDeprecated() {
-		File file = this.getFileFromPath("/data/ast/template/templateOverrideDeprecated.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateOverrideDeprecated.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOverrideDeprecated.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(1, 1, 0);
 			checkASTResolution(1, 2, 0);
@@ -511,12 +502,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateParamNameKeyword() {
-		File file = this.getFileFromPath("/data/ast/template/templateParamNameKeyword.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateParamNameKeyword.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateParamNameKeyword.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -528,12 +519,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateNameKeyword() {
-		File file = this.getFileFromPath("/data/ast/template/templateNameKeyword.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateNameKeyword.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateNameKeyword.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -545,12 +536,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateOtherForm() {
-		File file = this.getFileFromPath("/data/ast/template/templateOtherForm.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateOtherForm.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateOtherForm.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -562,12 +553,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidHeader() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidHeader.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidHeader.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidHeader.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -579,12 +570,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidName() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -596,12 +587,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidParamName() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidParamName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidParamName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidParamName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -613,12 +604,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidVisibility() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidVisibility.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidVisibility.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidVisibility.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 1);
 			checkCST2ASTConvertion(0, 1, 1);
 			checkASTResolution(0, 1, 1);
@@ -630,12 +621,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidVarInit() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidVarInit.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidVarInit.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidVarInit.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 2);
 			checkCST2ASTConvertion(0, 0, 2);
 			checkASTResolution(0, 0, 2);
@@ -647,12 +638,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidPost() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidPost.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidPost.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidPost.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -664,12 +655,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidGuard() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidGuard.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidGuard.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidGuard.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -681,12 +672,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateInvalidParamType() {
-		File file = this.getFileFromPath("/data/ast/template/templateInvalidParamType.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateInvalidParamType.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateInvalidParamType.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -698,12 +689,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingVisibility() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingVisibility.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingVisibility.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingVisibility.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -715,12 +706,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingName() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -732,12 +723,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingParameterName() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingParameterName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingParameterName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingParameterName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -749,12 +740,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingParenthesis() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingParenthesis.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingParenthesis.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingParenthesis.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -766,12 +757,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingParenthesis2() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingParenthesis2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingParenthesis2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingParenthesis2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -783,12 +774,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingParenthesis3() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingParenthesis3.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingParenthesis3.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingParenthesis3.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 1);
 			checkCST2ASTConvertion(0, 1, 1);
 			checkASTResolution(0, 1, 1);
@@ -800,12 +791,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingParenthesis4() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingParenthesis4.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingParenthesis4.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingParenthesis4.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 2);
 			checkCST2ASTConvertion(0, 0, 2);
 			checkASTResolution(0, 0, 2);
@@ -817,12 +808,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingGuardParenthesis() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingGuardParenthesis.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingGuardParenthesis.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingGuardParenthesis.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -834,12 +825,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingPostParenthesis() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingPostParenthesis.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingPostParenthesis.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingPostParenthesis.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -851,12 +842,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingPostParenthesis2() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingPostParenthesis2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingPostParenthesis2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingPostParenthesis2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -868,12 +859,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingColon() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingColon.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingColon.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingColon.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 1, 1);
 			checkCST2ASTConvertion(0, 1, 1);
 			checkASTResolution(0, 1, 1);
@@ -885,12 +876,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingCurlyBrace() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingCurlyBrace.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingCurlyBrace.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingCurlyBrace.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -902,12 +893,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingSemiColon() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingSemiColon.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingSemiColon.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingSemiColon.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -919,12 +910,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingQuestionMark() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingQuestionMark.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingQuestionMark.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingQuestionMark.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -936,12 +927,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMissingParameterType() {
-		File file = this.getFileFromPath("/data/ast/template/templateMissingParameterType.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMissingParameterType.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMissingParameterType.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -953,12 +944,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleSameNameAndParam() {
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleSameNameAndParam.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMultipleSameNameAndParam.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleSameNameAndParam.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -970,12 +961,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleSameName() {
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleSameName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMultipleSameName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleSameName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -987,12 +978,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleParamSameName() {
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleParamSameName.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMultipleParamSameName.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleParamSameName.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 1);
 			checkCST2ASTConvertion(0, 0, 1);
 			checkASTResolution(0, 0, 1);
@@ -1004,12 +995,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleVarInit() {
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleVarInit.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMultipleVarInit.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleVarInit.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -1021,12 +1012,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateMultipleVariable() {
-		File file = this.getFileFromPath("/data/ast/template/templateMultipleVariable.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateMultipleVariable.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateMultipleVariable.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -1038,12 +1029,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplatePublicMain() {
-		File file = this.getFileFromPath("/data/ast/template/templatePublicMain.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templatePublicMain.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templatePublicMain.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -1055,12 +1046,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplateProtectedMain() {
-		File file = this.getFileFromPath("/data/ast/template/templateProtectedMain.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templateProtectedMain.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templateProtectedMain.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);
@@ -1072,12 +1063,12 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseTemplatePrivateMain() {
-		File file = this.getFileFromPath("/data/ast/template/templatePrivateMain.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/template/templatePrivateMain.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/template/files"), project, //$NON-NLS-1$
 				"templatePrivateMain.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 1, 0);
 			checkASTResolution(0, 1, 0);

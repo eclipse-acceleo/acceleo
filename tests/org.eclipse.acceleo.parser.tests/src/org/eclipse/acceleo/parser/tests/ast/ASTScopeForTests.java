@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
-import java.io.File;
+import static org.junit.Assert.fail;
 
-import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -23,8 +22,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.fail;
 
 public class ASTScopeForTests extends AbstractASTParserTests {
 
@@ -50,12 +47,11 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForValid() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeValid.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeValid.mtl"); //$NON-NLS-1$
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeValid.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -67,12 +63,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForValid2() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeValid2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeValid2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeValid2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -84,12 +80,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForValid3() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeValid3.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeValid3.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeValid3.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -101,12 +97,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForValid4() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeValid4.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeValid4.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeValid4.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 0);
@@ -118,12 +114,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -135,12 +131,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid2() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid2.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid2.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid2.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -152,12 +148,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid3() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid3.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid3.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid3.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -169,12 +165,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid4() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid4.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid4.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid4.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -186,12 +182,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid5() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid5.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid5.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid5.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -203,12 +199,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid6() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid6.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid6.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid6.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -220,12 +216,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid7() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid7.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid7.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid7.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
@@ -237,12 +233,12 @@ public class ASTScopeForTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParserScopeForInvalid8() {
-		File file = this.getFileFromPath("/data/ast/scope/forScopeInvalid8.mtl"); //$NON-NLS-1$
-		StringBuffer buffer = FileContent.getFileContent(file);
-		IFile moduleFile = createFile(buffer,
+		String content = this.getContentFromPath("/data/ast/scope/forScopeInvalid8.mtl"); //$NON-NLS-1$
+
+		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/scope/for/files"), project, //$NON-NLS-1$
 				"forScopeInvalid8.mtl"); //$NON-NLS-1$
-		if (moduleFile.exists() && buffer.length() > 0) {
+		if (moduleFile.exists() && content.length() > 0) {
 			checkCSTParsing(moduleFile, 0, 0, 0);
 			checkCST2ASTConvertion(0, 0, 0);
 			checkASTResolution(0, 0, 1);
