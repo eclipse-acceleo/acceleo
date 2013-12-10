@@ -38,8 +38,8 @@
   </licenses>
   
   <properties>
-    <tycho-version>0.17.0</tycho-version>
-    <tycho-extras-version>0.17.0</tycho-extras-version>
+    <tycho-version>0.19.0</tycho-version>
+    <tycho-extras-version>0.19.0</tycho-extras-version>
     <acceleo-version>3.4.0-SNAPSHOT</acceleo-version>
     <platform-version-name>indigo</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>

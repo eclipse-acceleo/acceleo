@@ -33,10 +33,11 @@
         <configuration>
           <includes>
             <include>org/eclipse/acceleo/tests/suite/AllTests.class</include>
-          </includes>
+          </includes>        
           <useUIHarness>false</useUIHarness>
           <useUIThread>false</useUIThread>
           <testFailureIgnore>true</testFailureIgnore>
+          <appArgLine>-Xmx1024m -XX:MaxPermSize=256m</appArgLine>
         </configuration>
       </plugin>
      </plugins>
