@@ -63,8 +63,10 @@ import org.eclipse.ocl.utilities.ASTNode;
  * The main class of the Acceleo Parser. Creates an AST from a list of Acceleo files, using a CST step. You
  * just have to launch the 'parse' method...
  * 
+ * @Deprecated Used only by the deprecated Ant Task
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
+@Deprecated
 public class AcceleoParser {
 
 	/**

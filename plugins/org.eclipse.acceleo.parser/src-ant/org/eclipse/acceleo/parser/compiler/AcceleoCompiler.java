@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EPackage;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  * @since 3.1
  */
+@Deprecated
 public class AcceleoCompiler extends Task {
 
 	/**

@@ -18,6 +18,7 @@ import org.eclipse.acceleo.internal.parser.AcceleoParserMessages;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
  */
+@Deprecated
 public final class AcceleoMainCompiler {
 
 	/**

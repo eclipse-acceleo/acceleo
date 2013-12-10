@@ -58,6 +58,7 @@ import org.eclipse.ocl.expressions.ExpressionsPackage;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  * @since 3.1
  */
+@Deprecated
 public abstract class AbstractAcceleoCompiler {
 
 	/**
