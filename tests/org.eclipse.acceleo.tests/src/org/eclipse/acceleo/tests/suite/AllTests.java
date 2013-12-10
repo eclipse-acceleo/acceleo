@@ -15,7 +15,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.common.tests.suite.AllCommonTests;
-import org.eclipse.acceleo.compatibility.tests.suite.CompatibilityTestSuite;
+import org.eclipse.acceleo.compatibility.tests.suite.AllCompatibilityTests;
 import org.eclipse.acceleo.engine.tests.suite.EngineTestSuite;
 
 /**
@@ -46,7 +46,7 @@ public class AllTests {
 
 		final TestSuite classicSuite = new TestSuite("Testing Acceleo With Traceability Disabled");
 		classicSuite.addTest(AllCommonTests.suite());
-		classicSuite.addTest(CompatibilityTestSuite.suite());
+		classicSuite.addTest(AllCompatibilityTests.suite());
 		classicSuite.addTest(EngineTestSuite.suite());
 		// classicSuite.addTest(org.eclipse.acceleo.ide.ui.tests.suite.AllTests.suite());
 		classicSuite.addTest(org.eclipse.acceleo.parser.tests.suite.AllTests.suite());

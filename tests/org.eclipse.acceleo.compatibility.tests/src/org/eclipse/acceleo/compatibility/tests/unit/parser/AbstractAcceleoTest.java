@@ -10,17 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.compatibility.tests.unit.parser;
 
-import junit.framework.TestCase;
-
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateConstants;
+import org.junit.Before;
 
-public abstract class AbstractAcceleoTest extends TestCase {
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
+public abstract class AbstractAcceleoTest {
+	@Before
 	public void setUp() throws Exception {
 		TemplateConstants.getDefault().initConstants();
 	}

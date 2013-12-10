@@ -11,12 +11,16 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.expressions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Operator;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions.OperatorParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateConstants;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Operator parser.
@@ -26,6 +30,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class OperatorParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -36,6 +41,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testNoOperands() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = TemplateConstants.getDefault().getOperators()[i];
@@ -48,6 +54,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testOneBeforOperand() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = "1" + TemplateConstants.getDefault().getOperators()[i]; //$NON-NLS-1$
@@ -60,6 +67,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testOneAfterOperand() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = TemplateConstants.getDefault().getOperators()[i] + "1"; //$NON-NLS-1$
@@ -72,6 +80,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithOperands() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = "1" + TemplateConstants.getDefault().getOperators()[i] + "1" + TemplateConstants.getDefault().getOperators()[i] + "1"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -88,7 +97,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
-	// TODO check if modifications are needed in the parser
+	@Test
 	public void testMissingLastOperand() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = "1" + TemplateConstants.getDefault().getOperators()[i] + "1" + TemplateConstants.getDefault().getOperators()[i]; //$NON-NLS-1$ //$NON-NLS-2$
@@ -105,7 +114,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
-	// TODO check if modifications are needed in the parser
+	@Test
 	public void testMissingFirstOperand() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = TemplateConstants.getDefault().getOperators()[i]
@@ -123,7 +132,7 @@ public class OperatorParserTest extends AbstractAcceleoTest {
 		}
 	}
 
-	// TODO check if modifications are needed in the parser
+	@Test
 	public void testMissingMiddleOperand() {
 		for (int i = 0; i < TemplateConstants.getDefault().getOperators().length; ++i) {
 			String buffer = "1" + TemplateConstants.getDefault().getOperators()[i] + TemplateConstants.getDefault().getOperators()[i] + "1"; //$NON-NLS-1$ //$NON-NLS-2$

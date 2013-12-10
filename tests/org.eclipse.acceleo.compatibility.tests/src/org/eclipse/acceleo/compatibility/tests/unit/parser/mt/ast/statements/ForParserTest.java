@@ -11,6 +11,9 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.statements;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Parenthesis;
 import org.eclipse.acceleo.compatibility.model.mt.statements.For;
@@ -19,6 +22,7 @@ import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements.ForParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the For parser.
@@ -28,6 +32,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class ForParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -38,6 +43,7 @@ public class ForParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testForString() {
 		String buffer = " (call) {%>text<%}%>"; //$NON-NLS-1$
 		try {

@@ -11,11 +11,15 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.statements;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.statements.Comment;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements.CommentParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Comment parser.
@@ -25,6 +29,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class CommentParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -37,6 +42,7 @@ public class CommentParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testString() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {

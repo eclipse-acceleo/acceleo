@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.compatibility.tests.unit.migration;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -24,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.compatibility.tests.AcceleoCompatibilityTestPlugin;
@@ -42,7 +44,7 @@ import org.osgi.framework.Bundle;
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
 @SuppressWarnings("nls")
-public abstract class AbstractAcceleoTest extends TestCase {
+public abstract class AbstractAcceleoTest {
 	/**
 	 * Plugin bundle test.
 	 */
@@ -386,22 +388,6 @@ public abstract class AbstractAcceleoTest extends TestCase {
 	 */
 	protected String getEmtlModelRootPath() throws IOException {
 		return FileLocator.resolve(pluginRoot).getFile() + "/" + getEmtlModelPath();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 
 	/**

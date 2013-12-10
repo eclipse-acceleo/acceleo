@@ -11,6 +11,10 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.expressions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.BooleanLiteral;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Expression;
@@ -23,6 +27,7 @@ import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions.ExpressionParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Expression parser.
@@ -32,6 +37,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class ExpressionParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -42,6 +48,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testCallSet() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {
@@ -55,6 +62,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testStringLiteral() {
 		String buffer = "\"MyString\""; //$NON-NLS-1$
 		try {
@@ -68,6 +76,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testIntegerLiteral() {
 		String buffer = "13"; //$NON-NLS-1$
 		try {
@@ -81,6 +90,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testBooleanLiteral() {
 		String buffer = "false"; //$NON-NLS-1$
 		try {
@@ -94,6 +104,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testNot() {
 		String buffer = "!true"; //$NON-NLS-1$
 		try {
@@ -107,6 +118,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testOperator() {
 		String buffer = "0 + 0"; //$NON-NLS-1$
 		try {
@@ -120,6 +132,7 @@ public class ExpressionParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testParenthesis() {
 		String buffer = "(call)"; //$NON-NLS-1$
 		try {

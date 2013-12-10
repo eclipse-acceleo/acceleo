@@ -11,12 +11,17 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.statements;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.model.mt.statements.Feature;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements.FeatureParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Feature parser.
@@ -26,6 +31,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class FeatureParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -36,6 +42,7 @@ public class FeatureParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testString() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {

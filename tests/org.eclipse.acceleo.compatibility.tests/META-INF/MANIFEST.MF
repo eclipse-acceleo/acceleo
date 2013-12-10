@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.acceleo.compatibility,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.common,
  org.eclipse.ocl.ecore,
- org.junit,
+ org.junit;bundle-version="4.10.0",
  org.eclipse.acceleo.parser,
  org.eclipse.acceleo.compatibility.ui;bundle-version="0.8.0",
  org.eclipse.acceleo.engine;bundle-version="3.0.0"

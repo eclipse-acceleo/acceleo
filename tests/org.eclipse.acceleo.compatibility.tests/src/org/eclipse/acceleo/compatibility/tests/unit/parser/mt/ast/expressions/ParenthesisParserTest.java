@@ -11,6 +11,9 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.expressions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Parenthesis;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
@@ -18,6 +21,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions.Pare
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateConstants;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Parenthesis parser.
@@ -27,6 +31,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class ParenthesisParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -37,6 +42,7 @@ public class ParenthesisParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testNotParenthesisExpression() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {
@@ -48,6 +54,7 @@ public class ParenthesisParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testParenthesisExpression() {
 		String buffer = TemplateConstants.getDefault().getParenth()[0]
 				+ "call" + TemplateConstants.getDefault().getParenth()[1]; //$NON-NLS-1$

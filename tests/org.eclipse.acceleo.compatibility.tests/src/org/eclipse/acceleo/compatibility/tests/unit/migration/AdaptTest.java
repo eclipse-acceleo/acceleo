@@ -12,6 +12,8 @@ package org.eclipse.acceleo.compatibility.tests.unit.migration;
 
 import java.io.IOException;
 
+import org.junit.Test;
+
 /**
  * Class to test File script parameter.
  * 
@@ -35,6 +37,7 @@ public class AdaptTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Test
 	public void testAdapt() throws IOException {
 		// launch test
 		genericTest();

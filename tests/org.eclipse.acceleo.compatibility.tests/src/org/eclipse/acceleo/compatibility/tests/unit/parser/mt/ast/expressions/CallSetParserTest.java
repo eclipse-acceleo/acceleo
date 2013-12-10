@@ -11,11 +11,15 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.expressions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions.CallSetParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the CallSet parser.
@@ -25,6 +29,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class CallSetParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyCallSet() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -35,6 +40,7 @@ public class CallSetParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testCallSetWithEmptyCall() {
 		String buffer = "call1..call3"; //$NON-NLS-1$
 		try {
@@ -49,6 +55,7 @@ public class CallSetParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testCallSetWithOutEmptyCall() {
 		String buffer = "call1.call2.call3"; //$NON-NLS-1$
 		try {

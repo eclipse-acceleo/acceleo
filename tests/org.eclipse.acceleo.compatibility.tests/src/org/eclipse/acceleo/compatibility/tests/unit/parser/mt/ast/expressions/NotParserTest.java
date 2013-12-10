@@ -11,6 +11,9 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.expressions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Not;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
@@ -18,6 +21,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions.NotP
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateConstants;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Not parser.
@@ -26,6 +30,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
  */
 public class NotParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -36,6 +41,7 @@ public class NotParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testNotNotExpression() {
 		String buffer = "call"; //$NON-NLS-1$
 		try {
@@ -46,6 +52,7 @@ public class NotParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testNotExpression() {
 		String buffer = TemplateConstants.getDefault().getNot() + "call"; //$NON-NLS-1$
 		try {

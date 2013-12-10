@@ -11,6 +11,10 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.expressions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Call;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
@@ -18,6 +22,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.expressions.Call
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateConstants;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the Call parser.
@@ -27,6 +32,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class CallParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyCall() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -37,6 +43,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testNumericIdentifierCall() {
 		String buffer = "1243413"; //$NON-NLS-1$
 		try {
@@ -52,6 +59,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testStringIdentifierCall() {
 		String buffer = "azerty"; //$NON-NLS-1$
 		try {
@@ -67,6 +75,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testStringWithCallSepIdentifierCall() {
 		String buffer = "aze" + TemplateConstants.getDefault().getCallSep() + "rty"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
@@ -82,6 +91,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testStringWithArgSepIdentifierCall() {
 		String buffer = "aze" + TemplateConstants.getDefault().getArgSep() + "rty"; //$NON-NLS-1$ //$NON-NLS-2$
 		try {
@@ -97,6 +107,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithPrefixMetamodelCall() {
 		String buffer = TemplateConstants.getDefault().getLinkPrefixMetamodel()
 				+ TemplateConstants.getDefault().getLinkPrefixSeparator() + "azerty"; //$NON-NLS-1$
@@ -116,6 +127,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithMultiPrefixMetamodelCall() {
 		String buffer = TemplateConstants.getDefault().getLinkPrefixMetamodel()
 				+ TemplateConstants.getDefault().getLinkPrefixSeparator()
@@ -137,6 +149,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithEmptyArgsCall() {
 		String buffer = "azerty()"; //$NON-NLS-1$
 		try {
@@ -153,6 +166,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithEmptyFilterCall() {
 		String buffer = "azerty[filter]"; //$NON-NLS-1$
 		try {
@@ -172,6 +186,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithArgsCall() {
 		String buffer = "azerty(arg1, arg2, arg3)"; //$NON-NLS-1$
 		try {
@@ -195,6 +210,7 @@ public class CallParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testWithPrefixAndArgsCall() {
 		String buffer = TemplateConstants.getDefault().getLinkPrefixMetamodel()
 				+ TemplateConstants.getDefault().getLinkPrefixSeparator() + "azerty(arg1, arg2, arg3)"; //$NON-NLS-1$

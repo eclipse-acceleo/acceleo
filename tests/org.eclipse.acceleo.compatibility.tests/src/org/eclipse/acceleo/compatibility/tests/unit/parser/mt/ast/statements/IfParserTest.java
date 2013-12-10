@@ -11,6 +11,9 @@
  */
 package org.eclipse.acceleo.compatibility.tests.unit.parser.mt.ast.statements;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import org.eclipse.acceleo.compatibility.model.mt.expressions.CallSet;
 import org.eclipse.acceleo.compatibility.model.mt.expressions.Parenthesis;
 import org.eclipse.acceleo.compatibility.model.mt.statements.If;
@@ -19,6 +22,7 @@ import org.eclipse.acceleo.compatibility.tests.unit.parser.AbstractAcceleoTest;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.ast.statements.IfParser;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.Region;
 import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSyntaxException;
+import org.junit.Test;
 
 /**
  * Test Class for the For parser.
@@ -28,6 +32,7 @@ import org.eclipse.acceleo.internal.compatibility.parser.mt.common.TemplateSynta
 @SuppressWarnings("nls")
 public class IfParserTest extends AbstractAcceleoTest {
 
+	@Test
 	public void testEmptyString() {
 		String buffer = ""; //$NON-NLS-1$
 		try {
@@ -38,6 +43,7 @@ public class IfParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testIfThenString() {
 		String buffer = " (call) {%>text<%}%>"; //$NON-NLS-1$
 		try {
@@ -55,6 +61,7 @@ public class IfParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testIfThenElseString() {
 		String buffer = " (call) {%>text<%}else{%>textElse<%}%>"; //$NON-NLS-1$
 		try {
@@ -74,6 +81,7 @@ public class IfParserTest extends AbstractAcceleoTest {
 		}
 	}
 
+	@Test
 	public void testIfThenElseElseIfString() {
 		String buffer = " (call) {%>text<%}else if (call2){%>textElseIf<%}else{%>textElse<%}%>"; //$NON-NLS-1$
 		try {
