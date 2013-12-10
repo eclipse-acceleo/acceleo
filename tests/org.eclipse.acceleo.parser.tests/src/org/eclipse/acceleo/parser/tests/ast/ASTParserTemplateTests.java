@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -22,9 +24,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.fail;
 
 public class ASTParserTemplateTests extends AbstractASTParserTests {
 
@@ -82,6 +83,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateOverride() {
 		File file = this.getFileFromPath("/data/ast/template/templateOverride.mtl"); //$NON-NLS-1$
@@ -99,6 +101,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateOverrideQualifiedName() {
 		File file = this.getFileFromPath("/data/ast/template/templateOverrideQualifiedName.mtl"); //$NON-NLS-1$
@@ -116,6 +119,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateOverrideInSameModule() {
 		File file = this.getFileFromPath("/data/ast/template/templateOverrideInSameModule.mtl"); //$NON-NLS-1$
@@ -167,6 +171,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverride() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
@@ -192,6 +197,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideQualifiedName() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
@@ -217,6 +223,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideSameValue() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
@@ -242,6 +249,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideSameValueQualifiedName() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
@@ -268,6 +276,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideInSameModule() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
@@ -293,6 +302,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplateMultipleOverrideInSameModuleQualifiedName() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$
@@ -387,6 +397,7 @@ public class ASTParserTemplateTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseTemplatePostGuardVariableInitOverridesQualifiedName() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/templateValid.mtl"); //$NON-NLS-1$

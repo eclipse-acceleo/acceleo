@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests.ast;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -27,11 +31,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class ASTParserModuleTests extends AbstractASTParserTests {
 
@@ -183,6 +184,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleExtendsOtherModule() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
@@ -319,6 +321,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleExtendsIncompatibleMetaModel() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
@@ -361,6 +364,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleExtendsDeprecatedModule() {
 		File file = this.getFileFromPath("/data/ast/module/moduleExtendsDeprecatedModule.mtl"); //$NON-NLS-1$
@@ -412,6 +416,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleImport() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
@@ -437,6 +442,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleMultipleImport() {
 		File moduleValidFile = this.getFileFromPath("/data/ast/module/moduleValid.mtl"); //$NON-NLS-1$
@@ -496,6 +502,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleDuplicatedImport() {
 		File file = this.getFileFromPath("/data/ast/module/moduleDuplicatedImport.mtl"); //$NON-NLS-1$
@@ -530,6 +537,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleQualifiedNameExtends() {
 		File file = this.getFileFromPath("/data/ast/module/moduleQualifiedNameExtends.mtl"); //$NON-NLS-1$
@@ -547,6 +555,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleQualifiedNameImports() {
 		File file = this.getFileFromPath("/data/ast/module/moduleQualifiedNameImports.mtl"); //$NON-NLS-1$
@@ -905,6 +914,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testParseModuleInvalidExtends() {
 		File file = this.getFileFromPath("/data/ast/module/moduleInvalidExtends.mtl"); //$NON-NLS-1$

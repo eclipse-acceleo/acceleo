@@ -12,6 +12,7 @@ package org.eclipse.acceleo.compatibility.tests.unit.migration;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -37,6 +38,7 @@ public class ImportScriptTest extends AbstractAcceleoTest {
 	 * @throws IOException
 	 *             Thrown when the output cannot be saved.
 	 */
+	@Ignore
 	@Test
 	public void testImportScript() throws IOException {
 		// launch test
