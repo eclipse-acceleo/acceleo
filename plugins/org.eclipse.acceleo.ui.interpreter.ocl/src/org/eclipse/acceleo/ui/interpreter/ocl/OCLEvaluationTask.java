@@ -35,9 +35,9 @@ import org.eclipse.ocl.examples.domain.values.util.ValuesUtil;
 import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
 import org.eclipse.ocl.examples.pivot.LetExp;
 import org.eclipse.ocl.examples.pivot.OCLExpression;
+import org.eclipse.ocl.examples.pivot.evaluation.EvaluationEnvironment;
 import org.eclipse.ocl.examples.pivot.evaluation.EvaluationVisitor;
 import org.eclipse.ocl.examples.pivot.evaluation.EvaluationVisitorImpl;
-import org.eclipse.ocl.examples.pivot.evaluation.PivotEvaluationEnvironment;
 import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
 import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironment;
 import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironmentFactory;
@@ -212,7 +212,7 @@ public class OCLEvaluationTask implements Callable<EvaluationResult> {
 	private EvaluationVisitor createEvaluationVisitor(ExpressionInOCL expression, EObject evaluationTarget) {
 		PivotEnvironmentFactory environmentFactory = new PivotEnvironmentFactory(null, metaModelManager);
 		PivotEnvironment environment = environmentFactory.createEnvironment();
-		PivotEvaluationEnvironment evaluationEnvironment = environmentFactory.createEvaluationEnvironment();
+		EvaluationEnvironment evaluationEnvironment = environmentFactory.createEvaluationEnvironment();
 		Object contextValue = metaModelManager.getIdResolver().boxedValueOf(evaluationTarget);
 		evaluationEnvironment.add(expression.getContextVariable(), contextValue);
 		DomainModelManager modelManager = evaluationEnvironment.createModelManager(evaluationTarget);
