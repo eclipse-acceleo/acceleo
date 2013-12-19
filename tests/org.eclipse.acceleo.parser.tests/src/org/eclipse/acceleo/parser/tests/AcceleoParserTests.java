@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,14 +41,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class AcceleoParserTests {
 
@@ -87,6 +88,7 @@ public class AcceleoParserTests {
 	}
 
 	@Test
+	@Ignore
 	public void testCompileSourceBufferEcoreAcceleoWithImport() {
 		File file = createFile("/data/template/mtlParserEcore.mtl"); //$NON-NLS-1$
 		if (file == null) {
@@ -138,6 +140,7 @@ public class AcceleoParserTests {
 	}
 
 	@Test
+	@Ignore
 	public void testCompileSourceBufferLibrary2textAcceleo() {
 		File file = createFile("/data/template/mtlParserLibrary2text.mtl"); //$NON-NLS-1$
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);
@@ -153,6 +156,7 @@ public class AcceleoParserTests {
 	}
 
 	@Test
+	@Ignore
 	public void testCompileFileLibrary2textAcceleo() {
 		File iFile = createFile("/data/template/mtlParserLibrary2text.mtl"); //$NON-NLS-1$
 		URI oURI = createFileURI("/data/template/mtlParserLibrary2text.emtl"); //$NON-NLS-1$
@@ -160,6 +164,7 @@ public class AcceleoParserTests {
 	}
 
 	@Test
+	@Ignore
 	public void testCompileFileLibrary2textAcceleoWithBadOutputURI() {
 		File iFile = createFile("/data/template/mtlParserLibrary2text.mtl"); //$NON-NLS-1$
 		URI oURI = URI.createURI("http://acceleo.eclipse.org"); //$NON-NLS-1$
@@ -201,6 +206,7 @@ public class AcceleoParserTests {
 	}
 
 	@Test
+	@Ignore
 	public void testIndentStrategy() {
 		File file = createFile("/data/template/mtlIndentStrategy.mtl"); //$NON-NLS-1$
 		AcceleoSourceBuffer source = new AcceleoSourceBuffer(file);

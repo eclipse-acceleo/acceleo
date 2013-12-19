@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
@@ -66,6 +67,7 @@ public class FileContentTests {
 	}
 
 	@Test
+	@Ignore
 	public void testencodingISO() {
 		StringBuffer bufferISO = FileContent
 				.getFileContent(createFile("data/template/FileContentEncodingISO_8859_1.mtl")); //$NON-NLS-1$

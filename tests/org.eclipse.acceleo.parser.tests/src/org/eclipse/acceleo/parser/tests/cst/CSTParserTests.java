@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 
@@ -52,6 +53,7 @@ public class CSTParserTests extends AbstractCSTParserTests {
 	}
 
 	@Test
+	@Ignore
 	public void testParseFileLibrary2textAcceleo() {
 		File file = createFile("/data/template/cstParserLibrary2text.mtl"); //$NON-NLS-1$
 		checkCSTParsing(file, 0, 3, 0);
