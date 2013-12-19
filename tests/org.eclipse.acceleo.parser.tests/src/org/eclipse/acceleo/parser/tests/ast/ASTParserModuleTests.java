@@ -737,8 +737,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 
 	@Test
 	public void testParseModuleAlternateComment() {
-		String content = this
-				.getContentFromPath("../org.eclipse.acceleo.parser.tests/data/ast/module/moduleAlternateComment.mtl"); //$NON-NLS-1$
+		String content = this.getContentFromPath("/data/ast/module/moduleAlternateComment.mtl"); //$NON-NLS-1$
 
 		IFile moduleFile = createFile(content,
 				new Path("/org/eclipse/acceleo/parser/tests/module/files"), project, //$NON-NLS-1$
@@ -749,7 +748,7 @@ public class ASTParserModuleTests extends AbstractASTParserTests {
 			checkASTResolution(0, 0, 0);
 			checkASTDocumentationResolution(0, 0, 0);
 		} else {
-			fail("Path: " + moduleFile.getLocation().toString());
+			fail();
 		}
 	}
 
