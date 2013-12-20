@@ -109,6 +109,20 @@
     </repository>
   </repositories>
 
+  <distributionManagement>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Releases</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Snapshots</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
