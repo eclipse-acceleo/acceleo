@@ -15,6 +15,7 @@ import junit.framework.Test;
 import junit.textui.TestRunner;
 
 import org.eclipse.acceleo.common.tests.suite.AllCommonTests;
+import org.eclipse.acceleo.engine.tests.suite.AllEngineTests;
 import org.eclipse.acceleo.parser.tests.suite.AllParserTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -27,7 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses({AllCommonTests.class, AllParserTests.class })
+@SuiteClasses({AllCommonTests.class, AllParserTests.class, AllEngineTests.class, })
 public class AllTests {
 	/**
 	 * Launches the test with the given arguments.
