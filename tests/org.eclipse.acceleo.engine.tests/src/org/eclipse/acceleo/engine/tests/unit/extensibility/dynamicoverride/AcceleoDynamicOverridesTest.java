@@ -34,6 +34,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -49,6 +50,7 @@ import org.osgi.service.packageadmin.PackageAdmin;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 @SuppressWarnings("nls")
+@Ignore
 public class AcceleoDynamicOverridesTest extends AbstractAcceleoTest {
 	/** Id of the bundle containing dynamic overrides for this test. */
 	private static final String DYNAMIC_OVERRIDES_PLUGIN_ID = "org.eclipse.acceleo.dynamic.tests";

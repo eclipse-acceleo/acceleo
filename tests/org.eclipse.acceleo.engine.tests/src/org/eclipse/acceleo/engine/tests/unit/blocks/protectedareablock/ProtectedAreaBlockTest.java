@@ -29,6 +29,7 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:freddy.allilaire@obeo.fr">Freddy Allilaire</a>
  */
+@Ignore
 public class ProtectedAreaBlockTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}

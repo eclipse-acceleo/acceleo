@@ -35,6 +35,7 @@ import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -98,6 +99,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * in generation mode (preview = false).
 	 */
 	@Test
+	@Ignore
 	public void testDoGenerateModuleMapNoPreview() {
 		this.init("ModuleMap"); //$NON-NLS-1$
 		this.generate("template_1_1", defaultStrategy); //$NON-NLS-1$
@@ -199,6 +201,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * org.eclipse.emf.common.util.Monitor)} in generation mode (preview = false).
 	 */
 	@Test
+	@Ignore
 	public void testDoGenerateModuleNoPreview() {
 		this.init("Module"); //$NON-NLS-1$
 		this.generate("template_1_1", defaultStrategy); //$NON-NLS-1$
@@ -359,6 +362,7 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * in generation mode (preview = false).
 	 */
 	@Test
+	@Ignore
 	public void testDoGenerateTemplateNoPreview() {
 		this.init("Template"); //$NON-NLS-1$
 		this.generate("template_1_1", defaultStrategy); //$NON-NLS-1$
