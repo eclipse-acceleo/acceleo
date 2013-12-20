@@ -14,8 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,11 +101,7 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	public void setUp() {
 		super.setUp();
 		// only used for initialization
-		try {
-			generationRoot = new File(getGenerationRootPath("StdLib"));
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+		this.init("StdLib");
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new AcceleoPropertiesLookup(),
 				previewStrategy, new BasicMonitor());
@@ -131,11 +125,11 @@ public class AcceleoStandardLibraryTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "";
+	public String getReferencePath() {
+		return "StandardLibrary";
 	}
 
 	/**

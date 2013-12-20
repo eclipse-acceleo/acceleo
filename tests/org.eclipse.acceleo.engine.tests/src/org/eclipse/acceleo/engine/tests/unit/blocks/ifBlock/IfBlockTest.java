@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.ifBlock;
 
-import static org.junit.Assert.fail;
-
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -37,10 +34,10 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "IfBlock"; //$NON-NLS-1$
 	}
 
@@ -52,17 +49,9 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testIfStatementCompleteIf() throws IOException {
-		generationRoot = new File(getGenerationRootPath("CompleteIf")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("CompleteIf")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingCompleteIf", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("CompleteIf"); //$NON-NLS-1$
+		this.generate("testingCompleteIf", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -73,17 +62,9 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testIfStatementElse() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Else")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("Else")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingElse", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("Else"); //$NON-NLS-1$
+		this.generate("testingElse", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -94,17 +75,9 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testIfStatementElseif() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Elseif")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("Elseif")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingElseif", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("Elseif"); //$NON-NLS-1$
+		this.generate("testingElseif", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -115,17 +88,9 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testIfStatementIf() throws IOException {
-		generationRoot = new File(getGenerationRootPath("If")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("If")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingIf", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("If"); //$NON-NLS-1$
+		this.generate("testingIf", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -136,16 +101,8 @@ public class IfBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testIfStatementNestedIf() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NestedIf")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NestedIf")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingNestedIf", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("NestedIf"); //$NON-NLS-1$
+		this.generate("testingNestedIf", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 }

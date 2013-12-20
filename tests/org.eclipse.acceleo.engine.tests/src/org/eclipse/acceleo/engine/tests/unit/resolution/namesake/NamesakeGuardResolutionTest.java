@@ -10,20 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.namesake;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -60,11 +56,11 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "NamesakeResolution/Guard"; //$NON-NLS-1$
+	public String getReferencePath() {
+		return "NamesakeResolution"; //$NON-NLS-1$
 	}
 
 	/**
@@ -74,24 +70,10 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * expect the engine to use the imported template.
 	 */
 	@Test
-	public void testNamesakeGuard() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeGuard")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeGuard")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_guard", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.namesake_guard")); //$NON-NLS-1$
-		}
+	public void testNamesakeGuard() {
+		this.init("NamesakeGuard"); //$NON-NLS-1$
+		this.generate("test_namesake_guard", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -101,24 +83,10 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * to use the imported template.
 	 */
 	@Test
-	public void testNamesakeGuardImportSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeGuardImportSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeGuardImportSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_guard_import_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.namesake_guard_import_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeGuardImportSpecific() {
+		this.init("NamesakeGuardImportSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_guard_import_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -128,26 +96,10 @@ public class NamesakeGuardResolutionTest extends AbstractAcceleoTest {
 	 * use the imported template even though less specific.
 	 */
 	@Test
-	public void testNamesakeGuardedSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeGuardedSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeGuardedSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		new AcceleoService(defaultStrategy).doGenerate(module,
-				"test_namesake_guarded_specific", inputModel, generationRoot, //$NON-NLS-1$
-				new BasicMonitor());
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.namesake_guarded_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeGuardedSpecific() {
+		this.init("NamesakeGuardedSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_guarded_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**

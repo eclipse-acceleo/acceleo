@@ -10,14 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.service.java;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.compatibility.AcceleoCompatibilityEclipseHelper;
 import org.eclipse.acceleo.common.internal.utils.compatibility.OCLVersion;
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -57,11 +53,11 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "Service/Java";
+	public String getReferencePath() {
+		return "Service";
 	}
 
 	/**
@@ -95,24 +91,9 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testNoArgumentServiceInvocation() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NoArgument")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NoArgument")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_call_no_argument", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("AbstractClass")); //$NON-NLS-1$
-		}
+		this.init("NoArgument"); //$NON-NLS-1$
+		this.generate("test_call_no_argument", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -124,24 +105,9 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	@Ignore
 	@Test
 	public void testSingleArgumentServiceInvocation() throws IOException {
-		generationRoot = new File(getGenerationRootPath("SingleArgument")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("SingleArgument")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_call_single_argument", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("AbstractClass")); //$NON-NLS-1$
-		}
+		this.init("SingleArgument"); //$NON-NLS-1$
+		this.generate("test_call_single_argument", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -153,27 +119,13 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	@Ignore
 	@Test
 	public void testMultipleArgumentServiceInvocation() throws IOException {
+		this.init("MultipleArgument"); //$NON-NLS-1$
+		this.generate("test_call_multiple_argument", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
+
 		if (AcceleoCompatibilityEclipseHelper.getCurrentOCLVersion() == OCLVersion.GANYMEDE) {
 			// OCL 1.2 couldn't create a Sequence containing both an EClass and a String
 			return;
-		}
-		generationRoot = new File(getGenerationRootPath("MultipleArgument")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("MultipleArgument")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_call_multiple_argument", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("true")); //$NON-NLS-1$
 		}
 	}
 
@@ -187,24 +139,9 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	@Ignore
 	@Test
 	public void testInstanceOfServiceInvocation() throws IOException {
-		generationRoot = new File(getGenerationRootPath("InstanceOf")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("InstanceOf")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_call_instanceofs", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("true")); //$NON-NLS-1$
-		}
+		this.init("InstanceOf"); //$NON-NLS-1$
+		this.generate("test_call_instanceofs", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -216,23 +153,8 @@ public class AcceleoJavaServicesTest extends AbstractAcceleoTest {
 	@Ignore
 	@Test
 	public void testSourceAndParametersChoice() throws IOException {
-		generationRoot = new File(getGenerationRootPath("SourceAndParameters")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("SourceAndParameters")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_call_source_and_parameters", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("true")); //$NON-NLS-1$
-		}
+		this.init("SourceAndParameters"); //$NON-NLS-1$
+		this.generate("test_call_source_and_parameters", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 }

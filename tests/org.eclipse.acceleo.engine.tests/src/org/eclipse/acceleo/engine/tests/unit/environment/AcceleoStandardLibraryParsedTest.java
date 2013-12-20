@@ -13,8 +13,6 @@ package org.eclipse.acceleo.engine.tests.unit.environment;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -44,11 +42,7 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	@Override
 	public void setUp() {
 		super.setUp();
-		try {
-			generationRoot = new File(getGenerationRootPath("StdLib")); //$NON-NLS-1$
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+		this.init("StdLib");
 		generatedPreview = generate("test_stdlib", previewStrategy); //$NON-NLS-1$
 	}
 
@@ -65,10 +59,10 @@ public class AcceleoStandardLibraryParsedTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "StandardLibrary";
 	}
 

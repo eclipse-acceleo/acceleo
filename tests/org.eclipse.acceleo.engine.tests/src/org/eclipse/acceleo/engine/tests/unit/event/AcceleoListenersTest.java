@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -49,10 +48,10 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "Listeners"; //$NON-NLS-1$
 	}
 
@@ -64,10 +63,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testAcceleoGenerationListener() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Listeners")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
+		this.init("Listeners"); //$NON-NLS-1$
 		AcceleoGenerationCountListener listener = new AcceleoGenerationCountListener();
 		AcceleoService service = new AcceleoService(defaultStrategy);
 		service.addListener(listener);
@@ -99,7 +95,7 @@ public class AcceleoListenersTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testAcceleoGenerationEvent() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Events")); //$NON-NLS-1$
+		this.init("Events"); //$NON-NLS-1$
 
 		AcceleoGenerationEventTestListener listener = new AcceleoGenerationEventTestListener();
 		AcceleoService service = new AcceleoService(previewStrategy);

@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -38,10 +34,10 @@ public class QueryPropertyInvocationTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "TemplateInvocation"; //$NON-NLS-1$
 	}
 
@@ -53,21 +49,8 @@ public class QueryPropertyInvocationTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testDualTemplateInvocation() throws IOException {
-		generationRoot = new File(getGenerationRootPath("QueryPropertyInvocation")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("QueryPropertyInvocation")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("targeT")); //$NON-NLS-1$
-		}
+		this.init("QueryPropertyInvocation"); //$NON-NLS-1$
+		this.generate("test", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 }

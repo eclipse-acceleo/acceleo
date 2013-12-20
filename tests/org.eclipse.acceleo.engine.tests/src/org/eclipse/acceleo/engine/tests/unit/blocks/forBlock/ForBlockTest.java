@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.forBlock;
 
-import static org.junit.Assert.fail;
-
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -37,32 +34,21 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "ForBlock"; //$NON-NLS-1$
 	}
 
 	/**
 	 * Test For statement with After keyword.
-	 * 
-	 * @throws IOException
-	 *             Thrown when the output cannot be saved.
 	 */
 	@Test
-	public void testForStatementAfterKeyword() throws IOException {
-		generationRoot = new File(getGenerationRootPath("AfterKeyword")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("AfterKeyword")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingAfter", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+	public void testForStamentAfterKeyword() {
+		this.init("AfterKeyword"); //$NON-NLS-1$
+		this.generate("testingAfter", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -73,17 +59,9 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testForStatementBasicExample() throws IOException {
-		generationRoot = new File(getGenerationRootPath("BasicExample")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("BasicExample")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingSimple", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("BasicExample"); //$NON-NLS-1$
+		this.generate("testingSimple", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -94,17 +72,9 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testForStatementBeforeKeyword() throws IOException {
-		generationRoot = new File(getGenerationRootPath("BeforeKeyword")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("BeforeKeyword")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingBefore", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("BeforeKeyword"); //$NON-NLS-1$
+		this.generate("testingBefore", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -115,17 +85,9 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testForStatementGuardKeyword() throws IOException {
-		generationRoot = new File(getGenerationRootPath("GuardKeyword")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("GuardKeyword")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingGuard", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("GuardKeyword"); //$NON-NLS-1$
+		this.generate("testingGuard", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -136,17 +98,9 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testForStatementSeparatorKeyword() throws IOException {
-		generationRoot = new File(getGenerationRootPath("SeparatorKeyword")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("SeparatorKeyword")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingSeparator", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("SeparatorKeyword"); //$NON-NLS-1$
+		this.generate("testingSeparator", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -157,17 +111,9 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testForStatementIVariable() throws IOException {
-		generationRoot = new File(getGenerationRootPath("IVariable")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("IVariable")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingI", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("IVariable"); //$NON-NLS-1$
+		this.generate("testingI", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -178,16 +124,9 @@ public class ForBlockTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testForStatementIVariableSeparator() throws IOException {
-		generationRoot = new File(getGenerationRootPath("IVariableSeparator")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("IVariableSeparator")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("testingISeparator", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
+		this.init("IVariableSeparator"); //$NON-NLS-1$
+		this.generate("testingISeparator", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
+
 }

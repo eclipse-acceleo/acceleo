@@ -6,10 +6,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.templateinvocation;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -30,10 +26,10 @@ public class RecursiveTemplateInvocation extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "TemplateInvocation"; //$NON-NLS-1$
 	}
 
@@ -45,23 +41,9 @@ public class RecursiveTemplateInvocation extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testRecursiveTemplateInvocation() throws IOException {
-		generationRoot = new File(getGenerationRootPath("RecursiveTemplateInvocation")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("RecursiveTemplateInvocation")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("recursive_source_is_argument", defaultStrategy); //$NON-NLS-1$
-		generate("recursive_source_is_not_argument", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect two protected areas to have been created
-			assertTrue(content.contains("startcontinuestartstop")); //$NON-NLS-1$
-		}
+		this.init("RecursiveTemplateInvocation"); //$NON-NLS-1$
+		this.generate("recursive_source_is_argument", defaultStrategy); //$NON-NLS-1$
+		this.generate("recursive_source_is_not_argument", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 }

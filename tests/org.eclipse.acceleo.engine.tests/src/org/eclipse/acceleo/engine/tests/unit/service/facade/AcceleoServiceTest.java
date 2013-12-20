@@ -14,11 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
@@ -89,11 +85,11 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "Service/Facade";
+	public String getReferencePath() {
+		return "Service";
 	}
 
 	/**
@@ -102,30 +98,10 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * in generation mode (preview = false).
 	 */
 	@Test
-	public void testDoGenerateModuleMapNoPreview() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ModuleMap"));
-		referenceRoot = new File(getReferenceRootPath("ModuleMap"));
-		cleanGenerationRoot();
-
-		final Map<Module, Set<String>> templates = getTemplateMap();
-		final Map<String, String> preview = new AcceleoService().doGenerate(templates, inputModel,
-				generationRoot, null);
-		assertTrue("The preview should be empty", preview.isEmpty());
-
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		final File[] generatedFile = getFiles(generationRoot);
-		for (File generated : generatedFile) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains(FILE_OUTPUT));
-		}
-		assertSame("Unexpected number of templates evaluated.", 3, generatedFile.length);
+	public void testDoGenerateModuleMapNoPreview() {
+		this.init("ModuleMap"); //$NON-NLS-1$
+		this.generate("template_1_1", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -223,29 +199,10 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * org.eclipse.emf.common.util.Monitor)} in generation mode (preview = false).
 	 */
 	@Test
-	public void testDoGenerateModuleNoPreview() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Module"));
-		referenceRoot = new File(getReferenceRootPath("Module"));
-		cleanGenerationRoot();
-
-		final Map<String, String> preview = new AcceleoService().doGenerate(module1, "template_1_1",
-				inputModel, generationRoot, null);
-		assertTrue("The preview should be empty", preview.isEmpty());
-
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		final File[] generatedFile = getFiles(generationRoot);
-		assertSame("Unexpected number of templates evaluated.", 1, generatedFile.length);
-		for (File generated : generatedFile) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains(FILE_OUTPUT));
-		}
+	public void testDoGenerateModuleNoPreview() {
+		this.init("Module"); //$NON-NLS-1$
+		this.generate("template_1_1", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -402,29 +359,10 @@ public class AcceleoServiceTest extends AbstractAcceleoTest {
 	 * in generation mode (preview = false).
 	 */
 	@Test
-	public void testDoGenerateTemplateNoPreview() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Template"));
-		referenceRoot = new File(getReferenceRootPath("Template"));
-		cleanGenerationRoot();
-
-		final Map<String, String> preview = new AcceleoService().doGenerate(publicTemplate, inputModel,
-				generationRoot, null);
-		assertTrue("The preview should be empty", preview.isEmpty());
-
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		final File[] generatedFile = getFiles(generationRoot);
-		assertSame("Unexpected number of templates evaluated.", 1, generatedFile.length);
-		for (File generated : generatedFile) {
-			assertFalse("a lost file shouldn't have been created", generated.getName().endsWith(
-					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains(FILE_OUTPUT));
-		}
+	public void testDoGenerateTemplateNoPreview() {
+		this.init("Template"); //$NON-NLS-1$
+		this.generate("template_1_1", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**

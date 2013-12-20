@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.variables;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
@@ -38,10 +34,10 @@ public class SelfTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "Variables"; //$NON-NLS-1$
 	}
 
@@ -53,23 +49,9 @@ public class SelfTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testSelfVariableInQuery() throws IOException {
-		generationRoot = new File(getGenerationRootPath("SelfQuery")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("SelfQuery")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_self_query", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the name of the package to have been generated
-			assertTrue(content.contains("target")); //$NON-NLS-1$
-		}
+		this.init("SelfQuery"); //$NON-NLS-1$
+		this.generate("test_self_query", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -80,23 +62,9 @@ public class SelfTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testSelfVariableInTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("SelfTemplate")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("SelfTemplate")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_self_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the name of the package to have been generated
-			assertTrue(content.contains("target")); //$NON-NLS-1$
-		}
+		this.init("SelfTemplate"); //$NON-NLS-1$
+		this.generate("test_self_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -107,23 +75,9 @@ public class SelfTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testImplicitSelfVariableInQuery() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ImplicitSelfQuery")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ImplicitSelfQuery")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_implicit_self_query", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the name of the package to have been generated
-			assertTrue(content.contains("target")); //$NON-NLS-1$
-		}
+		this.init("ImplicitSelfQuery"); //$NON-NLS-1$
+		this.generate("test_implicit_self_query", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -134,22 +88,8 @@ public class SelfTest extends AbstractAcceleoTest {
 	 */
 	@Test
 	public void testImplicitSelfVariableInTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ImplicitSelfTemplate")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ImplicitSelfTemplate")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_implicit_self_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the name of the package to have been generated
-			assertTrue(content.contains("target")); //$NON-NLS-1$
-		}
+		this.init("ImplicitSelfTemplate"); //$NON-NLS-1$
+		this.generate("test_implicit_self_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 }

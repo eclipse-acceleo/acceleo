@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.blocks.template;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -59,10 +57,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "Template"; //$NON-NLS-1$
 	}
 
@@ -70,231 +68,100 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * Tests the "super" call of an overriding template.
 	 */
 	@Test
-	public void testSuperCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Super")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("Super")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_super", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("overriding call to")); //$NON-NLS-1$
-			assertTrue(content.contains("extended.super_extended_template")); //$NON-NLS-1$
-		}
+	public void testSuperCall() {
+		this.init("Super"); //$NON-NLS-1$
+		this.generate("test_super", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests calls to a local protected template.
 	 */
 	@Test
-	public void testProtectedCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ProtectedVisibility")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ProtectedVisibility")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_protected_visibility", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("local.protected_overriding_template")); //$NON-NLS-1$
-		}
+	public void testProtectedCall() {
+		this.init("ProtectedVisibility"); //$NON-NLS-1$
+		this.generate("test_protected_visibility", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests calls to a local private template.
 	 */
 	@Test
-	public void testPrivateCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("PrivateVisibility")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("PrivateVisibility")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_private_visibility", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("local.private_local_template")); //$NON-NLS-1$
-		}
+	public void testPrivateCall() {
+		this.init("PrivateVisibility"); //$NON-NLS-1$
+		this.generate("test_private_visibility", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the effect of the "before" attribute of a template invocation.
 	 */
 	@Test
-	public void testBefore() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Before")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("Before")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_before", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("before")); //$NON-NLS-1$
-		}
+	public void testBefore() {
+		this.init("Before"); //$NON-NLS-1$
+		this.generate("test_before", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the effect of the "after" attribute of a template invocation.
 	 */
 	@Test
-	public void testAfter() throws IOException {
-		generationRoot = new File(getGenerationRootPath("After")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("After")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_after", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("after")); //$NON-NLS-1$
-		}
+	public void testAfter() {
+		this.init("After"); //$NON-NLS-1$
+		this.generate("test_after", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the behavior of a template call when calling a template which guard evaluates to false.
 	 */
 	@Test
-	public void testFalseGuard() throws IOException {
-		generationRoot = new File(getGenerationRootPath("FalseGuard")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("FalseGuard")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_false_guard", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.trim().length() == 0);
-		}
+	public void testFalseGuard() {
+		this.init("FalseGuard"); //$NON-NLS-1$
+		this.generate("test_false_guard", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the behavior of a template call when calling a template which guard evaluates to true.
 	 */
 	@Test
-	public void testTrueGuard() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TrueGuard")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TrueGuard")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_true_guard", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("local.true_guard_template")); //$NON-NLS-1$
-		}
+	public void testTrueGuard() {
+		this.init("TrueGuard"); //$NON-NLS-1$
+		this.generate("test_true_guard", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the behavior of a template call when calling a template overriding a protected one.
 	 */
 	@Test
-	public void testProtectOverride() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ProtectOverride")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ProtectOverride")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_protect_override", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("local.protected_overriding_template")); //$NON-NLS-1$
-		}
+	public void testProtectOverride() {
+		this.init("ProtectOverride"); //$NON-NLS-1$
+		this.generate("test_protect_override", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the behavior of the engine when calling a template imported from an extended module.
 	 */
 	@Test
-	public void testImport() throws IOException {
-		generationRoot = new File(getGenerationRootPath("Import")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("Import")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_import", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("extended.imported_template")); //$NON-NLS-1$
-		}
+	public void testImport() {
+		this.init("Import"); //$NON-NLS-1$
+		this.generate("test_import", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
 	 * Tests the behavior of the engine when calling a template in a collection.
 	 */
 	@Test
-	public void testTemplateCollection() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateCollection")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateCollection")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_template_collection", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("template_call_collection")); //$NON-NLS-1$
-		}
+	public void testTemplateCollection() {
+		this.init("TemplateCollection"); //$NON-NLS-1$
+		this.generate("test_template_collection", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -302,23 +169,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * collection.
 	 */
 	@Test
-	public void testTemplateCollectionCollection() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateCollectionCollection")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateCollectionCollection")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_template_collection_collection", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("template_call_collection_collection")); //$NON-NLS-1$
-		}
+	public void testTemplateCollectionCollection() {
+		this.init("TemplateCollectionCollection"); //$NON-NLS-1$
+		this.generate("test_template_collection_collection", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -326,23 +180,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * collection...
 	 */
 	@Test
-	public void testTemplateCollectionCollectionCollectionCollection() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateCollectionCollectionCollectionCollection")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateCollectionCollectionCollectionCollection")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_template_collection_collection_collection_collection", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("template_call_collection_collection_collection_collection")); //$NON-NLS-1$
-		}
+	public void testTemplateCollectionCollectionCollectionCollection() {
+		this.init("TemplateCollectionCollectionCollectionCollection"); //$NON-NLS-1$
+		this.generate("test_template_collection_collection_collection_collection", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -350,23 +191,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * as parameter.
 	 */
 	@Test
-	public void testCollectionTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateOverrideCollection")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateOverrideCollection")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_collection_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("extending_collection_template")); //$NON-NLS-1$
-		}
+	public void testCollectionTemplate() {
+		this.init("TemplateOverrideCollection"); //$NON-NLS-1$
+		this.generate("test_collection_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -374,23 +202,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * as parameter.
 	 */
 	@Test
-	public void testSequenceTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateOverrideSequence")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateOverrideSequence")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_sequence_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("extending_sequence_template")); //$NON-NLS-1$
-		}
+	public void testSequenceTemplate() {
+		this.init("TemplateOverrideSequence"); //$NON-NLS-1$
+		this.generate("test_sequence_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -398,23 +213,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * as parameter.
 	 */
 	@Test
-	public void testSetTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateOverrideSet")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateOverrideSet")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_set_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("extending_set_template")); //$NON-NLS-1$
-		}
+	public void testSetTemplate() {
+		this.init("TemplateOverrideSet"); //$NON-NLS-1$
+		this.generate("test_set_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -422,23 +224,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * as parameter.
 	 */
 	@Test
-	public void testBagTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateOverrideBag")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateOverrideBag")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_bag_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("extending_bag_template")); //$NON-NLS-1$
-		}
+	public void testBagTemplate() {
+		this.init("TemplateOverrideBag"); //$NON-NLS-1$
+		this.generate("test_bag_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -446,23 +235,10 @@ public class TemplateTest extends AbstractAcceleoTest {
 	 * as parameter.
 	 */
 	@Test
-	public void testOrderedSetTemplate() throws IOException {
-		generationRoot = new File(getGenerationRootPath("TemplateOverrideOrderedSet")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("TemplateOverrideOrderedSet")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_ordered_set_template", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			assertTrue(content.contains("extending_ordered_set_template")); //$NON-NLS-1$
-		}
+	public void testOrderedSetTemplate() {
+		this.init("TemplateOverrideOrderedSet"); //$NON-NLS-1$
+		this.generate("test_ordered_set_template", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	@Before

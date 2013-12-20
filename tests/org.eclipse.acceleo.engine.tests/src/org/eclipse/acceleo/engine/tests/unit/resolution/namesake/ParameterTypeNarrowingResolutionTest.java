@@ -10,20 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.namesake;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.generation.strategy.DefaultStrategy;
 import org.eclipse.acceleo.engine.generation.strategy.PreviewStrategy;
-import org.eclipse.acceleo.engine.service.AcceleoService;
 import org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin;
 import org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest;
 import org.eclipse.acceleo.model.mtl.Module;
-import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -62,11 +58,11 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "NamesakeResolution/ParameterNarrowing"; //$NON-NLS-1$
+	public String getReferencePath() {
+		return "NamesakeResolution"; //$NON-NLS-1$
 	}
 
 	/**
@@ -75,24 +71,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * is here on the extended template.
 	 */
 	@Test
-	public void testNamesakeResolutionExtendMostSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeExtendMostSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeExtendMostSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_3_extend_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the extended one
-			assertTrue(content.contains("extended.namesake_3_extend_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionExtendMostSpecific() {
+		this.init("NamesakeExtendMostSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_3_extend_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -101,24 +83,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * expect it to select the most specific one which is here on the extended template.
 	 */
 	@Test
-	public void testNamesakeResolutionExternalExtendSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeExternalExtendSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeExternalExtendSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_external_extend_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the extended one
-			assertTrue(content.contains("extended.namesake_external_extend_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionExternalExtendSpecific() {
+		this.init("NamesakeExternalExtendSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_external_extend_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -127,24 +95,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * expect it to select the most specific one which is here on the imported template.
 	 */
 	@Test
-	public void testNamesakeResolutionExternalImportSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeExternalImportSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeExternalImportSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_external_import_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.namesake_external_import_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionExternalImportSpecific() {
+		this.init("NamesakeExternalImportSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_external_import_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -153,24 +107,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * is here on the imported template.
 	 */
 	@Test
-	public void testNamesakeResolutionImportMostSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeImportMostSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeImportMostSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_3_import_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.namesake_3_import_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionImportMostSpecific() {
+		this.init("NamesakeImportMostSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_3_import_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -179,26 +119,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * is here on the local template.
 	 */
 	@Test
-	public void testNamesakeResolutionLocalMostSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeLocalMostSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeLocalMostSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		new AcceleoService(defaultStrategy).doGenerate(module,
-				"test_namesake_3_local_specific", inputModel, generationRoot, //$NON-NLS-1$
-				new BasicMonitor());
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_3_local_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionLocalMostSpecific() {
+		this.init("NamesakeLocalMostSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_3_local_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -207,24 +131,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * template.
 	 */
 	@Test
-	public void testNamesakeResolutionOnExtendExtendSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeOnExtendExtendSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeOnExtendExtendSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_extend_extend_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the extended one
-			assertTrue(content.contains("extended.namesake_extend_extend_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionOnExtendExtendSpecific() {
+		this.init("NamesakeOnExtendExtendSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_extend_extend_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -233,24 +143,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * template.
 	 */
 	@Test
-	public void testNamesakeResolutionOnExtendLocalSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeOnExtendLocalSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeOnExtendLocalSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_extend_local_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_extend_local_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionOnExtendLocalSpecific() {
+		this.init("NamesakeOnExtendLocalSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_extend_local_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -259,24 +155,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * template.
 	 */
 	@Test
-	public void testNamesakeResolutionOnImportImportSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeOnImportImportSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeOnImportImportSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_import_import_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.namesake_import_import_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionOnImportImportSpecific() {
+		this.init("NamesakeOnImportImportSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_import_import_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -285,24 +167,10 @@ public class ParameterTypeNarrowingResolutionTest extends AbstractAcceleoTest {
 	 * template.
 	 */
 	@Test
-	public void testNamesakeResolutionOnImportLocalSpecific() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeOnImportLocalSpecific")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeOnImportLocalSpecific")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_import_local_specific", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_import_local_specific")); //$NON-NLS-1$
-		}
+	public void testNamesakeResolutionOnImportLocalSpecific() {
+		this.init("NamesakeOnImportLocalSpecific"); //$NON-NLS-1$
+		this.generate("test_namesake_import_local_specific", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**

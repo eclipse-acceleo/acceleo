@@ -12,8 +12,6 @@ package org.eclipse.acceleo.engine.tests.unit.evaluation;
 
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -81,10 +79,10 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
+	public String getReferencePath() {
 		return "EvaluationVisitor"; //$NON-NLS-1$
 	}
 
@@ -253,11 +251,7 @@ public abstract class AbstractAcceleoEvaluationVisitorTest extends AbstractAccel
 	public void setUp() {
 		super.setUp();
 		// only used for initialization
-		try {
-			generationRoot = new File(getGenerationRootPath("EvaluationVisitor")); //$NON-NLS-1$
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+		this.init("EvaluationVisitor"); //$NON-NLS-1$
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new AcceleoPropertiesLookup(),
 				previewStrategy, new BasicMonitor());

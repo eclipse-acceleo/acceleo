@@ -17,8 +17,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -116,11 +114,7 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	public void setUp() {
 		super.setUp();
 		// only used for initialization
-		try {
-			generationRoot = new File(getGenerationRootPath("NonStdLib"));
-		} catch (IOException e) {
-			fail(e.getMessage());
-		}
+		this.init("NonStdLib");
 		factory = new AcceleoEnvironmentFactory(generationRoot, module,
 				new ArrayList<IAcceleoTextGenerationListener>(), new AcceleoPropertiesLookup(),
 				previewStrategy, new BasicMonitor());
@@ -142,11 +136,11 @@ public class AcceleoNonStandardLibraryTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "";
+	public String getReferencePath() {
+		return "NonStandardLibrary";
 	}
 
 	/**

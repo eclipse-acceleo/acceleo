@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.namesake;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -60,11 +58,11 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "NamesakeResolution/Simple"; //$NON-NLS-1$
+	public String getReferencePath() {
+		return "NamesakeResolution"; //$NON-NLS-1$
 	}
 
 	/**
@@ -72,24 +70,10 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * on its extended module. We expect it to select the one present on the current module.
 	 */
 	@Test
-	public void testNameResolutionConflictOnExtended() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeExtendConflict")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeExtendConflict")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_extend", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_extend")); //$NON-NLS-1$
-		}
+	public void testNameResolutionConflictOnExtended() {
+		this.init("NamesakeExtendConflict"); //$NON-NLS-1$
+		this.generate("test_namesake_extend", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -97,24 +81,10 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * on its imported module. We expect it to select the one present on the current module.
 	 */
 	@Test
-	public void testNameResolutionConflictOnImported() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeImportConflict")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeImportConflict")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_import", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_import")); //$NON-NLS-1$
-		}
+	public void testNameResolutionConflictOnImported() {
+		this.init("NamesakeImportConflict"); //$NON-NLS-1$
+		this.generate("test_namesake_import", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -123,24 +93,10 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * one present on the extended module.
 	 */
 	@Test
-	public void testNameResolutionExternalConflict() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeExternalConflict")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeExternalConflict")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_external", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the extend one
-			assertTrue(content.contains("extended.namesake_external")); //$NON-NLS-1$
-		}
+	public void testNameResolutionExternalConflict() {
+		this.init("NamesakeExternalConflict"); //$NON-NLS-1$
+		this.generate("test_namesake_external", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -149,24 +105,10 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * regardless of parameter names.
 	 */
 	@Test
-	public void testNameResolutionDistinctParamNames() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakeDistinctParameterNames")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakeDistinctParameterNames")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_distinct_param_name", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_param_names")); //$NON-NLS-1$
-		}
+	public void testNameResolutionDistinctParamNames() {
+		this.init("NamesakeDistinctParameterNames"); //$NON-NLS-1$
+		this.generate("test_namesake_distinct_param_name", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -175,24 +117,10 @@ public class SimpleNamesakeResolutionTest extends AbstractAcceleoTest {
 	 * present on the current module.
 	 */
 	@Test
-	public void testNameResolutionPriority() throws IOException {
-		generationRoot = new File(getGenerationRootPath("NamesakePriority")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("NamesakePriority")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_namesake_3", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local one
-			assertTrue(content.contains("local.namesake_3")); //$NON-NLS-1$
-		}
+	public void testNameResolutionPriority() {
+		this.init("NamesakePriority"); //$NON-NLS-1$
+		this.generate("test_namesake_3", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**

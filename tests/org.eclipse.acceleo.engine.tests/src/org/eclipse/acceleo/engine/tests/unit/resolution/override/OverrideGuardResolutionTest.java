@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.override;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -52,18 +50,17 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 */
 	@Override
 	public String getModuleLocation() {
-		// useless for this test as we won't call super#setup()
-		return ""; //$NON-NLS-1$
+		return "OverrideGuardResolution"; //$NON-NLS-1$
 	}
 
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "OverrideResolution/Guard"; //$NON-NLS-1$
+	public String getReferencePath() {
+		return "OverrideResolution"; //$NON-NLS-1$
 	}
 
 	/**
@@ -73,24 +70,10 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * called.
 	 */
 	@Test
-	public void testOverrideSpecificGuarded() throws IOException {
-		generationRoot = new File(getGenerationRootPath("SpecificGuarded")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("SpecificGuarded")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_resolution_override_specific_guarded", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the imported one
-			assertTrue(content.contains("imported.override_resolution_definition_guard")); //$NON-NLS-1$
-		}
+	public void testOverrideSpecificGuarded() {
+		this.init("SpecificGuarded"); //$NON-NLS-1$
+		this.generate("test_resolution_override_specific_guarded", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -99,24 +82,10 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * super has its guard evaluated to false. We expect the local template to be called.
 	 */
 	@Test
-	public void testOverrideLocalDefinitionGuarded() throws IOException {
-		generationRoot = new File(getGenerationRootPath("LocalDefinitionGuarded")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("LocalDefinitionGuarded")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_resolution_local_override_definition_guarded", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local override
-			assertTrue(content.contains("local.override_resolution_local_guard")); //$NON-NLS-1$
-		}
+	public void testOverrideLocalDefinitionGuarded() {
+		this.init("LocalDefinitionGuarded"); //$NON-NLS-1$
+		this.generate("test_resolution_local_override_definition_guarded", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -125,24 +94,10 @@ public class OverrideGuardResolutionTest extends AbstractAcceleoTest {
 	 * evaluating to false, we then expect the extended one to be called.
 	 */
 	@Test
-	public void testOverrideParameterNarrowingExternal() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ExternalDefinitionGuarded")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ExternalDefinitionGuarded")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_resolution_external_override_definition_guarded", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the extend override
-			assertTrue(content.contains("extended.override_resolution_external_guard")); //$NON-NLS-1$
-		}
+	public void testOverrideParameterNarrowingExternal() {
+		this.init("ExternalDefinitionGuarded"); //$NON-NLS-1$
+		this.generate("test_resolution_external_override_definition_guarded", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**

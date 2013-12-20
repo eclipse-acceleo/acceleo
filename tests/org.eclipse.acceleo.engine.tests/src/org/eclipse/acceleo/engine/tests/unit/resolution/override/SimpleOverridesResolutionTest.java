@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.tests.unit.resolution.override;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.utils.ModelUtils;
@@ -59,11 +57,11 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getResultPath()
+	 * @see org.eclipse.acceleo.engine.tests.unit.AbstractAcceleoTest#getReferencePath()
 	 */
 	@Override
-	public String getResultPath() {
-		return "OverrideResolution/Simple"; //$NON-NLS-1$
+	public String getReferencePath() {
+		return "OverrideResolution"; //$NON-NLS-1$
 	}
 
 	/**
@@ -71,24 +69,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * imported module but overriden in the extended module called directly.
 	 */
 	@Test
-	public void testExtendOverrideDirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ExtendOverrideDirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ExtendOverrideDirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_extend_overriden_direct_call", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the actually called template to be the extend override
-			assertTrue(content.contains("extended.extend_overriden")); //$NON-NLS-1$
-		}
+	public void testExtendOverrideDirectCall() {
+		this.init("ExtendOverrideDirectCall"); //$NON-NLS-1$
+		this.generate("test_extend_overriden_direct_call", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -96,24 +80,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * imported module but overriden in the extended module called indirectly.
 	 */
 	@Test
-	public void testExtendOverrideIndirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("ExtendOverrideIndirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("ExtendOverrideIndirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_extend_overriden_indirect_call", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the actually called template to be the extend override
-			assertTrue(content.contains("extended.extend_overriden")); //$NON-NLS-1$
-		}
+	public void testExtendOverrideIndirectCall() {
+		this.init("ExtendOverrideIndirectCall"); //$NON-NLS-1$
+		this.generate("test_extend_overriden_indirect_call", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -121,24 +91,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * extended module yet locally overriden called directly.
 	 */
 	@Test
-	public void testLocalOverrideDirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("LocalOverrideDirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("LocalOverrideDirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_local_overriden_direct_call", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the actually called template to be the local override
-			assertTrue(content.contains("local.local_override")); //$NON-NLS-1$
-		}
+	public void testLocalOverrideDirectCall() {
+		this.init("LocalOverrideDirectCall"); //$NON-NLS-1$
+		this.generate("test_local_overriden_direct_call", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -146,24 +102,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * extended module yet locally overriden called indirectly
 	 */
 	@Test
-	public void testLocalOverrideIndirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("LocalOverrideIndirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("LocalOverrideIndirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_local_overriden_indirect_call", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the actually called template to be the local override
-			assertTrue(content.contains("local.local_override")); //$NON-NLS-1$
-		}
+	public void testLocalOverrideIndirectCall() {
+		this.init("LocalOverrideIndirectCall"); //$NON-NLS-1$
+		this.generate("test_local_overriden_indirect_call", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -172,24 +114,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * from the current module.
 	 */
 	@Test
-	public void testOverridePriorityDirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("OverridePriorityDirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("OverridePriorityDirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_override_priority_direct", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local override
-			assertTrue(content.contains("local.local_override_3")); //$NON-NLS-1$
-		}
+	public void testOverridePriorityDirectCall() {
+		this.init("OverridePriorityDirectCall"); //$NON-NLS-1$
+		this.generate("test_override_priority_direct", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -198,24 +126,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * in the imported module.
 	 */
 	@Test
-	public void testOverridePriorityIndirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("OverridePriorityIndirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("OverridePriorityIndirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_override_priority_indirect", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local override
-			assertTrue(content.contains("local.local_override_3")); //$NON-NLS-1$
-		}
+	public void testOverridePriorityIndirectCall() {
+		this.init("OverridePriorityIndirectCall"); //$NON-NLS-1$
+		this.generate("test_override_priority_indirect", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
@@ -224,24 +138,10 @@ public class SimpleOverridesResolutionTest extends AbstractAcceleoTest {
 	 * in the extended module.
 	 */
 	@Test
-	public void testOverridePriorityMidIndirectCall() throws IOException {
-		generationRoot = new File(getGenerationRootPath("OverridePriorityMidIndirectCall")); //$NON-NLS-1$
-		referenceRoot = new File(getReferenceRootPath("OverridePriorityMidIndirectCall")); //$NON-NLS-1$
-
-		cleanGenerationRoot();
-
-		generate("test_override_priority_indirect_extend", defaultStrategy); //$NON-NLS-1$
-		try {
-			compareDirectories(referenceRoot, generationRoot);
-		} catch (IOException e) {
-			fail(errorMessageForCompareDirectoriesMethod);
-		}
-
-		for (File generated : getFiles(generationRoot)) {
-			final String content = getAbsoluteFileContent(generated.getAbsolutePath());
-			// We expect the called template to be the local override
-			assertTrue(content.contains("local.local_override_3")); //$NON-NLS-1$
-		}
+	public void testOverridePriorityMidIndirectCall() {
+		this.init("OverridePriorityMidIndirectCall"); //$NON-NLS-1$
+		this.generate("test_override_priority_indirect_extend", defaultStrategy); //$NON-NLS-1$
+		this.compareDirectories();
 	}
 
 	/**
