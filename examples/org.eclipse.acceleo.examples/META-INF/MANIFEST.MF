@@ -1,10 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.examples;singleton:=true
+Bundle-Vendor: %providerName
 Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.eclipse.acceleo.examples;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.examples.internal.AcceleoExamplesPlugin
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="examples/org.eclipse.acceleo.examples";tag=R3_3_0
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -12,11 +17,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.common;bundle-version="3.0.0",
  org.eclipse.jdt.ui,
  org.eclipse.ui.intro
-Eclipse-LazyStart: true
-Bundle-ActivationPolicy: lazy
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.examples.internal;x-internal:=true,
  org.eclipse.acceleo.examples.internal.intro;x-internal:=true,
  org.eclipse.acceleo.examples.internal.wizard;x-internal:=true

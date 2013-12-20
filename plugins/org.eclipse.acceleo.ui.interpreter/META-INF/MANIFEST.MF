@@ -1,10 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.ui.interpreter;singleton:=true
+Bundle-Vendor: %providerName
 Bundle-Version: 3.5.0.qualifier
+Bundle-SymbolicName: org.eclipse.acceleo.ui.interpreter;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.ui.interpreter.InterpreterPlugin
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.ui.interpreter";tag=R3_3_0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui.forms,
@@ -13,10 +17,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
  org.eclipse.debug.ui;resolution:=optional
-Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Localization: plugin
-Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.ui.interpreter,
  org.eclipse.acceleo.ui.interpreter.internal;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.ui.interpreter.internal.compatibility.view;x-internal:=true,

@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.profiler.editor;singleton:=true
-Bundle-Version: 3.5.0.qualifier
-Bundle-ClassPath: .
-Bundle-Activator: org.eclipse.acceleo.profiler.presentation.ProfilerEditorPlugin$Implementation
 Bundle-Vendor: %providerName
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Activator: org.eclipse.acceleo.profiler.presentation.ProfilerEditorPlugin$Implementation
+Bundle-SymbolicName: org.eclipse.acceleo.profiler.editor;singleton:=true
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.profiler.editor";tag=R3_3_0
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Export-Package: org.eclipse.acceleo.profiler.editor;x-internal:=true,
  org.eclipse.acceleo.profiler.presentation
 Require-Bundle: org.eclipse.core.runtime,
@@ -18,4 +18,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.emf.ecore.editor
-Bundle-ActivationPolicy: lazy

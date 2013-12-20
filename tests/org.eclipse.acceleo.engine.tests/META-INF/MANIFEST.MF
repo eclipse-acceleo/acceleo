@@ -1,9 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.engine.tests;singleton:=true
 Bundle-Version: 3.5.0.qualifier
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Activator: org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin
+Bundle-SymbolicName: org.eclipse.acceleo.engine.tests;singleton:=true
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
+Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.jdt.core,
@@ -14,10 +19,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.10.0",
  org.eclipse.acceleo.parser,
  com.google.guava;bundle-version="10.0.1"
-Eclipse-LazyStart: true
-Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.acceleo.engine.tests.AcceleoEngineTestPlugin
-Bundle-Vendor: %providerName
 Export-Package: org.eclipse.acceleo.engine.tests.mock;x-friends:="org.eclipse.acceleo.dynamic.tests",
  org.eclipse.acceleo.engine.tests.suite;x-friends:="org.eclipse.acceleo.tests"
-Bundle-Localization: plugin

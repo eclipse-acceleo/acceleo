@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.model.edit;singleton:=true
-Bundle-Version: 3.5.0.qualifier
-Bundle-ClassPath: .
-Bundle-Activator: org.eclipse.acceleo.model.mtl.provider.MtlEditPlugin$Implementation
 Bundle-Vendor: %providerName
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.eclipse.acceleo.model.edit;singleton:=true
+Bundle-Activator: org.eclipse.acceleo.model.mtl.provider.MtlEditPlugin$Implementation
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.model.edit";tag=R3_3_0
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Export-Package: org.eclipse.acceleo.model.mtl.provider,
  org.eclipse.acceleo.model.ocl.provider;x-internal:=true
 Require-Bundle: org.eclipse.core.runtime,
@@ -18,4 +18,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.eclipse.ocl;visibility:=reexport,
  org.eclipse.ocl.ecore;visibility:=reexport
-Bundle-ActivationPolicy: lazy

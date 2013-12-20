@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.compatibility.ui;singleton:=true
-Bundle-Version: 3.5.0.qualifier
-Bundle-ClassPath: .
 Bundle-Vendor: %providerName
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.eclipse.acceleo.compatibility.ui;singleton:=true
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.compatibility.ui";tag=R3_3_0
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
@@ -21,6 +21,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ocl.ecore,
  org.eclipse.ui,
  org.eclipse.core.resources
-Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.acceleo.internal.compatibility.mtl.gen;x-friends:="org.eclipse.acceleo.compatibility.tests",
  org.eclipse.acceleo.internal.compatibility.ui;x-internal:=true

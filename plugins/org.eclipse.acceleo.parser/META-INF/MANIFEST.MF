@@ -1,21 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.parser;singleton:=true
-Bundle-Version: 3.5.0.qualifier
-Bundle-ClassPath: .
 Bundle-Vendor: %providerName
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.eclipse.acceleo.parser;singleton:=true
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.parser";tag=R3_3_0
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.acceleo.model,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.common,
  org.apache.ant,
  org.eclipse.core.runtime,
  com.google.guava;bundle-version="10.0.1"
-Eclipse-LazyStart: true
-Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;x-internal:=true,
  org.eclipse.acceleo.internal.parser;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.parser.tests",
  org.eclipse.acceleo.internal.parser.ast;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
@@ -23,11 +22,7 @@ Export-Package: org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.enviro
  org.eclipse.acceleo.internal.parser.ast.ocl.environment;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.compiler;x-friends:="org.eclipse.acceleo.standalone.tests,org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.parser.cst;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
- org.eclipse.acceleo.internal.parser.cst.utils;
-  x-friends:="org.eclipse.acceleo.ide.ui,
-   org.eclipse.acceleo.ide.ui.tests,
-   org.eclipse.acceleo.parser.tests,
-   org.eclipse.acceleo.compatibility.ui",
+ org.eclipse.acceleo.internal.parser.cst.utils;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui.tests,org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.compatibility.ui",
  org.eclipse.acceleo.internal.parser.documentation;x-internal:=true,
  org.eclipse.acceleo.internal.parser.documentation.utils;x-internal:=true,
  org.eclipse.acceleo.parser,

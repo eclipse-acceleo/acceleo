@@ -1,9 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
+Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.common;singleton:=true
-Bundle-Version: 3.5.0.qualifier
 Bundle-Vendor: %providerName
+Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.eclipse.acceleo.common;singleton:=true
+Bundle-Activator: org.eclipse.acceleo.common.AcceleoCommonPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.common";tag=R3_3_0
 Export-Package: org.eclipse.acceleo.common,
  org.eclipse.acceleo.common.internal.utils;
@@ -38,8 +43,3 @@ Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.jdt.core;bundle-version="3.4.0";resolution:=optional,
  com.google.guava;bundle-version="10.0.1",
  org.eclipse.core.filesystem;resolution:=optional
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Eclipse-LazyStart: true
-Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.eclipse.acceleo.common.AcceleoCommonPlugin
-Bundle-Localization: plugin

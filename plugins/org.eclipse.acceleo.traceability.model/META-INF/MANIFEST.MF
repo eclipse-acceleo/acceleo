@@ -1,13 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.traceability.model;singleton:=true
-Bundle-Version: 3.5.0.qualifier
-Bundle-ClassPath: .
 Bundle-Vendor: %providerName
-Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Version: 3.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.eclipse.acceleo.traceability.model;singleton:=true
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.traceability.model";tag=R3_3_0
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Export-Package: org.eclipse.acceleo.traceability,
  org.eclipse.acceleo.traceability.impl,
  org.eclipse.acceleo.traceability.minimal;x-internal:=true,
@@ -16,4 +16,3 @@ Export-Package: org.eclipse.acceleo.traceability,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.common
-Bundle-ActivationPolicy: lazy
