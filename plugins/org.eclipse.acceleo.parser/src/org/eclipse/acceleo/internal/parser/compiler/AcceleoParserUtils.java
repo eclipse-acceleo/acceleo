@@ -98,7 +98,7 @@ public final class AcceleoParserUtils {
 			String osName = System.getProperty("os.name"); //$NON-NLS-1$
 			final String file = "file:"; //$NON-NLS-1$
 
-			if (osName.indexOf("win") >= 0) { //$NON-NLS-1$
+			if (osName.indexOf("win") >= 0 || osName.indexOf("Win") >= 0) { //$NON-NLS-1$ //$NON-NLS-2$
 				// Windows
 				if (jarPath.startsWith("file:\\") || jarPath.startsWith("file:/")) { //$NON-NLS-1$ //$NON-NLS-2$
 					jarPath = jarPath.substring(6);
