@@ -106,6 +106,20 @@
       <url>${swtbot-site}</url>
     </repository>
   </repositories>
+  
+  <distributionManagement>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Releases</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Snapshots</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
 
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -465,7 +479,7 @@
                 </goals>
                 <phase>verify</phase>
                 <configuration>
-                  <configLocation>features\org.eclipse.acceleo-feature/codestyle/AcceleoCheckstyleConfiguration5.xml</configLocation>
+                  <configLocation>${project.basedir}/../../features/org.eclipse.acceleo-feature/codestyle/AcceleoCheckstyleConfiguration5.xml</configLocation>
                   <failOnErrors>false</failOnErrors>
                   <consoleOutput>true</consoleOutput>
                 </configuration>
