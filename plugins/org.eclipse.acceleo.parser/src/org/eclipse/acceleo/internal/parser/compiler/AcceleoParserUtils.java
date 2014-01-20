@@ -93,6 +93,7 @@ public final class AcceleoParserUtils {
 	 */
 	public static Set<URI> getAllModules(URI jar) {
 		Set<URI> modulesURIs = new LinkedHashSet<URI>();
+		JarFile jarFile = null;
 		try {
 			String jarPath = jar.toString();
 			String osName = System.getProperty("os.name"); //$NON-NLS-1$
@@ -119,7 +120,7 @@ public final class AcceleoParserUtils {
 					jarPath = jarPath.substring(5);
 				}
 			}
-			JarFile jarFile = new JarFile(jarPath);
+			jarFile = new JarFile(jarPath);
 			Enumeration<JarEntry> entries = jarFile.entries();
 			while (entries.hasMoreElements()) {
 				JarEntry nextElement = entries.nextElement();
@@ -133,6 +134,14 @@ public final class AcceleoParserUtils {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (jarFile != null) {
+				try {
+					jarFile.close();
+				} catch (IOException e) {
+					// we can't do anything here
+				}
+			}
 		}
 		return modulesURIs;
 	}
