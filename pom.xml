@@ -496,7 +496,7 @@
                 </goals>
                 <phase>verify</phase>
                 <configuration>
-                  <configLocation>features\org.eclipse.acceleo-feature/codestyle/AcceleoCheckstyleConfiguration5.xml</configLocation>
+                  <configLocation>${project.build.directory}/features/org.eclipse.acceleo-feature/codestyle/AcceleoCheckstyleConfiguration5.xml</configLocation>
                   <failOnErrors>false</failOnErrors>
                   <consoleOutput>true</consoleOutput>
                 </configuration>
