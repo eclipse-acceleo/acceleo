@@ -323,7 +323,7 @@ public class AcceleoParserMojo extends AbstractMojo {
 
 		log.info("Starting parsing...");
 		AcceleoParser parser = new AcceleoParser(aProject, this.useBinaryResources,
-				this.usePlatformResourcePath);
+				this.usePlatformResourcePath, false);
 		AcceleoParserListener listener = new AcceleoParserListener();
 		parser.addListeners(listener);
 

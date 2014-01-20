@@ -2,26 +2,35 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>maven</artifactId>
-  <version>3.2.1</version>
+  <version>3.5.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
   
   <repositories>
     <repository>
-      <id>Indigo Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+      <id>Eclipse - Acceleo Snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
     </repository>
 	<repository>
-      <id>Juno Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
-    </repository>
-	<repository>
-      <id>Snapshots</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+      <id>Eclipse - Acceleo Release</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
     </repository>
   </repositories>
   
+  <distributionManagement>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Releases</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Snapshots</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
   
   <dependencies>
     <dependency>
@@ -36,58 +45,58 @@
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
-    	<artifactId>parser</artifactId>
-    	<version>3.2.1</version>
+    	<artifactId>org.eclipse.acceleo.parser</artifactId>
+    	<version>3.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
-    	<artifactId>model</artifactId>
-    	<version>3.2.1</version>
+    	<artifactId>org.eclipse.acceleo.model</artifactId>
+    	<version>3.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
-    	<artifactId>common</artifactId>
-    	<version>3.2.1</version>
+    	<artifactId>org.eclipse.acceleo.common</artifactId>
+    	<version>3.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.emf</groupId>
-    	<artifactId>ecore</artifactId>
-    	<version>2.7.0</version>
+    	<artifactId>org.eclipse.emf.ecore</artifactId>
+    	<version>2.9.1.v20130827-0309</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.emf</groupId>
-    	<artifactId>ecore.xmi</artifactId>
-    	<version>2.7.0</version>
+    	<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+    	<version>2.9.1.v20130827-0309</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.emf</groupId>
-    	<artifactId>common</artifactId>
-    	<version>2.7.0</version>
+    	<artifactId>org.eclipse.emf.common</artifactId>
+    	<version>2.9.1.v20130827-0309</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.ocl</groupId>
-    	<artifactId>ecore</artifactId>
-    	<version>3.1.1</version>
+    	<artifactId>org.eclipse.ocl.ecore</artifactId>
+    	<version>3.3.0.v20130520-1222</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.ocl</groupId>
-    	<artifactId>ocl</artifactId>
-    	<version>3.1.1</version>
+    	<artifactId>org.eclipse.ocl</artifactId>
+    	<version>3.3.0.v20130909-1552</version>
     </dependency>
     <dependency>
-    	<groupId>org.eclipse.orbit</groupId>
-    	<artifactId>lpg.runtime</artifactId>
-    	<version>2.0.17</version>
+    	<groupId>lpg.runtime.java</groupId>
+    	<artifactId>lpg.runtime.java</artifactId>
+    	<version>2.0.17.v201004271640</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.core</groupId>
-    	<artifactId>contenttype</artifactId>
-    	<version>3.4.0</version>
+    	<artifactId>org.eclipse.core.contenttype</artifactId>
+    	<version>3.4.200.v20130326-1255</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.equinox</groupId>
-    	<artifactId>common</artifactId>
-    	<version>3.6.0</version>
+    	<artifactId>org.eclipse.equinox.common</artifactId>
+    	<version>3.6.200.v20130402-1505</version>
     </dependency>
     <dependency>
     	<groupId>com.google.guava</groupId>
