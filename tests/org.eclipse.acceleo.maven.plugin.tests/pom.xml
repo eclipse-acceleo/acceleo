@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.maven.plugin.tests</artifactId>
-  <version>1.0.0.qualifier</version>
+  <version>3.5.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <!-- Launched with the following command: mvn clean org.eclipse.acceleo:maven:3.2.1:acceleo-compile compile verify -->
@@ -41,16 +41,12 @@
       <url>${uml-to-java-site}</url>
     </repository>
     <repository>
-      <id>Indigo Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+      <id>Eclipse - Acceleo Snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
     </repository>
 	<repository>
-      <id>Juno Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
-    </repository>
-	<repository>
-      <id>Snapshots</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+      <id>Eclipse - Acceleo Release</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
     </repository>
   </repositories>
   
@@ -60,39 +56,35 @@
       <url>http://snapshots.repository.codehaus.org/</url>
     </pluginRepository>
     <pluginRepository>
-      <id>Indigo Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/indigo</url>
+      <id>Eclipse - Acceleo Snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
     </pluginRepository>
-    <pluginRepository>
-      <id>Juno Release</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/releases/juno</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>Snapshots</id>
-      <url>https://raw.github.com/eclipse/acceleo/master/maven/repository/snapshots</url>
+	<pluginRepository>
+      <id>Eclipse - Acceleo Release</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
     </pluginRepository>
   </pluginRepositories>
   
   <dependencies>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
-      <artifactId>maven</artifactId>
-      <version>3.2.1</version>
+      <artifactId>org.eclipse.acceleo.maven</artifactId>
+      <version>3.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
-      <artifactId>engine</artifactId>
-      <version>3.2.1</version>
+      <artifactId>org.eclipse.acceleo.engine</artifactId>
+      <version>3.5.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
-      <artifactId>uml</artifactId>
-      <version>3.2.1</version>
+      <artifactId>org.eclipse.uml2.uml</artifactId>
+      <version>4.1.1.v20130902-0826</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
-      <artifactId>common</artifactId>
-      <version>1.6.0</version>
+      <artifactId>org.eclipse.uml2.common</artifactId>
+      <version>1.8.1.v20130902-0826</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -120,8 +112,8 @@
       </plugin>
       <plugin>
        <groupId>org.eclipse.acceleo</groupId>
-       <artifactId>maven</artifactId>
-       <version>3.2.1</version>
+       <artifactId>org.eclipse.acceleo.maven</artifactId>
+       <version>3.5.0-SNAPSHOT</version>
        <executions>
           <execution>
             <phase>compile</phase>
