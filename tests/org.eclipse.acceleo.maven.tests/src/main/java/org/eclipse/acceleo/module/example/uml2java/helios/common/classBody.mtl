@@ -7,7 +7,7 @@
   
   author <a href="mailto:stephane.bouchet@obeo.fr">Stephane Bouchet</a>
 [/comment]
-[module classBody('http://www.eclipse.org/uml2/3.0.0/UML')/]
+[module classBody('http://www.eclipse.org/uml2/4.0.0/UML')/]
 [import org::eclipse::acceleo::module::example::uml2java::helios::common::common/]
 
 [template public generateClassBody(c : Class)]

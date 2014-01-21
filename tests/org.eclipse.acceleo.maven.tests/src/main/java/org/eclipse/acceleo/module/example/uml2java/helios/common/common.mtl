@@ -7,7 +7,7 @@
   
   author <a href="mailto:stephane.bouchet@obeo.fr">Stephane Bouchet</a>
 [/comment]
-[module common('http://www.eclipse.org/uml2/3.0.0/UML')/]
+[module common('http://www.eclipse.org/uml2/4.0.0/UML')/]
 
 [template public packagePath(cl : Classifier)]
 [cl.getNearestPackage().normalizeName()/]
