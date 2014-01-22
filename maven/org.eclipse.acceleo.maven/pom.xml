@@ -7,6 +7,10 @@
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
   
+  <scm>
+    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git/maven/org.eclipse.acceleo.maven</developerConnection>
+  </scm>
+  
   <repositories>
     <repository>
       <id>Eclipse - Acceleo Snapshots</id>
