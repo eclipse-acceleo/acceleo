@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -236,10 +237,15 @@ public class AcceleoParserMojo extends AbstractMojo {
 			Set<URI> newDependencies = new LinkedHashSet<URI>();
 			for (String jar : jars) {
 				log.info("Resolving jar: '" + jar + "'...");
+
+				boolean jarFound = false;
+
 				File jarFile = new File(jar);
 				if (jarFile.isFile()) {
 					URI uri = URI.createFileURI(jar);
 					newDependencies.add(uri);
+
+					jarFound = true;
 					log.info("Found jar for '" + jar + "' on the filesystem: '" + jarFile.getAbsolutePath()
 							+ "'.");
 				} else {
@@ -263,59 +269,21 @@ public class AcceleoParserMojo extends AbstractMojo {
 						c++;
 					}
 
-					Set<?> artifacts = this.project.getArtifacts();
-					for (Object object : artifacts) {
-						if (object instanceof Artifact) {
-							Artifact artifact = (Artifact)object;
-							if (groupdId != null && groupdId.equals(artifact.getGroupId())
-									&& artifactId != null && artifactId.equals(artifact.getArtifactId())) {
-								if (version != null && version.equals(artifact.getVersion())) {
-									File artifactFile = artifact.getFile();
-									if (artifactFile != null && artifactFile.exists()) {
-										URI uri = URI.createFileURI(artifactFile.getAbsolutePath());
-										newDependencies.add(uri);
-										log.info("Found jar for '" + jar + "' on the filesystem: '"
-												+ uri.toString() + "'.");
-									}
-								} else if (version == null) {
-									File artifactFile = artifact.getFile();
-									if (artifactFile != null && artifactFile.exists()) {
-										URI uri = URI.createFileURI(artifactFile.getAbsolutePath());
-										newDependencies.add(uri);
-										log.info("Found jar for '" + jar + "' on the filesystem: '"
-												+ uri.toString() + "'.");
-									}
-								}
-							}
-						}
+					List<URI> urisFromArtifacts = this.getURIsFromArtifacts(groupdId, artifactId, version,
+							jar);
+					if (urisFromArtifacts.size() > 0) {
+						jarFound = true;
 					}
 
-					List<?> mavenDependencies = this.project.getDependencies();
-					for (Object object : mavenDependencies) {
-						if (object instanceof Dependency) {
-							Dependency dependency = (Dependency)object;
-							if (groupdId != null && groupdId.equals(dependency.getGroupId())
-									&& artifactId != null && artifactId.equals(dependency.getArtifactId())) {
-								if (version != null && version.equals(dependency.getVersion())) {
-									String systemPath = dependency.getSystemPath();
-									if (systemPath != null && new File(systemPath).exists()) {
-										URI uri = URI.createFileURI(systemPath);
-										newDependencies.add(uri);
-										log.info("Found jar for '" + jar + "' on the filesystem: '"
-												+ uri.toString() + "'.");
-									}
-								} else if (version == null) {
-									String systemPath = dependency.getSystemPath();
-									if (systemPath != null && new File(systemPath).exists()) {
-										URI uri = URI.createFileURI(systemPath);
-										newDependencies.add(uri);
-										log.info("Found jar for '" + jar + "' on the filesystem: '"
-												+ uri.toString() + "'.");
-									}
-								}
-							}
-						}
+					List<URI> urisFromDependencies = this.getURIsFromDependencies(groupdId, artifactId,
+							version, jar);
+					if (urisFromDependencies.size() > 0) {
+						jarFound = true;
 					}
+				}
+				if (!jarFound) {
+					throw new MojoExecutionException("The jar " + jar
+							+ " has not been found on the dependencies available.");
 				}
 			}
 			aProject.addDependencies(newDependencies);
@@ -368,6 +336,103 @@ public class AcceleoParserMojo extends AbstractMojo {
 		// Removing everything
 		AcceleoPackageRegistry.INSTANCE.clear();
 		log.info("Build completed.");
+	}
+
+	/**
+	 * Return the URIs of the jars that have the given groupId, artifactId, and version in the maven artifact
+	 * of this project.
+	 * 
+	 * @param groupId
+	 *            The groupId
+	 * @param artifactId
+	 *            The artifactIf
+	 * @param version
+	 *            The version
+	 * @param jar
+	 *            The name of the jar
+	 * @return The URIs of the jars found
+	 */
+	private List<URI> getURIsFromArtifacts(String groupId, String artifactId, String version, String jar) {
+		List<URI> dependencies = new ArrayList<URI>();
+
+		Set<?> artifacts = this.project.getArtifacts();
+		for (Object object : artifacts) {
+			if (object instanceof Artifact) {
+				Artifact artifact = (Artifact)object;
+				if (groupId != null && groupId.equals(artifact.getGroupId()) && artifactId != null
+						&& artifactId.equals(artifact.getArtifactId())) {
+					if (version != null && version.equals(artifact.getVersion())) {
+						File artifactFile = artifact.getFile();
+						if (artifactFile != null && artifactFile.exists()) {
+							URI uri = URI.createFileURI(artifactFile.getAbsolutePath());
+							dependencies.add(uri);
+							this.getLog().info(
+									"Found jar for '" + jar + "' on the filesystem: '" + uri.toString()
+											+ "'.");
+						}
+					} else if (version == null) {
+						File artifactFile = artifact.getFile();
+						if (artifactFile != null && artifactFile.exists()) {
+							URI uri = URI.createFileURI(artifactFile.getAbsolutePath());
+							dependencies.add(uri);
+							this.getLog().info(
+									"Found jar for '" + jar + "' on the filesystem: '" + uri.toString()
+											+ "'.");
+						}
+					}
+				}
+			}
+		}
+
+		return dependencies;
+	}
+
+	/**
+	 * Return the URIs of the jars that have the given groupId, artifactId, and version in the maven
+	 * dependencies of this project.
+	 * 
+	 * @param groupId
+	 *            The groupId
+	 * @param artifactId
+	 *            The artifactIf
+	 * @param version
+	 *            The version
+	 * @param jar
+	 *            The name of the jar
+	 * @return The URIs of the jars found
+	 */
+	private List<URI> getURIsFromDependencies(String groupId, String artifactId, String version, String jar) {
+		List<URI> dependencies = new ArrayList<URI>();
+
+		List<?> mavenDependencies = this.project.getDependencies();
+		for (Object object : mavenDependencies) {
+			if (object instanceof Dependency) {
+				Dependency dependency = (Dependency)object;
+				if (groupId != null && groupId.equals(dependency.getGroupId()) && artifactId != null
+						&& artifactId.equals(dependency.getArtifactId())) {
+					if (version != null && version.equals(dependency.getVersion())) {
+						String systemPath = dependency.getSystemPath();
+						if (systemPath != null && new File(systemPath).exists()) {
+							URI uri = URI.createFileURI(systemPath);
+							dependencies.add(uri);
+							this.getLog().info(
+									"Found jar for '" + jar + "' on the filesystem: '" + uri.toString()
+											+ "'.");
+						}
+					} else if (version == null) {
+						String systemPath = dependency.getSystemPath();
+						if (systemPath != null && new File(systemPath).exists()) {
+							URI uri = URI.createFileURI(systemPath);
+							dependencies.add(uri);
+							this.getLog().info(
+									"Found jar for '" + jar + "' on the filesystem: '" + uri.toString()
+											+ "'.");
+						}
+					}
+				}
+			}
+		}
+		return dependencies;
 	}
 
 	/**
