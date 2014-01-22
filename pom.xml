@@ -40,12 +40,16 @@
   <properties>
     <tycho-version>0.19.0</tycho-version>
     <tycho-extras-version>0.19.0</tycho-extras-version>
-    <acceleo-version>3.4.0-SNAPSHOT</acceleo-version>
-    <platform-version-name>indigo</platform-version-name>
+    <acceleo-version>3.5.0-SNAPSHOT</acceleo-version>
+    <platform-version-name>luna</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/</orbit-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
   </properties>
+  
+  <scm>
+    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git</developerConnection>
+  </scm>
   
   <modules>
     <module>plugins/org.eclipse.acceleo.common</module>
