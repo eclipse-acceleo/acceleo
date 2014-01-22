@@ -7,7 +7,7 @@
   <name>org.eclipse.acceleo.maven.tests</name>
   <description>The Acceleo maven tests plugin.</description>
   
-  <!-- Launch this with the following command: mvn clean org.eclipse.acceleo:maven:3.2.1:acceleo-compile compile -->
+  <!-- Launch this with the following command: mvn clean org.eclipse.acceleo:org.eclipse.acceleo.maven:3.5.0-SNAPSHOT:acceleo-compile verify -->
   
   <repositories>
     <repository>
