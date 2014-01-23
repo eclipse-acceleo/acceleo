@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.acceleo</groupId>
+  <artifactId>org.eclipse.acceleo.maven.compatibility</artifactId>
+  <version>3.5.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+  <name>org.eclipse.acceleo.maven.compatibility</name>
+  <description>The Acceleo maven plugin.</description>
+  
+  <scm>
+    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git/maven/org.eclipse.acceleo.maven.compatibility</developerConnection>
+  </scm>
+  
+  <repositories>
+    <repository>
+      <id>Eclipse - Acceleo Snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots</url>
+    </repository>
+	<repository>
+      <id>Eclipse - Acceleo Release</id>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases</url>
+    </repository>
+  </repositories>
+  
+  <distributionManagement>
+    <repository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Releases</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>repo.eclipse.org</id>
+      <name>Acceleo Repository - Snapshots</name>
+      <url>https://repo.eclipse.org/content/repositories/acceleo-snapshots/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.0.8</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.acceleo</groupId>
+    	<artifactId>org.eclipse.acceleo.parser</artifactId>
+    	<version>3.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.acceleo</groupId>
+    	<artifactId>org.eclipse.acceleo.model</artifactId>
+    	<version>3.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.acceleo</groupId>
+    	<artifactId>org.eclipse.acceleo.common</artifactId>
+    	<version>3.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>org.eclipse.emf.ecore</artifactId>
+    	<version>2.8.3.v20130125-0546</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+    	<version>2.8.1.v20130125-0546</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.emf</groupId>
+    	<artifactId>org.eclipse.emf.common</artifactId>
+    	<version>2.8.0.v20130125-0546</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.ocl</groupId>
+    	<artifactId>org.eclipse.ocl.ecore</artifactId>
+    	<version>3.3.0.v20130520-1222</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.ocl</groupId>
+    	<artifactId>org.eclipse.ocl.common</artifactId>
+    	<version>1.1.0.v20130531-0544</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.ocl</groupId>
+    	<artifactId>org.eclipse.ocl</artifactId>
+    	<version>3.3.0.v20130909-1552</version>
+    </dependency>
+    <dependency>
+    	<groupId>lpg.runtime.java</groupId>
+    	<artifactId>lpg.runtime.java</artifactId>
+    	<version>2.0.17.v201004271640</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.core</groupId>
+    	<artifactId>org.eclipse.core.contenttype</artifactId>
+    	<version>3.4.200.v20130326-1255</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.eclipse.equinox</groupId>
+    	<artifactId>org.eclipse.equinox.common</artifactId>
+    	<version>3.6.200.v20130402-1505</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>10.0.1</version>
+	</dependency>
+  </dependencies>
+</project>
