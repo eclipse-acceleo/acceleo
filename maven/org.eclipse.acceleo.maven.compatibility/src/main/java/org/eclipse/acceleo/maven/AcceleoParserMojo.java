@@ -274,12 +274,14 @@ public class AcceleoParserMojo extends AbstractMojo {
 					if (urisFromArtifacts.size() > 0) {
 						jarFound = true;
 					}
+					newDependencies.addAll(urisFromArtifacts);
 
 					List<URI> urisFromDependencies = this.getURIsFromDependencies(groupdId, artifactId,
 							version, jar);
 					if (urisFromDependencies.size() > 0) {
 						jarFound = true;
 					}
+					newDependencies.addAll(urisFromDependencies);
 				}
 				if (!jarFound) {
 					throw new MojoExecutionException("The jar " + jar
