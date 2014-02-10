@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.acceleo.ui.language.interpreter">
+      <languageInterpreter
+            class="org.eclipse.acceleo.ui.interpreter.completeocl.internal.CompleteOCLInterpreter"
+            label="%completeocl.language.interpreter.label">
+      </languageInterpreter>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated evaluation_result -->
+      <package
+            uri="http://www.eclipse.org/interpreter/completeocl/result"
+            class="org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.EvaluationResultPackage"
+            genModel="model/evaluation_result.genmodel"/>
+   </extension>
+
+</plugin>

@@ -12,6 +12,7 @@ package org.eclipse.acceleo.ui.interpreter.view.providers;
 
 import java.util.Collection;
 
+import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterFile;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
@@ -40,10 +41,15 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 	 */
 	@Override
 	public Object[] getChildren(Object object) {
-		if (object instanceof InterpreterFile) {
-			return new Object[] {((InterpreterFile)object).getFileContent(), };
+		final Object[] children;
+		if (object instanceof EvaluationResult) {
+			children = getChildren(((EvaluationResult)object).getEvaluationResult());
+		} else if (object instanceof InterpreterFile) {
+			children = new Object[] {((InterpreterFile)object).getFileContent(), };
+		} else {
+			children = super.getChildren(object);
 		}
-		return super.getChildren(object);
+		return children;
 	}
 
 	/**
@@ -79,9 +85,14 @@ public class ResultContentProvider extends AdapterFactoryContentProvider {
 	 */
 	@Override
 	public boolean hasChildren(Object object) {
-		if (object instanceof InterpreterFile) {
-			return true;
+		final boolean hasChildren;
+		if (object instanceof EvaluationResult) {
+			hasChildren = hasChildren(((EvaluationResult)object).getEvaluationResult());
+		} else if (object instanceof InterpreterFile) {
+			hasChildren = true;
+		} else {
+			hasChildren = super.hasChildren(object);
 		}
-		return super.hasChildren(object);
+		return hasChildren;
 	}
 }

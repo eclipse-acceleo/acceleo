@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.acceleo.ui.interpreter.completeocl/src-gen"
+    editDirectory="/org.eclipse.acceleo.ui.interpreter.completeocl.edit/src-gen" modelPluginID="org.eclipse.acceleo.ui.interpreter.completeocl"
+    modelName="EvaluationResult" editPluginClass="org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.EvaluationResultEditPlugin"
+    editorPluginClass="org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.presentation.EvaluationResultEditorPlugin"
+    nonNLSMarkers="true" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" testSuiteClass="org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.tests.EvaluationResultAllTests"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore" importOrganizing="true">
+  <foreignModel>evaluation_result.ecore</foreignModel>
+  <genPackages prefix="EvaluationResult" basePackage="org.eclipse.acceleo.ui.interpreter.completeocl"
+      disposableProviderFactory="true" ecorePackage="evaluation_result.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="evaluation_result.ecore#//Severity">
+      <genEnumLiterals ecoreEnumLiteral="evaluation_result.ecore#//Severity/OK"/>
+      <genEnumLiterals ecoreEnumLiteral="evaluation_result.ecore#//Severity/INFO"/>
+      <genEnumLiterals ecoreEnumLiteral="evaluation_result.ecore#//Severity/WARNING"/>
+      <genEnumLiterals ecoreEnumLiteral="evaluation_result.ecore#//Severity/ERROR"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="evaluation_result.ecore#//EvaluationResult"/>
+    <genClasses ecoreClass="evaluation_result.ecore#//OCLElement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference evaluation_result.ecore#//OCLElement/element"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference evaluation_result.ecore#//OCLElement/children"/>
+      <genOperations ecoreOperation="evaluation_result.ecore#//OCLElement/getWorstSeverity"/>
+    </genClasses>
+    <genClasses ecoreClass="evaluation_result.ecore#//ConstraintElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference evaluation_result.ecore#//ConstraintElement/constraintResults"/>
+    </genClasses>
+    <genClasses ecoreClass="evaluation_result.ecore#//OperationElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference evaluation_result.ecore#//OperationElement/evaluationResults"/>
+    </genClasses>
+    <genClasses ecoreClass="evaluation_result.ecore#//OCLResult">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference evaluation_result.ecore#//OCLResult/evaluationTarget"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute evaluation_result.ecore#//OCLResult/interpreterResult"/>
+    </genClasses>
+    <genClasses ecoreClass="evaluation_result.ecore#//ConstraintResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute evaluation_result.ecore#//ConstraintResult/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute evaluation_result.ecore#//ConstraintResult/severity"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

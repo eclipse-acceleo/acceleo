@@ -26,8 +26,12 @@ public class SplitExpression {
 	/** Sub-steps computed for this expression. */
 	private final List<SubExpression> subSteps;
 
+	/** If this needs a prettier label than {@code fullExpression.toString()}. */
+	private final String label;
+
 	/**
-	 * Instantiates a split expression given its full expression and the list of its sub-steps.
+	 * Instantiates a split expression given its full expression and the list of its sub-steps. The expression
+	 * itself will be used as a label in the split expression view.
 	 * 
 	 * @param fullExpression
 	 *            The expression as a whole.
@@ -35,8 +39,29 @@ public class SplitExpression {
 	 *            The list of sub-components of this expression.
 	 */
 	public SplitExpression(Object fullExpression, List<SubExpression> subSteps) {
+		this(fullExpression, subSteps, null);
+	}
+
+	/**
+	 * Instantiates a split expression given its full expression and the list of its sub-steps, along with a
+	 * human-readable label for the expression view.
+	 * 
+	 * @param fullExpression
+	 *            The expression as a whole.
+	 * @param subSteps
+	 *            The list of sub-components of this expression.
+	 * @param label
+	 *            Label to display in the split expression viewer. If this is <code>null</code> or empty, the
+	 *            expression's toString() will be used instead.
+	 */
+	public SplitExpression(Object fullExpression, List<SubExpression> subSteps, String label) {
 		this.fullExpression = fullExpression;
 		this.subSteps = subSteps;
+		if (label == null || label.length() == 0) {
+			this.label = fullExpression.toString();
+		} else {
+			this.label = label;
+		}
 	}
 
 	/**
@@ -55,5 +80,24 @@ public class SplitExpression {
 	 */
 	public List<SubExpression> getSubSteps() {
 		return Collections.unmodifiableList(subSteps);
+	}
+
+	/**
+	 * Returns the label to display in the split expression viewer for this expression.
+	 * 
+	 * @return The label to display in the split expression viewer for this expression.
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getLabel();
 	}
 }

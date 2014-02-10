@@ -16,8 +16,11 @@ package org.eclipse.acceleo.ui.interpreter.internal;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public interface IInterpreterConstants {
-	/** Path to the icon for the "clear" action when enabled. */
+	/** Path to the icon for the "clear" action. */
 	String CLEAR_ACTION_ICON = "clear_action.gif"; //$NON-NLS-1$
+
+	/** Path to the icon for the "sort" action. */
+	String SORT_ACTION_ICON = "lexical_sort.gif"; //$NON-NLS-1$
 
 	/** Path to the icon for the "delete" action when disabled. */
 	String DELETE_ACTION_DISABLED_ICON = "delete_action_disabled.gif"; //$NON-NLS-1$	

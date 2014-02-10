@@ -30,9 +30,9 @@ public class StepLabelProvider extends LabelProvider {
 	public String getText(Object object) {
 		final String label;
 		if (object instanceof SplitExpression) {
-			label = ((SplitExpression)object).getFullExpression().toString();
+			label = ((SplitExpression)object).getLabel();
 		} else if (object instanceof SubExpression) {
-			label = object.toString();
+			label = ((SubExpression)object).getLabel();
 		} else {
 			label = super.getText(object);
 		}

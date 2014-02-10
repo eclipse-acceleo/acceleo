@@ -27,15 +27,37 @@ public class SubExpression {
 	/** The sub-steps composing this particular expression. */
 	private List<SubExpression> subSteps;
 
+	/** If this needs a prettier label than {@code fullExpression.toString()}. */
+	private final String label;
+
 	/**
-	 * Instantiates a sub-expression given the expression it represents.
+	 * Instantiates a sub-expression given the expression it represents. This will use
+	 * {@code expression.toString()} as the expression label in the split expressions viewer.
 	 * 
 	 * @param expression
 	 *            The expression representing this particular sub-expression.
 	 */
 	public SubExpression(Object expression) {
+		this(expression, null);
+	}
+
+	/**
+	 * Instantiates a sub-expression given the expression it represents.
+	 * 
+	 * @param expression
+	 *            The expression representing this particular sub-expression.
+	 * @param label
+	 *            Label to display in the split expression viewer. If this is <code>null</code> or empty, the
+	 *            expression's toString() will be used instead.
+	 */
+	public SubExpression(Object expression, String label) {
 		this.expression = expression;
 		this.subSteps = new ArrayList<SubExpression>();
+		if (label == null || label.length() == 0) {
+			this.label = expression.toString();
+		} else {
+			this.label = label;
+		}
 	}
 
 	/**
@@ -67,12 +89,21 @@ public class SubExpression {
 	}
 
 	/**
+	 * Returns the label to display in the split expression viewer for this expression.
+	 * 
+	 * @return The label to display in the split expression viewer for this expression.
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return expression.toString();
+		return getLabel();
 	}
 }

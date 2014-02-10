@@ -27,6 +27,9 @@
    <feature id="org.eclipse.acceleo.ui.interpreter.ocl" version="0.0.0">
       <category name="org.eclipse.acceleo.interpreters"/>
    </feature>
+   <feature id="org.eclipse.acceleo.ui.interpreter.completeocl" version="0.0.0">
+      <category name="org.eclipse.acceleo.interpreters"/>
+   </feature>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
          Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.) while keeping the traceability of the generated code.

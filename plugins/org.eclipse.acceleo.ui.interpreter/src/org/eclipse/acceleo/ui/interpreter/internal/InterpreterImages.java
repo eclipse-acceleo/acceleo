@@ -98,6 +98,7 @@ public final class InterpreterImages {
 				IInterpreterConstants.DELETE_ACTION_DISABLED_ICON);
 		createImage(IInterpreterConstants.DELETE_ACTION_ICON, IInterpreterConstants.DELETE_ACTION_ICON);
 		createImage(IInterpreterConstants.EVALUATE_ACTION_ICON, IInterpreterConstants.EVALUATE_ACTION_ICON);
+		createImage(IInterpreterConstants.SORT_ACTION_ICON, IInterpreterConstants.SORT_ACTION_ICON);
 		createImage(IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON,
 				IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON);
 		createImage(IInterpreterConstants.LINK_WITH_EDITOR_CONTEXT_ACTION_ICON,

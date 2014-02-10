@@ -13,10 +13,12 @@ package org.eclipse.acceleo.ui.interpreter.view.providers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.view.InterpreterFile;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorDescriptor;
@@ -27,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class ResultLabelProvider extends CellLabelProvider {
+public class ResultLabelProvider extends CellLabelProvider implements ILabelProvider {
 	/** The delegate label provider. */
 	private final AdapterFactoryLabelProvider delegate;
 
@@ -125,7 +127,7 @@ public class ResultLabelProvider extends CellLabelProvider {
 	 *            Element for which we need an icon.
 	 * @return The image to be displayed for the given element.
 	 */
-	private Image getImage(Object element) {
+	public Image getImage(Object element) {
 		Image result = null;
 		if (element instanceof InterpreterFile) {
 			String key = ((InterpreterFile)element).getFileName();
@@ -140,10 +142,14 @@ public class ResultLabelProvider extends CellLabelProvider {
 					images.put(key, result);
 				}
 			}
-
-			if (result != null) {
-				return result;
+		} else if (element instanceof EvaluationResult) {
+			final EvaluationResult evaluationResult = (EvaluationResult)element;
+			if (evaluationResult.getEvaluationResult() != null) {
+				result = delegate.getImage(evaluationResult.getEvaluationResult());
 			}
+		}
+		if (result != null) {
+			return result;
 		}
 		return delegate.getImage(element);
 	}
@@ -155,10 +161,22 @@ public class ResultLabelProvider extends CellLabelProvider {
 	 *            Element for which we need a label.
 	 * @return The text to be displayed for the given element.
 	 */
-	private String getText(Object element) {
-		if (element instanceof InterpreterFile) {
-			return ((InterpreterFile)element).getFileName();
+	public String getText(Object element) {
+		final String text;
+		if (element instanceof EvaluationResult) {
+			final EvaluationResult evaluationResult = (EvaluationResult)element;
+			if (evaluationResult.getEvaluationResult() != null) {
+				text = delegate.getText(evaluationResult.getEvaluationResult());
+			} else if (evaluationResult.getStatus() != null) {
+				text = evaluationResult.getStatus().getMessage();
+			} else {
+				text = "Empty evaluation result";
+			}
+		} else if (element instanceof InterpreterFile) {
+			text = ((InterpreterFile)element).getFileName();
+		} else {
+			text = delegate.getText(element);
 		}
-		return delegate.getText(element);
+		return text;
 	}
 }

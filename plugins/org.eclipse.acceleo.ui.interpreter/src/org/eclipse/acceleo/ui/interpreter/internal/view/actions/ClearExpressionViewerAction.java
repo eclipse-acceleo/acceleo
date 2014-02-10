@@ -14,7 +14,7 @@ import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * This action will be used to clear the "result" viewer.
+ * This action will be used to clear the "expression" viewer.
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */

@@ -46,6 +46,7 @@ import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearResultViewe
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.ClearVariableViewerAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.DeleteVariableOrValueAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.EvaluateAction;
+import org.eclipse.acceleo.ui.interpreter.internal.view.actions.LexicalSortAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.LinkWithEditorContextAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableAction;
 import org.eclipse.acceleo.ui.interpreter.internal.view.actions.NewVariableWizardAction;
@@ -73,6 +74,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -102,7 +104,10 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -200,6 +205,12 @@ public class InterpreterView extends ViewPart {
 
 	/** Key for the hidden state of the Sub-Expressions viewer as stored in this view's memento. */
 	private static final String MEMENTO_SUB_EXPRESSIONS_VISIBLE_KEY = "org.eclipse.acceleo.ui.interpreter.memento.subexpressions.hide"; //$NON-NLS-1$
+
+	/** Key for the sorted state of the result viewer as stored in this view's memento. */
+	private static final String MEMENTO_RESULT_SORTED_KEY = "org.eclipse.acceleo.ui.interpreter.memento.result.sorted"; //$NON-NLS-1$
+
+	/** Key for the sorted state of the Sub-Expressions viewer as stored in this view's memento. */
+	private static final String MEMENTO_SUB_EXPRESSIONS_SORTED_KEY = "org.eclipse.acceleo.ui.interpreter.memento.subexpressions.sorted"; //$NON-NLS-1$
 
 	/** We'll use this as the id of our viewers' menus. */
 	private static final String MENU_ID = "#PopupMenu"; //$NON-NLS-1$
@@ -327,10 +338,18 @@ public class InterpreterView extends ViewPart {
 	private Viewer resultViewer;
 
 	/** Viewer in which we'll display sub-expressions if the current language has a splitter. */
-	private Viewer subExpressionViewer;
+	private TreeViewer subExpressionViewer;
 
-	/** This will hold the current selection of EObjects (in the workspace). */
+	/**
+	 * This will hold the current selection of EObjects (in the workspace).
+	 * 
+	 * @deprecated use {@link #selectedNotifiers} instead.
+	 */
+	@Deprecated
 	private List<EObject> selectedEObjects;
+
+	/** This will hold the current selection of ENotifiers (in the workspace). */
+	private List<Notifier> selectedNotifiers;
 
 	/** The "right column" composite of the interpreter form, displaying the variables when not hidden. */
 	private Composite variableColumn;
@@ -605,12 +624,9 @@ public class InterpreterView extends ViewPart {
 	 *            The split expression.
 	 */
 	protected final void setSubExpressions(SplitExpression splitExpression) {
-		TreeViewer viewer = (TreeViewer)subExpressionViewer;
+		TreeViewer viewer = subExpressionViewer;
 		if (splitExpression != null) {
-			viewer.getControl().setRedraw(false);
 			viewer.setInput(Collections.singleton(splitExpression));
-			viewer.expandAll();
-			viewer.getControl().setRedraw(true);
 		} else {
 			viewer.setInput(null);
 		}
@@ -646,9 +662,9 @@ public class InterpreterView extends ViewPart {
 
 		String fullExpression = expressionViewer.getTextWidget().getText();
 
-		List<EObject> targetEObjects = selectedEObjects;
-		if (targetEObjects == null) {
-			targetEObjects = Collections.emptyList();
+		List<Notifier> targetNotifiers = selectedNotifiers;
+		if (targetNotifiers == null) {
+			targetNotifiers = Collections.emptyList();
 		}
 
 		final List<Variable> variables;
@@ -679,7 +695,7 @@ public class InterpreterView extends ViewPart {
 			}
 		}
 
-		return new InterpreterContext(fullExpression, selection, targetEObjects, variables);
+		return new InterpreterContext(fullExpression, selection, targetNotifiers, variables);
 	}
 
 	/**
@@ -695,7 +711,7 @@ public class InterpreterView extends ViewPart {
 		IContextService contextService = (IContextService)site.getService(IContextService.class);
 		contextActivationToken = contextService.activateContext(INTERPRETER_VIEW_CONTEXT_ID);
 
-		eobjectSelectionListener = new EObjectSelectionListener();
+		eobjectSelectionListener = new NotifierSelectionListener();
 		activationListener = new ActivationListener(this);
 		site.getPage().addPartListener(activationListener);
 		site.getPage().addSelectionListener(eobjectSelectionListener);
@@ -757,6 +773,12 @@ public class InterpreterView extends ViewPart {
 					Boolean.valueOf(variableViewer.getControl().isVisible()));
 			memento.putBoolean(MEMENTO_SUB_EXPRESSIONS_VISIBLE_KEY,
 					Boolean.valueOf(subExpressionViewer.getControl().isVisible()));
+			if (resultViewer instanceof StructuredViewer) {
+				memento.putBoolean(MEMENTO_RESULT_SORTED_KEY,
+						Boolean.valueOf(((StructuredViewer)resultViewer).getComparator() != null));
+			}
+			memento.putBoolean(MEMENTO_SUB_EXPRESSIONS_SORTED_KEY,
+					Boolean.valueOf(subExpressionViewer.getComparator() != null));
 		}
 	}
 
@@ -888,13 +910,35 @@ public class InterpreterView extends ViewPart {
 	 * 
 	 * @param object
 	 *            The element that is to be added to the current selection.
+	 * @deprecated use {@link #addToSelection(Notifier)} instead.
 	 */
+	@Deprecated
 	protected void addToSelection(EObject object) {
-		if (selectedEObjects == null) {
+		if (selectedNotifiers == null) {
 			// Assumes the "usual" selection is always 1 element long
+			selectedNotifiers = new ArrayList<Notifier>(1);
 			selectedEObjects = new ArrayList<EObject>(1);
 		}
+		selectedNotifiers.add(object);
 		selectedEObjects.add(object);
+	}
+
+	/**
+	 * Creates a new list for the selection if needed, and adds the given notifier into it.
+	 * 
+	 * @param notifier
+	 *            The element that is to be added to the current selection.
+	 */
+	protected void addToSelection(Notifier notifier) {
+		if (selectedNotifiers == null) {
+			// Assumes the "usual" selection is always 1 element long
+			selectedNotifiers = new ArrayList<Notifier>(1);
+			selectedEObjects = new ArrayList<EObject>(1);
+		}
+		selectedNotifiers.add(notifier);
+		if (notifier instanceof EObject) {
+			selectedEObjects.add((EObject)notifier);
+		}
 	}
 
 	/**
@@ -941,7 +985,9 @@ public class InterpreterView extends ViewPart {
 	 * If we currently have EObjects selected, this will clear the whole list.
 	 */
 	protected void clearSelection() {
-		if (selectedEObjects != null) {
+		if (selectedNotifiers != null) {
+			selectedNotifiers.clear();
+			selectedNotifiers = null;
 			selectedEObjects.clear();
 			selectedEObjects = null;
 		}
@@ -1345,8 +1391,8 @@ public class InterpreterView extends ViewPart {
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		subExpressionViewer.getControl().setLayoutData(gridData);
 
-		ToolBarManager toolBarManager = createSectionToolBar(subExpressionsSection);
-		toolBarManager.update(true);
+		createSectionToolBar(subExpressionsSection);
+		populateSubExpressionSectionToolbar(subExpressionsSection);
 
 		toolkit.paintBordersFor(subExpressionsSectionBody);
 		subExpressionsSection.setClient(subExpressionsSectionBody);
@@ -1370,6 +1416,7 @@ public class InterpreterView extends ViewPart {
 		viewer.setContentProvider(new StepByStepContentProvider(adapterFactory));
 		viewer.setLabelProvider(new StepLabelProvider());
 		viewer.addSelectionChangedListener(new SubExpressionListener());
+		viewer.addDoubleClickListener(new SubExpressionDoubleClickListener());
 
 		return viewer;
 	}
@@ -1454,7 +1501,37 @@ public class InterpreterView extends ViewPart {
 		ToolBarManager toolBarManager = getSectionToolBar(section);
 		if (toolBarManager != null) {
 			toolBarManager.removeAll();
+			if (resultViewer instanceof StructuredViewer) {
+				final Action sortAction = new LexicalSortAction((StructuredViewer)resultViewer);
+				toolBarManager.add(sortAction);
+				if (partMemento != null && partMemento.getBoolean(MEMENTO_RESULT_SORTED_KEY) != null) {
+					boolean sortEnabled = partMemento.getBoolean(MEMENTO_RESULT_SORTED_KEY).booleanValue();
+					sortAction.setChecked(sortEnabled);
+					if (sortEnabled) {
+						sortAction.run();
+					}
+				}
+			}
 			toolBarManager.add(new ClearResultViewerAction(resultViewer));
+			toolBarManager.update(true);
+		}
+	}
+
+	protected void populateSubExpressionSectionToolbar(Section section) {
+		ToolBarManager toolBarManager = getSectionToolBar(section);
+		if (toolBarManager != null) {
+			toolBarManager.removeAll();
+			final Action sortAction = new LexicalSortAction(subExpressionViewer);
+			toolBarManager.add(sortAction);
+			if (partMemento != null && partMemento.getBoolean(MEMENTO_SUB_EXPRESSIONS_SORTED_KEY) != null) {
+				boolean sortEnabled = partMemento.getBoolean(MEMENTO_SUB_EXPRESSIONS_SORTED_KEY)
+						.booleanValue();
+				sortAction.setChecked(sortEnabled);
+				if (sortEnabled) {
+					sortAction.run();
+				}
+			}
+			toolBarManager.add(new ClearResultViewerAction(subExpressionViewer));
 			toolBarManager.update(true);
 		}
 	}
@@ -1749,11 +1826,24 @@ public class InterpreterView extends ViewPart {
 	 *            The expression viewer.
 	 */
 	private void createExpressionMenu(SourceViewer viewer) {
-		MenuManager menuManager = new MenuManager(MENU_ID);
-		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(createExpressionMenuListener(viewer));
-		Menu menu = menuManager.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
+		Menu menu = viewer.getTextWidget().getMenu();
+		boolean createMenu = true;
+		if (menu != null) {
+			MenuManager manager = (MenuManager)menu
+					.getData("org.eclipse.jface.action.MenuManager.managerKey"); //$NON-NLS-1$
+			if (manager != null) {
+				manager.addMenuListener(createExpressionMenuListener(viewer));
+				createMenu = false;
+			}
+		}
+
+		if (createMenu) {
+			MenuManager menuManager = new MenuManager(MENU_ID);
+			menuManager.setRemoveAllWhenShown(true);
+			menuManager.addMenuListener(createExpressionMenuListener(viewer));
+			menu = menuManager.createContextMenu(viewer.getTextWidget());
+			viewer.getTextWidget().setMenu(menu);
+		}
 	}
 
 	/**
@@ -1853,6 +1943,7 @@ public class InterpreterView extends ViewPart {
 		 * @see org.eclipse.jface.action.IMenuListener#menuAboutToShow(org.eclipse.jface.action.IMenuManager)
 		 */
 		public void menuAboutToShow(IMenuManager manager) {
+			manager.add(new Separator("org.eclipse.ui.interpreter.view.expression.menu")); //$NON-NLS-1$
 			manager.add(new EvaluateAction(InterpreterView.this));
 			manager.add(new ClearExpressionViewerAction(sourceViewer));
 			manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -1959,17 +2050,18 @@ public class InterpreterView extends ViewPart {
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	protected class ResultDoubleClickListener implements IDoubleClickListener {
+	protected static class ResultDoubleClickListener implements IDoubleClickListener {
 		/**
 		 * {@inheritDoc}
 		 * 
 		 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
 		 */
 		public void doubleClick(DoubleClickEvent event) {
-			if (event.getSelection().isEmpty() || !(event.getSelection() instanceof IStructuredSelection)) {
+			ISelection selection = event.getSelection();
+			if (selection.isEmpty() || !(selection instanceof IStructuredSelection)) {
 				return;
 			}
-			final Object target = ((IStructuredSelection)event.getSelection()).getFirstElement();
+			final Object target = ((IStructuredSelection)selection).getFirstElement();
 			if (target instanceof InterpreterFile) {
 				showGeneratedFile((InterpreterFile)target);
 			} else if (target instanceof String
@@ -1977,6 +2069,17 @@ public class InterpreterView extends ViewPart {
 				GeneratedTextDialog dialog = new GeneratedTextDialog(Display.getCurrent().getActiveShell(),
 						"Evaluation Result", (String)target); //$NON-NLS-1$
 				dialog.open();
+			} else if (event.getViewer() instanceof TreeViewer
+					&& ((TreeViewer)event.getViewer()).isExpandable(target)) {
+				final TreeViewer viewer = ((TreeViewer)event.getViewer());
+				if (selection instanceof ITreeSelection) {
+					TreePath[] paths = ((ITreeSelection)selection).getPathsFor(target);
+					for (int i = 0; i < paths.length; i++) {
+						viewer.setExpandedState(paths[i], !viewer.getExpandedState(paths[i]));
+					}
+				} else {
+					viewer.setExpandedState(target, !viewer.getExpandedState(target));
+				}
 			}
 		}
 
@@ -2008,6 +2111,39 @@ public class InterpreterView extends ViewPart {
 				page.openEditor(input, editorID);
 			} catch (PartInitException e) {
 				// swallow : we just won't open editors
+			}
+		}
+	}
+
+	/**
+	 * This will allow us to react to double click events in the sub-expressions view in order to expand when
+	 * needed.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	protected static class SubExpressionDoubleClickListener implements IDoubleClickListener {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.jface.viewers.IDoubleClickListener#doubleClick(org.eclipse.jface.viewers.DoubleClickEvent)
+		 */
+		public void doubleClick(DoubleClickEvent event) {
+			ISelection selection = event.getSelection();
+			if (selection.isEmpty() || !(selection instanceof IStructuredSelection)) {
+				return;
+			}
+			final Object target = ((IStructuredSelection)selection).getFirstElement();
+			if (event.getViewer() instanceof TreeViewer
+					&& ((TreeViewer)event.getViewer()).isExpandable(target)) {
+				final TreeViewer viewer = ((TreeViewer)event.getViewer());
+				if (selection instanceof ITreeSelection) {
+					TreePath[] paths = ((ITreeSelection)selection).getPathsFor(target);
+					for (int i = 0; i < paths.length; i++) {
+						viewer.setExpandedState(paths[i], !viewer.getExpandedState(paths[i]));
+					}
+				} else {
+					viewer.setExpandedState(target, !viewer.getExpandedState(target));
+				}
 			}
 		}
 	}
@@ -2254,15 +2390,15 @@ public class InterpreterView extends ViewPart {
 
 	/**
 	 * This will be installed on the workbench page on which this view is displayed in order to listen to
-	 * selection events corresponding to EObjects.
+	 * selection events corresponding to Notifiers.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	private class EObjectSelectionListener implements ISelectionListener {
+	private class NotifierSelectionListener implements ISelectionListener {
 		/**
 		 * Increases visibility of the default constructor.
 		 */
-		public EObjectSelectionListener() {
+		public NotifierSelectionListener() {
 			// Increases visibility
 		}
 
@@ -2279,21 +2415,24 @@ public class InterpreterView extends ViewPart {
 				final Iterator<Object> selectionIterator = ((IStructuredSelection)selection).iterator();
 				while (selectionIterator.hasNext()) {
 					final Object next = selectionIterator.next();
-					final EObject nextEObject;
-					if (next instanceof EObject) {
-						nextEObject = (EObject)next;
-					} else if (next instanceof IAdaptable) {
-						nextEObject = (EObject)((IAdaptable)next).getAdapter(EObject.class);
+					final Notifier nextNotifier;
+					if (next instanceof Notifier) {
+						nextNotifier = (Notifier)next;
 					} else {
-						nextEObject = (EObject)Platform.getAdapterManager().getAdapter(next, EObject.class);
+						final Notifier adaptedNotifier = adaptAs(next, Notifier.class);
+						if (adaptedNotifier != null) {
+							nextNotifier = adaptedNotifier;
+						} else {
+							nextNotifier = adaptAs(next, EObject.class);
+						}
 					}
-					if (nextEObject != null) {
-						// At least one of the selected objects is an EObject, clear current selection
+					if (nextNotifier != null) {
+						// At least one of the selected objects is a Notifier, clear current selection
 						if (!cleared) {
 							clearSelection();
 							cleared = true;
 						}
-						addToSelection(nextEObject);
+						addToSelection(nextNotifier);
 					}
 				}
 				// If the selection changed somehow, relaunch the real-time evaluation
@@ -2301,6 +2440,14 @@ public class InterpreterView extends ViewPart {
 					realTimeThread.setDirty();
 				}
 			}
+		}
+
+		@SuppressWarnings("unchecked")
+		private <T> T adaptAs(Object object, Class<T> clazz) {
+			if (object instanceof IAdaptable) {
+				return (T)((IAdaptable)object).getAdapter(clazz);
+			}
+			return (T)Platform.getAdapterManager().getAdapter(object, clazz);
 		}
 	}
 

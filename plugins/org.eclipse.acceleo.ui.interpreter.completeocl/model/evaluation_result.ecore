@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="evaluationresult" nsURI="http://www.eclipse.org/interpreter/completeocl/result"
+    nsPrefix="evaluationresult">
+  <eClassifiers xsi:type="ecore:EClass" name="OCLElement">
+    <eOperations name="getWorstSeverity" eType="#//Severity"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" lowerBound="1"
+        eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//OCLElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintElement" eSuperTypes="#//OCLElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraintResults" upperBound="-1"
+        eType="#//ConstraintResult" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OperationElement" eSuperTypes="#//OCLElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="evaluationResults" upperBound="-1"
+        eType="#//OCLResult" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OCLResult">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="evaluationTarget" lowerBound="1"
+        eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="interpreterResult" lowerBound="1"
+        eType="#//EvaluationResult"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintResult" eSuperTypes="#//OCLResult">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="severity" lowerBound="1"
+        eType="#//Severity"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Severity">
+    <eLiterals name="OK"/>
+    <eLiterals name="INFO" value="1"/>
+    <eLiterals name="WARNING" value="2"/>
+    <eLiterals name="ERROR" value="4"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="EvaluationResult" instanceClassName="org.eclipse.acceleo.ui.interpreter.language.EvaluationResult"/>
+</ecore:EPackage>
