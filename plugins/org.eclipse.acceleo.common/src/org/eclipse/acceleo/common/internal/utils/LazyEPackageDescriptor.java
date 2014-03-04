@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -309,12 +308,14 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 			saxParser.parse(input, lazyEPackageDescriptorSAXHandler);
 			is.close();
 			result = lazyEPackageDescriptorSAXHandler.getRootDescriptor();
-		} catch (IOException e) {
-			// swallow and return null
-		} catch (ParserConfigurationException e) {
-			// swallow and return null
-		} catch (SAXException e) {
-			// swallow and return null
+			// CHECKSTYLE:OFF
+		} catch (Throwable e) {
+			/*
+			 * Anything might happen here. File is wrongly named .ecore, parsing fails, IO fails. In any case,
+			 * we don't want the whole process to fail, it just mean we are unable to create the descriptor
+			 * and we should just return null.
+			 */
+			// CHECKSTYLE:ON
 		} finally {
 			if (is != null) {
 				try {
@@ -443,9 +444,9 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 		@Override
 		public void endElement(String uri, String localName, String qName) throws SAXException {
 			super.endElement(uri, localName, qName);
-			if (ECORE_E_PACKAGE.equals(qName)) {
+			if (ECORE_E_PACKAGE.equals(qName) && currentDescriptor.size() > 0) {
 				currentDescriptor.pop();
-			} else if (E_SUBPACKAGES.equals(qName)) {
+			} else if (E_SUBPACKAGES.equals(qName) && currentDescriptor.size() > 0) {
 				currentDescriptor.pop();
 			}
 		}
