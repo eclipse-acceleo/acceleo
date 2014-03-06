@@ -353,12 +353,44 @@ public final class ModelUtils {
 	 *             If the given file does not exist.
 	 */
 	public static EObject load(URI modelURI, ResourceSet resourceSet) throws IOException {
+		return load(modelURI, resourceSet, false);
+	}
+
+	/**
+	 * Loads a model from an {@link org.eclipse.emf.common.util.URI URI} in a given {@link ResourceSet}.
+	 * <p>
+	 * This will return the first root of the loaded model, other roots can be accessed via the resource's
+	 * content.
+	 * </p>
+	 * 
+	 * @param modelURI
+	 *            {@link org.eclipse.emf.common.util.URI URI} where the model is stored.
+	 * @param resourceSet
+	 *            The {@link ResourceSet} to load the model in.
+	 * @param resolve
+	 *            If true the method will resolve the proxies in the loaded resource.
+	 * @return The model loaded from the URI.
+	 * @throws IOException
+	 *             If the given file does not exist.
+	 * @since 3.5
+	 */
+	public static EObject load(URI modelURI, ResourceSet resourceSet, boolean resolve) throws IOException {
 		ensureResourceFactoryPresent(resourceSet);
 		String fileExtension = modelURI.fileExtension();
 		ensureDefaultResourceFactoryPresent(resourceSet, fileExtension);
 
+		Resource modelResource;
 		EObject result = null;
-		final Resource modelResource = resourceSet.getResource(modelURI, true);
+		if (resolve) {
+			modelResource = resourceSet.getResource(modelURI, false);
+			if (!modelResource.isLoaded()) {
+				modelResource.load(resourceSet.getLoadOptions());
+				EcoreUtil.resolveAll(modelResource);
+			}
+		} else {
+			modelResource = resourceSet.getResource(modelURI, true);
+		}
+
 		if (modelResource.getContents().size() > 0) {
 			result = modelResource.getContents().get(0);
 		}

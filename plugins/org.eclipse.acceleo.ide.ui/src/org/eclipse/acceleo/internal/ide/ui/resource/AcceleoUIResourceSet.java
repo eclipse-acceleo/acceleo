@@ -73,7 +73,7 @@ public final class AcceleoUIResourceSet {
 	 */
 	public static EObject getResource(URI uri) throws IOException {
 		synchronized(RESOURCE_SET) {
-			return ModelUtils.load(uri, RESOURCE_SET);
+			return ModelUtils.load(uri, RESOURCE_SET, true);
 		}
 	}
 
