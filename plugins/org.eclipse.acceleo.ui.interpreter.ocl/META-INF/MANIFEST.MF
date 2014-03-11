@@ -10,4 +10,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.acceleo.ui.interpreter;bundle-version="3.4.1",
  org.eclipse.ocl.examples.xtext.console;bundle-version="3.4.0"
-Export-Package: org.eclipse.acceleo.ui.interpreter.ocl
+Export-Package: org.eclipse.acceleo.ui.interpreter.ocl;uses:="org.eclipse.acceleo.ui.interpreter.language"

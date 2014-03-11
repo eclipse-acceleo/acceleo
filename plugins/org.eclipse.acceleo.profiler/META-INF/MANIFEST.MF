@@ -8,9 +8,13 @@ Bundle-SymbolicName: org.eclipse.acceleo.profiler;singleton:=true
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.profiler";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.acceleo.profiler,
+Export-Package: org.eclipse.acceleo.profiler;uses:="org.eclipse.emf.ecore",
  org.eclipse.acceleo.profiler.impl;x-internal:=true,
  org.eclipse.acceleo.profiler.impl.spec;x-internal:=true,
- org.eclipse.acceleo.profiler.util
+ org.eclipse.acceleo.profiler.util;
+  uses:="org.eclipse.emf.ecore,
+   org.eclipse.emf.common.notify.impl,
+   org.eclipse.acceleo.profiler,
+   org.eclipse.emf.common.notify"
 Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi

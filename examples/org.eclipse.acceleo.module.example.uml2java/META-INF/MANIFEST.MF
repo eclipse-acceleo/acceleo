@@ -13,8 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.engine,
- com.google.guava;bundle-version="10.0.1"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+ com.google.guava;bundle-version="12.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.acceleo.module.example.uml2java

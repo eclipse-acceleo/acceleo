@@ -9,7 +9,7 @@ Bundle-Activator: org.eclipse.acceleo.model.mtl.provider.MtlEditPlugin$Implement
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.model.edit";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.acceleo.model.mtl.provider,
+Export-Package: org.eclipse.acceleo.model.mtl.provider;uses:="org.eclipse.emf.common.notify",
  org.eclipse.acceleo.model.ocl.provider;x-internal:=true
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.model;visibility:=reexport,

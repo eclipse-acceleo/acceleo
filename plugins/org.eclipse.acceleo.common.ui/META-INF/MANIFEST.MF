@@ -11,6 +11,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
-Export-Package: org.eclipse.acceleo.common.ui,
+Export-Package: org.eclipse.acceleo.common.ui;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.eclipse.acceleo.common.ui.internal.notification;x-internal:=true,
- org.eclipse.acceleo.common.ui.notification
+ org.eclipse.acceleo.common.ui.notification;uses:="org.eclipse.swt.events,org.eclipse.swt.graphics,org.eclipse.core.runtime.preferences"

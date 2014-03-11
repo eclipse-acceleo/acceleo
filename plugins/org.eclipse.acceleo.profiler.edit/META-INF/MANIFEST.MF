@@ -9,7 +9,7 @@ Bundle-SymbolicName: org.eclipse.acceleo.profiler.edit;singleton:=true
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.profiler.edit";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: org.eclipse.acceleo.profiler.provider
+Export-Package: org.eclipse.acceleo.profiler.provider;uses:="org.eclipse.emf.common.notify"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.acceleo.profiler;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,

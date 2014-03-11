@@ -13,8 +13,7 @@ Require-Bundle: org.eclipse.acceleo.model,
  org.eclipse.ocl.ecore,
  org.eclipse.acceleo.common,
  org.apache.ant,
- org.eclipse.core.runtime,
- com.google.guava;bundle-version="10.0.1"
+ org.eclipse.core.runtime
 Export-Package: org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.environment;x-internal:=true,
  org.eclipse.acceleo.internal.parser;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.parser.tests",
  org.eclipse.acceleo.internal.parser.ast;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
@@ -22,12 +21,30 @@ Export-Package: org.eclipse.acceleo.internal.compatibility.parser.ast.ocl.enviro
  org.eclipse.acceleo.internal.parser.ast.ocl.environment;x-friends:="org.eclipse.acceleo.ide.ui",
  org.eclipse.acceleo.internal.parser.compiler;x-friends:="org.eclipse.acceleo.standalone.tests,org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui.tests",
  org.eclipse.acceleo.internal.parser.cst;x-friends:="org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.ide.ui",
- org.eclipse.acceleo.internal.parser.cst.utils;x-friends:="org.eclipse.acceleo.ide.ui,org.eclipse.acceleo.ide.ui.tests,org.eclipse.acceleo.parser.tests,org.eclipse.acceleo.compatibility.ui",
+ org.eclipse.acceleo.internal.parser.cst.utils;
+  x-friends:="org.eclipse.acceleo.ide.ui,
+   org.eclipse.acceleo.ide.ui.tests,
+   org.eclipse.acceleo.parser.tests,
+   org.eclipse.acceleo.compatibility.ui",
  org.eclipse.acceleo.internal.parser.documentation;x-internal:=true,
  org.eclipse.acceleo.internal.parser.documentation.utils;x-internal:=true,
- org.eclipse.acceleo.parser,
- org.eclipse.acceleo.parser.compiler,
- org.eclipse.acceleo.parser.cst,
+ org.eclipse.acceleo.parser;
+  uses:="org.eclipse.emf.ecore.resource,
+   org.eclipse.ocl,
+   org.eclipse.acceleo.model.mtl,
+   org.eclipse.emf.common.util,
+   org.eclipse.acceleo.internal.parser.ast,
+   org.eclipse.acceleo.internal.parser.documentation,
+   org.eclipse.acceleo.internal.parser.ast.ocl,
+   org.eclipse.acceleo.parser.cst",
+ org.eclipse.acceleo.parser.compiler;uses:="org.apache.tools.ant",
+ org.eclipse.acceleo.parser.cst;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.eclipse.acceleo.parser.cst.impl;x-friends:="org.eclipse.acceleo.parser.tests",
  org.eclipse.acceleo.parser.cst.util;x-friends:="org.eclipse.acceleo.parser.tests",
- org.eclipse.acceleo.parser.interpreter
+ org.eclipse.acceleo.parser.interpreter;
+  uses:="org.eclipse.emf.ecore.resource,
+   com.google.common.collect,
+   org.eclipse.emf.common.util,
+   org.eclipse.acceleo.common.interpreter"
+Import-Package: com.google.common.base;version="[12.0.0,13.0.0)",
+ com.google.common.collect;version="[12.0.0,13.0.0)"
