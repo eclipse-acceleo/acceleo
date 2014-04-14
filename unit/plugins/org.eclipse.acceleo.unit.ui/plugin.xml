@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="false"
+            category="org.eclipse.acceleo.ide.ui"
+            class="org.eclipse.acceleo.unit.ui.internal.wizards.newproject.AUnitProjectWizard"
+            finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
+            icon="icons/acceleo-unit-project.png"
+            id="org.eclipse.acceleo.unit.ui.wizards.project"
+            name="Acceleo Unit Project"
+            project="true">
+      </wizard>
+      <!--<wizard
+            category="org.eclipse.acceleo.ide.ui"
+            class="org.eclipse.acceleo.unit.ui.internal.wizards.newfile.AUnitTestCaseWizard"
+            finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
+            icon="icons/acceleo-unit-test-case.gif"
+            id="org.eclipse.acceleo.unit.ui.wizard2"
+            name="Acceleo Unit Test Case">
+      </wizard>
+      <wizard
+            category="org.eclipse.acceleo.ide.ui"
+            class="org.eclipse.acceleo.unit.ui.internal.wizards.newfile.AUnitTestSuiteWizard"
+            finalPerspective="org.eclipse.acceleo.ide.ui.AcceleoPerspective"
+            icon="icons/acceleo-unit-test-suite.gif"
+            id="org.eclipse.acceleo.unit.ui.wizard3"
+            name="Acceleo Unit Test Suite">
+      </wizard>-->
+   </extension>
+
+</plugin>

@@ -1,0 +1,7 @@
+[comment encoding = UTF-8 /]
+[module queries('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[query public reqTextToHtmlId(anEPackage : EPackage) : Sequence(EClassifier) = anEPackage.eClassifiers->asSequence()/]
+
+[query public reqTextToHtmlId(anEClass : EClass) : Sequence(EAttribute) = anEClass.eAllAttributes->asSequence()/]

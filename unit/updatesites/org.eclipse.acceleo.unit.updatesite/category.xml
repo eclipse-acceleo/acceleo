@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.eclipse.acceleo.unit.core.feature_3.5.0.qualifier.jar" id="org.eclipse.acceleo.unit.core.feature" version="3.5.0.qualifier">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature url="features/org.eclipse.acceleo.unit.ui.feature_3.5.0.qualifier.jar" id="org.eclipse.acceleo.unit.ui.feature" version="3.5.0.qualifier">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <category-def name="org.eclipse.acceleo" label="Acceleo"/>
+</site>

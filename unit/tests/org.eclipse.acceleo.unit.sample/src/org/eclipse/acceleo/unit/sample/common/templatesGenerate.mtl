@@ -1,0 +1,11 @@
+[comment encoding = UTF-8 /]
+[module templatesGenerate('http://www.eclipse.org/emf/2002/Ecore')]
+
+
+[template public generateElement(aEPackage : EPackage)]
+This is my template
+[/template]
+
+[template public generateElement(aEClass : EClass)]
+This is my second template
+[/template]
