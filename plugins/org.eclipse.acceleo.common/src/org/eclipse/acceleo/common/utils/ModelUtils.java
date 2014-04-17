@@ -382,7 +382,7 @@ public final class ModelUtils {
 		Resource modelResource;
 		EObject result = null;
 		if (resolve) {
-			modelResource = resourceSet.getResource(modelURI, false);
+			modelResource = resourceSet.getResource(modelURI, true);
 			if (!modelResource.isLoaded()) {
 				modelResource.load(resourceSet.getLoadOptions());
 				EcoreUtil.resolveAll(modelResource);
