@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -270,11 +271,15 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 			}
 		}
 
-		// Disable Acceleo notifications and debug messages
-		final boolean notificationsState = AcceleoPreferences.areNotificationsEnabled();
-		AcceleoPreferences.switchNotifications(false);
-		final boolean debugMessagesState = AcceleoPreferences.isDebugMessagesEnabled();
-		AcceleoPreferences.switchDebugMessages(false);
+		boolean notificationsState = false;
+		boolean debugMessagesState = false;
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			// Disable Acceleo notifications and debug messages
+			notificationsState = AcceleoPreferences.areNotificationsEnabled();
+			AcceleoPreferences.switchNotifications(false);
+			debugMessagesState = AcceleoPreferences.isDebugMessagesEnabled();
+			AcceleoPreferences.switchDebugMessages(false);
+		}
 
 		// Add our log listener so as to "remember" the Acceleo errors
 		final EvaluationLogListener evaluationListener = new EvaluationLogListener();
@@ -301,8 +306,10 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 
 			return new EvaluationResult(result, accumulatedProblems);
 		} finally {
-			AcceleoPreferences.switchNotifications(notificationsState);
-			AcceleoPreferences.switchDebugMessages(debugMessagesState);
+			if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+				AcceleoPreferences.switchNotifications(notificationsState);
+				AcceleoPreferences.switchDebugMessages(debugMessagesState);
+			}
 			if (Platform.isRunning()) {
 				Platform.removeLogListener(evaluationListener);
 			}

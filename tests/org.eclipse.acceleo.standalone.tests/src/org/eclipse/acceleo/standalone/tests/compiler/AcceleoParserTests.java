@@ -41,7 +41,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainFirstProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.first");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.first");
 		File output = new File(projectRoot, "bin");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -61,33 +61,33 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
-		File main = new File(projectRoot, "src/org/eclipse/acceleo/project/first/main/main.mtl");
-		File genClass = new File(projectRoot, "src/org/eclipse/acceleo/project/first/file/genClass.mtl");
+		File main = new File(projectRoot, "src/o/e/a/c/first/main/main.mtl");
+		File genClass = new File(projectRoot, "src/o/e/a/c/first/file/genClass.mtl");
 		File genInterface = new File(projectRoot,
-				"src/org/eclipse/acceleo/project/first/file/genInterface.mtl");
+				"src/o/e/a/c/first/file/genInterface.mtl");
 		File genClassifier = new File(projectRoot,
-				"src/org/eclipse/acceleo/project/first/file/genClassifier.mtl");
-		File services = new File(projectRoot, "src/org/eclipse/acceleo/project/first/common/services.mtl");
+				"src/o/e/a/c/first/file/genClassifier.mtl");
+		File services = new File(projectRoot, "src/o/e/a/c/first/common/services.mtl");
 
 		AcceleoParser parser = new AcceleoParser(project, false, true, false);
 		parser.buildFile(main, new BasicMonitor());
 
-		File builtMain = new File(projectRoot, "bin/org/eclipse/acceleo/project/first/main/main.emtl");
+		File builtMain = new File(projectRoot, "bin/o/e/a/c/first/main/main.emtl");
 		assertTrue(builtMain.exists());
 
 		File builtGenInterface = new File(projectRoot,
-				"bin/org/eclipse/acceleo/project/first/file/genInterface.emtl");
+				"bin/o/e/a/c/first/file/genInterface.emtl");
 		assertTrue(builtGenInterface.exists());
 
 		File builtGenClassifier = new File(projectRoot,
-				"bin/org/eclipse/acceleo/project/first/file/genClassifier.emtl");
+				"bin/o/e/a/c/first/file/genClassifier.emtl");
 		assertTrue(builtGenClassifier.exists());
 
-		File builtGenClass = new File(projectRoot, "bin/org/eclipse/acceleo/project/first/file/genClass.emtl");
+		File builtGenClass = new File(projectRoot, "bin/o/e/a/c/first/file/genClass.emtl");
 		assertTrue(builtGenClass.exists());
 
 		File builtServices = new File(projectRoot,
-				"bin/org/eclipse/acceleo/project/first/common/services.emtl");
+				"bin/o/e/a/c/first/common/services.emtl");
 		assertTrue(builtServices.exists());
 
 		assertThat(parser.getProblems(main).toString(), is(Collections.emptyList().toString()));
@@ -116,7 +116,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainSecondProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.second");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.second");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -136,35 +136,35 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
-		File main = new File(projectRoot, "src/org/eclipse/acceleo/project/second/main/main.mtl");
-		File genClass = new File(projectRoot, "src/org/eclipse/acceleo/project/second/file/genClass.mtl");
+		File main = new File(projectRoot, "src/o/e/a/c/second/main/main.mtl");
+		File genClass = new File(projectRoot, "src/o/e/a/c/second/file/genClass.mtl");
 		File genInterface = new File(projectRoot,
-				"src/org/eclipse/acceleo/project/second/file/genInterface.mtl");
+				"src/o/e/a/c/second/file/genInterface.mtl");
 		File genClassifier = new File(projectRoot,
-				"src/org/eclipse/acceleo/project/second/file/genClassifier.mtl");
-		File services = new File(projectRoot, "src/org/eclipse/acceleo/project/second/common/services.mtl");
+				"src/o/e/a/c/second/file/genClassifier.mtl");
+		File services = new File(projectRoot, "src/o/e/a/c/second/common/services.mtl");
 
 		AcceleoParser parser = new AcceleoParser(project, false, true, false);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/second/main/main.emtl");
+				"target/classes/o/e/a/c/second/main/main.emtl");
 		assertTrue(builtMain.exists());
 
 		File builtGenInterface = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/second/file/genInterface.emtl");
+				"target/classes/o/e/a/c/second/file/genInterface.emtl");
 		assertTrue(builtGenInterface.exists());
 
 		File builtGenClassifier = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/second/file/genClassifier.emtl");
+				"target/classes/o/e/a/c/second/file/genClassifier.emtl");
 		assertTrue(builtGenClassifier.exists());
 
 		File builtGenClass = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/second/file/genClass.emtl");
+				"target/classes/o/e/a/c/second/file/genClass.emtl");
 		assertTrue(builtGenClass.exists());
 
 		File builtServices = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/second/common/services.emtl");
+				"target/classes/o/e/a/c/second/common/services.emtl");
 		assertTrue(builtServices.exists());
 
 		assertThat(parser.getProblems(main).toString(), is(Collections.emptyList().toString()));
@@ -193,7 +193,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainThirdProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.third");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.third");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -213,37 +213,37 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
-		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/third/main/main.mtl");
+		File main = new File(projectRoot, "src/main/java/o/e/a/c/third/main/main.mtl");
 		File genClass = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/third/file/genClass.mtl");
+				"src/main/java/o/e/a/c/third/file/genClass.mtl");
 		File genInterface = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/third/file/genInterface.mtl");
+				"src/main/java/o/e/a/c/third/file/genInterface.mtl");
 		File genClassifier = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/third/file/genClassifier.mtl");
+				"src/main/java/o/e/a/c/third/file/genClassifier.mtl");
 		File services = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/third/common/services.mtl");
+				"src/main/java/o/e/a/c/third/common/services.mtl");
 
 		AcceleoParser parser = new AcceleoParser(project, false, true, false);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/third/main/main.emtl");
+				"target/classes/o/e/a/c/third/main/main.emtl");
 		assertTrue(builtMain.exists());
 
 		File builtGenInterface = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/third/file/genInterface.emtl");
+				"target/classes/o/e/a/c/third/file/genInterface.emtl");
 		assertTrue(builtGenInterface.exists());
 
 		File builtGenClassifier = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/third/file/genClassifier.emtl");
+				"target/classes/o/e/a/c/third/file/genClassifier.emtl");
 		assertTrue(builtGenClassifier.exists());
 
 		File builtGenClass = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/third/file/genClass.emtl");
+				"target/classes/o/e/a/c/third/file/genClass.emtl");
 		assertTrue(builtGenClass.exists());
 
 		File builtServices = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/third/common/services.emtl");
+				"target/classes/o/e/a/c/third/common/services.emtl");
 		assertTrue(builtServices.exists());
 
 		assertThat(parser.getProblems(main).toString(), is(Collections.emptyList().toString()));
@@ -272,9 +272,9 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainFourthProject() {
 		String curDir = System.getProperty("user.dir");
-		File gitRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fourth");
+		File gitRoot = new File(curDir, "data/workspace/o.e.a.p.fourth");
 
-		File javaProjectRoot = new File(gitRoot, "plugin/org.eclipse.acceleo.project.fourth.java");
+		File javaProjectRoot = new File(gitRoot, "plugin/o.e.a.p.fourth.java");
 		File output = new File(javaProjectRoot, "bin");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -294,37 +294,37 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		AcceleoProject project = new AcceleoProject(javaProjectRoot, entries);
 
-		File main = new File(javaProjectRoot, "src/org/eclipse/acceleo/project/fourth/java/main/main.mtl");
+		File main = new File(javaProjectRoot, "src/o/e/a/c/fourth/java/main/main.mtl");
 		File genClass = new File(javaProjectRoot,
-				"src/org/eclipse/acceleo/project/fourth/java/file/genClass.mtl");
+				"src/o/e/a/c/fourth/java/file/genClass.mtl");
 		File genInterface = new File(javaProjectRoot,
-				"src/org/eclipse/acceleo/project/fourth/java/file/genInterface.mtl");
+				"src/o/e/a/c/fourth/java/file/genInterface.mtl");
 		File genClassifier = new File(javaProjectRoot,
-				"src/org/eclipse/acceleo/project/fourth/java/file/genClassifier.mtl");
+				"src/o/e/a/c/fourth/java/file/genClassifier.mtl");
 		File services = new File(javaProjectRoot,
-				"src/org/eclipse/acceleo/project/fourth/java/common/services.mtl");
+				"src/o/e/a/c/fourth/java/common/services.mtl");
 
 		AcceleoParser parser = new AcceleoParser(project, false, true, false);
 		parser.buildFile(main, new BasicMonitor());
 
 		File builtMain = new File(javaProjectRoot,
-				"bin/org/eclipse/acceleo/project/fourth/java/main/main.emtl");
+				"bin/o/e/a/c/fourth/java/main/main.emtl");
 		assertTrue(builtMain.exists());
 
 		File builtGenInterface = new File(javaProjectRoot,
-				"bin/org/eclipse/acceleo/project/fourth/java/file/genInterface.emtl");
+				"bin/o/e/a/c/fourth/java/file/genInterface.emtl");
 		assertTrue(builtGenInterface.exists());
 
 		File builtGenClassifier = new File(javaProjectRoot,
-				"bin/org/eclipse/acceleo/project/fourth/java/file/genClassifier.emtl");
+				"bin/o/e/a/c/fourth/java/file/genClassifier.emtl");
 		assertTrue(builtGenClassifier.exists());
 
 		File builtGenClass = new File(javaProjectRoot,
-				"bin/org/eclipse/acceleo/project/fourth/java/file/genClass.emtl");
+				"bin/o/e/a/c/fourth/java/file/genClass.emtl");
 		assertTrue(builtGenClass.exists());
 
 		File builtServices = new File(javaProjectRoot,
-				"bin/org/eclipse/acceleo/project/fourth/java/common/services.emtl");
+				"bin/o/e/a/c/fourth/java/common/services.emtl");
 		assertTrue(builtServices.exists());
 
 		assertThat(parser.getProblems(main).toString(), is(Collections.emptyList().toString()));
@@ -349,7 +349,7 @@ public class AcceleoParserTests {
 		assertThat(parser.getWarnings(services).toString(), is(Collections.emptyList().toString()));
 		assertThat(parser.getInfos(services).toString(), is(Collections.emptyList().toString()));
 
-		File mavenProjectRoot = new File(gitRoot, "plugin/org.eclipse.acceleo.project.fourth.maven");
+		File mavenProjectRoot = new File(gitRoot, "plugin/o.e.a.p.fourth.maven");
 		output = new File(mavenProjectRoot, "target/classes");
 		listFiles = output.listFiles();
 		if (listFiles.length > 0) {
@@ -370,37 +370,37 @@ public class AcceleoParserTests {
 		project = new AcceleoProject(mavenProjectRoot, entries);
 
 		main = new File(mavenProjectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fourth/maven/main/main.mtl");
+				"src/main/java/o/e/a/c/fourth/maven/main/main.mtl");
 		genClass = new File(mavenProjectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fourth/maven/file/genClass.mtl");
+				"src/main/java/o/e/a/c/fourth/maven/file/genClass.mtl");
 		genInterface = new File(mavenProjectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fourth/maven/file/genInterface.mtl");
+				"src/main/java/o/e/a/c/fourth/maven/file/genInterface.mtl");
 		genClassifier = new File(mavenProjectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fourth/maven/file/genClassifier.mtl");
+				"src/main/java/o/e/a/c/fourth/maven/file/genClassifier.mtl");
 		services = new File(mavenProjectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fourth/maven/common/services.mtl");
+				"src/main/java/o/e/a/c/fourth/maven/common/services.mtl");
 
 		parser = new AcceleoParser(project, false, true, false);
 		parser.buildFile(main, new BasicMonitor());
 
 		builtMain = new File(mavenProjectRoot,
-				"target/classes/org/eclipse/acceleo/project/fourth/maven/main/main.emtl");
+				"target/classes/o/e/a/c/fourth/maven/main/main.emtl");
 		assertTrue(builtMain.exists());
 
 		builtGenInterface = new File(mavenProjectRoot,
-				"target/classes/org/eclipse/acceleo/project/fourth/maven/file/genInterface.emtl");
+				"target/classes/o/e/a/c/fourth/maven/file/genInterface.emtl");
 		assertTrue(builtGenInterface.exists());
 
 		builtGenClassifier = new File(mavenProjectRoot,
-				"target/classes/org/eclipse/acceleo/project/fourth/maven/file/genClassifier.emtl");
+				"target/classes/o/e/a/c/fourth/maven/file/genClassifier.emtl");
 		assertTrue(builtGenClassifier.exists());
 
 		builtGenClass = new File(mavenProjectRoot,
-				"target/classes/org/eclipse/acceleo/project/fourth/maven/file/genClass.emtl");
+				"target/classes/o/e/a/c/fourth/maven/file/genClass.emtl");
 		assertTrue(builtGenClass.exists());
 
 		builtServices = new File(mavenProjectRoot,
-				"target/classes/org/eclipse/acceleo/project/fourth/maven/common/services.emtl");
+				"target/classes/o/e/a/c/fourth/maven/common/services.emtl");
 		assertTrue(builtServices.exists());
 
 		assertThat(parser.getProblems(main).toString(), is(Collections.emptyList().toString()));
@@ -429,7 +429,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainFifthProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -449,7 +449,7 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		AcceleoProject project = new AcceleoProject(projectRoot, entries);
 
-		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
+		File main = new File(projectRoot, "src/main/java/o/e/a/c/fifth/main/workflow.mtl");
 
 		ParserListener parserListener = new ParserListener();
 		AcceleoParser parser = new AcceleoParser(project, false, true, false);
@@ -457,83 +457,83 @@ public class AcceleoParserTests {
 		parser.buildFile(main, new BasicMonitor());
 
 		File attributes = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/attributes.emtl");
+				"target/classes/o/e/a/c/fifth/common/attributes.emtl");
 		File behavior = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/behavior.emtl");
+				"target/classes/o/e/a/c/fifth/common/behavior.emtl");
 		File common = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/common.emtl");
+				"target/classes/o/e/a/c/fifth/common/common.emtl");
 		File declaration = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/declaration.emtl");
+				"target/classes/o/e/a/c/fifth/common/declaration.emtl");
 		File imports = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/imports.emtl");
+				"target/classes/o/e/a/c/fifth/common/imports.emtl");
 		File operations = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/operations.emtl");
+				"target/classes/o/e/a/c/fifth/common/operations.emtl");
 		File properties = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/properties.emtl");
-		File type = new File(projectRoot, "target/classes/org/eclipse/acceleo/project/fifth/common/type.emtl");
+				"target/classes/o/e/a/c/fifth/common/properties.emtl");
+		File type = new File(projectRoot, "target/classes/o/e/a/c/fifth/common/type.emtl");
 
 		File classFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/classFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/classFile.emtl");
 		File commonFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/commonFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/commonFile.emtl");
 		File enumerationFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/enumerationFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/enumerationFile.emtl");
 		File interfaceFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/interfaceFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/interfaceFile.emtl");
 
 		File workflow = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/main/workflow.emtl");
+				"target/classes/o/e/a/c/fifth/main/workflow.emtl");
 
 		File request = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/request/request.emtl");
+				"target/classes/o/e/a/c/fifth/request/request.emtl");
 
 		File commonServices = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/services/commonServices.emtl");
+				"target/classes/o/e/a/c/fifth/services/commonServices.emtl");
 
 		File validator = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/validator/validator.emtl");
+				"target/classes/o/e/a/c/fifth/validator/validator.emtl");
 
 		assertThat(project.getAllCompiledAcceleoModules(), hasItems(attributes, behavior, common,
 				declaration, imports, operations, properties, type, classFile, commonFile, enumerationFile,
 				interfaceFile, workflow, request, commonServices, validator));
 
 		File attributesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/attributes.mtl");
+				"src/main/java/o/e/a/c/fifth/common/attributes.mtl");
 		File behaviorMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/behavior.mtl");
+				"src/main/java/o/e/a/c/fifth/common/behavior.mtl");
 		File commonMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/common.mtl");
+				"src/main/java/o/e/a/c/fifth/common/common.mtl");
 		File declarationMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/declaration.mtl");
+				"src/main/java/o/e/a/c/fifth/common/declaration.mtl");
 		File importsMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/imports.mtl");
+				"src/main/java/o/e/a/c/fifth/common/imports.mtl");
 		File operationsMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/operations.mtl");
+				"src/main/java/o/e/a/c/fifth/common/operations.mtl");
 		File propertiesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/properties.mtl");
+				"src/main/java/o/e/a/c/fifth/common/properties.mtl");
 		File typeMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/type.mtl");
+				"src/main/java/o/e/a/c/fifth/common/type.mtl");
 
 		File classFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/classFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/classFile.mtl");
 		File commonFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/commonFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/commonFile.mtl");
 		File enumerationFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/enumerationFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/enumerationFile.mtl");
 		File interfaceFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/interfaceFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/interfaceFile.mtl");
 
 		File workflowMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
+				"src/main/java/o/e/a/c/fifth/main/workflow.mtl");
 
 		File requestMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/request/request.mtl");
+				"src/main/java/o/e/a/c/fifth/request/request.mtl");
 
 		File commonServicesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/services/commonServices.mtl");
+				"src/main/java/o/e/a/c/fifth/services/commonServices.mtl");
 
 		File validatorMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/validator/validator.mtl");
+				"src/main/java/o/e/a/c/fifth/validator/validator.mtl");
 
 		List<File> filesBuilt = parserListener.getFilesBuilt();
 		String filesBuiltStr = "";
@@ -584,7 +584,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildAllFifthProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -610,87 +610,87 @@ public class AcceleoParserTests {
 		parser.buildAll(new BasicMonitor());
 
 		File attributes = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/attributes.emtl");
+				"target/classes/o/e/a/c/fifth/common/attributes.emtl");
 		File behavior = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/behavior.emtl");
+				"target/classes/o/e/a/c/fifth/common/behavior.emtl");
 		File common = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/common.emtl");
+				"target/classes/o/e/a/c/fifth/common/common.emtl");
 		File declaration = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/declaration.emtl");
+				"target/classes/o/e/a/c/fifth/common/declaration.emtl");
 		File imports = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/imports.emtl");
+				"target/classes/o/e/a/c/fifth/common/imports.emtl");
 		File operations = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/operations.emtl");
+				"target/classes/o/e/a/c/fifth/common/operations.emtl");
 		File properties = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/common/properties.emtl");
-		File type = new File(projectRoot, "target/classes/org/eclipse/acceleo/project/fifth/common/type.emtl");
+				"target/classes/o/e/a/c/fifth/common/properties.emtl");
+		File type = new File(projectRoot, "target/classes/o/e/a/c/fifth/common/type.emtl");
 
 		File classFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/classFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/classFile.emtl");
 		File commonFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/commonFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/commonFile.emtl");
 		File enumerationFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/enumerationFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/enumerationFile.emtl");
 		File interfaceFile = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/files/interfaceFile.emtl");
+				"target/classes/o/e/a/c/fifth/files/interfaceFile.emtl");
 
 		File workflow = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/main/workflow.emtl");
+				"target/classes/o/e/a/c/fifth/main/workflow.emtl");
 
 		File request = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/request/request.emtl");
+				"target/classes/o/e/a/c/fifth/request/request.emtl");
 
 		File commonServices = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/services/commonServices.emtl");
+				"target/classes/o/e/a/c/fifth/services/commonServices.emtl");
 		File logger = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/services/logger.emtl");
+				"target/classes/o/e/a/c/fifth/services/logger.emtl");
 
 		File validator = new File(projectRoot,
-				"target/classes/org/eclipse/acceleo/project/fifth/validator/validator.emtl");
+				"target/classes/o/e/a/c/fifth/validator/validator.emtl");
 
 		assertThat(project.getAllCompiledAcceleoModules(), hasItems(attributes, behavior, common,
 				declaration, imports, operations, properties, type, classFile, commonFile, enumerationFile,
 				interfaceFile, workflow, request, commonServices, logger, validator));
 
 		File attributesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/attributes.mtl");
+				"src/main/java/o/e/a/c/fifth/common/attributes.mtl");
 		File behaviorMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/behavior.mtl");
+				"src/main/java/o/e/a/c/fifth/common/behavior.mtl");
 		File commonMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/common.mtl");
+				"src/main/java/o/e/a/c/fifth/common/common.mtl");
 		File declarationMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/declaration.mtl");
+				"src/main/java/o/e/a/c/fifth/common/declaration.mtl");
 		File importsMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/imports.mtl");
+				"src/main/java/o/e/a/c/fifth/common/imports.mtl");
 		File operationsMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/operations.mtl");
+				"src/main/java/o/e/a/c/fifth/common/operations.mtl");
 		File propertiesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/properties.mtl");
+				"src/main/java/o/e/a/c/fifth/common/properties.mtl");
 		File typeMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/type.mtl");
+				"src/main/java/o/e/a/c/fifth/common/type.mtl");
 
 		File classFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/classFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/classFile.mtl");
 		File commonFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/commonFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/commonFile.mtl");
 		File enumerationFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/enumerationFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/enumerationFile.mtl");
 		File interfaceFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/interfaceFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/interfaceFile.mtl");
 
 		File workflowMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
+				"src/main/java/o/e/a/c/fifth/main/workflow.mtl");
 
 		File requestMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/request/request.mtl");
+				"src/main/java/o/e/a/c/fifth/request/request.mtl");
 
 		File commonServicesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/services/commonServices.mtl");
+				"src/main/java/o/e/a/c/fifth/services/commonServices.mtl");
 		File loggerMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/services/logger.mtl");
+				"src/main/java/o/e/a/c/fifth/services/logger.mtl");
 
 		File validatorMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/validator/validator.mtl");
+				"src/main/java/o/e/a/c/fifth/validator/validator.mtl");
 
 		List<File> filesBuilt = parserListener.getFilesBuilt();
 		String filesBuiltStr = "";
@@ -742,7 +742,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainFifthProjectAlreadyBuilt() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -766,7 +766,7 @@ public class AcceleoParserTests {
 		parser.buildAll(new BasicMonitor());
 
 		// Now let's rebuild the main module
-		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
+		File main = new File(projectRoot, "src/main/java/o/e/a/c/fifth/main/workflow.mtl");
 
 		ParserListener parserListener = new ParserListener();
 		parser = new AcceleoParser(project, false, true, false);
@@ -794,7 +794,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainFifthProjectAlreadyBuiltWithPropagation() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -818,7 +818,7 @@ public class AcceleoParserTests {
 		parser.buildAll(new BasicMonitor());
 
 		// Now let's delete the main module and rebuild it
-		File main = new File(projectRoot, "src/main/java/org/eclipse/acceleo/project/fifth/main/workflow.mtl");
+		File main = new File(projectRoot, "src/main/java/o/e/a/c/fifth/main/workflow.mtl");
 		File outputFile = project.getOutputFile(main);
 		outputFile.delete();
 
@@ -848,7 +848,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromCommonFifthProjectAlreadyBuilt() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -873,7 +873,7 @@ public class AcceleoParserTests {
 
 		// Now let's rebuild common
 		File commonMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/common.mtl");
+				"src/main/java/o/e/a/c/fifth/common/common.mtl");
 
 		ParserListener parserListener = new ParserListener();
 		parser = new AcceleoParser(project, false, true, false);
@@ -901,7 +901,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromCommonFifthProjectAlreadyBuiltWithPropagation() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -926,28 +926,28 @@ public class AcceleoParserTests {
 
 		// Now let's rebuild common
 		File attributesMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/attributes.mtl");
+				"src/main/java/o/e/a/c/fifth/common/attributes.mtl");
 		File behaviorMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/behavior.mtl");
+				"src/main/java/o/e/a/c/fifth/common/behavior.mtl");
 		File commonMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/common.mtl");
+				"src/main/java/o/e/a/c/fifth/common/common.mtl");
 		File declarationMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/declaration.mtl");
+				"src/main/java/o/e/a/c/fifth/common/declaration.mtl");
 		File importsMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/imports.mtl");
+				"src/main/java/o/e/a/c/fifth/common/imports.mtl");
 		File operationsMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/operations.mtl");
+				"src/main/java/o/e/a/c/fifth/common/operations.mtl");
 		File typeMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/common/type.mtl");
+				"src/main/java/o/e/a/c/fifth/common/type.mtl");
 
 		File classFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/classFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/classFile.mtl");
 		File commonFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/commonFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/commonFile.mtl");
 		File enumerationFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/enumerationFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/enumerationFile.mtl");
 		File interfaceFileMTL = new File(projectRoot,
-				"src/main/java/org/eclipse/acceleo/project/fifth/files/interfaceFile.mtl");
+				"src/main/java/o/e/a/c/fifth/files/interfaceFile.mtl");
 
 		File outputFile = project.getOutputFile(commonMTL);
 		outputFile.delete();
@@ -982,7 +982,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildOneByOneFifthProjectAlreadyBuiltWithPropagation() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.fifth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.fifth");
 		File output = new File(projectRoot, "target/classes");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -1041,7 +1041,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainSixthProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectSevenRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.seventh");
+		File projectSevenRoot = new File(curDir, "data/workspace/o.e.a.p.seventh");
 		File output = new File(projectSevenRoot, "bin");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -1062,17 +1062,17 @@ public class AcceleoParserTests {
 		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot, entries);
 
 		File commonSeven = new File(projectSevenRoot,
-				"src/org/eclipse/acceleo/project/seventh/common/common.mtl");
+				"src/o/e/a/c/seventh/common/common.mtl");
 		File requestSeven = new File(projectSevenRoot,
-				"src/org/eclipse/acceleo/project/seventh/common/request.mtl");
+				"src/o/e/a/c/seventh/common/request.mtl");
 		File servicesSeven = new File(projectSevenRoot,
-				"src/org/eclipse/acceleo/project/seventh/common/services.mtl");
+				"src/o/e/a/c/seventh/common/services.mtl");
 		File genTypeSeven = new File(projectSevenRoot,
-				"src/org/eclipse/acceleo/project/seventh/file/genType.mtl");
+				"src/o/e/a/c/seventh/file/genType.mtl");
 		File genTraitSeven = new File(projectSevenRoot,
-				"src/org/eclipse/acceleo/project/seventh/file/genTrait.mtl");
+				"src/o/e/a/c/seventh/file/genTrait.mtl");
 
-		File projectSixRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.sixth");
+		File projectSixRoot = new File(curDir, "data/workspace/o.e.a.p.sixth");
 		output = new File(projectSixRoot, "target/modules");
 		listFiles = output.listFiles();
 		if (listFiles.length > 0) {
@@ -1095,15 +1095,15 @@ public class AcceleoParserTests {
 		projectSeven.addProjectDependencies(Sets.newHashSet(projectSix));
 
 		File mainSix = new File(projectSixRoot,
-				"src/main/acceleo/org/eclipse/acceleo/project/sixth/main/main.mtl");
+				"src/main/acceleo/o/e/a/c/sixth/main/main.mtl");
 		File genClassSix = new File(projectSixRoot,
-				"src/main/acceleo/org/eclipse/acceleo/project/sixth/file/genClass.mtl");
+				"src/main/acceleo/o/e/a/c/sixth/file/genClass.mtl");
 		File genInterfaceSix = new File(projectSixRoot,
-				"src/main/acceleo/org/eclipse/acceleo/project/sixth/file/genInterface.mtl");
+				"src/main/acceleo/o/e/a/c/sixth/file/genInterface.mtl");
 		File genClassifierSix = new File(projectSixRoot,
-				"src/main/acceleo/org/eclipse/acceleo/project/sixth/file/genClassifier.mtl");
+				"src/main/acceleo/o/e/a/c/sixth/file/genClassifier.mtl");
 		File servicesSix = new File(projectSixRoot,
-				"src/main/acceleo/org/eclipse/acceleo/project/sixth/common/services.mtl");
+				"src/main/acceleo/o/e/a/c/sixth/common/services.mtl");
 
 		AcceleoParser parser = new AcceleoParser(projectSix, false, true, false);
 		ParserListener parserListener = new ParserListener();
@@ -1138,7 +1138,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildFromMainSixthAfterFullBuildProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectSevenRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.seventh");
+		File projectSevenRoot = new File(curDir, "data/workspace/o.e.a.p.seventh");
 		File output = new File(projectSevenRoot, "bin");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -1158,7 +1158,7 @@ public class AcceleoParserTests {
 		entries.add(entry);
 		AcceleoProject projectSeven = new AcceleoProject(projectSevenRoot, entries);
 
-		File projectSixRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.sixth");
+		File projectSixRoot = new File(curDir, "data/workspace/o.e.a.p.sixth");
 		inputDirectory = new File(projectSixRoot, "src/main/acceleo");
 		outputDirectory = new File(projectSixRoot, "target/modules");
 		entry = new AcceleoProjectClasspathEntry(inputDirectory, outputDirectory);
@@ -1174,11 +1174,11 @@ public class AcceleoParserTests {
 		parser.buildAll(new BasicMonitor());
 
 		File genClassifierSix = new File(projectSixRoot,
-				"target/modules/org/eclipse/acceleo/project/sixth/file/genClassifier.emtl");
+				"target/modules/o/e/a/c/sixth/file/genClassifier.emtl");
 		genClassifierSix.delete();
 
 		File genTraitSeven = new File(projectSevenRoot,
-				"src/org/eclipse/acceleo/project/seventh/file/genTrait.mtl");
+				"src/o/e/a/c/seventh/file/genTrait.mtl");
 		parser.buildFile(genTraitSeven, new BasicMonitor());
 
 		assertThat(parser.getProblems(genTraitSeven).toString(), is(Collections.emptyList().toString()));
@@ -1196,7 +1196,7 @@ public class AcceleoParserTests {
 	@Test
 	public void testBuildAllEigthProject() {
 		String curDir = System.getProperty("user.dir");
-		File projectRoot = new File(curDir, "data/workspace/org.eclipse.acceleo.project.eigth");
+		File projectRoot = new File(curDir, "data/workspace/o.e.a.p.eigth");
 		File output = new File(projectRoot, "bin");
 		File[] listFiles = output.listFiles();
 		if (listFiles != null && listFiles.length > 0) {
@@ -1221,9 +1221,9 @@ public class AcceleoParserTests {
 		parser.addListeners(parserListener);
 		parser.buildAll(new BasicMonitor());
 
-		File first = new File(projectRoot, "src/org/eclipse/acceleo/project/eigth/files/first.mtl");
-		File second = new File(projectRoot, "src/org/eclipse/acceleo/project/eigth/files/second.mtl");
-		File third = new File(projectRoot, "src/org/eclipse/acceleo/project/eigth/files/third.mtl");
+		File first = new File(projectRoot, "src/o/e/a/c/eigth/files/first.mtl");
+		File second = new File(projectRoot, "src/o/e/a/c/eigth/files/second.mtl");
+		File third = new File(projectRoot, "src/o/e/a/c/eigth/files/third.mtl");
 
 		assertThat(
 				parser.getProblems(first).toString(),

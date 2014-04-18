@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
+import org.eclipse.emf.common.EMFPlugin;
 
 /**
  * This will provide utility methods for the manipulation of the launching ID.
@@ -287,7 +288,9 @@ public final class AcceleoLaunchingUtil {
 	 *            indicates that we would like to compute the traceability information
 	 */
 	public static void switchTraceability(boolean activate) {
-		AcceleoPreferences.switchTraceability(activate);
+		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
+			AcceleoPreferences.switchTraceability(activate);
+		}
 	}
 
 	/**

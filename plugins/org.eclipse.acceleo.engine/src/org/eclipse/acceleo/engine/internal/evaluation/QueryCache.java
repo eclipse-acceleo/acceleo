@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.model.mtl.Query;
+import org.eclipse.emf.common.EMFPlugin;
 
 /**
  * This will act as a cache for the query invocation so that invoking the same query with the same arguments
@@ -101,7 +102,7 @@ public class QueryCache {
 	 *            Result we are to cache.
 	 */
 	public void cacheResult(Query query, List<Object> params, Object result) {
-		if (!AcceleoPreferences.isQueryCacheEnabled()) {
+		if (EMFPlugin.IS_ECLIPSE_RUNNING && !AcceleoPreferences.isQueryCacheEnabled()) {
 			return;
 		}
 
@@ -137,7 +138,8 @@ public class QueryCache {
 	 *         hasn't been run yet.
 	 */
 	public Object getResult(Query query, List<Object> params) {
-		if (!AcceleoPreferences.isQueryCacheEnabled() || !queryResults.containsKey(query)) {
+		if ((EMFPlugin.IS_ECLIPSE_RUNNING && !AcceleoPreferences.isQueryCacheEnabled())
+				|| !queryResults.containsKey(query)) {
 			return NO_CACHED_RESULT;
 		}
 
