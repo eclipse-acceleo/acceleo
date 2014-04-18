@@ -483,6 +483,15 @@ public class AcceleoCommonPlugin extends Plugin {
 		}
 	}
 
+	/**
+	 * return true if the given ecore file might be used by an Acceleo generator meaning : it is at least in a
+	 * plugin project.
+	 * 
+	 * @param ecoreFile
+	 *            an IFile which is a .ecore.
+	 * @return true if the given ecore file might be used by an Acceleo generator meaning : it is at least in
+	 *         a plugin project.
+	 */
 	private boolean mightBeInAcceleoScope(IFile ecoreFile) {
 		try {
 			if (ecoreFile.getProject() != null && ecoreFile.getProject().getDescription() != null) {
@@ -493,7 +502,10 @@ public class AcceleoCommonPlugin extends Plugin {
 				}
 			}
 		} catch (CoreException e) {
-			return false;
+			/*
+			 * If there is a problem accessing the project description we probably just want to ignore this
+			 * file.
+			 */
 		}
 
 		return false;
@@ -551,9 +563,8 @@ public class AcceleoCommonPlugin extends Plugin {
 						resource = resources.get(0);
 					}
 					if (resource != null && resource.isAccessible() && resource.getFileExtension() != null
-							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)
-							&& resource instanceof IFile) {
-						if (mightBeInAcceleoScope((IFile)resource)) {
+							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
+						if (resource instanceof IFile && mightBeInAcceleoScope((IFile)resource)) {
 							URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
 							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
 									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
