@@ -259,9 +259,11 @@ public class AcceleoCommonPlugin extends Plugin {
 							&& ((IFile)resource).getFileExtension() != null
 							&& ((IFile)resource).getFileExtension().equals(
 									IAcceleoConstants.ECORE_FILE_EXTENSION)) {
-						URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
-						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
-								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+						if (mightBeInAcceleoScope((IFile)resource)) {
+							URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
+							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
+									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+						}
 					}
 				}
 				return true;
@@ -481,6 +483,22 @@ public class AcceleoCommonPlugin extends Plugin {
 		}
 	}
 
+	private boolean mightBeInAcceleoScope(IFile ecoreFile) {
+		try {
+			if (ecoreFile.getProject() != null && ecoreFile.getProject().getDescription() != null) {
+				for (String nature : ecoreFile.getProject().getDescription().getNatureIds()) {
+					if (IAcceleoConstants.PLUGIN_NATURE_ID.equals(nature)) {
+						return true;
+					}
+				}
+			}
+		} catch (CoreException e) {
+			return false;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Allows us to react to changes in the dynamic ecore models.
 	 * 
@@ -533,10 +551,13 @@ public class AcceleoCommonPlugin extends Plugin {
 						resource = resources.get(0);
 					}
 					if (resource != null && resource.isAccessible() && resource.getFileExtension() != null
-							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
-						URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
-						AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
-								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)
+							&& resource instanceof IFile) {
+						if (mightBeInAcceleoScope((IFile)resource)) {
+							URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
+							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
+									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
+						}
 					}
 					break;
 				default:
