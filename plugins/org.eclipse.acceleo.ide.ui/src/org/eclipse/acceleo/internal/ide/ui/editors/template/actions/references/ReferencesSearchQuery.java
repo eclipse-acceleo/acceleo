@@ -253,7 +253,9 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			List<Resource> resources = AcceleoUIResourceSet.getResources();
 			for (Resource resource : resources) {
 				if (resource.getContents().size() > 0 && resource.getContents().get(0) instanceof Module) {
-					scanModuleForDeclaration((Module)resource.getContents().get(0));
+					if (resource.getURI() != null && resource.getURI().isPlatform()) {
+						scanModuleForDeclaration((Module)resource.getContents().get(0));
+					}
 				}
 			}
 		}
