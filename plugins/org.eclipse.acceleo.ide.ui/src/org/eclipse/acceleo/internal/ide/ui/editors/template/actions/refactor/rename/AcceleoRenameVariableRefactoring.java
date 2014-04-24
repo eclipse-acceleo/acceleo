@@ -130,12 +130,14 @@ public class AcceleoRenameVariableRefactoring extends Refactoring {
 					tfc.setTextType(IAcceleoConstants.MTL_FILE_EXTENSION);
 				}
 
-				final String str = ((ReferenceEntry)match.getElement()).getMessage();
-				int offset = str.indexOf(this.fVariable.getVariableName());
+				if (edit != null) {
+					final String str = ((ReferenceEntry)match.getElement()).getMessage();
+					int offset = str.indexOf(this.fVariable.getVariableName());
 
-				edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fVariable.getVariableName()
-						.length(), this.fNewVariableName));
-				this.fChanges.put(file, tfc);
+					edit.addChild(new ReplaceEdit(match.getOffset() + offset, this.fVariable
+							.getVariableName().length(), this.fNewVariableName));
+					this.fChanges.put(file, tfc);
+				}
 			}
 		}
 
