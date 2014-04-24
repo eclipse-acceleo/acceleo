@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.resource;
 
+import com.google.common.collect.ImmutableList;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -96,7 +98,7 @@ public final class AcceleoUIResourceSet {
 	 */
 	public static List<Resource> getResources() {
 		synchronized(RESOURCE_SET) {
-			return RESOURCE_SET.getResources();
+			return ImmutableList.copyOf(RESOURCE_SET.getResources());
 		}
 	}
 }
