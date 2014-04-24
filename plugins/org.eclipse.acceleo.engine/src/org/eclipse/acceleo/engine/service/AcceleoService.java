@@ -952,7 +952,7 @@ public final class AcceleoService {
 				}
 
 				// If one of the listeners wants to force the traceability it will have it.
-				if (!AcceleoPreferences.isTraceabilityEnabled()
+				if (EMFPlugin.IS_ECLIPSE_RUNNING && !AcceleoPreferences.isTraceabilityEnabled()
 						&& acceleoListenerDescriptor.isForceTraceability()) {
 					AcceleoPreferences.switchTraceability(true);
 					forceTraceability = true;
@@ -1029,7 +1029,7 @@ public final class AcceleoService {
 			generationEngine.removeListener(listener);
 		}
 
-		if (forceTraceability) {
+		if (EMFPlugin.IS_ECLIPSE_RUNNING && forceTraceability) {
 			AcceleoPreferences.switchTraceability(false);
 		}
 	}

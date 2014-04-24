@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -83,7 +84,7 @@ public class AcceleoPluginLaunchingStrategy implements IAcceleoLaunchingStrategy
 			launch.addDebugTarget(new AcceleoDebugTarget(launch, debugger));
 			AcceleoEvaluationVisitor.setDebug(debugger);
 			debugger.start();
-		} else if (AcceleoPreferences.isProfilerEnabled() || profiling) {
+		} else if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isProfilerEnabled() || profiling) {
 			profiler = new Profiler();
 			AcceleoEngineUtils.setProfiler(profiler);
 			launch.addProcess(new AcceleoProcess(launch));

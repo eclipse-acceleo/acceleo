@@ -196,7 +196,7 @@ public class AcceleoEvaluationContext<C> {
 			} else {
 				final String message = AcceleoEngineMessages
 						.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
-				if (!EMFPlugin.IS_ECLIPSE_RUNNING || AcceleoPreferences.isDebugMessagesEnabled()) {
+				if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
 					AcceleoEnginePlugin.log(message, false);
 				}
 				if (defaultWriter == null) {
@@ -386,7 +386,7 @@ public class AcceleoEvaluationContext<C> {
 		if (writers.isEmpty()) {
 			final String message = AcceleoEngineMessages
 					.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
-			if (!EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
+			if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
 				AcceleoEnginePlugin.log(message, false);
 			}
 			return ""; //$NON-NLS-1$

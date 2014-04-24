@@ -51,6 +51,7 @@ import org.eclipse.acceleo.model.mtl.Template;
 import org.eclipse.acceleo.model.mtl.TemplateExpression;
 import org.eclipse.acceleo.model.mtl.TemplateInvocation;
 import org.eclipse.acceleo.profiler.Profiler;
+import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -848,7 +849,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			for (Variable var : query.getParameter()) {
 				getEvaluationEnvironment().remove(var.getName());
 			}
-			if (QueryCache.isInvalid(cachedResult) && AcceleoPreferences.isDebugMessagesEnabled()) {
+			if (QueryCache.isInvalid(cachedResult) && EMFPlugin.IS_ECLIPSE_RUNNING
+					&& AcceleoPreferences.isDebugMessagesEnabled()) {
 				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				final AcceleoEvaluationException exception = getContext().createAcceleoException(query,
 						(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
