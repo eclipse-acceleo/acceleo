@@ -113,18 +113,18 @@
     	<version>10.0.1</version>
 	</dependency>
 	<dependency>
-      <artifactId>org.eclipse.core</artifactId>
-      <groupId>org.eclipse.core.runtime</groupId>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
       <version>3.9.0.v20130326-1255</version>
     </dependency>
     <dependency>
-      <artifactId>org.eclipse.equinox</artifactId>
-      <groupId>org.eclipse.equinox.registry</groupId>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>org.eclipse.equinox.registry</artifactId>
       <version>3.5.301.v20130717-1549</version>
     </dependency>
     <dependency>
-      <artifactId>org.eclipse.core</artifactId>
-      <groupId>org.eclipse.core.resources</groupId>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>org.eclipse.core.resources</artifactId>
       <version>3.8.101.v20130717-0806</version>
     </dependency>
   </dependencies>
