@@ -380,7 +380,7 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 		}
 
 		@Override
-		protected ConstraintResult handleExceptionResult(Exception e) {
+		protected ConstraintResult handleExceptionResult(Throwable e) {
 			return null;
 		}
 
