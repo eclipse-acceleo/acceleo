@@ -96,6 +96,15 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	}
 
 	/**
+	 * Returns <code>true</code> if there are some bundles providing dynamic templates.
+	 * 
+	 * @return <code>true</code> if there are some bundles providing dynamic templates.
+	 */
+	public static boolean hasDynamicModulesDescriptors() {
+		return EXTENDING_BUNDLES.size() > 0;
+	}
+
+	/**
 	 * Returns all registered modules. The returned set is a copy of this instance's.
 	 * 
 	 * @param generatorID

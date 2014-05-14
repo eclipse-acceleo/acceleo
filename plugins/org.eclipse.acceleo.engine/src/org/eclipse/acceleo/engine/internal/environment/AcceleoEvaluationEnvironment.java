@@ -46,6 +46,7 @@ import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
+import org.eclipse.acceleo.engine.internal.utils.AcceleoDynamicTemplatesEclipseUtil;
 import org.eclipse.acceleo.engine.service.AcceleoDynamicTemplatesRegistry;
 import org.eclipse.acceleo.engine.service.AcceleoModulePropertiesAdapter;
 import org.eclipse.acceleo.model.mtl.Module;
@@ -930,7 +931,7 @@ public class AcceleoEvaluationEnvironment extends EcoreEvaluationEnvironment {
 	 * Maps dynamic overriding templates for smoother polymorphic resolution.
 	 */
 	private void mapDynamicOverrides() {
-		if (AcceleoDynamicTemplatesRegistry.INSTANCE.getRegisteredModules().isEmpty()) {
+		if (!AcceleoDynamicTemplatesEclipseUtil.hasDynamicModulesDescriptors()) {
 			return;
 		}
 
