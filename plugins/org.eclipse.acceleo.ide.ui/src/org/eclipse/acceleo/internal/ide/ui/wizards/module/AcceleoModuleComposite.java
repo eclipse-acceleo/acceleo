@@ -32,8 +32,8 @@ import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleoModuleEleme
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.ModuleElementKind;
 import org.eclipse.acceleo.internal.ide.ui.wizards.module.example.AcceleoInitializationStrategyUtils;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -446,6 +446,10 @@ public class AcceleoModuleComposite extends Composite {
 		} else if (acceleoModule.isIsInitialized() && (acceleoModule.getInitializationPath() == null || "" //$NON-NLS-1$
 				.equals(acceleoModule.getInitializationPath()))) {
 			String message = AcceleoUIMessages
+					.getString("AcceleoModuleCompositeMessage.EmptyModuleElementInitializationPath"); //$NON-NLS-1$
+			status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message);
+		} else if (acceleoModule.isIsInitialized() && !(fileExists(acceleoModule.getInitializationPath()))) {
+			String message = AcceleoUIMessages
 					.getString("AcceleoModuleCompositeMessage.InvalidModuleElementInitializationPath"); //$NON-NLS-1$
 			status = new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, message);
 		} else if (moduleExists(acceleoModule.getProjectName(), acceleoModule.getParentFolder(),
@@ -455,6 +459,20 @@ public class AcceleoModuleComposite extends Composite {
 		}
 
 		this.listener.applyToStatusLine(status);
+	}
+
+	/**
+	 * Tells if the given path is an {@link IFile} that is {@link IFile#isAccessible() accessible}.
+	 * 
+	 * @param path
+	 *            the path
+	 * @return <code>true</code> if the given path is an {@link IFile} that is {@link IFile#isAccessible()
+	 *         accessible}, <code>false</code> otherwise
+	 */
+	private boolean fileExists(String path) {
+		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
+
+		return file != null && file.exists() && file.isAccessible();
 	}
 
 	/**
@@ -474,9 +492,14 @@ public class AcceleoModuleComposite extends Composite {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		if (project.exists() && project.isAccessible()) {
 			IPath path = new Path(outputPath);
-			IFolder folder = project.getFolder(path.removeFirstSegments(1));
-			if (folder.exists() && folder.isAccessible()) {
-				IFile file = folder.getFile(module + '.' + IAcceleoConstants.MTL_FILE_EXTENSION);
+			final IContainer container;
+			if (path.segmentCount() > 1) {
+				container = project.getFolder(path.removeFirstSegments(1));
+			} else {
+				container = project;
+			}
+			if (container.exists() && container.isAccessible()) {
+				IFile file = container.getFile(new Path(module + '.' + IAcceleoConstants.MTL_FILE_EXTENSION));
 				result = file.exists() && file.isAccessible();
 			}
 		}
