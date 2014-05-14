@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -97,20 +98,45 @@ public final class AcceleoDynamicTemplatesEclipseUtil {
 	/**
 	 * Returns all registered modules. The returned set is a copy of this instance's.
 	 * 
+	 * @param generatorID
+	 *            The generator ID to look for
 	 * @return A copy of the registered modules set.
 	 */
-	public static Set<DynamicModuleContribution> getRegisteredModules() {
-		refreshModules();
+	public static Set<DynamicModuleContribution> getRegisteredModules(String generatorID) {
+		refreshModules(generatorID);
 		return new CompactLinkedHashSet<DynamicModuleContribution>(REGISTERED_MODULES);
 	}
 
 	/**
 	 * This will be called prior to all invocations of getRegisteredModules so as to be aware of new additions
 	 * or removals of dynamic templates.
+	 * 
+	 * @param generatorID
+	 *            The generator ID for which we will refresh the modules or null to refresh all the registered
+	 *            modules
 	 */
 	@SuppressWarnings("unchecked")
-	private static void refreshModules() {
+	private static void refreshModules(String generatorID) {
 		REGISTERED_MODULES.clear();
+
+		if (generatorID != null) {
+			boolean hasDynamicModulesForGeneratorId = false;
+			Collection<AcceleoDynamicModulesDescriptor> values = EXTENDING_BUNDLES.values();
+			for (AcceleoDynamicModulesDescriptor acceleoDynamicModulesDescriptor : values) {
+				// If a bundle does not specify the list of its generator IDs, it will work for all the
+				// generators
+				if (acceleoDynamicModulesDescriptor.getGeneratorIDs().size() == 0
+						|| acceleoDynamicModulesDescriptor.getGeneratorIDs().contains(generatorID)) {
+					hasDynamicModulesForGeneratorId = true;
+					break;
+				}
+			}
+
+			if (!hasDynamicModulesForGeneratorId) {
+				return;
+			}
+		}
+
 		final List<Bundle> uninstalledBundles = new ArrayList<Bundle>();
 		final String pathSeparator = "/"; //$NON-NLS-1$
 		for (java.util.Map.Entry<Bundle, AcceleoDynamicModulesDescriptor> entry : new CompactLinkedHashSet<java.util.Map.Entry<Bundle, AcceleoDynamicModulesDescriptor>>(

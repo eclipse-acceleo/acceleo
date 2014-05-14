@@ -124,7 +124,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 		final Set<File> compound = new CompactLinkedHashSet<File>();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil
-					.getRegisteredModules();
+					.getRegisteredModules(null);
 			for (DynamicModuleContribution dynamicModuleContribution : modules) {
 				compound.addAll(dynamicModuleContribution.getFiles());
 			}
@@ -146,7 +146,7 @@ public final class AcceleoDynamicTemplatesRegistry {
 		final Set<File> compound = new CompactLinkedHashSet<File>();
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			Set<DynamicModuleContribution> modules = AcceleoDynamicTemplatesEclipseUtil
-					.getRegisteredModules();
+					.getRegisteredModules(generatorID);
 			for (DynamicModuleContribution dynamicModuleContribution : modules) {
 				List<String> generatorIDs = dynamicModuleContribution.getGeneratorIDs();
 				if (generatorIDs.size() > 0) {
