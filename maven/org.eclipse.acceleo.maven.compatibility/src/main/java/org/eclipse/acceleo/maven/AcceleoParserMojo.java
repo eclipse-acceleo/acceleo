@@ -105,7 +105,7 @@ public class AcceleoParserMojo extends AbstractMojo {
 	 * 
 	 * @parameter expression = "${acceleo-compile.failOnError}"
 	 */
-	private boolean failOnError;
+	private boolean failOnError = true;
 
 	/**
 	 * {@inheritDoc}
