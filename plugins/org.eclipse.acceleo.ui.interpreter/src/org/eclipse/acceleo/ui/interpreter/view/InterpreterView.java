@@ -1499,24 +1499,31 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected void populateResultSectionToolbar(Section section) {
 		ToolBarManager toolBarManager = getSectionToolBar(section);
-		if (toolBarManager != null) {
-			toolBarManager.removeAll();
-			if (resultViewer instanceof StructuredViewer) {
-				final Action sortAction = new LexicalSortAction((StructuredViewer)resultViewer);
-				toolBarManager.add(sortAction);
-				if (partMemento != null && partMemento.getBoolean(MEMENTO_RESULT_SORTED_KEY) != null) {
-					boolean sortEnabled = partMemento.getBoolean(MEMENTO_RESULT_SORTED_KEY).booleanValue();
-					sortAction.setChecked(sortEnabled);
-					if (sortEnabled) {
-						sortAction.run();
-					}
+		if (toolBarManager == null) {
+			return;
+		}
+		toolBarManager.removeAll();
+		if (resultViewer instanceof StructuredViewer) {
+			final Action sortAction = new LexicalSortAction((StructuredViewer)resultViewer);
+			toolBarManager.add(sortAction);
+			if (partMemento != null && partMemento.getBoolean(MEMENTO_RESULT_SORTED_KEY) != null) {
+				boolean sortEnabled = partMemento.getBoolean(MEMENTO_RESULT_SORTED_KEY).booleanValue();
+				sortAction.setChecked(sortEnabled);
+				if (sortEnabled) {
+					sortAction.run();
 				}
 			}
-			toolBarManager.add(new ClearResultViewerAction(resultViewer));
-			toolBarManager.update(true);
 		}
+		toolBarManager.add(new ClearResultViewerAction(resultViewer));
+		toolBarManager.update(true);
 	}
 
+	/**
+	 * Populates the sub expression section toolbar.
+	 * 
+	 * @param section
+	 *            The section for which the toolbar should be populated
+	 */
 	protected void populateSubExpressionSectionToolbar(Section section) {
 		ToolBarManager toolBarManager = getSectionToolBar(section);
 		if (toolBarManager != null) {
@@ -2071,7 +2078,7 @@ public class InterpreterView extends ViewPart {
 				dialog.open();
 			} else if (event.getViewer() instanceof TreeViewer
 					&& ((TreeViewer)event.getViewer()).isExpandable(target)) {
-				final TreeViewer viewer = ((TreeViewer)event.getViewer());
+				final TreeViewer viewer = (TreeViewer)event.getViewer();
 				if (selection instanceof ITreeSelection) {
 					TreePath[] paths = ((ITreeSelection)selection).getPathsFor(target);
 					for (int i = 0; i < paths.length; i++) {
@@ -2135,7 +2142,7 @@ public class InterpreterView extends ViewPart {
 			final Object target = ((IStructuredSelection)selection).getFirstElement();
 			if (event.getViewer() instanceof TreeViewer
 					&& ((TreeViewer)event.getViewer()).isExpandable(target)) {
-				final TreeViewer viewer = ((TreeViewer)event.getViewer());
+				final TreeViewer viewer = (TreeViewer)event.getViewer();
 				if (selection instanceof ITreeSelection) {
 					TreePath[] paths = ((ITreeSelection)selection).getPathsFor(target);
 					for (int i = 0; i < paths.length; i++) {
@@ -2442,6 +2449,17 @@ public class InterpreterView extends ViewPart {
 			}
 		}
 
+		/**
+		 * Adapts the given object to the given class.
+		 * 
+		 * @param object
+		 *            The object to adapt
+		 * @param clazz
+		 *            The class to which the object should be adapted
+		 * @param <T>
+		 *            The type of the class to obtain
+		 * @return The adapted object
+		 */
 		@SuppressWarnings("unchecked")
 		private <T> T adaptAs(Object object, Class<T> clazz) {
 			if (object instanceof IAdaptable) {
