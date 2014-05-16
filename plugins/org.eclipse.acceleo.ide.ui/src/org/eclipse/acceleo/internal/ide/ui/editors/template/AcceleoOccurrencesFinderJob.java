@@ -87,17 +87,27 @@ public class AcceleoOccurrencesFinderJob extends Job {
 	 */
 	@Override
 	protected IStatus run(final IProgressMonitor monitor) {
-		final ReferencesSearchResult result = (ReferencesSearchResult)query.getSearchResult();
+		/*
+		 * We capture the reference to the attributes as calls to Job cancellation or clear() from another
+		 * thread could reset the instance scoped references.
+		 */
+		ReferencesSearchQuery capturedQuery = this.query;
+		AcceleoEditor capturedEditor = this.editor;
 
-		IStatus status = null;
+		final ReferencesSearchResult result = (ReferencesSearchResult)capturedQuery.getSearchResult();
+		/*
+		 * Whatever happens we should never return a null status, see the javadoc.
+		 */
+		IStatus status = Status.OK_STATUS;
 		final int origPriority = Thread.currentThread().getPriority();
 		try {
 			Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 		} catch (SecurityException e) {
 			// do nothing
 		}
+
 		try {
-			status = this.query.run(monitor);
+			status = capturedQuery.run(monitor);
 		} finally {
 			try {
 				Thread.currentThread().setPriority(origPriority);
@@ -106,11 +116,11 @@ public class AcceleoOccurrencesFinderJob extends Job {
 			}
 		}
 
-		boolean shouldContinue = this.editor != null && this.editor.getDocumentProvider() != null
-				&& this.editor.getEditorInput() != null;
-		if (!monitor.isCanceled() && shouldContinue) {
-			final IAnnotationModel annotationModel = this.editor.getDocumentProvider().getAnnotationModel(
-					this.editor.getEditorInput());
+		boolean shouldContinue = capturedEditor != null && capturedEditor.getDocumentProvider() != null
+				&& capturedEditor.getEditorInput() != null;
+		if (!monitor.isCanceled() && shouldContinue && capturedEditor != null) {
+			final IAnnotationModel annotationModel = capturedEditor.getDocumentProvider().getAnnotationModel(
+					capturedEditor.getEditorInput());
 			if (annotationModel != null) {
 				List<Match> matches = this.listOfTheOccurencesInTheCurrentFile(result);
 				for (Match match : matches) {
@@ -125,9 +135,9 @@ public class AcceleoOccurrencesFinderJob extends Job {
 						status = Status.CANCEL_STATUS;
 					}
 
-					if (this.editor.getDocumentProvider() == null
-							|| this.editor.getDocumentProvider().getAnnotationModel(
-									this.editor.getEditorInput()) == null) {
+					if (capturedEditor.getDocumentProvider() == null
+							|| capturedEditor.getDocumentProvider().getAnnotationModel(
+									capturedEditor.getEditorInput()) == null) {
 						status = Status.CANCEL_STATUS;
 					}
 
@@ -135,12 +145,21 @@ public class AcceleoOccurrencesFinderJob extends Job {
 						return status;
 					}
 
-					final String description = ref.getMatch().toString();
+					String description = ref.getMatch().eClass().getName();
+					try {
+						description = ref.getMatch().toString();
+					} catch (UnsupportedOperationException e) {
+						/*
+						 * indeed there are cases where MDT-OCL will throw an UnsupportedOperationException at
+						 * us when calling toString(). See
+						 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=390083#c9
+						 */
+					}
 
 					Map<Annotation, Position> annotations2positions = new HashMap<Annotation, Position>();
 					for (Position position : this.computePositions(ref)) {
 						// Existing marker of the JDT do not modify !
-						if (position != null) {							
+						if (position != null) {
 							annotations2positions.put(new Annotation(FIND_OCCURENCES_ANNOTATION_TYPE, false,
 									description), position);
 						}
