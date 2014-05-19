@@ -1032,6 +1032,8 @@ public final class AcceleoService {
 		if (EMFPlugin.IS_ECLIPSE_RUNNING && forceTraceability) {
 			AcceleoPreferences.switchTraceability(false);
 		}
+
+		strategy.dispose();
 	}
 
 	/**

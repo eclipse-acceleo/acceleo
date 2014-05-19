@@ -25,6 +25,7 @@ import java.util.concurrent.CancellationException;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
+import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.AcceleoEngine;
 import org.eclipse.acceleo.engine.generation.IAcceleoEngine2;
@@ -396,10 +397,19 @@ public class AcceleoEvaluationTask implements Callable<EvaluationResult> {
 		IAcceleoGenerationStrategy strategy = new AcceleoInterpreterStrategy();
 		final IDebugAST debugger = AcceleoEvaluationVisitor.getDebug();
 		AcceleoEvaluationVisitor.setDebug(null);
-		if (moduleElement instanceof Template) {
-			result = engine.evaluate((Template)moduleElement, arguments, strategy, new BasicMonitor());
-		} else if (moduleElement instanceof Query) {
-			result = engine.evaluate((Query)moduleElement, arguments, strategy, new BasicMonitor());
+		try {
+			if (moduleElement instanceof Template) {
+				result = engine.evaluate((Template)moduleElement, arguments, strategy, new BasicMonitor());
+			} else if (moduleElement instanceof Query) {
+				result = engine.evaluate((Query)moduleElement, arguments, strategy, new BasicMonitor());
+			}
+		} finally {
+			try {
+				strategy.awaitCompletion();
+			} catch (InterruptedException e) {
+				// LostFileWriters cannot throw exceptions
+				AcceleoEnginePlugin.log(e, true);
+			}
 		}
 		AcceleoEvaluationVisitor.setDebug(debugger);
 

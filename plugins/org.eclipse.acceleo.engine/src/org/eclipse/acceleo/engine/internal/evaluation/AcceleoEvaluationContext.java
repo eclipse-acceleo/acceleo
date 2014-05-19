@@ -225,9 +225,11 @@ public class AcceleoEvaluationContext<C> {
 	 * 
 	 * @throws InterruptedException
 	 *             This will be thrown if the lost files creation is interrupted somehow.
+	 * @deprecated does nothing call {@link IAcceleoGenerationStrategy#awaitCompletion()} directly.
 	 */
+	@Deprecated
 	public void awaitCompletion() throws InterruptedException {
-		strategy.awaitCompletion();
+		// strategy.awaitCompletion();
 	}
 
 	/**
@@ -433,12 +435,6 @@ public class AcceleoEvaluationContext<C> {
 	public void dispose() throws AcceleoEvaluationException {
 		AcceleoEvaluationException exception = null;
 		try {
-			try {
-				awaitCompletion();
-			} catch (InterruptedException e) {
-				exception = new AcceleoEvaluationException(AcceleoEngineMessages
-						.getString("AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
-			}
 			try {
 				for (final Writer writer : writers) {
 					writer.close();

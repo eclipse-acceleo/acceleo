@@ -16,19 +16,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
-import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationContext;
-import org.eclipse.acceleo.engine.internal.evaluation.AcceleoEvaluationVisitor;
 import org.eclipse.acceleo.model.mtl.FileBlock;
 import org.eclipse.acceleo.model.mtl.MtlFactory;
 import org.eclipse.acceleo.model.mtl.OpenModeKind;
 import org.eclipse.acceleo.model.mtl.ProtectedAreaBlock;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 
@@ -121,15 +117,7 @@ public class AcceleoEvaluationVisitorProtectedAreaBlockTest extends AbstractAcce
 		evaluationVisitor.visitExpression(getParentTemplate(protectedBlock));
 
 		try {
-			Field field = AcceleoEvaluationVisitor.class.getDeclaredField("context"); //$NON-NLS-1$
-			field.setAccessible(true);
-			AcceleoEvaluationContext<EClassifier> context = (AcceleoEvaluationContext<EClassifier>)field
-					.get(evaluationVisitor);
-			context.awaitCompletion();
-		} catch (NoSuchFieldException e) {
-			fail("name of the context field from the AcceleoEvaluationVisitor changed"); //$NON-NLS-1$
-		} catch (IllegalAccessException e) {
-			fail("private field hasn't been made accessible"); //$NON-NLS-1$
+			previewStrategy.awaitCompletion();
 		} catch (InterruptedException e) {
 			fail("Lost file creator pool termination interrupted."); //$NON-NLS-1$
 		}
