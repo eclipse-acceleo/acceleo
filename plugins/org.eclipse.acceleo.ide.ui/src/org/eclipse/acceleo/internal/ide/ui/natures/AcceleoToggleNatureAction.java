@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.natures;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -193,20 +190,8 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 			acceleoProject.setJre("J2SE-1.5"); //$NON-NLS-1$
 			AcceleoUIGenerator.getDefault().generateDotProject(acceleoProject, project);
 
-			// Generate the build.acceleo
-			AcceleoUIGenerator.getDefault().generateBuildAcceleo(acceleoProject, project);
-
 			IFile buildProperties = project.getFile("build.properties"); //$NON-NLS-1$
-			if (buildProperties.exists()) {
-				Properties properties = new Properties();
-				try {
-					properties.load(buildProperties.getContents());
-					properties.put("customBuildCallbacks", "build.acceleo"); //$NON-NLS-1$//$NON-NLS-2$
-					properties.store(new FileOutputStream(buildProperties.getLocation().toFile()), ""); //$NON-NLS-1$
-				} catch (IOException e) {
-					AcceleoUIActivator.log(e, true);
-				}
-			} else {
+			if (!buildProperties.exists()) {
 				AcceleoUIGenerator.getDefault().generateBuildProperties(acceleoProject, project);
 			}
 

@@ -84,8 +84,6 @@ public final class AcceleoProjectUtils {
 		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateProjectManifest(acceleoProject, project);
 		monitor.worked(10);
-		AcceleoUIGenerator.getDefault().generateBuildAcceleo(acceleoProject, project);
-		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateBuildProperties(acceleoProject, project);
 		monitor.worked(10);
 		AcceleoUIGenerator.getDefault().generateActivator(acceleoProject, project);

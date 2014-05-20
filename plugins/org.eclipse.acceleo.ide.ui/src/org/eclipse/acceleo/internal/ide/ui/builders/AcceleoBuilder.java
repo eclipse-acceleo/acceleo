@@ -36,7 +36,6 @@ import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.acceleo.internal.ide.ui.acceleowizardmodel.AcceleowizardmodelFactory;
 import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleoOperation;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
-import org.eclipse.acceleo.internal.ide.ui.generators.AcceleoUIGenerator;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoParser;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
 import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
@@ -54,10 +53,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.BasicMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -618,11 +615,9 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	 *             contains a status object describing the cause of the exception
 	 */
 	private void generateAcceleoBuildFile(IProgressMonitor monitor) throws CoreException {
-		IFile buildProperties = getProject().getFile("build.properties"); //$NON-NLS-1$
 		for (File outputFolder : this.outputFolders) {
 			IPath path = new Path(outputFolder.getAbsolutePath());
 			if (path.segmentCount() >= 1) {
-				IFile buildAcceleo = getProject().getFile("build.acceleo"); //$NON-NLS-1$
 				AcceleoProject project = new AcceleoProject(getProject());
 				List<IProject> dependencies = project.getRecursivelyAccessibleProjects();
 				dependencies.remove(getProject());
@@ -633,17 +628,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					pluginDependencies.add(iProject.getName());
 				}
 
-				AcceleoUIGenerator.getDefault()
-						.generateBuildAcceleo(acceleoProject, buildAcceleo.getParent());
-
-				if (buildProperties.exists()
-						&& FileContent.getFileContent(buildProperties.getLocation().toFile()).indexOf(
-								buildAcceleo.getName()) == -1) {
-					AcceleoUIActivator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, AcceleoUIMessages
-									.getString("AcceleoBuilder.AcceleoBuildFileIssue", //$NON-NLS-1$
-											new Object[] {getProject().getName(), })));
-				}
 			}
 		}
 	}

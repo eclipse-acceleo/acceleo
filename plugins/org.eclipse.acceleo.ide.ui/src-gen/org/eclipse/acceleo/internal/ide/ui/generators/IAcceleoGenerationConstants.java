@@ -59,7 +59,10 @@ public interface IAcceleoGenerationConstants {
 
 	/**
 	 * The uri of the build.acceleo generator.
+	 * 
+	 * @deprecated PDE build not supported any more
 	 */
+	@Deprecated
 	String BUILD_ACCELEO_GENERATOR_URI = "buildAcceleo.emtl"; //$NON-NLS-1$
 
 	/**

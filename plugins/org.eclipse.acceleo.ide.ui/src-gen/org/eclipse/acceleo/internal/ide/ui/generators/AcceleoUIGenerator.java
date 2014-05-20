@@ -218,11 +218,13 @@ public final class AcceleoUIGenerator {
 	 *            The Acceleo project
 	 * @param outputContainer
 	 *            The output container.
+	 * @deprecated PDE build not supported any more
 	 */
+	@Deprecated
 	public void generateBuildAcceleo(AcceleoProject acceleoProject, IContainer outputContainer) {
-		generate(buildAcceleoGenerator, acceleoProject, outputContainer,
-				IAcceleoGenerationConstants.BUILD_ACCELEO_GENERATOR_URI,
-				IAcceleoGenerationConstants.BUILD_ACCELEO_TEMPLATE_URI);
+		// generate(buildAcceleoGenerator, acceleoProject, outputContainer,
+		// IAcceleoGenerationConstants.BUILD_ACCELEO_GENERATOR_URI,
+		// IAcceleoGenerationConstants.BUILD_ACCELEO_TEMPLATE_URI);
 	}
 
 	/**
