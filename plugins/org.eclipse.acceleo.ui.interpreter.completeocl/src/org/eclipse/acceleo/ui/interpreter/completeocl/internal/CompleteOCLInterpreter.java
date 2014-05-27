@@ -13,8 +13,9 @@ package org.eclipse.acceleo.ui.interpreter.completeocl.internal;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 
-import org.eclipse.acceleo.ui.interpreter.completeocl.internal.action.ExportCompleteOCLEvaluationResultAction;
+import org.eclipse.acceleo.ui.interpreter.completeocl.internal.action.HTMLExportCompleteOCLEvaluationResultAction;
 import org.eclipse.acceleo.ui.interpreter.completeocl.internal.action.ImportCompleteOCLResourceAction;
+import org.eclipse.acceleo.ui.interpreter.completeocl.internal.action.ModelExportCompleteOCLEvaluationResultAction;
 import org.eclipse.acceleo.ui.interpreter.language.AbstractLanguageInterpreter;
 import org.eclipse.acceleo.ui.interpreter.language.CompilationResult;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
@@ -140,8 +141,13 @@ public class CompleteOCLInterpreter extends AbstractLanguageInterpreter {
 				if (metaModeManager == null) {
 					metaModeManager = getDefaultMetaModelManager();
 				}
-				manager.add(new ExportCompleteOCLEvaluationResultAction(editor.getResource(),
+
+				MenuManager submenuManager = new MenuManager("Export Evaluation Result");
+				submenuManager.add(new HTMLExportCompleteOCLEvaluationResultAction(editor.getResource(),
 						lastTargetResource, metaModeManager));
+				submenuManager.add(new ModelExportCompleteOCLEvaluationResultAction(editor.getResource(),
+						lastTargetResource, metaModeManager));
+				manager.add(submenuManager);
 			}
 		};
 	}
