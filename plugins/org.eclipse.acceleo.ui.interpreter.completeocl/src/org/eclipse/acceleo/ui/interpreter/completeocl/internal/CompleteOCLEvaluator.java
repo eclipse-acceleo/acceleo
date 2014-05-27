@@ -22,10 +22,13 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.ocl.AbstractOCLEvaluator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.ocl.examples.domain.values.Value;
 import org.eclipse.ocl.examples.domain.values.impl.InvalidValueException;
 import org.eclipse.ocl.examples.pivot.Constraint;
@@ -338,11 +341,15 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 	 * most likely be better off copy/pasting the methods we need.
 	 */
 	private class OCLConstraintParser extends ConstraintEvaluator<ConstraintResult> {
+
+		private EObject currentevaluationTarget;
+
 		public OCLConstraintParser(ExpressionInOCL expression) {
 			super(expression);
 		}
 
 		public ConstraintResult parse(EObject evaluationTarget, EvaluationResult result) {
+			currentevaluationTarget = evaluationTarget;
 			final ConstraintResult constraintResult = EvaluationResultFactory.eINSTANCE
 					.createConstraintResult();
 			constraintResult.setEvaluationTarget(evaluationTarget);
@@ -376,6 +383,13 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 
 		@Override
 		protected String getObjectLabel() {
+			AdapterFactory factory = new ComposedAdapterFactory(
+					ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+			IItemLabelProvider provider = (IItemLabelProvider)factory.adapt(currentevaluationTarget,
+					IItemLabelProvider.class);
+			if (provider != null) {
+				return provider.getText(currentevaluationTarget);
+			}
 			return null;
 		}
 
@@ -396,6 +410,11 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 
 		@Override
 		protected ConstraintResult handleSuccessResult() {
+			return null;
+		}
+
+		@Override
+		protected ConstraintResult handleInvalidExpression(String message) {
 			return null;
 		}
 	}
