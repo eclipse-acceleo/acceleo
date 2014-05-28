@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
@@ -294,8 +295,8 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 	 *            the registry to populate.
 	 * @return a new descriptor representing the instance.
 	 */
-	public static LazyEPackageDescriptor create(URI metaURI, ResourceSet set, EPackage.Registry registry) {
-		LazyEPackageDescriptor result = null;
+	public static List<LazyEPackageDescriptor> create(URI metaURI, ResourceSet set, EPackage.Registry registry) {
+		List<LazyEPackageDescriptor> result = null;
 		InputStream is = null;
 		try {
 			is = set.getURIConverter().createInputStream(metaURI, Collections.EMPTY_MAP);
@@ -307,7 +308,7 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 					metaURI, registry);
 			saxParser.parse(input, lazyEPackageDescriptorSAXHandler);
 			is.close();
-			result = lazyEPackageDescriptorSAXHandler.getRootDescriptor();
+			result = lazyEPackageDescriptorSAXHandler.getRootDescriptors();
 			// CHECKSTYLE:OFF
 		} catch (Throwable e) {
 			/*
@@ -370,7 +371,7 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 		/**
 		 * The first descriptor created during the parsing, aka the root EPackage.
 		 */
-		private LazyEPackageDescriptor rootDescriptor;
+		private List<LazyEPackageDescriptor> rootDescriptor = new ArrayList<LazyEPackageDescriptor>();
 
 		/**
 		 * A stack keeping track of the created EPackages. The peek of the stack always is the EPackage we are
@@ -406,13 +407,11 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 		}
 
 		/**
-		 * return a descriptor for the root EPackage. Might be null if there is nothing of interest in the
-		 * file.
+		 * return descriptors for root EPackage. Might be null if there is nothing of interest in the file.
 		 * 
-		 * @return a descriptor for the root EPackage. Might be null if there is nothing of interest in the
-		 *         file.
+		 * @return descriptors for root EPackage. Might be null if there is nothing of interest in the file.
 		 */
-		public LazyEPackageDescriptor getRootDescriptor() {
+		public List<LazyEPackageDescriptor> getRootDescriptors() {
 			return rootDescriptor;
 		}
 
@@ -424,11 +423,11 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 				String nsURI = attributes.getValue(NS_URI_ATTR);
 				String nsPrefix = attributes.getValue(NS_PREFIX_ATTR);
 				String name = attributes.getValue(NAME_ATTR);
-				LazyEPackageDescriptor newOne = new LazyEPackageDescriptor(nsURI, nsPrefix, name,
+				LazyEPackageDescriptor root = new LazyEPackageDescriptor(nsURI, nsPrefix, name,
 						this.resourceURI, set, registry);
-				if (rootDescriptor == null) {
-					rootDescriptor = newOne;
-					currentDescriptor.push(newOne);
+				if (currentDescriptor.size() == 0) {
+					rootDescriptor.add(root);
+					currentDescriptor.push(root);
 				}
 			} else if (E_SUBPACKAGES.equals(qName)) {
 				String nsURI = attributes.getValue(NS_URI_ATTR);
@@ -444,9 +443,9 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 		@Override
 		public void endElement(String uri, String localName, String qName) throws SAXException {
 			super.endElement(uri, localName, qName);
-			if (ECORE_E_PACKAGE.equals(qName) && currentDescriptor.size() > 0) {
+			if (ECORE_E_PACKAGE.equals(qName)) {
 				currentDescriptor.pop();
-			} else if (E_SUBPACKAGES.equals(qName) && currentDescriptor.size() > 0) {
+			} else if (E_SUBPACKAGES.equals(qName)) {
 				currentDescriptor.pop();
 			}
 		}

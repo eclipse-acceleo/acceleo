@@ -16,12 +16,12 @@ import com.google.common.collect.Sets;
 import java.io.IOException;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
@@ -282,17 +282,19 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 * @return the NsURI of the ecore root package, or the given path name if it isn't possible to find the
 	 *         corresponding NsURI
 	 */
-	public String registerEcorePackages(String pathName, ResourceSet resourceSet) {
-		LazyEPackageDescriptor descriptor = null;
+	public List<String> registerEcorePackages(String pathName, ResourceSet resourceSet) {
+		List<String> res = new ArrayList<String>();
+		List<LazyEPackageDescriptor> descriptors = new ArrayList<LazyEPackageDescriptor>();
 		URIConverter converter = resourceSet.getURIConverter();
 		if (converter == null) {
 			converter = new ExtensibleURIConverterImpl();
 		}
+		URI metaURI = null;
 		// Specifically get rid of Ecore.ecore so that we never dynamically register it
 		if (pathName != null && pathName.endsWith(".ecore") && !pathName.startsWith("http://") //$NON-NLS-1$ //$NON-NLS-2$
 				&& !pathName.endsWith("Ecore.ecore")) { //$NON-NLS-1$
 			// Try and load the ecore file with its URI as-is or fall back to platform resource URI.
-			URI metaURI = URI.createURI(URI.decode(pathName));
+			metaURI = URI.createURI(URI.decode(pathName));
 			if (!metaURI.isPlatform()) {
 				metaURI = URI.createPlatformResourceURI(pathName, true);
 			}
@@ -310,29 +312,41 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 					}
 				}
 			}
-			descriptor = LazyEPackageDescriptor.create(metaURI, resourceSet, this);
+			descriptors.addAll(LazyEPackageDescriptor.create(metaURI, resourceSet, this));
 
 			// If that failed, try and load the ecore file with a platform:/resource URI
-			if (descriptor == null) {
+			if (descriptors.size() == 0) {
 				metaURI = URI.createPlatformResourceURI(pathName, false);
-				descriptor = LazyEPackageDescriptor.create(metaURI, resourceSet, this);
+				descriptors.addAll(LazyEPackageDescriptor.create(metaURI, resourceSet, this));
 			}
 
 			// If all failed, try and load the model with a platform:/plugin URI
-			if (descriptor == null) {
+			if (descriptors.size() == 0) {
 				metaURI = URI.createPlatformPluginURI(pathName, false);
-				descriptor = LazyEPackageDescriptor.create(metaURI, resourceSet, this);
+				descriptors.addAll(LazyEPackageDescriptor.create(metaURI, resourceSet, this));
 			}
 		}
 
-		if (descriptor != null && !"".equals(descriptor.getNsURI())) { //$NON-NLS-1$
+		final List<LazyEPackageDescriptor> toRemove = new ArrayList<LazyEPackageDescriptor>();
+		for (LazyEPackageDescriptor descriptor : descriptors) {
+			if ("".equals(descriptor.getNsURI())) { //$NON-NLS-1$
+				toRemove.add(descriptor);
+			}
+		}
+		descriptors.removeAll(toRemove);
+
+		if (descriptors.size() != 0) {
 			/*
 			 * If there is already a LazyEPackageDescriptor for this uri, lets start by removing it.
 			 */
-			registerOrReplaceInRegistry(this, descriptor);
-			return descriptor.getNsURI();
+			registerOrReplaceInRegistry(this, metaURI, descriptors);
+			for (LazyEPackageDescriptor descriptor : descriptors) {
+				res.add(descriptor.getNsURI());
+			}
+			return res;
 		}
-		return pathName;
+		res.add(pathName);
+		return res;
 	}
 
 	/**
@@ -343,20 +357,23 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 * 
 	 * @param registry
 	 *            registry to update.
-	 * @param descriptor
-	 *            the descriptor to register.
+	 * @param resourceURI
+	 *            the resource URI
+	 * @param descriptors
+	 *            descriptors to register.
 	 */
-	private void registerOrReplaceInRegistry(Registry registry, LazyEPackageDescriptor descriptor) {
+	private void registerOrReplaceInRegistry(Registry registry, URI resourceURI,
+			List<LazyEPackageDescriptor> descriptors) {
 
 		List<String> toRemove = Lists.newArrayList();
 		Set<LazyEPackageDescriptor> toUnload = Sets.newLinkedHashSet();
-		for (Entry<String, Object> entry : registry.entrySet()) {
+		for (Map.Entry<String, Object> entry : registry.entrySet()) {
 			/*
 			 * I only take care of my own instances to avoid unpredictable side effects on other tools.
 			 */
 			if (entry.getValue() instanceof LazyEPackageDescriptor) {
 				LazyEPackageDescriptor registered = (LazyEPackageDescriptor)entry.getValue();
-				if (registered.getResourceURI().equals(descriptor.getResourceURI())) {
+				if (registered.getResourceURI().equals(resourceURI)) {
 					toRemove.add(entry.getKey());
 				}
 				toUnload.add(registered);
@@ -365,7 +382,9 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		for (String nsURI : toRemove) {
 			registry.remove(nsURI);
 		}
-		registerDescriptorsHierarchy(registry, descriptor);
+		for (LazyEPackageDescriptor descriptor : descriptors) {
+			registerDescriptorsHierarchy(registry, descriptor);
+		}
 
 	}
 

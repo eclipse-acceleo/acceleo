@@ -715,47 +715,75 @@ public class CSTParser {
 		while (currentPos != posEnd) {
 			Region comma = pComma.search(source.getBuffer(), currentPos, posEnd, null,
 					new SequenceBlock[] {pLiteral });
-			TypedModel typedModel = CstFactory.eINSTANCE.createTypedModel();
 			int e;
 			if (comma.b() == -1) {
 				e = posEnd;
 			} else {
 				e = comma.b();
 			}
-			setPositions(typedModel, currentPos, e);
-			String ePackageKey = source.getBuffer().substring(currentPos, e).trim();
-			EPackage ePackage = ModelUtils.getEPackage(ePackageKey);
-			if (ePackage == null && ePackageKey.startsWith(IAcceleoConstants.LITERAL_BEGIN)
-					&& ePackageKey.endsWith(IAcceleoConstants.LITERAL_END)) {
-				ePackageKey = ePackageKey.substring(IAcceleoConstants.LITERAL_BEGIN.length(), ePackageKey
-						.length()
-						- IAcceleoConstants.LITERAL_END.length());
-				ePackage = ModelUtils.getEPackage(ePackageKey);
-				if (ePackage == null) {
-					try {
-						ePackageKey = AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ePackageKey,
-								AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
-					} catch (WrappedException ex) {
-						// swallow exception
-					}
-					ePackage = ModelUtils.getEPackage(ePackageKey);
-					if (ePackage == null) {
-						logProblem(
-								AcceleoParserMessages.getString("CSTParser.MetamodelNotFound"), currentPos, e); //$NON-NLS-1$
-					}
-				}
-			}
+			TypedModel typedModel = checkEPackages(currentPos, e);
+			eModule.getInput().add(typedModel);
 			if (comma.b() == -1) {
 				currentPos = posEnd;
 			} else {
 				currentPos = comma.e();
 			}
-			if (ePackage != null) {
-				typedModel.getTakesTypesFrom().add(ePackage);
-				typedModel.getTakesTypesFrom().addAll(getAllSubpackages(ePackage));
-			}
-			eModule.getInput().add(typedModel);
 		}
+	}
+
+	/**
+	 * Checks EPackage existence.
+	 * 
+	 * @param currentPos
+	 *            the current position
+	 * @param endPos
+	 *            the end position
+	 * @return the created TypedModel
+	 */
+	private TypedModel checkEPackages(int currentPos, int endPos) {
+		TypedModel res = CstFactory.eINSTANCE.createTypedModel();
+		setPositions(res, currentPos, endPos);
+
+		String ePackageKey = source.getBuffer().substring(currentPos, endPos).trim();
+		EPackage ePackage = ModelUtils.getEPackage(ePackageKey);
+		List<EPackage> ePackages = new ArrayList<EPackage>();
+		if (ePackage == null && ePackageKey.startsWith(IAcceleoConstants.LITERAL_BEGIN)
+				&& ePackageKey.endsWith(IAcceleoConstants.LITERAL_END)) {
+			ePackageKey = ePackageKey.substring(IAcceleoConstants.LITERAL_BEGIN.length(), ePackageKey
+					.length()
+					- IAcceleoConstants.LITERAL_END.length());
+			ePackage = ModelUtils.getEPackage(ePackageKey);
+			if (ePackage == null) {
+				List<String> ePackageKeys = new ArrayList<String>();
+				try {
+					ePackageKeys.addAll(AcceleoPackageRegistry.INSTANCE.registerEcorePackages(ePackageKey,
+							AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET));
+
+				} catch (WrappedException ex) {
+					// swallow exception
+				}
+				for (String key : ePackageKeys) {
+					final EPackage ePkg = ModelUtils.getEPackage(key);
+					if (ePkg != null) {
+						ePackages.add(ePkg);
+					}
+				}
+				if (ePackages.size() == 0) {
+					logProblem(
+							AcceleoParserMessages.getString("CSTParser.MetamodelNotFound"), currentPos, endPos); //$NON-NLS-1$
+				}
+			} else {
+				ePackages.add(ePackage);
+			}
+		} else if (ePackage != null) {
+			ePackages.add(ePackage);
+		}
+		for (EPackage ePkg : ePackages) {
+			res.getTakesTypesFrom().add(ePkg);
+			res.getTakesTypesFrom().addAll(getAllSubpackages(ePkg));
+		}
+
+		return res;
 	}
 
 	/**
