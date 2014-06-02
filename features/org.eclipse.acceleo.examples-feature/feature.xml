@@ -13,7 +13,9 @@ Contributors:
       id="org.eclipse.acceleo.examples"
       label="%featureName"
       version="3.5.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.1">
 
    <description>
       %description

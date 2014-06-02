@@ -114,6 +114,11 @@
       <layout>p2</layout>
       <url>${swtbot-site}</url>
     </repository>
+	<repository>
+      <id>cbi-license</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/cbi/updates/license</url>
+    </repository>
   </repositories>
 
   <distributionManagement>
