@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 
 <!--
-Copyright (c) 2008, 2012 Obeo.
+Copyright (c) 2008, 2014 Obeo.
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
 which accompanies this distribution, and is available at
@@ -40,13 +40,13 @@ Contributors:
    <!-- The description attribute mustn't be modified -->
    <extension point="org.eclipse.acceleo.ide.ui.launching">
       <strategy
-            description="%AcceleoPluginLaunch"
-            class="org.eclipse.acceleo.ide.ui.launching.strategy.AcceleoPluginLaunchingStrategy"/>
+            description="%AcceleoJavaLaunch"
+            class="org.eclipse.acceleo.internal.ide.ui.launching.strategy.AcceleoJavaLaunchingStrategy"/>
    </extension>
    <extension point="org.eclipse.acceleo.ide.ui.launching">
       <strategy
-            description="%AcceleoJavaLaunch"
-            class="org.eclipse.acceleo.internal.ide.ui.launching.strategy.AcceleoJavaLaunchingStrategy"/>
+            description="%AcceleoPluginLaunch"
+            class="org.eclipse.acceleo.ide.ui.launching.strategy.AcceleoPluginLaunchingStrategy"/>
    </extension>
 
    <extension point="org.eclipse.core.resources.builders" id="acceleoBuilder" name="%AcceleoBuilderName">

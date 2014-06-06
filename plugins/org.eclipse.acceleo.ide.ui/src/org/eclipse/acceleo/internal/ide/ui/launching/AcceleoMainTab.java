@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -62,6 +62,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 /**
  * The Acceleo main tab of the launch configuration. It displays and edits project and main type name launch
@@ -815,7 +817,15 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
-		int item = getLaunchingStrategies().indexOf(id);
+
+		int item = -1;
+		List<String> strategies = this.getLaunchingStrategies();
+		for (int i = 0; i < strategies.size(); i++) {
+			if (id.startsWith(strategies.get(i))) {
+				item = i;
+			}
+		}
+
 		if (item == -1) {
 			item = 0;
 		}
@@ -834,6 +844,21 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	@Override
 	public boolean isValid(ILaunchConfiguration config) {
 		boolean result = super.isValid(config);
+
+		Bundle bundle = Platform.getBundle("org.eclipse.osgi"); //$NON-NLS-1$
+		if (bundle != null) {
+			int selectionIndex = this.launchingStrategyCombo.getSelectionIndex();
+			String selectedStrategy = this.launchingStrategyCombo.getItem(selectionIndex);
+			List<String> strategies = this.getLaunchingStrategies();
+
+			// Luna version
+			Version keplerVersion = Version.parseVersion("3.10.0"); //$NON-NLS-1$
+			if (bundle.getVersion().compareTo(keplerVersion) >= 0
+					&& selectedStrategy.equals(strategies.get(1))) {
+				this.setErrorMessage(AcceleoUIMessages.getString("AcceleoMainTab.Error.PluginLaunchWithLuna")); //$NON-NLS-1$
+			}
+		}
+
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		if (result) {
 			String model = modelText.getText().trim();
@@ -974,7 +999,6 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			}
 			Collections.sort(launchingStrategies);
 		}
-		Collections.sort(acceleoStrategies);
 		launchingStrategies.addAll(0, acceleoStrategies);
 		return launchingStrategies;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -99,7 +99,8 @@ public class AcceleoLaunchDelegate extends AcceleoLaunchDelegateStandalone {
 					IConfigurationElement member = members[j];
 					String description = member.getAttribute("description"); //$NON-NLS-1$
 					String strategyClass = member.getAttribute("class"); //$NON-NLS-1$
-					if (strategyClass != null && description != null && description.equals(launchingID)) {
+					if (strategyClass != null && description != null && launchingID != null
+							&& launchingID.startsWith(description)) {
 						try {
 							Bundle bundle = Platform.getBundle(member.getNamespaceIdentifier());
 							@SuppressWarnings("cast")
