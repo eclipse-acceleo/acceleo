@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2012 Obeo.
+ * Copyright (c) 2010, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -169,6 +169,23 @@ public abstract class AbstractAcceleoGenerator {
 	 *             This will be thrown if any of the output files cannot be saved to disk.
 	 */
 	public Map<String, String> generate(Monitor monitor) throws IOException {
+		return generate(monitor, true);
+	}
+
+	/**
+	 * Launches the generation described by this instance.
+	 * 
+	 * @param monitor
+	 *            This will be used to display progress information to the user.
+	 * @param recursive
+	 *            if <code>true</code> the {@link AbstractAcceleoGenerator#getModel() model} will be iterated
+	 *            over
+	 * @return This will return a preview of the generation when the generation strategy feeds it to us.
+	 * @throws IOException
+	 *             This will be thrown if any of the output files cannot be saved to disk.
+	 * @since 3.5
+	 */
+	public Map<String, String> generate(Monitor monitor, boolean recursive) throws IOException {
 		boolean notificationsState = false;
 		if (EMFPlugin.IS_ECLIPSE_RUNNING && !AcceleoPreferences.areNotificationsForcedDisabled()) {
 			notificationsState = AcceleoPreferences.areNotificationsEnabled();
@@ -191,8 +208,8 @@ public abstract class AbstractAcceleoGenerator {
 		}
 
 		for (int i = 0; i < templateNames.length; i++) {
-			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), getArguments(),
-					target, monitor));
+			result.putAll(service.doGenerate(getModule(), templateNames[i], getModel(), recursive,
+					getArguments(), target, monitor));
 		}
 
 		// End

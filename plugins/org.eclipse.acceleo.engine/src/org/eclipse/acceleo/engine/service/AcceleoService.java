@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2014 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -315,6 +315,37 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Map<Module, Set<String>> templates, EObject model,
 			File generationRoot, Monitor monitor) {
+		return doGenerate(templates, model, true, generationRoot, monitor);
+	}
+
+	/**
+	 * This can be used to launch the generation of multiple Acceleo templates given their names and their
+	 * containing modules.
+	 * <p>
+	 * Keep in mind that this can only be used with single-argument templates. Any attempt to call to a
+	 * template with more than one argument through this method will throw {@link AcceleoEvaluationException}
+	 * s.
+	 * </p>
+	 * 
+	 * @param templates
+	 *            This map will be used to locate templates of the given names in the associated module.
+	 * @param model
+	 *            Input model for this generation.
+	 * @param recursive
+	 *            if <code>true</code> the input model will be iterated over for objects matching the
+	 *            templates' parameter types
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. Cannot be <code>null</code> except if
+	 *            <code>preview</code> is <code>true</code> in which case no files will be generated.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 * @since 3.0
+	 */
+	public Map<String, String> doGenerate(Map<Module, Set<String>> templates, EObject model,
+			boolean recursive, File generationRoot, Monitor monitor) {
 		if (templates == null || model == null
 				|| (!(strategy instanceof PreviewStrategy) && generationRoot == null)) {
 			throw new NullPointerException(TEMPLATE_CALL_NPE);
@@ -355,17 +386,19 @@ public final class AcceleoService {
 				}
 			}
 		}
-		final TreeIterator<EObject> targetElements = model.eAllContents();
-		while (targetElements.hasNext()) {
-			final EObject potentialTarget = targetElements.next();
-			for (Map.Entry<EClassifier, Set<Template>> entry : templateTypes.entrySet()) {
-				if (entry.getKey().isInstance(potentialTarget)) {
-					arguments.clear();
-					arguments.add(potentialTarget);
-					for (Template template : entry.getValue()) {
-						previewResult
-								.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
-						generationHasOccurred = true;
+		if (recursive) {
+			final TreeIterator<EObject> targetElements = model.eAllContents();
+			while (targetElements.hasNext()) {
+				final EObject potentialTarget = targetElements.next();
+				for (Map.Entry<EClassifier, Set<Template>> entry : templateTypes.entrySet()) {
+					if (entry.getKey().isInstance(potentialTarget)) {
+						arguments.clear();
+						arguments.add(potentialTarget);
+						for (Template template : entry.getValue()) {
+							previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot,
+									monitor));
+							generationHasOccurred = true;
+						}
 					}
 				}
 			}
@@ -534,6 +567,39 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
 			List<? extends Object> arguments, File generationRoot, Monitor monitor) {
+		return doGenerate(module, templateName, model, true, arguments, generationRoot, monitor);
+	}
+
+	/**
+	 * Launches the generation of an Acceleo template given its name and containing module.
+	 * <p>
+	 * This is a convenience method that can be used with multiple argument templates. The template will then
+	 * be called with these objects as first arguments, and the given list of <code>arguments</code> for the
+	 * remaining template parameters.
+	 * </p>
+	 * 
+	 * @param module
+	 *            The module in which we seek a template <tt>templateName</tt>.
+	 * @param templateName
+	 *            Name of the template that is to be generated.
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param recursive
+	 *            if <code>true</code> the input model will be iterated over for objects matching the
+	 *            template's <b>first</b> parameter type
+	 * @param arguments
+	 *            Arguments of the template call, excluding the very first one (<code>model</code> object).
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 */
+	public Map<String, String> doGenerate(Module module, String templateName, EObject model,
+			boolean recursive, List<? extends Object> arguments, File generationRoot, Monitor monitor) {
 
 		// Start
 		boolean shouldNotify = false;
@@ -575,16 +641,18 @@ public final class AcceleoService {
 				previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot, monitor));
 				generationHasOccurred = true;
 			}
-			final TreeIterator<EObject> targetElements = model.eAllContents();
-			while (targetElements.hasNext()) {
-				final EObject potentialTarget = targetElements.next();
-				if (argumentType.isInstance(potentialTarget)) {
-					final List<Object> actualArguments = new ArrayList<Object>();
-					actualArguments.add(potentialTarget);
-					actualArguments.addAll(arguments);
-					previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot,
-							monitor));
-					generationHasOccurred = true;
+			if (recursive) {
+				final TreeIterator<EObject> targetElements = model.eAllContents();
+				while (targetElements.hasNext()) {
+					final EObject potentialTarget = targetElements.next();
+					if (argumentType.isInstance(potentialTarget)) {
+						final List<Object> actualArguments = new ArrayList<Object>();
+						actualArguments.add(potentialTarget);
+						actualArguments.addAll(arguments);
+						previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot,
+								monitor));
+						generationHasOccurred = true;
+					}
 				}
 			}
 			// There is a possibility that "model" is but one of the resource's roots.
@@ -700,6 +768,36 @@ public final class AcceleoService {
 	 */
 	public Map<String, String> doGenerate(Template template, EObject model, File generationRoot,
 			Monitor monitor) {
+		return doGenerate(template, model, true, generationRoot, monitor);
+	}
+
+	/**
+	 * Launches the generation of a single-argument Acceleo template for all matching EObjects in the given
+	 * model.
+	 * <p>
+	 * This is a convenience method that can only be used with single argument templates. Any attempt at
+	 * calling other templates through this method will throw {@link AcceleoEvaluationException}s.
+	 * </p>
+	 * 
+	 * @param template
+	 *            The template that is to be generated
+	 * @param model
+	 *            Input model for this Acceleo template.
+	 * @param recursive
+	 *            if <code>true</code> the input model will be iterated over for objects matching the
+	 *            template's <b>first</b> parameter type
+	 * @param generationRoot
+	 *            This will be used as the root for the generated files. This can be <code>null</code>, in
+	 *            which case the user home directory will be used as root.
+	 * @param monitor
+	 *            This will be used as the progress monitor for the generation. Can be <code>null</code>.
+	 * @return if <code>preview</code> is set to <code>true</code>, no files will be generated. Instead, a Map
+	 *         mapping all file paths to the potential content will be returned. This returned map will be
+	 *         empty otherwise.
+	 * @since 3.0
+	 */
+	public Map<String, String> doGenerate(Template template, EObject model, boolean recursive,
+			File generationRoot, Monitor monitor) {
 		boolean shouldNotify = false;
 		if (!generationIsOccurring) {
 			// Start
@@ -733,14 +831,16 @@ public final class AcceleoService {
 			previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
 			generationHasOccurred = true;
 		}
-		final TreeIterator<EObject> targetElements = model.eAllContents();
-		while (targetElements.hasNext()) {
-			final EObject potentialTarget = targetElements.next();
-			if (argumentType.isInstance(potentialTarget)) {
-				arguments.clear();
-				arguments.add(potentialTarget);
-				previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
-				generationHasOccurred = true;
+		if (recursive) {
+			final TreeIterator<EObject> targetElements = model.eAllContents();
+			while (targetElements.hasNext()) {
+				final EObject potentialTarget = targetElements.next();
+				if (argumentType.isInstance(potentialTarget)) {
+					arguments.clear();
+					arguments.add(potentialTarget);
+					previewResult.putAll(doGenerateTemplate(template, arguments, generationRoot, monitor));
+					generationHasOccurred = true;
+				}
 			}
 		}
 
