@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mtl"
-    nsURI="http://www.eclipse.org/acceleo/mtl/3.0" nsPrefix="mtl">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mtl" nsURI="http://www.eclipse.org/acceleo/mtl/3.0" nsPrefix="mtl">
   <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage #//DocumentedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="input" lowerBound="1" upperBound="-1"
         eType="#//TypedModel" containment="true"/>
@@ -171,7 +169,7 @@
         containment="true" eOpposite="#//Documentation/documentedElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deprecated" lowerBound="1"
         eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
-        defaultValueLiteral=""/>
+        defaultValueLiteral="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CommentBody">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startPosition" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
