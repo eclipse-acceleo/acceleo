@@ -477,25 +477,18 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				// null typed loop variables will be the same as "Object" typed
 				// We could have no loop variables. In such cases, "self" will do
 				// TODO implicit loop variables (self) are non standard. provide a way to deactivate
-				if (loopVariable != null && loopVariable.getType() != null
-						&& !loopVariable.getType().isInstance(o)) {
-					if (!iterationCCE) {
-						int line = getLineOf(forBlock);
-						String actualType = "null"; //$NON-NLS-1$
-						if (o != null) {
-							actualType = o.getClass().getName();
+				if (loopVariable != null && loopVariable.getType() != null) {
+					// class cast check on each iteration value
+					// [436843] "OclAny" is a wild card such as "Object" would be in java.
+					if (!loopVariable.getType().isInstance(o)
+							&& loopVariable.getType() != getAcceleoEnvironment().getOCLStandardLibrary()
+									.getOclAny()) {
+						if (!iterationCCE) {
+							logIterationError(forBlock, loopVariable, o);
+							iterationCCE = true;
 						}
-						final String expectedType = loopVariable.getType().getName();
-						final String message = AcceleoEngineMessages.getString(
-								"AcceleoEvaluationVisitor.IterationClassCast", Integer.valueOf(line), //$NON-NLS-1$
-								((Module)EcoreUtil.getRootContainer(forBlock)).getName(),
-								forBlock.toString(), actualType, expectedType);
-						final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
-						exception.setStackTrace(getContext().createAcceleoStackTrace());
-						AcceleoEnginePlugin.log(exception, false);
-						iterationCCE = true;
+						continue;
 					}
-					continue;
 				}
 				if (loopVariable != null) {
 					// Do not remove previous values of the loop variable if this is the first iteration.
@@ -554,6 +547,34 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		if (actualIteration.size() > 0 && forBlock.getAfter() != null) {
 			getVisitor().visitExpression((OCLExpression<C>)forBlock.getAfter());
 		}
+	}
+
+	/**
+	 * Logs erroneous typing errors as they occur during for loop evaluations. This will only be called once
+	 * per for block even if multiple values have the wrong type in a single iteration.
+	 * 
+	 * @param forBlock
+	 *            The for loop on which a class cast occurred.
+	 * @param loopVariable
+	 *            The iteration variable of this for block.
+	 * @param iterationValue
+	 *            Current value of the iteration.
+	 */
+	private void logIterationError(ForBlock forBlock, Variable loopVariable, Object iterationValue) {
+		int line = getLineOf(forBlock);
+		String actualType = "null"; //$NON-NLS-1$
+		if (iterationValue != null) {
+			actualType = iterationValue.getClass().getName();
+		}
+		final String expectedType = loopVariable.getType().getName();
+		final String message = AcceleoEngineMessages.getString(
+				"AcceleoEvaluationVisitor.IterationClassCast", Integer.valueOf(line), //$NON-NLS-1$
+				((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock.toString(), actualType,
+				expectedType);
+		final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
+		exception.setStackTrace(getContext().createAcceleoStackTrace());
+		AcceleoEnginePlugin.log(exception, false);
+
 	}
 
 	/**
