@@ -296,7 +296,7 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 	 * @return a new descriptor representing the instance.
 	 */
 	public static List<LazyEPackageDescriptor> create(URI metaURI, ResourceSet set, EPackage.Registry registry) {
-		List<LazyEPackageDescriptor> result = null;
+		List<LazyEPackageDescriptor> result = new ArrayList<LazyEPackageDescriptor>();
 		InputStream is = null;
 		try {
 			is = set.getURIConverter().createInputStream(metaURI, Collections.EMPTY_MAP);
