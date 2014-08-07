@@ -251,7 +251,7 @@ public class AcceleoParserMojo extends AbstractMojo {
 				} else {
 					StringTokenizer tok = new StringTokenizer(jar, ":");
 
-					String groupdId = null;
+					String groupId = null;
 					String artifactId = null;
 					String version = null;
 
@@ -259,7 +259,7 @@ public class AcceleoParserMojo extends AbstractMojo {
 					while (tok.hasMoreTokens()) {
 						String nextToken = tok.nextToken();
 						if (c == 0) {
-							groupdId = nextToken;
+							groupId = nextToken;
 						} else if (c == 1) {
 							artifactId = nextToken;
 						} else if (c == 2) {
@@ -269,19 +269,24 @@ public class AcceleoParserMojo extends AbstractMojo {
 						c++;
 					}
 
-					List<URI> urisFromArtifacts = this.getURIsFromArtifacts(groupdId, artifactId, version,
-							jar);
+					List<URI> urisFromArtifacts = this
+							.getURIsFromArtifacts(groupId, artifactId, version, jar);
 					if (urisFromArtifacts.size() > 0) {
 						jarFound = true;
 					}
 					newDependencies.addAll(urisFromArtifacts);
 
-					List<URI> urisFromDependencies = this.getURIsFromDependencies(groupdId, artifactId,
+					List<URI> urisFromDependencies = this.getURIsFromDependencies(groupId, artifactId,
 							version, jar);
 					if (urisFromDependencies.size() > 0) {
 						jarFound = true;
 					}
 					newDependencies.addAll(urisFromDependencies);
+
+					this.getLog().debug("Additional dependencies added from jars...");
+					for (URI uri : newDependencies) {
+						this.getLog().debug(uri.toString());
+					}
 				}
 				if (!jarFound) {
 					throw new MojoExecutionException("The jar " + jar
@@ -361,6 +366,11 @@ public class AcceleoParserMojo extends AbstractMojo {
 		for (Object object : artifacts) {
 			if (object instanceof Artifact) {
 				Artifact artifact = (Artifact)object;
+
+				this.getLog().debug(
+						"Trying to match the jar required with " + artifact.getGroupId() + " : "
+								+ artifact.getArtifactId());
+
 				if (groupId != null && groupId.equals(artifact.getGroupId()) && artifactId != null
 						&& artifactId.equals(artifact.getArtifactId())) {
 					if (version != null && version.equals(artifact.getVersion())) {
@@ -410,6 +420,11 @@ public class AcceleoParserMojo extends AbstractMojo {
 		for (Object object : mavenDependencies) {
 			if (object instanceof Dependency) {
 				Dependency dependency = (Dependency)object;
+
+				this.getLog().debug(
+						"Trying to match the jar required with " + dependency.getGroupId() + " : "
+								+ dependency.getArtifactId());
+
 				if (groupId != null && groupId.equals(dependency.getGroupId()) && artifactId != null
 						&& artifactId.equals(dependency.getArtifactId())) {
 					if (version != null && version.equals(dependency.getVersion())) {
