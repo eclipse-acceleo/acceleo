@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.sdk"
       label="%featureName"
-      version="3.5.0.qualifier"
+      version="3.6.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.acceleo.common"
       license-feature="org.eclipse.license"
@@ -28,12 +28,11 @@
    <includes
          id="org.eclipse.acceleo"
          version="0.0.0"/>
-   
-   <!-- Note : these will be built automatically by tycho. -->
+
    <includes
          id="org.eclipse.acceleo.source"
          version="0.0.0"/>
-         
+
    <includes
          id="org.eclipse.acceleo.examples"
          version="0.0.0"/>
