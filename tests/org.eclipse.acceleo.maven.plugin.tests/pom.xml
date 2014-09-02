@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.maven.plugin.tests</artifactId>
-  <version>3.5.0-SNAPSHOT</version>
+  <version>3.5.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <!-- Launched with the following command: mvn clean org.eclipse.acceleo:maven:3.2.1:acceleo-compile compile verify -->
@@ -69,12 +69,12 @@
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>org.eclipse.acceleo.maven</artifactId>
-      <version>3.5.0-SNAPSHOT</version>
+      <version>3.5.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.acceleo</groupId>
       <artifactId>org.eclipse.acceleo.engine</artifactId>
-      <version>3.5.0-SNAPSHOT</version>
+      <version>3.5.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.uml2</groupId>
@@ -118,7 +118,7 @@
       <plugin>
        <groupId>org.eclipse.acceleo</groupId>
        <artifactId>org.eclipse.acceleo.maven</artifactId>
-       <version>3.5.0-SNAPSHOT</version>
+       <version>3.5.1-SNAPSHOT</version>
        <executions>
           <execution>
             <phase>compile</phase>

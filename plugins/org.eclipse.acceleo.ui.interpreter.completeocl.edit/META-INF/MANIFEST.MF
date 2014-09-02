@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.ui.interpreter.completeocl.edit;singleton:=true
-Bundle-Version: 3.5.0.qualifier
+Bundle-Version: 3.5.1.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.EvaluationResultEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -14,6 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
- org.eclipse.acceleo.ui.interpreter;bundle-version="3.5.0",
+ org.eclipse.acceleo.ui.interpreter;bundle-version="3.5.1",
  org.eclipse.ocl.examples.pivot;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy
