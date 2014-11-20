@@ -299,19 +299,26 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @return The input <em>text</em> after its indentation has been modified to fit the context.
 	 */
 	public String fitIndentationTo(String source, String indentation) {
-		// Do not alter the very first line (^)
-		String regex = "\r\n|\r|\n"; //$NON-NLS-1$
-		String replacement = "$0" + indentation; //$NON-NLS-1$
+		final String result;
 
-		Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
-		StringBuffer result = new StringBuffer();
-		boolean hasMatch = sourceMatcher.find();
-		while (hasMatch) {
-			sourceMatcher.appendReplacement(result, replacement);
-			hasMatch = sourceMatcher.find();
+		if (!"".equals(indentation)) { //$NON-NLS-1$
+			// Do not alter the very first line (^)
+			String regex = "\r\n|\r|\n"; //$NON-NLS-1$
+			String replacement = "$0" + indentation; //$NON-NLS-1$
+
+			Matcher sourceMatcher = Pattern.compile(regex).matcher(source);
+			StringBuffer buffer = new StringBuffer(source.length());
+			boolean hasMatch = sourceMatcher.find();
+			while (hasMatch) {
+				sourceMatcher.appendReplacement(buffer, replacement);
+				hasMatch = sourceMatcher.find();
+			}
+			sourceMatcher.appendTail(buffer);
+			result = buffer.toString();
+		} else {
+			result = source;
 		}
-		sourceMatcher.appendTail(result);
-		return result.toString();
+		return result;
 	}
 
 	/**
