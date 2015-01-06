@@ -1,0 +1,3 @@
+h1. Implementation of services that handle collections
+
+h2. eContents()

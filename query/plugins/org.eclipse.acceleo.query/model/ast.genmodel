@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=" Copyright (c) 2015 Obeo.&#xA; All rights reserved. This program and the accompanying materials&#xA; are made available under the terms of the Eclipse Public License v1.0&#xA; which accompanies this distribution, and is available at&#xA; http://www.eclipse.org/legal/epl-v10.html&#xA; &#xA; Contributors:&#xA;     Obeo - initial API and implementation&#xA;"
+    modelDirectory="/org.eclipse.acceleo.query/src-gen" editDirectory="/org.eclipse.acceleo.query.edit/src-gen"
+    editorDirectory="/org.eclipse.acceleo.query.editor/src-gen" modelPluginID="org.eclipse.acceleo.query"
+    templateDirectory="" modelName="Ast" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="/org.eclipse.acceleo.query.tests/src-gen" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="6.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>ast.ecore</foreignModel>
+  <genPackages prefix="Ast" basePackage="org.eclipse.acceleo.query" disposableProviderFactory="true"
+      ecorePackage="ast.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ast.ecore#//CallType">
+      <genEnumLiterals ecoreEnumLiteral="ast.ecore#//CallType/CALLSERVICE"/>
+      <genEnumLiterals ecoreEnumLiteral="ast.ecore#//CallType/CALLORAPPLY"/>
+      <genEnumLiterals ecoreEnumLiteral="ast.ecore#//CallType/COLLECTIONCALL"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="ast.ecore#//ObjectType"/>
+    <genDataTypes ecoreDataType="ast.ecore#//AstEvaluator"/>
+    <genDataTypes ecoreDataType="ast.ecore#//ObjectArray"/>
+    <genClasses image="false" ecoreClass="ast.ecore#//Expression"/>
+    <genClasses ecoreClass="ast.ecore#//VarRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//VarRef/variableName"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//FeatureAccess">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//FeatureAccess/featureName"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//FeatureAccess/target"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ast.ecore#//Call">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/serviceName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Call/arguments"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//Literal"/>
+    <genClasses ecoreClass="ast.ecore#//IntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//IntegerLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//RealLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//RealLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//StringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//BooleanLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//BooleanLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//EnumLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ast.ecore#//EnumLiteral/literal"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//TypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//TypeLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//CollectionTypeLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//CollectionTypeLiteral/elementType"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//Lambda">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference ast.ecore#//Lambda/parameters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Lambda/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Lambda/evaluator"/>
+      <genOperations ecoreOperation="ast.ecore#//Lambda/eval">
+        <genParameters ecoreParameter="ast.ecore#//Lambda/eval/args"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//NullLiteral"/>
+    <genClasses ecoreClass="ast.ecore#//SetInExtensionLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//SetInExtensionLiteral/values"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//SequenceInExtensionLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//SequenceInExtensionLiteral/values"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//VariableDeclaration">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//VariableDeclaration/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//VariableDeclaration/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ast.ecore#//VariableDeclaration/expression"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ast.ecore#//Error"/>
+    <genClasses ecoreClass="ast.ecore#//ErrorExpression"/>
+    <genClasses ecoreClass="ast.ecore#//ErrorTypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorTypeLiteral/segments"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//ErrorFeatureAccessOrCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//ErrorFeatureAccessOrCall/target"/>
+    </genClasses>
+    <genClasses ecoreClass="ast.ecore#//ErrorCollectionCall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//ErrorCollectionCall/target"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

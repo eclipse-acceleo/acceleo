@@ -1,0 +1,170 @@
+/*******************************************************************************
+ * Copyright (c) 2015 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.query.tests;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.acceleo.query.tests.qmodel.BooleanResult;
+import org.eclipse.acceleo.query.tests.qmodel.EObjectResult;
+import org.eclipse.acceleo.query.tests.qmodel.EObjectVariable;
+import org.eclipse.acceleo.query.tests.qmodel.EmptyResult;
+import org.eclipse.acceleo.query.tests.qmodel.EnumeratorResult;
+import org.eclipse.acceleo.query.tests.qmodel.ErrorResult;
+import org.eclipse.acceleo.query.tests.qmodel.IntegerResult;
+import org.eclipse.acceleo.query.tests.qmodel.InvalidResult;
+import org.eclipse.acceleo.query.tests.qmodel.ListResult;
+import org.eclipse.acceleo.query.tests.qmodel.Query;
+import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResult;
+import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
+import org.eclipse.acceleo.query.tests.qmodel.SerializableResult;
+import org.eclipse.acceleo.query.tests.qmodel.StringResult;
+import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
+import org.eclipse.acceleo.query.tests.qmodel.Variable;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
+
+import static org.junit.Assert.fail;
+
+public class QueryResultAssert {
+
+	public static void assertEquivalentEvaluation(QueryEvaluationResult expectedResult,
+			QueryEvaluationResult actualResult) {
+
+		assertSame(expectedResult.eClass().getName(), actualResult.eClass().getName());
+
+		if (expectedResult instanceof ListResult) {
+			assertEquals(true, actualResult instanceof ListResult);
+			assertEquals(((ListResult)expectedResult).getValues().size(), ((ListResult)actualResult)
+					.getValues().size());
+			Iterator<QueryEvaluationResult> expectedIt = ((ListResult)expectedResult).getValues().iterator();
+			Iterator<QueryEvaluationResult> actualIt = ((ListResult)actualResult).getValues().iterator();
+			while (expectedIt.hasNext()) {
+				assertEquivalentEvaluation(expectedIt.next(), actualIt.next());
+			}
+		} else if (expectedResult instanceof EObjectResult) {
+			assertEquals(true, actualResult instanceof EObjectResult);
+			EObject expectedValue = ((EObjectResult)expectedResult).getValue();
+			EObject actualValue = ((EObjectResult)actualResult).getValue();
+			assertEquals(expectedValue, actualValue);
+		} else if (expectedResult instanceof StringResult) {
+			assertEquals(true, actualResult instanceof StringResult);
+			String expectedValue = ((StringResult)expectedResult).getValue();
+			String actualValue = ((StringResult)actualResult).getValue();
+			assertEquals(expectedValue, actualValue);
+		} else if (expectedResult instanceof BooleanResult) {
+			assertEquals(true, actualResult instanceof BooleanResult);
+			Boolean expectedValue = ((BooleanResult)expectedResult).isValue();
+			Boolean actualValue = ((BooleanResult)actualResult).isValue();
+			assertEquals(expectedValue, actualValue);
+		} else if (expectedResult instanceof InvalidResult) {
+			assertEquals(true, actualResult instanceof InvalidResult);
+		} else if (expectedResult instanceof ErrorResult) {
+			/*
+			 * we don't discriminate errors yet, we'll assume as long as it is an error its good.
+			 */
+		} else if (expectedResult instanceof EmptyResult) {
+			assertEquals(true, actualResult instanceof EmptyResult);
+		} else if (expectedResult instanceof EnumeratorResult) {
+			assertEquals(true, actualResult instanceof EnumeratorResult);
+			String expectedValue = ((EnumeratorResult)expectedResult).getValue();
+			String actualValue = ((EnumeratorResult)actualResult).getValue();
+			assertEquals(expectedValue, actualValue);
+		} else if (expectedResult instanceof SerializableResult) {
+			assertEquals(true, actualResult instanceof SerializableResult);
+			Serializable expectedValue = ((SerializableResult)expectedResult).getValue();
+			Serializable actualValue = ((SerializableResult)actualResult).getValue();
+			assertEquals(expectedValue, actualValue);
+		} else if (expectedResult instanceof IntegerResult) {
+			assertEquals(true, actualResult instanceof IntegerResult);
+			Integer expectedValue = ((IntegerResult)expectedResult).getValue();
+			Integer actualValue = ((IntegerResult)actualResult).getValue();
+			assertEquals(expectedValue, actualValue);
+		}
+
+		else {
+
+			fail("not supported yet in the test framework:" + expectedResult.eClass().getName());
+		}
+	}
+
+	private static Collection<URI> toURIs(Collection<EObject> expectedValues) {
+		List<URI> uris = new ArrayList<URI>(expectedValues.size());
+		for (EObject val : expectedValues) {
+			uris.add(EcoreUtil.getURI(val));
+		}
+		return uris;
+	}
+
+	public static void assertEquivalentValidation(QueryValidationResult expectedResult,
+			QueryValidationResult actualResult) {
+		assertEquals(expectedResult.getPossibleTypes(), actualResult.getPossibleTypes());
+		assertEquals(expectedResult.getValidationMessages().size(), actualResult.getValidationMessages()
+				.size());
+		for (int i = 0; i < expectedResult.getValidationMessages().size(); ++i) {
+			final ValidationMessage expectedMessage = expectedResult.getValidationMessages().get(i);
+			final ValidationMessage actualMessage = actualResult.getValidationMessages().get(i);
+			assertEquals(expectedMessage.getSeverity(), actualMessage.getSeverity());
+			// TODO assertEquals(expectedMessage.getLine(),
+			// actualMessage.getLine());
+			// TODO assertEquals(expectedMessage.getColumn(),
+			// actualMessage.getColumn());
+			assertEquals(expectedMessage.getMessage(), actualMessage.getMessage());
+		}
+	}
+
+	/**
+	 * Prints a {@link QueryValidationResult} to standard output stream.
+	 * 
+	 * @param query
+	 *            the {@link Query}
+	 * @param result
+	 *            the {@link QueryValidationResult} to print
+	 */
+	public static void printValidation(Query query, QueryValidationResult result) {
+		System.out.println("Interpreter: " + result.getInterpreter());
+		printQuery(query);
+		System.out.println("Possible types:");
+		for (String possibleType : result.getPossibleTypes()) {
+			System.out.println("\t" + possibleType);
+		}
+		System.out.println("Validation messages:");
+		for (ValidationMessage message : result.getValidationMessages()) {
+			System.out.println("\t" + message.getSeverity() + " " + message.getMessage());
+		}
+		System.out.flush();
+	}
+
+	/**
+	 * Prints a {@link Query} to standard output stream.
+	 * 
+	 * @param query
+	 *            the {@link Query} to print
+	 */
+	private static void printQuery(Query query) {
+		System.out.println("Expression: " + query.getExpression());
+		System.out.println("Self: " + query.getStartingPoint());
+		for (Variable variable : query.getVariables()) {
+			if (variable instanceof EObjectVariable) {
+				System.out.println(variable.getName() + ": "
+						+ ((EObjectVariable)variable).getValue().getTarget());
+			}
+		}
+	}
+
+}

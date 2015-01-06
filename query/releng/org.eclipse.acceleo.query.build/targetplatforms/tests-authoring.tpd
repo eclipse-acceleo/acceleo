@@ -1,0 +1,9 @@
+target "Target Platform with required plugins to author query model tests"
+with source, requirements
+include "compatibility-tests.tpd"
+
+
+location Eclipse-Luna "http://download.eclipse.org/releases/luna" {
+	org.eclipse.emf.sdk.feature.group	
+	org.eclipse.sdk.feature.group
+}

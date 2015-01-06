@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qmodel:Queries xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:qmodel="http://www.eclipse.org/acceleo/qmodel" name="anydsl">
+  <queries expression="[self/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="anyDSLModel.anydsl#/"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=World</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.0/@adress"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.0/@producers.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.0/@producers.0/@adress"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.1"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.1/@adress"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.1/@producers.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.1/@producers.0/@adress"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.2"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.2/@adress"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.2/@producers.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.2/@producers.0/@adress"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@foods.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@foods.1"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@foods.2"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@foods.3"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.1"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.2"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.3"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.customToString()/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <validationMessages severity="ERROR" message="Couldn't find the customToString(EClassifier=Adress) service or EOperation" line="1" column="4"/>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.EObjectServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
+  </queries>
+  <queries expression="[self.eAllContents()->filter(ProductionCompany)->select(a:ProductionCompany | a.name.toString().startsWith('Beef'))/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.0"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=ProductionCompany)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <validationMessages severity="ERROR" message="Feature name not found in EClass World" line="1" column="4"/>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="BeefCo"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents(anydsl::NamedElement)->select( named : anydsl::NamedElement | named.name.toString().startsWith('Sa'))/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@foods.1"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=NamedElement)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents(anydsl::MultiNamedElement)->select(s|s.oclAsType(anydsl::Source).name->size() = 1)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.1"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.2"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@sources.3"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=MultiNamedElement)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[-1/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl" value="-1"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.caliber/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EnumeratorResult" interpreter="mtl" value="M"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Caliber</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Constraint 1 Constraint2'/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Constraint 1 Constraint2"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['NewAbstractClass_' + self.eContainer().eContents(anydsl::Food)->size()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="NewAbstractClass_4"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['The ' + self.oclAsType(anydsl::Company).name +' class is never used'/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="The BeefCo class is never used"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eInverse(anydsl::Producer)/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@companies.0/@producers.0"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=Producer)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name.toLower()/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="beefco"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(anydsl::Company).eAllContents(anydsl::Food)->including(self).eInverse()->select(self.oclIsKindOf(&#x9;anydsl::World) or self.oclIsKindOf(anydsl::Food))->reject(self.oclAsType(&#x9;anydsl::World).companies->includes(self))->notEmpty()/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.producers->size() &lt;4/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(anydsl::Source).foods->size() &lt;4/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[true/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+ self.name +' Class Diagram'/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open ElstarGolden DeliciousIngrid Marie Class Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+ self.name +' Class Diagram'/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open BeefCo Class Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self &lt;> self.eContainer()/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(anydsl::World)/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="anyDSLModel.anydsl#/"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=World</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(anydsl::World)/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="anyDSLModel.anydsl#/"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=World</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(anydsl::Food)/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Food</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not self.color->isEmpty()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eClass().name + ' : ' + self.name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="ProductionCompany : BeefCo"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(anydsl::MultiNamedElement)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(anydsl::MultiNamedElement)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(anydsl::Source)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(anydsl::Plant)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->isEmpty() and self.sources->isEmpty()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->isEmpty() or self.sources->isEmpty()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->select(a|a.oclIsTypeOf(anydsl::Restaurant))->isEmpty() or self.sources->isEmpty()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents()->select(content| content.oclIsTypeOf(anydsl::Food))->isEmpty()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents()->select(content| content.oclIsTypeOf(anydsl::ProductionCompany))->isEmpty()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="anyDSLModel.anydsl#//@foods.0"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Food</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().name/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="El Star"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().caliber/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EnumeratorResult" interpreter="mtl" value="M"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Caliber</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().caliber.oclIsTypeOf(anydsl::Caliber)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().caliber.toString()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="M"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().color->size()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl" value="5"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().color->first()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EnumeratorResult" interpreter="mtl" value="red"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Color</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.foods->first().color->first().toString()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="red"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().name/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="BeefCo"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).adress.country.oclIsTypeOf(anydsl::CountryData)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().name/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Bruce"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().adress.country.oclIsTypeOf(anydsl::CountryData)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="anyDSLModel.anydsl#//@foods.2"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Food)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().caliber/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EnumeratorResult" interpreter="mtl" value="L"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Caliber</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().caliber.oclIsTypeOf(anydsl::Caliber)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().caliber.toString()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="L"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().color.toString()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:StringResult" value="red"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EString)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=SingleString)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=String)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().color->first()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EnumeratorResult" interpreter="mtl" value="red"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Color</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().color->first().oclIsTypeOf(anydsl::Color)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().color->size()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl" value="1"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().color/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EnumeratorResult" value="red"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Color)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <modelElements name="The World">
+    <target href="anyDSLModel.anydsl#/"/>
+  </modelElements>
+  <modelElements name="Food El Star">
+    <target href="anyDSLModel.anydsl#//@foods.0"/>
+  </modelElements>
+  <modelElements name="BeefCo">
+    <target href="anyDSLModel.anydsl#//@companies.0"/>
+  </modelElements>
+  <modelElements name="Adress">
+    <target href="anyDSLModel.anydsl#//@companies.0/@adress"/>
+  </modelElements>
+  <modelElements name="Elstar Plant">
+    <target href="anyDSLModel.anydsl#//@sources.0"/>
+  </modelElements>
+</qmodel:Queries>

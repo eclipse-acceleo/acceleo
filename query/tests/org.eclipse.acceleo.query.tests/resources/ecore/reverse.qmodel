@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qmodel:Queries xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:qmodel="http://www.eclipse.org/acceleo/qmodel">
+  <queries expression="[self/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EClass</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session/INVALID_SESSION"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session/INVALID_SESSION/%of_generation%"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session/INVALID_SESSION/%of_generation%/@details.0"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session/INVALID_SESSION/@eGenericType"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllSuperTypes->including(self) - self.eAllSuperTypes/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.internal.metamodel.description.tool.spec/PasteDescriptionSpec"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EClass)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.customToString()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Session"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.EObjectServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
+  </queries>
+  <queries expression="[self.eAllContents(ecore::EClass)->select(a: EClass | a.name.startsWith('Abst'))->select( a | a.interface)/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.diagram/AbstractDNode"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.diagram.description/AbstractNodeMapping"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.diagram.layoutdata/AbstractLayoutData"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.viewpoint.description/AbstractMappingImport"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.viewpoint.description.tool/AbstractToolDescription"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.viewpoint.description.tool/AbstractVariable"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EClass)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Session"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAllContents(ecore::EClass)->select(self.name.startsWith('IInterpreter'))/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EClass)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Session"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.abstract/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBoolean</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Constraint 1 Constraint2'/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Constraint 1 Constraint2"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['NewAbstractClass' + self.eContainer().eContents(ecore::EClass)->size()/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="NewAbstractClass11"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['The ' + self.oclAsType(ecore::EClass).name +' class is never used'/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="The Session class is never used"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[-1/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl" value="-1"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eAnnotations.details->select(self.key = 'archetype')->asSequence()->first()/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EStringToStringMapEntry</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eInverse(ecore::EClass)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.api.session.danalysis/DAnalysisSession"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.business.internal.session.danalysis/DAnalysisSessionImpl"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=EClass)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name.toLower()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="session"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(ecore::EClass).eAllSuperTypes->including(self).eInverse()->select(self.oclIsKindOf(ecore::EClass) or self.oclIsKindOf(ecore::EReference))->reject(self.oclAsType(ecore::EClass).eAllStructuralFeatures->includes(self))->notEmpty()/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(ecore::EClass).eAllSuperTypes->size() &lt; 4/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[true/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+ self.name +' Class Diagram'/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open full-sirius-code Class Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self &lt;> self.eContainer()/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(ecore::EPackage)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="reverse.ecore#//org.eclipse.sirius.business.api.session"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EPackage</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not self.derived/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eClass().name + ':' + self.name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="EPackage:full-sirius-code"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(ecore::ENamedElement)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(ecore::EClass)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(ecore::ENamedElement)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.abstract and session.interface/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="session" value="//@modelElements.0"/>
+  </queries>
+  <queries expression="[1 + 1 + 1/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl" value="3"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eClass().name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="EPackage"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <modelElements name="Session">
+    <target href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session"/>
+  </modelElements>
+  <modelElements name="PasteDescription">
+    <target href="reverse.ecore#//org.eclipse.sirius.business.internal.metamodel.description.tool.spec/PasteDescriptionSpec"/>
+  </modelElements>
+  <modelElements name="root">
+    <target href="reverse.ecore#/"/>
+  </modelElements>
+  <modelElements name="DialectPackage">
+    <target href="reverse.ecore#//org.eclipse.sirius.business.api.dialect"/>
+  </modelElements>
+  <modelElements name="MomentInterval">
+    <target href="reverse.ecore#//newMomentInterval5"/>
+  </modelElements>
+  <modelElements name="UnusedClass">
+    <target href="reverse.ecore#//Unused"/>
+  </modelElements>
+  <modelElements name="AnEReference">
+    <target href="reverse.ecore#//org.eclipse.sirius.business.internal.logger/RuntimeLoggerInterpreterImpl/interpreter"/>
+  </modelElements>
+</qmodel:Queries>

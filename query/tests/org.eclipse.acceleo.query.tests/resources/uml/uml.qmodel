@@ -1,0 +1,1911 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qmodel:Queries xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:qmodel="http://www.eclipse.org/acceleo/qmodel" name="uml">
+  <queries expression="[''/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value=""/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['// TODO body of '+instance.name/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="// TODO body of model"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="instance" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="['&lt;&lt;'+self.name+'>>'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="&lt;&lt;model>>"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['&lt;&lt;use>> '+self.name/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="&lt;&lt;use>> model"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+self.name+' Activity Diagram'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open model Activity Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+self.name+' Class Diagram'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open model Class Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+self.name+' Sequence Diagram'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open model Sequence Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Open '+self.name+' State Machine Diagram'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Open model State Machine Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Part'+self.eContainer().eContents()->filter(uml::Property)->size()/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Part5"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['Transition_'+source.name+'To'+target.name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Transition_modelToname"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.1"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.2"/>
+  </queries>
+  <queries expression="['context dependency: '+self.clientDependency.supplier.name->sep('::')/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="context dependency: "/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['current container : '+self.clientDependency.supplier.eContainer(anydsl::NamedElement).name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="current container : "/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['current container : '+self.represents.eContainer().oclAsType(uml::NamedElement).name+'\n context dependency: '+self.clientDependency.supplier.name->sep('::')/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="current container : Person&#xA; context dependency: "/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['current container : '+self.represents.eContainer().oclAsType(uml::NamedElement).name/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="current container : Person"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="['do/ '+ self.computeUmlLabel()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="do/ model"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="['entry/ '+ self.computeUmlLabel()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="entry/ model"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="['exit/ '+ self.computeUmlLabel()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="exit/ model"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[(self.eClass().name &lt;> 'Class') and (self.eContainer() &lt;> container) /]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[(not self.oclIsTypeOf(uml::Class)) and (self.eContainer() &lt;> container) /]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[(self.eClass().name = 'Class') and (self.eContainer() &lt;> container) /]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[(self.eClass().name = 'Class') and (self.eContainer() = container) /]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[(self.oclIsTypeOf(uml::Class)) and (self.eContainer() &lt;> container) /]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[(self.oclIsTypeOf(uml::Class)) and (self.eContainer() = container) /]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[(source.oclIsTypeOf(uml::Property) and sourceView.eContainer()=targetView.eContainer()) or (source.oclIsKindOf(uml::StructuredClassifier) and sourceView.eContainer()=targetView.eContainer()) or (source.oclIsKindOf(uml::Port) and sourceView.eContainer().eContainer()=targetView.eContainer())/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.3"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="sourceView" value="//@modelElements.2"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="targetView" value="//@modelElements.3"/>
+  </queries>
+  <queries expression="[(target.oclIsTypeOf(uml::Property) and sourceView.eContainer()=targetView.eContainer()) or (target.oclIsKindOf(uml::StructuredClassifier) and sourceView.eContainer()=targetView.eContainer()) or (target.oclIsKindOf(uml::Port) and sourceView.eContainer()=targetView.eContainer().eContainer())/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.3"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="sourceView" value="//@modelElements.2"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="targetView" value="//@modelElements.3"/>
+  </queries>
+  <queries expression="[0&lt;>null/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[0=null/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[uml::Class/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifierLiteral=Class</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[aProperty.findTypeByName('String')&lt;>null/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="aProperty" value="//@modelElements.2"/>
+  </queries>
+  <queries expression="[actor.name/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Vehicle"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="actor" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[self.ancestors()->last()->including(self.ancestors()->last().eAllContents(uml::PackageableElement))/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=EObject)</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=PackageableElement))</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.ancestors()->size()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.class.name/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Person"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.clientDependency->size() > 0/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.clientDependency->size()>0 or self.represents.eContainer()->size()>0/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[container &lt;> self.eContainer()/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container->filter(uml::Activity)->size()>0/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container->filter(uml::ActivityPartition)->size()>0/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container.createHelperInterfaceRealization(interfaceToAdd)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=InterfaceRealization</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="interfaceToAdd" value="//@modelElements.9"/>
+  </queries>
+  <queries expression="[container.createSlot(aProperty)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>void</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.10"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="aProperty" value="//@modelElements.2"/>
+  </queries>
+  <queries expression="[container.eContainer(uml::Package).getAvailableTypes()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=Type)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container.eContainer(uml::Package)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Package</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container.oclAsType(uml::Element).getNearestPackage().getAllAppliedProfiles()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Profile)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container.oclIsKindOf(uml::Property) or container.oclIsKindOf(uml::StructuredClassifier)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[container.packagedElement/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_pC1TsJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_hPZ4sHcDEeS_LcjX3XW_Qg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.5"/>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Model).name/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="model"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.createInteraction()/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Interaction</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[self.packagedElement->excludes(class)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="class" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[self.interfaceRealization->filter(uml::InterfaceRealization).supplier/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=NamedElement)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.interfaceRealization->filter(uml::InterfaceRealization)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=InterfaceRealization)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.packagedElement->select(self.oclIsTypeOf(uml::Class) or self.oclIsTypeOf(uml::Interface))/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.getAppliedStereotypes()->size() >0/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.getStereotypesDescription('energy')/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[self.eAllContents(uml::Package)->including(self)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer() = null/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer().eContainer().eAllContents(uml::EnumerationLiteral)->size() - 1/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:IntegerResult" interpreter="mtl" value="-1"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(uml::BehavioredClassifier).eContents()->filter(uml::StateMachine)->last()/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=StateMachine</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(uml::BehavioredClassifier)/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=BehavioredClassifier</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(uml::Model)/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Model</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(uml::Package).name+' Subject'/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="org.eclipse.acceleo.java Subject"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer(uml::Package)/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Package</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->filter(uml::Activity)->asSequence()->first()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Activity</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->filter(uml::Package)->last()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Package</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->select(eObject | eObject.oclIsKindOf(uml::Class) or eObject.oclIsKindOf(uml::Component) or eObject.oclIsKindOf(uml::Package))/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Comment)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=StringExpression)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Constraint)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ElementImport)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageImport)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=TemplateBinding)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=TemplateSignature)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageMerge)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ProfileApplication)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->select(not self.oclIsTypeOf(uml::Comment))/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_pC1TsJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_hPZ4sHcDEeS_LcjX3XW_Qg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Comment)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=StringExpression)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Constraint)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ElementImport)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageImport)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=TemplateBinding)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=TemplateSignature)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageMerge)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ProfileApplication)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[element->filter(uml::Classifier)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=Classifier)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="element" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[element->filter(uml::Property)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_JrASAJBmEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=Property)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="element" value="//@modelElements.2"/>
+  </queries>
+  <queries expression="[self.eContainer(uml::Package)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Package</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.memberEnd->at(1)/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_A96esZBpEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Property</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.memberEnd->at(2)/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_A97FwZBpEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Property</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name+'_call'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="model_call"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Operation)/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.memberEnd->at(1).role->filter(uml::Property)->first()/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <validationMessages severity="ERROR" message="Feature role not found in EClass Property"/>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.memberEnd->at(1).role->filter(uml::Property)/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <validationMessages severity="ERROR" message="Feature role not found in EClass Property"/>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.memberEnd->at(1).name+'To'+self.memberEnd->at(2).name.toUpperFirst()/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="parentToChildren"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.memberEnd->at(1).name.toUpperFirst()/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="Parent"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.findTypeByName('String')/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Type</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[self.getAllAvailableRootPackages()->union(self.getAllAvailableRootPackages().eAllContents()->filter(uml::Classifier))->union(self.getAllAvailableRootPackages().eAllContents()->filter(uml::Operation))/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[self.getApplicableStereotypes().getProfile()->asOrderedSet()->asSequence()/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Profile)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.getAppliedStereotypes()->size() > 0/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.getValidsForComponentDiagram()->select(eObject | eObject.oclIsKindOf(uml::Class) or eObject.oclIsKindOf(uml::Component) or eObject.oclIsKindOf(uml::Package))/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->select(eObject | eObject.oclIsKindOf(uml::Class) or eObject.oclIsKindOf(uml::Component) or eObject.oclIsKindOf(uml::Package))/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_eRVrwHDGEeSjq5wVpgsUQA"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Property).nameExpression/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=StringExpression</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.isAbstract and self.isStatic/]" startingPoint="//@modelElements.11">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.getComment()/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Comment</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[self.packagedElement->filter(uml::Activity)->asSequence()->first()/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Activity</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.packagedElement->filter(uml::Activity)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Activity)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.name + 'Activity Diagram'/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="modelActivity Diagram"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EString</possibleTypes>
+        <possibleTypes>EClassifier=SingleString</possibleTypes>
+        <possibleTypes>EClassifier=String</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not (target.ancestors()->including(target))->includes(source)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.4"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[not self.oclIsKindOf(uml::InterfaceRealization)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not self.oclIsKindOf(uml::Package)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not self.oclIsTypeOf(uml::Actor) and not self.oclIsTypeOf(uml::UseCase)/]" startingPoint="//@modelElements.7">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not self.oclIsTypeOf(uml::Manifestation)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not self.oclIsTypeOf(uml::Comment)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[not source.oclIsKindOf(uml::Association)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.6"/>
+  </queries>
+  <queries expression="[not self.eContainer(uml::EncapsulatedClassifier).ownedElement->includes(object)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[object.oclIsKindOf(uml::EncapsulatedClassifier)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[object.oclIsKindOf(uml::Property)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Component).packagedElement->filter(uml::Package)->asSequence()->first()/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Package</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Element).getAppliedStereotypes()/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Stereotype)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Element)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Element</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::StructuredClassifier).ownedAttribute->filter(uml::Port)->select(self.type &lt;> self)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Port)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::StructuredClassifier).ownedAttribute/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Property)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::Interface) or self.oclIsKindOf(uml::Port) or self.oclIsKindOf(uml::EncapsulatedClassifier) or self.oclIsKindOf(uml::PackageableElement)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::Node) or self.oclIsKindOf(uml::Package)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::Package) or self.oclIsKindOf(uml::StructuredClassifier)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Package) or self.oclIsTypeOf(uml::Component) or self.oclIsTypeOf(uml::ExecutionEnvironment) or self.oclIsTypeOf(uml::Node) or self.oclIsTypeOf(uml::Device) or self.oclIsTypeOf(uml::Artifact)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Property) and self.oclAsType(uml::Property).defaultValue &lt;>null/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Property) and self.oclAsType(uml::Property).defaultValue = null/]" startingPoint="//@modelElements.2">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Property) and self.oclAsType(uml::Property).nameExpression &lt;> null/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Property) and self.oclAsType(uml::Property).nameExpression = null/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsTypeOf(uml::Property) or self.oclIsTypeOf(uml::Operation)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.packagedElement->select(self.oclIsTypeOf(uml::Package))->size()=0/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[preSource->including(preTarget)->filter(uml::Actor)->size() = 2 or preSource->including(preTarget)->filter(uml::UseCase)->size() = 2/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.1"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.5"/>
+  </queries>
+  <queries expression="[preSource->including(preTarget)->filter(uml::UseCase)->size() = 2/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.1"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.5"/>
+  </queries>
+  <queries expression="[preSource.canCreateAnInstanceSlot(preTarget)/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBoolean</possibleTypes>
+        <possibleTypes>EClassifier=Boolean</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.10"/>
+    <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.10"/>
+  </queries>
+  <queries expression="[preSource.candidatesForSlot()->filter(uml::Property)->size()>0/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.10"/>
+  </queries>
+  <queries expression="[preSource.oclIsKindOf(uml::Classifier)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[preTarget->filter(uml::TemplateableElement).ownedTemplateSignature.ownedParameter&lt;>null/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[preTarget.oclIsKindOf(uml::Classifier)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[preTarget.oclIsKindOf(uml::Component)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[self.property.oclAsType(uml::ConnectableElement).end.eContainer(uml::Connector)->flatten()/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.redefinedPort->size() > 0/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.represents &lt;>null and self.clientDependency->size() > 0/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.represents = null and self.clientDependency->size() = 1/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.represents = null and self.clientDependency->size()>1/]" startingPoint="//@modelElements.3">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.selection.oclAsType(uml::UseCase).subject->size() = 0/]" startingPoint="//@modelElements.7">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.selection.oclAsType(uml::UseCase).subject->size() > 0/]" startingPoint="//@modelElements.7">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.selection.oclIsTypeOf(uml::Actor)/]" startingPoint="//@modelElements.7">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.selection.oclIsTypeOf(uml::Classifier)/]" startingPoint="//@modelElements.7">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.selection.oclIsTypeOf(uml::UseCase)/]" startingPoint="//@modelElements.7">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self->filter(uml::Lifeline).represents->filter(uml::Property)->size() >0/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self->including(self.getSource())->including(self.getTarget())/]" startingPoint="//@modelElements.6">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=Association)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Property)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+  </queries>
+  <queries expression="[self->including(self.getStereotypeApplications())/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:ListResult"/>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=EObject))</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContainer() &lt;> container/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
+  </queries>
+  <queries expression="[self.eContents()->filter(uml::Activity)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Activity)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->filter(uml::Interaction)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Interaction)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.eContents()->filter(uml::StateMachine)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_eRVrwHDGEeSjq5wVpgsUQA"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=StateMachine)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Element).getApplicableStereotypes()->union(self.oclAsType(uml::Element).getApplicableStereotypes().getProfile()->asSet())/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::Class)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::Package)/]" startingPoint="//@modelElements.5">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->asOrderedSet()->asSequence()->select(self.oclIsTypeOf(uml::Class) or self.oclIsTypeOf(uml::DataType))/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->asOrderedSet()->asSequence()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->select(self.oclIsTypeOf(uml::Enumeration))->asOrderedSet()->asSequence()/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[source.eContainer(uml::Interaction)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Interaction</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[source.eContainer(uml::Model)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Model</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[source.eContainer(uml::Package)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Package</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[source.eContainer(uml::Region)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=Region</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[target.oclAsType(ecore::EModelElement).eAnnotations/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[target.oclIsKindOf(uml::Interface)/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[target.ownedTemplateSignature/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=TemplateSignature</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.4"/>
+  </queries>
+  <queries expression="[uml::AggregationKind::composite/]" startingPoint="//@modelElements.1">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EnumeratorResult" interpreter="mtl" value="composite"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=AggregationKind</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.value->select(value | not (value.owner.oclAsType(uml::Slot).definingFeature.oclAsType(uml::Property).isComposite) )->filter(uml::InstanceValue).instance/]" startingPoint="//@modelElements.8">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=InstanceSpecification)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.value->select(value | value.owner.oclAsType(uml::Slot).definingFeature.oclAsType(uml::Property).isComposite )->filter(uml::InstanceValue).instance/]" startingPoint="//@modelElements.8">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=InstanceSpecification)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclAsType(uml::Element).ownedElement->includes(object)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.8"/>
+  </queries>
+  <queries expression="[self.oclAsType(uml::EncapsulatedClassifier).ownedElement->includes(object)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+    <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.2"/>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::EncapsulatedClassifier)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.oclIsKindOf(uml::InterfaceRealization)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.visibility&lt;>uml::VisibilityKind::public/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <modelElements name="APort">
+    <target href="example.uml#_eD4KIHb-EeS_LcjX3XW_Qg"/>
+  </modelElements>
+  <modelElements name="TheModel">
+    <target href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+  </modelElements>
+  <modelElements name="PersonName">
+    <target href="example.uml#_JrASAJBmEd2MY5zfT4Awfg"/>
+  </modelElements>
+  <modelElements name="ActivityPartition">
+    <target href="example.uml#_M5h9UHDEEeSjq5wVpgsUQA"/>
+  </modelElements>
+  <modelElements name="AClass">
+    <target href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+  </modelElements>
+  <modelElements name="APackage">
+    <target href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+  </modelElements>
+  <modelElements name="AnAssociation">
+    <target href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+  </modelElements>
+  <modelElements name="InputPin">
+    <target href="example.uml#_2nErwHcBEeS_LcjX3XW_Qg"/>
+  </modelElements>
+  <modelElements name="Slot">
+    <target href="example.uml#_5l6pMHcGEeS_LcjX3XW_Qg"/>
+  </modelElements>
+  <modelElements name="AnInterface">
+    <target href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+  </modelElements>
+  <modelElements name="AnInstanceSpecification">
+    <target href="example.uml#_hPZ4sHcDEeS_LcjX3XW_Qg"/>
+  </modelElements>
+  <modelElements name="AnOperation">
+    <target href="example.uml#_YRLRMJBmEd2MY5zfT4Awfg"/>
+  </modelElements>
+</qmodel:Queries>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anydsl:World xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:anydsl="http://www.eclipse.org/acceleo/anydsl">
+  <companies xsi:type="anydsl:ProductionCompany" name="BeefCo" world="/">
+    <adress zipCode="48084" city="Troy" country="Michigan-America"/>
+    <producers name="Bruce" company="//@companies.0" foods="//@foods.2">
+      <adress zipCode="48309" city="Rochester Hills" country="Michigan-America"/>
+    </producers>
+  </companies>
+  <companies xsi:type="anydsl:ProductionCompany" name="ChickenCo" world="/">
+    <adress zipCode="29300" city="Quimperlé" country="France-Europe"/>
+    <producers name="Raymond" company="//@companies.1" foods="//@foods.3">
+      <adress zipCode="29300" city="Riec-sur-Bélon" country="France-Europe"/>
+    </producers>
+  </companies>
+  <companies xsi:type="anydsl:ProductionCompany" name="AppleCo" world="/">
+    <adress zipCode="9437" city="Balinge" country="Netherlands-Europe"/>
+    <producers name="Bruce" company="//@companies.2" foods="//@foods.0">
+      <adress zipCode="48309" city="Rochester Hills" country="Michigan-America"/>
+    </producers>
+  </companies>
+  <foods name="El Star" caliber="M" relatedFoods="//@foods.1" group="Fruit" label="El Star" producers="//@companies.2/@producers.0">
+    <color>red</color>
+    <color>yellow</color>
+    <color>pink</color>
+    <color>veryYellow</color>
+    <color>palPink</color>
+  </foods>
+  <foods name="Santana" caliber="M" relatedFoods="//@foods.0" group="Fruit" label="Santana" source="//@sources.1">
+    <color>red</color>
+    <color>green</color>
+  </foods>
+  <foods name="Rump Steak" caliber="L" group="Protein" label="cuts of beef" source="//@sources.2" producers="//@companies.0/@producers.0">
+    <color>red</color>
+  </foods>
+  <foods name="Fillet" caliber="M" group="Protein" label="Chicken fillet" source="//@sources.3" producers="//@companies.1/@producers.0">
+    <color>white</color>
+  </foods>
+  <sources xsi:type="anydsl:Plant" kind="Tree">
+    <name>Elstar</name>
+    <name>Golden Delicious</name>
+    <name>Ingrid Marie</name>
+    <origin>France-Europe</origin>
+    <origin>Spain-Europe</origin>
+    <origin>Portugal-Europe</origin>
+    <origin>Nehtelands-Europe</origin>
+  </sources>
+  <sources xsi:type="anydsl:Plant" foods="//@foods.1" kind="Tree">
+    <name>Santana</name>
+    <origin>France-Europe</origin>
+    <origin>Spain-Europe</origin>
+    <origin>Portugal-Europe</origin>
+    <origin>Nehtelands-Europe</origin>
+  </sources>
+  <sources xsi:type="anydsl:Animal" foods="//@foods.2">
+    <name>Beef</name>
+    <origin>Paraguay-America</origin>
+    <origin>France-Europe</origin>
+    <part>Muscle</part>
+  </sources>
+  <sources xsi:type="anydsl:Animal" foods="//@foods.3">
+    <name>Chicken</name>
+    <origin>Paraguay-America</origin>
+    <origin>France-Europe</origin>
+    <part>Muscle</part>
+  </sources>
+</anydsl:World>

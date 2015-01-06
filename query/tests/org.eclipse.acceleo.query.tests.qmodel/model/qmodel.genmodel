@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText=" Copyright (c) 2015 Obeo.&#xA; All rights reserved. This program and the accompanying materials&#xA; are made available under the terms of the Eclipse Public License v1.0&#xA; which accompanies this distribution, and is available at&#xA; http://www.eclipse.org/legal/epl-v10.html&#xA; &#xA; Contributors:&#xA;     Obeo - initial API and implementation&#xA;"
+    modelDirectory="/org.eclipse.acceleo.query.tests.qmodel/src-gen" creationIcons="false"
+    editDirectory="/org.eclipse.acceleo.query.tests.qmodel.edit/src-gen" editorDirectory="/org.eclipse.acceleo.query.tests.qmodel.editor/src-gen"
+    modelPluginID="org.eclipse.acceleo.query.tests.qmodel" modelName="Qmodel" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
+    runtimeVersion="2.8" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>qmodel.ecore</foreignModel>
+  <genPackages prefix="Qmodel" basePackage="org.eclipse.acceleo.query.tests" disposableProviderFactory="true"
+      ecorePackage="qmodel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="qmodel.ecore#//Severity">
+      <genEnumLiterals ecoreEnumLiteral="qmodel.ecore#//Severity/INFO"/>
+      <genEnumLiterals ecoreEnumLiteral="qmodel.ecore#//Severity/WARNING"/>
+      <genEnumLiterals ecoreEnumLiteral="qmodel.ecore#//Severity/ERROR"/>
+    </genEnums>
+    <genDataTypes ecoreDataType="qmodel.ecore#//AnySerializable"/>
+    <genClasses ecoreClass="qmodel.ecore#//Query">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//Query/expression"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference qmodel.ecore#//Query/startingPoint"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference qmodel.ecore#//Query/currentResults"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//Query/expectations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//Query/classesToImport"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//Query/variables"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//Query/pluginsInClassPath"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="qmodel.ecore#//Variable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//Variable/name"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//EObjectVariable">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference qmodel.ecore#//EObjectVariable/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="qmodel.ecore#//QueryEvaluationResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//QueryEvaluationResult/interpreter"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//ListResult">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//ListResult/values"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//Queries">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//Queries/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//Queries/queries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//Queries/modelElements"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//ModelElement">
+      <genFeatures children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference qmodel.ecore#//ModelElement/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ModelElement/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="qmodel.ecore#//Expectation"/>
+    <genClasses ecoreClass="qmodel.ecore#//QueryEvaluationResultExpectation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//QueryEvaluationResultExpectation/expectedResult"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//ErrorResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ErrorResult/message"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//SerializableResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//SerializableResult/value"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//EnumeratorResult">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute qmodel.ecore#//EnumeratorResult/value"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//BooleanResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//BooleanResult/value"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//StringResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//StringResult/value"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//EmptyResult"/>
+    <genClasses ecoreClass="qmodel.ecore#//IntegerResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//IntegerResult/value"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//QueryValidationResultExpectation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//QueryValidationResultExpectation/expectedResult"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//QueryValidationResult">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//QueryValidationResult/interpreter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//QueryValidationResult/possibleTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//QueryValidationResult/validationMessages"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//ValidationMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/severity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/line"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/column"/>
+    </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//InvalidResult"/>
+    <genClasses ecoreClass="qmodel.ecore#//EObjectResult">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference qmodel.ecore#//EObjectResult/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

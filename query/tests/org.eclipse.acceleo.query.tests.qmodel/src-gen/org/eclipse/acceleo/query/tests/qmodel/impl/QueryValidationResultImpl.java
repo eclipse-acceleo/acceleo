@@ -1,0 +1,269 @@
+/*******************************************************************************
+ * Copyright (c) 2015 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.query.tests.qmodel.impl;
+
+import java.util.Collection;
+
+import org.eclipse.acceleo.query.tests.qmodel.QmodelPackage;
+import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
+import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+/**
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Query Validation Result</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.QueryValidationResultImpl#getInterpreter <em>
+ * Interpreter</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.QueryValidationResultImpl#getPossibleTypes <em>
+ * Possible Types</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.QueryValidationResultImpl#getValidationMessages <em>
+ * Validation Messages</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @generated
+ */
+public class QueryValidationResultImpl extends MinimalEObjectImpl.Container implements QueryValidationResult {
+	/**
+	 * The default value of the '{@link #getInterpreter() <em>Interpreter</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getInterpreter()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String INTERPRETER_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getInterpreter() <em>Interpreter</em>}' attribute. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @see #getInterpreter()
+	 * @generated
+	 * @ordered
+	 */
+	protected String interpreter = INTERPRETER_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPossibleTypes() <em>Possible Types</em>}' attribute list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getPossibleTypes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> possibleTypes;
+
+	/**
+	 * The cached value of the '{@link #getValidationMessages() <em>Validation Messages</em>}' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getValidationMessages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ValidationMessage> validationMessages;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected QueryValidationResultImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return QmodelPackage.Literals.QUERY_VALIDATION_RESULT;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String getInterpreter() {
+		return interpreter;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setInterpreter(String newInterpreter) {
+		String oldInterpreter = interpreter;
+		interpreter = newInterpreter;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					QmodelPackage.QUERY_VALIDATION_RESULT__INTERPRETER, oldInterpreter, interpreter));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<String> getPossibleTypes() {
+		if (possibleTypes == null) {
+			possibleTypes = new EDataTypeUniqueEList<String>(String.class, this,
+					QmodelPackage.QUERY_VALIDATION_RESULT__POSSIBLE_TYPES);
+		}
+		return possibleTypes;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<ValidationMessage> getValidationMessages() {
+		if (validationMessages == null) {
+			validationMessages = new EObjectContainmentEList<ValidationMessage>(ValidationMessage.class,
+					this, QmodelPackage.QUERY_VALIDATION_RESULT__VALIDATION_MESSAGES);
+		}
+		return validationMessages;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case QmodelPackage.QUERY_VALIDATION_RESULT__VALIDATION_MESSAGES:
+				return ((InternalEList<?>)getValidationMessages()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case QmodelPackage.QUERY_VALIDATION_RESULT__INTERPRETER:
+				return getInterpreter();
+			case QmodelPackage.QUERY_VALIDATION_RESULT__POSSIBLE_TYPES:
+				return getPossibleTypes();
+			case QmodelPackage.QUERY_VALIDATION_RESULT__VALIDATION_MESSAGES:
+				return getValidationMessages();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case QmodelPackage.QUERY_VALIDATION_RESULT__INTERPRETER:
+				setInterpreter((String)newValue);
+				return;
+			case QmodelPackage.QUERY_VALIDATION_RESULT__POSSIBLE_TYPES:
+				getPossibleTypes().clear();
+				getPossibleTypes().addAll((Collection<? extends String>)newValue);
+				return;
+			case QmodelPackage.QUERY_VALIDATION_RESULT__VALIDATION_MESSAGES:
+				getValidationMessages().clear();
+				getValidationMessages().addAll((Collection<? extends ValidationMessage>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case QmodelPackage.QUERY_VALIDATION_RESULT__INTERPRETER:
+				setInterpreter(INTERPRETER_EDEFAULT);
+				return;
+			case QmodelPackage.QUERY_VALIDATION_RESULT__POSSIBLE_TYPES:
+				getPossibleTypes().clear();
+				return;
+			case QmodelPackage.QUERY_VALIDATION_RESULT__VALIDATION_MESSAGES:
+				getValidationMessages().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case QmodelPackage.QUERY_VALIDATION_RESULT__INTERPRETER:
+				return INTERPRETER_EDEFAULT == null ? interpreter != null : !INTERPRETER_EDEFAULT
+						.equals(interpreter);
+			case QmodelPackage.QUERY_VALIDATION_RESULT__POSSIBLE_TYPES:
+				return possibleTypes != null && !possibleTypes.isEmpty();
+			case QmodelPackage.QUERY_VALIDATION_RESULT__VALIDATION_MESSAGES:
+				return validationMessages != null && !validationMessages.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (interpreter: ");
+		result.append(interpreter);
+		result.append(", possibleTypes: ");
+		result.append(possibleTypes);
+		result.append(')');
+		return result.toString();
+	}
+
+} // QueryValidationResultImpl

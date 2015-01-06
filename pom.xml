@@ -43,7 +43,7 @@
     <acceleo-version>3.5.0-SNAPSHOT</acceleo-version>
     <platform-version-name>luna</platform-version-name>
     <eclipse-site>http://download.eclipse.org/releases/${platform-version-name}</eclipse-site>
-    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20140114142710/repository/</orbit-site>
+    <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/I20141218090704/repository/</orbit-site>
     <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
   </properties>
   
@@ -52,7 +52,11 @@
   </scm>
   
   <modules>
-    <module>plugins/org.eclipse.acceleo.common</module>
+        <module>query/plugins/org.eclipse.acceleo.query</module>
+	<module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
+	<module>query/features/org.eclipse.acceleo.query-feature</module>
+	
+        <module>plugins/org.eclipse.acceleo.common</module>
 	<module>plugins/org.eclipse.acceleo.common.ui</module>
 	<module>plugins/org.eclipse.acceleo.model</module>
 	<module>plugins/org.eclipse.acceleo.model.edit</module>
