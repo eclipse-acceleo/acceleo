@@ -34,6 +34,7 @@
 	         <failIfNoTests>false</failIfNoTests>         
 	         <useUIHarness>false</useUIHarness>
 	         <useUIThread>false</useUIThread>          
+	         <application>org.eclipse.ui.ide.workbench</application>
 	      </configuration>
       </plugin>  
       <plugin>
