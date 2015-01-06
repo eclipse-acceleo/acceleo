@@ -54,7 +54,16 @@
   <modules>
         <module>query/plugins/org.eclipse.acceleo.query</module>
 	<module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
+	
 	<module>query/features/org.eclipse.acceleo.query-feature</module>
+	
+	<module>query/tests/org.eclipse.acceleo.query.tests</module>
+	<module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module>
+	<module>query/tests/org.eclipse.acceleo.query.tests.qmodel</module>
+	<module>query/tests/org.eclipse.acceleo.query.tests.anydsl</module>
+	<module>query/tests/org.eclipse.acceleo.query.tests.anydsl.edit</module>
+	<module>query/tests/org.eclipse.acceleo.query.tests.anydsl.editor</module>
+	
 	
         <module>plugins/org.eclipse.acceleo.common</module>
 	<module>plugins/org.eclipse.acceleo.common.ui</module>
