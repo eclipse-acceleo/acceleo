@@ -37,6 +37,7 @@
                     <includes>
                         <include>org/eclipse/acceleo/query/tests/AllTests.class</include>
                     </includes>
+                    <application>org.eclipse.ui.ide.workbench</application>
                     <dependencies>
                         <dependency>
                             <type>eclipse-plugin</type>
