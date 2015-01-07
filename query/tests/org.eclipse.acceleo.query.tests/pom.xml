@@ -32,9 +32,8 @@
                 <version>${tycho-version}</version>
                 <configuration>	   
                     <failIfNoTests>false</failIfNoTests>         
-                    <useUIHarness>true</useUIHarness>
+                    <useUIHarness>false</useUIHarness>
                     <useUIThread>false</useUIThread>          
-                    <application>org.eclipse.ui.ide.workbench</application>
                     <dependencies>
                         <dependency>
                             <type>eclipse-plugin</type>
