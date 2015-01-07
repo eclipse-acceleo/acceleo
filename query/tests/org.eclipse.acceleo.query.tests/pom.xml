@@ -34,6 +34,9 @@
                     <failIfNoTests>false</failIfNoTests>         
                     <useUIHarness>false</useUIHarness>
                     <useUIThread>false</useUIThread>          
+                    <includes>
+                        <include>org/eclipse/acceleo/query/tests/AllTests.class</include>
+                    </includes>
                     <dependencies>
                         <dependency>
                             <type>eclipse-plugin</type>
