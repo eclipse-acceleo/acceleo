@@ -29,6 +29,7 @@ import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.SerializableResult;
+import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.acceleo.query.tests.qmodel.StringResult;
 import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
 import org.eclipse.acceleo.query.tests.qmodel.Variable;
@@ -112,6 +113,11 @@ public class QmodelAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseListResult(ListResult object) {
 			return createListResultAdapter();
+		}
+
+		@Override
+		public Adapter caseSetResult(SetResult object) {
+			return createSetResultAdapter();
 		}
 
 		@Override
@@ -280,6 +286,20 @@ public class QmodelAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createListResultAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.tests.qmodel.SetResult
+	 * <em>Set Result</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.tests.qmodel.SetResult
+	 * @generated
+	 */
+	public Adapter createSetResultAdapter() {
 		return null;
 	}
 

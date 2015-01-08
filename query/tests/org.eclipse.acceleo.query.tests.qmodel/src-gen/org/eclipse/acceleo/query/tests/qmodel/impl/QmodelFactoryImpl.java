@@ -30,6 +30,7 @@ import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.SerializableResult;
+import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.acceleo.query.tests.qmodel.Severity;
 import org.eclipse.acceleo.query.tests.qmodel.StringResult;
 import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
@@ -87,6 +88,8 @@ public class QmodelFactoryImpl extends EFactoryImpl implements QmodelFactory {
 				return createEObjectVariable();
 			case QmodelPackage.LIST_RESULT:
 				return createListResult();
+			case QmodelPackage.SET_RESULT:
+				return createSetResult();
 			case QmodelPackage.QUERIES:
 				return createQueries();
 			case QmodelPackage.MODEL_ELEMENT:
@@ -187,6 +190,16 @@ public class QmodelFactoryImpl extends EFactoryImpl implements QmodelFactory {
 	public ListResult createListResult() {
 		ListResultImpl listResult = new ListResultImpl();
 		return listResult;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public SetResult createSetResult() {
+		SetResultImpl setResult = new SetResultImpl();
+		return setResult;
 	}
 
 	/**

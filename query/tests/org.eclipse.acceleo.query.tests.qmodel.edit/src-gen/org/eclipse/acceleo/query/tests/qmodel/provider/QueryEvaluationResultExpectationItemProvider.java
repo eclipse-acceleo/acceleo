@@ -169,6 +169,11 @@ public class QueryEvaluationResultExpectationItemProvider extends
 		newChildDescriptors
 				.add(createChildParameter(
 						QmodelPackage.Literals.QUERY_EVALUATION_RESULT_EXPECTATION__EXPECTED_RESULT,
+						QmodelFactory.eINSTANCE.createSetResult()));
+
+		newChildDescriptors
+				.add(createChildParameter(
+						QmodelPackage.Literals.QUERY_EVALUATION_RESULT_EXPECTATION__EXPECTED_RESULT,
 						QmodelFactory.eINSTANCE.createErrorResult()));
 
 		newChildDescriptors

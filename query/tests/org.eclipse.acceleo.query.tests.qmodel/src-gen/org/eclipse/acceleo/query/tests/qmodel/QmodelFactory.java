@@ -53,6 +53,14 @@ public interface QmodelFactory extends EFactory {
 	ListResult createListResult();
 
 	/**
+	 * Returns a new object of class '<em>Set Result</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Set Result</em>'.
+	 * @generated
+	 */
+	SetResult createSetResult();
+
+	/**
 	 * Returns a new object of class '<em>Queries</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return a new object of class '<em>Queries</em>'.

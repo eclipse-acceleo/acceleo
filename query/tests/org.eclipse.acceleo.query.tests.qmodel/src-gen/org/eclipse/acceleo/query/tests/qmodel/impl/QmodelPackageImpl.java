@@ -32,6 +32,7 @@ import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.SerializableResult;
+import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.acceleo.query.tests.qmodel.Severity;
 import org.eclipse.acceleo.query.tests.qmodel.StringResult;
 import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
@@ -85,6 +86,13 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 	 * @generated
 	 */
 	private EClass listResultEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass setResultEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -419,6 +427,24 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 	 */
 	public EReference getListResult_Values() {
 		return (EReference)listResultEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getSetResult() {
+		return setResultEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getSetResult_Values() {
+		return (EReference)setResultEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -821,6 +847,9 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 		listResultEClass = createEClass(LIST_RESULT);
 		createEReference(listResultEClass, LIST_RESULT__VALUES);
 
+		setResultEClass = createEClass(SET_RESULT);
+		createEReference(setResultEClass, SET_RESULT__VALUES);
+
 		queriesEClass = createEClass(QUERIES);
 		createEAttribute(queriesEClass, QUERIES__NAME);
 		createEReference(queriesEClass, QUERIES__QUERIES);
@@ -917,6 +946,7 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 		// Add supertypes to classes
 		eObjectVariableEClass.getESuperTypes().add(this.getVariable());
 		listResultEClass.getESuperTypes().add(this.getQueryEvaluationResult());
+		setResultEClass.getESuperTypes().add(this.getQueryEvaluationResult());
 		queryEvaluationResultExpectationEClass.getESuperTypes().add(this.getExpectation());
 		errorResultEClass.getESuperTypes().add(this.getQueryEvaluationResult());
 		serializableResultEClass.getESuperTypes().add(this.getQueryEvaluationResult());
@@ -976,6 +1006,12 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 				IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getListResult_Values(), this.getQueryEvaluationResult(), null, "values", null, 0, -1,
 				ListResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(setResultEClass, SetResult.class, "SetResult", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSetResult_Values(), this.getQueryEvaluationResult(), null, "values", null, 0, -1,
+				SetResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(queriesEClass, Queries.class, "Queries", !IS_ABSTRACT, !IS_INTERFACE,

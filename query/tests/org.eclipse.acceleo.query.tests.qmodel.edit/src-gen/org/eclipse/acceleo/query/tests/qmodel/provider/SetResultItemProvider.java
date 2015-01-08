@@ -1,21 +1,22 @@
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Obeo.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors:
+ *      Obeo - initial API and implementation
  * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.acceleo.query.tests.qmodel.provider;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.acceleo.query.tests.qmodel.ListResult;
 import org.eclipse.acceleo.query.tests.qmodel.QmodelFactory;
 import org.eclipse.acceleo.query.tests.qmodel.QmodelPackage;
+import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -24,19 +25,19 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
  * This is the item provider adapter for a
- * {@link org.eclipse.acceleo.query.tests.qmodel.ListResult} object. <!--
+ * {@link org.eclipse.acceleo.query.tests.qmodel.SetResult} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  * 
  * @generated
  */
-public class ListResultItemProvider extends QueryEvaluationResultItemProvider {
+public class SetResultItemProvider extends QueryEvaluationResultItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	public ListResultItemProvider(AdapterFactory adapterFactory) {
+	public SetResultItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -70,7 +71,7 @@ public class ListResultItemProvider extends QueryEvaluationResultItemProvider {
 			Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(QmodelPackage.Literals.LIST_RESULT__VALUES);
+			childrenFeatures.add(QmodelPackage.Literals.SET_RESULT__VALUES);
 		}
 		return childrenFeatures;
 	}
@@ -90,15 +91,14 @@ public class ListResultItemProvider extends QueryEvaluationResultItemProvider {
 	}
 
 	/**
-	 * This returns ListResult.gif. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
+	 * This returns SetResult.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object,
-				getResourceLocator().getImage("full/obj16/ListResult"));
+				getResourceLocator().getImage("full/obj16/SetResult"));
 	}
 
 	/**
@@ -119,9 +119,9 @@ public class ListResultItemProvider extends QueryEvaluationResultItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ListResult) object).getInterpreter();
-		return label == null || label.length() == 0 ? getString("_UI_ListResult_type")
-				: getString("_UI_ListResult_type") + " " + label;
+		String label = ((SetResult) object).getInterpreter();
+		return label == null || label.length() == 0 ? getString("_UI_SetResult_type")
+				: getString("_UI_SetResult_type") + " " + label;
 	}
 
 	/**
@@ -136,8 +136,8 @@ public class ListResultItemProvider extends QueryEvaluationResultItemProvider {
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(ListResult.class)) {
-		case QmodelPackage.LIST_RESULT__VALUES:
+		switch (notification.getFeatureID(SetResult.class)) {
+		case QmodelPackage.SET_RESULT__VALUES:
 			fireNotifyChanged(new ViewerNotification(notification,
 					notification.getNotifier(), true, false));
 			return;
@@ -158,47 +158,47 @@ public class ListResultItemProvider extends QueryEvaluationResultItemProvider {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createListResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createSetResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createErrorResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createSerializableResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createEnumeratorResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createBooleanResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createStringResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createEmptyResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createIntegerResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createInvalidResult()));
 
 		newChildDescriptors.add(createChildParameter(
-				QmodelPackage.Literals.LIST_RESULT__VALUES,
+				QmodelPackage.Literals.SET_RESULT__VALUES,
 				QmodelFactory.eINSTANCE.createEObjectResult()));
 	}
 

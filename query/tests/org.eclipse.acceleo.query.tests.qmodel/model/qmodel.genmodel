@@ -37,6 +37,9 @@
     <genClasses ecoreClass="qmodel.ecore#//ListResult">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//ListResult/values"/>
     </genClasses>
+    <genClasses ecoreClass="qmodel.ecore#//SetResult">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//SetResult/values"/>
+    </genClasses>
     <genClasses ecoreClass="qmodel.ecore#//Queries">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//Queries/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference qmodel.ecore#//Queries/queries"/>

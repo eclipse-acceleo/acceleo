@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.tests.qmodel;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EObject;
@@ -21,7 +22,13 @@ public class QueryEvaluationResultFactory {
 	@SuppressWarnings("unchecked")
 	public QueryEvaluationResult createFromValue(Object value) {
 		QueryEvaluationResult res = QmodelFactory.eINSTANCE.createEmptyResult();
-		if (value instanceof Collection) {
+		if (value instanceof Set) {
+			SetResult mtlResult = QmodelFactory.eINSTANCE.createSetResult();
+			for (Object object : (Collection<Object>)value) {
+				mtlResult.getValues().add(createFromValue(object));
+			}
+			res = mtlResult;
+		} else if (value instanceof Collection) {
 			ListResult mtlResult = QmodelFactory.eINSTANCE.createListResult();
 			for (Object object : (Collection<Object>)value) {
 				mtlResult.getValues().add(createFromValue(object));

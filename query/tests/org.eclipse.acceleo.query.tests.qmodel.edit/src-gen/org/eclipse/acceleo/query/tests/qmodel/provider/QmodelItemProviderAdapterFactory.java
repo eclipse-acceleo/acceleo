@@ -158,6 +158,31 @@ public class QmodelItemProviderAdapterFactory extends QmodelAdapterFactory
 
 	/**
 	 * This keeps track of the one adapter used for all
+	 * {@link org.eclipse.acceleo.query.tests.qmodel.SetResult} instances. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected SetResultItemProvider setResultItemProvider;
+
+	/**
+	 * This creates an adapter for a
+	 * {@link org.eclipse.acceleo.query.tests.qmodel.SetResult}. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Adapter createSetResultAdapter() {
+		if (setResultItemProvider == null) {
+			setResultItemProvider = new SetResultItemProvider(this);
+		}
+
+		return setResultItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all
 	 * {@link org.eclipse.acceleo.query.tests.qmodel.Queries} instances. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -644,6 +669,8 @@ public class QmodelItemProviderAdapterFactory extends QmodelAdapterFactory
 			eObjectVariableItemProvider.dispose();
 		if (listResultItemProvider != null)
 			listResultItemProvider.dispose();
+		if (setResultItemProvider != null)
+			setResultItemProvider.dispose();
 		if (queriesItemProvider != null)
 			queriesItemProvider.dispose();
 		if (modelElementItemProvider != null)

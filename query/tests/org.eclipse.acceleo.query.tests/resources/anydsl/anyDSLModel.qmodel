@@ -221,7 +221,7 @@
   </queries>
   <queries expression="[self.eInverse(anydsl::Producer)/]" startingPoint="//@modelElements.2">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
         <values xsi:type="qmodel:EObjectResult">
           <value href="anyDSLModel.anydsl#//@companies.0/@producers.0"/>
         </values>

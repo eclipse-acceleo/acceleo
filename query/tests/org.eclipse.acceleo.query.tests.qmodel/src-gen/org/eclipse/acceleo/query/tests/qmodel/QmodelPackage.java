@@ -317,6 +317,52 @@ public interface QmodelPackage extends EPackage {
 	int LIST_RESULT_OPERATION_COUNT = QUERY_EVALUATION_RESULT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.qmodel.impl.SetResultImpl
+	 * <em>Set Result</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.SetResultImpl
+	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getSetResult()
+	 * @generated
+	 */
+	int SET_RESULT = 5;
+
+	/**
+	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int SET_RESULT__INTERPRETER = QUERY_EVALUATION_RESULT__INTERPRETER;
+
+	/**
+	 * The feature id for the '<em><b>Values</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int SET_RESULT__VALUES = QUERY_EVALUATION_RESULT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Set Result</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int SET_RESULT_FEATURE_COUNT = QUERY_EVALUATION_RESULT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Set Result</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int SET_RESULT_OPERATION_COUNT = QUERY_EVALUATION_RESULT_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.qmodel.impl.QueriesImpl
 	 * <em>Queries</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -324,7 +370,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getQueries()
 	 * @generated
 	 */
-	int QUERIES = 5;
+	int QUERIES = 6;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -377,7 +423,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getModelElement()
 	 * @generated
 	 */
-	int MODEL_ELEMENT = 6;
+	int MODEL_ELEMENT = 7;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -422,7 +468,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getExpectation()
 	 * @generated
 	 */
-	int EXPECTATION = 7;
+	int EXPECTATION = 8;
 
 	/**
 	 * The number of structural features of the '<em>Expectation</em>' class. <!-- begin-user-doc --> <!--
@@ -451,7 +497,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getQueryEvaluationResultExpectation()
 	 * @generated
 	 */
-	int QUERY_EVALUATION_RESULT_EXPECTATION = 8;
+	int QUERY_EVALUATION_RESULT_EXPECTATION = 9;
 
 	/**
 	 * The feature id for the '<em><b>Expected Result</b></em>' containment reference. <!-- begin-user-doc -->
@@ -488,7 +534,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getErrorResult()
 	 * @generated
 	 */
-	int ERROR_RESULT = 9;
+	int ERROR_RESULT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -534,7 +580,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getSerializableResult()
 	 * @generated
 	 */
-	int SERIALIZABLE_RESULT = 10;
+	int SERIALIZABLE_RESULT = 11;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -579,7 +625,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getEnumeratorResult()
 	 * @generated
 	 */
-	int ENUMERATOR_RESULT = 11;
+	int ENUMERATOR_RESULT = 12;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -624,7 +670,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getBooleanResult()
 	 * @generated
 	 */
-	int BOOLEAN_RESULT = 12;
+	int BOOLEAN_RESULT = 13;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -669,7 +715,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getStringResult()
 	 * @generated
 	 */
-	int STRING_RESULT = 13;
+	int STRING_RESULT = 14;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -714,7 +760,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getEmptyResult()
 	 * @generated
 	 */
-	int EMPTY_RESULT = 14;
+	int EMPTY_RESULT = 15;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -751,7 +797,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getIntegerResult()
 	 * @generated
 	 */
-	int INTEGER_RESULT = 15;
+	int INTEGER_RESULT = 16;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -797,7 +843,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getQueryValidationResultExpectation()
 	 * @generated
 	 */
-	int QUERY_VALIDATION_RESULT_EXPECTATION = 16;
+	int QUERY_VALIDATION_RESULT_EXPECTATION = 17;
 
 	/**
 	 * The feature id for the '<em><b>Expected Result</b></em>' containment reference. <!-- begin-user-doc -->
@@ -835,7 +881,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getQueryValidationResult()
 	 * @generated
 	 */
-	int QUERY_VALIDATION_RESULT = 17;
+	int QUERY_VALIDATION_RESULT = 18;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -890,7 +936,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getValidationMessage()
 	 * @generated
 	 */
-	int VALIDATION_MESSAGE = 18;
+	int VALIDATION_MESSAGE = 19;
 
 	/**
 	 * The feature id for the '<em><b>Severity</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -953,7 +999,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getInvalidResult()
 	 * @generated
 	 */
-	int INVALID_RESULT = 19;
+	int INVALID_RESULT = 20;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -990,7 +1036,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getEObjectResult()
 	 * @generated
 	 */
-	int EOBJECT_RESULT = 20;
+	int EOBJECT_RESULT = 21;
 
 	/**
 	 * The feature id for the '<em><b>Interpreter</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1035,7 +1081,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getSeverity()
 	 * @generated
 	 */
-	int SEVERITY = 21;
+	int SEVERITY = 22;
 
 	/**
 	 * The meta object id for the '<em>Any Serializable</em>' data type. <!-- begin-user-doc --> <!--
@@ -1045,7 +1091,7 @@ public interface QmodelPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getAnySerializable()
 	 * @generated
 	 */
-	int ANY_SERIALIZABLE = 22;
+	int ANY_SERIALIZABLE = 23;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.qmodel.Query <em>Query</em>}
@@ -1228,6 +1274,28 @@ public interface QmodelPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getListResult_Values();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.qmodel.SetResult
+	 * <em>Set Result</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Set Result</em>'.
+	 * @see org.eclipse.acceleo.query.tests.qmodel.SetResult
+	 * @generated
+	 */
+	EClass getSetResult();
+
+	/**
+	 * Returns the meta object for the containment reference list '
+	 * {@link org.eclipse.acceleo.query.tests.qmodel.SetResult#getValues <em>Values</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference list '<em>Values</em>'.
+	 * @see org.eclipse.acceleo.query.tests.qmodel.SetResult#getValues()
+	 * @see #getSetResult()
+	 * @generated
+	 */
+	EReference getSetResult_Values();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.qmodel.Queries
@@ -1826,6 +1894,24 @@ public interface QmodelPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LIST_RESULT__VALUES = eINSTANCE.getListResult_Values();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.tests.qmodel.impl.SetResultImpl
+		 * <em>Set Result</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.tests.qmodel.impl.SetResultImpl
+		 * @see org.eclipse.acceleo.query.tests.qmodel.impl.QmodelPackageImpl#getSetResult()
+		 * @generated
+		 */
+		EClass SET_RESULT = eINSTANCE.getSetResult();
+
+		/**
+		 * The meta object literal for the '<em><b>Values</b></em>' containment reference list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference SET_RESULT__VALUES = eINSTANCE.getSetResult_Values();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.tests.qmodel.impl.QueriesImpl

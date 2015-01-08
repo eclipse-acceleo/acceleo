@@ -601,7 +601,7 @@
   </queries>
   <queries expression="[self.interfaceRealization->filter(uml::InterfaceRealization)/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -848,7 +848,7 @@
   </queries>
   <queries expression="[element->filter(uml::Classifier)/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
         </values>
@@ -863,7 +863,7 @@
   </queries>
   <queries expression="[element->filter(uml::Property)/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_JrASAJBmEd2MY5zfT4Awfg"/>
         </values>
@@ -1590,8 +1590,8 @@
   </queries>
   <queries expression="[self->including(self.getStereotypeApplications())/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
-        <values xsi:type="qmodel:ListResult"/>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
+        <values xsi:type="qmodel:SetResult"/>
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
         </values>
@@ -1651,7 +1651,7 @@
   </queries>
   <queries expression="[self.oclAsType(uml::Element).getApplicableStereotypes()->union(self.oclAsType(uml::Element).getApplicableStereotypes().getProfile()->asSet())/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">

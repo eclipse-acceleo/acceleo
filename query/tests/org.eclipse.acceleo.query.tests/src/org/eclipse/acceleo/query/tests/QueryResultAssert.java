@@ -29,6 +29,7 @@ import org.eclipse.acceleo.query.tests.qmodel.Query;
 import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.SerializableResult;
+import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.acceleo.query.tests.qmodel.StringResult;
 import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
 import org.eclipse.acceleo.query.tests.qmodel.Variable;
@@ -54,6 +55,15 @@ public class QueryResultAssert {
 					.getValues().size());
 			Iterator<QueryEvaluationResult> expectedIt = ((ListResult)expectedResult).getValues().iterator();
 			Iterator<QueryEvaluationResult> actualIt = ((ListResult)actualResult).getValues().iterator();
+			while (expectedIt.hasNext()) {
+				assertEquivalentEvaluation(expectedIt.next(), actualIt.next());
+			}
+		} else if (expectedResult instanceof SetResult) {
+			assertEquals(true, actualResult instanceof SetResult);
+			assertEquals(((SetResult)expectedResult).getValues().size(), ((SetResult)actualResult)
+					.getValues().size());
+			Iterator<QueryEvaluationResult> expectedIt = ((SetResult)expectedResult).getValues().iterator();
+			Iterator<QueryEvaluationResult> actualIt = ((SetResult)actualResult).getValues().iterator();
 			while (expectedIt.hasNext()) {
 				assertEquivalentEvaluation(expectedIt.next(), actualIt.next());
 			}

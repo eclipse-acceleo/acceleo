@@ -29,6 +29,7 @@ import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.SerializableResult;
+import org.eclipse.acceleo.query.tests.qmodel.SetResult;
 import org.eclipse.acceleo.query.tests.qmodel.StringResult;
 import org.eclipse.acceleo.query.tests.qmodel.ValidationMessage;
 import org.eclipse.acceleo.query.tests.qmodel.Variable;
@@ -121,6 +122,15 @@ public class QmodelSwitch<T> extends Switch<T> {
 				T result = caseListResult(listResult);
 				if (result == null)
 					result = caseQueryEvaluationResult(listResult);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case QmodelPackage.SET_RESULT: {
+				SetResult setResult = (SetResult)theEObject;
+				T result = caseSetResult(setResult);
+				if (result == null)
+					result = caseQueryEvaluationResult(setResult);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -336,6 +346,21 @@ public class QmodelSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseListResult(ListResult object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Set Result</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Set Result</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSetResult(SetResult object) {
 		return null;
 	}
 
