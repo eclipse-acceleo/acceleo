@@ -244,7 +244,8 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		if ("filter".equals(publicMethod.getName())) {
 			result = new SecondArgumentTypeInFirstArgumentCollectionType(publicMethod, this);
-		} else if ("add".equals(publicMethod.getName()) || "concat".equals(publicMethod.getName())) {
+		} else if ("add".equals(publicMethod.getName()) || "concat".equals(publicMethod.getName())
+				|| "union".equals(publicMethod.getName())) {
 			result = new ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType(publicMethod, this);
 		} else if ("asSequence".equals(publicMethod.getName()) || "asSet".equals(publicMethod.getName())
 				|| "asOrderedSet".equals(publicMethod.getName())) {
@@ -475,6 +476,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 
 	public Set<Object> add(Set<Object> l1, Set<Object> l2) {
+		// TODO use lazy collection ? see union java doc
 		return Sets.union(l1, l2);
 	}
 
@@ -1040,6 +1042,32 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 	public Boolean includes(Collection<Object> collection, Object object) {
 		return Boolean.valueOf(collection.contains(object));
+	}
+
+	/**
+	 * Makes the union of the first {@link Set} with the second {@link Set}.
+	 * 
+	 * @param c1
+	 *            the first {@link Set}
+	 * @param c2
+	 *            the second {@link Set}
+	 * @return the union of the first {@link Set} with the second {@link Set}
+	 */
+	public Set<Object> union(Set<Object> c1, Set<Object> c2) {
+		return add(c1, c2);
+	}
+
+	/**
+	 * Makes the union of the first {@link List} with the second {@link List}.
+	 * 
+	 * @param c1
+	 *            the first {@link List}
+	 * @param c2
+	 *            the second {@link List}
+	 * @return the union of the first {@link List} with the second {@link List}
+	 */
+	public List<Object> union(List<Object> c1, List<Object> c2) {
+		return concat(c1, c2);
 	}
 
 }

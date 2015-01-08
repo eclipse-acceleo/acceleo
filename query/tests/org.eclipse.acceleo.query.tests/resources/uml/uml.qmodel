@@ -1045,7 +1045,9 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Operation)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
