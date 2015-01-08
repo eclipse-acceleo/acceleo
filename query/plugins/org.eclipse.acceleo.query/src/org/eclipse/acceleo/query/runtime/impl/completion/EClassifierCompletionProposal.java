@@ -48,10 +48,10 @@ public class EClassifierCompletionProposal implements ICompletionProposal {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getcursorOffset()
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getCursorOffset()
 	 */
 	@Override
-	public int getcursorOffset() {
+	public int getCursorOffset() {
 		return getProposal().length();
 	}
 

@@ -196,6 +196,15 @@ public interface AstFactory extends EFactory {
 	ErrorCollectionCall createErrorCollectionCall();
 
 	/**
+	 * Returns a new object of class '<em>Error Variable Declaration</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Error Variable Declaration</em>'.
+	 * @generated
+	 */
+	ErrorVariableDeclaration createErrorVariableDeclaration();
+
+	/**
 	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the package supported by this factory.

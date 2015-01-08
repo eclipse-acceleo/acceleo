@@ -280,11 +280,18 @@ public class AstBuilderListener extends QueryBaseListener {
 						pushError(builder.errorTypeLiteral(new String[] {}));
 					}
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
-					errorRule = QueryParser.RULE_expression;
-					final String variableName = e.getCtx().getChild(0).getText();
-					final TypeLiteral type = createModelType((ModelObjectTypeContext)e.getCtx().getChild(2));
-					final Expression variableExpression = pop();
-					push(builder.variableDeclaration(variableName, type, variableExpression));
+					if (e.getCtx().getChildCount() > 0) {
+						errorRule = QueryParser.RULE_expression;
+						final String variableName = e.getCtx().getChild(0).getText();
+						final TypeLiteral type = createModelType((ModelObjectTypeContext)e.getCtx().getChild(
+								2));
+						final Expression variableExpression = pop();
+						push(builder.variableDeclaration(variableName, type, variableExpression));
+					} else {
+						final Expression variableExpression = pop();
+						errorRule = QueryParser.RULE_variableDefinition;
+						pushError(builder.errorVariableDeclaration(variableExpression));
+					}
 					pushError(builder.errorExpression());
 				} else if (e.getCtx() instanceof CallExpContext) {
 					errorRule = QueryParser.RULE_navigationSegment;
@@ -904,19 +911,14 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitIterationCall(IterationCallContext ctx) {
-		// the stack contains [receiver, (variableDef,)?, expression]
-		String serviceName = ctx.getChild(0).getText();
-		Expression ast = pop();
-		VariableDeclaration iterator;
-		if (ctx.getChildCount() == 5) {
-			// there's a variable definition
-			iterator = popVariableDeclaration();
-		} else {
-			final Expression variableExpression = pop();
-			iterator = builder.variableDeclaration("self", variableExpression);
-		}
-		EvaluationServices service = new EvaluationServices(environment, true);
-		Lambda lambda = builder.lambda(ast, new AstEvaluator(service), iterator);
+		// the stack contains [receiver, variableDef, expression]
+		final String serviceName = ctx.getChild(0).getText();
+		final Expression ast = pop();
+		final VariableDeclaration iterator;
+		final EvaluationServices service = new EvaluationServices(environment, true);
+		final Lambda lambda;
+		iterator = popVariableDeclaration();
+		lambda = builder.lambda(ast, new AstEvaluator(service), iterator);
 		push(serviceName);
 		push(new Expression[] {iterator.getExpression(), lambda });
 	}

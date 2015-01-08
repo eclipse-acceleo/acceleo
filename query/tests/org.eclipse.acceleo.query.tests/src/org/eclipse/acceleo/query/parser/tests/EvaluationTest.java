@@ -182,7 +182,7 @@ public class EvaluationTest {
 
 	@Test
 	public void testSelect0() {
-		String expr = "self.oclAsType(ecore::EClass).eAllSuperTypes->select(self.oclIsKindOf(ecore::EClass))";
+		String expr = "self.oclAsType(ecore::EClass).eAllSuperTypes->select(e | e.oclIsKindOf(ecore::EClass))";
 		Map<String, Object> variables = Maps.newHashMap();
 		variables.put("self", EcorePackage.Literals.ECLASS);
 		Object result = engine.eval(expr, variables);
@@ -192,7 +192,7 @@ public class EvaluationTest {
 
 	@Test
 	public void testSelect1() {
-		String expr = "self.oclAsType(ecore::EClass).eAllSuperTypes->including(self).eInverse()->select(self.oclIsKindOf(ecore::EClass) or self.oclIsKindOf(ecore::EReference))->reject(self.oclAsType(ecore::EClass).eAllStructuralFeatures->includes(self))->notEmpty()";
+		String expr = "self.oclAsType(ecore::EClass).eAllSuperTypes->including(self).eInverse()->select(e | e.oclIsKindOf(ecore::EClass) or self.oclIsKindOf(ecore::EReference))->reject(e | e.oclAsType(ecore::EClass).eAllStructuralFeatures->includes(self))->notEmpty()";
 		Map<String, Object> variables = Maps.newHashMap();
 		variables.put("self", EcorePackage.Literals.ECLASS);
 		Object result = engine.eval(expr, variables);

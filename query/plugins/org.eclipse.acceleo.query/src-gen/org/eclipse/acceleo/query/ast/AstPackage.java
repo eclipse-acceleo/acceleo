@@ -908,6 +908,60 @@ public interface AstPackage extends EPackage {
 	int ERROR_COLLECTION_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
+	 * <em>Error Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
+	 * @generated
+	 */
+	int ERROR_VARIABLE_DECLARATION = 22;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE_DECLARATION__NAME = ERROR_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE_DECLARATION__TYPE = ERROR_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Expression</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE_DECLARATION__EXPRESSION = ERROR_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Error Variable Declaration</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE_DECLARATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Error Variable Declaration</em>' class. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE_DECLARATION_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -915,7 +969,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 22;
+	int CALL_TYPE = 23;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -925,7 +979,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 23;
+	int OBJECT_TYPE = 24;
 
 	/**
 	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -935,7 +989,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 	 * @generated
 	 */
-	int AST_EVALUATOR = 24;
+	int AST_EVALUATOR = 25;
 
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -944,7 +998,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 25;
+	int OBJECT_ARRAY = 26;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -1456,6 +1510,16 @@ public interface AstPackage extends EPackage {
 	EReference getErrorCollectionCall_Target();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
+	 * <em>Error Variable Declaration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Error Variable Declaration</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
+	 * @generated
+	 */
+	EClass getErrorVariableDeclaration();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1943,6 +2007,17 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ERROR_COLLECTION_CALL__TARGET = eINSTANCE.getErrorCollectionCall_Target();
+
+		/**
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
+		 * <em>Error Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
+		 * @generated
+		 */
+		EClass ERROR_VARIABLE_DECLARATION = eINSTANCE.getErrorVariableDeclaration();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'

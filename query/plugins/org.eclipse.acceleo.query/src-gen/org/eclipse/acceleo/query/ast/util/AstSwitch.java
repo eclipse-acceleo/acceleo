@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -310,6 +311,17 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseError(errorCollectionCall);
 				if (result == null)
 					result = caseExpression(errorCollectionCall);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.ERROR_VARIABLE_DECLARATION: {
+				ErrorVariableDeclaration errorVariableDeclaration = (ErrorVariableDeclaration)theEObject;
+				T result = caseErrorVariableDeclaration(errorVariableDeclaration);
+				if (result == null)
+					result = caseError(errorVariableDeclaration);
+				if (result == null)
+					result = caseVariableDeclaration(errorVariableDeclaration);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -648,6 +660,21 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseErrorCollectionCall(ErrorCollectionCall object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Variable Declaration</em>'.
+	 * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
+	 * the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Variable Declaration</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorVariableDeclaration(ErrorVariableDeclaration object) {
 		return null;
 	}
 

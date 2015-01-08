@@ -102,9 +102,34 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.eAllContents(ecore::EClass)->select(self.name.startsWith('IInterpreter'))/]" startingPoint="//@modelElements.2">
+  <queries expression="[self.eAllContents(ecore::EClass)->select(e | e.name.startsWith('IInterpreter'))/]" startingPoint="//@modelElements.2">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.common.tools.api.interpreter/IInterpreter"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.common.tools.api.interpreter/IInterpreterContext"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.common.tools.api.interpreter/IInterpreterProvider"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.common.tools.api.interpreter/IInterpreterSiriusVariables"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.common.tools.api.interpreter/IInterpreterStatus"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.table.tools.api.interpreter/IInterpreterSiriusTableVariables"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.tools.api.interpreter/IInterpreterMessages"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="reverse.ecore#//org.eclipse.sirius.tree.tools.api.interpreter/IInterpreterSiriusTreeVariables"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -178,7 +203,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.eAnnotations.details->select(self.key = 'archetype')->asSequence()->first()/]" startingPoint="//@modelElements.4">
+  <queries expression="[self.eAnnotations.details->select(e | e.key = 'archetype')->asSequence()->first()/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
     </expectations>
@@ -217,7 +242,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.oclAsType(ecore::EClass).eAllSuperTypes->including(self).eInverse()->select(self.oclIsKindOf(ecore::EClass) or self.oclIsKindOf(ecore::EReference))->reject(self.oclAsType(ecore::EClass).eAllStructuralFeatures->includes(self))->notEmpty()/]" startingPoint="//@modelElements.5">
+  <queries expression="[self.oclAsType(ecore::EClass).eAllSuperTypes->including(self).eInverse()->select(e | e.oclIsKindOf(ecore::EClass) or e.oclIsKindOf(ecore::EReference))->reject(e | e.oclAsType(ecore::EClass).eAllStructuralFeatures->includes(self))->notEmpty()/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
     </expectations>

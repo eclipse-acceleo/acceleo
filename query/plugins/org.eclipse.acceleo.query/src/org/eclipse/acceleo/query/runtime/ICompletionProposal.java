@@ -29,7 +29,7 @@ public interface ICompletionProposal {
 	 * 
 	 * @return the cursor offset in the {@link ICompletionProposal#getProposal() proposed message}
 	 */
-	int getcursorOffset();
+	int getCursorOffset();
 
 	/**
 	 * Gets the {@link Object} associated to the proposal.

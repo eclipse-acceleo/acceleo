@@ -26,6 +26,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionPropo
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -71,6 +72,7 @@ public class CompletionTest {
 		assertEquals(null, completionResult.getPrefix());
 		assertEquals(null, completionResult.getRemaining());
 		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -92,6 +94,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -103,6 +106,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -114,6 +118,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -125,6 +130,7 @@ public class CompletionTest {
 		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -137,6 +143,7 @@ public class CompletionTest {
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -152,6 +159,7 @@ public class CompletionTest {
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -167,6 +175,7 @@ public class CompletionTest {
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -178,6 +187,7 @@ public class CompletionTest {
 		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -188,6 +198,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 		assertEquals(59, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -200,6 +211,7 @@ public class CompletionTest {
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -213,6 +225,7 @@ public class CompletionTest {
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -222,6 +235,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -230,10 +244,12 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertNoServiceCompletionProposal(completionResult);
-		assertNoFeatureCompletionProposal(completionResult);
-		assertNoEOperationCompletionProposal(completionResult);
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		final ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
+				.get(0);
+		assertEquals(true, proposal instanceof VariableDeclarationCompletionProposal);
+		assertEquals("anEClass : ecore::EClass | ", proposal.getProposal());
+		assertEquals("anEClass : ecore::EClass | ".length(), proposal.getCursorOffset());
 	}
 
 	@Test
@@ -248,6 +264,7 @@ public class CompletionTest {
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -261,6 +278,7 @@ public class CompletionTest {
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
@@ -278,6 +296,12 @@ public class CompletionTest {
 	public void assertNoEOperationCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof EOperationCompletionProposal);
+		}
+	}
+
+	public void assertNoVariableDeclarationCompletionProposal(ICompletionResult completionResult) {
+		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
+			assertEquals(false, prop instanceof VariableDeclarationCompletionProposal);
 		}
 	}
 

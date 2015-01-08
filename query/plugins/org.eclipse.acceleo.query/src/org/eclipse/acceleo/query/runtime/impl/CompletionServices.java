@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionPropo
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -239,6 +240,29 @@ public class CompletionServices extends ValidationServices {
 					result.add(new EEnumLiteralCompletionProposal(literal));
 				}
 			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link List} of {@link VariableDeclarationCompletionProposal} for the given {@link Set} of
+	 * {@link IType} the {@link org.eclipse.acceleo.query.ast.VariableDeclaration VariableDeclaration} can
+	 * have.
+	 * 
+	 * @param possibleTypes
+	 *            the {@link Set} of {@link IType} the
+	 *            {@link org.eclipse.acceleo.query.ast.VariableDeclaration VariableDeclaration} can have
+	 * @return the {@link List} of {@link VariableDeclarationCompletionProposal} for the given {@link Set} of
+	 *         {@link IType} the {@link org.eclipse.acceleo.query.ast.VariableDeclaration VariableDeclaration}
+	 *         can have
+	 */
+	public List<VariableDeclarationCompletionProposal> getVariableDeclarationProposals(
+			Set<IType> possibleTypes) {
+		final List<VariableDeclarationCompletionProposal> result = new ArrayList<VariableDeclarationCompletionProposal>();
+
+		for (IType type : possibleTypes) {
+			result.add(new VariableDeclarationCompletionProposal(type));
 		}
 
 		return result;

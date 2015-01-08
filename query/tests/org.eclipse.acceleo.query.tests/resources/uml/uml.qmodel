@@ -609,7 +609,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.packagedElement->select(self.oclIsTypeOf(uml::Class) or self.oclIsTypeOf(uml::Interface))/]" startingPoint="//@modelElements.5">
+  <queries expression="[self.packagedElement->select(e | e.oclIsTypeOf(uml::Class) or e.oclIsTypeOf(uml::Interface))/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
     </expectations>
@@ -795,7 +795,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.eContents()->select(not self.oclIsTypeOf(uml::Comment))/]" startingPoint="//@modelElements.5">
+  <queries expression="[self.eContents()->select(e | not e.oclIsTypeOf(uml::Comment))/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
         <values xsi:type="qmodel:EObjectResult">
@@ -1252,7 +1252,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.oclAsType(uml::StructuredClassifier).ownedAttribute->filter(uml::Port)->select(self.type &lt;> self)/]" startingPoint="//@modelElements.4">
+  <queries expression="[self.oclAsType(uml::StructuredClassifier).ownedAttribute->filter(uml::Port)->select(e | e.type &lt;> self)/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
     </expectations>
@@ -1362,7 +1362,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.packagedElement->select(self.oclIsTypeOf(uml::Package))->size()=0/]" startingPoint="//@modelElements.1">
+  <queries expression="[self.packagedElement->select(e | e.oclIsTypeOf(uml::Package))->size()=0/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
     </expectations>
@@ -1679,7 +1679,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->asOrderedSet()->asSequence()->select(self.oclIsTypeOf(uml::Class) or self.oclIsTypeOf(uml::DataType))/]" startingPoint="//@modelElements.1">
+  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->asOrderedSet()->asSequence()->select(e | e.oclIsTypeOf(uml::Class) or e.oclIsTypeOf(uml::DataType))/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
     </expectations>
@@ -1699,7 +1699,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->select(self.oclIsTypeOf(uml::Enumeration))->asOrderedSet()->asSequence()/]" startingPoint="//@modelElements.1">
+  <queries expression="[self.packagedElement->filter(uml::InstanceSpecification).classifier->select(e | e.oclIsTypeOf(uml::Enumeration))->asOrderedSet()->asSequence()/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
     </expectations>

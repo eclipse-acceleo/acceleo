@@ -26,6 +26,7 @@ import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -401,6 +402,22 @@ public class AstBuilder {
 				.create(AstPackage.Literals.SEQUENCE_IN_EXTENSION_LITERAL);
 
 		result.getValues().addAll(expressions);
+
+		return result;
+	}
+
+	/**
+	 * Creates a new {@link ErrorVariableDeclaration}.
+	 * 
+	 * @param expression
+	 *            the {@link VariableDeclaration#getExpression() variable expression}
+	 * @return a new {@link ErrorVariableDeclaration}
+	 */
+	public ErrorVariableDeclaration errorVariableDeclaration(Expression expression) {
+		ErrorVariableDeclaration result = (ErrorVariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.ERROR_VARIABLE_DECLARATION);
+
+		result.setExpression(expression);
 
 		return result;
 	}

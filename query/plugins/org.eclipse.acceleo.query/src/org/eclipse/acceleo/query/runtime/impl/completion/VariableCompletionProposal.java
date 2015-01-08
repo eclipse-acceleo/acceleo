@@ -47,10 +47,10 @@ public class VariableCompletionProposal implements ICompletionProposal {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getcursorOffset()
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getCursorOffset()
 	 */
 	@Override
-	public int getcursorOffset() {
+	public int getCursorOffset() {
 		return varName.length();
 	}
 

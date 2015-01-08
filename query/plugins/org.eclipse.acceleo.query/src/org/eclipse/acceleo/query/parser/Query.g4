@@ -67,7 +67,7 @@ callExp :     'filter(' typeLiteral ')'        #Filter
 			| 'eAllContents('typeLiteral? ')'      #EAContent
 			| 'eContainer('typeLiteral? ')'       #EContainer
 			| 'eInverse('typeLiteral? ')'       #EInverse
-			| collectionIterator '(' variableDefinition? lambdaExpression ')'  #IterationCall
+			| collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall
 			| qualifiedName'(' expressionSequence ')'    #ServiceCall
 ;
 lambdaExpression : expression

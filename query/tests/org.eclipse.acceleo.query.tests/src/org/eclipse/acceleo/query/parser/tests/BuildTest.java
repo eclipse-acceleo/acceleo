@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -380,7 +381,7 @@ public class BuildTest {
 
 	@Test
 	public void selectTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(true)");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select(e | true)");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
@@ -394,8 +395,8 @@ public class BuildTest {
 		assertEquals(
 				true,
 				((Lambda)((Call)ast).getArguments().get(1)).getParameters().get(0) instanceof VariableDeclaration);
-		assertEquals("self", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
-				.getParameters().get(0)).getName());
+		assertEquals("e", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getName());
 		assertEquals(null, ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getType());
 		assertEquals(true,
@@ -1149,14 +1150,17 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);
 		assertEquals(true, ((Call)ast).getArguments().get(1) instanceof Lambda);
-		assertEquals(true,
-				((Lambda)((Call)ast).getArguments().get(1)).getExpression() instanceof ErrorExpression);
-		assertEquals(1, build.getErrors().size());
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertEquals(true, lambda.getExpression() instanceof ErrorExpression);
+		assertEquals(1, lambda.getParameters().size());
+		assertEquals(1, lambda.getParameters().size());
+		assertEquals(true, lambda.getParameters().get(0) instanceof ErrorVariableDeclaration);
+		assertEquals(2, build.getErrors().size());
 	}
 
 	@Test
 	public void incompletIterationCallWithExpressionTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( true");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select(e | true");
 		Expression ast = build.getAst();
 
 		assertEquals(true, ast instanceof Call);

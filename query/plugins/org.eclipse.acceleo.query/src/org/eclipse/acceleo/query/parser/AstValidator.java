@@ -66,6 +66,11 @@ import org.eclipse.emf.ecore.EClassifier;
 public class AstValidator extends AstSwitch<Set<IType>> {
 
 	/**
+	 * Message used when a variable overrides an existing value.
+	 */
+	private static final String VARIABLE_OVERRIDES_AN_EXISTING_VALUE = "Variable %s overrides an existing value.";
+
+	/**
 	 * Should never happen message.
 	 */
 	private static final String SHOULD_NEVER_HAPPEN = "should never happen";
@@ -284,6 +289,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseLambda(Lambda object) {
+		final Set<IType> lambdaExpressionTypes = new LinkedHashSet<IType>();
+
 		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
 				.peek());
 		for (VariableDeclaration variableDeclaration : object.getParameters()) {
@@ -301,6 +308,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			} else {
 				types = doSwitch(variableDeclaration.getType());
 			}
+			if (newVariableTypes.containsKey(variableDeclaration.getName())) {
+				lambdaExpressionTypes.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE,
+						variableDeclaration.getName()));
+			}
 			newVariableTypes.put(variableDeclaration.getName(), types);
 		}
 
@@ -308,7 +319,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final Set<IType> lambdaExpressionPossibleTypes = doSwitch(object.getExpression());
 		final Set<IType> lambdaEvaluatorPossibleTypes = newVariableTypes.get(object.getParameters().get(0)
 				.getName());
-		final Set<IType> lambdaExpressionTypes = new LinkedHashSet<IType>();
 		for (IType lambdaEvaluatorPossibleType : lambdaEvaluatorPossibleTypes) {
 			for (IType lambdaExpressionType : lambdaExpressionPossibleTypes) {
 				lambdaExpressionTypes.add(new LambdaType(lambdaEvaluatorPossibleType, lambdaExpressionType));
@@ -479,6 +489,17 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseVariableDeclaration(org.eclipse.acceleo.query.ast.VariableDeclaration)
+	 */
+	@Override
+	public Set<IType> caseVariableDeclaration(VariableDeclaration object) {
+		doSwitch(object.getExpression());
+		return null;
 	}
 
 }

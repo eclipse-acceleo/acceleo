@@ -245,7 +245,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.oclAsType(anydsl::Company).eAllContents(anydsl::Food)->including(self).eInverse()->select(self.oclIsKindOf(&#x9;anydsl::World) or self.oclIsKindOf(anydsl::Food))->reject(self.oclAsType(&#x9;anydsl::World).companies->includes(self))->notEmpty()/]" startingPoint="//@modelElements.2">
+  <queries expression="[self.oclAsType(anydsl::Company).eAllContents(anydsl::Food)->including(self).eInverse()->select(i | i.oclIsKindOf(anydsl::World) or i.oclIsKindOf(anydsl::Food))->reject(e | e.oclAsType(anydsl::World).companies->includes(e))->notEmpty()/]" startingPoint="//@modelElements.2">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
     </expectations>

@@ -84,5 +84,6 @@
     <genClasses ecoreClass="ast.ecore#//ErrorCollectionCall">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//ErrorCollectionCall/target"/>
     </genClasses>
+    <genClasses ecoreClass="ast.ecore#//ErrorVariableDeclaration"/>
   </genPackages>
 </genmodel:GenModel>

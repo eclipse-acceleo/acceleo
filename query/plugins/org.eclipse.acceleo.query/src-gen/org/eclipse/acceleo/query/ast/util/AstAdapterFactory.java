@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -197,6 +198,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseErrorCollectionCall(ErrorCollectionCall object) {
 			return createErrorCollectionCallAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorVariableDeclaration(ErrorVariableDeclaration object) {
+			return createErrorVariableDeclarationAdapter();
 		}
 
 		@Override
@@ -522,6 +528,20 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createErrorCollectionCallAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration <em>Error Variable Declaration</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
+	 * @generated
+	 */
+	public Adapter createErrorVariableDeclarationAdapter() {
 		return null;
 	}
 

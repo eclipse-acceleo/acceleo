@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -204,6 +205,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass errorCollectionCallEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass errorVariableDeclarationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -726,6 +734,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getErrorVariableDeclaration() {
+		return errorVariableDeclarationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EEnum getCallType() {
 		return callTypeEEnum;
 	}
@@ -854,6 +871,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorCollectionCallEClass = createEClass(ERROR_COLLECTION_CALL);
 		createEReference(errorCollectionCallEClass, ERROR_COLLECTION_CALL__TARGET);
 
+		errorVariableDeclarationEClass = createEClass(ERROR_VARIABLE_DECLARATION);
+
 		// Create enums
 		callTypeEEnum = createEEnum(CALL_TYPE);
 
@@ -918,6 +937,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getExpression());
 		errorCollectionCallEClass.getESuperTypes().add(this.getError());
 		errorCollectionCallEClass.getESuperTypes().add(this.getExpression());
+		errorVariableDeclarationEClass.getESuperTypes().add(this.getError());
+		errorVariableDeclarationEClass.getESuperTypes().add(this.getVariableDeclaration());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(expressionEClass, Expression.class, "Expression", IS_ABSTRACT, !IS_INTERFACE,
@@ -1059,6 +1080,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEReference(getErrorCollectionCall_Target(), this.getExpression(), null, "target", null, 0, 1,
 				ErrorCollectionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(errorVariableDeclarationEClass, ErrorVariableDeclaration.class,
+				"ErrorVariableDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(callTypeEEnum, CallType.class, "CallType");

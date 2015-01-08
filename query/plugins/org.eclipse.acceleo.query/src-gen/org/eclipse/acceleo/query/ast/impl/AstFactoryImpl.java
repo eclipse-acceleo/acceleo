@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -121,6 +122,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createErrorFeatureAccessOrCall();
 			case AstPackage.ERROR_COLLECTION_CALL:
 				return createErrorCollectionCall();
+			case AstPackage.ERROR_VARIABLE_DECLARATION:
+				return createErrorVariableDeclaration();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName()
 						+ "' is not a valid classifier");
@@ -369,6 +372,16 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public ErrorCollectionCall createErrorCollectionCall() {
 		ErrorCollectionCallImpl errorCollectionCall = new ErrorCollectionCallImpl();
 		return errorCollectionCall;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ErrorVariableDeclaration createErrorVariableDeclaration() {
+		ErrorVariableDeclarationImpl errorVariableDeclaration = new ErrorVariableDeclarationImpl();
+		return errorVariableDeclaration;
 	}
 
 	/**

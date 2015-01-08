@@ -76,7 +76,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	 *            the object arguments used to format the log message.
 	 * @return a nothing {@link NothingValidationStatus}.
 	 */
-	private NothingType nothing(String message, Object... msgArgs) {
+	public NothingType nothing(String message, Object... msgArgs) {
 		final String formatedMessage = String.format(message, msgArgs);
 		return new NothingType(formatedMessage);
 	}
