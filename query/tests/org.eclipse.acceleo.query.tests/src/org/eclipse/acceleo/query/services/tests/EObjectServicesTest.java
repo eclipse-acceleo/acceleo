@@ -13,7 +13,6 @@ package org.eclipse.acceleo.query.services.tests;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -83,15 +82,41 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(clazz2);
-		assertEquals("Unexpected count of inverse references returned", 2, ((Collection<?>)inversedSequence)
-				.size());
+		assertEquals("Unexpected count of inverse references returned", 2, inversedSequence.size());
 
-		final Iterator<?> children = ((Collection<?>)inversedSequence).iterator();
+		final Iterator<EObject> children = inversedSequence.iterator();
 		assertEquals("The first inverse reference on the second EClass should have been the first EClass",
 				clazz, children.next());
 		assertTrue("The second inverse reference on the second EClass should have been a GenericType",
 				children.next() instanceof EGenericType);
 
+	}
+
+	@Test
+	public void testEInverseNullReceiver() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverse");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(null);
+		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
 	}
 
 	@Test
@@ -119,12 +144,178 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		Set<EObject> inversedSequence = eObjectServices.eInverse(clazz2, EcorePackage.eINSTANCE
 				.getEGenericType());
 
-		assertEquals("Unexpected count of inverse references returned", 1, ((Collection<?>)inversedSequence)
-				.size());
-		final Iterator<?> children = ((Collection<?>)inversedSequence).iterator();
+		assertEquals("Unexpected count of inverse references returned", 1, inversedSequence.size());
+		final Iterator<EObject> children = inversedSequence.iterator();
 		assertTrue("The inverse reference on the second EClass should have been a GenericType", children
 				.next() instanceof EGenericType);
 
+	}
+
+	@Test
+	public void testEInverseWithFilterNullReceiver() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverseWithFilter");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(null, EcorePackage.eINSTANCE
+				.getEGenericType());
+
+		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
+	}
+
+	@Test
+	public void testEInverseWithFilterNullFilter() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverseWithFilter");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(clazz2, (EClassifier)null);
+
+		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
+	}
+
+	@Test
+	public void testEInverseWithFeature() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverseWithFilter");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(clazz2, "eRawType");
+
+		assertEquals("Unexpected count of inverse references returned", 1, inversedSequence.size());
+		final Iterator<EObject> children = inversedSequence.iterator();
+		assertTrue("The inverse reference on the second EClass should have been a GenericType", children
+				.next() instanceof EGenericType);
+
+	}
+
+	@Test
+	public void testEInverseWithFeatureNullReceiver() throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverseWithFilter");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(null, "eRawType");
+
+		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
+	}
+
+	@Test
+	public void testEInverseWithFeatureNullFeatureName() throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverseWithFilter");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(clazz2, (String)null);
+
+		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
+	}
+
+	@Test
+	public void testEInverseWithFeatureNotAFeature() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+		final EPackage root = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage sub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub = EcoreFactory.eINSTANCE.createEPackage();
+		final EPackage subSub2 = EcoreFactory.eINSTANCE.createEPackage();
+		final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
+		final EClass clazz2 = EcoreFactory.eINSTANCE.createEClass();
+		final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
+		clazz.getEStructuralFeatures().add(attribute);
+		subSub.getEClassifiers().add(clazz);
+		sub.getESubpackages().add(subSub);
+		subSub2.getEClassifiers().add(clazz2);
+		sub.getESubpackages().add(subSub2);
+		root.getESubpackages().add(sub);
+		clazz.getESuperTypes().add(clazz2);
+		Logger logger = Logger.getLogger("testEInverseWithFilter");
+		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+				clazz2, logger).getLookupEngine();
+		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+
+		Set<EObject> inversedSequence = eObjectServices.eInverse(clazz2, "notAFeaure");
+
+		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
 	}
 
 	/**

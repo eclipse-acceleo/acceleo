@@ -96,7 +96,8 @@ public class EObjectServices extends AbstractServiceProvider {
 	protected IService getService(Method publicMethod) {
 		final IService result;
 
-		if (publicMethod.getParameterTypes().length == 2) {
+		if (publicMethod.getParameterTypes().length == 2
+				&& EClassifier.class.isAssignableFrom(publicMethod.getParameterTypes()[1])) {
 			result = new Service(publicMethod, this) {
 
 				@Override
@@ -322,13 +323,42 @@ public class EObjectServices extends AbstractServiceProvider {
 	 */
 	public Set<EObject> eInverse(EObject self, EClassifier filter) {
 		final Set<EObject> result;
+
+		final Collection<EStructuralFeature.Setting> settings = crossReferencer.getInverseReferences(self);
+		if (settings == null || filter == null) {
+			result = Collections.emptySet();
+		} else {
+			result = Sets.newLinkedHashSet();
+			for (EStructuralFeature.Setting setting : settings) {
+				if (filter.isInstance(setting.getEObject())) {
+					result.add(setting.getEObject());
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Returns the elements from the set of the inverse {@link EStructuralFeature#getName() feature name} of
+	 * the receiver.
+	 * 
+	 * @param self
+	 *            The EObject we seek the inverse references of.
+	 * @param featureName
+	 *            the {@link EStructuralFeature#getName() feature name}.
+	 * @return The sequence containing the full set of inverse references.
+	 */
+	public Set<EObject> eInverse(EObject self, String featureName) {
+		final Set<EObject> result;
+
 		final Collection<EStructuralFeature.Setting> settings = crossReferencer.getInverseReferences(self);
 		if (settings == null) {
 			result = Collections.emptySet();
 		} else {
 			result = Sets.newLinkedHashSet();
 			for (EStructuralFeature.Setting setting : settings) {
-				if (filter.isInstance(setting.getEObject())) {
+				if (setting.getEStructuralFeature().getName().equals(featureName)) {
 					result.add(setting.getEObject());
 				}
 			}
