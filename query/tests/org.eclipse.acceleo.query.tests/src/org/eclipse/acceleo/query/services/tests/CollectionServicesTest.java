@@ -634,6 +634,82 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testCollectList() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		List<Object> nullList = null;
+		try {
+			collectionServices.reject(nullList, lambda);
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		List<Object> list = Lists.newArrayList();
+		collectionServices.reject(list, null);
+
+		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
+		EObject queries = reverseModel.getContents().get(0);
+		TreeIterator<EObject> iterator = queries.eAllContents();
+
+		list.add(iterator.next());
+		list.add(iterator.next());
+		list.add(iterator.next());
+
+		List<Object> newList = collectionServices.collect(list, null);
+		assertEquals(0, newList.size());
+
+		newList = collectionServices.reject(list, lambda);
+		assertEquals(0, newList.size());
+	}
+
+	@Test
+	public void testCollectSet() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		Set<Object> nullList = null;
+		try {
+			collectionServices.reject(nullList, lambda);
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		Set<Object> set = new HashSet<Object>();
+		collectionServices.reject(set, null);
+
+		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
+		EObject queries = reverseModel.getContents().get(0);
+		TreeIterator<EObject> iterator = queries.eAllContents();
+
+		set.add(iterator.next());
+		set.add(iterator.next());
+		set.add(iterator.next());
+
+		Set<Object> newList = collectionServices.collect(set, null);
+		assertEquals(0, newList.size());
+
+		newList = collectionServices.reject(set, lambda);
+		assertEquals(0, newList.size());
+	}
+
+	@Test
 	public void testSelectSet() throws URISyntaxException, IOException {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(

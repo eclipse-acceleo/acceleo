@@ -17,6 +17,7 @@ import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -277,7 +278,6 @@ public class CollectionServices extends AbstractServiceProvider {
 					return result;
 				}
 			};
-
 		} else if ("select".equals(publicMethod.getName())) {
 			result = new Service(publicMethod, this) {
 
@@ -300,6 +300,22 @@ public class CollectionServices extends AbstractServiceProvider {
 						}
 					} else {
 						result.add(new NothingType("expression in a select must return a boolean"));
+					}
+					return result;
+				}
+			};
+		} else if ("collect".equals(publicMethod.getName())) {
+			result = new Service(publicMethod, this) {
+
+				@Override
+				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
+						List<IType> argTypes) {
+					final Set<IType> result = new LinkedHashSet<IType>();
+					final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						result.add(new SequenceType(lambdaType.getLambdaExpressionType()));
+					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						result.add(new SetType(lambdaType.getLambdaExpressionType()));
 					}
 					return result;
 				}
@@ -463,20 +479,20 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Select returns a filtered version of the specified list.
+	 * Select returns a filtered version of the specified {@link List}.
 	 * 
 	 * @param l1
-	 *            the original list.
+	 *            the original {@link List}.
 	 * @param lambda
 	 *            the predicate expression
-	 * @return a filtered version of the specified set.
+	 * @return a filtered version of the specified {@link List}.
 	 */
 	public List<Object> select(List<Object> l1, Lambda lambda) {
 		// TODO use lazy collection
 		final List<Object> newList;
 
 		if (lambda == null) {
-			newList = Lists.newArrayList();
+			newList = Collections.emptyList();
 		} else {
 			newList = Lists.newArrayList();
 			for (Object elt : l1) {
@@ -496,20 +512,20 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Select returns a filtered version of the specified list.
+	 * Select returns a filtered version of the specified {@link Set}.
 	 * 
 	 * @param l1
-	 *            the original list.
+	 *            the original {@link Set}.
 	 * @param lambda
 	 *            the predicate expression
-	 * @return a filtered version of the specified set.
+	 * @return a filtered version of the specified {@link Set}.
 	 */
 	public Set<Object> select(Set<Object> l1, Lambda lambda) {
 		// TODO use lazy collection
 		final Set<Object> newSet;
 
 		if (lambda == null) {
-			newSet = Sets.newLinkedHashSet();
+			newSet = Collections.emptySet();
 		} else {
 			newSet = Sets.newLinkedHashSet();
 			for (Object elt : l1) {
@@ -529,20 +545,20 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Select returns a filtered version of the specified set.
+	 * Select returns a filtered version of the specified {@link Set}.
 	 * 
 	 * @param l1
-	 *            the original set
+	 *            the original {@link Set}
 	 * @param lambda
 	 *            the predicate expression
-	 * @return a filtered version of the specified set.
+	 * @return a filtered version of the specified {@link Set}.
 	 */
 	public Set<Object> reject(Set<Object> l1, Lambda lambda) {
 		// TODO use lazy collection
 		final Set<Object> newSet;
 
 		if (lambda == null) {
-			newSet = Sets.newLinkedHashSet();
+			newSet = Collections.emptySet();
 		} else {
 			newSet = Sets.newLinkedHashSet();
 			for (Object elt : l1) {
@@ -562,20 +578,20 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Select returns a filtered version of the specified set.
+	 * Select returns a filtered version of the specified {@link List}.
 	 * 
 	 * @param l1
-	 *            the original set
+	 *            the original {@link List}
 	 * @param lambda
 	 *            the predicate expression
-	 * @return a filtered version of the specified set.
+	 * @return a filtered version of the specified {@link List}.
 	 */
 	public List<Object> reject(List<Object> l1, Lambda lambda) {
 		// TODO use lazy collection
 		final List<Object> newList;
 
 		if (lambda == null) {
-			newList = Lists.newArrayList();
+			newList = Collections.emptyList();
 		} else {
 			newList = Lists.newArrayList();
 			for (Object elt : l1) {
@@ -592,6 +608,68 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		return newList;
+	}
+
+	/**
+	 * Collects elements from the given {@link Set} using the given navigation {@link Lambda}.
+	 * 
+	 * @param set
+	 *            the original {@link Set}
+	 * @param lambda
+	 *            the predicate expression
+	 * @return a navigated version of the specified {@link Set}.
+	 */
+	public Set<Object> collect(Set<Object> set, Lambda lambda) {
+		// TODO use lazy collection
+		final Set<Object> result;
+
+		if (lambda == null) {
+			result = Collections.emptySet();
+		} else {
+			result = Sets.newLinkedHashSet();
+			for (Object elt : set) {
+				try {
+					result.add(lambda.eval(new Object[] {elt }));
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Collects elements from the given {@link List} using the given navigation {@link Lambda}.
+	 * 
+	 * @param list
+	 *            the original {@link List}
+	 * @param lambda
+	 *            the predicate expression
+	 * @return a navigated version of the specified {@link List}.
+	 */
+	public List<Object> collect(List<Object> list, Lambda lambda) {
+		// TODO use lazy collection
+		final List<Object> result;
+
+		if (lambda == null) {
+			result = Collections.emptyList();
+		} else {
+			result = Lists.newArrayList();
+			for (Object elt : list) {
+				try {
+					result.add(lambda.eval(new Object[] {elt }));
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return result;
 	}
 
 	/**
