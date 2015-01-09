@@ -336,7 +336,7 @@
   </queries>
   <queries expression="[aProperty.findTypeByName('String')&lt;>null/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -345,6 +345,7 @@
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <variables xsi:type="qmodel:EObjectVariable" name="aProperty" value="//@modelElements.2"/>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[actor.name/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
@@ -441,35 +442,31 @@
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
   </queries>
-  <queries expression="[container.createHelperInterfaceRealization(interfaceToAdd)/]" startingPoint="//@modelElements.1">
-    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
-    </expectations>
-    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
-      <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=InterfaceRealization</possibleTypes>
-      </expectedResult>
-    </expectations>
-    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
-    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
-    <variables xsi:type="qmodel:EObjectVariable" name="interfaceToAdd" value="//@modelElements.9"/>
-  </queries>
-  <queries expression="[container.createSlot(aProperty)/]" startingPoint="//@modelElements.1">
-    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
-    </expectations>
-    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
-      <expectedResult interpreter="manual">
-        <possibleTypes>void</possibleTypes>
-      </expectedResult>
-    </expectations>
-    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
-    <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.10"/>
-    <variables xsi:type="qmodel:EObjectVariable" name="aProperty" value="//@modelElements.2"/>
-  </queries>
   <queries expression="[container.eContainer(uml::Package).getAvailableTypes()/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -478,6 +475,7 @@
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[container.eContainer(uml::Package)/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
@@ -567,17 +565,6 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.createInteraction()/]" startingPoint="//@modelElements.5">
-    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
-    </expectations>
-    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
-      <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=Interaction</possibleTypes>
-      </expectedResult>
-    </expectations>
-    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
-  </queries>
   <queries expression="[self.packagedElement->excludes(class)/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
@@ -631,7 +618,7 @@
   </queries>
   <queries expression="[self.getStereotypesDescription('energy')/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value=""/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -641,6 +628,7 @@
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[self.eAllContents(uml::Package)->including(self)/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
@@ -978,7 +966,9 @@
   </queries>
   <queries expression="[self.findTypeByName('String')/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_bFkDkJCWEd2Xeb6Jt2sbCQ"/>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -986,10 +976,72 @@
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[self.getAllAvailableRootPackages()->union(self.getAllAvailableRootPackages().eAllContents()->filter(uml::Classifier))->union(self.getAllAvailableRootPackages().eAllContents()->filter(uml::Operation))/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_pC1TsJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_G1LiIJBrEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_bFkDkJCWEd2Xeb6Jt2sbCQ"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_cHO78JCWEd2Xeb6Jt2sbCQ"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_q-uUoJCWEd2Xeb6Jt2sbCQ"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_eRVrwHDGEeSjq5wVpgsUQA"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_YRLRMJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_ZrDOMJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_jNYjQJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_tLZEgJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_Fr5JgHGWEeSAasxVx1szDQ"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -997,6 +1049,7 @@
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[self.getApplicableStereotypes().getProfile()->asOrderedSet()->asSequence()/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
@@ -1027,6 +1080,7 @@
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
       </expectedResult>
     </expectations>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[self.eContents()->select(eObject | eObject.oclIsKindOf(uml::Class) or eObject.oclIsKindOf(uml::Component) or eObject.oclIsKindOf(uml::Package))/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
@@ -1398,7 +1452,7 @@
   </queries>
   <queries expression="[preSource.canCreateAnInstanceSlot(preTarget)/]" startingPoint="//@modelElements.6">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -1409,10 +1463,11 @@
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.10"/>
     <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.10"/>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[preSource.candidatesForSlot()->filter(uml::Property)->size()>0/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -1421,6 +1476,7 @@
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.10"/>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[preSource.oclIsKindOf(uml::Classifier)/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
@@ -1578,7 +1634,17 @@
   </queries>
   <queries expression="[self->including(self.getSource())->including(self.getTarget())/]" startingPoint="//@modelElements.6">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A97FwZBpEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esZBpEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -1587,6 +1653,7 @@
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[self->including(self.getStereotypeApplications())/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">

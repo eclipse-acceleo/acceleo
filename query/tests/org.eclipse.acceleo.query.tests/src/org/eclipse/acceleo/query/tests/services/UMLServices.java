@@ -32,7 +32,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.BehavioredClassifier;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
@@ -268,55 +267,6 @@ public class UMLServices {
 	}
 
 	/**
-	 * Create an interface realization.
-	 * 
-	 * @param context
-	 *            the context to create the interface realization. It can be a Property, a Port or a
-	 *            BehavioredClassifier.
-	 * @param contract
-	 *            the contract to respect
-	 * @return the new interface realization
-	 */
-	public InterfaceRealization createHelperInterfaceRealization(EObject context, Interface contract) {
-		InterfaceRealization result = null;
-
-		if (context instanceof Property) {
-			final Property property = (Property)context;
-			boolean isPortWithValidType = false;
-			if (context instanceof Port && ((Port)context).isConjugated()) {
-				final Port port = (Port)property;
-				// create InterfaceRealization on the type
-				Type type = port.getType();
-				if (type instanceof BehavioredClassifier) {
-					isPortWithValidType = true;
-					BehavioredClassifier behavioredClassifier = (BehavioredClassifier)type;
-					result = behavioredClassifier.createInterfaceRealization(genDependencyName(
-							behavioredClassifier, contract), contract);
-					result.getClients().add(port);
-				}
-			}
-			if (!isPortWithValidType) {
-				EObject eContainer = context.eContainer();
-				if (eContainer instanceof BehavioredClassifier) {
-					BehavioredClassifier behavioredClassifier = (BehavioredClassifier)eContainer;
-					result = behavioredClassifier.createInterfaceRealization(genDependencyName(property,
-							contract), contract);
-					result.getClients().add(property);
-				}
-			}
-		} else if (context instanceof BehavioredClassifier) {
-			BehavioredClassifier behavioredClassifier = (BehavioredClassifier)context;
-			result = behavioredClassifier.createInterfaceRealization(genDependencyName(behavioredClassifier,
-					contract), contract);
-		} else {
-			// new LogServices().error("CompositeStructureServices.createInterfaceRealization("
-			// + context.getClass() + ") not handled", null);
-		}
-
-		return result;
-	}
-
-	/**
 	 * Generate a dependency label.
 	 * 
 	 * @param source
@@ -327,26 +277,6 @@ public class UMLServices {
 	 */
 	public String genDependencyName(NamedElement source, NamedElement target) {
 		return source.getName() + "To" + target.getName();
-	}
-
-	/**
-	 * Create a new instance value slot.
-	 * 
-	 * @param source
-	 *            Instance under which slot will be created
-	 * @param target
-	 *            Instance referenced by the slot
-	 * @param property
-	 *            Property attached to the slot
-	 */
-	public void createSlot(InstanceSpecification source, InstanceSpecification target, Property property) {
-		// Create new slot
-		final Slot slot = UMLFactory.eINSTANCE.createSlot();
-		slot.setDefiningFeature(property);
-		source.getSlots().add(slot);
-
-		// Set value
-		createInstanceValue(target, slot);
 	}
 
 	/**
@@ -445,20 +375,6 @@ public class UMLServices {
 		}
 
 		return packages;
-	}
-
-	/**
-	 * Create interaction a new interaction in package.
-	 * 
-	 * @param pkg
-	 *            Package containing new interaction.
-	 */
-	public Interaction createInteraction(EObject pkg) {
-		final UMLFactory factory = UMLFactory.eINSTANCE;
-		final Interaction interaction = factory.createInteraction();
-		interaction.setName(getNewInteractionName((Package)pkg));
-		// ((Package)pkg).getPackagedElements().add(interaction);
-		return interaction;
 	}
 
 	/**
