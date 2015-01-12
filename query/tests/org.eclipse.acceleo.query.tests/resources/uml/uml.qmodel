@@ -1718,13 +1718,14 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.oclAsType(uml::Element).getApplicableStereotypes()->union(self.oclAsType(uml::Element).getApplicableStereotypes().getProfile()->asSet())/]" startingPoint="//@modelElements.4">
+  <queries expression="[self.oclAsType(uml::Element).getApplicableStereotypes()->asSet()->union(self.oclAsType(uml::Element).getApplicableStereotypes().getProfile()->asSet())/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>Set(EClassifier=Stereotype)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Profile)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
