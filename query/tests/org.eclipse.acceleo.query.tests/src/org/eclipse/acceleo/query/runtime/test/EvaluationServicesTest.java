@@ -128,12 +128,12 @@ public class EvaluationServicesTest {
 
 	/**
 	 * Test feature access on an {@link EObject} with an existing feature name but wich value is unset.
-	 * Expected result : NOTHING.
+	 * Expected result : null.
 	 */
 	@Test
 	public void testUnsetFeature() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
-		assertEquals(EvaluationServices.NOTHING, services.featureAccess(attribute, "eType"));
+		assertEquals(null, services.featureAccess(attribute, "eType"));
 	}
 
 	/**

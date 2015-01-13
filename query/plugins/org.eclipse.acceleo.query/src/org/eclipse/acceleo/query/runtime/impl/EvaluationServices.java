@@ -108,9 +108,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 					return nothing(UNKNOWN_FEATURE, featureName, eClass.getName());
 				} else {
 					result = ((EObject)context).eGet(feature);
-					if (result == null) {
-						result = NOTHING;
-					}
 				}
 			} else if (context instanceof List) {
 				result = applyGetFeatureOnSequence((List<Object>)context, featureName);
