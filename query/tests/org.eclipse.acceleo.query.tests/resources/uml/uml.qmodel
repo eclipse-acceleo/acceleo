@@ -358,9 +358,99 @@
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="actor" value="//@modelElements.4"/>
   </queries>
-  <queries expression="[self.ancestors()->last()->including(self.ancestors()->last().eAllContents(uml::PackageableElement))/]" startingPoint="//@modelElements.1">
+  <queries expression="[self.ancestors()->last()->including(self.ancestors()->last().eAllContents(uml::PackageableElement))/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="manual">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:ListResult">
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_Bob28JFcEd2gfL_kAZmBgw"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_BCAJEJFcEd2gfL_kAZmBgw"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_pC1TsJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_pC1TspBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_pC16wJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_pC16wpBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_pC16w5BqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_A96espBpEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_A97FwJBpEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_A97FwpBpEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_A97Fw5BpEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_kmJGIJCPEd2Xeb6Jt2sbCQ"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_lEMUEJCPEd2Xeb6Jt2sbCQ"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_hPZ4sHcDEeS_LcjX3XW_Qg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_G1LiIJBrEd2MY5zfT4Awfg"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_bFkDkJCWEd2Xeb6Jt2sbCQ"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_cHO78JCWEd2Xeb6Jt2sbCQ"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_q-uUoJCWEd2Xeb6Jt2sbCQ"/>
+          </values>
+          <values xsi:type="qmodel:EObjectResult">
+            <value href="example.uml#_eRVrwHDGEeSjq5wVpgsUQA"/>
+          </values>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
