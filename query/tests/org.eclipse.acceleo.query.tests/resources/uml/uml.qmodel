@@ -666,19 +666,19 @@
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="class" value="//@modelElements.4"/>
   </queries>
-  <queries expression="[self.interfaceRealization->filter(uml::InterfaceRealization).supplier/]" startingPoint="//@modelElements.4">
+  <queries expression="[self.interfaceRealization->filter(uml::InterfaceRealization)/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="manual"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=NamedElement)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=InterfaceRealization)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
   <queries expression="[self.interfaceRealization->filter(uml::InterfaceRealization)/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="manual"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
