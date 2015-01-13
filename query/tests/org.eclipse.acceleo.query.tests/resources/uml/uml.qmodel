@@ -1075,13 +1075,36 @@
   </queries>
   <queries expression="[self.getValidsForComponentDiagram()->select(eObject | eObject.oclIsKindOf(uml::Class) or eObject.oclIsKindOf(uml::Component) or eObject.oclIsKindOf(uml::Package))/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_Tj-XsJBlEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
       </expectedResult>
     </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
   <queries expression="[self.eContents()->select(eObject | eObject.oclIsKindOf(uml::Class) or eObject.oclIsKindOf(uml::Component) or eObject.oclIsKindOf(uml::Package))/]" startingPoint="//@modelElements.1">
