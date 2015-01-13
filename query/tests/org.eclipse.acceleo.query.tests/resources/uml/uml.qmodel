@@ -1097,7 +1097,17 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Comment)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=StringExpression)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Constraint)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ElementImport)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageImport)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=TemplateBinding)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=TemplateSignature)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageMerge)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ProfileApplication)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
