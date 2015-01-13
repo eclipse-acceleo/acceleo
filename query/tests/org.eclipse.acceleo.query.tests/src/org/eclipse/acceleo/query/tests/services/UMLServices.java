@@ -339,10 +339,10 @@ public class UMLServices {
 	 * @return All the available types
 	 */
 	public Set<Type> getAvailableTypes(Package pkg) {
-		Set<Type> availableTypes = Sets.newHashSet();
+		Set<Type> availableTypes = Sets.newLinkedHashSet();
 		Set<Package> availablePackages = getAvailablePackages(pkg);
 		for (Package availablePackage : availablePackages) {
-			Set<Type> types = Sets.newHashSet(Iterables.filter(availablePackage.getOwnedTypes(),
+			Set<Type> types = Sets.newLinkedHashSet(Iterables.filter(availablePackage.getOwnedTypes(),
 					new Predicate<EObject>() {
 						public boolean apply(EObject input) {
 							return input instanceof Class || input instanceof Interface
@@ -362,7 +362,7 @@ public class UMLServices {
 	 * @return All the available packages
 	 */
 	public Set<Package> getAvailablePackages(Package pkg) {
-		Set<Package> packages = Sets.newHashSet();
+		Set<Package> packages = Sets.newLinkedHashSet();
 		packages.add(pkg);
 		for (Iterator<EObject> iterator = pkg.getModel().eAllContents(); iterator.hasNext();) {
 			EObject eObject = iterator.next();

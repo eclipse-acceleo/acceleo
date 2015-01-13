@@ -534,15 +534,12 @@
   </queries>
   <queries expression="[container.eContainer(uml::Package).getAvailableTypes()/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
-        <values xsi:type="qmodel:EObjectResult">
-          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
-        </values>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
         </values>
         <values xsi:type="qmodel:EObjectResult">
-          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
         </values>
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
@@ -551,10 +548,13 @@
           <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
         </values>
         <values xsi:type="qmodel:EObjectResult">
-          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
         </values>
         <values xsi:type="qmodel:EObjectResult">
-          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
         </values>
       </expectedResult>
     </expectations>
