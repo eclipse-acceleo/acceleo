@@ -688,7 +688,26 @@
   </queries>
   <queries expression="[self.packagedElement->select(e | e.oclIsTypeOf(uml::Class) or e.oclIsTypeOf(uml::Interface))/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="manual">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
