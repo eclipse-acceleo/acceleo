@@ -1557,16 +1557,6 @@
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
   </queries>
-  <queries expression="[self.property.oclAsType(uml::ConnectableElement).end.eContainer(uml::Connector)->flatten()/]" startingPoint="//@modelElements.6">
-    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
-    </expectations>
-    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
-      <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-      </expectedResult>
-    </expectations>
-  </queries>
   <queries expression="[self.redefinedPort->size() > 0/]" startingPoint="//@modelElements.0">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
