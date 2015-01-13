@@ -1029,23 +1029,29 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.memberEnd->at(1).role->filter(uml::Property)->first()/]" startingPoint="//@modelElements.6">
+  <queries expression="[self.memberEnd->at(1)->filter(uml::Property)->asSequence()->first()/]" startingPoint="//@modelElements.6">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="example.uml#_A96esZBpEd2MY5zfT4Awfg"/>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Feature role not found in EClass Property"/>
+        <possibleTypes>EClassifier=Property</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="[self.memberEnd->at(1).role->filter(uml::Property)/]" startingPoint="//@modelElements.6">
+  <queries expression="[self.memberEnd->at(1)->filter(uml::Property)/]" startingPoint="//@modelElements.6">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esZBpEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Feature role not found in EClass Property"/>
+        <possibleTypes>Set(EClassifier=Property)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
