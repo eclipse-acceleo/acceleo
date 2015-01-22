@@ -1,13 +1,12 @@
 package org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider;
 
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.OCLElement;
-import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.OCLElementItemProvider;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.util.SeverityOverlay;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.ocl.examples.pivot.NamedElement;
-import org.eclipse.ocl.examples.pivot.Package;
-import org.eclipse.ocl.examples.pivot.Root;
-import org.eclipse.ocl.examples.pivot.Type;
+import org.eclipse.ocl.pivot.Model;
+import org.eclipse.ocl.pivot.NamedElement;
+import org.eclipse.ocl.pivot.Package;
+import org.eclipse.ocl.pivot.Type;
 
 public class OCLElementItemProviderSpec extends OCLElementItemProvider {
 	public OCLElementItemProviderSpec(AdapterFactory adapterFactory) {
@@ -17,7 +16,7 @@ public class OCLElementItemProviderSpec extends OCLElementItemProvider {
 	@Override
 	public String getText(Object object) {
 		final OCLElement element = (OCLElement)object;
-		if (element.getElement() instanceof Root) {
+		if (element.getElement() instanceof Model) {
 			return "All Results";
 		} else if (element.getElement() instanceof Package) {
 			return "Package - " + ((Package)element.getElement()).getName();

@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
+import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.xtext.resource.XtextResource;
 
 /**
@@ -36,12 +36,11 @@ public class ModelExportCompleteOCLEvaluationResultAction extends AbstractExport
 	 *            the xtext resource to evaluate.
 	 * @param target
 	 *            the target resource.
-	 * @param metaModelManager
+	 * @param metamodelManager
 	 *            the meta model manager.
 	 */
-	public ModelExportCompleteOCLEvaluationResultAction(XtextResource resource, Resource target,
-			MetaModelManager metaModelManager) {
-		super("Model EXPORT", resource, target, metaModelManager, new IEvaluationExporter() {
+	public ModelExportCompleteOCLEvaluationResultAction(XtextResource resource, Resource target, OCL ocl) {
+		super("Model EXPORT", resource, target, ocl, new IEvaluationExporter() {
 			public void export(String outputPath, OCLElement resultRoot, IProgressMonitor monitor) {
 				Resource res = new XMIResourceImpl(URI.createFileURI(outputPath));
 				res.getContents().add(resultRoot);

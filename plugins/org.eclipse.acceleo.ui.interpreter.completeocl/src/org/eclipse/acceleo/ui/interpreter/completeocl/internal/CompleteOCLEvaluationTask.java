@@ -20,15 +20,15 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ocl.examples.pivot.Constraint;
-import org.eclipse.ocl.examples.pivot.Element;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.OCLExpression;
-import org.eclipse.ocl.examples.pivot.Operation;
-import org.eclipse.ocl.examples.pivot.Package;
-import org.eclipse.ocl.examples.pivot.Root;
-import org.eclipse.ocl.examples.pivot.Type;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
+import org.eclipse.ocl.pivot.Constraint;
+import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.Model;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.Operation;
+import org.eclipse.ocl.pivot.Package;
+import org.eclipse.ocl.pivot.Type;
+import org.eclipse.ocl.pivot.utilities.EnvironmentFactory;
 
 /**
  * This class aims at providing the necessary API to evaluate an OCL query that was compiled from a simple
@@ -40,20 +40,20 @@ public class CompleteOCLEvaluationTask implements Callable<EvaluationResult> {
 	/** Current interpreter context. */
 	private final EvaluationContext context;
 
-	/** Current metaModel Manager. */
-	private final MetaModelManager metaModelManager;
+	/** Current metamodel Manager. */
+	private final EnvironmentFactory environmentFactory;
 
 	/**
 	 * Instantiates the evaluation task for the given evaluation context.
 	 * 
 	 * @param context
 	 *            The Current interpreter context.
-	 * @param metaModelManager
-	 *            The Current MetaModel Manager.
+	 * @param metamodelManager
+	 *            The Current Metamodel Manager.
 	 */
-	public CompleteOCLEvaluationTask(EvaluationContext context, MetaModelManager metaModelManager) {
+	public CompleteOCLEvaluationTask(EvaluationContext context, EnvironmentFactory environmentFactory) {
 		this.context = context;
-		this.metaModelManager = metaModelManager;
+		this.environmentFactory = environmentFactory;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class CompleteOCLEvaluationTask implements Callable<EvaluationResult> {
 					"No context selected."));
 		}
 
-		final CompleteOCLEvaluator evaluator = new CompleteOCLEvaluator(metaModelManager);
+		final CompleteOCLEvaluator evaluator = new CompleteOCLEvaluator(environmentFactory);
 		final Notifier evaluationTarget = context.getTargetNotifiers().get(0);
 		final EvaluationResult result;
 		if (compilationResult.getCompiledExpression() instanceof ExpressionInOCL) {
@@ -128,7 +128,7 @@ public class CompleteOCLEvaluationTask implements Callable<EvaluationResult> {
 		Object expression = compilationResult.getCompiledExpression();
 
 		boolean knownExpression = false;
-		if (expression instanceof Root || expression instanceof Package || expression instanceof Type
+		if (expression instanceof Model || expression instanceof Package || expression instanceof Type
 				|| expression instanceof Constraint || expression instanceof Operation) {
 			knownExpression = true;
 		} else {

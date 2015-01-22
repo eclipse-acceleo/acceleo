@@ -29,51 +29,56 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.ocl.examples.domain.values.Value;
-import org.eclipse.ocl.examples.domain.values.impl.InvalidValueException;
-import org.eclipse.ocl.examples.pivot.Constraint;
-import org.eclipse.ocl.examples.pivot.Element;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.Namespace;
-import org.eclipse.ocl.examples.pivot.OCLExpression;
-import org.eclipse.ocl.examples.pivot.Operation;
-import org.eclipse.ocl.examples.pivot.Package;
-import org.eclipse.ocl.examples.pivot.ParserException;
-import org.eclipse.ocl.examples.pivot.PivotConstants;
-import org.eclipse.ocl.examples.pivot.Property;
-import org.eclipse.ocl.examples.pivot.PropertyCallExp;
-import org.eclipse.ocl.examples.pivot.Root;
-import org.eclipse.ocl.examples.pivot.TupleType;
-import org.eclipse.ocl.examples.pivot.Type;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.utilities.ConstraintEvaluator;
+import org.eclipse.ocl.pivot.CompleteModel;
+import org.eclipse.ocl.pivot.Constraint;
+import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.LanguageExpression;
+import org.eclipse.ocl.pivot.Model;
+import org.eclipse.ocl.pivot.Namespace;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.Operation;
+import org.eclipse.ocl.pivot.Package;
+import org.eclipse.ocl.pivot.Type;
+import org.eclipse.ocl.pivot.evaluation.AbstractConstraintEvaluator;
+import org.eclipse.ocl.pivot.utilities.EnvironmentFactory;
+import org.eclipse.ocl.pivot.utilities.MetamodelManager;
+import org.eclipse.ocl.pivot.utilities.ParserException;
+import org.eclipse.ocl.pivot.values.InvalidValueException;
+import org.eclipse.ocl.pivot.values.Value;
 
 public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
-	private final MetaModelManager metaModelManager;
+	private final EnvironmentFactory environmentFactory;
 
-	public CompleteOCLEvaluator(MetaModelManager metaModelManager) {
-		this.metaModelManager = metaModelManager;
+	private final MetamodelManager metamodelManager;
+
+	private final CompleteModel completeModel;
+
+	public CompleteOCLEvaluator(EnvironmentFactory environmentFactory) {
+		this.environmentFactory = environmentFactory;
+		this.metamodelManager = environmentFactory.getMetamodelManager();
+		this.completeModel = environmentFactory.getCompleteModel();
 	}
 
 	@Override
-	protected MetaModelManager getMetaModelManager() {
-		return metaModelManager;
+	protected EnvironmentFactory getEnvironmentFactory() {
+		return environmentFactory;
 	}
 
 	public EvaluationResult evaluateCompleteOCLElement(Element pivotElement, Notifier evaluationTarget) {
 		final OCLElement oclElement;
-		if (pivotElement instanceof Root) {
+		if (pivotElement instanceof Model) {
 			oclElement = createOCLElement(pivotElement);
-			for (Package pack : ((Root)pivotElement).getNestedPackage()) {
+			for (Package pack : ((Model)pivotElement).getOwnedPackages()) {
 				checkCancelled();
 				oclElement.getChildren().add(evaluateCompleteOCLExpression(pack, null, evaluationTarget));
 			}
 		} else if (pivotElement instanceof Package) {
 			oclElement = evaluateCompleteOCLExpression((Package)pivotElement, null, evaluationTarget);
-		} else if (pivotElement instanceof Type) {
-			final Package packaje = ((Type)pivotElement).getPackage();
-			final OCLElement packageElement = evaluateCompleteOCLExpression(packaje, (Type)pivotElement,
-					evaluationTarget);
+		} else if (pivotElement instanceof org.eclipse.ocl.pivot.Class) {
+			final Package packaje = ((org.eclipse.ocl.pivot.Class)pivotElement).getOwningPackage();
+			final OCLElement packageElement = evaluateCompleteOCLExpression(packaje,
+					(org.eclipse.ocl.pivot.Class)pivotElement, evaluationTarget);
 			oclElement = packageElement.getChildren().get(0);
 		} else if (pivotElement instanceof Constraint) {
 			if (evaluationTarget instanceof EObject
@@ -91,10 +96,17 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 		} else if (pivotElement instanceof Operation) {
 			if (evaluationTarget instanceof EObject
 					&& ((Operation)pivotElement).getParameterTypes().get().length == 0
-					&& checkType(((Operation)pivotElement).getOwningType(), (EObject)evaluationTarget)) {
-				final EvaluationResult result = evaluateExpression(((Operation)pivotElement)
-						.getBodyExpression().getExpressionInOCL(), (EObject)evaluationTarget);
-
+					&& checkType(((Operation)pivotElement).getOwningClass(), (EObject)evaluationTarget)) {
+				final LanguageExpression spec = ((Operation)pivotElement).getBodyExpression();
+				ExpressionInOCL expression;
+				try {
+					expression = metamodelManager.parseSpecification(spec);
+				} catch (ParserException e) {
+					return new EvaluationResult(new Status(IStatus.ERROR,
+							CompleteOCLInterpreterActivator.PLUGIN_ID,
+							"Unknown error evaluating expression.", e));
+				}
+				final EvaluationResult result = evaluateExpression(expression, (EObject)evaluationTarget);
 				oclElement = EvaluationResultFactory.eINSTANCE.createOperationElement();
 				oclElement.setElement(pivotElement);
 				((OperationElement)oclElement).getEvaluationResults().add(
@@ -119,7 +131,7 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 	private boolean checkType(Type type, EObject target) {
 		final Type targetType;
 		try {
-			targetType = metaModelManager.getPivotOf(Type.class, target.eClass());
+			targetType = metamodelManager.getASOf(Type.class, target.eClass());
 		} catch (ParserException e) {
 			InterpreterPlugin
 					.getDefault()
@@ -128,20 +140,20 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 							e));
 			return false;
 		}
-		if (metaModelManager.conformsTo(targetType, type, null)) {
+		if (completeModel.conformsTo(targetType, null, type, null)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	private Map<Type, Set<Type>> getRelatedTypes(Package packaje) {
-		final Map<Type, Set<Type>> types = new LinkedHashMap<Type, Set<Type>>();
-		for (Type type : packaje.getOwnedType()) {
-			final Type key = metaModelManager.getTypeServer(type).getPivotType();
-			Set<Type> relatedTypes = types.get(key);
+	private Map<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> getRelatedTypes(Package packaje) {
+		final Map<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> types = new LinkedHashMap<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>>();
+		for (org.eclipse.ocl.pivot.Class type : packaje.getOwnedClasses()) {
+			final org.eclipse.ocl.pivot.Class key = completeModel.getCompleteClass(type).getPrimaryClass();
+			Set<org.eclipse.ocl.pivot.Class> relatedTypes = types.get(key);
 			if (relatedTypes == null) {
-				relatedTypes = new LinkedHashSet<Type>();
+				relatedTypes = new LinkedHashSet<org.eclipse.ocl.pivot.Class>();
 				types.put(key, relatedTypes);
 			}
 			relatedTypes.add(type);
@@ -149,20 +161,22 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 		return types;
 	}
 
-	private Map<Type, Set<Type>> getRelatedTypes(Type type) {
-		final Package packaje = type.getPackage();
+	private Map<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> getRelatedTypes(
+			org.eclipse.ocl.pivot.Class type) {
+		final Package packaje = type.getOwningPackage();
 		if (packaje == null) {
 			return Collections.singletonMap(type, Collections.singleton(type));
 		}
 
-		final Type key = metaModelManager.getTypeServer(type).getPivotType();
-		final Map<Type, Set<Type>> types = new LinkedHashMap<Type, Set<Type>>();
-		for (Type candidate : packaje.getOwnedType()) {
-			final Type candidateKey = metaModelManager.getTypeServer(candidate).getPivotType();
+		final org.eclipse.ocl.pivot.Class key = completeModel.getCompleteClass(type).getPrimaryClass();
+		final Map<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> types = new LinkedHashMap<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>>();
+		for (org.eclipse.ocl.pivot.Class candidate : packaje.getOwnedClasses()) {
+			final org.eclipse.ocl.pivot.Class candidateKey = completeModel.getCompleteClass(candidate)
+					.getPrimaryClass();
 			if (key == candidateKey) {
-				Set<Type> relatedTypes = types.get(key);
+				Set<org.eclipse.ocl.pivot.Class> relatedTypes = types.get(key);
 				if (relatedTypes == null) {
-					relatedTypes = new LinkedHashSet<Type>();
+					relatedTypes = new LinkedHashSet<org.eclipse.ocl.pivot.Class>();
 					types.put(key, relatedTypes);
 				}
 				relatedTypes.add(candidate);
@@ -182,13 +196,13 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 	 *            The evaluation target.
 	 * @return The composite result of this evaluation.
 	 */
-	private OCLElement evaluateCompleteOCLExpression(Package compiledExpression, Type type,
-			Notifier evaluationTarget) {
+	private OCLElement evaluateCompleteOCLExpression(Package compiledExpression,
+			org.eclipse.ocl.pivot.Class type, Notifier evaluationTarget) {
 		final OCLElement oclElement = createOCLElement(compiledExpression);
 
 		// OCL creates multiple "Type" expression if there are more than one on the same target class.
 		// Make sure we regroup them accordingly.
-		final Map<Type, Set<Type>> types;
+		final Map<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> types;
 		if (type != null) {
 			types = getRelatedTypes(type);
 		} else {
@@ -205,7 +219,8 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 		} else {
 			candidates = Collections.emptyList();
 		}
-		for (Map.Entry<Type, Set<Type>> entry : types.entrySet()) {
+		for (Map.Entry<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> entry : types
+				.entrySet()) {
 			checkCancelled();
 			oclElement.getChildren().add(checkTypeAndEvaluate(entry, candidates));
 		}
@@ -213,7 +228,8 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 		return oclElement;
 	}
 
-	private OCLElement checkTypeAndEvaluate(Map.Entry<Type, Set<Type>> relatedTypes,
+	private OCLElement checkTypeAndEvaluate(
+			Map.Entry<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> relatedTypes,
 			Iterable<EObject> targetCandidates) {
 		final OCLElement typeElement = createOCLElement(relatedTypes.getKey());
 		final List<EObject> conformingTargets = new ArrayList<EObject>();
@@ -244,12 +260,13 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 	 *            List of EObject conform to this type on which to evaluate the constraints.
 	 * @return The composite result of this evaluation.
 	 */
-	private List<OCLElement> evaluateCompleteOCLExpression(Map.Entry<Type, Set<Type>> relatedTypes,
+	private List<OCLElement> evaluateCompleteOCLExpression(
+			Map.Entry<org.eclipse.ocl.pivot.Class, Set<org.eclipse.ocl.pivot.Class>> relatedTypes,
 			List<EObject> conformTargets) {
 		final List<OCLElement> childrenResult = new ArrayList<OCLElement>();
-		for (Type type : relatedTypes.getValue()) {
+		for (org.eclipse.ocl.pivot.Class type : relatedTypes.getValue()) {
 			checkCancelled();
-			for (Constraint constraint : type.getOwnedInvariant()) {
+			for (Constraint constraint : type.getOwnedInvariants()) {
 				checkCancelled();
 				final List<ConstraintResult> results = new ArrayList<ConstraintResult>(conformTargets.size());
 				for (EObject target : conformTargets) {
@@ -265,15 +282,23 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 				}
 			}
 
-			for (Operation operation : type.getOwnedOperation()) {
+			for (Operation operation : type.getOwnedOperations()) {
 				checkCancelled();
 				if (operation.getParameterTypes().get().length != 0) {
 					continue;
 				}
 				final List<OCLResult> results = new ArrayList<OCLResult>(conformTargets.size());
 				for (EObject target : conformTargets) {
-					final EvaluationResult childResult = evaluateExpression(operation.getBodyExpression()
-							.getExpressionInOCL(), target);
+					final LanguageExpression spec = operation.getBodyExpression();
+					EvaluationResult childResult;
+					try {
+						ExpressionInOCL expression = metamodelManager.parseSpecification(spec);
+						childResult = evaluateExpression(expression, target);
+					} catch (ParserException e) {
+						childResult = new EvaluationResult(new Status(IStatus.ERROR,
+								CompleteOCLInterpreterActivator.PLUGIN_ID,
+								"Unknown error evaluating expression.", e));
+					}
 					results.add(parseOperationResult(target, childResult));
 				}
 
@@ -290,9 +315,18 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 	}
 
 	private ConstraintResult evaluateExpression(Constraint constraint, EObject evaluationTarget) {
-		final ExpressionInOCL expressionInOCL = constraint.getSpecification().getExpressionInOCL();
-		final OCLExpression expression = getConstraintExpression(expressionInOCL);
-		final EvaluationResult result = internalEvaluateExpression(expression, evaluationTarget);
+		final LanguageExpression spec = constraint.getOwnedSpecification();
+		ExpressionInOCL expressionInOCL = null;
+		EvaluationResult result;
+		try {
+			expressionInOCL = metamodelManager.parseSpecification(spec);
+			final OCLExpression expression = AbstractConstraintEvaluator
+					.getConstraintExpression(expressionInOCL);
+			result = internalEvaluateExpression(expression, evaluationTarget);
+		} catch (ParserException e) {
+			result = new EvaluationResult(new Status(IStatus.ERROR,
+					CompleteOCLInterpreterActivator.PLUGIN_ID, "Unknown error evaluating expression.", e));
+		}
 		return new OCLConstraintParser(expressionInOCL).parse(evaluationTarget, result);
 	}
 
@@ -312,18 +346,6 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 		}
 	}
 
-	private static OCLExpression getConstraintExpression(ExpressionInOCL constraintSpecification) {
-		final OCLExpression body = constraintSpecification.getBodyExpression();
-		if (body instanceof PropertyCallExp) {
-			Property referredProperty = ((PropertyCallExp)body).getReferredProperty();
-			if ((referredProperty != null) && (referredProperty.getOwningType() instanceof TupleType)
-					&& PivotConstants.STATUS_PART_NAME.equals(referredProperty.getName())) {
-				return ((PropertyCallExp)body).getSource();
-			}
-		}
-		return body;
-	}
-
 	private static class AllContentsIterable implements Iterable<EObject> {
 		private Resource resource;
 
@@ -340,7 +362,7 @@ public class CompleteOCLEvaluator extends AbstractOCLEvaluator {
 	 * FIXME there is no API to retrieve the evaluation result except for within sub-classes of this. We'd
 	 * most likely be better off copy/pasting the methods we need.
 	 */
-	private class OCLConstraintParser extends ConstraintEvaluator<ConstraintResult> {
+	private class OCLConstraintParser extends AbstractConstraintEvaluator<ConstraintResult> {
 
 		private EObject currentevaluationTarget;
 

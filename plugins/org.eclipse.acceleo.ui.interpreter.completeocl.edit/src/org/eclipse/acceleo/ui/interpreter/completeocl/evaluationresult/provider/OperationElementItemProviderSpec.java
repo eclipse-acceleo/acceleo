@@ -5,7 +5,7 @@ import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.Severity;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.OperationElementItemProvider;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.util.SeverityOverlay;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.ocl.examples.pivot.NamedElement;
+import org.eclipse.ocl.pivot.NamedElement;
 
 public class OperationElementItemProviderSpec extends OperationElementItemProvider {
 	public OperationElementItemProviderSpec(AdapterFactory  adapterFactory) {

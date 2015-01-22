@@ -24,14 +24,13 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
-import org.eclipse.ocl.examples.domain.values.Value;
-import org.eclipse.ocl.examples.pivot.Element;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.context.EInvocationContext;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.util.Pivotable;
 import org.eclipse.ocl.examples.xtext.console.xtfo.EmbeddedXtextEditor;
-import org.eclipse.ocl.examples.xtext.essentialocl.utilities.EssentialOCLCSResource;
+import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.internal.context.EInvocationContext;
+import org.eclipse.ocl.pivot.utilities.Pivotable;
+import org.eclipse.ocl.pivot.values.Value;
+import org.eclipse.ocl.xtext.essentialocl.utilities.EssentialOCLCSResource;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.resource.XtextResource;
@@ -50,9 +49,6 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 	/** Embedded editor containing the expression to compile. */
 	private final EmbeddedXtextEditor editor;
 
-	/** The current metaModel Manager. */
-	private final MetaModelManager metaModelManager;
-
 	/**
 	 * Instantiates our compilation task given the current interpreter context.
 	 * 
@@ -60,14 +56,12 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 	 *            The current interpreter context.
 	 * @param editor
 	 *            The current editor.
-	 * @param metaModelManager
+	 * @param metamodelManager
 	 *            The Metamodel Manager.
 	 */
-	public OCLCompilationTask(InterpreterContext context, EmbeddedXtextEditor editor,
-			MetaModelManager metaModelManager) {
+	public OCLCompilationTask(InterpreterContext context, EmbeddedXtextEditor editor) {
 		this.context = context;
 		this.editor = editor;
-		this.metaModelManager = metaModelManager;
 	}
 
 	/**
@@ -157,8 +151,7 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 	 *            The selected model element.
 	 */
 	private void refreshEditor(EObject target) {
-		final IUnitOfWork<Object, XtextResource> refresher = new DocumentRefresher(editor, metaModelManager,
-				target);
+		final IUnitOfWork<Object, XtextResource> refresher = new DocumentRefresher(editor, target);
 
 		final Display display = Display.getDefault();
 		if (display != null) {
@@ -191,9 +184,6 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 		/** Embedded editor containing the expression to compile. */
 		private final EmbeddedXtextEditor editor;
 
-		/** The current metaModel Manager. */
-		private final MetaModelManager metaModelManager;
-
 		/** EObject which is to be set as the new context of this document. */
 		private final EObject target;
 
@@ -202,14 +192,13 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 		 * 
 		 * @param editor
 		 *            The editor which document will be refreshed.
-		 * @param metaModelManager
+		 * @param metamodelManager
 		 *            The current metamodel manager.
 		 * @param target
 		 *            The context EObject for the incoming parsing.
 		 */
-		public DocumentRefresher(EmbeddedXtextEditor editor, MetaModelManager metaModelManager, EObject target) {
+		public DocumentRefresher(EmbeddedXtextEditor editor, EObject target) {
 			this.editor = editor;
-			this.metaModelManager = metaModelManager;
 			this.target = target;
 		}
 
@@ -228,8 +217,8 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 						return null;
 					}
 				}
-				csResource.setParserContext(new EInvocationContext(metaModelManager, resource.getURI(),
-						contextClassifier, null));
+				csResource.setParserContext(new EInvocationContext(editor.getEnvironmentFactory(), resource
+						.getURI(), contextClassifier, null));
 				csResource.reparse(editor.getDocument().get());
 			}
 			// unused return value

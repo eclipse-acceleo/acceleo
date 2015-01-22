@@ -22,10 +22,10 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
-import org.eclipse.ocl.examples.pivot.Element;
-import org.eclipse.ocl.examples.pivot.Root;
-import org.eclipse.ocl.examples.pivot.util.Pivotable;
 import org.eclipse.ocl.examples.xtext.console.xtfo.EmbeddedXtextEditor;
+import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.Model;
+import org.eclipse.ocl.pivot.utilities.Pivotable;
 import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.resource.XtextResource;
 
@@ -72,7 +72,7 @@ public class CompleteOCLCompilationTask implements Callable<CompilationResult> {
 
 		final XtextResource resource = editor.getResource();
 
-		Root root = null;
+		Model root = null;
 		CompilationResult compilationResult = null;
 		if (resource != null) {
 			final IParseResult result = resource.getParseResult();
@@ -80,8 +80,8 @@ public class CompleteOCLCompilationTask implements Callable<CompilationResult> {
 			if (result != null && result.getRootASTElement() instanceof Pivotable) {
 				final Element pivotElement = ((Pivotable)result.getRootASTElement()).getPivot();
 
-				if (pivotElement instanceof Root) {
-					root = (Root)pivotElement;
+				if (pivotElement instanceof Model) {
+					root = (Model)pivotElement;
 				}
 			}
 

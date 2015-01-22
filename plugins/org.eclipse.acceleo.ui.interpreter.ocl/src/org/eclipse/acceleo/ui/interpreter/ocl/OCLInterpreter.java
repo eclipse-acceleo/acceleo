@@ -18,13 +18,10 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.acceleo.ui.interpreter.language.SplitExpression;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
 import org.eclipse.ocl.examples.xtext.console.xtfo.EmbeddedXtextEditor;
-import org.eclipse.ocl.examples.xtext.essentialocl.ui.internal.EssentialOCLActivator;
-import org.eclipse.ocl.examples.xtext.essentialocl.utilities.EssentialOCLPlugin;
+import org.eclipse.ocl.xtext.essentialocl.ui.internal.EssentialOCLActivator;
+import org.eclipse.ocl.xtext.essentialocl.utilities.EssentialOCLPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -39,9 +36,6 @@ public class OCLInterpreter extends AbstractLanguageInterpreter {
 	/** The current editor. */
 	private EmbeddedXtextEditor editor;
 
-	/** The current metaModel Manager. */
-	private MetaModelManager metaModelManager;
-
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -49,12 +43,7 @@ public class OCLInterpreter extends AbstractLanguageInterpreter {
 	 */
 	@Override
 	public Callable<CompilationResult> getCompilationTask(InterpreterContext context) {
-		MetaModelManager contextManager = null;
-		if (!context.getTargetEObjects().isEmpty()) {
-			EObject evaluationTarget = context.getTargetEObjects().get(0);
-			contextManager = getMetaModelManager(evaluationTarget);
-		}
-		return new OCLCompilationTask(context, editor, contextManager);
+		return new OCLCompilationTask(context, editor);
 	}
 
 	/**
@@ -64,12 +53,7 @@ public class OCLInterpreter extends AbstractLanguageInterpreter {
 	 */
 	@Override
 	public Callable<EvaluationResult> getEvaluationTask(EvaluationContext context) {
-		MetaModelManager contextManager = null;
-		if (!context.getTargetEObjects().isEmpty()) {
-			EObject evaluationTarget = context.getTargetEObjects().get(0);
-			contextManager = getMetaModelManager(evaluationTarget);
-		}
-		return new OCLEvaluationTask(context, contextManager);
+		return new OCLEvaluationTask(context, editor.getEnvironmentFactory());
 
 	}
 
@@ -100,25 +84,5 @@ public class OCLInterpreter extends AbstractLanguageInterpreter {
 			}
 		});
 		return viewer;
-	}
-
-	/**
-	 * Find the metamodel manager for the given target.
-	 * 
-	 * @param target
-	 *            The current selected element.
-	 * @return The metamodel manager.
-	 */
-	private MetaModelManager getMetaModelManager(EObject target) {
-		if (target != null) {
-			MetaModelManager manager = PivotUtil.findMetaModelManager(target);
-			if (manager != null) {
-				return manager;
-			}
-		}
-		if (metaModelManager == null) {
-			metaModelManager = new MetaModelManager();
-		}
-		return metaModelManager;
 	}
 }

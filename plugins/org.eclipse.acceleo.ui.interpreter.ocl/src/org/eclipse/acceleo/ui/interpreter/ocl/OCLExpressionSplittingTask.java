@@ -19,17 +19,17 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationContext;
 import org.eclipse.acceleo.ui.interpreter.language.SplitExpression;
 import org.eclipse.acceleo.ui.interpreter.language.SubExpression;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.ocl.examples.pivot.CallExp;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.IfExp;
-import org.eclipse.ocl.examples.pivot.LetExp;
-import org.eclipse.ocl.examples.pivot.LiteralExp;
-import org.eclipse.ocl.examples.pivot.OCLExpression;
-import org.eclipse.ocl.examples.pivot.OperationCallExp;
-import org.eclipse.ocl.examples.pivot.Variable;
-import org.eclipse.ocl.examples.pivot.VariableExp;
-import org.eclipse.ocl.examples.pivot.util.AbstractExtendingVisitor;
-import org.eclipse.ocl.examples.pivot.util.Visitable;
+import org.eclipse.ocl.pivot.CallExp;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.IfExp;
+import org.eclipse.ocl.pivot.LetExp;
+import org.eclipse.ocl.pivot.LiteralExp;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.OperationCallExp;
+import org.eclipse.ocl.pivot.Variable;
+import org.eclipse.ocl.pivot.VariableExp;
+import org.eclipse.ocl.pivot.util.AbstractExtendingVisitor;
+import org.eclipse.ocl.pivot.util.Visitable;
 
 /**
  * This class aims at providing the necessary API to split an OCL query that was compiled from a simple
@@ -105,18 +105,18 @@ public class OCLExpressionSplittingTask implements Callable<SplitExpression> {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitExpressionInOCL(ExpressionInOCL)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitExpressionInOCL(ExpressionInOCL)
 		 */
 		@Override
 		public SubExpression visitExpressionInOCL(ExpressionInOCL object) {
-			expressionStack.addFirst(new SubExpression(object.getBodyExpression()));
-			return object.getBodyExpression().accept(this);
+			expressionStack.addFirst(new SubExpression(object.getOwnedBody()));
+			return object.getOwnedBody().accept(this);
 		}
 
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visiting(Visitable)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visiting(Visitable)
 		 */
 		public SubExpression visiting(Visitable visitable) {
 			return null;
@@ -125,11 +125,11 @@ public class OCLExpressionSplittingTask implements Callable<SplitExpression> {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitOperationCallExp(OperationCallExp)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitOperationCallExp(OperationCallExp)
 		 */
 		@Override
 		public SubExpression visitOperationCallExp(OperationCallExp object) {
-			for (OCLExpression expression : object.getArgument()) {
+			for (OCLExpression expression : object.getOwnedArguments()) {
 				addAndVisitSubStep(expression);
 			}
 			SubExpression result = super.visitOperationCallExp(object);
@@ -139,41 +139,41 @@ public class OCLExpressionSplittingTask implements Callable<SplitExpression> {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitLetExp(LetExp)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitLetExp(LetExp)
 		 */
 		@Override
 		public SubExpression visitLetExp(LetExp object) {
 			addChild(new SubExpression(object));
 
 			// variable definition should not be displayed
-			object.getVariable().accept(this);
+			object.getOwnedVariable().accept(this);
 
-			return addAndVisitSubStep(object.getIn());
+			return addAndVisitSubStep(object.getOwnedIn());
 		}
 
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitVariable(Variable)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitVariable(Variable)
 		 */
 		@Override
 		public SubExpression visitVariable(Variable object) {
-			return addAndVisitSubStep(object.getInitExpression());
+			return addAndVisitSubStep(object.getOwnedInit());
 		}
 
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitIfExp(IfExp)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitIfExp(IfExp)
 		 */
 		@Override
 		public SubExpression visitIfExp(IfExp object) {
 			addChild(new SubExpression(object));
 			SubExpression result = super.visitIfExp(object);
 
-			addAndVisitSubStep(object.getCondition());
-			addAndVisitSubStep(object.getThenExpression());
-			addAndVisitSubStep(object.getElseExpression());
+			addAndVisitSubStep(object.getOwnedCondition());
+			addAndVisitSubStep(object.getOwnedThen());
+			addAndVisitSubStep(object.getOwnedElse());
 
 			return result;
 		}
@@ -181,7 +181,7 @@ public class OCLExpressionSplittingTask implements Callable<SplitExpression> {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitVariableExp(VariableExp)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitVariableExp(VariableExp)
 		 */
 		@Override
 		public SubExpression visitVariableExp(VariableExp object) {
@@ -192,7 +192,7 @@ public class OCLExpressionSplittingTask implements Callable<SplitExpression> {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitLiteralExp(LiteralExp)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitLiteralExp(LiteralExp)
 		 */
 		@Override
 		public SubExpression visitLiteralExp(LiteralExp object) {
@@ -203,12 +203,12 @@ public class OCLExpressionSplittingTask implements Callable<SplitExpression> {
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.ocl.examples.pivot.util.Visitor#visitCallExp(CallExp)
+		 * @see org.eclipse.ocl.pivot.util.Visitor#visitCallExp(CallExp)
 		 */
 		@Override
 		public SubExpression visitCallExp(CallExp object) {
 			addChild(new SubExpression(object));
-			return addAndVisitSubStep(object.getSource());
+			return addAndVisitSubStep(object.getOwnedSource());
 		}
 
 		/**

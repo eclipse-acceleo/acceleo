@@ -12,7 +12,7 @@ package org.eclipse.acceleo.ui.interpreter.completeocl.internal.action;
 
 import org.eclipse.acceleo.ui.interpreter.completeocl.HTMLExporter;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
+import org.eclipse.ocl.pivot.utilities.OCL;
 import org.eclipse.xtext.resource.XtextResource;
 
 /**
@@ -29,11 +29,10 @@ public class HTMLExportCompleteOCLEvaluationResultAction extends AbstractExportC
 	 *            the xtext resource to evaluate.
 	 * @param target
 	 *            the target resource.
-	 * @param metaModelManager
+	 * @param metamodelManager
 	 *            the meta model manager.
 	 */
-	public HTMLExportCompleteOCLEvaluationResultAction(XtextResource resource, Resource target,
-			MetaModelManager metaModelManager) {
-		super("HTML EXPORT", resource, target, metaModelManager, new HTMLExporter());
+	public HTMLExportCompleteOCLEvaluationResultAction(XtextResource resource, Resource target, OCL ocl) {
+		super("HTML EXPORT", resource, target, ocl, new HTMLExporter(ocl)); //$NON-NLS-1$
 	}
 }

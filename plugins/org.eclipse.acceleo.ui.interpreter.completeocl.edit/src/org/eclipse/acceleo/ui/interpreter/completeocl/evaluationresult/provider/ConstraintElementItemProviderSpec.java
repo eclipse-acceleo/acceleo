@@ -9,7 +9,7 @@ import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.Severity;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.ConstraintElementItemProvider;
 import org.eclipse.acceleo.ui.interpreter.completeocl.evaluationresult.provider.util.SeverityOverlay;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.ocl.examples.pivot.NamedElement;
+import org.eclipse.ocl.pivot.NamedElement;
 
 public class ConstraintElementItemProviderSpec extends ConstraintElementItemProvider {
 	public ConstraintElementItemProviderSpec(AdapterFactory adapterFactory) {

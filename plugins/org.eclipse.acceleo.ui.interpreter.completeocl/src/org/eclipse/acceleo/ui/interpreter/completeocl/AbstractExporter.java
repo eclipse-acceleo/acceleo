@@ -107,7 +107,7 @@ public abstract class AbstractExporter implements IEvaluationExporter {
 		try {
 			export(s, targetFile.getName(), resultRoot);
 
-			byte[] byteArrayInputStream = s.toString().getBytes(Charset.forName("UTF-8"));
+			byte[] byteArrayInputStream = s.toString().getBytes(Charset.forName("UTF-8")); //$NON-NLS-1$
 			if (targetFile.isAbsolute()) {
 				Files.write(byteArrayInputStream, targetFile);
 			} else {

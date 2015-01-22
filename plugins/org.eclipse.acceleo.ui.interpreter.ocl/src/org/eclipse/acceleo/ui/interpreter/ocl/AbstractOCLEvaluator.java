@@ -21,22 +21,19 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ocl.examples.domain.evaluation.DomainModelManager;
-import org.eclipse.ocl.examples.domain.values.CollectionValue;
-import org.eclipse.ocl.examples.domain.values.OrderedSetValue;
-import org.eclipse.ocl.examples.domain.values.SetValue;
-import org.eclipse.ocl.examples.domain.values.Value;
-import org.eclipse.ocl.examples.domain.values.impl.InvalidValueException;
-import org.eclipse.ocl.examples.domain.values.util.ValuesUtil;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.LetExp;
-import org.eclipse.ocl.examples.pivot.OCLExpression;
-import org.eclipse.ocl.examples.pivot.evaluation.EvaluationEnvironment;
-import org.eclipse.ocl.examples.pivot.evaluation.EvaluationVisitor;
-import org.eclipse.ocl.examples.pivot.evaluation.EvaluationVisitorImpl;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironment;
-import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironmentFactory;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.LetExp;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.evaluation.EvaluationEnvironment;
+import org.eclipse.ocl.pivot.evaluation.EvaluationVisitor;
+import org.eclipse.ocl.pivot.evaluation.ModelManager;
+import org.eclipse.ocl.pivot.utilities.EnvironmentFactory;
+import org.eclipse.ocl.pivot.utilities.ValueUtil;
+import org.eclipse.ocl.pivot.values.CollectionValue;
+import org.eclipse.ocl.pivot.values.InvalidValueException;
+import org.eclipse.ocl.pivot.values.OrderedSetValue;
+import org.eclipse.ocl.pivot.values.SetValue;
+import org.eclipse.ocl.pivot.values.Value;
 
 public abstract class AbstractOCLEvaluator {
 	/**
@@ -44,7 +41,7 @@ public abstract class AbstractOCLEvaluator {
 	 * 
 	 * @return The metamodel manager this evaluator should use.
 	 */
-	protected abstract MetaModelManager getMetaModelManager();
+	protected abstract EnvironmentFactory getEnvironmentFactory();
 
 	/**
 	 * Evaluates the given ExpressionInOCL with the given evaluationTarget as context.
@@ -139,8 +136,8 @@ public abstract class AbstractOCLEvaluator {
 			final ListIterator<LetExp> letIterator = letInContext.listIterator(letInContext.size());
 			while (letIterator.hasPrevious()) {
 				LetExp let = letIterator.previous();
-				Object variableValue = let.getVariable().accept(visitor);
-				visitor.getEvaluationEnvironment().add(let.getVariable(), variableValue);
+				Object variableValue = let.getOwnedVariable().accept(visitor);
+				visitor.getEvaluationEnvironment().add(let.getOwnedVariable(), variableValue);
 			}
 			final Object value = expression.accept(visitor);
 			result = new EvaluationResult(value);
@@ -168,14 +165,13 @@ public abstract class AbstractOCLEvaluator {
 	 * @return An evaluation visitor for this expression.
 	 */
 	private EvaluationVisitor createEvaluationVisitor(ExpressionInOCL expression, EObject evaluationTarget) {
-		PivotEnvironmentFactory environmentFactory = new PivotEnvironmentFactory(null, getMetaModelManager());
-		PivotEnvironment environment = environmentFactory.createEnvironment();
-		EvaluationEnvironment evaluationEnvironment = environmentFactory.createEvaluationEnvironment();
-		Object contextValue = getMetaModelManager().getIdResolver().boxedValueOf(evaluationTarget);
-		evaluationEnvironment.add(expression.getContextVariable(), contextValue);
-		DomainModelManager modelManager = evaluationEnvironment.createModelManager(evaluationTarget);
-
-		return new EvaluationVisitorImpl(environment, evaluationEnvironment, modelManager);
+		EnvironmentFactory environmentFactory = getEnvironmentFactory();
+		ModelManager modelManager = environmentFactory.createModelManager(evaluationTarget);
+		EvaluationEnvironment evaluationEnvironment = environmentFactory.createEvaluationEnvironment(
+				expression, modelManager);
+		Object contextValue = environmentFactory.getIdResolver().boxedValueOf(evaluationTarget);
+		evaluationEnvironment.add(expression.getOwnedContext(), contextValue);
+		return environmentFactory.createEvaluationVisitor(evaluationEnvironment);
 	}
 
 	/**
@@ -188,7 +184,7 @@ public abstract class AbstractOCLEvaluator {
 	@SuppressWarnings("unchecked")
 	protected Object unwrap(Value value) {
 		Object realObject = value.asObject();
-		CollectionValue collectionValue = ValuesUtil.isCollectionValue(value);
+		CollectionValue collectionValue = ValueUtil.isCollectionValue(value);
 		if (collectionValue != null) {
 			if (collectionValue instanceof OrderedSetValue) {
 				realObject = new LinkedHashSet<Object>();

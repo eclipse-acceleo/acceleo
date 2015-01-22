@@ -31,11 +31,10 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.utilities.PivotUtil;
-import org.eclipse.ocl.examples.xtext.completeocl.ui.internal.CompleteOCLActivator;
-import org.eclipse.ocl.examples.xtext.completeocl.utilities.CompleteOCLPlugin;
 import org.eclipse.ocl.examples.xtext.console.xtfo.EmbeddedXtextEditor;
+import org.eclipse.ocl.pivot.utilities.OCL;
+import org.eclipse.ocl.xtext.completeocl.ui.internal.CompleteOCLActivator;
+import org.eclipse.ocl.xtext.completeocl.utilities.CompleteOCLPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -50,9 +49,6 @@ import org.eclipse.swt.widgets.Menu;
 public class CompleteOCLInterpreter extends AbstractLanguageInterpreter {
 	/** The current editor. */
 	protected EmbeddedXtextEditor editor;
-
-	/** Used when we cannot infer a better Manager from contextual information. */
-	private MetaModelManager defaultMetaModelManager;
 
 	/**
 	 * The last Resource that was used as an evaluation target. May be the Resource of the last "EObject" used
@@ -78,7 +74,7 @@ public class CompleteOCLInterpreter extends AbstractLanguageInterpreter {
 	@Override
 	public Callable<EvaluationResult> getEvaluationTask(EvaluationContext context) {
 		lastTargetResource = findTargetResource(context);
-		return new CompleteOCLEvaluationTask(context, getContextMetaModelManager(context));
+		return new CompleteOCLEvaluationTask(context, editor.getEnvironmentFactory());
 	}
 
 	/**
@@ -88,7 +84,7 @@ public class CompleteOCLInterpreter extends AbstractLanguageInterpreter {
 	 */
 	@Override
 	public Callable<SplitExpression> getExpressionSplittingTask(EvaluationContext context) {
-		return new CompleteOCLExpressionSplittingTask(context, getContextMetaModelManager(context));
+		return new CompleteOCLExpressionSplittingTask(context, editor.getEnvironmentFactory());
 	}
 
 	/**
@@ -137,16 +133,12 @@ public class CompleteOCLInterpreter extends AbstractLanguageInterpreter {
 			public void menuAboutToShow(IMenuManager manager) {
 				manager.add(new Separator());
 				manager.add(new ImportCompleteOCLResourceAction(viewer));
-				MetaModelManager metaModeManager = getMetaModelManager(lastTargetResource);
-				if (metaModeManager == null) {
-					metaModeManager = getDefaultMetaModelManager();
-				}
-
-				MenuManager submenuManager = new MenuManager("Export Evaluation Result");
+				OCL ocl = editor.getOCL();
+				MenuManager submenuManager = new MenuManager("Export Evaluation Result"); //$NON-NLS-1$
 				submenuManager.add(new HTMLExportCompleteOCLEvaluationResultAction(editor.getResource(),
-						lastTargetResource, metaModeManager));
+						lastTargetResource, ocl));
 				submenuManager.add(new ModelExportCompleteOCLEvaluationResultAction(editor.getResource(),
-						lastTargetResource, metaModeManager));
+						lastTargetResource, ocl));
 				manager.add(submenuManager);
 			}
 		};
@@ -164,59 +156,5 @@ public class CompleteOCLInterpreter extends AbstractLanguageInterpreter {
 			}
 		}
 		return target;
-	}
-
-	private MetaModelManager getContextMetaModelManager(EvaluationContext context) {
-		MetaModelManager contextManager = null;
-		if (!context.getTargetNotifiers().isEmpty()) {
-			final Iterator<Notifier> notifiers = context.getTargetNotifiers().iterator();
-			while (notifiers.hasNext() && contextManager == null) {
-				final Notifier next = notifiers.next();
-				if (next instanceof EObject) {
-					contextManager = getMetaModelManager((EObject)next);
-				} else if (next instanceof Resource) {
-					contextManager = getMetaModelManager((Resource)next);
-				}
-			}
-		}
-		if (contextManager == null) {
-			contextManager = getDefaultMetaModelManager();
-		}
-		return contextManager;
-	}
-
-	/**
-	 * Find the metamodel manager for the given target.
-	 * 
-	 * @param target
-	 *            The current selected element.
-	 * @return The metamodel manager.
-	 */
-	private MetaModelManager getMetaModelManager(EObject target) {
-		if (target != null) {
-			return PivotUtil.findMetaModelManager(target);
-		}
-		return null;
-	}
-
-	/**
-	 * Find the metamodel manager for the given target.
-	 * 
-	 * @param target
-	 *            The current selected element.
-	 * @return The metamodel manager.
-	 */
-	private MetaModelManager getMetaModelManager(Resource target) {
-		if (target != null) {
-			return PivotUtil.findMetaModelManager(target);
-		}
-		return null;
-	}
-
-	private MetaModelManager getDefaultMetaModelManager() {
-		if (defaultMetaModelManager == null) {
-			defaultMetaModelManager = new MetaModelManager();
-		}
-		return defaultMetaModelManager;
 	}
 }

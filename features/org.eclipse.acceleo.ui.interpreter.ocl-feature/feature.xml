@@ -31,7 +31,7 @@ Contributors:
 
    <requires>
       <import feature="org.eclipse.acceleo" version="3.4.1.qualifier" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ocl.examples.xtext.console" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ocl.examples.xtext.console" version="4.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

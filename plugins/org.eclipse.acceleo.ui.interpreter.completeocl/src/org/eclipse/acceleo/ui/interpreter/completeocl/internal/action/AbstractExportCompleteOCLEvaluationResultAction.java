@@ -28,10 +28,10 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.ocl.examples.pivot.Element;
-import org.eclipse.ocl.examples.pivot.Root;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
-import org.eclipse.ocl.examples.pivot.util.Pivotable;
+import org.eclipse.ocl.pivot.Element;
+import org.eclipse.ocl.pivot.Model;
+import org.eclipse.ocl.pivot.utilities.OCL;
+import org.eclipse.ocl.pivot.utilities.Pivotable;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.xtext.parser.IParseResult;
@@ -56,7 +56,7 @@ public class AbstractExportCompleteOCLEvaluationResultAction extends Action {
 	protected final IEvaluationExporter exporter;
 
 	/** The meta model manager. */
-	private final MetaModelManager metaModelManager;
+	private final OCL ocl;
 
 	/**
 	 * Constructor.
@@ -67,18 +67,18 @@ public class AbstractExportCompleteOCLEvaluationResultAction extends Action {
 	 *            the xtext resource to evaluate.
 	 * @param target
 	 *            the target resource.
-	 * @param metaModelManager
+	 * @param metamodelManager
 	 *            the meta model manager.
 	 * @param exporter
 	 *            the used exporter.
 	 */
 	public AbstractExportCompleteOCLEvaluationResultAction(String text, XtextResource resource,
-			Resource target, MetaModelManager metaModelManager, IEvaluationExporter exporter) {
+			Resource target, OCL ocl, IEvaluationExporter exporter) {
 		super(text, IAction.AS_PUSH_BUTTON);
 		setToolTipText(TOOLTIP_TEXT);
 		this.resource = resource;
 		this.target = target;
-		this.metaModelManager = metaModelManager;
+		this.ocl = ocl;
 		this.exporter = exporter;
 	}
 
@@ -97,9 +97,9 @@ public class AbstractExportCompleteOCLEvaluationResultAction extends Action {
 			if (parseResult != null && parseResult.getRootASTElement() instanceof Pivotable) {
 				final Element pivotElement = ((Pivotable)parseResult.getRootASTElement()).getPivot();
 
-				if (pivotElement instanceof Root) {
-					evalutionResult = new CompleteOCLEvaluator(metaModelManager).evaluateCompleteOCLElement(
-							pivotElement, target);
+				if (pivotElement instanceof Model) {
+					evalutionResult = new CompleteOCLEvaluator(ocl.getEnvironmentFactory())
+							.evaluateCompleteOCLElement(pivotElement, target);
 				} else {
 					evalutionResult = null;
 				}
@@ -146,7 +146,7 @@ public class AbstractExportCompleteOCLEvaluationResultAction extends Action {
 	 *            true if we need to activate the error dialog, false otherwise.
 	 */
 	static void handleError(Throwable t, boolean popup) {
-		final String message = "Internal error:" + t.getMessage();
+		final String message = "Internal error:" + t.getMessage(); //$NON-NLS-1$
 		final IStatus status;
 		if (t instanceof CoreException) {
 			status = new Status(((CoreException)t).getStatus().getSeverity(), InterpreterPlugin.PLUGIN_ID,
@@ -160,7 +160,7 @@ public class AbstractExportCompleteOCLEvaluationResultAction extends Action {
 			PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() {
 				public void run() {
 					ErrorDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-							"Creation problems", message, status);
+							"Creation problems", message, status); //$NON-NLS-1$
 				}
 			});
 		}

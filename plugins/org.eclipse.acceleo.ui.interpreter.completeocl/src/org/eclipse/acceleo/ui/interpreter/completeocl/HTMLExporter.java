@@ -23,8 +23,12 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.ocl.examples.pivot.Constraint;
-import org.eclipse.ocl.examples.pivot.Operation;
+import org.eclipse.ocl.pivot.Constraint;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.LanguageExpression;
+import org.eclipse.ocl.pivot.Operation;
+import org.eclipse.ocl.pivot.utilities.OCL;
+import org.eclipse.ocl.pivot.utilities.ParserException;
 
 /**
  * Exports all the complete OCL Interpreter view results as an html file.
@@ -32,6 +36,11 @@ import org.eclipse.ocl.examples.pivot.Operation;
  * @author <a href="mailto:marwa.rostren@obeo.fr">Marwa Rostren</a>
  */
 public class HTMLExporter extends AbstractExporter {
+	protected final OCL ocl;
+
+	public HTMLExporter(OCL ocl) {
+		this.ocl = ocl;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -55,7 +64,7 @@ public class HTMLExporter extends AbstractExporter {
 
 		appendConstraintsLogs(html, constraintstotal);
 
-		appendOperationsLogs(html, operationstotal);
+		appendOperationsLogs(html);
 
 		appendFooter(html);
 	}
@@ -271,12 +280,19 @@ public class HTMLExporter extends AbstractExporter {
 			Constraint constraint = ((Constraint)element);
 			String context = constraint.getContext().toString();
 			String identifier = constraint.getName();
-			String expression = constraint.getSpecification().getExpressionInOCL().toString();
-			for (ConstraintResult result : constraintElement.getConstraintResults()) {
-				s.append("\t\t\t<tr>\n"); //$NON-NLS-1$
-				appendConstraintsResult(s, context, identifier, expression, severity, result);
-				s.append("\t\t\t</tr>\n"); //$NON-NLS-1$
+			try {
+				final LanguageExpression spec = constraint.getOwnedSpecification();
+				ExpressionInOCL expressionInOCL = ocl.parseSpecification(constraint, spec);
+				String expression = expressionInOCL.toString();
+				for (ConstraintResult result : constraintElement.getConstraintResults()) {
+					s.append("\t\t\t<tr>\n"); //$NON-NLS-1$
+					appendConstraintsResult(s, context, identifier, expression, severity, result);
+					s.append("\t\t\t</tr>\n"); //$NON-NLS-1$
+				}
+			} catch (ParserException e) {
+				// swallow
 			}
+
 		}
 	}
 
@@ -337,7 +353,8 @@ public class HTMLExporter extends AbstractExporter {
 	 * @throws IOException
 	 *             threw when an IO Exception occurs.
 	 */
-	private void appendOperationsLogs(Appendable html, int operationstotal) throws IOException {
+	private void appendOperationsLogs(Appendable html)
+			throws IOException {
 		html.append("\t\t<h1>4. STATISTICS</h1>\n"); //$NON-NLS-1$
 
 		int section = 1;
@@ -424,13 +441,19 @@ public class HTMLExporter extends AbstractExporter {
 		EObject element = operationElement.getElement();
 		if (element instanceof Operation) {
 			Operation operation = ((Operation)element);
-			String context = operation.getOwningType().toString();
+			String context = operation.getOwningClass().toString();
 			String identifier = operation.getName();
-			String expression = operation.getBodyExpression().getExpressionInOCL().toString();
-			for (OCLResult result : operationElement.getEvaluationResults()) {
-				s.append("\t\t\t<tr>\n"); //$NON-NLS-1$
-				appendOperationsResult(s, context, identifier, expression, severity, result);
-				s.append("\t\t\t</tr>\n"); //$NON-NLS-1$
+			try {
+				final LanguageExpression spec = operation.getBodyExpression();
+				ExpressionInOCL expressionInOCL = ocl.parseSpecification(operation, spec);
+				String expression = expressionInOCL.toString();
+				for (OCLResult result : operationElement.getEvaluationResults()) {
+					s.append("\t\t\t<tr>\n"); //$NON-NLS-1$
+					appendOperationsResult(s, context, identifier, expression, severity, result);
+					s.append("\t\t\t</tr>\n"); //$NON-NLS-1$
+				}
+			} catch (ParserException e) {
+				// swallow
 			}
 		}
 	}

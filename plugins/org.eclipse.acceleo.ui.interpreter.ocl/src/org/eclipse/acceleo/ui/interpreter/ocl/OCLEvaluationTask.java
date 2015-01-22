@@ -19,9 +19,9 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ocl.examples.pivot.ExpressionInOCL;
-import org.eclipse.ocl.examples.pivot.OCLExpression;
-import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
+import org.eclipse.ocl.pivot.ExpressionInOCL;
+import org.eclipse.ocl.pivot.OCLExpression;
+import org.eclipse.ocl.pivot.utilities.EnvironmentFactory;
 
 /**
  * This class aims at providing the necessary API to evaluate an OCL query that was compiled from a simple
@@ -33,25 +33,25 @@ public class OCLEvaluationTask extends AbstractOCLEvaluator implements Callable<
 	/** Current interpreter context. */
 	private final EvaluationContext context;
 
-	/** Current metaModel Manager. */
-	private final MetaModelManager metaModelManager;
+	/** Current metamodel Manager. */
+	private final EnvironmentFactory environmentFactory;
 
 	/**
 	 * Instantiates the evaluation task for the given evaluation context.
 	 * 
 	 * @param context
 	 *            The Current interpreter context.
-	 * @param metaModelManager
-	 *            The Current MetaModel Manager.
+	 * @param metamodelManager
+	 *            The Current Metamodel Manager.
 	 */
-	public OCLEvaluationTask(EvaluationContext context, MetaModelManager metaModelManager) {
+	public OCLEvaluationTask(EvaluationContext context, EnvironmentFactory environmentFactory) {
 		this.context = context;
-		this.metaModelManager = metaModelManager;
+		this.environmentFactory = environmentFactory;
 	}
 
 	@Override
-	protected MetaModelManager getMetaModelManager() {
-		return metaModelManager;
+	protected EnvironmentFactory getEnvironmentFactory() {
+		return environmentFactory;
 	}
 
 	/**

@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.eclipse.acceleo.ui.interpreter;bundle-version="3.5.0",
- org.eclipse.ocl.examples.pivot;bundle-version="3.4.0"
+ org.eclipse.ocl.pivot.ui;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
