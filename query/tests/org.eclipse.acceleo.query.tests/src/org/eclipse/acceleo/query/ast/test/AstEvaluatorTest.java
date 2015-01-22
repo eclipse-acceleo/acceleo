@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -77,8 +76,7 @@ public class AstEvaluatorTest extends AstBuilder {
 			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
 			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
 			for (Resource crossReferenceResource : rs.getResources()) {
-				if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(crossReferenceResource.getURI()
-						.fileExtension())) {
+				if (!"emtl".equals(crossReferenceResource.getURI().fileExtension())) {
 					notifiers.add(crossReferenceResource);
 				}
 			}

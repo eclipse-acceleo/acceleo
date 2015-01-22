@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
@@ -68,8 +67,7 @@ public class AbstractEngineInitializationWithCrossReferencer {
 			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
 			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
 			for (Resource crossReferenceResource : rs.getResources()) {
-				if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(crossReferenceResource.getURI()
-						.fileExtension())) {
+				if (!"emtl".equals(crossReferenceResource.getURI().fileExtension())) {
 					notifiers.add(crossReferenceResource);
 				}
 			}

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
@@ -82,8 +81,7 @@ public class CollectionServicesTest {
 			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
 			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
 			for (Resource crossReferenceResource : rs.getResources()) {
-				if (!IAcceleoConstants.EMTL_FILE_EXTENSION.equals(crossReferenceResource.getURI()
-						.fileExtension())) {
+				if (!"emtl".equals(crossReferenceResource.getURI().fileExtension())) {
 					notifiers.add(crossReferenceResource);
 				}
 			}
