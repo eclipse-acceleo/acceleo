@@ -1797,11 +1797,11 @@
   </queries>
   <queries expression="[self->including(self.getStereotypeApplications())/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
-        <values xsi:type="qmodel:SetResult"/>
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="manual">
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
         </values>
+        <values xsi:type="qmodel:ListResult"/>
       </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
