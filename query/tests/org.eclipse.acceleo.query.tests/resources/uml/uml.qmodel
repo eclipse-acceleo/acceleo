@@ -1568,7 +1568,7 @@
   </queries>
   <queries expression="[self.packagedElement->select(e | e.oclIsTypeOf(uml::Package))->size()=0/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
