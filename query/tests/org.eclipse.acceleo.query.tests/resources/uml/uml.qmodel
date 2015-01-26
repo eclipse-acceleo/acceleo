@@ -1724,7 +1724,7 @@
   </queries>
   <queries expression="[self.selection.oclAsType(uml::UseCase).subject->size() > 0/]" startingPoint="//@modelElements.7">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual" value="true"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
