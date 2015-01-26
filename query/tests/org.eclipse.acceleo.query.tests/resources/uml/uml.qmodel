@@ -1774,15 +1774,15 @@
   </queries>
   <queries expression="[self->including(self.getSource())->including(self.getTarget())/]" startingPoint="//@modelElements.6">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="manual">
         <values xsi:type="qmodel:EObjectResult">
-          <value href="example.uml#_A97FwZBpEd2MY5zfT4Awfg"/>
+          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
         </values>
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_A96esZBpEd2MY5zfT4Awfg"/>
         </values>
         <values xsi:type="qmodel:EObjectResult">
-          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+          <value href="example.uml#_A97FwZBpEd2MY5zfT4Awfg"/>
         </values>
       </expectedResult>
     </expectations>
