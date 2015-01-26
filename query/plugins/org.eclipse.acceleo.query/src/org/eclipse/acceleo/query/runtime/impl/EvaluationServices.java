@@ -105,7 +105,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 				EClass eClass = ((EObject)context).eClass();
 				EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
 				if (feature == null) {
-					return nothing(UNKNOWN_FEATURE, featureName, eClass.getName());
+					nothing(UNKNOWN_FEATURE, featureName, eClass.getName());
+					return null;
 				} else {
 					result = ((EObject)context).eGet(feature);
 				}

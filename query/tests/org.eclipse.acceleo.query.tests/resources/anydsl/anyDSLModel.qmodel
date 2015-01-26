@@ -111,7 +111,7 @@
   </queries>
   <queries expression="[self.name/]" startingPoint="//@modelElements.0">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="manual"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">

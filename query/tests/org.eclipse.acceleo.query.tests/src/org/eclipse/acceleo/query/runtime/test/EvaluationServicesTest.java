@@ -115,7 +115,7 @@ public class EvaluationServicesTest {
 	public void testNonExistingFeatureAccessOnEObject() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute.setName("attr0");
-		assertEquals(EvaluationServices.NOTHING, services.featureAccess(attribute, "noname"));
+		assertEquals(null, services.featureAccess(attribute, "noname"));
 	}
 
 	/**
@@ -253,8 +253,9 @@ public class EvaluationServicesTest {
 		List<EStructuralFeature> list = Lists.newArrayList(attr, ref);
 		Object result = services.featureAccess(list, "containment");
 		assertTrue(result instanceof List);
-		assertEquals(1, ((List<Object>)result).size());
-		assertEquals(true, ((List<Object>)result).get(0));
+		assertEquals(2, ((List<Object>)result).size());
+		assertEquals(null, ((List<Object>)result).get(0));
+		assertEquals(true, ((List<Object>)result).get(1));
 	}
 
 	/**
@@ -274,10 +275,10 @@ public class EvaluationServicesTest {
 		Set<Object> set = createSet(attr, ref);
 		Object result = services.featureAccess(set, "containment");
 		assertTrue(result instanceof Set);
-		assertEquals(1, ((Set<Object>)result).size());
+		assertEquals(2, ((Set<Object>)result).size());
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
+		assertEquals(null, iterator.next());
 		assertEquals(true, iterator.next());
-
 	}
 
 	/**

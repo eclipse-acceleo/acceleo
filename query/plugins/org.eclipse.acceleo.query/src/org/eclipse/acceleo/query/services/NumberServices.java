@@ -287,7 +287,15 @@ public class NumberServices {
 	 */
 
 	public Boolean equals(Double a, Double b) {
-		return a.equals(b);
+		final Boolean result;
+
+		if (a == null) {
+			result = Boolean.valueOf(b == null);
+		} else {
+			result = Boolean.valueOf(a.equals(b));
+		}
+
+		return result;
 	}
 
 	/**
