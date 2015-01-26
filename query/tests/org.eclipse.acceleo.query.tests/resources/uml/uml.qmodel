@@ -1641,7 +1641,7 @@
   </queries>
   <queries expression="[preTarget->filter(uml::TemplateableElement).ownedTemplateSignature.ownedParameter&lt;>null/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" value="true"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
