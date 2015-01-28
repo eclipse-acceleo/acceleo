@@ -203,7 +203,15 @@ public class NumberServices {
 	 */
 
 	public Boolean equals(Integer a, Integer b) {
-		return a.equals(b);
+		final boolean result;
+
+		if (a == null) {
+			result = Boolean.valueOf(b == null);
+		} else {
+			result = Boolean.valueOf(a.equals(b));
+		}
+
+		return result;
 	}
 
 	/**
@@ -217,7 +225,7 @@ public class NumberServices {
 	 */
 
 	public Boolean differs(Integer a, Integer b) {
-		return !a.equals(b);
+		return !equals(a, b);
 	}
 
 	/**
@@ -309,7 +317,7 @@ public class NumberServices {
 	 */
 
 	public Boolean differs(Double a, Double b) {
-		return !a.equals(b);
+		return !equals(a, b);
 	}
 
 	/**
