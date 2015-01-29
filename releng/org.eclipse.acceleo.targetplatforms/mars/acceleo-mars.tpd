@@ -1,0 +1,32 @@
+target "Acceleo Mars Target Platform"
+
+include "orbit.tpd"
+include "license.tpd"
+
+with source requirements
+
+location "http://download.eclipse.org/releases/mars" {
+	org.eclipse.platform.sdk lazy
+	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.jdt.feature.group lazy
+	org.eclipse.pde.feature.group lazy
+	org.eclipse.uml2.feature.group lazy
+	
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius.runtime.acceleo.feature.group lazy
+}
+
+location "https://hudson.eclipse.org/ocl/job/ocl-mars-master/lastSuccessfulBuild/artifact/MDT-OCL.p2.repository" {
+	lpg.runtime.java [2.0.17,2.1.0)
+	
+	org.eclipse.ocl [3.5.0,3.6.0)
+	org.eclipse.ocl.ecore [3.3.200,3.4.0)
+	org.eclipse.ocl.common [1.3.0,1.4.0)
+	
+	org.eclipse.ocl.examples.xtext.console [4.0.0,4.1.0)
+	org.eclipse.ocl.examples.xtext.completeocl [3.5.0,3.6.0)
+	org.eclipse.ocl.examples.xtext.completeocl.ui [3.5.0,3.6.0)
+	
+	org.eclipse.ocl.pivot.uml [1.0.0,2.0.0)
+	org.eclipse.ocl.pivot.ui [1.0.0,2.0.0)
+}
