@@ -302,8 +302,7 @@ public class EvaluationServicesTest {
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
 		assertEquals("attr0", listResult.get(0));
-		assertTrue(listResult.get(1) instanceof List);
-		assertEquals("attr1", ((List<Object>)listResult.get(1)).get(0));
+		assertEquals("attr1", listResult.get(1));
 	}
 
 	/**
@@ -327,10 +326,7 @@ public class EvaluationServicesTest {
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
 		assertEquals("attr0", listResult.get(0));
-		assertTrue(listResult.get(1) instanceof Set);
-		Iterator<Object> iterator = ((Set<Object>)listResult.get(1)).iterator();
-		assertEquals("attr1", iterator.next());
-
+		assertEquals("attr1", listResult.get(1));
 	}
 
 	/**
@@ -352,9 +348,7 @@ public class EvaluationServicesTest {
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
 		assertEquals("attr0", listResult.get(0));
-		assertEquals(true, listResult.get(1) instanceof List);
-		assertEquals(1, ((List<?>)listResult.get(1)).size());
-		assertEquals(null, ((List<?>)listResult.get(1)).get(0));
+		assertEquals(null, listResult.get(1));
 	}
 
 	/**
@@ -473,14 +467,11 @@ public class EvaluationServicesTest {
 		Object result = services.callOrApply("toString", args);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
-		assertEquals(3, listResult.size());
+		assertEquals(4, listResult.size());
 		assertEquals("1", listResult.get(0));
 		assertEquals("2", listResult.get(1));
-		assertTrue(listResult.get(2) instanceof List);
-		List<Object> nested = (List<Object>)listResult.get(2);
-		assertEquals(2, nested.size());
-		assertEquals("3", nested.get(0));
-		assertEquals("4", nested.get(1));
+		assertEquals("3", listResult.get(2));
+		assertEquals("4", listResult.get(3));
 	}
 
 	/**
@@ -495,16 +486,11 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
-		assertEquals(3, listResult.size());
+		assertEquals(4, listResult.size());
 		assertEquals("1", listResult.get(0));
 		assertEquals("2", listResult.get(1));
-		assertTrue(listResult.get(2) instanceof Set);
-		@SuppressWarnings("unchecked")
-		Set<Object> nested = (Set<Object>)listResult.get(2);
-		assertEquals(2, nested.size());
-		Iterator<Object> iterator = nested.iterator();
-		assertEquals("3", iterator.next());
-		assertEquals("4", iterator.next());
+		assertEquals("3", listResult.get(2));
+		assertEquals("4", listResult.get(3));
 	}
 
 	/**
@@ -523,9 +509,7 @@ public class EvaluationServicesTest {
 		assertEquals(3, listResult.size());
 		assertEquals(1, listResult.get(0));
 		assertEquals(2, listResult.get(1));
-		assertEquals(true, listResult.get(2) instanceof List);
-		assertEquals(1, ((List<?>)listResult.get(2)).size());
-		assertEquals(null, ((List<?>)listResult.get(2)).get(0));
+		assertEquals(null, listResult.get(2));
 	}
 
 	/**

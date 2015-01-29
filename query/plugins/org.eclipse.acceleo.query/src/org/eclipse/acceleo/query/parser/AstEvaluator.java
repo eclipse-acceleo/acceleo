@@ -141,7 +141,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseFeatureAccess(FeatureAccess object) {
-		Object target = doSwitch(object.getTarget());
+		final Object target = doSwitch(object.getTarget());
 		return services.featureAccess(target, object.getFeatureName());
 	}
 

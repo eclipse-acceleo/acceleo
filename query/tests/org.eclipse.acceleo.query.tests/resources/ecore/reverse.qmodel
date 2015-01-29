@@ -205,7 +205,9 @@
   </queries>
   <queries expression="[self.eAnnotations.details->select(e | e.key = 'archetype')->asSequence()->first()/]" startingPoint="//@modelElements.4">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="reverse.ecore#//newMomentInterval5/%http:%2F%2Fwww.obeo.fr%2Fdsl%2Fdnc%2Farchetype%/@details.0"/>
+      </expectedResult>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">

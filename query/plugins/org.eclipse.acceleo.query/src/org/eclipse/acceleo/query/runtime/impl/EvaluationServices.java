@@ -144,7 +144,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 		for (Object element : context) {
 			Object newElt = featureAccess(element, featureName);
 			if (newElt != NOTHING) {
-				result.add(newElt);
+				// flatten
+				if (newElt instanceof Collection) {
+					result.addAll((Collection<?>)newElt);
+				} else {
+					result.add(newElt);
+				}
 			}
 		}
 
@@ -166,7 +171,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 		for (Object element : context) {
 			Object newElt = featureAccess(element, featureName);
 			if (newElt != NOTHING) {
-				result.add(newElt);
+				// flatten
+				if (newElt instanceof Collection) {
+					result.addAll((Collection<?>)newElt);
+				} else {
+					result.add(newElt);
+				}
 			}
 		}
 
@@ -445,7 +455,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 				innerArguments[0] = obj;
 				Object newResult = callOrApply(serviceName, innerArguments);
 				if (newResult != NOTHING) {
-					result.add(newResult);
+					// flatten
+					if (newResult instanceof Collection) {
+						result.addAll((Collection<?>)newResult);
+					} else {
+						result.add(newResult);
+					}
 				}
 			}
 
@@ -478,7 +493,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 				innerArguments[0] = obj;
 				Object newResult = callOrApply(serviceName, innerArguments);
 				if (newResult != NOTHING) {
-					result.add(newResult);
+					// flatten
+					if (newResult instanceof Collection) {
+						result.addAll((Collection<?>)newResult);
+					} else {
+						result.add(newResult);
+					}
 				}
 			}
 

@@ -2080,6 +2080,90 @@
       </expectedResult>
     </expectations>
   </queries>
+  <queries expression="[self.getAllAvailableRootPackages()/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_w8FzIJBjEd2MY5zfT4Awfg"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
+  </queries>
+  <queries expression="[self.getAllAvailableRootPackages().eAllContents()->filter(uml::Classifier)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_GUaJoJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_pC1TsJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_A96esJBpEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_gG4FUJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_k9nKwJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_queWIJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_rRaEEJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_sSj_EJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_3iZnsHDDEeSjq5wVpgsUQA"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_G1LiIJBrEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_bFkDkJCWEd2Xeb6Jt2sbCQ"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_cHO78JCWEd2Xeb6Jt2sbCQ"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_q-uUoJCWEd2Xeb6Jt2sbCQ"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_eRVrwHDGEeSjq5wVpgsUQA"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
+  </queries>
+  <queries expression="[self.getAllAvailableRootPackages().eAllContents()->filter(uml::Operation)/]" startingPoint="//@modelElements.4">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_YRLRMJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_ZrDOMJBmEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_jNYjQJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_tLZEgJBqEd2MY5zfT4Awfg"/>
+        </values>
+        <values xsi:type="qmodel:EObjectResult">
+          <value href="example.uml#_Fr5JgHGWEeSAasxVx1szDQ"/>
+        </values>
+      </expectedResult>
+    </expectations>
+    <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
+    <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
+  </queries>
   <modelElements name="APort">
     <target href="example.uml#_eD4KIHb-EeS_LcjX3XW_Qg"/>
   </modelElements>

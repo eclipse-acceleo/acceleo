@@ -106,43 +106,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	}
 
 	/**
-	 * Flatten the given {@link IType}.
-	 * <ul>
-	 * <li>Sequence(Sequence(...)) or Sequence(Set(...)) gives a Sequence(...)</li>
-	 * <li>Set(Sequence(...)) or Set(Set(...)) gives a Set(...)</li>
-	 * </ul>
-	 * 
-	 * @param types
-	 *            the {@link IType} to flatten
-	 * @return flattened {@link IType}
-	 */
-	private Set<IType> flatten(Set<IType> types) {
-		Set<IType> result = new LinkedHashSet<IType>();
-
-		for (IType type : types) {
-			if (type instanceof SequenceType) {
-				if (((SequenceType)type).getCollectionType() instanceof ICollectionType) {
-					result.add(new SequenceType(((ICollectionType)((SequenceType)type).getCollectionType())
-							.getCollectionType()));
-				} else {
-					result.add(type);
-				}
-			} else if (type instanceof SetType) {
-				if (((SetType)type).getCollectionType() instanceof ICollectionType) {
-					result.add(new SetType(((ICollectionType)((SetType)type).getCollectionType())
-							.getCollectionType()));
-				} else {
-					result.add(type);
-				}
-			} else {
-				result.add(type);
-			}
-		}
-
-		return result;
-	}
-
-	/**
 	 * Checks warnings and errors from {@link NothingType} removing them from the resulting {@link Set} of
 	 * {@link IType}.
 	 * 
@@ -210,8 +173,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				possibleTypes = services.callType(serviceName, argTypes);
 				break;
 			case CALLORAPPLY:
-				final Set<IType> types = services.callOrApplyTypes(serviceName, argTypes);
-				possibleTypes = flatten(types);
+				possibleTypes = services.callOrApplyTypes(serviceName, argTypes);
 				break;
 			case COLLECTIONCALL:
 				possibleTypes = services.collectionServiceCallTypes(serviceName, argTypes);
@@ -266,8 +228,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseFeatureAccess(FeatureAccess object) {
 		final Set<IType> reveiverTypes = doSwitch(object.getTarget());
 		final String featureName = object.getFeatureName();
-		final Set<IType> featureAccessTypes = services.featureAccessTypes(reveiverTypes, featureName);
-		final Set<IType> flattened = flatten(featureAccessTypes);
+		final Set<IType> flattened = services.featureAccessTypes(reveiverTypes, featureName);
 		return checkWarningsAndErrors(object, flattened);
 	}
 

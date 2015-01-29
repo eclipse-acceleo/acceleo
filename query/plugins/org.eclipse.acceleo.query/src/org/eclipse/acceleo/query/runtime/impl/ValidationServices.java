@@ -173,12 +173,22 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return a {@link SetType} for the given feature type
 	 */
 	private IType getFeatureTypeOnSet(SetType targetType, String featureName) {
+		final IType result;
+
 		final IType basicType = targetType.getCollectionType();
 		final Set<IType> basicTypes = new LinkedHashSet<IType>();
 		basicTypes.add(basicType);
 		final IType featureAccessType = featureAccessTypes(basicTypes, featureName).iterator().next();
 		// TODO should we extract Nothing from a set of nothing ? probably not
-		return new SetType(featureAccessType);
+
+		// flatten
+		if (featureAccessType instanceof ICollectionType) {
+			result = new SetType(((ICollectionType)featureAccessType).getCollectionType());
+		} else {
+			result = new SetType(featureAccessType);
+		}
+
+		return result;
 	}
 
 	/**
@@ -191,12 +201,22 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return a {@link SequenceType} for the given feature type
 	 */
 	private IType getFeatureTypeOnSequence(SequenceType targetType, String featureName) {
+		final IType result;
+
 		final IType basicType = targetType.getCollectionType();
 		final Set<IType> basicTypes = new LinkedHashSet<IType>();
 		basicTypes.add(basicType);
 		final IType featureAccessType = featureAccessTypes(basicTypes, featureName).iterator().next();
 		// TODO should we extract Nothing from a list of nothing ? probably not
-		return new SequenceType(featureAccessType);
+
+		// flatten
+		if (featureAccessType instanceof ICollectionType) {
+			result = new SequenceType(((ICollectionType)featureAccessType).getCollectionType());
+		} else {
+			result = new SequenceType(featureAccessType);
+		}
+
+		return result;
 	}
 
 	/**
@@ -387,7 +407,12 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Set<IType> rawResultTypes = callOrApplyTypes(serviceName, newArgTypes);
 			for (IType rawResultType : rawResultTypes) {
 				if (!(rawResultType instanceof NothingType)) {
-					result.add(new SequenceType(rawResultType));
+					// flatten
+					if (rawResultType instanceof ICollectionType) {
+						result.add(new SequenceType(((ICollectionType)rawResultType).getCollectionType()));
+					} else {
+						result.add(new SequenceType(rawResultType));
+					}
 				}
 			}
 			if (result.size() == 0) {
@@ -426,7 +451,12 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Set<IType> rawResultTypes = callOrApplyTypes(serviceName, newArgTypes);
 			for (IType rawResultType : rawResultTypes) {
 				if (!(rawResultType instanceof NothingType)) {
-					result.add(new SetType(rawResultType));
+					// flatten
+					if (rawResultType instanceof ICollectionType) {
+						result.add(new SetType(((ICollectionType)rawResultType).getCollectionType()));
+					} else {
+						result.add(new SetType(rawResultType));
+					}
 				}
 			}
 			if (result.size() == 0) {
