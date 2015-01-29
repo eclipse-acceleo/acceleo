@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.maven</artifactId>
-  <version>3.5.1-SNAPSHOT</version>
+  <version>3.5.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
@@ -65,32 +65,32 @@
     <dependency>
     	<groupId>org.eclipse.emf</groupId>
     	<artifactId>org.eclipse.emf.ecore</artifactId>
-    	<version>2.9.2.v20131212-0545</version>
+    	<version>2.10.1.v20140901-1043</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.emf</groupId>
     	<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-    	<version>2.9.1.v20131212-0545</version>
+    	<version>2.10.1.v20140901-1043</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.emf</groupId>
     	<artifactId>org.eclipse.emf.common</artifactId>
-    	<version>2.9.2.v20131212-0545</version>
+    	<version>2.10.1.v20140901-1043</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.ocl</groupId>
     	<artifactId>org.eclipse.ocl.ecore</artifactId>
-    	<version>3.3.0.v20130520-1222</version>
+    	<version>3.3.100.v20140610-0641</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.ocl</groupId>
     	<artifactId>org.eclipse.ocl.common</artifactId>
-    	<version>1.1.0.v20130531-0544</version>
+    	<version>1.2.0.v20140610-0641</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.ocl</groupId>
     	<artifactId>org.eclipse.ocl</artifactId>
-    	<version>3.3.0.v20140120-1508</version>
+    	<version>3.4.2.v20140725-2242</version>
     </dependency>
     <dependency>
     	<groupId>lpg.runtime.java</groupId>
@@ -100,7 +100,7 @@
     <dependency>
     	<groupId>org.eclipse.core</groupId>
     	<artifactId>org.eclipse.core.contenttype</artifactId>
-    	<version>3.4.200.v20130326-1255</version>
+    	<version>3.4.200.v20140207-1251</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.equinox</groupId>
@@ -115,12 +115,12 @@
 	<dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>org.eclipse.core.runtime</artifactId>
-      <version>3.9.100.v20131218-1515</version>
+      <version>3.10.0.v20140318-2214</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>org.eclipse.core.resources</artifactId>
-      <version>3.8.101.v20130717-0806</version>
+      <version>3.9.1.v20140825-1431</version>
     </dependency>
   </dependencies>
 </project>
