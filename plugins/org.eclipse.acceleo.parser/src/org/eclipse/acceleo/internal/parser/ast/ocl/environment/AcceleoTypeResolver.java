@@ -237,7 +237,9 @@ public class AcceleoTypeResolver extends AbstractTypeResolver<EPackage, EClassif
 	 */
 	@Override
 	protected EClass createShadowClass(EClassifier type) {
-		return OCLStandardLibraryImpl.createShadowClass(type);
+		EClass clazz = OCLStandardLibraryImpl.createShadowClass(type);
+		clazz.setName(type.getEPackage().getName() + '_' + clazz.getName());
+		return clazz;
 	}
 
 	/**
