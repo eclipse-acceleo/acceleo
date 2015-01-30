@@ -96,7 +96,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			int start = offset;
 			while (start - 1 >= 0) {
 				char charAt = expression.charAt(start - 1);
-				if (Character.isAlphabetic(charAt) || Character.isDigit(charAt) || charAt == '_') {
+				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_') {
 					--start;
 				} else {
 					break;
@@ -129,7 +129,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			int end = offset;
 			while (end < length) {
 				char charAt = expression.charAt(end - 1);
-				if (Character.isAlphabetic(charAt) || Character.isDigit(charAt) || charAt == '_') {
+				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_') {
 					++end;
 				} else {
 					break;
