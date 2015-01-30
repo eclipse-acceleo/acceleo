@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.maven.launcher.compatibility</artifactId>
-  <version>3.5.0-SNAPSHOT</version>
+  <version>3.6.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven.launcher.compatibility</name>
   <description>The Acceleo maven launcher plugin.</description>
@@ -50,17 +50,17 @@
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
     	<artifactId>org.eclipse.acceleo.engine</artifactId>
-    	<version>3.5.0-SNAPSHOT</version>
+    	<version>3.6.0-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
     	<artifactId>org.eclipse.acceleo.model</artifactId>
-    	<version>3.5.0-SNAPSHOT</version>
+    	<version>3.6.0-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
     	<artifactId>org.eclipse.acceleo.common</artifactId>
-    	<version>3.5.0-SNAPSHOT</version>
+    	<version>3.6.0-SNAPSHOT</version>
     </dependency>
      <dependency>
     	<groupId>org.eclipse.emf</groupId>
