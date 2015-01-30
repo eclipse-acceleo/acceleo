@@ -2088,6 +2088,11 @@
         </values>
       </expectedResult>
     </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
+      </expectedResult>
+    </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
@@ -2138,6 +2143,11 @@
         </values>
       </expectedResult>
     </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
+      </expectedResult>
+    </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
     <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
@@ -2159,6 +2169,11 @@
         <values xsi:type="qmodel:EObjectResult">
           <value href="example.uml#_Fr5JgHGWEeSAasxVx1szDQ"/>
         </values>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=Operation)</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
