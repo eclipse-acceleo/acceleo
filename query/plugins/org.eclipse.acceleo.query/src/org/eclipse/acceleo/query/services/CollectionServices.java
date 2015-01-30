@@ -1003,15 +1003,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         <code>null</code>
 	 */
 	public Object last(List<Object> list) {
-		final Object result;
-
-		if (list == null || list.size() == 0) {
-			result = null;
-		} else {
-			result = list.get(list.size() - 1);
-		}
-
-		return result;
+		return list.get(list.size() - 1);
 	}
 
 	/**

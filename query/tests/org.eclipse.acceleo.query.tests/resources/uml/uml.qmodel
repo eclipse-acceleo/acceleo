@@ -775,7 +775,7 @@
   </queries>
   <queries expression="[self.eContainer(uml::BehavioredClassifier).eContents()->filter(uml::StateMachine)->last()/]" startingPoint="//@modelElements.2">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -1426,7 +1426,7 @@
   </queries>
   <queries expression="[self.oclAsType(uml::Component).packagedElement->filter(uml::Package)->asSequence()->first()/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">

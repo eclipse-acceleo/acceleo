@@ -925,14 +925,14 @@ public class CollectionServicesTest {
 		assertEquals(suffix, result.get(8));
 	}
 
-	@Test
+	@Test(expected = java.lang.NullPointerException.class)
 	public void testLastNullList() {
 		Object result = collectionServices.last(null);
 
 		assertEquals(null, result);
 	}
 
-	@Test
+	@Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
 	public void testLastEmptyList() {
 		final List<Object> list = Lists.newArrayList();
 
