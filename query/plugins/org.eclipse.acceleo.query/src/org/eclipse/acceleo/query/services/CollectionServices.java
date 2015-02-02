@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -24,8 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Lambda;
-import org.eclipse.acceleo.query.collections.LazyList;
-import org.eclipse.acceleo.query.collections.LazySet;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
@@ -402,7 +398,19 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return the concatenation of the two specified operands.
 	 */
 	public List<Object> concat(List<Object> c1, List<Object> c2) {
-		return new LazyList<Object>(Iterables.concat(c1, c2));
+		// TODO use lazy collection
+		final List<Object> result;
+
+		if (c1.isEmpty()) {
+			result = c2;
+		} else if (c2.isEmpty()) {
+			result = c1;
+		} else {
+			result = Lists.newArrayList(c1);
+			result.addAll(c2);
+		}
+
+		return result;
 	}
 
 	/**
@@ -891,14 +899,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if (eClassifier == null) {
 			result = Sets.newLinkedHashSet();
 		} else {
-			result = new LazySet<Object>(Iterables.filter(set, new Predicate<Object>() {
-
-				@Override
-				public boolean apply(Object object) {
-					return eClassifier.isInstance(object);
+			result = Sets.newLinkedHashSet();
+			for (Object object : set) {
+				if (eClassifier.isInstance(object)) {
+					result.add(object);
 				}
-
-			}));
+			}
 		}
 
 		return result;
@@ -923,14 +929,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if (eClassifier == null) {
 			result = Lists.newArrayList();
 		} else {
-			result = new LazyList<Object>(Iterables.filter(list, new Predicate<Object>() {
-
-				@Override
-				public boolean apply(Object object) {
-					return eClassifier.isInstance(object);
+			result = Lists.newArrayList();
+			for (Object object : list) {
+				if (eClassifier.isInstance(object)) {
+					result.add(object);
 				}
-
-			}));
+			}
 		}
 
 		return result;

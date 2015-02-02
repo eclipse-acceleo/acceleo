@@ -11,8 +11,7 @@
 package org.eclipse.acceleo.query.services;
 
 //CHECKSTYLE:OFF
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.collections.LazyList;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
@@ -58,34 +56,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * A cross referencer needed to realize the service eInverse().
 	 */
 	private CrossReferenceProvider crossReferencer;
-
-	/**
-	 * An adapter that makes an EObject looks like an {@link Iterable} with respect to eAllContents.
-	 * 
-	 * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
-	 */
-	private class EObjectIterableAdapter implements Iterable<EObject> {
-		/**
-		 * The root of the EAllContent iteration.
-		 */
-		private EObject root;
-
-		/**
-		 * Create a new {@link EObjectIterableAdapter} instance.
-		 * 
-		 * @param root
-		 *            the root EObject.
-		 */
-		public EObjectIterableAdapter(EObject root) {
-			this.root = root;
-		}
-
-		@Override
-		public Iterator<EObject> iterator() {
-			return root.eAllContents();
-		}
-
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -182,7 +152,15 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return the recursive content of the specified eObject.
 	 */
 	public List<EObject> eAllContents(EObject eObject) {
-		return new LazyList<EObject>(new EObjectIterableAdapter(eObject));
+		// TODO lazy collection
+		final List<EObject> result = Lists.newArrayList();
+
+		final Iterator<EObject> it = eObject.eAllContents();
+		while (it.hasNext()) {
+			result.add(it.next());
+		}
+
+		return result;
 	}
 
 	/**
@@ -197,14 +175,18 @@ public class EObjectServices extends AbstractServiceProvider {
 	 */
 	public List<EObject> eAllContents(EObject eObject, final EClass type) {
 		// TODO optimize by pruning dead branches according to EClasses.
-		return new LazyList<EObject>(Iterables.filter(new EObjectIterableAdapter(eObject),
-				new Predicate<EObject>() {
+		// TODO lazy collection
+		final List<EObject> result = Lists.newArrayList();
 
-					@Override
-					public boolean apply(EObject input) {
-						return type.isSuperTypeOf(input.eClass());
-					}
-				}));
+		final Iterator<EObject> it = eObject.eAllContents();
+		while (it.hasNext()) {
+			final EObject input = it.next();
+			if (type.isSuperTypeOf(input.eClass())) {
+				result.add(input);
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -228,12 +210,16 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return the filtered content of the specified eObject
 	 */
 	public List<EObject> eContents(EObject eObject, final EClass type) {
-		return new LazyList<EObject>(Iterables.filter(eObject.eContents(), new Predicate<EObject>() {
-			@Override
-			public boolean apply(EObject input) {
-				return type.isSuperTypeOf(input.eClass());
+		// TODO lazy collection
+		final List<EObject> result = Lists.newArrayList();
+
+		for (EObject input : eObject.eContents()) {
+			if (type.isSuperTypeOf(input.eClass())) {
+				result.add(input);
 			}
-		}));
+		}
+
+		return result;
 	}
 
 	/**
@@ -391,6 +377,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	public List<EObject> ancestors(EObject object, EClassifier filter) {
 		// TODO lazy collection + predicate
 		final List<EObject> result = new ArrayList<EObject>();
+
 		EObject container = object.eContainer();
 		while (container != null) {
 			if (filter == null || filter.isInstance(container)) {
@@ -398,6 +385,7 @@ public class EObjectServices extends AbstractServiceProvider {
 			}
 			container = container.eContainer();
 		}
+
 		return result;
 	}
 
@@ -428,7 +416,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            The EObject we seek the following siblings of.
 	 * @return Sequence containing the sought set of the receiver's following siblings.
 	 */
-	public Object followingSiblings(EObject eObject) {
+	public List<EObject> followingSiblings(EObject eObject) {
 		return siblings(eObject, null, false);
 	}
 
@@ -441,7 +429,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the sought set of the receiver's following siblings.
 	 */
-	public Object followingSiblings(EObject eObject, EClassifier filter) {
+	public List<EObject> followingSiblings(EObject eObject, EClassifier filter) {
 		return siblings(eObject, filter, false);
 	}
 
@@ -452,7 +440,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            The EObject we seek the preceding siblings of.
 	 * @return Sequence containing the sought set of the receiver's preceding siblings.
 	 */
-	public Object precedingSiblings(EObject eObject) {
+	public List<EObject> precedingSiblings(EObject eObject) {
 		return siblings(eObject, null, true);
 	}
 
@@ -465,7 +453,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the sought set of the receiver's preceding siblings.
 	 */
-	public Object precedingSiblings(EObject eObject, EClassifier filter) {
+	public List<EObject> precedingSiblings(EObject eObject, EClassifier filter) {
 		return siblings(eObject, filter, true);
 	}
 
@@ -476,7 +464,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            The EObject we seek the siblings of.
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
-	public Object siblings(EObject eObject) {
+	public List<EObject> siblings(EObject eObject) {
 		return siblings(eObject, null);
 	}
 
@@ -489,19 +477,25 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            Types of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
-	public Object siblings(final EObject eObject, final EClassifier filter) {
+	public List<EObject> siblings(final EObject eObject, final EClassifier filter) {
+		// TODO lazy collection
+		final List<EObject> result;
+
 		Object container = getContainer(eObject);
 		if (container != null) {
-			return new LazyList<EObject>(Iterables.filter(getContents(container), new Predicate<EObject>() {
-				@Override
-				public boolean apply(EObject input) {
-					return input != eObject
-							&& (filter == null || filter.isInstance(input.eClass()) || filter.equals(input
-									.eClass()));
+			result = Lists.newArrayList();
+			for (EObject input : getContents(container)) {
+				if (input != eObject
+						&& (filter == null || filter.isInstance(input.eClass()) || filter.equals(input
+								.eClass()))) {
+					result.add(input);
 				}
-			}));
+			}
+		} else {
+			result = Collections.<EObject> emptyList();
 		}
-		return Collections.<EObject> emptyList();
+
+		return result;
 	}
 
 	/**
@@ -518,6 +512,9 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return Sequence containing the sought set of the receiver's siblings.
 	 */
 	private List<EObject> siblings(final EObject eObject, final EClassifier filter, Boolean preceding) {
+		// TODO lazy collection
+		final List<EObject> result;
+
 		final Object container = getContainer(eObject);
 		if (container != null) {
 			final List<EObject> siblings = getContents(container);
@@ -529,16 +526,18 @@ public class EObjectServices extends AbstractServiceProvider {
 			} else {
 				startIndex = siblings.indexOf(eObject) + 1;
 			}
-			return new LazyList<EObject>(Iterables.filter(siblings.subList(startIndex, endIndex),
-					new Predicate<EObject>() {
-						@Override
-						public boolean apply(EObject input) {
-							return filter == null || filter.isInstance(input.eClass())
-									|| filter.equals(input.eClass());
-						}
-					}));
+
+			result = Lists.newArrayList();
+			for (EObject input : siblings.subList(startIndex, endIndex)) {
+				if (filter == null || filter.isInstance(input.eClass()) || filter.equals(input.eClass())) {
+					result.add(input);
+				}
+			}
+		} else {
+			result = Collections.<EObject> emptyList();
 		}
-		return Collections.<EObject> emptyList();
+
+		return result;
 	}
 
 	/**

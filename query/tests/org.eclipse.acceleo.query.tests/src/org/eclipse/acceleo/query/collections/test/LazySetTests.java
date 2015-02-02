@@ -16,12 +16,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.query.collections.LazySet;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class LazySetTests {
 
 	private static final List<String> testList = Lists.newArrayList("elt0", "elt1", "elt2", "elt3", "elt4",

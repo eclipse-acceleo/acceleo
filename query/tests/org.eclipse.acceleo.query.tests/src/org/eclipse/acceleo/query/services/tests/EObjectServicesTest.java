@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.eclipse.acceleo.query.collections.LazyList;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -32,7 +31,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
@@ -669,25 +667,21 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
 
-		Object result = eObjectServices.siblings(queries);
+		List<EObject> result = eObjectServices.siblings(queries);
 		assertNotNull(result);
-		LazyList<EObject> listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.siblings(query);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(36, listResult.size());
+		assertEquals(36, result.size());
 
 		result = eObjectServices.siblings(resultExpectation);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(1, listResult.size());
+		assertEquals(1, result.size());
 
 		result = eObjectServices.siblings(eObjectListResult);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 	}
 
 	private int siblingsNumber(EObject eObject, EClass eClass) {
@@ -718,30 +712,25 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
 
-		Object result = eObjectServices.siblings(queries, queries.eClass());
+		List<EObject> result = eObjectServices.siblings(queries, queries.eClass());
 		assertNotNull(result);
-		LazyList<EObject> listResult = (LazyList<EObject>)result;
-		assertEquals(siblingsNumber(queries, queries.eClass()), listResult.size());
+		assertEquals(siblingsNumber(queries, queries.eClass()), result.size());
 
 		result = eObjectServices.siblings(query, query.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(siblingsNumber(query, query.eClass()), listResult.size());
+		assertEquals(siblingsNumber(query, query.eClass()), result.size());
 
 		result = eObjectServices.siblings(query, queries.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(siblingsNumber(query, queries.eClass()), listResult.size());
+		assertEquals(siblingsNumber(query, queries.eClass()), result.size());
 
 		result = eObjectServices.siblings(resultExpectation, resultExpectation.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(siblingsNumber(resultExpectation, resultExpectation.eClass()), listResult.size());
+		assertEquals(siblingsNumber(resultExpectation, resultExpectation.eClass()), result.size());
 
 		result = eObjectServices.siblings(eObjectListResult, eObjectListResult.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(siblingsNumber(eObjectListResult, eObjectListResult.eClass()), listResult.size());
+		assertEquals(siblingsNumber(eObjectListResult, eObjectListResult.eClass()), result.size());
 	}
 
 	/**
@@ -756,25 +745,21 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		Object result = eObjectServices.precedingSiblings(queries);
+		List<EObject> result = eObjectServices.precedingSiblings(queries);
 		assertNotNull(result);
-		LazyList<EObject> listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.precedingSiblings(query_1);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.precedingSiblings(query_2);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(5, listResult.size());
+		assertEquals(5, result.size());
 
 		result = eObjectServices.precedingSiblings(resultExpectation);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 	}
 
 	/**
@@ -789,30 +774,25 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		Object result = eObjectServices.precedingSiblings(queries, queries.eClass());
+		List<EObject> result = eObjectServices.precedingSiblings(queries, queries.eClass());
 		assertNotNull(result);
-		LazyList<EObject> listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.precedingSiblings(query_1, query_1.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.precedingSiblings(query_2, query_2.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(5, listResult.size());
+		assertEquals(5, result.size());
 
 		result = eObjectServices.precedingSiblings(query_1, queries.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.precedingSiblings(resultExpectation, resultExpectation.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 	}
 
 	private int followingSiblingsNumber(EObject eObject) {
@@ -836,17 +816,6 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		return result;
 	}
 
-	private Object getContainer(EObject object) {
-		Object result = object.eContainer();
-
-		if (result == null && object instanceof InternalEObject) {
-			// maybe it's a resource root
-			result = ((InternalEObject)object).eDirectResource();
-		}
-
-		return result;
-	}
-
 	/**
 	 * Tests {@link EObjectServices#followingSiblings(EObject)} method.</br> This test uses the
 	 * "resources/ecore/reverse.ecore" model. </br> It ensures that the
@@ -859,25 +828,21 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		Object result = eObjectServices.followingSiblings(queries);
+		List<EObject> result = eObjectServices.followingSiblings(queries);
 		assertNotNull(result);
-		LazyList<EObject> listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(queries), listResult.size());
+		assertEquals(followingSiblingsNumber(queries), result.size());
 
 		result = eObjectServices.followingSiblings(query_1);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(query_1), listResult.size());
+		assertEquals(followingSiblingsNumber(query_1), result.size());
 
 		result = eObjectServices.followingSiblings(query_2);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(query_2), listResult.size());
+		assertEquals(followingSiblingsNumber(query_2), result.size());
 
 		result = eObjectServices.followingSiblings(resultExpectation);
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(resultExpectation), listResult.size());
+		assertEquals(followingSiblingsNumber(resultExpectation), result.size());
 	}
 
 	/**
@@ -892,29 +857,24 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		Object result = eObjectServices.followingSiblings(queries, queries.eClass());
+		List<EObject> result = eObjectServices.followingSiblings(queries, queries.eClass());
 		assertNotNull(result);
-		LazyList<EObject> listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(queries, queries.eClass()), listResult.size());
+		assertEquals(followingSiblingsNumber(queries, queries.eClass()), result.size());
 
 		result = eObjectServices.followingSiblings(query_1, query_1.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(query_1, query_1.eClass()), listResult.size());
+		assertEquals(followingSiblingsNumber(query_1, query_1.eClass()), result.size());
 
 		result = eObjectServices.followingSiblings(query_2, query_2.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(followingSiblingsNumber(query_2, query_2.eClass()), listResult.size());
+		assertEquals(followingSiblingsNumber(query_2, query_2.eClass()), result.size());
 
 		result = eObjectServices.followingSiblings(query_1, queries.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 
 		result = eObjectServices.followingSiblings(resultExpectation, resultExpectation.eClass());
 		assertNotNull(result);
-		listResult = (LazyList<EObject>)result;
-		assertEquals(0, listResult.size());
+		assertEquals(0, result.size());
 	}
 }
