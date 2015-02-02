@@ -1,4 +1,4 @@
-// Generated from Query.g4 by ANTLR 4.3
+// Generated from Query.g4 by ANTLR 4.4
 
 /*******************************************************************************
  * Copyright (c) 2015 Obeo.
@@ -37,7 +37,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitImplies(@NotNull QueryParser.ImpliesContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -50,7 +49,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEnumOrClassifierLit(@NotNull QueryParser.EnumOrClassifierLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -63,7 +61,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVarRef(@NotNull QueryParser.VarRefContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -76,7 +73,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSeqLit(@NotNull QueryParser.SeqLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -89,7 +85,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAddOp(@NotNull QueryParser.AddOpContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -102,7 +97,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFeature(@NotNull QueryParser.FeatureContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -115,7 +109,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEContent(@NotNull QueryParser.EContentContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -128,7 +121,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpressionSequence(@NotNull QueryParser.ExpressionSequenceContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -141,7 +133,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntType(@NotNull QueryParser.IntTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -154,7 +145,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLit(@NotNull QueryParser.LitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -167,7 +157,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAdd(@NotNull QueryParser.AddContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -180,7 +169,18 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSiblings(@NotNull QueryParser.SiblingsContext ctx) { }
-
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterXor(@NotNull QueryParser.XorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitXor(@NotNull QueryParser.XorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -193,7 +193,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSetLit(@NotNull QueryParser.SetLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -206,7 +205,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMin(@NotNull QueryParser.MinContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -219,7 +217,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitModelObjectType(@NotNull QueryParser.ModelObjectTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -232,7 +229,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRealType(@NotNull QueryParser.RealTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -245,7 +241,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEContainer(@NotNull QueryParser.EContainerContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -258,7 +253,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTrueLit(@NotNull QueryParser.TrueLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -271,7 +265,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParen(@NotNull QueryParser.ParenContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -284,7 +277,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIsKind(@NotNull QueryParser.IsKindContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -297,7 +289,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSetType(@NotNull QueryParser.SetTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -310,7 +301,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIterationCall(@NotNull QueryParser.IterationCallContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -323,7 +313,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRealLit(@NotNull QueryParser.RealLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -336,7 +325,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStringLit(@NotNull QueryParser.StringLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -349,7 +337,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStrType(@NotNull QueryParser.StrTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -362,7 +349,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFilter(@NotNull QueryParser.FilterContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -375,7 +361,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -388,7 +373,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOr(@NotNull QueryParser.OrContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -401,7 +385,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAsType(@NotNull QueryParser.AsTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -414,7 +397,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEAContent(@NotNull QueryParser.EAContentContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -427,7 +409,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBooleanType(@NotNull QueryParser.BooleanTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -440,7 +421,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAnd(@NotNull QueryParser.AndContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -453,7 +433,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPrecSiblings(@NotNull QueryParser.PrecSiblingsContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -466,7 +445,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCompOp(@NotNull QueryParser.CompOpContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -479,7 +457,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAs(@NotNull QueryParser.AsContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -492,7 +469,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExplicitSetLit(@NotNull QueryParser.ExplicitSetLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -505,7 +481,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIs(@NotNull QueryParser.IsContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -518,7 +493,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEInverse(@NotNull QueryParser.EInverseContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -531,7 +505,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCallService(@NotNull QueryParser.CallServiceContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -544,7 +517,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitServiceCall(@NotNull QueryParser.ServiceCallContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -557,7 +529,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIsType(@NotNull QueryParser.IsTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -570,7 +541,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitApply(@NotNull QueryParser.ApplyContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -583,7 +553,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFalseLit(@NotNull QueryParser.FalseLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -596,7 +565,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMult(@NotNull QueryParser.MultContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -609,7 +577,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariableDefinition(@NotNull QueryParser.VariableDefinitionContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -622,7 +589,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNav(@NotNull QueryParser.NavContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -635,7 +601,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNullLit(@NotNull QueryParser.NullLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -648,7 +613,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitQualifiedName(@NotNull QueryParser.QualifiedNameContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -661,7 +625,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSeqType(@NotNull QueryParser.SeqTypeContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -674,7 +637,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNot(@NotNull QueryParser.NotContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -687,7 +649,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEntry(@NotNull QueryParser.EntryContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -700,7 +661,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVar(@NotNull QueryParser.VarContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -713,7 +673,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLambdaExpression(@NotNull QueryParser.LambdaExpressionContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -726,7 +685,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCollectionIterator(@NotNull QueryParser.CollectionIteratorContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -739,7 +697,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIntegerLit(@NotNull QueryParser.IntegerLitContext ctx) { }
-
 	/**
 	 * {@inheritDoc}
 	 *

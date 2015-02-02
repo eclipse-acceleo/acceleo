@@ -75,4 +75,17 @@ public class BooleanServices {
 		return result;
 	}
 
+	/**
+	 * Logical and.
+	 * 
+	 * @param op1
+	 *            the first operand
+	 * @param op2
+	 *            the second operand
+	 * @return the logical and of the two operands.
+	 */
+	public Boolean xor(Boolean op1, Boolean op2) {
+		return op1 ^ op2;
+	}
+
 }

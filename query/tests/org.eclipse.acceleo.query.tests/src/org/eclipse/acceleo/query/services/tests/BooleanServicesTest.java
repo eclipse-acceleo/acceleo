@@ -54,4 +54,12 @@ public class BooleanServicesTest extends AbstractServicesTest {
 		runTest("implies", true, new Boolean[] {false, false });
 	}
 
+	@Test
+	public void testXor() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		runTest("xor", true, new Boolean[] {true, false });
+		runTest("xor", true, new Boolean[] {false, true });
+		runTest("xor", false, new Boolean[] {true, true });
+		runTest("xor", false, new Boolean[] {false, false });
+	}
+
 }

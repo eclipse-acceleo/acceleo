@@ -8,16 +8,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
 import java.util.ArrayList;
@@ -90,6 +80,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.TrueLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.TypeLiteralContext;
 import org.eclipse.acceleo.query.parser.QueryParser.VarRefContext;
 import org.eclipse.acceleo.query.parser.QueryParser.VariableDefinitionContext;
+import org.eclipse.acceleo.query.parser.QueryParser.XorContext;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -243,6 +234,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * <code>or<code> operator.
 	 */
 	public static final String OR_OPERATOR = "or";
+
+	/**
+	 * <code>xor<code> service name.
+	 */
+	public static final String XOR_SERVICE_NAME = "xor";
+
+	/**
+	 * <code>xor<code> operator.
+	 */
+	public static final String XOR_OPERATOR = "xor";
 
 	/**
 	 * <code>implies<code> service name.
@@ -417,6 +418,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		result.add(OR_SERVICE_NAME);
 		result.add(SUB_SERVICE_NAME);
 		result.add(UNARY_MIN_SERVICE_NAME);
+		result.add(XOR_SERVICE_NAME);
 
 		return result;
 	}
@@ -584,6 +586,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitOr(OrContext ctx) {
 		pushBinary(OR_SERVICE_NAME);
+	}
+
+	@Override
+	public void exitXor(XorContext ctx) {
+		pushBinary(XOR_SERVICE_NAME);
 	}
 
 	@Override

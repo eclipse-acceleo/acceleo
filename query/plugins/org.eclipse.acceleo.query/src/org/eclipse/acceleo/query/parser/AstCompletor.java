@@ -267,6 +267,9 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		if (serviceNames.contains(AstBuilderListener.OR_SERVICE_NAME)) {
 			result.add(new TextCompletionProposal(AstBuilderListener.OR_OPERATOR + SPACE, 0));
 		}
+		if (serviceNames.contains(AstBuilderListener.XOR_SERVICE_NAME)) {
+			result.add(new TextCompletionProposal(AstBuilderListener.XOR_OPERATOR + SPACE, 0));
+		}
 		if (serviceNames.contains(AstBuilderListener.IMPLIES_SERVICE_NAME)) {
 			result.add(new TextCompletionProposal(AstBuilderListener.IMPLIES_OPERATOR + SPACE, 0));
 		}
