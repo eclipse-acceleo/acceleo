@@ -54,4 +54,25 @@ public class BooleanServices {
 		return !op1;
 	}
 
+	/**
+	 * Logical implies.
+	 * 
+	 * @param op1
+	 *            the first operand
+	 * @param op2
+	 *            the second operand
+	 * @return the logical implies of the two operands
+	 */
+	public Boolean implies(Boolean op1, Boolean op2) {
+		final boolean result;
+
+		if (!op1) {
+			result = true;
+		} else {
+			result = op2;
+		}
+
+		return result;
+	}
+
 }

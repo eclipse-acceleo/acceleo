@@ -45,4 +45,13 @@ public class BooleanServicesTest extends AbstractServicesTest {
 		runTest("not", true, new Boolean[] {false });
 	}
 
+	@Test
+	public void testImplies() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		runTest("implies", false, new Boolean[] {true, false });
+		runTest("implies", true, new Boolean[] {false, true });
+		runTest("implies", true, new Boolean[] {true, true });
+		runTest("implies", true, new Boolean[] {false, false });
+	}
+
 }

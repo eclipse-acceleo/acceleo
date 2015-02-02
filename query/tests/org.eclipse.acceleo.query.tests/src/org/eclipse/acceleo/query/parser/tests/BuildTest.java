@@ -320,6 +320,22 @@ public class BuildTest {
 	}
 
 	@Test
+	public void impliesTest() {
+		IQueryBuilderEngine.AstResult build = engine.build("true implies false");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(true, ast instanceof Call);
+		assertEquals("implies", ((Call)ast).getServiceName());
+		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof BooleanLiteral);
+		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
+		assertEquals(true, ((Call)ast).getArguments().get(1) instanceof BooleanLiteral);
+		assertEquals(false, ((BooleanLiteral)((Call)ast).getArguments().get(1)).isValue());
+	}
+
+	@Test
 	public void andTest() {
 		IQueryBuilderEngine.AstResult build = engine.build("true and false");
 		Expression ast = build.getAst();
@@ -931,6 +947,20 @@ public class BuildTest {
 
 		assertEquals(true, ast instanceof Call);
 		assertEquals("or", ((Call)ast).getServiceName());
+		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);
+		assertEquals(true, ((Call)ast).getArguments().get(1) instanceof ErrorExpression);
+		assertEquals(1, build.getErrors().size());
+	}
+
+	@Test
+	public void incompletImpliesTest() {
+		IQueryBuilderEngine.AstResult build = engine.build("self implies");
+		Expression ast = build.getAst();
+
+		assertEquals(true, ast instanceof Call);
+		assertEquals("implies", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);

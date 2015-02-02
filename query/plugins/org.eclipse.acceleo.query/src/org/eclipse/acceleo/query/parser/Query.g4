@@ -36,6 +36,7 @@ expression : expression navigationSegment #Nav
 		     | expression compOp expression #Comp
 		     | expression 'and' expression #And
 		     | expression 'or' expression  #Or
+		     | expression 'implies' expression  #Implies
 		     | varRef       #Var
 		     | literal      #Lit
 		     | '(' expression ')'    #Paren 

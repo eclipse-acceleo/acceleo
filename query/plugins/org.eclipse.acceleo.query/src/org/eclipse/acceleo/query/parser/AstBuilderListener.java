@@ -63,6 +63,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FalseLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FeatureContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FilterContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ImpliesContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IntTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IntegerLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IsKindContext;
@@ -244,6 +245,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	public static final String OR_OPERATOR = "or";
 
 	/**
+	 * <code>implies<code> service name.
+	 */
+	public static final String IMPLIES_SERVICE_NAME = "implies";
+
+	/**
+	 * <code>implies<code> operator.
+	 */
+	public static final String IMPLIES_OPERATOR = "implies";
+
+	/**
 	 * {@link Set} of operator service names.
 	 */
 	public static final Set<String> OPERATOR_SERVICE_NAMES = initOperatorServiceNames();
@@ -398,6 +409,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		result.add(EQUALS_SERVICE_NAME);
 		result.add(GREATER_THAN_EQUAL_SERVICE_NAME);
 		result.add(GREATER_THAN_SERVICE_NAME);
+		result.add(IMPLIES_SERVICE_NAME);
 		result.add(LESS_THAN_EQUAL_SERVICE_NAME);
 		result.add(LESS_THAN_SERVICE_NAME);
 		result.add(MULT_SERVICE_NAME);
@@ -572,6 +584,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitOr(OrContext ctx) {
 		pushBinary(OR_SERVICE_NAME);
+	}
+
+	@Override
+	public void exitImplies(ImpliesContext ctx) {
+		pushBinary(IMPLIES_SERVICE_NAME);
 	}
 
 	@Override
