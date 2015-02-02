@@ -115,7 +115,7 @@ public class EvaluationServicesTest {
 	public void testNonExistingFeatureAccessOnEObject() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute.setName("attr0");
-		assertEquals(null, services.featureAccess(attribute, "noname"));
+		assertEquals(EvaluationServices.NOTHING, services.featureAccess(attribute, "noname"));
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void testFeatureAccessOnObject() {
-		assertEquals(null, services.featureAccess(new Integer(3), "noname"));
+		assertEquals(EvaluationServices.NOTHING, services.featureAccess(new Integer(3), "noname"));
 	}
 
 	/**
@@ -217,8 +217,7 @@ public class EvaluationServicesTest {
 		Object listResult = services.featureAccess(list, "noname");
 
 		assertEquals(true, listResult instanceof List);
-		assertEquals(1, ((List<?>)listResult).size());
-		assertEquals(null, ((List<?>)listResult).get(0));
+		assertEquals(0, ((List<?>)listResult).size());
 	}
 
 	/**
@@ -233,8 +232,7 @@ public class EvaluationServicesTest {
 		Object setResult = services.featureAccess(set, "noname");
 
 		assertEquals(true, setResult instanceof Set);
-		assertEquals(1, ((Set<?>)setResult).size());
-		assertEquals(null, ((Set<?>)setResult).iterator().next());
+		assertEquals(0, ((Set<?>)setResult).size());
 	}
 
 	/**
@@ -253,9 +251,8 @@ public class EvaluationServicesTest {
 		List<EStructuralFeature> list = Lists.newArrayList(attr, ref);
 		Object result = services.featureAccess(list, "containment");
 		assertTrue(result instanceof List);
-		assertEquals(2, ((List<Object>)result).size());
-		assertEquals(null, ((List<Object>)result).get(0));
-		assertEquals(true, ((List<Object>)result).get(1));
+		assertEquals(1, ((List<Object>)result).size());
+		assertEquals(true, ((List<Object>)result).get(0));
 	}
 
 	/**
@@ -275,9 +272,8 @@ public class EvaluationServicesTest {
 		Set<Object> set = createSet(attr, ref);
 		Object result = services.featureAccess(set, "containment");
 		assertTrue(result instanceof Set);
-		assertEquals(2, ((Set<Object>)result).size());
+		assertEquals(1, ((Set<Object>)result).size());
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
-		assertEquals(null, iterator.next());
 		assertEquals(true, iterator.next());
 	}
 
@@ -346,9 +342,8 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
-		assertEquals(2, listResult.size());
+		assertEquals(1, listResult.size());
 		assertEquals("attr0", listResult.get(0));
-		assertEquals(null, listResult.get(1));
 	}
 
 	/**

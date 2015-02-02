@@ -121,9 +121,12 @@ public class AcceleoMTLLegacyInterpreter implements InterpreterUnderTest {
 
 		if (query.getStartingPoint() != null && query.getStartingPoint().getTarget() != null) {
 			try {
-				Object result = inter.eval(query.getStartingPoint().getTarget(), compilationResult)
-						.getEvaluationResult();
-				res = new QueryEvaluationResultFactory().createFromValue(result);
+				EvaluationResult result = inter.eval(query.getStartingPoint().getTarget(), compilationResult);
+				if (result.getStatus().isOK()) {
+					res = new QueryEvaluationResultFactory().createFromValue(result.getEvaluationResult());
+				} else {
+					res = QmodelFactory.eINSTANCE.createInvalidResult();
+				}
 
 				query.getCurrentResults().add(res);
 			} catch (EvaluationException e) {

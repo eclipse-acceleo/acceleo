@@ -1393,7 +1393,7 @@
   </queries>
   <queries expression="[not self.eContainer(uml::EncapsulatedClassifier).ownedElement->includes(object)/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual"/>
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
@@ -1724,7 +1724,7 @@
   </queries>
   <queries expression="[self.selection.oclAsType(uml::UseCase).subject->size() > 0/]" startingPoint="//@modelElements.7">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="manual" value="true"/>
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">

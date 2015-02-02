@@ -99,34 +99,25 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object featureAccess(Object context, String featureName) {
-		try {
-			Object result;
-			if (context instanceof EObject) {
-				EClass eClass = ((EObject)context).eClass();
-				EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
-				if (feature == null) {
-					nothing(UNKNOWN_FEATURE, featureName, eClass.getName());
-					return null;
-				} else {
-					result = ((EObject)context).eGet(feature);
-				}
-			} else if (context instanceof List) {
-				result = applyGetFeatureOnSequence((List<Object>)context, featureName);
-			} else if (context instanceof Set) {
-				result = applyGetFeatureOnSet((Set<Object>)context, featureName);
-			} else if (context != null) {
-				result = null;
-				nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, context.getClass().getCanonicalName());
+		Object result;
+		if (context instanceof EObject) {
+			EClass eClass = ((EObject)context).eClass();
+			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+			if (feature == null) {
+				result = nothing(UNKNOWN_FEATURE, featureName, eClass.getName());
 			} else {
-				result = null;
-				nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
+				result = ((EObject)context).eGet(feature);
 			}
-			return result;
-			// CHECKSTYLE:OFF
-		} catch (Exception e) {
-			// CHECKSTYLE:ON
-			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
+		} else if (context instanceof List) {
+			result = applyGetFeatureOnSequence((List<Object>)context, featureName);
+		} else if (context instanceof Set) {
+			result = applyGetFeatureOnSet((Set<Object>)context, featureName);
+		} else if (context != null) {
+			result = nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, context.getClass().getCanonicalName());
+		} else {
+			result = nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
 		}
+		return result;
 	}
 
 	/**
