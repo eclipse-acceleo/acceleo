@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="Acceleo Mars Target Platform" sequenceNumber="1421922775">
+<target name="Acceleo Mars Target Platform" sequenceNumber="1422951285">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="com.google.guava" version="15.0.0.v201403281430"/>
       <unit id="org.junit" version="4.11.0.v201303080030"/>
-      <unit id="org.antlr.runtime" version="4.3.0.v201412161120"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/I20150127213331/repository/"/>
+      <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20150202203538/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="1.0.1.v20140414-1359"/>
