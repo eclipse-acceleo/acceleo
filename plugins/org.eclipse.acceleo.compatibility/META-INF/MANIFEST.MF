@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core,
  org.eclipse.acceleo.common,
  org.eclipse.ocl,
- org.eclipse.ocl.ecore
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.common.ide;bundle-version="3.6.0"
 Export-Package: org.eclipse.acceleo.compatibility.model.mt;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.eclipse.acceleo.compatibility.model.mt.core;
   uses:="org.eclipse.emf.ecore,

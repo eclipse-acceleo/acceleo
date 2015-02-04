@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.ide.authoring.WorkspaceUtils;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.ide.ui.resources.AcceleoProject;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
@@ -272,7 +272,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 		boolean result = true;
 
 		try {
-			result = AcceleoWorkspaceUtil.getWorkspaceFile(uri.toString()).exists();
+			result = WorkspaceUtils.getWorkspaceFile(uri.toString()).exists();
 		} catch (IOException e) {
 			// do nothing
 		}

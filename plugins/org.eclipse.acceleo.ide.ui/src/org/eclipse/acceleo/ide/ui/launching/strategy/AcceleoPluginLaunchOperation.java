@@ -17,8 +17,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.acceleo.common.ide.authoring.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator;
 import org.eclipse.acceleo.engine.utils.AcceleoLaunchingUtil;
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
@@ -101,7 +101,8 @@ public class AcceleoPluginLaunchOperation implements IWorkspaceRunnable {
 	public void run(IProgressMonitor monitor) throws CoreException {
 		Class<?> generatorClass = null;
 		try {
-			Bundle[] bundles = AcceleoWorkspaceUtil.getBundles(bunbleName);
+			Bundle[] bundles = org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil
+					.getBundles(bunbleName);
 			for (Bundle bundle : bundles) {
 				generatorClass = bundle.loadClass(qualifiedName);
 				if (generatorClass != null && generatorClass.isAssignableFrom(AbstractAcceleoGenerator.class)) {

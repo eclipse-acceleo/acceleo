@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.ide.authoring.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.acceleo.compatibility.model.mt.MtFactory;
 import org.eclipse.acceleo.compatibility.model.mt.ResourceSet;

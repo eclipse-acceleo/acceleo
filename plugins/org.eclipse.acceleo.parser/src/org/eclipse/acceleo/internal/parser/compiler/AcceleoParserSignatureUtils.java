@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,35 +69,37 @@ public final class AcceleoParserSignatureUtils {
 	 */
 	public static List<String> signature(File file, final ResourceSet resourceSet) {
 		List<String> previousSignatures = new ArrayList<String>();
-		try {
-			EObject previousRoot = ModelUtils.load(file, resourceSet);
-			if (previousRoot instanceof Module) {
-				previousSignatures = createSignatureList((Module)previousRoot);
-			}
-		} catch (IOException e) {
-			// Swallow this : we just didn't have a precompiled state
-		} catch (WrappedException e) {
-			// Swallow this : we just didn't have a precompiled state
-			// CHECKSTYLE:OFF
-		} catch (RuntimeException e) {
-			// CHECKSTYLE:ON
-			// Swallow this : we just didn't have a precompiled state (maven build)
-		} finally {
-			Thread unloadThread = new Thread() {
-				/**
-				 * {@inheritDoc}
-				 * 
-				 * @see java.lang.Thread#run()
-				 */
-				@Override
-				public void run() {
-					for (Resource res : resourceSet.getResources()) {
-						res.unload();
-					}
-					resourceSet.getResources().clear();
+		if (file != null) {
+			try {
+				EObject previousRoot = ModelUtils.load(file, resourceSet);
+				if (previousRoot instanceof Module) {
+					previousSignatures = createSignatureList((Module)previousRoot);
 				}
-			};
-			unloadThread.start();
+			} catch (IOException e) {
+				// Swallow this : we just didn't have a precompiled state
+			} catch (WrappedException e) {
+				// Swallow this : we just didn't have a precompiled state
+				// CHECKSTYLE:OFF
+			} catch (RuntimeException e) {
+				// CHECKSTYLE:ON
+				// Swallow this : we just didn't have a precompiled state (maven build)
+			} finally {
+				Thread unloadThread = new Thread() {
+					/**
+					 * {@inheritDoc}
+					 * 
+					 * @see java.lang.Thread#run()
+					 */
+					@Override
+					public void run() {
+						for (Resource res : resourceSet.getResources()) {
+							res.unload();
+						}
+						resourceSet.getResources().clear();
+					}
+				};
+				unloadThread.start();
+			}
 		}
 		return previousSignatures;
 	}

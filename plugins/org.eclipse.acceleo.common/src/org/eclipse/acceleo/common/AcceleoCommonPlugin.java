@@ -10,26 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoLibrariesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
-import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoModelManager;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.internal.utils.workspace.ClassLoadingCompanionProvider;
+import org.eclipse.acceleo.common.internal.utils.workspace.ClassLoadingCompanionsRegistry;
 import org.eclipse.acceleo.common.library.connector.ILibrary;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -41,7 +29,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.common.util.URI;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -52,6 +39,13 @@ import org.osgi.framework.BundleContext;
 public class AcceleoCommonPlugin extends Plugin {
 	/** Name of the extension point to parse for other libraries. */
 	public static final String LIBRARIES_EXTENSION_POINT = "org.eclipse.acceleo.common.libraries"; //$NON-NLS-1$
+
+	/**
+	 * Name of the extension point to parse for class loading companions.
+	 * 
+	 * @since 3.6
+	 */
+	public static final String COMPANIONS_EXTENSION_POINT = "org.eclipse.acceleo.common.internal.classloadingcompanion"; //$NON-NLS-1$
 
 	/** Name of the extension point to parse for other languages queries. */
 	public static final String LIBRARY_CONNECTORS_EXTENSION_POINT = "org.eclipse.acceleo.common.library.connectors"; //$NON-NLS-1$
@@ -85,11 +79,11 @@ public class AcceleoCommonPlugin extends Plugin {
 	/** The registry listener that will be used to listen to Acceleo library connector changes. */
 	private final AcceleoLibraryConnectorsRegistryListener librariesConnectorListener = new AcceleoLibraryConnectorsRegistryListener();
 
+	/** The registry listener that will be used to listen to Acceleo library connector changes. */
+	private final AcceleoCompanionsRegistryListener companionsListener = new AcceleoCompanionsRegistryListener();
+
 	/** The registry listener that will be used to listen to Acceleo libraries changes. */
 	private final AcceleoLibrariesRegistryListener librariesListener = new AcceleoLibrariesRegistryListener();
-
-	/** Listener tracking changes with the workspace ecore files. */
-	private final WorkspaceEcoreListener workspaceEcoreListener = new WorkspaceEcoreListener();
 
 	/**
 	 * Default constructor for the plugin.
@@ -106,7 +100,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	public static AcceleoCommonPlugin getDefault() {
 		return plugin;
 	}
-	
+
 	/**
 	 * Trace an Exception in the error log.
 	 * 
@@ -121,7 +115,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	public static void log(Exception e, boolean blocker) {
 		AcceleoLogger.log(e, blocker);
 	}
-	
+
 	/**
 	 * Puts the given status in the error log view.
 	 * 
@@ -133,7 +127,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	public static void log(IStatus status) {
 		AcceleoLogger.log(status);
 	}
-	
+
 	/**
 	 * Puts the given message in the error log view, as error or warning.
 	 * 
@@ -148,7 +142,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	public static void log(String message, boolean blocker) {
 		AcceleoLogger.log(message, blocker);
 	}
-	
+
 	/**
 	 * Traces an exception in the error log with the given log message.
 	 * <p>
@@ -190,40 +184,13 @@ public class AcceleoCommonPlugin extends Plugin {
 		super.start(bundleContext);
 		AcceleoWorkspaceUtil.INSTANCE.initialize();
 
-		Bundle pdeCoreBundle = Platform.getBundle("org.eclipse.pde.core"); //$NON-NLS-1$
-		if (pdeCoreBundle != null) {
-			ResourcesPlugin.getWorkspace().addResourceChangeListener(
-					workspaceEcoreListener,
-					IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE
-							| IResourceChangeEvent.POST_CHANGE);
-		}
-
-		ResourcesPlugin.getWorkspace().getRoot().accept(new IResourceVisitor() {
-
-			public boolean visit(IResource resource) throws CoreException {
-				if (resource instanceof IFile) {
-					if (resource instanceof IFile
-							&& ((IFile)resource).getFileExtension() != null
-							&& ((IFile)resource).getFileExtension().equals(
-									IAcceleoConstants.ECORE_FILE_EXTENSION)) {
-						if (mightBeInAcceleoScope((IFile)resource)) {
-							URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
-							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
-									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
-						}
-					}
-				}
-				return true;
-			}
-		});
-
 		context = bundleContext;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		registry.addListener(librariesConnectorListener, LIBRARY_CONNECTORS_EXTENSION_POINT);
 		registry.addListener(librariesListener, LIBRARIES_EXTENSION_POINT);
+		registry.addListener(companionsListener, COMPANIONS_EXTENSION_POINT);
 		parseInitialContributions();
 
-		AcceleoModelManager.getManager().startup();
 	}
 
 	/**
@@ -237,21 +204,17 @@ public class AcceleoCommonPlugin extends Plugin {
 			final IExtensionRegistry registry = Platform.getExtensionRegistry();
 			registry.removeListener(librariesConnectorListener);
 			registry.removeListener(librariesListener);
+			registry.removeListener(companionsListener);
 
-			Bundle pdeCoreBundle = Platform.getBundle("org.eclipse.pde.core"); //$NON-NLS-1$
-			if (pdeCoreBundle != null) {
-				ResourcesPlugin.getWorkspace().removeResourceChangeListener(workspaceEcoreListener);
-
-			}
 			AcceleoServicesEclipseUtil.clearRegistry();
 			AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
 			AcceleoLibrariesEclipseUtil.clearRegistry();
+			ClassLoadingCompanionsRegistry.INSTANCE.clearRegistry();
 			AcceleoWorkspaceUtil.INSTANCE.dispose();
 			AcceleoPreferences.save();
 			plugin = null;
 			context = null;
 
-			AcceleoModelManager.getManager().shutdown();
 		} finally {
 			super.stop(bundleContext);
 		}
@@ -433,150 +396,60 @@ public class AcceleoCommonPlugin extends Plugin {
 	}
 
 	/**
-	 * return true if the given ecore file might be used by an Acceleo generator meaning : it is at least in a
-	 * plugin project.
-	 * 
-	 * @param ecoreFile
-	 *            an IFile which is a .ecore.
-	 * @return true if the given ecore file might be used by an Acceleo generator meaning : it is at least in
-	 *         a plugin project.
+	 * This will allow us to be aware of changes of extension against the Acceleo library connector extension
+	 * point.
 	 */
-	private boolean mightBeInAcceleoScope(IFile ecoreFile) {
-		try {
-			if (ecoreFile.getProject() != null && ecoreFile.getProject().getDescription() != null) {
-				for (String nature : ecoreFile.getProject().getDescription().getNatureIds()) {
-					if (IAcceleoConstants.PLUGIN_NATURE_ID.equals(nature)) {
-						return true;
+	final class AcceleoCompanionsRegistryListener implements IRegistryEventListener {
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
+		 */
+		@SuppressWarnings("unchecked")
+		public void added(IExtension[] extensions) {
+			for (IExtension extension : extensions) {
+				for (IConfigurationElement service : extension.getConfigurationElements()) {
+					try {
+						ClassLoadingCompanionsRegistry.INSTANCE
+								.register((ClassLoadingCompanionProvider)service
+										.createExecutableExtension(CLASS_TAG_NAME));
+					} catch (CoreException e) {
+						log(e, false);
 					}
 				}
 			}
-		} catch (CoreException e) {
-			/*
-			 * If there is a problem accessing the project description we probably just want to ignore this
-			 * file.
-			 */
-		}
-
-		return false;
-	}
-
-	/**
-	 * Allows us to react to changes in the dynamic ecore models.
-	 * 
-	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
-	 */
-	private class WorkspaceEcoreListener implements IResourceChangeListener {
-		/**
-		 * Default constructor.
-		 */
-		WorkspaceEcoreListener() {
-			// Increases visibility
 		}
 
 		/**
 		 * {@inheritDoc}
 		 * 
-		 * @see org.eclipse.core.resources.IResourceChangeListener#resourceChanged(org.eclipse.core.resources.IResourceChangeEvent)
+		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
 		 */
-		public void resourceChanged(IResourceChangeEvent event) {
-			switch (event.getType()) {
-			/*
-			 * Project closing and deletion must trigger the removal of its models from the dynamic registry.
-			 * Model deletion must trigger its removal from the dynamic registry. Model change must trigger
-			 * its removal and re-adding in the registry. Model creation must trigger its addition in the
-			 * registry.
-			 */
-				case IResourceChangeEvent.PRE_CLOSE:
-				case IResourceChangeEvent.PRE_DELETE:
-					if (event.getResource() instanceof IProject) {
-						try {
-							List<IFile> ecoreFiles = members((IContainer)event.getResource(),
-									IAcceleoConstants.ECORE_FILE_EXTENSION);
-							if (!ecoreFiles.isEmpty()) {
-								for (IFile ecoreFile : ecoreFiles) {
-									AcceleoPackageRegistry.INSTANCE.unregisterEcorePackages(ecoreFile
-											.getFullPath().toString());
-								}
-							}
-						} catch (CoreException e) {
-							AcceleoLogger.log(e, false);
-						}
-					}
-					break;
-				case IResourceChangeEvent.POST_CHANGE:
-					IResource resource = null;
-					if (event.getResource() != null) {
-						resource = event.getResource();
-					} else if (getResources(event.getDelta()).size() > 0) {
-						List<IResource> resources = getResources(event.getDelta());
-						resource = resources.get(0);
-					}
-					if (resource != null && resource.isAccessible() && resource.getFileExtension() != null
-							&& resource.getFileExtension().endsWith(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
-						if (resource instanceof IFile && mightBeInAcceleoScope((IFile)resource)) {
-							URI uri = URI.createPlatformResourceURI(resource.getFullPath().toString(), true);
-							AcceleoPackageRegistry.INSTANCE.registerEcorePackages(uri.toString(),
-									AcceleoDynamicMetamodelResourceSetImpl.DYNAMIC_METAMODEL_RESOURCE_SET);
-						}
-					}
-					break;
-				default:
-					// no default action
+		public void added(IExtensionPoint[] extensionPoints) {
+			// no need to listen to this
+		}
+
+		/**
+		 * {@inheritDoc}
+		 * 
+		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
+		 */
+		public void removed(IExtension[] extensions) {
+			for (IExtension extension : extensions) {
+				for (IConfigurationElement service : extension.getConfigurationElements()) {
+					ClassLoadingCompanionsRegistry.INSTANCE.unregister(service.getAttribute(CLASS_TAG_NAME));
+				}
 			}
 		}
 
 		/**
-		 * Computes the resources available in a resource delta.
+		 * {@inheritDoc}
 		 * 
-		 * @param delta
-		 *            the resource delta.
-		 * @return The lsit of resources in a resource delta.
+		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
 		 */
-		private List<IResource> getResources(IResourceDelta delta) {
-			List<IResource> resources = new ArrayList<IResource>();
-			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
-			for (IResourceDelta iResourceDelta : affectedChildren) {
-				IResource resource = iResourceDelta.getResource();
-				if (resource instanceof IFile
-						&& ((IFile)resource).getFileExtension() != null
-						&& ((IFile)resource).getFileExtension()
-								.equals(IAcceleoConstants.ECORE_FILE_EXTENSION)) {
-					resources.add(resource);
-				}
-
-				resources.addAll(getResources(iResourceDelta));
-			}
-			return resources;
-		}
-
-		/**
-		 * Returns a list of existing member files (that validate the file extension) in this resource.
-		 * 
-		 * @param container
-		 *            The container to browse for files with the given extension.
-		 * @param extension
-		 *            The file extension to browse for.
-		 * @return The List of files of the given extension contained by <code>container</code>.
-		 * @throws CoreException
-		 *             Thrown if we couldn't retrieve the children of <code>container</code>.
-		 */
-		private List<IFile> members(IContainer container, String extension) throws CoreException {
-			List<IFile> output = new ArrayList<IFile>();
-			if (container != null && container.isAccessible()) {
-				IResource[] children = container.members();
-				if (children != null) {
-					for (int i = 0; i < children.length; ++i) {
-						IResource resource = children[i];
-						if (resource instanceof IFile
-								&& extension.equals(((IFile)resource).getFileExtension())) {
-							output.add((IFile)resource);
-						} else if (resource instanceof IContainer) {
-							output.addAll(members((IContainer)resource, extension));
-						}
-					}
-				}
-			}
-			return output;
+		public void removed(IExtensionPoint[] extensionPoints) {
+			// no need to listen to this event
 		}
 	}
+
 }

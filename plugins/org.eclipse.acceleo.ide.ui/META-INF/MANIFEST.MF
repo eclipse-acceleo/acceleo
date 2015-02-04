@@ -49,7 +49,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.acceleo.common.ui,
  org.eclipse.acceleo.traceability,
  org.eclipse.acceleo.ui.interpreter,
- org.eclipse.ui.intro
+ org.eclipse.ui.intro,
+ org.eclipse.acceleo.common.ide 
 Export-Package: org.eclipse.acceleo.ide.ui;
   uses:="org.eclipse.core.runtime,
    org.eclipse.jface.resource,

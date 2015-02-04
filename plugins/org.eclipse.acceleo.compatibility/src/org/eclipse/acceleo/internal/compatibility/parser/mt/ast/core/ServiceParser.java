@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.acceleo.internal.compatibility.parser.mt.ast.core;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
+import org.eclipse.acceleo.common.ide.authoring.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.compatibility.model.mt.Resource;
 import org.eclipse.acceleo.compatibility.model.mt.ResourceSet;
 import org.eclipse.acceleo.compatibility.model.mt.core.CoreFactory;

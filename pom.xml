@@ -67,6 +67,7 @@
 	<module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module>
 
     <module>plugins/org.eclipse.acceleo.common</module>
+    <module>plugins/org.eclipse.acceleo.common.ide</module>
 	<module>plugins/org.eclipse.acceleo.common.ui</module>
 	<module>plugins/org.eclipse.acceleo.model</module>
 	<module>plugins/org.eclipse.acceleo.model.edit</module>

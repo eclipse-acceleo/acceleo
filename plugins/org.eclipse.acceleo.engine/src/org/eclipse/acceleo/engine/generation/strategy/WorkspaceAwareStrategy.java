@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
-import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.engine.AcceleoEngineMessages;
 import org.eclipse.acceleo.engine.AcceleoEnginePlugin;
 import org.eclipse.acceleo.engine.AcceleoEvaluationException;
@@ -34,6 +33,7 @@ import org.eclipse.acceleo.engine.generation.writers.AcceleoWorkspaceFileWriter;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -109,7 +109,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 
 		for (Map.Entry<String, Writer> entry : preview.entrySet()) {
 			final File targetFile = new File(entry.getKey());
-			final IFile workspaceFile = AcceleoWorkspaceUtil.getWorkspaceFile(targetFile);
+			final IFile workspaceFile = getWorkspaceFile(targetFile);
 			if (!targetFile.getParentFile().exists()) {
 				if (!targetFile.getParentFile().mkdirs()) {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
@@ -162,6 +162,17 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 	}
 
 	/**
+	 * This will try and resolve the given {@link java.io.File} within the workspace and return it if found.
+	 * 
+	 * @param file
+	 *            The file we wish to find in the workspace.
+	 * @return The resolved IFile if any, <code>null</code> otherwise.
+	 */
+	private static IFile getWorkspaceFile(File file) {
+		return ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getAbsolutePath()));
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.acceleo.engine.generation.strategy.AbstractGenerationStrategy#createLostFiles(java.util.Map)
@@ -175,7 +186,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		for (Map.Entry<String, Map<String, String>> entry : lostCode.entrySet()) {
 			final File targetFile = new File(entry.getKey().concat(
 					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
-			final IFile workspaceFile = AcceleoWorkspaceUtil.getWorkspaceFile(targetFile);
+			final IFile workspaceFile = getWorkspaceFile(targetFile);
 			if (!targetFile.getParentFile().exists()) {
 				if (!targetFile.getParentFile().mkdirs()) {
 					throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(

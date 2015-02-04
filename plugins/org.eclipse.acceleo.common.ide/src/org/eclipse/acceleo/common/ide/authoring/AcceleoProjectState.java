@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.common.internal.utils.workspace;
+package org.eclipse.acceleo.common.ide.authoring;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
