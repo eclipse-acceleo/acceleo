@@ -821,4 +821,26 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(4), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void toRealNullString() {
+		stringServices.toReal(null);
+	}
+
+	@Test
+	public void toRealRoundedReal() {
+		Double result = stringServices.toReal("3.0");
+		assertEquals(Double.valueOf(3.0), result);
+	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toRealInvalid() {
+		stringServices.toReal("toInteger");
+	}
+
+	@Test
+	public void toReal() {
+		Double result = stringServices.toReal("3.14");
+		assertEquals(Double.valueOf(3.14), result);
+	}
+
 }

@@ -456,4 +456,15 @@ public class StringServices {
 		return Integer.valueOf(self);
 	}
 
+	/**
+	 * Returns an real of value equal to self, or an exception if self does not represent a real.
+	 * 
+	 * @param self
+	 *            the current {@link String}
+	 * @return an real of value equal to self, or an exception if self does not represent a real
+	 */
+	public Double toReal(String self) {
+		return Double.valueOf(self);
+	}
+
 }
