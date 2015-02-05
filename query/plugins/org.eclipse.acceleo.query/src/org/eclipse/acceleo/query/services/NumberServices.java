@@ -401,4 +401,30 @@ public class NumberServices {
 		return Double.valueOf(Math.max(self.doubleValue(), r.doubleValue()));
 	}
 
+	/**
+	 * Returns the lowest number between self and r.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param r
+	 *            the other value
+	 * @return the greatest number between self and r.
+	 */
+	public Integer min(Integer self, Integer r) {
+		return Integer.valueOf(Math.min(self.intValue(), r.intValue()));
+	}
+
+	/**
+	 * Returns the lowest number between self and r.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param r
+	 *            the other value
+	 * @return the greatest number between self and r.
+	 */
+	public Double min(Double self, Double r) {
+		return Double.valueOf(Math.min(self.doubleValue(), r.doubleValue()));
+	}
+
 }

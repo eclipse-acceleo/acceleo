@@ -415,4 +415,46 @@ public class NumberServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(6), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minDoubleNullNull() {
+		numServices.min((Double)null, (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minDoubleDoubleNull() {
+		numServices.min(Double.valueOf(3.14), (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minDoubleNullDouble() {
+		numServices.min((Double)null, Double.valueOf(3.14));
+	}
+
+	@Test
+	public void minDouble() {
+		Double result = numServices.min(Double.valueOf(6.28), Double.valueOf(3.14));
+		assertEquals(Double.valueOf(3.14), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minIntegerNullNull() {
+		numServices.min((Integer)null, (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minIntegerIntegerNull() {
+		numServices.min(Integer.valueOf(3), (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minIntegerNullInteger() {
+		numServices.min((Integer)null, Integer.valueOf(3));
+	}
+
+	@Test
+	public void minInteger() {
+		Integer result = numServices.min(Integer.valueOf(6), Integer.valueOf(3));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
 }
