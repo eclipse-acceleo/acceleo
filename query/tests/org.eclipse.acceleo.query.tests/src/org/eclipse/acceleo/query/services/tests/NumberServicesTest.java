@@ -373,4 +373,46 @@ public class NumberServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(3), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxDoubleNullNull() {
+		numServices.max((Double)null, (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxDoubleDoubleNull() {
+		numServices.max(Double.valueOf(3.14), (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxDoubleNullDouble() {
+		numServices.max((Double)null, Double.valueOf(3.14));
+	}
+
+	@Test
+	public void maxDouble() {
+		Double result = numServices.max(Double.valueOf(6.28), Double.valueOf(3.14));
+		assertEquals(Double.valueOf(6.28), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxIntegerNullNull() {
+		numServices.max((Integer)null, (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxIntegerIntegerNull() {
+		numServices.max(Integer.valueOf(3), (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxIntegerNullInteger() {
+		numServices.max((Integer)null, Integer.valueOf(3));
+	}
+
+	@Test
+	public void maxInteger() {
+		Integer result = numServices.max(Integer.valueOf(6), Integer.valueOf(3));
+		assertEquals(Integer.valueOf(6), result);
+	}
+
 }

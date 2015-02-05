@@ -375,4 +375,30 @@ public class NumberServices {
 		return self;
 	}
 
+	/**
+	 * Returns the greatest number between self and r.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param r
+	 *            the other value
+	 * @return the greatest number between self and r.
+	 */
+	public Integer max(Integer self, Integer r) {
+		return Integer.valueOf(Math.max(self.intValue(), r.intValue()));
+	}
+
+	/**
+	 * Returns the greatest number between self and r.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param r
+	 *            the other value
+	 * @return the greatest number between self and r.
+	 */
+	public Double max(Double self, Double r) {
+		return Double.valueOf(Math.max(self.doubleValue(), r.doubleValue()));
+	}
+
 }
