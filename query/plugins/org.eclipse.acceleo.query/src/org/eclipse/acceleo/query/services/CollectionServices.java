@@ -46,6 +46,189 @@ import org.eclipse.emf.ecore.EClassifier;
 public class CollectionServices extends AbstractServiceProvider {
 
 	/**
+	 * Any {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class AnyService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private AnyService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
+			if (isBooleanType(lambdaExpressionType)) {
+				IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
+				if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
+					lambdaEvaluatorType = new EClassifierType(((EClassifierLiteralType)lambdaEvaluatorType)
+							.getType());
+				}
+				result.add(lambdaEvaluatorType);
+			} else {
+				result.add(new NothingType("expression in an any must return a boolean"));
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * Including {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class IncludingService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private IncludingService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				result.add(new SequenceType(((ICollectionType)argTypes.get(0)).getCollectionType()));
+				result.add(new SequenceType(argTypes.get(1)));
+			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
+				result.add(new SetType(argTypes.get(1)));
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * Collect {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class CollectService extends Service {
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private CollectService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				result.add(new SequenceType(lambdaType.getLambdaExpressionType()));
+			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				result.add(new SetType(lambdaType.getLambdaExpressionType()));
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * Select {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class SelectService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private SelectService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
+			if (isBooleanType(lambdaExpressionType)) {
+				IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
+				if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
+					lambdaEvaluatorType = new EClassifierType(((EClassifierLiteralType)lambdaEvaluatorType)
+							.getType());
+				}
+				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SequenceType(lambdaEvaluatorType));
+				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SetType(lambdaEvaluatorType));
+				}
+			} else {
+				result.add(new NothingType("expression in a select must return a boolean"));
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * Reject {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class RejectService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private RejectService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
+			if (isBooleanType(lambdaExpressionType)) {
+				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SequenceType(((ICollectionType)argTypes.get(0)).getCollectionType()));
+				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
+				}
+			} else {
+				result.add(new NothingType("expression in a reject must return a boolean"));
+			}
+
+			return result;
+		}
+	}
+
+	/**
 	 * A {@link Service} returning the raw collection type of the first argument.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -252,88 +435,13 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("excluding".equals(publicMethod.getName()) || "sub".equals(publicMethod.getName())) {
 			result = new FirstCollectionTypeService(publicMethod, this);
 		} else if ("reject".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result = new LinkedHashSet<IType>();
-
-					final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-					final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
-					if (isBooleanType(lambdaExpressionType)) {
-						if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-							result.add(new SequenceType(((ICollectionType)argTypes.get(0))
-									.getCollectionType()));
-						} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-							result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
-						}
-					} else {
-						result.add(new NothingType("expression in a reject must return a boolean"));
-					}
-
-					return result;
-				}
-			};
+			result = new RejectService(publicMethod, this);
 		} else if ("select".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result = new LinkedHashSet<IType>();
-					final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-					final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
-					if (isBooleanType(lambdaExpressionType)) {
-						IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
-						if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
-							lambdaEvaluatorType = new EClassifierType(
-									((EClassifierLiteralType)lambdaEvaluatorType).getType());
-						}
-						if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-							result.add(new SequenceType(lambdaEvaluatorType));
-						} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-							result.add(new SetType(lambdaEvaluatorType));
-						}
-					} else {
-						result.add(new NothingType("expression in a select must return a boolean"));
-					}
-					return result;
-				}
-			};
+			result = new SelectService(publicMethod, this);
 		} else if ("collect".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result = new LinkedHashSet<IType>();
-					final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-						result.add(new SequenceType(lambdaType.getLambdaExpressionType()));
-					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-						result.add(new SetType(lambdaType.getLambdaExpressionType()));
-					}
-					return result;
-				}
-			};
+			result = new CollectService(publicMethod, this);
 		} else if ("including".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result = new LinkedHashSet<IType>();
-					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-						result.add(new SequenceType(((ICollectionType)argTypes.get(0)).getCollectionType()));
-						result.add(new SequenceType(argTypes.get(1)));
-					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-						result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
-						result.add(new SetType(argTypes.get(1)));
-					}
-					return result;
-				}
-			};
+			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
 				result = new Service(publicMethod, this) {
@@ -368,6 +476,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			} else {
 				result = new Service(publicMethod, this);
 			}
+		} else if ("any".equals(publicMethod.getName())) {
+			result = new AnyService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}
@@ -1064,6 +1174,41 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 	public List<Object> union(List<Object> c1, List<Object> c2) {
 		return concat(c1, c2);
+	}
+
+	/**
+	 * Gets the first element in the given {@link Collection} for which the {@link Lambda} is
+	 * {@link Lambda#eval(Object[]) evaluated} to <code>true</code>.
+	 * 
+	 * @param self
+	 *            the {@link Collection}
+	 * @param lambda
+	 *            the {@link Lambda}
+	 * @return the first element in the given {@link Collection} for which the {@link Lambda} is
+	 *         {@link Lambda#eval(Object[]) evaluated} to <code>true</code> if any, <code>null</code>
+	 *         otherwise
+	 */
+	public Object any(Collection<Object> self, Lambda lambda) {
+		Object result = null;
+
+		if (self != null && lambda == null) {
+			result = null;
+		} else {
+			for (Object input : self) {
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = input;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return result;
 	}
 
 }

@@ -72,7 +72,7 @@ callExp :     'filter(' typeLiteral ')'        #Filter
 ;
 lambdaExpression : expression
 ;
-collectionIterator : 'select' | 'reject' | 'collect'
+collectionIterator : 'select' | 'reject' | 'collect' | 'any'
 ;
 expressionSequence : (expression (',' expression)*)?
 ;
