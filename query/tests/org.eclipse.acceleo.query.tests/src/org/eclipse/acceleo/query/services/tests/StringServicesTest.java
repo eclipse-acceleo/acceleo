@@ -757,4 +757,41 @@ public class StringServicesTest extends AbstractServicesTest {
 		}
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void substringNullString() {
+		stringServices.substring(null, 1, 1);
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void substringLowerOutOfRange() {
+		stringServices.substring("some string", 0, 1);
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void substringUpperOutOfRange() {
+		stringServices.substring("some string", 1, 100);
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void substringInversedBounds() {
+		stringServices.substring("some string", 7, 4);
+	}
+
+	@Test
+	public void substring() {
+		String result = stringServices.substring("some string", 4, 7);
+		assertEquals("some string".substring(3, 7), result);
+	}
+
+	@Test
+	public void substring_1() {
+		String result = stringServices.substring("substring operation", 11, 19);
+		assertEquals("operation", result);
+	}
+
+	@Test
+	public void substring_2() {
+		String result = stringServices.substring("substring operation", 1, 1);
+		assertEquals("s", result);
+	}
 }

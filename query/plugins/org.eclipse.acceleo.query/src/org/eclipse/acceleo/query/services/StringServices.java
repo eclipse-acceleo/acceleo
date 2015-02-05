@@ -423,4 +423,23 @@ public class StringServices {
 	public Integer size(String str) {
 		return str.length();
 	}
+
+	/**
+	 * Returns a string containing all characters from self starting from index lower up to index upper
+	 * included. Both lower and upper parameters should be contained between 1 and self.size() included. lower
+	 * cannot be greater than upper.
+	 * 
+	 * @param self
+	 *            the current {@link String}
+	 * @param lower
+	 *            the lower bound
+	 * @param upper
+	 *            the uppper bound
+	 * @return a string containing all characters from self starting from index lower up to index upper
+	 *         included. Both lower and upper parameters should be contained between 1 and self.size()
+	 *         included. lower cannot be greater than upper
+	 */
+	public String substring(String self, Integer lower, Integer upper) {
+		return self.substring(lower.intValue() - 1, upper.intValue());
+	}
 }
