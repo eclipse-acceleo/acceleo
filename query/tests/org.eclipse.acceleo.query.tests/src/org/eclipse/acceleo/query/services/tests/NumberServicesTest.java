@@ -457,4 +457,27 @@ public class NumberServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(3), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void roundDoubleNull() {
+		numServices.round((Double)null);
+	}
+
+	@Test
+	public void roundDouble() {
+		Integer result = numServices.round(Double.valueOf(3.64));
+		assertEquals(Integer.valueOf(4), result);
+	}
+
+	@Test
+	public void roundIntegerNull() {
+		Integer result = numServices.round((Integer)null);
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void roundInteger() {
+		Integer result = numServices.round(Integer.valueOf(3));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
 }

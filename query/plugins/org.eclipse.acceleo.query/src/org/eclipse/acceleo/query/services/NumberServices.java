@@ -427,4 +427,26 @@ public class NumberServices {
 		return Double.valueOf(Math.min(self.doubleValue(), r.doubleValue()));
 	}
 
+	/**
+	 * Returns the nearest integer to self.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @return the nearest integer to self
+	 */
+	public Integer round(Double self) {
+		return Integer.valueOf((int)Math.round(self.doubleValue()));
+	}
+
+	/**
+	 * Returns self.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @return self
+	 */
+	public Integer round(Integer self) {
+		return self;
+	}
+
 }
