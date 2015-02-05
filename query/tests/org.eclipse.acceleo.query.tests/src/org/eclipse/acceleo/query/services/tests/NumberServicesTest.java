@@ -350,4 +350,27 @@ public class NumberServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(3), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void floorDoubleNull() {
+		numServices.floor((Double)null);
+	}
+
+	@Test
+	public void floorDouble() {
+		Integer result = numServices.floor(Double.valueOf(3.14));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
+	@Test
+	public void floorIntegerNull() {
+		Integer result = numServices.floor((Integer)null);
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void floorInteger() {
+		Integer result = numServices.floor(Integer.valueOf(3));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
 }

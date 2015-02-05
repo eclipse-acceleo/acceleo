@@ -353,4 +353,26 @@ public class NumberServices {
 		return Integer.valueOf(Math.abs(self.intValue()));
 	}
 
+	/**
+	 * Returns the integer part of self.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @return the integer part of self
+	 */
+	public Integer floor(Double self) {
+		return Integer.valueOf((int)Math.floor(self.doubleValue()));
+	}
+
+	/**
+	 * Returns self.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @return self
+	 */
+	public Integer floor(Integer self) {
+		return self;
+	}
+
 }
