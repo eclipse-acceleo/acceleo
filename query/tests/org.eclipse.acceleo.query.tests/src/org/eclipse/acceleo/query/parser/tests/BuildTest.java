@@ -780,7 +780,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(true, ast instanceof Call);
-		assertEquals("div", ((Call)ast).getServiceName());
+		assertEquals("divOp", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);

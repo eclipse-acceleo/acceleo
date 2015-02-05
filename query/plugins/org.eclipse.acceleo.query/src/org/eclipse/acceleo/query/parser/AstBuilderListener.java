@@ -176,7 +176,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * <code>/<code> service name.
 	 */
-	public static final String DIV_SERVICE_NAME = "div";
+	public static final String DIV_SERVICE_NAME = "divOp";
 
 	/**
 	 * <code>/<code> operator.

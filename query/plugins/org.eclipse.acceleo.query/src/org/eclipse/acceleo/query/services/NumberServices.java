@@ -78,7 +78,7 @@ public class NumberServices {
 	 * @return the division of the arguments.
 	 */
 
-	public Integer div(Integer a, Integer b) {
+	public Integer divOp(Integer a, Integer b) {
 		return a / b;
 	}
 
@@ -134,7 +134,7 @@ public class NumberServices {
 	 * @return the division of the arguments.
 	 */
 
-	public Double div(Double a, Double b) {
+	public Double divOp(Double a, Double b) {
 		return a / b;
 	}
 
@@ -447,6 +447,43 @@ public class NumberServices {
 	 */
 	public Integer round(Integer self) {
 		return self;
+	}
+
+	/**
+	 * Returns the integer quotient of the division of self by i.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param i
+	 *            the divider
+	 * @return the integer quotient of the division of self by i
+	 */
+	public Integer div(Double self, Double i) {
+		/*
+		 * 0d/0d doesn't fail in ArithmeticsException but rather returns Double#POSITIVE_INFINITY. We want the
+		 * same failure for both operations, hence the explicit test.
+		 */
+		if (i.equals(Double.valueOf(0))) {
+			throw new IllegalArgumentException("Can't divide by zero.");
+		}
+		return Integer.valueOf((int)(self.doubleValue() / i.doubleValue()));
+	}
+
+	/**
+	 * Returns the integer quotient of the division of self by i.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param i
+	 *            the divider
+	 * @return the integer quotient of the division of self by i
+	 */
+	public Integer div(Integer self, Integer i) {
+		// see comment in #div(Double, Double) for this test
+		if (i.equals(Integer.valueOf(0))) {
+			throw new IllegalArgumentException("Can't divide by zero.");
+		}
+		return Integer.valueOf((int)(self.intValue() / i.intValue()));
 	}
 
 }

@@ -83,8 +83,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 		Integer int2 = new Integer(2);
 		Integer int4 = new Integer(4);
 
-		assertEquals("2", numServices.div(int4, int2).toString());
-		assertEquals("0", numServices.div(int1, int2).toString());
+		assertEquals("2", numServices.divOp(int4, int2).toString());
+		assertEquals("0", numServices.divOp(int1, int2).toString());
 	}
 
 	@Test
@@ -130,8 +130,8 @@ public class NumberServicesTest extends AbstractServicesTest {
 		Double double2 = new Double(2);
 		Double double4 = new Double(4);
 
-		assertEquals("2.0", numServices.div(double4, double2).toString());
-		assertEquals("0.5", numServices.div(double1, double2).toString());
+		assertEquals("2.0", numServices.divOp(double4, double2).toString());
+		assertEquals("0.5", numServices.divOp(double1, double2).toString());
 	}
 
 	@Test
@@ -478,6 +478,60 @@ public class NumberServicesTest extends AbstractServicesTest {
 	public void roundInteger() {
 		Integer result = numServices.round(Integer.valueOf(3));
 		assertEquals(Integer.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divDoubleNullNull() {
+		numServices.div((Double)null, (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divDoubleDoubleNull() {
+		numServices.div(Double.valueOf(3.14), (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divDoubleNullDouble() {
+		numServices.div((Double)null, Double.valueOf(3.14));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void divDoubleByZero() {
+		Integer result = numServices.div(Double.valueOf(3.14), Double.valueOf(0));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void divDouble() {
+		Integer result = numServices.div(Double.valueOf(3.14 * 7 + 1), Double.valueOf(3.14));
+		assertEquals(Integer.valueOf(7), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divIntegerNullNull() {
+		numServices.div((Integer)null, (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divIntegerIntegerNull() {
+		numServices.div(Integer.valueOf(3), (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divIntegerNullInteger() {
+		numServices.div((Integer)null, Integer.valueOf(3));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void divIntegerByZero() {
+		Integer result = numServices.div(Integer.valueOf(3), Integer.valueOf(0));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void divInteger() {
+		Integer result = numServices.div(Integer.valueOf(3 * 7 + 1), Integer.valueOf(3));
+		assertEquals(Integer.valueOf(7), result);
 	}
 
 }
