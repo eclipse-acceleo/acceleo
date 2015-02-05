@@ -442,4 +442,18 @@ public class StringServices {
 	public String substring(String self, Integer lower, Integer upper) {
 		return self.substring(lower.intValue() - 1, upper.intValue());
 	}
+
+	/**
+	 * Returns an {@link Integer} of value equal to self, or an exception if self does not represent an
+	 * {@link Integer}.
+	 * 
+	 * @param self
+	 *            the current {@link String}
+	 * @return an {@link Integer} of value equal to self, or an exception if self does not represent an
+	 *         {@link Integer}
+	 */
+	public Integer toInteger(String self) {
+		return Integer.valueOf(self);
+	}
+
 }

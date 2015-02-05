@@ -794,4 +794,31 @@ public class StringServicesTest extends AbstractServicesTest {
 		String result = stringServices.substring("substring operation", 1, 1);
 		assertEquals("s", result);
 	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toIntegerNullString() {
+		stringServices.toInteger(null);
+	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toIntegerRoundedReal() {
+		stringServices.toInteger("3.0");
+	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toIntegerReal() {
+		stringServices.toInteger("3.14");
+	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toIntegerInvalid() {
+		stringServices.toInteger("toInteger");
+	}
+
+	@Test
+	public void toInteger() {
+		Integer result = stringServices.toInteger("4");
+		assertEquals(Integer.valueOf(4), result);
+	}
+
 }
