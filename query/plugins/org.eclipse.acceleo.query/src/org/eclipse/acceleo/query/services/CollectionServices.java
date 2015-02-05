@@ -1211,4 +1211,53 @@ public class CollectionServices extends AbstractServiceProvider {
 		return result;
 	}
 
+	/**
+	 * Counts the number of times the given object is present in the given {@link Set}.
+	 * 
+	 * @param set
+	 *            the {@link Set}
+	 * @param object
+	 *            the {@link Object}
+	 * @return the number of times the given object is present in the given {@link Set}
+	 */
+	public Integer count(Set<Object> set, Object object) {
+		final Integer result;
+
+		if (set.contains(object)) {
+			result = Integer.valueOf(1);
+		} else {
+			result = Integer.valueOf(0);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Counts the number of times the given object is present in the given {@link List}.
+	 * 
+	 * @param list
+	 *            the {@link List}
+	 * @param object
+	 *            the {@link Object}
+	 * @return the number of times the given object is present in the given {@link List}
+	 */
+	public Integer count(List<Object> list, Object object) {
+		int result = 0;
+
+		if (object == null) {
+			for (Object input : list) {
+				if (input == null) {
+					++result;
+				}
+			}
+		} else {
+			for (Object input : list) {
+				if (object.equals(input)) {
+					++result;
+				}
+			}
+		}
+
+		return Integer.valueOf(result);
+	}
 }

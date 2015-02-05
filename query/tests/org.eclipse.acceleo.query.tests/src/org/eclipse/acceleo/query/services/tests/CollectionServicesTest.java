@@ -1109,4 +1109,62 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(3), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testCountSetNullNull() {
+		collectionServices.count((Set<Object>)null, null);
+	}
+
+	@Test
+	public void testCountSetNull() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(null);
+
+		Integer result = collectionServices.count(set, null);
+		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test
+	public void testCountSet() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(null);
+
+		Integer result = collectionServices.count(set, Integer.valueOf(1));
+		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testCountListNullNull() {
+		collectionServices.count((List<Object>)null, null);
+	}
+
+	@Test
+	public void testCountListNull() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(null);
+
+		Integer result = collectionServices.count(list, null);
+		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test
+	public void testCountList() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(null);
+
+		Integer result = collectionServices.count(list, Integer.valueOf(1));
+		assertEquals(Integer.valueOf(1), result);
+	}
+
 }
