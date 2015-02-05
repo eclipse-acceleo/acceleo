@@ -46,6 +46,40 @@ import org.eclipse.emf.ecore.EClassifier;
 public class CollectionServices extends AbstractServiceProvider {
 
 	/**
+	 * Exists {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class ExistsService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private ExistsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
+			if (isBooleanType(lambdaExpressionType)) {
+				result.addAll(super.getType(services, provider, argTypes));
+			} else {
+				result.add(new NothingType("expression in " + getServiceMethod().getName()
+						+ " must return a boolean"));
+			}
+			return result;
+		}
+	}
+
+	/**
 	 * Any {@link IService}.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -478,6 +512,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 		} else if ("any".equals(publicMethod.getName())) {
 			result = new AnyService(publicMethod, this);
+		} else if ("exists".equals(publicMethod.getName())) {
+			result = new ExistsService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}
@@ -1259,5 +1295,39 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		return Integer.valueOf(result);
+	}
+
+	/**
+	 * Tells if it exists an {@link Object} from the given {@link Collection} that validate the given
+	 * {@link Lambda}.
+	 * 
+	 * @param collection
+	 *            the {@link Collection}
+	 * @param lambda
+	 *            the {@link Lambda}
+	 * @return <code>true</code> if it exists an {@link Object} from the given {@link Collection} that
+	 *         validate the given {@link Lambda}, <code>false</code> otherwise
+	 */
+	public Boolean exists(Collection<Object> collection, Lambda lambda) {
+		Boolean result = Boolean.FALSE;
+
+		if (collection != null && lambda == null) {
+			result = Boolean.FALSE;
+		} else {
+			for (Object input : collection) {
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = Boolean.TRUE;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return result;
 	}
 }

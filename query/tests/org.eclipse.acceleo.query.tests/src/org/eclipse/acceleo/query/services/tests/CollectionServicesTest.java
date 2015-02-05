@@ -1167,4 +1167,130 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(1), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testExistsNullCollection() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		collectionServices.exists(null, lambda);
+	}
+
+	@Test
+	public void testExistsSetNullLambda() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.exists(list, null);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testExistsListNullLambda() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.exists(set, null);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testExistsSetNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.exists(set, lambda);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testExistsListNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.exists(list, lambda);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testExistsSet() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
+				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.exists(set, lambda);
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testExistsList() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
+				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.exists(list, lambda);
+		assertEquals(Boolean.TRUE, result);
+	}
 }
