@@ -327,8 +327,30 @@ public class NumberServices {
 	 *            the operand.
 	 * @return the negation of the value.
 	 */
-
 	public Double unaryMin(Double value) {
 		return -value;
 	}
+
+	/**
+	 * Returns the absolute value of self, self if it is already a positive number.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @return the absolute value of self, self if it is already a positive number
+	 */
+	public Double abs(Double self) {
+		return Double.valueOf(Math.abs(self.doubleValue()));
+	}
+
+	/**
+	 * Returns the absolute value of self, self if it is already a positive number.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @return the absolute value of self, self if it is already a positive number
+	 */
+	public Integer abs(Integer self) {
+		return Integer.valueOf(Math.abs(self.intValue()));
+	}
+
 }

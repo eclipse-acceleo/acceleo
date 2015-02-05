@@ -315,4 +315,39 @@ public class NumberServicesTest extends AbstractServicesTest {
 		assertTrue(numServices.differs(double1, double2));
 		assertFalse(numServices.differs(double2, double21));
 	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void absDoubleNull() {
+		numServices.abs((Double)null);
+	}
+
+	@Test
+	public void absDoublePositive() {
+		Double result = numServices.abs(Double.valueOf(3.14));
+		assertEquals(Double.valueOf(3.14), result);
+	}
+
+	@Test
+	public void absDoubleNegative() {
+		Double result = numServices.abs(Double.valueOf(-3.14));
+		assertEquals(Double.valueOf(3.14), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void absIntegerNull() {
+		numServices.abs((Integer)null);
+	}
+
+	@Test
+	public void absIntegerPositive() {
+		Integer result = numServices.abs(Integer.valueOf(3));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
+	@Test
+	public void absIntegerNegative() {
+		Integer result = numServices.abs(Integer.valueOf(-3));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
 }
