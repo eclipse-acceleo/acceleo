@@ -534,4 +534,58 @@ public class NumberServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(7), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modDoubleNullNull() {
+		numServices.mod((Double)null, (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modDoubleDoubleNull() {
+		numServices.mod(Double.valueOf(3.14), (Double)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modDoubleNullDouble() {
+		numServices.mod((Double)null, Double.valueOf(3.14));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void modDoubleByZero() {
+		Integer result = numServices.mod(Double.valueOf(3.14), Double.valueOf(0));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void modDouble() {
+		Integer result = numServices.mod(Double.valueOf(3.14 * 7 + 1), Double.valueOf(3.14));
+		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modIntegerNullNull() {
+		numServices.mod((Integer)null, (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modIntegerIntegerNull() {
+		numServices.mod(Integer.valueOf(3), (Integer)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modIntegerNullInteger() {
+		numServices.mod((Integer)null, Integer.valueOf(3));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void modIntegerByZero() {
+		Integer result = numServices.mod(Integer.valueOf(3), Integer.valueOf(0));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void modInteger() {
+		Integer result = numServices.mod(Integer.valueOf(3 * 7 + 1), Integer.valueOf(3));
+		assertEquals(Integer.valueOf(1), result);
+	}
+
 }

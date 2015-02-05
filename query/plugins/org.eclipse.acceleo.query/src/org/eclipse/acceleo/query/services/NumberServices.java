@@ -18,6 +18,11 @@ package org.eclipse.acceleo.query.services;
 public class NumberServices {
 
 	/**
+	 * Can't divide by zero message.
+	 */
+	private static final String CAN_T_DIVIDE_BY_ZERO = "Can't divide by zero.";
+
+	/**
 	 * Performs the negation of the specified argument.
 	 * 
 	 * @param value
@@ -464,7 +469,7 @@ public class NumberServices {
 		 * same failure for both operations, hence the explicit test.
 		 */
 		if (i.equals(Double.valueOf(0))) {
-			throw new IllegalArgumentException("Can't divide by zero.");
+			throw new IllegalArgumentException(CAN_T_DIVIDE_BY_ZERO);
 		}
 		return Integer.valueOf((int)(self.doubleValue() / i.doubleValue()));
 	}
@@ -481,9 +486,47 @@ public class NumberServices {
 	public Integer div(Integer self, Integer i) {
 		// see comment in #div(Double, Double) for this test
 		if (i.equals(Integer.valueOf(0))) {
-			throw new IllegalArgumentException("Can't divide by zero.");
+			throw new IllegalArgumentException(CAN_T_DIVIDE_BY_ZERO);
 		}
 		return Integer.valueOf((int)(self.intValue() / i.intValue()));
+	}
+
+	/**
+	 * Returns the integer remainder of the division of self by i.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param i
+	 *            the divider
+	 * @return the integer remainder of the division of self by i
+	 */
+	public Integer mod(Double self, Double i) {
+		/*
+		 * As with division, mod operation will not fail in exception when using zero as divisor, but rather
+		 * return Double#NaN. We want this operation to fail as does its version with Integer, hence the
+		 * explicit test.
+		 */
+		if (i.equals(Double.valueOf(0))) {
+			throw new IllegalArgumentException(CAN_T_DIVIDE_BY_ZERO);
+		}
+		return Integer.valueOf((int)Math.ceil(self.doubleValue() % i.doubleValue()));
+	}
+
+	/**
+	 * Returns the integer remainder of the division of self by i.
+	 * 
+	 * @param self
+	 *            the current value
+	 * @param i
+	 *            the divider
+	 * @return the integer remainder of the division of self by i
+	 */
+	public Integer mod(Integer self, Integer i) {
+		// see comment in #mod(Double, Double) for this test
+		if (i.equals(Integer.valueOf(0))) {
+			throw new IllegalArgumentException(CAN_T_DIVIDE_BY_ZERO);
+		}
+		return Integer.valueOf((int)(self.intValue() % i.intValue()));
 	}
 
 }
