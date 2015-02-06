@@ -1375,4 +1375,18 @@ public class CollectionServices extends AbstractServiceProvider {
 		return Boolean.valueOf(result);
 	}
 
+	/**
+	 * Tells if all elements of c2 are {@link Collection#contains(Object) contained} in self.
+	 * 
+	 * @param self
+	 *            the current {@link Collection}
+	 * @param c2
+	 *            the other {@link Collection}
+	 * @return <code>true</code> if all elements of c2 are {@link Collection#contains(Object) contained} in
+	 *         self, <code>false</code> otherwise
+	 */
+	public Boolean includesAll(Collection<Object> self, Collection<Object> c2) {
+		return Boolean.valueOf(self.containsAll(c2));
+	}
+
 }

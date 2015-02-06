@@ -1607,4 +1607,181 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.TRUE, result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIncludesAllNullNull() {
+		collectionServices.includesAll(null, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIncludesAllSetNull() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.includesAll(set, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIncludesAllListNull() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.includesAll(list, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIncludesAllNullSet() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.includesAll(null, set);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIncludesAllNullList() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.includesAll(null, list);
+	}
+
+	@Test
+	public void testIncludesAllSetSetFalse() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(5));
+
+		Boolean result = collectionServices.includesAll(set, set1);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testIncludesAllSetSetTrue() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+
+		Boolean result = collectionServices.includesAll(set, set1);
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testIncludesAllSetListFalse() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(5));
+
+		Boolean result = collectionServices.includesAll(set, list1);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testIncludesAllSetListTrue() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+
+		Boolean result = collectionServices.includesAll(set, list1);
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testIncludesAllListSetFalse() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(5));
+
+		Boolean result = collectionServices.includesAll(list, set1);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testIncludesAllListSetTrue() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+
+		Boolean result = collectionServices.includesAll(list, set1);
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testIncludesAllListListFalse() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(5));
+
+		Boolean result = collectionServices.includesAll(list, list1);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testIncludesAllListListTrue() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+
+		Boolean result = collectionServices.includesAll(list, list1);
+		assertEquals(Boolean.TRUE, result);
+	}
+
 }
