@@ -1389,4 +1389,39 @@ public class CollectionServices extends AbstractServiceProvider {
 		return Boolean.valueOf(self.containsAll(c2));
 	}
 
+	/**
+	 * Tells if {@link Lambda#eval(Object[]) evaluation} of the given lambda gives a different value for all
+	 * element of the given {@link Collection}.
+	 * 
+	 * @param self
+	 *            the {@link Collection}
+	 * @param lambda
+	 *            the {@link Lambda}
+	 * @return <code>true</code> if {@link Lambda#eval(Object[]) evaluation} of the given lambda gives a
+	 *         different value for all element of the given {@link Collection}, <code>false</code> otherwise
+	 */
+	public Boolean isUnique(Collection<Object> self, Lambda lambda) {
+		boolean result = true;
+		final Set<Object> evaluated = Sets.newHashSet();
+
+		if (self != null && lambda == null) {
+			result = false;
+		} else {
+			for (Object input : self) {
+				try {
+					if (!evaluated.add(lambda.eval(new Object[] {input }))) {
+						result = false;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return Boolean.valueOf(result);
+	}
+
 }

@@ -207,7 +207,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(39, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(40, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
