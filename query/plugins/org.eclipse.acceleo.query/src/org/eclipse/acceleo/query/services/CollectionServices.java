@@ -512,7 +512,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 		} else if ("any".equals(publicMethod.getName())) {
 			result = new AnyService(publicMethod, this);
-		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName())) {
+		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName())
+				|| "one".equals(publicMethod.getName())) {
 			result = new BooleanLambdaService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
@@ -1424,4 +1425,38 @@ public class CollectionServices extends AbstractServiceProvider {
 		return Boolean.valueOf(result);
 	}
 
+	/**
+	 * Tells if one and only one element of the given {@link Collection} validates the given {@link Lambda}.
+	 * 
+	 * @param self
+	 *            the current {@link Collection}
+	 * @param lambda
+	 *            the {@link Lambda}
+	 * @return <code>true</code> if one and only one element of the given {@link Collection} validates the
+	 *         given {@link Lambda}, <code>false</code> otherwise
+	 */
+	public Boolean one(Collection<Object> self, Lambda lambda) {
+		boolean result = false;
+
+		if (self != null && lambda == null) {
+			result = false;
+		} else {
+			for (Object input : self) {
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = !result;
+						if (!result) {
+							break;
+						}
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return Boolean.valueOf(result);
+	}
 }
