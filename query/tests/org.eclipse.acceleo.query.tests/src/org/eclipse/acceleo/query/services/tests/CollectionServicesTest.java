@@ -1998,4 +1998,51 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSumNull() {
+		collectionServices.sum(null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testSumSetNotNumber() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add("potatoes");
+		set.add(Integer.valueOf(3));
+
+		collectionServices.sum(set);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testSumListNotNumber() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add("potatoes");
+		list.add(Integer.valueOf(3));
+
+		collectionServices.sum(list);
+	}
+
+	@Test
+	public void testSumSet() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Double.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		Double result = collectionServices.sum(set);
+		assertEquals(Double.valueOf(6), result);
+	}
+
+	@Test
+	public void testSumList() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Double.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Double result = collectionServices.sum(list);
+		assertEquals(Double.valueOf(6), result);
+	}
+
 }

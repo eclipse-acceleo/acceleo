@@ -1459,4 +1459,26 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		return Boolean.valueOf(result);
 	}
+
+	/**
+	 * Sums elements of the given {@link Collection} if possible.
+	 * 
+	 * @param self
+	 *            the current {@link Collection}
+	 * @return the sum of elements of the given {@link Collection} if possible, throw an exception otherwise
+	 */
+	public Double sum(Collection<Object> self) {
+		double result = 0;
+
+		for (Object input : self) {
+			if (input instanceof Number) {
+				result += ((Number)input).doubleValue();
+			} else {
+				throw new IllegalArgumentException("Can only sum numbers.");
+			}
+		}
+
+		return Double.valueOf(result);
+	}
+
 }
