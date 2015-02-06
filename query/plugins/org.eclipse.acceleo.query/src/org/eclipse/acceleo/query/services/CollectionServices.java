@@ -50,7 +50,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class ExistsService extends Service {
+	private static final class BooleanLambdaService extends Service {
 
 		/**
 		 * Constructor.
@@ -60,7 +60,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
 		 */
-		private ExistsService(Method serviceMethod, Object serviceInstance) {
+		private BooleanLambdaService(Method serviceMethod, Object serviceInstance) {
 			super(serviceMethod, serviceInstance);
 		}
 
@@ -512,8 +512,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 		} else if ("any".equals(publicMethod.getName())) {
 			result = new AnyService(publicMethod, this);
-		} else if ("exists".equals(publicMethod.getName())) {
-			result = new ExistsService(publicMethod, this);
+		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName())) {
+			result = new BooleanLambdaService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}
@@ -1330,4 +1330,40 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		return result;
 	}
+
+	/**
+	 * Tells if all {@link Object} form the given {@link Collection} validates the given {@link Lambda}.
+	 * 
+	 * @param collection
+	 *            the {@link Collection}
+	 * @param lambda
+	 *            the {@link Lambda}
+	 * @return <code>true</code> if all {@link Object} form the given {@link Collection} validates the given
+	 *         {@link Lambda}, <code>false</code> otherwise
+	 */
+	public Boolean forAll(Collection<Object> collection, Lambda lambda) {
+		Boolean result = Boolean.TRUE;
+
+		if (collection != null && lambda == null) {
+			result = Boolean.FALSE;
+		} else {
+			for (Object input : collection) {
+				try {
+					if (!Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = Boolean.FALSE;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+					result = Boolean.FALSE;
+					break;
+				}
+				// CHECKSTYLE:ON
+			}
+		}
+
+		return result;
+	}
+
 }

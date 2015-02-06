@@ -663,7 +663,7 @@ public class CollectionServicesTest {
 		list.add(iterator.next());
 		list.add(iterator.next());
 
-		List<Object> newList = collectionServices.collect(list, null);
+		List<Object> newList = collectionServices.reject(list, null);
 		assertEquals(0, newList.size());
 
 		newList = collectionServices.reject(list, lambda);
@@ -701,7 +701,7 @@ public class CollectionServicesTest {
 		set.add(iterator.next());
 		set.add(iterator.next());
 
-		Set<Object> newList = collectionServices.collect(set, null);
+		Set<Object> newList = collectionServices.reject(set, null);
 		assertEquals(0, newList.size());
 
 		newList = collectionServices.reject(set, lambda);
@@ -1293,4 +1293,176 @@ public class CollectionServicesTest {
 		Boolean result = collectionServices.exists(list, lambda);
 		assertEquals(Boolean.TRUE, result);
 	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testForAllNullCollection() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		collectionServices.forAll(null, lambda);
+	}
+
+	@Test
+	public void testForAllSetNullLambda() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, null);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testForAllListNullLambda() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(set, null);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testForAllSetNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(set, lambda);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testForAllListNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				evaluator, selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, lambda);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testForAllSetTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
+				.varRef("self"), builder.integerLiteral(0)), evaluator, selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(set, lambda);
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testForAllListTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
+				.varRef("self"), builder.integerLiteral(0)), evaluator, selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, lambda);
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testForAllSetFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
+				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(set, lambda);
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testForAllListFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = new QueryEnvironment(
+				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
+				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, lambda);
+		assertEquals(Boolean.FALSE, result);
+	}
+
 }
