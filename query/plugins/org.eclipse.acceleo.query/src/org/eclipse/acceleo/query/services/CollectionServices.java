@@ -1013,20 +1013,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Returns the collection on which all the elements of the collection2 have been removed.
-	 * 
-	 * @param collection1
-	 *            The source collection.
-	 * @param collection2
-	 *            The collection to remove.
-	 * @return The collection on which all the elements of the collection2 have been removed.
-	 */
-	public Collection<Object> removeAll(Collection<Object> collection1, Collection<Object> collection2) {
-		collection1.removeAll(collection2);
-		return collection1;
-	}
-
-	/**
 	 * Keeps instances of the given {@link EClassifier} from the given {@link Set}.
 	 * 
 	 * @param set
@@ -1364,6 +1350,29 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Tells if no elements of c2 are {@link Collection#contains(Object) contained} in self.
+	 * 
+	 * @param self
+	 *            the current {@link Collection}
+	 * @param c2
+	 *            the other {@link Collection}
+	 * @return <code>true</code> if no elements of c2 are {@link Collection#contains(Object) contained} in
+	 *         self, <code>false</code> otherwise
+	 */
+	public Boolean excludesAll(Collection<Object> self, Collection<Object> c2) {
+		boolean result = true;
+
+		for (Object input : c2) {
+			if (self.contains(input)) {
+				result = false;
+				break;
+			}
+		}
+
+		return Boolean.valueOf(result);
 	}
 
 }
