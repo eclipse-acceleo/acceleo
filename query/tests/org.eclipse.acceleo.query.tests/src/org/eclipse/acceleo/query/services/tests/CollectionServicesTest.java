@@ -2045,4 +2045,41 @@ public class CollectionServicesTest {
 		assertEquals(Double.valueOf(6), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIndexOfNullNull() {
+		collectionServices.indexOf(null, null);
+	}
+
+	@Test
+	public void testIndexOfListNull() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.indexOf(list, null);
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void testIndexOfListNotInList() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.indexOf(list, Integer.valueOf(7));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void testIndexOfListInList() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Integer result = collectionServices.indexOf(list, Integer.valueOf(2));
+		assertEquals(Integer.valueOf(2), result);
+	}
 }

@@ -1481,4 +1481,17 @@ public class CollectionServices extends AbstractServiceProvider {
 		return Double.valueOf(result);
 	}
 
+	/**
+	 * Gets the index of the given {@link Object} in the given {@link List}.
+	 * 
+	 * @param self
+	 *            the {@link List}
+	 * @param object
+	 *            the {@link Object}
+	 * @return the index of the given {@link Object} in the given {@link List} [1..n]
+	 */
+	public Integer indexOf(List<Object> self, Object object) {
+		return Integer.valueOf(self.indexOf(object) + 1);
+	}
+
 }
