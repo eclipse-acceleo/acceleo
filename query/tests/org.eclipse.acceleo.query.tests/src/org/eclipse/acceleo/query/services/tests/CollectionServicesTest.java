@@ -2251,4 +2251,85 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(3), it.next());
 		assertEquals(Integer.valueOf(4), it.next());
 	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void TestSubSequenceNull() {
+		collectionServices.subSequence(null, Integer.valueOf(1), Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubSequenceStartTooLow() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.subSequence(list, Integer.valueOf(0), Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubSequenceStartTooHi() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.subSequence(list, Integer.valueOf(5), Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubSequenceEndTooLow() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.subSequence(list, Integer.valueOf(1), Integer.valueOf(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubSequenceEndTooHi() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		collectionServices.subSequence(list, Integer.valueOf(1), Integer.valueOf(5));
+	}
+
+	@Test
+	public void TestSubSequenceStartEqualsEnd() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(3), Integer
+				.valueOf(3));
+		assertEquals(1, result.size());
+		Iterator<Object> it = result.iterator();
+		assertEquals(Integer.valueOf(3), it.next());
+	}
+
+	@Test
+	public void TestSubSequence() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(2), Integer
+				.valueOf(4));
+		assertEquals(3, result.size());
+		Iterator<Object> it = result.iterator();
+		assertEquals(Integer.valueOf(2), it.next());
+		assertEquals(Integer.valueOf(3), it.next());
+		assertEquals(Integer.valueOf(4), it.next());
+	}
 }

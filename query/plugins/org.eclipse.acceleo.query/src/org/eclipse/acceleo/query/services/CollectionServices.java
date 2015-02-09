@@ -1600,4 +1600,40 @@ public class CollectionServices extends AbstractServiceProvider {
 		return result;
 	}
 
+	/**
+	 * Gets a sub sequence of the given {@link List}.
+	 * 
+	 * @param list
+	 *            the {@link List}
+	 * @param startIndex
+	 *            low end point (inclusive) of the sub-set
+	 * @param endIndex
+	 *            high end point (inclusive) of the sub-set
+	 * @return a subset of the given {@link List}
+	 * @throws IndexOutOfBoundsException
+	 *             for an illegal end point value (
+	 *             <code>startIndex &lt; 1 || endIndex > set.size() || startIndex > endIndex</code>)
+	 */
+	public List<Object> subSequence(List<Object> list, Integer startIndex, Integer endIndex) {
+		if (startIndex < 1 || endIndex > list.size() || startIndex > endIndex) {
+			throw new IndexOutOfBoundsException();
+		}
+		// TODO use lazy collection
+		final List<Object> result = new ArrayList<Object>(endIndex - startIndex + 1);
+
+		int index = 1;
+		for (Object input : list) {
+			if (index >= startIndex) {
+				if (index <= endIndex) {
+					result.add(input);
+				} else {
+					break;
+				}
+			}
+			++index;
+		}
+
+		return result;
+	}
+
 }
