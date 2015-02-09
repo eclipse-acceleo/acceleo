@@ -1520,4 +1520,24 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		return result;
 	}
+
+	/**
+	 * Inserts the given {@link Object} in a copy of the given {@link List} at position 1.
+	 * 
+	 * @param list
+	 *            the {@link List}
+	 * @param object
+	 *            the {@link Object}
+	 * @return a copy of the given {@link List}
+	 */
+	public List<Object> prepend(List<Object> list, Object object) {
+		// TODO use lazy collection
+		final List<Object> result = new ArrayList<Object>(list.size() + 1);
+
+		result.add(object);
+		result.addAll(list);
+
+		return result;
+	}
+
 }
