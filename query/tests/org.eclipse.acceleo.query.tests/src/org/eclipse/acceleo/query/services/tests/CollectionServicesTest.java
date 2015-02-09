@@ -18,6 +18,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -2170,4 +2171,84 @@ public class CollectionServicesTest {
 		collectionServices.intersection(null, set);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void TestSubOrderedSetNull() {
+		collectionServices.subOrderedSet(null, Integer.valueOf(1), Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubOrderedSetStartTooLow() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.subOrderedSet(set, Integer.valueOf(0), Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubOrderedSetStartTooHi() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.subOrderedSet(set, Integer.valueOf(5), Integer.valueOf(1));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubOrderedSetEndTooLow() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.subOrderedSet(set, Integer.valueOf(1), Integer.valueOf(0));
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void TestSubOrderedSetEndTooHi() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		collectionServices.subOrderedSet(set, Integer.valueOf(1), Integer.valueOf(5));
+	}
+
+	@Test
+	public void TestSubOrderedSetStartEqualsEnd() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(3), Integer
+				.valueOf(3));
+		assertEquals(1, result.size());
+		Iterator<Object> it = result.iterator();
+		assertEquals(Integer.valueOf(3), it.next());
+	}
+
+	@Test
+	public void TestSubOrderedSet() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(2), Integer
+				.valueOf(4));
+		assertEquals(3, result.size());
+		Iterator<Object> it = result.iterator();
+		assertEquals(Integer.valueOf(2), it.next());
+		assertEquals(Integer.valueOf(3), it.next());
+		assertEquals(Integer.valueOf(4), it.next());
+	}
 }

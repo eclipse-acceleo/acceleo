@@ -1564,4 +1564,40 @@ public class CollectionServices extends AbstractServiceProvider {
 		return result;
 	}
 
+	/**
+	 * Gets a subset of the given {@link Set}.
+	 * 
+	 * @param set
+	 *            the {@link Set}
+	 * @param startIndex
+	 *            low end point (inclusive) of the sub-set
+	 * @param endIndex
+	 *            high end point (inclusive) of the sub-set
+	 * @return a subset of the given {@link Set}
+	 * @throws IndexOutOfBoundsException
+	 *             for an illegal end point value (
+	 *             <code>startIndex &lt; 1 || endIndex > set.size() || startIndex > endIndex</code>)
+	 */
+	public Set<Object> subOrderedSet(Set<Object> set, Integer startIndex, Integer endIndex) {
+		if (startIndex < 1 || endIndex > set.size() || startIndex > endIndex) {
+			throw new IndexOutOfBoundsException();
+		}
+		// TODO use lazy collection
+		final Set<Object> result = new LinkedHashSet<Object>(endIndex - startIndex + 1);
+
+		int index = 1;
+		for (Object input : set) {
+			if (index >= startIndex) {
+				if (index <= endIndex) {
+					result.add(input);
+				} else {
+					break;
+				}
+			}
+			++index;
+		}
+
+		return result;
+	}
+
 }
