@@ -2145,4 +2145,29 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(3), result.get(3));
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIntersectionSetNullNull() {
+		collectionServices.intersection(null, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIntersectionSetSetNull() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		collectionServices.intersection(set, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIntersectionSetNullSet() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		collectionServices.intersection(null, set);
+	}
+
 }

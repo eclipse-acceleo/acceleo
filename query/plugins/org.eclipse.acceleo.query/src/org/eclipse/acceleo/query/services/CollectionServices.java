@@ -1540,4 +1540,28 @@ public class CollectionServices extends AbstractServiceProvider {
 		return result;
 	}
 
+	/**
+	 * Creates a {@link Set} with elements from the given {@link Set} that are also present in the given
+	 * {@link Set}.
+	 * 
+	 * @param set1
+	 *            the {@link Set}
+	 * @param set2
+	 *            the {@link Set}
+	 * @return the created {@link Set} with elements from the given {@link Set} that are also present in the
+	 *         given {@link Set}
+	 */
+	public Set<Object> intersection(Set<Object> set1, Set<Object> set2) {
+		// TODO use lazy collection
+		final Set<Object> result = Sets.newHashSet();
+
+		for (Object input : set1) {
+			if (set2.contains(input)) {
+				result.add(input);
+			}
+		}
+
+		return result;
+	}
+
 }
