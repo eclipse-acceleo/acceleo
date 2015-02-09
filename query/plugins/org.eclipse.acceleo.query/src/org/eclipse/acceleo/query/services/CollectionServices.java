@@ -14,6 +14,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -1494,4 +1495,29 @@ public class CollectionServices extends AbstractServiceProvider {
 		return Integer.valueOf(self.indexOf(object) + 1);
 	}
 
+	/**
+	 * Inserts the given {@link Object} in a copy of the given {@link List} at the given position ([1..n]).
+	 * 
+	 * @param list
+	 *            the {@link List}
+	 * @param position
+	 *            the position
+	 * @param object
+	 *            the {@link Object}
+	 * @return a copy of the given {@link List}
+	 */
+	public List<Object> insertAt(List<Object> list, Integer position, Object object) {
+		final int initialSize = list.size();
+		if (position < 1 || position > initialSize) {
+			throw new IndexOutOfBoundsException();
+		}
+		// TODO use lazy collection
+		final List<Object> result = new ArrayList<Object>(initialSize + 1);
+
+		result.addAll(list.subList(0, position - 1));
+		result.add(object);
+		result.addAll(list.subList(position - 1, initialSize));
+
+		return result;
+	}
 }

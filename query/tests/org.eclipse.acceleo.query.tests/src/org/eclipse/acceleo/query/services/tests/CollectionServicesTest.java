@@ -2082,4 +2082,46 @@ public class CollectionServicesTest {
 		Integer result = collectionServices.indexOf(list, Integer.valueOf(2));
 		assertEquals(Integer.valueOf(2), result);
 	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testInsetAtNull() {
+		collectionServices.insertAt(null, 1, null);
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testInsetAtUnderLowerBound() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		collectionServices.insertAt(list, 0, null);
+	}
+
+	@Test(expected = java.lang.IndexOutOfBoundsException.class)
+	public void testInsetAtOverUpperBound() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		collectionServices.insertAt(list, 5, null);
+	}
+
+	@Test
+	public void testInsetAt() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		final List<Object> result = collectionServices.insertAt(list, 1, null);
+		assertTrue(list != result);
+		assertEquals(4, result.size());
+		assertEquals(null, result.get(0));
+		assertEquals(Integer.valueOf(1), result.get(1));
+		assertEquals(Integer.valueOf(2), result.get(2));
+		assertEquals(Integer.valueOf(3), result.get(3));
+	}
+
 }
