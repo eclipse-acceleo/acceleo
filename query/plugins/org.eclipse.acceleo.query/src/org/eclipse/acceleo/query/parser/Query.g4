@@ -65,10 +65,10 @@ callExp :     'filter(' typeLiteral ')'        #Filter
 			| 'is(' typeLiteral ')'         #Is
 			| 'precedingSiblings(' typeLiteral? ')'     #PrecSiblings
 			| 'siblings(' typeLiteral? ')'       #Siblings
-			| 'eContents('typeLiteral? ')'       #EContent
-			| 'eAllContents('typeLiteral? ')'      #EAContent
-			| 'eContainer('typeLiteral? ')'       #EContainer
-			| 'eInverse('typeLiteral? ')'       #EInverse
+			| 'eContents(' typeLiteral? ')'       #EContent
+			| 'eAllContents(' typeLiteral? ')'      #EAContent
+			| 'eContainer(' typeLiteral? ')'       #EContainer
+			| 'eInverse(' (typeLiteral | expression)? ')'       #EInverse
 			| collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall
 			| qualifiedName'(' expressionSequence ')'    #ServiceCall
 ;

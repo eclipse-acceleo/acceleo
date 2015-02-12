@@ -754,6 +754,45 @@ public class BuildTest {
 	}
 
 	@Test
+	public void eInverse() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse()");
+		Expression ast = build.getAst();
+
+		assertEquals(true, ast instanceof Call);
+		assertEquals("eInverse", ((Call)ast).getServiceName());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);
+	}
+
+	@Test
+	public void eInverseType() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse(ecore::EClass)");
+		Expression ast = build.getAst();
+
+		assertEquals(true, ast instanceof Call);
+		assertEquals("eInverse", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);
+		assertEquals(true, ((Call)ast).getArguments().get(1) instanceof TypeLiteral);
+		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+	}
+
+	@Test
+	public void eInverseString() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse('name')");
+		Expression ast = build.getAst();
+
+		assertEquals(true, ast instanceof Call);
+		assertEquals("eInverse", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertEquals(true, ((Call)ast).getArguments().get(0) instanceof VarRef);
+		assertEquals(true, ((Call)ast).getArguments().get(1) instanceof StringLiteral);
+		final StringLiteral stringLiteral = (StringLiteral)((Call)ast).getArguments().get(1);
+		assertEquals("name", stringLiteral.getValue());
+	}
+
+	@Test
 	public void nullTest() {
 		IQueryBuilderEngine.AstResult build = engine.build(null);
 		assertEquals(true, build.getAst() instanceof ErrorExpression);

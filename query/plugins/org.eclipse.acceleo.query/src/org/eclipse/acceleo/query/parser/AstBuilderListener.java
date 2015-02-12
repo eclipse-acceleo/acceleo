@@ -794,7 +794,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				if (ctx.getChild(1) instanceof ModelObjectTypeContext) {
 					type = createModelType((ModelObjectTypeContext)ctx.getChild(1));
 				} else {
-					type = popTypeLiteral();
+					type = pop();
 				}
 				Expression receiver = pop();
 				push(serviceName);
