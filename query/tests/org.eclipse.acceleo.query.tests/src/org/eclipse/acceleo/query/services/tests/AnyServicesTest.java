@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
@@ -541,6 +542,11 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertEquals("a \u00e9\u00e8\u0020\u00f1  Foehn12 Standard sentence.", any.toString(Arrays
 				.asList(stringValues)));
 		assertEquals("0", any.toString("0"));
+	}
+
+	@Test
+	public void testToStringNothing() {
+		assertEquals("", any.toString(EvaluationServices.NOTHING));
 	}
 
 }
