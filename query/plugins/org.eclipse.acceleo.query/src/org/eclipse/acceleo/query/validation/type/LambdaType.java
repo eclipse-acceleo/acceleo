@@ -17,7 +17,7 @@ import org.eclipse.acceleo.query.ast.Lambda;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class LambdaType implements IJavaType {
+public class LambdaType extends AbstractJavaType implements IJavaType {
 
 	/**
 	 * The {@link IType} of this {@link Lambda#getEvaluator() evaluator} type.

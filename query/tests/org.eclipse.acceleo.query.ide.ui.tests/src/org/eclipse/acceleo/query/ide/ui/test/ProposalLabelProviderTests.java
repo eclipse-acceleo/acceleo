@@ -11,8 +11,10 @@
 package org.eclipse.acceleo.query.ide.ui.test;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ide.ui.ProposalLabelProvider;
@@ -57,8 +59,27 @@ public class ProposalLabelProviderTests {
 		 * @see org.eclipse.acceleo.query.runtime.IService#getType(ValidationServices, EPackageProvider, List)
 		 */
 		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
-			final Set<IType> result = new HashSet<IType>();
+			final Set<IType> result = new LinkedHashSet<IType>();
+
 			result.add(new ClassType(String.class));
+
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.IService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
+		 */
+		public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+				Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				result.addAll(entry.getValue());
+			}
+
 			return result;
 		}
 

@@ -13,6 +13,8 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.lang.reflect.Type;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
@@ -35,4 +37,21 @@ public abstract class AbstractService implements IService {
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+	 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
+	 */
+	@Override
+	public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+			Map<List<IType>, Set<IType>> allTypes) {
+		final Set<IType> result = new LinkedHashSet<IType>();
+
+		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+			result.addAll(entry.getValue());
+		}
+
+		return result;
+	}
 }

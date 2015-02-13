@@ -15,7 +15,7 @@ package org.eclipse.acceleo.query.validation.type;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ClassType extends AbstractType implements IJavaType {
+public class ClassType extends AbstractJavaType implements IJavaType {
 
 	/**
 	 * The {@link Class}.

@@ -14,9 +14,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Error;
@@ -237,6 +239,7 @@ public class ValidationServices extends AbstractLanguageServices {
 		try {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
+			Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
 			while (it.hasNext()) {
 				List<IType> currentArgTypes = it.next();
 				Class<?>[] argumentTypes = getArgumentTypes(currentArgTypes);
@@ -257,9 +260,20 @@ public class ValidationServices extends AbstractLanguageServices {
 						result.add(nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName, currentArgTypes)));
 					}
 				} else {
-					result.addAll(getServiceType(service, currentArgTypes));
+					Map<List<IType>, Set<IType>> typeMapping = typesPerService.get(service);
+					if (typeMapping == null) {
+						typeMapping = new LinkedHashMap<List<IType>, Set<IType>>();
+						typesPerService.put(service, typeMapping);
+					}
+					Set<IType> serviceTypes = getServiceTypes(service, currentArgTypes);
+					typeMapping.put(currentArgTypes, serviceTypes);
 				}
 			}
+			for (Entry<IService, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
+				Set<IType> validatedTypes = validateServiceAllTypes(entry.getKey(), entry.getValue());
+				result.addAll(validatedTypes);
+			}
+
 			return result;
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
@@ -321,8 +335,21 @@ public class ValidationServices extends AbstractLanguageServices {
 	 *            the {@link IType} of parameters
 	 * @return the return {@link IType} of a {@link IService service}
 	 */
-	private Set<IType> getServiceType(IService service, List<IType> argTypes) {
+	private Set<IType> getServiceTypes(IService service, List<IType> argTypes) {
 		return service.getType(this, ePackageProvider, argTypes);
+	}
+
+	/**
+	 * Gets the validated return {@link IType} of a {@link IService service}.
+	 * 
+	 * @param service
+	 *            the {@link IService}
+	 * @param allTypes
+	 *            the {@link IType} of parameters to possible service types
+	 * @return the validated return {@link IType} of a {@link IService service}
+	 */
+	private Set<IType> validateServiceAllTypes(IService service, Map<List<IType>, Set<IType>> allTypes) {
+		return service.validateAllType(this, ePackageProvider, allTypes);
 	}
 
 	/**

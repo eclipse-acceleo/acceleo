@@ -1,4 +1,4 @@
-// Generated from Query.g4 by ANTLR 4.4
+// Generated from Query.g4 by ANTLR 4.3
 
 /*******************************************************************************
  * Copyright (c) 2015 Obeo.
@@ -24,7 +24,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class QueryLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =

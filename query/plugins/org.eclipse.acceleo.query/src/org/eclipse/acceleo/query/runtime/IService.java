@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
@@ -50,5 +51,21 @@ public interface IService {
 	 * @return the {@link IType} of elements returned by the service
 	 */
 	Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes);
+
+	/**
+	 * Validates all couple of arguments {@link IType} and the {@link IType} of elements returned by the
+	 * service.
+	 * 
+	 * @param services
+	 *            the {@link ValidationServices}
+	 * @param provider
+	 *            the {@link EPackageProvider}
+	 * @param allTypes
+	 *            all couple of arguments {@link IType} and the {@link IType} of elements returned by the
+	 *            service
+	 * @return validated {@link IType}
+	 */
+	Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+			Map<List<IType>, Set<IType>> allTypes);
 
 }

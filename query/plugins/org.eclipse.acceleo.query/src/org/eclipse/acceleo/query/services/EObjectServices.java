@@ -68,7 +68,7 @@ public class EObjectServices extends AbstractServiceProvider {
 
 		if (publicMethod.getParameterTypes().length == 2
 				&& EClassifier.class.isAssignableFrom(publicMethod.getParameterTypes()[1])) {
-			result = new Service(publicMethod, this) {
+			result = new FilterService(publicMethod, this) {
 
 				@Override
 				public Set<IType> getType(ValidationServices services, EPackageProvider provider,

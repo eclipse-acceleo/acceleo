@@ -1,4 +1,4 @@
-// Generated from Query.g4 by ANTLR 4.4
+// Generated from Query.g4 by ANTLR 4.3
 
 /*******************************************************************************
  * Copyright (c) 2015 Obeo.
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class QueryParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -372,6 +372,7 @@ public class QueryParser extends Parser {
 				setState(33); expression(12);
 				}
 				break;
+
 			case 2:
 				{
 				_localctx = new MinContext(_localctx);
@@ -381,6 +382,7 @@ public class QueryParser extends Parser {
 				setState(35); expression(11);
 				}
 				break;
+
 			case 3:
 				{
 				_localctx = new VarContext(_localctx);
@@ -389,6 +391,7 @@ public class QueryParser extends Parser {
 				setState(36); varRef();
 				}
 				break;
+
 			case 4:
 				{
 				_localctx = new LitContext(_localctx);
@@ -397,6 +400,7 @@ public class QueryParser extends Parser {
 				setState(37); literal();
 				}
 				break;
+
 			case 5:
 				{
 				_localctx = new ParenContext(_localctx);
@@ -429,6 +433,7 @@ public class QueryParser extends Parser {
 						setState(46); expression(11);
 						}
 						break;
+
 					case 2:
 						{
 						_localctx = new AddContext(new ExpressionContext(_parentctx, _parentState));
@@ -439,6 +444,7 @@ public class QueryParser extends Parser {
 						setState(49); expression(10);
 						}
 						break;
+
 					case 3:
 						{
 						_localctx = new CompContext(new ExpressionContext(_parentctx, _parentState));
@@ -449,6 +455,7 @@ public class QueryParser extends Parser {
 						setState(53); expression(9);
 						}
 						break;
+
 					case 4:
 						{
 						_localctx = new AndContext(new ExpressionContext(_parentctx, _parentState));
@@ -459,6 +466,7 @@ public class QueryParser extends Parser {
 						setState(57); expression(8);
 						}
 						break;
+
 					case 5:
 						{
 						_localctx = new OrContext(new ExpressionContext(_parentctx, _parentState));
@@ -469,6 +477,7 @@ public class QueryParser extends Parser {
 						setState(60); expression(7);
 						}
 						break;
+
 					case 6:
 						{
 						_localctx = new XorContext(new ExpressionContext(_parentctx, _parentState));
@@ -479,6 +488,7 @@ public class QueryParser extends Parser {
 						setState(63); expression(6);
 						}
 						break;
+
 					case 7:
 						{
 						_localctx = new ImpliesContext(new ExpressionContext(_parentctx, _parentState));
@@ -489,6 +499,7 @@ public class QueryParser extends Parser {
 						setState(66); expression(5);
 						}
 						break;
+
 					case 8:
 						{
 						_localctx = new NavContext(new ExpressionContext(_parentctx, _parentState));
@@ -702,6 +713,7 @@ public class QueryParser extends Parser {
 				setState(81); match(Ident);
 				}
 				break;
+
 			case 2:
 				_localctx = new ApplyContext(_localctx);
 				enterOuterAlt(_localctx, 2);
@@ -710,6 +722,7 @@ public class QueryParser extends Parser {
 				setState(83); callExp();
 				}
 				break;
+
 			case 3:
 				_localctx = new CallServiceContext(_localctx);
 				enterOuterAlt(_localctx, 3);
@@ -1829,12 +1842,19 @@ public class QueryParser extends Parser {
 	private boolean expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0: return precpred(_ctx, 10);
+
 		case 1: return precpred(_ctx, 9);
+
 		case 2: return precpred(_ctx, 8);
+
 		case 3: return precpred(_ctx, 7);
+
 		case 4: return precpred(_ctx, 6);
+
 		case 5: return precpred(_ctx, 5);
+
 		case 6: return precpred(_ctx, 4);
+
 		case 7: return precpred(_ctx, 13);
 		}
 		return true;

@@ -57,7 +57,7 @@ public class AnyServices extends AbstractServiceProvider {
 		final IService result;
 
 		if ("oclAsType".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
+			result = new FilterService(publicMethod, this) {
 
 				@Override
 				public Set<IType> getType(ValidationServices services, EPackageProvider provider,

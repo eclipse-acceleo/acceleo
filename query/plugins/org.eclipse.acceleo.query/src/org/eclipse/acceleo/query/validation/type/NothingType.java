@@ -83,4 +83,14 @@ public class NothingType extends AbstractType implements IJavaType {
 		return System.identityHashCode(this) == System.identityHashCode(obj);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.validation.type.IType#isAssignableFrom(org.eclipse.acceleo.query.validation.type.IType)
+	 */
+	@Override
+	public boolean isAssignableFrom(IType type) {
+		return false;
+	}
+
 }

@@ -24,4 +24,14 @@ public interface IType {
 	 */
 	Object getType();
 
+	/**
+	 * Tells if the given {@link IType} can be assigned to this {@link IType}.
+	 * 
+	 * @param type
+	 *            the {@link IType}
+	 * @return <code>true</code> if the given {@link IType} can be assigned to this {@link IType},
+	 *         <code>false</code> otherwise
+	 */
+	boolean isAssignableFrom(IType type);
+
 }

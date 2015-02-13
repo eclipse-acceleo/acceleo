@@ -383,7 +383,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class SecondArgumentTypeInFirstArgumentCollectionType extends Service {
+	private static final class SecondArgumentTypeInFirstArgumentCollectionType extends FilterService {
 
 		/**
 		 * Constructor.
