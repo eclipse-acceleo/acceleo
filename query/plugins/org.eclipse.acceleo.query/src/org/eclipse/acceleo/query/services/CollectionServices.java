@@ -1212,14 +1212,14 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Returns the first element of the specified list.
+	 * Returns the first element of the specified Collection.
 	 * 
-	 * @param list
-	 *            the input list.
-	 * @return the first element of the list.
+	 * @param collection
+	 *            the input {@link Collection}.
+	 * @return the first element of the {@link Collection}.
 	 */
-	public Object first(List<Object> list) {
-		return list.get(0);
+	public Object first(Collection<Object> collection) {
+		return collection.iterator().next();
 	}
 
 	/**
