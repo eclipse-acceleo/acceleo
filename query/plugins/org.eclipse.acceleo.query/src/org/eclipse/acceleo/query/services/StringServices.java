@@ -484,4 +484,17 @@ public class StringServices {
 		return Integer.valueOf(self.compareTo(s1));
 	}
 
+	/**
+	 * Searches r in self.
+	 * 
+	 * @param self
+	 *            the current {@link String}
+	 * @param r
+	 *            the {@link String} to search
+	 * @return <code>true</code> if r is found, <code>false</code> otherwise
+	 */
+	public Boolean strstr(String self, String r) {
+		return Boolean.valueOf(self.indexOf(r) > -1);
+	}
+
 }
