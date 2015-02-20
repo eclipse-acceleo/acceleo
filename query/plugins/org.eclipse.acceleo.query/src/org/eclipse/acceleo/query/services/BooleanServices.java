@@ -27,7 +27,7 @@ public class BooleanServices {
 	 * @return the logical or of the two operands.
 	 */
 	public Boolean or(Boolean op1, Boolean op2) {
-		return op1 || op2;
+		return Boolean.valueOf(op1.booleanValue() || op2.booleanValue());
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class BooleanServices {
 	 * @return the logical and of the two operands.
 	 */
 	public Boolean and(Boolean op1, Boolean op2) {
-		return op1 && op2;
+		return Boolean.valueOf(op1.booleanValue() && op2.booleanValue());
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class BooleanServices {
 	 * @return the logical negation of the operand.
 	 */
 	public Boolean not(Boolean op1) {
-		return !op1;
+		return Boolean.valueOf(!op1.booleanValue());
 	}
 
 	/**
@@ -64,10 +64,10 @@ public class BooleanServices {
 	 * @return the logical implies of the two operands
 	 */
 	public Boolean implies(Boolean op1, Boolean op2) {
-		final boolean result;
+		final Boolean result;
 
-		if (!op1) {
-			result = true;
+		if (!op1.booleanValue()) {
+			result = Boolean.TRUE;
 		} else {
 			result = op2;
 		}
@@ -85,7 +85,7 @@ public class BooleanServices {
 	 * @return the logical and of the two operands.
 	 */
 	public Boolean xor(Boolean op1, Boolean op2) {
-		return op1 ^ op2;
+		return Boolean.valueOf(op1.booleanValue() ^ op2.booleanValue());
 	}
 
 }
