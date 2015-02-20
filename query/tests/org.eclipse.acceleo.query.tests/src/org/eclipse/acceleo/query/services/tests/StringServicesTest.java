@@ -886,4 +886,31 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals(Boolean.FALSE, stringServices.strstr("strstr operation", "false"));
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void substituteNullNullNull() {
+		stringServices.substitute(null, null, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void substituteStringNullNull() {
+		stringServices.substitute("", null, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void substituteNullStringNull() {
+		stringServices.substitute(null, "", null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void substituteNullNullString() {
+		stringServices.substitute(null, null, "");
+	}
+
+	@Test
+	public void substitute() {
+		assertEquals("subsTiTuTe operaTion", stringServices.substitute("substitute operation", "t", "T"));
+		assertEquals("foobar foobar foobar", stringServices.substitute("foobar foobar foobar", "t", "T"));
+		assertEquals("foobar foobar foobar", stringServices.substitute("f..bar f..bar f..bar", ".", "o"));
+	}
+
 }

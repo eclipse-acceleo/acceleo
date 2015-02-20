@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * This class provides methods for String queries.
  * 
@@ -495,6 +498,22 @@ public class StringServices {
 	 */
 	public Boolean strstr(String self, String r) {
 		return Boolean.valueOf(self.indexOf(r) > -1);
+	}
+
+	/**
+	 * Substitutes substring r in self by substring t and returns the resulting string. Will return self if it
+	 * contains no occurrence of the substring r.
+	 * 
+	 * @param self
+	 *            the current {@link String}
+	 * @param r
+	 *            the {@link String} to replace
+	 * @param t
+	 *            the replacement {@link String}
+	 * @return a new {@link String}
+	 */
+	public String substitute(String self, String r, String t) {
+		return Pattern.compile(r, Pattern.LITERAL).matcher(self).replaceAll(Matcher.quoteReplacement(t));
 	}
 
 }
