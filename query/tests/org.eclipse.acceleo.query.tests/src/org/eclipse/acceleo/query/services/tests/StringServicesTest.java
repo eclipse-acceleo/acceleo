@@ -843,4 +843,25 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals(Double.valueOf(3.14), result);
 	}
 
+	@Test(expected = java.lang.NullPointerException.class)
+	public void strcmpNullNull() {
+		stringServices.strcmp(null, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void strcmpStringNull() {
+		stringServices.strcmp("", null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void strcmpNullString() {
+		stringServices.strcmp(null, "");
+	}
+
+	@Test
+	public void strcmp() {
+		assertEquals(Integer.valueOf(10), stringServices.strcmp("strcmp operation", "strcmp"));
+		assertEquals(Integer.valueOf(0), stringServices.strcmp("strcmp operation", "strcmp operation"));
+		assertEquals(Integer.valueOf(-17), stringServices.strcmp("strcmp operation", "strtok"));
+	}
 }

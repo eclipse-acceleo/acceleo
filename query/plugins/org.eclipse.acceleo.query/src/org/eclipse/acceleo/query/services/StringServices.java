@@ -467,4 +467,21 @@ public class StringServices {
 		return Double.valueOf(self);
 	}
 
+	/**
+	 * Returns an integer that is either negative, zero or positive depending on whether s1 is alphabetically
+	 * less than, equal to or greater than self. Note that upper case letters come before lower case ones, so
+	 * that 'AA' is closer to 'AC' than it is to 'Ab'.
+	 * 
+	 * @param self
+	 *            the current {@link String}
+	 * @param s1
+	 *            the other {@link String}
+	 * @return an integer that is either negative, zero or positive depending on whether s1 is alphabetically
+	 *         less than, equal to or greater than self. Note that upper case letters come before lower case
+	 *         ones, so that 'AA' is closer to 'AC' than it is to 'Ab'
+	 */
+	public Integer strcmp(String self, String s1) {
+		return Integer.valueOf(self.compareTo(s1));
+	}
+
 }
