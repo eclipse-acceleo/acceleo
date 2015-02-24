@@ -67,7 +67,7 @@ public class ClassType extends AbstractJavaType implements IJavaType {
 		final int result;
 
 		if (type != null) {
-			result = super.hashCode();
+			result = type.hashCode();
 		} else {
 			result = 0;
 		}
@@ -85,9 +85,9 @@ public class ClassType extends AbstractJavaType implements IJavaType {
 		final boolean result;
 
 		if (type != null) {
-			result = super.equals(obj);
+			result = obj.getClass() == getClass() && type.equals(((ClassType)obj).getType());
 		} else {
-			result = obj instanceof ClassType && ((ClassType)obj).getType() == null;
+			result = obj.getClass() == getClass() && ((ClassType)obj).getType() == null;
 		}
 
 		return result;
