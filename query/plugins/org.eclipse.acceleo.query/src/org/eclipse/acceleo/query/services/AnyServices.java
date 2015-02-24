@@ -23,7 +23,7 @@ import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.Enumerator;
@@ -64,7 +64,16 @@ public class AnyServices extends AbstractServiceProvider {
 						List<IType> argTypes) {
 					final Set<IType> result = new LinkedHashSet<IType>();
 
-					result.add(new EClassifierType(((EClassifierLiteralType)argTypes.get(1)).getType()));
+					final Object type = argTypes.get(1).getType();
+					if (type instanceof EClassifier) {
+						result.add(new EClassifierType((EClassifier)type));
+					} else if (type instanceof Class) {
+						result.add(new ClassType((Class<?>)type));
+					} else if (type != null) {
+						result.add(services.nothing("Don't know what kind of type is %s", type));
+					} else {
+						result.add(services.nothing("Don't know what kind of type is %s", "null"));
+					}
 
 					return result;
 				}
