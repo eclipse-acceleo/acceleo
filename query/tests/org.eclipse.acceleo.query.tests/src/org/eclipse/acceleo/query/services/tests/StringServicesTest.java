@@ -14,9 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import junit.framework.AssertionFailedError;
 
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.services.StringServices;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -29,10 +27,12 @@ import static org.junit.Assert.assertTrue;
  * @author <a href="mailto:pierre.guilet@obeo.fr">Pierre Guilet</a>
  */
 public class StringServicesTest extends AbstractServicesTest {
+
 	private StringServices stringServices;
 
-	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	@Override
+	public void before() throws Exception {
+		super.before();
 		stringServices = new StringServices();
 	}
 

@@ -25,6 +25,7 @@ import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupTest;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServiceLoggingTests;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServicesTest;
 import org.eclipse.acceleo.query.services.tests.BooleanServicesTest;
+import org.eclipse.acceleo.query.services.tests.BooleanServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.CollectionServicesTest;
 import org.eclipse.acceleo.query.services.tests.ComparableServicesTest;
 import org.eclipse.acceleo.query.services.tests.EObjectServicesTest;
@@ -51,10 +52,11 @@ import org.junit.runners.Suite.SuiteClasses;
 		BuildTest.class, CombineIteratorTest.class, CompletionTest.class, EvaluationTest.class,
 		LexerTest.class, ValidationTest.class, BasicLookupCrossReferencerTest.class, BasicLookupTest.class,
 		EvaluationServiceLoggingTests.class, EvaluationServicesTest.class, BooleanServicesTest.class,
-		CollectionServicesTest.class, ComparableServicesTest.class, EObjectServicesTest.class,
-		NumberServicesTest.class, StringServicesTest.class, AnyDSLEvaluationTests.class,
-		AnyDSLValidationTests.class, EcoreReverseTests.class, EcoreValidationTests.class,
-		UMLEvaluationTests.class, UMLValidationTests.class, PrimitiveTypeTests.class })
+		BooleanServicesValidationTest.class, CollectionServicesTest.class, ComparableServicesTest.class,
+		EObjectServicesTest.class, NumberServicesTest.class, StringServicesTest.class,
+		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
+		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
+		PrimitiveTypeTests.class })
 public class AllTests {
 
 }

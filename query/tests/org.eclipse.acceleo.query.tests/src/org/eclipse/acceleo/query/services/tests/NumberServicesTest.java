@@ -12,9 +12,7 @@ package org.eclipse.acceleo.query.services.tests;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.services.NumberServices;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,15 +21,13 @@ import static org.junit.Assert.assertTrue;
 
 public class NumberServicesTest extends AbstractServicesTest {
 
-	public NumberServicesTest() {
-	}
-
 	private NumberServices numServices;
 
 	NumberServices services = new NumberServices();
 
-	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	@Override
+	public void before() throws Exception {
+		super.before();
 		getLookupEngine().addServices(NumberServices.class);
 		numServices = new NumberServices();
 	}

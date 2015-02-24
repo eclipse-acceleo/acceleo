@@ -12,14 +12,14 @@ package org.eclipse.acceleo.query.services.tests;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.services.BooleanServices;
-import org.junit.Before;
 import org.junit.Test;
 
 public class BooleanServicesTest extends AbstractServicesTest {
-	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+
+	@Override
+	public void before() throws Exception {
+		super.before();
 		getLookupEngine().addServices(BooleanServices.class);
 	}
 

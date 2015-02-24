@@ -11,14 +11,11 @@
 package org.eclipse.acceleo.query.services.tests;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -34,7 +31,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -51,8 +47,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 
 	public Resource reverseModel;
 
-	@Before
-	public void setup() throws InvalidAcceleoPackageException, URISyntaxException, IOException {
+	@Override
+	public void before() throws Exception {
+		super.before();
 		getLookupEngine().addServices(AnyServices.class);
 		any = new AnyServices();
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
