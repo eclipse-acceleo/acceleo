@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -630,6 +631,45 @@ public class ValidationServices extends AbstractLanguageServices {
 		 */
 		final String message = error.eClass().getName();
 		result.add(new NothingType(message));
+
+		return result;
+	}
+
+	/**
+	 * Gets the lower {@link IType} from the two given {@link IType} if they are in the same
+	 * {@link IType#isAssignableFrom(IType) hierarchy} ({@link EClassifierLiteralType} are converted to
+	 * {@link EClassifierType}).
+	 * 
+	 * @param type1
+	 *            the first {@link IType}
+	 * @param type2
+	 *            the second {@link IType}
+	 * @return the lower {@link IType} from the two given {@link IType} if they are in the same
+	 *         {@link IType#isAssignableFrom(IType) hierarchy}, <code>null</code> otherwise
+	 */
+	public IType lower(IType type1, IType type2) {
+		final IType result;
+
+		if (type1 == null || type2 == null) {
+			result = null;
+		} else {
+			if (type1.isAssignableFrom(type2) || type1.getType() == EcorePackage.eINSTANCE.getEObject()) {
+				if (type2 instanceof EClassifierLiteralType) {
+					result = new EClassifierType(((EClassifierLiteralType)type2).getType());
+				} else {
+					result = type2;
+				}
+			} else if (type2.isAssignableFrom(type1)
+					|| type2.getType() == EcorePackage.eINSTANCE.getEObject()) {
+				if (type1 instanceof EClassifierLiteralType) {
+					result = new EClassifierType(((EClassifierLiteralType)type1).getType());
+				} else {
+					result = type1;
+				}
+			} else {
+				result = null;
+			}
+		}
 
 		return result;
 	}

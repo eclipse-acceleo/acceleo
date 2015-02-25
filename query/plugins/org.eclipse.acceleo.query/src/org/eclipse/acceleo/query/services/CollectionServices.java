@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -45,6 +47,11 @@ import org.eclipse.emf.ecore.EClassifier;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class CollectionServices extends AbstractServiceProvider {
+
+	/**
+	 * Message separator.
+	 */
+	private static final String MESSAGE_SEPARATOR = "\n ";
 
 	/**
 	 * Exists {@link IService}.
@@ -73,8 +80,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			if (isBooleanType(lambdaExpressionType)) {
 				result.addAll(super.getType(services, provider, argTypes));
 			} else {
-				result.add(new NothingType("expression in " + getServiceMethod().getName()
-						+ " must return a boolean"));
+				result.add(services.nothing("expression in %s must return a boolean", getServiceMethod()
+						.getName()));
 			}
 			return result;
 		}
@@ -112,7 +119,7 @@ public class CollectionServices extends AbstractServiceProvider {
 				}
 				result.add(lambdaEvaluatorType);
 			} else {
-				result.add(new NothingType("expression in an any must return a boolean"));
+				result.add(services.nothing("expression in an any must return a boolean"));
 			}
 			return result;
 		}
@@ -147,6 +154,38 @@ public class CollectionServices extends AbstractServiceProvider {
 				result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
 				result.add(new SetType(argTypes.get(1)));
 			}
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
+		 */
+		@Override
+		public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+				Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final StringBuilder builder = new StringBuilder();
+
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				for (IType type : entry.getValue()) {
+					if (((ICollectionType)type).getCollectionType() instanceof NothingType) {
+						builder.append(MESSAGE_SEPARATOR);
+						builder.append(((NothingType)((ICollectionType)type).getCollectionType())
+								.getMessage());
+					} else {
+						result.add(type);
+					}
+				}
+			}
+
+			if (result.isEmpty()) {
+				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getServiceMethod()
+						.getName()));
+			}
+
 			return result;
 		}
 	}
@@ -218,7 +257,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					result.add(new SetType(lambdaEvaluatorType));
 				}
 			} else {
-				result.add(new NothingType("expression in a select must return a boolean"));
+				result.add(services.nothing("expression in a select must return a boolean"));
 			}
 			return result;
 		}
@@ -256,7 +295,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
 				}
 			} else {
-				result.add(new NothingType("expression in a reject must return a boolean"));
+				result.add(services.nothing("expression in a reject must return a boolean"));
 			}
 
 			return result;
@@ -374,6 +413,39 @@ public class CollectionServices extends AbstractServiceProvider {
 
 			return result;
 		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
+		 */
+		@Override
+		public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+				Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final StringBuilder builder = new StringBuilder();
+
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				for (IType type : entry.getValue()) {
+					if (((ICollectionType)type).getCollectionType() instanceof NothingType) {
+						builder.append(MESSAGE_SEPARATOR);
+						builder.append(((NothingType)((ICollectionType)type).getCollectionType())
+								.getMessage());
+					} else {
+						result.add(type);
+					}
+				}
+			}
+
+			if (result.isEmpty()) {
+				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getServiceMethod()
+						.getName()));
+			}
+
+			return result;
+		}
+
 	}
 
 	/**
@@ -448,6 +520,170 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
+	 * InsertAt {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class InsertAtService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private InsertAtService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				result.add(new SequenceType(((ICollectionType)argTypes.get(0)).getCollectionType()));
+				result.add(new SequenceType(argTypes.get(2)));
+			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				result.add(new SetType(((ICollectionType)argTypes.get(0)).getCollectionType()));
+				result.add(new SetType(argTypes.get(2)));
+			}
+			return result;
+		}
+	}
+
+	/**
+	 * Intersection {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class IntersectionService extends Service {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private IntersectionService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			IType selfRawType = ((ICollectionType)argTypes.get(0)).getCollectionType();
+			IType otherRawType = ((ICollectionType)argTypes.get(1)).getCollectionType();
+			final Set<IType> resultRawTypes = new LinkedHashSet<IType>();
+			final IType loweredType = services.lower(selfRawType, otherRawType);
+			if (loweredType != null) {
+				resultRawTypes.add(loweredType);
+			} else if (selfRawType.getType() instanceof EClass && otherRawType.getType() instanceof EClass) {
+				for (EClass eCls : getSubTypesTopIntersection(provider, (EClass)selfRawType.getType(),
+						(EClass)otherRawType.getType())) {
+					resultRawTypes.add(new EClassifierType(eCls));
+				}
+				if (resultRawTypes.isEmpty()) {
+					resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s",
+							argTypes.get(0), argTypes.get(1)));
+				}
+			} else {
+				resultRawTypes.add(selfRawType);
+				resultRawTypes.add(otherRawType);
+			}
+			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				for (IType resultRawType : resultRawTypes) {
+					result.add(new SequenceType(resultRawType));
+				}
+			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				for (IType resultRawType : resultRawTypes) {
+					result.add(new SetType(resultRawType));
+				}
+			}
+
+			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
+		 */
+		@Override
+		public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+				Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final StringBuilder builder = new StringBuilder();
+
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				for (IType type : entry.getValue()) {
+					if (((ICollectionType)type).getCollectionType() instanceof NothingType) {
+						builder.append(MESSAGE_SEPARATOR);
+						builder.append(((NothingType)((ICollectionType)type).getCollectionType())
+								.getMessage());
+					} else {
+						result.add(type);
+					}
+				}
+			}
+
+			if (result.isEmpty()) {
+				result.add(services.nothing("Nothing left after intersection:" + builder.toString()));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link Set} of the higher {@link EClass} in the super types hierarchy inheriting from both
+		 * given {@link EClass} according to the given {@link EPackageProvider} .
+		 * 
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param eCls1
+		 *            the first {@link EClass}
+		 * @param eCls2
+		 *            the second {@link EClass}
+		 * @return the {@link Set} of the higher {@link EClass} in the super types hierarchy inheriting from
+		 *         both given {@link EClass} according to the given {@link EPackageProvider}
+		 */
+		private Set<EClass> getSubTypesTopIntersection(EPackageProvider provider, EClass eCls1, EClass eCls2) {
+			final Set<EClass> result = new LinkedHashSet<EClass>();
+
+			final Set<EClass> subTypes1 = provider.getAllSubTypes(eCls1);
+			final Set<EClass> subTypes2 = provider.getAllSubTypes(eCls2);
+
+			final Set<EClass> intersection = new LinkedHashSet<EClass>();
+			for (EClass subType1 : subTypes1) {
+				if (subTypes2.contains(subType1)) {
+					intersection.add(subType1);
+				}
+			}
+
+			for (EClass eCls : intersection) {
+				boolean isTopEClass = true;
+
+				for (EClass superECls : eCls.getEAllSuperTypes()) {
+					if (intersection.contains(superECls)) {
+						isTopEClass = false;
+						break;
+					}
+				}
+
+				if (isTopEClass) {
+					result.add(eCls);
+				}
+			}
+
+			return result;
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
@@ -464,6 +700,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("asSequence".equals(publicMethod.getName()) || "asSet".equals(publicMethod.getName())
 				|| "asOrderedSet".equals(publicMethod.getName())) {
 			result = new ReturnCollectionTypeWithFirstArgumentRawCollectionType(publicMethod, this);
+		} else if ("subOrderedSet".equals(publicMethod.getName())
+				|| "subSequence".equals(publicMethod.getName())) {
+			result = new FirstCollectionTypeService(publicMethod, this);
 		} else if ("first".equals(publicMethod.getName()) || "at".equals(publicMethod.getName())
 				|| "last".equals(publicMethod.getName())) {
 			result = new FirstArgumentRawCollectionType(publicMethod, this);
@@ -475,7 +714,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new SelectService(publicMethod, this);
 		} else if ("collect".equals(publicMethod.getName())) {
 			result = new CollectService(publicMethod, this);
-		} else if ("including".equals(publicMethod.getName())) {
+		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())) {
 			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
@@ -486,7 +725,7 @@ public class CollectionServices extends AbstractServiceProvider {
 							List<IType> argTypes) {
 						final Set<IType> result = new LinkedHashSet<IType>();
 
-						result.add(argTypes.get(0));
+						result.add(new SequenceType(((ICollectionType)argTypes.get(0)).getCollectionType()));
 						result.add(new SequenceType(argTypes.get(1)));
 
 						return result;
@@ -500,7 +739,7 @@ public class CollectionServices extends AbstractServiceProvider {
 							List<IType> argTypes) {
 						final Set<IType> result = new LinkedHashSet<IType>();
 
-						result.add(argTypes.get(0));
+						result.add(new SequenceType(((ICollectionType)argTypes.get(0)).getCollectionType()));
 						result.add(new SequenceType(argTypes.get(1)));
 						result.add(new SequenceType(argTypes.get(2)));
 						result.add(new SequenceType(argTypes.get(3)));
@@ -516,6 +755,10 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName())
 				|| "one".equals(publicMethod.getName())) {
 			result = new BooleanLambdaService(publicMethod, this);
+		} else if ("insertAt".equals(publicMethod.getName())) {
+			result = new InsertAtService(publicMethod, this);
+		} else if ("intersection".equals(publicMethod.getName())) {
+			result = new IntersectionService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}
