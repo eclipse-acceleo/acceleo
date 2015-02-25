@@ -17,86 +17,98 @@ package org.eclipse.acceleo.query.services;
  */
 public class ComparableServices {
 	/**
-	 * Comares two comparable instances. Returns <code>true</code> if a < b.
+	 * Compares two comparable instances. Returns <code>true</code> if a < b.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
+	 * @param <T>
+	 *            the type been compared
 	 * @return <code>true</code> if a < b.
 	 */
 
-	public Boolean lower(Comparable a, Comparable b) {
-		return a.compareTo(b) < 0;
+	public <T> Boolean lower(Comparable<T> a, T b) {
+		return Boolean.valueOf(a.compareTo(b) < 0);
 	}
 
 	/**
-	 * Comares two comparable instances. Returns <code>true</code> if a <= b.
+	 * Compares two comparable instances. Returns <code>true</code> if a <= b.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
+	 * @param <T>
+	 *            the type been compared
 	 * @return <code>true</code> if a <= b.
 	 */
 
-	public Boolean lowerEqual(Comparable a, Comparable b) {
-		return a.compareTo(b) <= 0;
+	public <T> Boolean lowerEqual(Comparable<T> a, T b) {
+		return Boolean.valueOf(a.compareTo(b) <= 0);
 	}
 
 	/**
-	 * Comares two comparable instances. Returns <code>true</code> if a > b.
+	 * Compares two comparable instances. Returns <code>true</code> if a > b.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
+	 * @param <T>
+	 *            the type been compared
 	 * @return <code>true</code> if a > b.
 	 */
 
-	public Boolean greater(Comparable a, Comparable b) {
-		return a.compareTo(b) > 0;
+	public <T> Boolean greater(Comparable<T> a, T b) {
+		return Boolean.valueOf(a.compareTo(b) > 0);
 	}
 
 	/**
-	 * Comares two comparable instances. Returns <code>true</code> if a >= b.
+	 * Compares two comparable instances. Returns <code>true</code> if a >= b.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
+	 * @param <T>
+	 *            the type been compared
 	 * @return <code>true</code> if a >= b.
 	 */
 
-	public Boolean greaterEqual(Comparable a, Comparable b) {
-		return a.compareTo(b) >= 0;
+	public <T> Boolean greaterEqual(Comparable<T> a, T b) {
+		return Boolean.valueOf(a.compareTo(b) >= 0);
 	}
 
 	/**
-	 * Comares two comparable instances. Returns <code>true</code> if a == b.
+	 * Compares two comparable instances. Returns <code>true</code> if a == b.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
+	 * @param <T>
+	 *            the type been compared
 	 * @return <code>true</code> if a == b.
 	 */
 
-	public Boolean equals(Comparable a, Comparable b) {
-		return a.compareTo(b) == 0;
+	public <T> Boolean equals(Comparable<T> a, T b) {
+		return Boolean.valueOf(a.compareTo(b) == 0);
 	}
 
 	/**
-	 * Comares two comparable instances. Returns <code>true</code> if a != b.
+	 * Compares two comparable instances. Returns <code>true</code> if a != b.
 	 * 
 	 * @param a
 	 *            the first operand
 	 * @param b
 	 *            the second operand
+	 * @param <T>
+	 *            the type been compared
 	 * @return <code>true</code> if a != b.
 	 */
-	public Boolean differs(Comparable a, Comparable b) {
-		return a.compareTo(b) != 0;
+	public <T> Boolean differs(Comparable<T> a, T b) {
+		return Boolean.valueOf(a.compareTo(b) != 0);
 	}
 
 }
