@@ -101,6 +101,13 @@ public class AcceleoParserMojo extends AbstractMojo {
 	private boolean usePlatformResourcePath;
 
 	/**
+	 * Indicates if we should remove the position of the expressions in the emtl files.
+	 * 
+	 * @parameter expression = "${acceleo-compile.trimPosition}"
+	 */
+	private boolean trimPosition;
+
+	/**
 	 * Indicates if we should fail on errors.
 	 * 
 	 * @parameter expression = "${acceleo-compile.failOnError}"
@@ -298,7 +305,7 @@ public class AcceleoParserMojo extends AbstractMojo {
 
 		log.info("Starting parsing...");
 		AcceleoParser parser = new AcceleoParser(aProject, this.useBinaryResources,
-				this.usePlatformResourcePath, false);
+				this.usePlatformResourcePath, this.trimPosition);
 		AcceleoParserListener listener = new AcceleoParserListener();
 		parser.addListeners(listener);
 
