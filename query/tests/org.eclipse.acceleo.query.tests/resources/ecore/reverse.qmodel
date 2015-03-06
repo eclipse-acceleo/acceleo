@@ -31,7 +31,14 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
+        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=ETypeParameter)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EOperation)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EStructuralFeature)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EGenericType)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EStringToStringMapEntry)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=EParameter)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>

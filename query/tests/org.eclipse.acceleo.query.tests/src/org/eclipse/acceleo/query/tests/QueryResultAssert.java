@@ -168,7 +168,8 @@ public class QueryResultAssert {
 	 */
 	private static void printQuery(Query query) {
 		System.out.println("Expression: " + query.getExpression());
-		System.out.println("Self: " + query.getStartingPoint());
+		System.out.println("Self: " + query.getStartingPoint().getName() + " - "
+				+ query.getStartingPoint().getTarget());
 		for (Variable variable : query.getVariables()) {
 			if (variable instanceof EObjectVariable) {
 				System.out.println(variable.getName() + ": "

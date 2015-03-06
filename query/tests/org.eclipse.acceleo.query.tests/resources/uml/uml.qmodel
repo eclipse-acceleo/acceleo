@@ -135,7 +135,7 @@
       </expectedResult>
     </expectations>
   </queries>
-  <queries expression="['current container : '+self.clientDependency.supplier.eContainer(anydsl::NamedElement).name/]" startingPoint="//@modelElements.2">
+  <queries expression="['current container : '+self.clientDependency.supplier.eContainer(uml::NamedElement).name/]" startingPoint="//@modelElements.2">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:StringResult" interpreter="mtl" value="current container : "/>
     </expectations>
@@ -454,8 +454,127 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Set(EClassifier=EObject)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TemplateParameter)</possibleTypes>
         <possibleTypes>Set(Sequence(EClassifier=PackageableElement))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=StringExpression))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=UseCase))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=ValueSpecification))</possibleTypes>
+        <possibleTypes>Set(EClassifier=TemplateParameterSubstitution)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Package)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Component)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EAnnotation)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TemplateSignature)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TemplateBinding)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Interface)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EModelElement)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TemplateableElement)</possibleTypes>
+        <possibleTypes>Set(EClassifier=BehavioredClassifier)</possibleTypes>
+        <possibleTypes>Set(EClassifier=State)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Transition)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Node)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EPackage)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EEnum)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EClass)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EOperation)</possibleTypes>
+        <possibleTypes>Set(EClassifier=EClassifier)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Classifier)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Artifact)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Deployment)</possibleTypes>
+        <possibleTypes>Set(EClassifier=DataType)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StateMachine)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Region)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Activity)</possibleTypes>
+        <possibleTypes>Set(EClassifier=CombinedFragment)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Property)</possibleTypes>
+        <possibleTypes>Set(EClassifier=MultiplicityElement)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Parameter)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Constraint)</possibleTypes>
+        <possibleTypes>Set(EClassifier=InstanceSpecification)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Slot)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Expression)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ActivityEdge)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ObjectNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ValueSpecificationAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ValuePin)</possibleTypes>
+        <possibleTypes>Set(EClassifier=JoinNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ChangeEvent)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TimeExpression)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Message)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Lifeline)</possibleTypes>
+        <possibleTypes>Set(EClassifier=InteractionUse)</possibleTypes>
+        <possibleTypes>Set(EClassifier=InteractionConstraint)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Duration)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Abstraction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=NamedElement)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StringExpression)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TimeEvent)</possibleTypes>
+        <possibleTypes>Set(EClassifier=CollaborationUse)</possibleTypes>
+        <possibleTypes>Set(EClassifier=DeploymentTarget)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Namespace)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ParameterSet)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Extend)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Action)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StateInvariant)</possibleTypes>
+        <possibleTypes>Set(EClassifier=InteractionOperand)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Enumeration)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Association)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Signal)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StructuredClassifier)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Behavior)</possibleTypes>
+        <possibleTypes>Set(EClassifier=BehavioralFeature)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StructuredActivityNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=LinkAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=WriteStructuralFeatureAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StructuralFeatureAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=WriteVariableAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=AddStructuralFeatureValueAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=AddVariableValueAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=InvocationAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=CallOperationAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ClearAssociationAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=DestroyObjectAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=LoopNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=OpaqueAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=RaiseExceptionAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadIsClassifiedObjectAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadLinkObjectEndAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadLinkObjectEndQualifierAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReclassifyObjectAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReduceAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=RemoveStructuralFeatureValueAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=RemoveVariableValueAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReplyAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=SendObjectAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=SendSignalAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StartClassifierBehaviorAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=StartObjectBehaviorAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=TestIdentityAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=UnmarshallAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=AcceptCallAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=AcceptEventAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=CallAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ClearStructuralFeatureAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ConditionalNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=CreateLinkObjectAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=CreateObjectAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadExtentAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadLinkAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadSelfAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadStructuralFeatureAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ReadVariableAction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=UseCase)</possibleTypes>
+        <possibleTypes>Set(EClassifier=SequenceNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ActionInputPin)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Interaction)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ActivityPartition)</possibleTypes>
+        <possibleTypes>Set(EClassifier=InteractionFragment)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Element)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Stereotype)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ProtocolStateMachine)</possibleTypes>
+        <possibleTypes>Set(EClassifier=Connector)</possibleTypes>
+        <possibleTypes>Set(EClassifier=ExecutableNode)</possibleTypes>
+        <possibleTypes>Set(EClassifier=LinkEndData)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -791,7 +910,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=BehavioredClassifier</possibleTypes>
+        <possibleTypes>EClassifier=Component</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>

@@ -55,11 +55,11 @@ public class EClassifierType extends AbstractType {
 		final boolean result;
 
 		if (otherType instanceof EClassifierType) {
-			if (getType() instanceof EDataType) {
+			if (otherType.getType() instanceof EDataType) {
 				result = getType() == otherType.getType();
-			} else if (getType() instanceof EClass) {
+			} else if (otherType.getType() instanceof EClass) {
 				result = getType() == otherType.getType()
-						|| ((EClass)getType()).getEAllSuperTypes().contains(otherType.getType());
+						|| ((EClass)otherType.getType()).getEAllSuperTypes().contains(getType());
 			} else {
 				result = false;
 			}

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-//CHECKSTYLE:OFF
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -33,7 +32,6 @@ import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClass;
@@ -41,16 +39,726 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-//CHECKSTYLE:ON
 /**
  * Services on {@link EObject}.
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class EObjectServices extends AbstractServiceProvider {
+
+	/**
+	 * Ancestors {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class AncestorsService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private AncestorsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SequenceType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
+								.get(1)).getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SequenceType(services.nothing(
+						"Only EClass can be contained into other EClasses not %s", argTypes.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.size() == 1) {
+				for (EClass containingEClass : provider.getAllContainingEClasses(receiverEClass)) {
+					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't be contained", argTypes.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containingEClass : provider.getAllContainingEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SequenceType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing(
+							"%s can't contain directly or indirectly %s", filterType, argTypes.get(0))));
+				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * EContainer {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class EContainerService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private EContainerService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(argTypes.get(0));
+					} else if (argTypes.size() == 2) {
+						result.add(new EClassifierType(((EClassifierLiteralType)argTypes.get(1)).getType()));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(services.nothing("Only EClass can be contained into other EClasses not %s",
+						argTypes.get(0)));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.size() == 1) {
+				for (EClass containingEClass : provider.getContainingEClasses(receiverEClass)) {
+					result.add(new EClassifierType(containingEClass));
+				}
+				if (result.isEmpty()) {
+					result.add(services.nothing("%s can't be contained", argTypes.get(0)));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containingEClass : provider.getAllContainingEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+					if (lowerType != null) {
+						result.add(lowerType);
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(services.nothing("%s can't contain directly or indirectly %s", filterType,
+							argTypes.get(0)));
+				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * EContents {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class EContentsService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private EContentsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SequenceType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
+								.get(1)).getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SequenceType(services.nothing("Only EClass can contain other EClasses not %s",
+						argTypes.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final Set<IType> containedTypes = new LinkedHashSet<IType>();
+			for (EClass contained : provider.getContainedEClasses(receiverEClass)) {
+				containedTypes.add(new SequenceType(new EClassifierType(contained)));
+			}
+			if (argTypes.size() == 1) {
+				result.addAll(containedTypes);
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s doesn't contain any other EClass",
+							argTypes.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containedEClass : provider.getContainedEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containedEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SequenceType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't contain %s direclty", argTypes
+							.get(0), filterType)));
+				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * EAllContents {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class EAllContentsService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private EAllContentsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SequenceType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
+								.get(1)).getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SequenceType(services.nothing("Only EClass can contain other EClasses not %s",
+						argTypes.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final Set<IType> containedTypes = new LinkedHashSet<IType>();
+			for (EClass contained : provider.getAllContainedEClasses(receiverEClass)) {
+				containedTypes.add(new SequenceType(new EClassifierType(contained)));
+			}
+			if (argTypes.size() == 1) {
+				result.addAll(containedTypes);
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s doesn't contain any other EClass",
+							argTypes.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containedEClass : provider.getAllContainedEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containedEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SequenceType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing(
+							"%s can't contain %s direclty or indirectly", argTypes.get(0), filterType)));
+				}
+			}
+
+			return result;
+		}
+	}
+
+	/**
+	 * EInverse {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class EInverseService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private EInverseService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SetType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SetType(new EClassifierType(((EClassifierLiteralType)argTypes.get(1))
+								.getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SetType(services.nothing("Only EClass can have inverse not %s", argTypes
+						.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClassifier)) {
+				for (EClass inverseEClass : provider.getInverseEClasses(receiverEClass)) {
+					result.add(new SetType(new EClassifierType(inverseEClass)));
+				}
+				if (result.isEmpty()) {
+					result.add(new SetType(services.nothing("%s don't have inverse", argTypes.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass inverseEClass : provider.getInverseEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(inverseEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SetType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SetType(services.nothing("%s don't have inverse to %s", argTypes.get(0),
+							filterType)));
+				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * FollowingSiblings {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class FollowingSiblingsService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private FollowingSiblingsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SequenceType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
+								.get(1)).getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SequenceType(services.nothing(
+						"Only EClass can have following siblings not %s", argTypes.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.size() == 1) {
+				for (EClass containingEClass : provider.getFollowingSiblingsEClasses(receiverEClass)) {
+					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't have following siblings", argTypes
+							.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containingEClass : provider.getFollowingSiblingsEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SequenceType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't be a following sibling of %s",
+							filterType, argTypes.get(0))));
+				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * PrecedingSiblings {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class PrecedingSiblingsService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private PrecedingSiblingsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SequenceType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
+								.get(1)).getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SequenceType(services.nothing(
+						"Only EClass can have preceding siblings not %s", argTypes.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.size() == 1) {
+				for (EClass containingEClass : provider.getPrecedingSiblingsEClasses(receiverEClass)) {
+					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't have preceding siblings", argTypes
+							.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containingEClass : provider.getPrecedingSiblingsEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SequenceType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't be a preceding sibling of %s",
+							filterType, argTypes.get(0))));
+				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * Siblings {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class SiblingsService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private SiblingsService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					if (argTypes.size() == 1) {
+						result.add(new SequenceType(argTypes.get(0)));
+					} else if (argTypes.size() == 2) {
+						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
+								.get(1)).getType())));
+					}
+				} else {
+					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+				}
+			} else {
+				result.add(new SequenceType(services.nothing("Only EClass can have siblings not %s", argTypes
+						.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param provider
+		 *            the {@link EPackageProvider}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
+				List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.size() == 1) {
+				for (EClass containingEClass : provider.getSiblingsEClasses(receiverEClass)) {
+					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't have siblings", argTypes.get(0))));
+				}
+			} else if (argTypes.size() == 2) {
+				final IType filterType = argTypes.get(1);
+				for (EClass containingEClass : provider.getSiblingsEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+					if (lowerType != null) {
+						result.add(new SequenceType(lowerType));
+					}
+				}
+				if (result.isEmpty()) {
+					result.add(new SequenceType(services.nothing("%s can't be a sibling of %s", filterType,
+							argTypes.get(0))));
+				}
+			}
+
+			return result;
+		}
+
+	}
 
 	/**
 	 * A cross referencer needed to realize the service eInverse().
@@ -66,77 +774,22 @@ public class EObjectServices extends AbstractServiceProvider {
 	protected IService getService(Method publicMethod) {
 		final IService result;
 
-		if (publicMethod.getParameterTypes().length == 2
-				&& EClassifier.class.isAssignableFrom(publicMethod.getParameterTypes()[1])) {
-			result = new FilterService(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result = new LinkedHashSet<IType>();
-
-					final EClassifierType rawType = new EClassifierType(((EClassifierLiteralType)argTypes
-							.get(1)).getType());
-					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-						result.add(new SequenceType(rawType));
-					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-						result.add(new SetType(rawType));
-					} else {
-						result.add(rawType);
-					}
-
-					return result;
-				}
-			};
-		} else if ("eContents".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result;
-
-					if (argTypes.size() == 1 && argTypes.get(0).getType() instanceof EClass) {
-						final EClass eCls = (EClass)argTypes.get(0).getType();
-						result = new LinkedHashSet<IType>();
-						for (EStructuralFeature feature : eCls.getEAllStructuralFeatures()) {
-							if (feature instanceof EReference && ((EReference)feature).isContainment()
-									&& feature.getEType() instanceof EClass) {
-								result.add(new SequenceType(new EClassifierType(((EReference)feature)
-										.getEType())));
-							}
-						}
-					} else {
-						result = super.getType(services, provider, argTypes);
-					}
-
-					return result;
-				}
-			};
+		if ("eContents".equals(publicMethod.getName())) {
+			result = new EContentsService(publicMethod, this);
+		} else if ("eAllContents".equals(publicMethod.getName())) {
+			result = new EAllContentsService(publicMethod, this);
 		} else if ("eContainer".equals(publicMethod.getName())) {
-			result = new Service(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
-						List<IType> argTypes) {
-					final Set<IType> result;
-
-					if (argTypes.size() == 1 && argTypes.get(0).getType() instanceof EClass) {
-						final EClass eCls = (EClass)argTypes.get(0).getType();
-						result = new LinkedHashSet<IType>();
-						for (EClass containingEClass : provider.getAllContainingEClasses(eCls)) {
-							result.add(new EClassifierType(containingEClass));
-						}
-						if (result.size() == 0) {
-							result.add(new NothingType("No EObject can contain " + eCls.getName()));
-						}
-					} else {
-						result = super.getType(services, provider, argTypes);
-					}
-
-					return result;
-				}
-			};
+			result = new EContainerService(publicMethod, this);
+		} else if ("ancestors".equals(publicMethod.getName())) {
+			result = new AncestorsService(publicMethod, this);
+		} else if ("eInverse".equals(publicMethod.getName())) {
+			result = new EInverseService(publicMethod, this);
+		} else if ("followingSiblings".equals(publicMethod.getName())) {
+			result = new FollowingSiblingsService(publicMethod, this);
+		} else if ("precedingSiblings".equals(publicMethod.getName())) {
+			result = new PrecedingSiblingsService(publicMethod, this);
+		} else if ("siblings".equals(publicMethod.getName())) {
+			result = new SiblingsService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}

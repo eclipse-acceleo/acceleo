@@ -445,8 +445,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			}
 			if (result.size() == 0) {
 				// TODO check the message... and check if needed this problem should already be reported.
-				result.add(new NothingType(serviceName + " service call on "
-						+ receiverType.getCollectionType() + " produce nothing."));
+				result.add(nothing("%s service call on %s produce nothing.", serviceName, receiverType
+						.getCollectionType()));
 			}
 			return result;
 			// CHECKSTYLE:OFF
@@ -489,8 +489,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			}
 			if (result.size() == 0) {
 				// TODO check the message... and check if needed this problem should already be reported.
-				result.add(new NothingType(serviceName + " service call on "
-						+ receiverType.getCollectionType() + " produce nothing."));
+				result.add(nothing("%s service call on %s produce nothing.", serviceName, receiverType
+						.getCollectionType()));
 			}
 			return result;
 			// CHECKSTYLE:OFF
@@ -630,7 +630,7 @@ public class ValidationServices extends AbstractLanguageServices {
 		 * TODO when there are parsing errors, provide a better message than just the error EClass
 		 */
 		final String message = error.eClass().getName();
-		result.add(new NothingType(message));
+		result.add(nothing(message));
 
 		return result;
 	}
@@ -673,5 +673,4 @@ public class ValidationServices extends AbstractLanguageServices {
 
 		return result;
 	}
-
 }

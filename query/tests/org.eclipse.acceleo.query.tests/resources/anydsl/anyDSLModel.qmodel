@@ -79,7 +79,13 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Company)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Food)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Source)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Adress)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Producer)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Chef)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Recipe)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -159,7 +165,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=MultiNamedElement)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Source)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -349,7 +355,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=Food</possibleTypes>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress"/>
       </expectedResult>
     </expectations>
   </queries>
