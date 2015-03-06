@@ -30,7 +30,7 @@ public class NumberServices {
 	 * @return the negation of the argument.
 	 */
 	public Integer unaryMin(Integer value) {
-		return -value;
+		return Integer.valueOf(-value.intValue());
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class NumberServices {
 	 * @return the addition of the arguments.
 	 */
 	public Integer add(Integer a, Integer b) {
-		return a + b;
+		return Integer.valueOf(a.intValue() + b.intValue());
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class NumberServices {
 	 * @return the substraction of the arguments.
 	 */
 	public Integer sub(Integer a, Integer b) {
-		return a - b;
+		return Integer.valueOf(a.intValue() - b.intValue());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class NumberServices {
 	 */
 
 	public Integer mult(Integer a, Integer b) {
-		return a * b;
+		return Integer.valueOf(a.intValue() * b.intValue());
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class NumberServices {
 	 */
 
 	public Integer divOp(Integer a, Integer b) {
-		return a / b;
+		return Integer.valueOf(a.intValue() / b.intValue());
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class NumberServices {
 	 */
 
 	public Double add(Double a, Double b) {
-		return a + b;
+		return Double.valueOf(a.doubleValue() + b.doubleValue());
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class NumberServices {
 	 */
 
 	public Double sub(Double a, Double b) {
-		return a - b;
+		return Double.valueOf(a.doubleValue() - b.doubleValue());
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class NumberServices {
 	 */
 
 	public Double mult(Double a, Double b) {
-		return a * b;
+		return Double.valueOf(a.doubleValue() * b.doubleValue());
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class NumberServices {
 	 */
 
 	public Double divOp(Double a, Double b) {
-		return a / b;
+		return Double.valueOf(a.doubleValue() / b.doubleValue());
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class NumberServices {
 	 * @return <code>true</code> if a<b
 	 */
 	public Boolean lessThan(Integer a, Integer b) {
-		return a < b;
+		return Boolean.valueOf(a.doubleValue() < b.doubleValue());
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class NumberServices {
 	 * @return <code>true</code> if a<=b
 	 */
 	public Boolean lessThanEqual(Integer a, Integer b) {
-		return a <= b;
+		return Boolean.valueOf(a.intValue() <= b.intValue());
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class NumberServices {
 	 */
 
 	public Boolean greaterThan(Integer a, Integer b) {
-		return a > b;
+		return Boolean.valueOf(a.intValue() > b.intValue());
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class NumberServices {
 	 */
 
 	public Boolean greaterThanEqual(Integer a, Integer b) {
-		return a >= b;
+		return Boolean.valueOf(a.intValue() >= b.intValue());
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class NumberServices {
 	 */
 
 	public Boolean equals(Integer a, Integer b) {
-		final boolean result;
+		final Boolean result;
 
 		if (a == null) {
 			result = Boolean.valueOf(b == null);
@@ -230,7 +230,7 @@ public class NumberServices {
 	 */
 
 	public Boolean differs(Integer a, Integer b) {
-		return !equals(a, b);
+		return Boolean.valueOf(!equals(a, b));
 	}
 
 	/**
@@ -244,7 +244,7 @@ public class NumberServices {
 	 */
 
 	public Boolean lessThan(Double a, Double b) {
-		return a < b;
+		return Boolean.valueOf(a.doubleValue() < b.doubleValue());
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class NumberServices {
 	 */
 
 	public Boolean lessThanEqual(Double a, Double b) {
-		return a <= b;
+		return Boolean.valueOf(a.doubleValue() <= b.doubleValue());
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class NumberServices {
 	 */
 
 	public Boolean greaterThan(Double a, Double b) {
-		return a > b;
+		return Boolean.valueOf(a.doubleValue() > b.doubleValue());
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class NumberServices {
 	 */
 
 	public Boolean greaterThanEqual(Double a, Double b) {
-		return a >= b;
+		return Boolean.valueOf(a.doubleValue() >= b.doubleValue());
 	}
 
 	/**
@@ -322,7 +322,7 @@ public class NumberServices {
 	 */
 
 	public Boolean differs(Double a, Double b) {
-		return !equals(a, b);
+		return Boolean.valueOf(!equals(a, b));
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class NumberServices {
 	 * @return the negation of the value.
 	 */
 	public Double unaryMin(Double value) {
-		return -value;
+		return Double.valueOf(-value.doubleValue());
 	}
 
 	/**
