@@ -37,6 +37,7 @@ import org.eclipse.acceleo.query.services.tests.EObjectServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesTest;
+import org.eclipse.acceleo.query.services.tests.StringServicesValidationTest;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLEvaluationTests;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLValidationTests;
 import org.eclipse.acceleo.query.tests.unit.EcoreReverseTests;
@@ -62,9 +63,9 @@ import org.junit.runners.Suite.SuiteClasses;
 		CollectionServicesTest.class, CollectionServicesValidationTest.class, ComparableServicesTest.class,
 		ComparableServicesValidationTest.class, EObjectServicesTest.class,
 		EObjectServicesValidationTest.class, NumberServicesTest.class, NumberServicesValidationTest.class,
-		StringServicesTest.class, AnyDSLEvaluationTests.class, AnyDSLValidationTests.class,
-		EcoreReverseTests.class, EcoreValidationTests.class, UMLEvaluationTests.class,
-		UMLValidationTests.class, PrimitiveTypeTests.class })
+		StringServicesTest.class, StringServicesValidationTest.class, AnyDSLEvaluationTests.class,
+		AnyDSLValidationTests.class, EcoreReverseTests.class, EcoreValidationTests.class,
+		UMLEvaluationTests.class, UMLValidationTests.class, PrimitiveTypeTests.class })
 public class AllTests {
 
 }

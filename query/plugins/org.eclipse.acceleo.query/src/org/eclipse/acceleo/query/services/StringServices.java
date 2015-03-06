@@ -116,7 +116,7 @@ public class StringServices {
 	 *         NullPointerException if "self" or "b" is null.
 	 */
 	public Boolean contains(String self, String b) {
-		return self.contains(b);
+		return Boolean.valueOf(self.contains(b));
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class StringServices {
 	 *         Throws NullPointerException if "self" or "regex" is null.
 	 */
 	public Boolean matches(String self, String regex) {
-		return self.matches(regex);
+		return Boolean.valueOf(self.matches(regex));
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class StringServices {
 	 *         if "self" or "b" is null.
 	 */
 	public Boolean endsWith(String self, String b) {
-		return self.endsWith(b);
+		return Boolean.valueOf(self.endsWith(b));
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class StringServices {
 	 *         if "self" or "b" is null.
 	 */
 	public Boolean startsWith(String self, String b) {
-		return self.startsWith(b);
+		return Boolean.valueOf(self.startsWith(b));
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class StringServices {
 	 *         comparison. False otherwise. Throws NullPointerException if "self" or "b" is null.
 	 */
 	public Boolean equalsIgnoreCase(String self, String b) {
-		return self.equalsIgnoreCase(b);
+		return Boolean.valueOf(self.equalsIgnoreCase(b));
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class StringServices {
 		if (index == 0) {
 			index = -1;
 		}
-		return index;
+		return Integer.valueOf(index);
 	}
 
 	/**
@@ -255,7 +255,7 @@ public class StringServices {
 		if (index == 0) {
 			index = -1;
 		}
-		return index;
+		return Integer.valueOf(index);
 	}
 
 	/**
@@ -278,7 +278,7 @@ public class StringServices {
 		if (indexResult == 0) {
 			indexResult = -1;
 		}
-		return indexResult;
+		return Integer.valueOf(indexResult);
 	}
 
 	/**
@@ -302,7 +302,7 @@ public class StringServices {
 		if (indexResult == 0) {
 			indexResult = -1;
 		}
-		return indexResult;
+		return Integer.valueOf(indexResult);
 
 	}
 
@@ -388,10 +388,10 @@ public class StringServices {
 		final char[] chars = self.toCharArray();
 		for (final char c : chars) {
 			if (!Character.isLetter(c)) {
-				return false;
+				return Boolean.FALSE;
 			}
 		}
-		return true;
+		return Boolean.TRUE;
 	}
 
 	/**
@@ -407,10 +407,10 @@ public class StringServices {
 		final char[] chars = self.toCharArray();
 		for (final char c : chars) {
 			if (!Character.isLetterOrDigit(c)) {
-				return false;
+				return Boolean.FALSE;
 			}
 		}
-		return true;
+		return Boolean.TRUE;
 	}
 
 	/**
@@ -421,7 +421,7 @@ public class StringServices {
 	 * @return the length of the specified string.
 	 */
 	public Integer size(String str) {
-		return str.length();
+		return Integer.valueOf(str.length());
 	}
 
 	/**
