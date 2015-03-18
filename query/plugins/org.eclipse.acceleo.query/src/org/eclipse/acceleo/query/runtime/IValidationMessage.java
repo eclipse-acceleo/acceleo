@@ -31,17 +31,17 @@ public interface IValidationMessage {
 	String getMessage();
 
 	/**
-	 * The column number where the problem has been detected.
+	 * The start position where the problem has been detected.
 	 * 
-	 * @return The column number where the problem has been detected.
+	 * @return The start position where the problem has been detected.
 	 */
-	int getLocationLine();
+	int getStartPosition();
 
 	/**
-	 * The column number where the problem has been detected.
+	 * The end position where the problem has been detected.
 	 * 
-	 * @return The column number where the problem has been detected.
+	 * @return The end position where the problem has been detected.
 	 */
-	int getLocationColumn();
+	int getEndPosition();
 
 }

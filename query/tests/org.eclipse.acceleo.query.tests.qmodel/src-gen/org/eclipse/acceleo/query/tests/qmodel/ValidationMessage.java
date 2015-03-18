@@ -20,8 +20,9 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getSeverity <em>Severity</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getMessage <em>Message</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getLine <em>Line</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getColumn <em>Column</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getStartPosition <em>Start Position
+ * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getEndPosition <em>End Position</em>}</li>
  * </ul>
  * </p>
  *
@@ -88,57 +89,58 @@ public interface ValidationMessage extends EObject {
 	void setMessage(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Line</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Line</em>' attribute isn't clear, there really should be more of a
+	 * If the meaning of the '<em>Start Position</em>' attribute isn't clear, there really should be more of a
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Line</em>' attribute.
-	 * @see #setLine(int)
-	 * @see org.eclipse.acceleo.query.tests.qmodel.QmodelPackage#getValidationMessage_Line()
+	 * @return the value of the '<em>Start Position</em>' attribute.
+	 * @see #setStartPosition(int)
+	 * @see org.eclipse.acceleo.query.tests.qmodel.QmodelPackage#getValidationMessage_StartPosition()
 	 * @model required="true"
 	 * @generated
 	 */
-	int getLine();
+	int getStartPosition();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getLine
-	 * <em>Line</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '
+	 * {@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getStartPosition
+	 * <em>Start Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
-	 *            the new value of the '<em>Line</em>' attribute.
-	 * @see #getLine()
+	 *            the new value of the '<em>Start Position</em>' attribute.
+	 * @see #getStartPosition()
 	 * @generated
 	 */
-	void setLine(int value);
+	void setStartPosition(int value);
 
 	/**
-	 * Returns the value of the '<em><b>Column</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Column</em>' attribute isn't clear, there really should be more of a
+	 * If the meaning of the '<em>End Position</em>' attribute isn't clear, there really should be more of a
 	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Column</em>' attribute.
-	 * @see #setColumn(int)
-	 * @see org.eclipse.acceleo.query.tests.qmodel.QmodelPackage#getValidationMessage_Column()
+	 * @return the value of the '<em>End Position</em>' attribute.
+	 * @see #setEndPosition(int)
+	 * @see org.eclipse.acceleo.query.tests.qmodel.QmodelPackage#getValidationMessage_EndPosition()
 	 * @model required="true"
 	 * @generated
 	 */
-	int getColumn();
+	int getEndPosition();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getColumn
-	 * <em>Column</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getEndPosition
+	 * <em>End Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
-	 *            the new value of the '<em>Column</em>' attribute.
-	 * @see #getColumn()
+	 *            the new value of the '<em>End Position</em>' attribute.
+	 * @see #getEndPosition()
 	 * @generated
 	 */
-	void setColumn(int value);
+	void setEndPosition(int value);
 
 } // ValidationMessage

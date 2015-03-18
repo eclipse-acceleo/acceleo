@@ -63,8 +63,8 @@ public class ValidationMessageItemProvider extends ItemProviderAdapter
 
 			addSeverityPropertyDescriptor(object);
 			addMessagePropertyDescriptor(object);
-			addLinePropertyDescriptor(object);
-			addColumnPropertyDescriptor(object);
+			addStartPositionPropertyDescriptor(object);
+			addEndPositionPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -110,45 +110,43 @@ public class ValidationMessageItemProvider extends ItemProviderAdapter
 	}
 
 	/**
-	 * This adds a property descriptor for the Line feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected void addLinePropertyDescriptor(Object object) {
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(
-						((ComposeableAdapterFactory) adapterFactory)
-								.getRootAdapterFactory(),
-						getResourceLocator(),
-						getString("_UI_ValidationMessage_line_feature"),
-						getString("_UI_PropertyDescriptor_description",
-								"_UI_ValidationMessage_line_feature",
-								"_UI_ValidationMessage_type"),
-						QmodelPackage.Literals.VALIDATION_MESSAGE__LINE, true,
-						false, false,
-						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Column feature. <!--
+	 * This adds a property descriptor for the Start Position feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
-	protected void addColumnPropertyDescriptor(Object object) {
-		itemPropertyDescriptors
-				.add(createItemPropertyDescriptor(
-						((ComposeableAdapterFactory) adapterFactory)
-								.getRootAdapterFactory(),
-						getResourceLocator(),
-						getString("_UI_ValidationMessage_column_feature"),
-						getString("_UI_PropertyDescriptor_description",
-								"_UI_ValidationMessage_column_feature",
-								"_UI_ValidationMessage_type"),
-						QmodelPackage.Literals.VALIDATION_MESSAGE__COLUMN,
-						true, false, false,
-						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+	protected void addStartPositionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(),
+				getResourceLocator(),
+				getString("_UI_ValidationMessage_startPosition_feature"),
+				getString("_UI_PropertyDescriptor_description",
+						"_UI_ValidationMessage_startPosition_feature",
+						"_UI_ValidationMessage_type"),
+				QmodelPackage.Literals.VALIDATION_MESSAGE__START_POSITION,
+				true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the End Position feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addEndPositionPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(),
+				getResourceLocator(),
+				getString("_UI_ValidationMessage_endPosition_feature"),
+				getString("_UI_PropertyDescriptor_description",
+						"_UI_ValidationMessage_endPosition_feature",
+						"_UI_ValidationMessage_type"),
+				QmodelPackage.Literals.VALIDATION_MESSAGE__END_POSITION, true,
+				false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				null, null));
 	}
 
 	/**
@@ -202,8 +200,8 @@ public class ValidationMessageItemProvider extends ItemProviderAdapter
 		switch (notification.getFeatureID(ValidationMessage.class)) {
 		case QmodelPackage.VALIDATION_MESSAGE__SEVERITY:
 		case QmodelPackage.VALIDATION_MESSAGE__MESSAGE:
-		case QmodelPackage.VALIDATION_MESSAGE__LINE:
-		case QmodelPackage.VALIDATION_MESSAGE__COLUMN:
+		case QmodelPackage.VALIDATION_MESSAGE__START_POSITION:
+		case QmodelPackage.VALIDATION_MESSAGE__END_POSITION:
 			fireNotifyChanged(new ViewerNotification(notification,
 					notification.getNotifier(), false, true));
 			return;

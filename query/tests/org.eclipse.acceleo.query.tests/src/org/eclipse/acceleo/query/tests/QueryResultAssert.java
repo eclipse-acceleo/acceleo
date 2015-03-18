@@ -130,10 +130,8 @@ public class QueryResultAssert {
 			final ValidationMessage expectedMessage = expectedResult.getValidationMessages().get(i);
 			final ValidationMessage actualMessage = actualResult.getValidationMessages().get(i);
 			assertEquals(expectedMessage.getSeverity(), actualMessage.getSeverity());
-			// TODO assertEquals(expectedMessage.getLine(),
-			// actualMessage.getLine());
-			// TODO assertEquals(expectedMessage.getColumn(),
-			// actualMessage.getColumn());
+			assertEquals(expectedMessage.getStartPosition(), actualMessage.getStartPosition());
+			assertEquals(expectedMessage.getEndPosition(), actualMessage.getEndPosition());
 			assertEquals(expectedMessage.getMessage(), actualMessage.getMessage());
 		}
 	}

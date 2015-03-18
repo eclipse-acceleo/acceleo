@@ -85,7 +85,7 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getPossibleTypes(ast).size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorExpression", -1, -1);
+				"ErrorExpression", 0, 0);
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the notExisting variable", -1, -1);
+				"Couldn't find the notExisting variable", 0, 11);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Feature notExisting not found in EClass EClass", -1, -1);
+				"Feature notExisting not found in EClass EClass", 4, 16);
 	}
 
 	@Test
@@ -236,9 +236,9 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service", -1, -1);
+				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service", 1, 9);
 		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.ERROR,
-				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service", -1, -1);
+				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service", 1, 9);
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class ValidationTest {
 				validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR,
 				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service or EOperation",
-				-1, -1);
+				4, 22);
 	}
 
 	@Test
@@ -315,7 +315,7 @@ public class ValidationTest {
 				validationResult.getMessages().get(0),
 				ValidationMessageLevel.WARNING,
 				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=SingleString) service or EOperation",
-				-1, -1);
+				5, 30);
 	}
 
 	@Test
@@ -330,7 +330,7 @@ public class ValidationTest {
 				validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR,
 				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=EIntegerObject) service or EOperation",
-				-1, -1);
+				5, 23);
 	}
 
 	@Test
@@ -385,7 +385,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorTypeLiteral", -1, -1);
+				"ErrorTypeLiteral", 0, 14);
 	}
 
 	@Test
@@ -412,7 +412,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorTypeLiteral", -1, -1);
+				"ErrorTypeLiteral", 0, 25);
 	}
 
 	@Test
@@ -479,17 +479,17 @@ public class ValidationTest {
 	 *            the expected {@link IValidationMessage#getLevel() level}
 	 * @param expectedMessage
 	 *            the expected {@link IValidationMessage#getMessage() message}
-	 * @param expectedLine
-	 *            the expected {@link IValidationMessage#getLocationLine() line}
-	 * @param expectedColumn
-	 *            the expected {@link IValidationMessage#getLocationColumn() column}
+	 * @param expectedStartPosition
+	 *            the expected {@link IValidationMessage#getStartPosition() start position}
+	 * @param expectedEndPosition
+	 *            the expected {@link IValidationMessage#getEndPosition() end position}
 	 */
 	private void assertValidationMessage(IValidationMessage message, ValidationMessageLevel expectedLevel,
-			String expectedMessage, int expectedLine, int expectedColumn) {
+			String expectedMessage, int expectedStartPosition, int expectedEndPosition) {
 		assertEquals(expectedLevel, message.getLevel());
 		assertEquals(expectedMessage, message.getMessage());
-		assertEquals(expectedLine, message.getLocationLine());
-		assertEquals(expectedColumn, message.getLocationColumn());
+		assertEquals(expectedStartPosition, message.getStartPosition());
+		assertEquals(expectedEndPosition, message.getEndPosition());
 	}
 
 }

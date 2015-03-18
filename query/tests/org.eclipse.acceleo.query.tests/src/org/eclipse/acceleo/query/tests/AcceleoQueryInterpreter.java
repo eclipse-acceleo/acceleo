@@ -198,8 +198,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 				default:
 					throw new IllegalStateException();
 			}
-			message.setLine(msg.getLocationLine());
-			message.setColumn(msg.getLocationColumn());
+			message.setStartPosition(msg.getStartPosition());
+			message.setEndPosition(msg.getEndPosition());
 			message.setMessage(msg.getMessage());
 			result.getValidationMessages().add(message);
 		}

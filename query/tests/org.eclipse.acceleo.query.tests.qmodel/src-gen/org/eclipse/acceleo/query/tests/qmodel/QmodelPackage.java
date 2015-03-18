@@ -957,21 +957,22 @@ public interface QmodelPackage extends EPackage {
 	int VALIDATION_MESSAGE__MESSAGE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Line</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int VALIDATION_MESSAGE__LINE = 2;
+	int VALIDATION_MESSAGE__START_POSITION = 2;
 
 	/**
-	 * The feature id for the '<em><b>Column</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
+	 * The feature id for the '<em><b>End Position</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int VALIDATION_MESSAGE__COLUMN = 3;
+	int VALIDATION_MESSAGE__END_POSITION = 3;
 
 	/**
 	 * The number of structural features of the '<em>Validation Message</em>' class. <!-- begin-user-doc -->
@@ -1657,27 +1658,27 @@ public interface QmodelPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getLine <em>Line</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getStartPosition
+	 * <em>Start Position</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the attribute '<em>Line</em>'.
-	 * @see org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getLine()
+	 * @return the meta object for the attribute '<em>Start Position</em>'.
+	 * @see org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getStartPosition()
 	 * @see #getValidationMessage()
 	 * @generated
 	 */
-	EAttribute getValidationMessage_Line();
+	EAttribute getValidationMessage_StartPosition();
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getColumn <em>Column</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getEndPosition <em>End Position</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the attribute '<em>Column</em>'.
-	 * @see org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getColumn()
+	 * @return the meta object for the attribute '<em>End Position</em>'.
+	 * @see org.eclipse.acceleo.query.tests.qmodel.ValidationMessage#getEndPosition()
 	 * @see #getValidationMessage()
 	 * @generated
 	 */
-	EAttribute getValidationMessage_Column();
+	EAttribute getValidationMessage_EndPosition();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.qmodel.InvalidResult
@@ -2215,20 +2216,20 @@ public interface QmodelPackage extends EPackage {
 		EAttribute VALIDATION_MESSAGE__MESSAGE = eINSTANCE.getValidationMessage_Message();
 
 		/**
-		 * The meta object literal for the '<em><b>Line</b></em>' attribute feature. <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Start Position</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
 		 */
-		EAttribute VALIDATION_MESSAGE__LINE = eINSTANCE.getValidationMessage_Line();
+		EAttribute VALIDATION_MESSAGE__START_POSITION = eINSTANCE.getValidationMessage_StartPosition();
 
 		/**
-		 * The meta object literal for the '<em><b>Column</b></em>' attribute feature. <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>End Position</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
 		 */
-		EAttribute VALIDATION_MESSAGE__COLUMN = eINSTANCE.getValidationMessage_Column();
+		EAttribute VALIDATION_MESSAGE__END_POSITION = eINSTANCE.getValidationMessage_EndPosition();
 
 		/**
 		 * The meta object literal for the '

@@ -27,8 +27,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.ValidationMessageImpl#getSeverity <em>Severity</em>}
  * </li>
  * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.ValidationMessageImpl#getMessage <em>Message</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.ValidationMessageImpl#getLine <em>Line</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.ValidationMessageImpl#getColumn <em>Column</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.ValidationMessageImpl#getStartPosition <em>Start
+ * Position</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.qmodel.impl.ValidationMessageImpl#getEndPosition <em>End
+ * Position</em>}</li>
  * </ul>
  * </p>
  *
@@ -76,44 +78,44 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 	protected String message = MESSAGE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getLine() <em>Line</em>}' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getLine()
+	 * @see #getStartPosition()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int LINE_EDEFAULT = 0;
+	protected static final int START_POSITION_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getLine() <em>Line</em>}' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getLine()
+	 * @see #getStartPosition()
 	 * @generated
 	 * @ordered
 	 */
-	protected int line = LINE_EDEFAULT;
+	protected int startPosition = START_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getColumn() <em>Column</em>}' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getColumn()
+	 * @see #getEndPosition()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int COLUMN_EDEFAULT = 0;
+	protected static final int END_POSITION_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getColumn() <em>Column</em>}' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see #getColumn()
+	 * @see #getEndPosition()
 	 * @generated
 	 * @ordered
 	 */
-	protected int column = COLUMN_EDEFAULT;
+	protected int endPosition = END_POSITION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -183,8 +185,8 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 	 * 
 	 * @generated
 	 */
-	public int getLine() {
-		return line;
+	public int getStartPosition() {
+		return startPosition;
 	}
 
 	/**
@@ -192,12 +194,12 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 	 * 
 	 * @generated
 	 */
-	public void setLine(int newLine) {
-		int oldLine = line;
-		line = newLine;
+	public void setStartPosition(int newStartPosition) {
+		int oldStartPosition = startPosition;
+		startPosition = newStartPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, QmodelPackage.VALIDATION_MESSAGE__LINE,
-					oldLine, line));
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					QmodelPackage.VALIDATION_MESSAGE__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -205,8 +207,8 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 	 * 
 	 * @generated
 	 */
-	public int getColumn() {
-		return column;
+	public int getEndPosition() {
+		return endPosition;
 	}
 
 	/**
@@ -214,12 +216,12 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 	 * 
 	 * @generated
 	 */
-	public void setColumn(int newColumn) {
-		int oldColumn = column;
-		column = newColumn;
+	public void setEndPosition(int newEndPosition) {
+		int oldEndPosition = endPosition;
+		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, QmodelPackage.VALIDATION_MESSAGE__COLUMN,
-					oldColumn, column));
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					QmodelPackage.VALIDATION_MESSAGE__END_POSITION, oldEndPosition, endPosition));
 	}
 
 	/**
@@ -234,10 +236,10 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 				return getSeverity();
 			case QmodelPackage.VALIDATION_MESSAGE__MESSAGE:
 				return getMessage();
-			case QmodelPackage.VALIDATION_MESSAGE__LINE:
-				return getLine();
-			case QmodelPackage.VALIDATION_MESSAGE__COLUMN:
-				return getColumn();
+			case QmodelPackage.VALIDATION_MESSAGE__START_POSITION:
+				return getStartPosition();
+			case QmodelPackage.VALIDATION_MESSAGE__END_POSITION:
+				return getEndPosition();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -257,11 +259,11 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 			case QmodelPackage.VALIDATION_MESSAGE__MESSAGE:
 				setMessage((String)newValue);
 				return;
-			case QmodelPackage.VALIDATION_MESSAGE__LINE:
-				setLine((Integer)newValue);
+			case QmodelPackage.VALIDATION_MESSAGE__START_POSITION:
+				setStartPosition((Integer)newValue);
 				return;
-			case QmodelPackage.VALIDATION_MESSAGE__COLUMN:
-				setColumn((Integer)newValue);
+			case QmodelPackage.VALIDATION_MESSAGE__END_POSITION:
+				setEndPosition((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -281,11 +283,11 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 			case QmodelPackage.VALIDATION_MESSAGE__MESSAGE:
 				setMessage(MESSAGE_EDEFAULT);
 				return;
-			case QmodelPackage.VALIDATION_MESSAGE__LINE:
-				setLine(LINE_EDEFAULT);
+			case QmodelPackage.VALIDATION_MESSAGE__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
 				return;
-			case QmodelPackage.VALIDATION_MESSAGE__COLUMN:
-				setColumn(COLUMN_EDEFAULT);
+			case QmodelPackage.VALIDATION_MESSAGE__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -303,10 +305,10 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 				return severity != SEVERITY_EDEFAULT;
 			case QmodelPackage.VALIDATION_MESSAGE__MESSAGE:
 				return MESSAGE_EDEFAULT == null ? message != null : !MESSAGE_EDEFAULT.equals(message);
-			case QmodelPackage.VALIDATION_MESSAGE__LINE:
-				return line != LINE_EDEFAULT;
-			case QmodelPackage.VALIDATION_MESSAGE__COLUMN:
-				return column != COLUMN_EDEFAULT;
+			case QmodelPackage.VALIDATION_MESSAGE__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case QmodelPackage.VALIDATION_MESSAGE__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -326,10 +328,10 @@ public class ValidationMessageImpl extends MinimalEObjectImpl.Container implemen
 		result.append(severity);
 		result.append(", message: ");
 		result.append(message);
-		result.append(", line: ");
-		result.append(line);
-		result.append(", column: ");
-		result.append(column);
+		result.append(", startPosition: ");
+		result.append(startPosition);
+		result.append(", endPosition: ");
+		result.append(endPosition);
 		result.append(')');
 		return result.toString();
 	}

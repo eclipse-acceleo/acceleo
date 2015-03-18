@@ -95,7 +95,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Couldn't find the customToString(EClassifier=Adress) service or EOperation" line="1" column="4"/>
+        <validationMessages severity="ERROR" message="Couldn't find the customToString(EClassifier=Adress) service or EOperation" startPosition="4" endPosition="21"/>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.EObjectServices</classesToImport>
@@ -121,7 +121,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Feature name not found in EClass World" line="1" column="4"/>
+        <validationMessages severity="ERROR" message="Feature name not found in EClass World" startPosition="4" endPosition="9"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -355,7 +355,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress" startPosition="4" endPosition="29"/>
       </expectedResult>
     </expectations>
   </queries>

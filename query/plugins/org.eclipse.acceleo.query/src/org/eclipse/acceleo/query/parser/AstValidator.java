@@ -120,11 +120,19 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
 		for (IType type : types) {
 			if (type instanceof NothingType) {
-				// TODO position
-				// msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, ((NothingType)type)
-				// .getMessage(), ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine()));
+				final AstResult astResult = validationResult.getAstResult();
+				final int startPostion;
+				if (expression instanceof Call) {
+					startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+				} else if (expression instanceof FeatureAccess) {
+					startPostion = astResult.getEndPosition(((FeatureAccess)expression).getTarget());
+				} else {
+					startPostion = astResult.getStartPosition(expression);
+				}
+				final int endPosition = astResult.getEndPosition(expression);
+
 				msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, ((NothingType)type)
-						.getMessage(), -1, -1));
+						.getMessage(), startPostion, endPosition));
 			} else {
 				result.add(type);
 			}

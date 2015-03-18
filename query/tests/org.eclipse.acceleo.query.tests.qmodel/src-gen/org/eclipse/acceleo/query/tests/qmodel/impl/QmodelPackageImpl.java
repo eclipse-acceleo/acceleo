@@ -740,7 +740,7 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 	 * 
 	 * @generated
 	 */
-	public EAttribute getValidationMessage_Line() {
+	public EAttribute getValidationMessage_StartPosition() {
 		return (EAttribute)validationMessageEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -749,7 +749,7 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 	 * 
 	 * @generated
 	 */
-	public EAttribute getValidationMessage_Column() {
+	public EAttribute getValidationMessage_EndPosition() {
 		return (EAttribute)validationMessageEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -897,8 +897,8 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 		validationMessageEClass = createEClass(VALIDATION_MESSAGE);
 		createEAttribute(validationMessageEClass, VALIDATION_MESSAGE__SEVERITY);
 		createEAttribute(validationMessageEClass, VALIDATION_MESSAGE__MESSAGE);
-		createEAttribute(validationMessageEClass, VALIDATION_MESSAGE__LINE);
-		createEAttribute(validationMessageEClass, VALIDATION_MESSAGE__COLUMN);
+		createEAttribute(validationMessageEClass, VALIDATION_MESSAGE__START_POSITION);
+		createEAttribute(validationMessageEClass, VALIDATION_MESSAGE__END_POSITION);
 
 		invalidResultEClass = createEClass(INVALID_RESULT);
 
@@ -1112,10 +1112,10 @@ public class QmodelPackageImpl extends EPackageImpl implements QmodelPackage {
 		initEAttribute(getValidationMessage_Message(), ecorePackage.getEString(), "message", null, 1, 1,
 				ValidationMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getValidationMessage_Line(), ecorePackage.getEInt(), "line", null, 1, 1,
-				ValidationMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getValidationMessage_Column(), ecorePackage.getEInt(), "column", null, 1, 1,
+		initEAttribute(getValidationMessage_StartPosition(), ecorePackage.getEInt(), "startPosition", null,
+				1, 1, ValidationMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getValidationMessage_EndPosition(), ecorePackage.getEInt(), "endPosition", null, 1, 1,
 				ValidationMessage.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

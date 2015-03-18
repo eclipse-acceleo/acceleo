@@ -31,14 +31,14 @@ public class ValidationMessage implements IValidationMessage {
 	private final String message;
 
 	/**
-	 * The line.
+	 * The start position.
 	 */
-	private final int line;
+	private final int startPosition;
 
 	/**
-	 * The comlumn.
+	 * The end position.
 	 */
-	private final int column;
+	private final int endPosition;
 
 	/**
 	 * Constructor.
@@ -47,16 +47,16 @@ public class ValidationMessage implements IValidationMessage {
 	 *            the {@link ValidationMessageLevel}
 	 * @param message
 	 *            the message
-	 * @param line
-	 *            the line number
-	 * @param column
-	 *            the column number
+	 * @param startPosition
+	 *            the start position
+	 * @param endPosition
+	 *            the end position
 	 */
-	public ValidationMessage(ValidationMessageLevel level, String message, int line, int column) {
+	public ValidationMessage(ValidationMessageLevel level, String message, int startPosition, int endPosition) {
 		this.level = level;
 		this.message = message;
-		this.line = line;
-		this.column = column;
+		this.startPosition = startPosition;
+		this.endPosition = endPosition;
 	}
 
 	/**
@@ -92,21 +92,21 @@ public class ValidationMessage implements IValidationMessage {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationMessage#getLocationLine()
+	 * @see org.eclipse.acceleo.query.runtime.IValidationMessage#getStartPosition()
 	 */
 	@Override
-	public int getLocationLine() {
-		return line;
+	public int getStartPosition() {
+		return startPosition;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IValidationMessage#getLocationColumn()
+	 * @see org.eclipse.acceleo.query.runtime.IValidationMessage#getEndPosition()
 	 */
 	@Override
-	public int getLocationColumn() {
-		return column;
+	public int getEndPosition() {
+		return endPosition;
 	}
 
 }

@@ -84,8 +84,8 @@
     <genClasses ecoreClass="qmodel.ecore#//ValidationMessage">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/severity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/message"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/line"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/column"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/startPosition"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute qmodel.ecore#//ValidationMessage/endPosition"/>
     </genClasses>
     <genClasses ecoreClass="qmodel.ecore#//InvalidResult"/>
     <genClasses ecoreClass="qmodel.ecore#//EObjectResult">
