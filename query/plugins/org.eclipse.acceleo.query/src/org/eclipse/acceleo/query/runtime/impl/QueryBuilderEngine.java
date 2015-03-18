@@ -12,7 +12,9 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -74,8 +76,11 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 					.getErrorExpression());
 			List<Error> errors = new ArrayList<Error>(1);
 			errors.add(errorExpression);
-
-			result = new AstResult(errorExpression, errors);
+			final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+			if (expression != null) {
+				positions.put(errorExpression, Integer.valueOf(0));
+			}
+			result = new AstResult(errorExpression, positions, positions, errors);
 		}
 
 		return result;
