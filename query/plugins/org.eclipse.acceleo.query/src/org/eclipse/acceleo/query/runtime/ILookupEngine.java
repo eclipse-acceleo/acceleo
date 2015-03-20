@@ -69,15 +69,25 @@ public interface ILookupEngine {
 	Set<IService> getServices(Set<Class<?>> receiverTypes);
 
 	/**
-	 * Tells if a given {@link Method} is considered as a {@link IService#getServiceMethod() service} to
-	 * provide when querying.
+	 * Tells if a given {@link Method} is considered as a service to provide when querying.
 	 * 
+	 * @param instance
+	 *            the instance {@link Object} if any, <code>null</code> otherwise
 	 * @param method
-	 *            the method we want to know if it must be considered as a service to provide when querying.
-	 * @return <code>true</code> if a given {@link Method} is considered as a
-	 *         {@link IService#getServiceMethod() service} to provide when querying, <code>false</code>
+	 *            the {@link Method} to check
+	 * @return <code>true</code> if a given {@link Method} is considered as a service to provide when
+	 *         querying, <code>false</code> otherwise
+	 */
+	boolean isServiceMethod(Object instance, Method method);
+
+	/**
+	 * Tells if the given {@link Class} is already registered.
+	 * 
+	 * @param cls
+	 *            the {@link Class} to check.
+	 * @return <code>true</code> if the given {@link Class} is already registered, <code>false</code>
 	 *         otherwise
 	 */
-	boolean isServiceMethod(Method method);
+	public boolean isRegisteredService(Class<?> cls);
 
 }

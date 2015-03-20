@@ -13,8 +13,10 @@ package org.eclipse.acceleo.query.runtime.lookup.basic;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 
 /**
  * Lookup engine are used to retrieve services from a name and a set of arguments.
@@ -35,10 +38,15 @@ import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 public class BasicLookupEngine implements ILookupEngine {
 
 	/**
+	 * Message used when a service cannot be instantiated.
+	 */
+	public static final String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
+
+	/**
 	 * The method name a query service that needs to use a registered cross referencer must have so it can be
 	 * pass to the services.
 	 */
-	private static final String SET_CROSS_REFERENCER_METHOD_NAME = "setCrossReferencer";
+	public static final String SET_CROSS_REFERENCER_METHOD_NAME = "setCrossReferencer";
 
 	/**
 	 * Message used when a service doesn't have a zero-argument constructor.
@@ -51,9 +59,9 @@ public class BasicLookupEngine implements ILookupEngine {
 	private final Map<Integer, Map<String, List<IService>>> services = new HashMap<Integer, Map<String, List<IService>>>();
 
 	/**
-	 * {@link List} of known {@link IService} and their addition order.
+	 * Mapping from a {@link Class} to its {@link IService}.
 	 */
-	private final List<IService> servicesList = new ArrayList<IService>();
+	private final Map<Class<?>, Set<IService>> classToServices = new LinkedHashMap<Class<?>, Set<IService>>();
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
@@ -83,6 +91,24 @@ public class BasicLookupEngine implements ILookupEngine {
 	@Override
 	public CrossReferenceProvider getCrossReferencer() {
 		return crossReferencer;
+	}
+
+	/**
+	 * Gets Maps of multimethods : maps the arity to maps that maps service names to their IService list.
+	 * 
+	 * @return Maps of multimethods : maps the arity to maps that maps service names to their IService list
+	 */
+	protected Map<Integer, Map<String, List<IService>>> getServices() {
+		return services;
+	}
+
+	/**
+	 * Gets the mapping from a {@link Class} to its {@link IService}.
+	 * 
+	 * @return the mapping from a {@link Class} to its {@link IService}
+	 */
+	protected Map<Class<?>, Set<IService>> getClassToServices() {
+		return classToServices;
 	}
 
 	/**
@@ -158,21 +184,104 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * @param method1
 	 *            method1 to compare
 	 * @param method2
-	 *            method2 to compare.
-	 * @return <code>true</code> if method1 < method2 in terms of parameter types.
+	 *            method2 to compare
+	 * @return <code>true</code> if method1 <= method2 in terms of parameter types, <code>false</code>
+	 *         otherwise
 	 */
-	private boolean lower(Method method1, Method method2) {
-		Class<?>[] params1 = method1.getParameterTypes();
-		Class<?>[] params2 = method2.getParameterTypes();
-		int size = params1.length;
-		for (int i = 0; i < size; i++) {
-			Class<?> param1 = params1[i];
-			Class<?> param2 = params2[i];
-			if (param2.isAssignableFrom(param1) && param1 != param2) {
-				return true;
+	private boolean isLowerOrEqualParameterTypes(Method method1, Method method2) {
+		final Class<?>[] params1 = method1.getParameterTypes();
+		final Class<?>[] params2 = method2.getParameterTypes();
+		boolean result = params1.length == params2.length;
+
+		if (result) {
+			final int size = params1.length;
+			for (int i = 0; i < size; i++) {
+				Class<?> param1 = params1[i];
+				Class<?> param2 = params2[i];
+				if (!param2.isAssignableFrom(param1)) {
+					result = false;
+					break;
+				}
 			}
 		}
-		return false;
+
+		return result;
+	}
+
+	/**
+	 * Predicates that is <code>true</code> if and only if all method1's parameter types are assignable to
+	 * method2's parameter types at the same index and not all parameter types are the same at the same index.
+	 * 
+	 * @param method1
+	 *            method1 to compare
+	 * @param method2
+	 *            method2 to compare
+	 * @return <code>true</code> if method1 < method2 in terms of parameter types, <code>false</code>
+	 *         otherwise
+	 */
+	private boolean isLowerParameterTypes(Method method1, Method method2) {
+		return isLowerOrEqualParameterTypes(method1, method2) && !isEqualParameterTypes(method1, method2);
+	}
+
+	/**
+	 * Predicates that is <code>true</code> if and only if all method1's parameter types are the same as
+	 * method2's parameter types at the same index.
+	 * 
+	 * @param method1
+	 *            method1 to compare
+	 * @param method2
+	 *            method2 to compare
+	 * @return <code>true</code> if method1 == method2 in terms of parameter types, <code>false</code>
+	 *         otherwise
+	 */
+	private boolean isEqualParameterTypes(Method method1, Method method2) {
+		final Class<?>[] params1 = method1.getParameterTypes();
+		final Class<?>[] params2 = method2.getParameterTypes();
+		boolean result = params1.length == params2.length;
+
+		if (result) {
+			final int size = params1.length;
+			for (int i = 0; i < size; i++) {
+				Class<?> param1 = params1[i];
+				Class<?> param2 = params2[i];
+				if (param1 != param2) {
+					result = false;
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Tells if given methods are equals (same name and same argument types).
+	 * 
+	 * @param method1
+	 *            method1 to compare
+	 * @param method2
+	 *            method2 to compare
+	 * @return <code>true</code> if given methods are equals (same name and same argument types),
+	 *         <code>false</code> otherwise
+	 */
+	private boolean isEqual(Method method1, Method method2) {
+		return method1.getName().equals(method2.getName()) && isEqualParameterTypes(method1, method2);
+	}
+
+	/**
+	 * Tells if given methods have the same name and
+	 * {@link BasicLookupEngine#isLowerParameterTypes(Method, Method) lower parameter types}.
+	 * 
+	 * @param method1
+	 *            method1 to compare
+	 * @param method2
+	 *            method2 to compare
+	 * @return <code>true</code> if given methods have the same name and
+	 *         {@link BasicLookupEngine#isLowerParameterTypes(Method, Method) lower parameter types},
+	 *         <code>false</code> otherwise
+	 */
+	private boolean isLower(Method method1, Method method2) {
+		return method1.getName().equals(method2.getName()) && isLowerParameterTypes(method1, method2);
 	}
 
 	@Override
@@ -185,7 +294,7 @@ public class BasicLookupEngine implements ILookupEngine {
 			for (IService service : multiMethod) {
 				Method method = service.getServiceMethod();
 				if (matches(method, argumentTypes)
-						&& (result == null || lower(method, result.getServiceMethod()))) {
+						&& (result == null || isLowerOrEqualParameterTypes(method, result.getServiceMethod()))) {
 					result = service;
 				}
 			}
@@ -194,16 +303,16 @@ public class BasicLookupEngine implements ILookupEngine {
 	}
 
 	@Override
-	public boolean isServiceMethod(Method method) {
-		boolean objectMethod = method.getDeclaringClass() != Object.class;
-		return objectMethod;
+	public boolean isServiceMethod(Object instance, Method method) {
+		// We do not register java.lang.Object method as
+		// having an expression calling the 'wait' or the notify service
+		// could yield problems that are difficult to track down.
+		return method.getDeclaringClass() != Object.class
+				&& (instance != null || Modifier.isStatic(method.getModifiers()));
 	}
 
 	@Override
 	public boolean isCrossReferencerMethod(Method method) {
-		// We do not register java.lang.Object method as
-		// having an expression calling the 'wait' or the notify service
-		// could yield problems that are difficult to track down.
 		boolean crossRefSet = SET_CROSS_REFERENCER_METHOD_NAME.equals(method.getName())
 				&& method.getParameterTypes().length > 0
 				&& CrossReferenceProvider.class.isAssignableFrom(method.getParameterTypes()[0]);
@@ -215,90 +324,170 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * 
 	 * @param provider
 	 *            the {@link IServiceProvider} to register
+	 * @return the {@link ServiceRegistrationResult}
 	 * @throws InvalidAcceleoPackageException
 	 *             if the specified class doesn't follow the acceleo package rules.
 	 */
-	public void addServices(IServiceProvider provider) throws InvalidAcceleoPackageException {
+	private ServiceRegistrationResult registerServices(IServiceProvider provider)
+			throws InvalidAcceleoPackageException {
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+
 		for (IService service : provider.getServices(queryEnvironment)) {
-			final List<IService> multiMethod = getOrCreateMultimethod(service.getServiceMethod().getName(),
-					service.getServiceMethod().getParameterTypes().length);
-			multiMethod.add(service);
-			servicesList.add(service);
+			result.merge(registerService(provider.getClass(), service));
 		}
+
+		return result;
 	}
 
 	/**
 	 * Registers a new set of services.
 	 * 
 	 * @param newServices
-	 *            the class containing the methods to register.
+	 *            the {@link Class} containing the methods to register
+	 * @return the {@link ServiceRegistrationResult}
 	 * @throws InvalidAcceleoPackageException
-	 *             if the specified class doesn't follow the acceleo package rules.
+	 *             if the specified {@link Class} doesn't follow the acceleo package rules
 	 */
-	public void addServices(Class<?> newServices) throws InvalidAcceleoPackageException {
-		try {
-			Constructor<?> cstr = null;
-			Object instance = null;
+	public ServiceRegistrationResult registerServices(Class<?> newServices)
+			throws InvalidAcceleoPackageException {
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+
+		if (!isRegisteredService(newServices)) {
 			try {
-				cstr = newServices.getConstructor(new Class[] {});
-				instance = cstr.newInstance(new Object[] {});
-			} catch (NoSuchMethodException e) {
+				Constructor<?> cstr = null;
+				Object instance = null;
 				try {
-					cstr = newServices.getConstructor(new Class[] {IReadOnlyQueryEnvironment.class });
-					instance = cstr.newInstance(new Object[] {queryEnvironment });
-				} catch (NoSuchMethodException e1) {
-					throw new InvalidAcceleoPackageException(PACKAGE_PROBLEM_MSG
-							+ newServices.getCanonicalName(), e);
+					cstr = newServices.getConstructor(new Class[] {});
+					instance = cstr.newInstance(new Object[] {});
+				} catch (NoSuchMethodException e) {
+					try {
+						cstr = newServices.getConstructor(new Class[] {IReadOnlyQueryEnvironment.class });
+						instance = cstr.newInstance(new Object[] {queryEnvironment });
+					} catch (NoSuchMethodException e1) {
+						// we will go without instance and register only static methods
+					}
+				}
+				if (instance instanceof IServiceProvider) {
+					result.merge(registerServices((IServiceProvider)instance));
+				} else {
+					Method[] methods = newServices.getMethods();
+					result.merge(getServicesFromInstance(newServices, instance, methods));
+				}
+			} catch (SecurityException e) {
+				throw new InvalidAcceleoPackageException(
+						PACKAGE_PROBLEM_MSG + newServices.getCanonicalName(), e);
+			} catch (InstantiationException e) {
+				throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
+						+ newServices.getCanonicalName(), e);
+			} catch (IllegalAccessException e) {
+				throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
+						+ newServices.getCanonicalName(), e);
+			} catch (IllegalArgumentException e) {
+				throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
+						+ newServices.getCanonicalName(), e);
+			} catch (InvocationTargetException e) {
+				throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
+						+ newServices.getCanonicalName(), e);
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean isRegisteredService(Class<?> cls) {
+		return classToServices.containsKey(cls);
+	}
+
+	/**
+	 * Removes {@link IService} related to the given {@link Class}.
+	 * 
+	 * @param servicesClass
+	 *            the {@link Class} to unregister.
+	 */
+	public void removeServices(Class<?> servicesClass) {
+		Set<IService> servicesSet = classToServices.remove(servicesClass);
+		if (servicesSet != null) {
+			for (IService service : servicesSet) {
+				final int argc = service.getServiceMethod().getParameterTypes().length;
+				final Map<String, List<IService>> argcServices = services.get(argc);
+				final String serviceName = service.getServiceMethod().getName();
+				final List<IService> servicesList = argcServices.get(serviceName);
+				servicesList.remove(service);
+				if (servicesList.isEmpty()) {
+					argcServices.remove(serviceName);
+					if (argcServices.isEmpty()) {
+						services.remove(argc);
+					}
 				}
 			}
-			if (instance instanceof IServiceProvider) {
-				addServices((IServiceProvider)instance);
-			} else {
-				Method[] methods = newServices.getMethods();
-				getServicesFromInstance(instance, methods);
-			}
-		} catch (SecurityException e) {
-			throw new InvalidAcceleoPackageException(PACKAGE_PROBLEM_MSG + newServices.getCanonicalName(), e);
-		} catch (InstantiationException e) {
-			throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
-					+ newServices.getCanonicalName(), e);
-		} catch (IllegalAccessException e) {
-			throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
-					+ newServices.getCanonicalName(), e);
-		} catch (IllegalArgumentException e) {
-			throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
-					+ newServices.getCanonicalName(), e);
-		} catch (InvocationTargetException e) {
-			throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
-					+ newServices.getCanonicalName(), e);
 		}
 	}
 
 	/**
 	 * Gets {@link IService} from the given instance and {@link Method} array.
 	 * 
+	 * @param newServices
+	 *            the services {@link Class}
 	 * @param instance
 	 *            the instance
 	 * @param methods
 	 *            the array of {@link Method}
+	 * @return the {@link ServiceRegistrationResult}
 	 * @throws IllegalAccessException
 	 *             if invocation to set the cross referencer fails
 	 * @throws InvocationTargetException
 	 *             if invocation to set the cross referencer fails
 	 */
-	private void getServicesFromInstance(Object instance, Method[] methods) throws IllegalAccessException,
-			InvocationTargetException {
+	private ServiceRegistrationResult getServicesFromInstance(Class<?> newServices, Object instance,
+			Method[] methods) throws IllegalAccessException, InvocationTargetException {
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+
 		for (Method method : methods) {
 			if (isCrossReferencerMethod(method)) {
 				method.invoke(instance, crossReferencer);
-			} else if (isServiceMethod(method)) {
-				List<IService> multiMethod = getOrCreateMultimethod(method.getName(), method
-						.getParameterTypes().length);
+			} else if (isServiceMethod(instance, method)) {
 				final IService service = new Service(method, instance);
-				multiMethod.add(service);
-				servicesList.add(service);
+				result.merge(registerService(newServices, service));
 			}
 		}
+
+		return result;
+	}
+
+	/**
+	 * Registers the given {@link IService}.
+	 * 
+	 * @param newServices
+	 *            the services {@link Class}
+	 * @param service
+	 *            the {@link IService} to register
+	 * @return the {@link ServiceRegistrationResult}
+	 */
+	private ServiceRegistrationResult registerService(Class<?> newServices, IService service) {
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+
+		final List<IService> multiMethod = getOrCreateMultimethod(service.getServiceMethod().getName(),
+				service.getServiceMethod().getParameterTypes().length);
+		for (IService existingService : multiMethod) {
+			if (isEqual(service.getServiceMethod(), existingService.getServiceMethod())) {
+				result.addDuplicated(service.getServiceMethod(), existingService.getServiceMethod());
+			} else if (isLower(service.getServiceMethod(), existingService.getServiceMethod())) {
+				result.addMasked(service.getServiceMethod(), existingService.getServiceMethod());
+			} else if (isLower(existingService.getServiceMethod(), service.getServiceMethod())) {
+				result.addIsMaskedBy(service.getServiceMethod(), existingService.getServiceMethod());
+			}
+		}
+		result.getRegistered().add(service.getServiceMethod());
+		multiMethod.add(service);
+		Set<IService> servicesSet = classToServices.get(newServices);
+		if (servicesSet == null) {
+			servicesSet = new LinkedHashSet<IService>();
+			classToServices.put(newServices, servicesSet);
+		}
+		servicesSet.add(service);
+
+		return result;
 	}
 
 	@Override
@@ -306,9 +495,11 @@ public class BasicLookupEngine implements ILookupEngine {
 		final Set<IService> result = new LinkedHashSet<IService>();
 
 		for (Class<?> cls : receiverTypes) {
-			for (IService service : servicesList) {
-				if (service.getServiceMethod().getParameterTypes()[0].isAssignableFrom(cls)) {
-					result.add(service);
+			for (Set<IService> servicesSet : classToServices.values()) {
+				for (IService service : servicesSet) {
+					if (service.getServiceMethod().getParameterTypes()[0].isAssignableFrom(cls)) {
+						result.add(service);
+					}
 				}
 			}
 		}

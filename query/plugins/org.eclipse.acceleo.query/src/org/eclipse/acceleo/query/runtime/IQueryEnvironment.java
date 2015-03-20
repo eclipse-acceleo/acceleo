@@ -42,10 +42,29 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * 
 	 * @param services
 	 *            the service package to be registered.
+	 * @return the {@link ServiceRegistrationResult}
 	 * @throws InvalidAcceleoPackageException
 	 *             if the specified class has no default constructor.
 	 */
-	void registerServicePackage(Class<?> services) throws InvalidAcceleoPackageException;
+	ServiceRegistrationResult registerServicePackage(Class<?> services) throws InvalidAcceleoPackageException;
+
+	/**
+	 * Tells if the given {@link Class} is already registered.
+	 * 
+	 * @param services
+	 *            the service package to check
+	 * @return <code>true</code> if the given {@link Class} is already registered, <code>false</code>
+	 *         otherwise
+	 */
+	boolean isRegiteredServicePackage(Class<?> services);
+
+	/**
+	 * Removes the given {@link Class} from registered the service package.
+	 * 
+	 * @param services
+	 *            the service package to be removed
+	 */
+	void removeServicePackage(Class<?> services);
 
 	/**
 	 * Registers a new {@link EPackage} that can be referred during evaluation and validation.

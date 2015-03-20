@@ -72,7 +72,7 @@ public class EvaluationServiceLoggingTests {
 		engine = queryEnvironment.getLookupEngine();
 		TestServiceDefinition instance = new TestServiceDefinition();
 		try {
-			engine.addServices(TestServiceDefinition.class);
+			engine.registerServices(TestServiceDefinition.class);
 		} catch (InvalidAcceleoPackageException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -50,4 +50,22 @@ public abstract class AbstractService implements IService {
 
 		return result;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		final String result;
+
+		if (getServiceMethod() != null) {
+			result = "Service: " + getServiceMethod().toString();
+		} else {
+			result = super.toString();
+		}
+
+		return result;
+	}
 }

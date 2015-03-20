@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.services.BooleanServices;
@@ -86,8 +87,24 @@ public class QueryEnvironment implements IQueryEnvironment {
 	}
 
 	@Override
-	public void registerServicePackage(Class<?> services) throws InvalidAcceleoPackageException {
-		lookupEngine.addServices(services);
+	public ServiceRegistrationResult registerServicePackage(Class<?> services)
+			throws InvalidAcceleoPackageException {
+		return lookupEngine.registerServices(services);
+	}
+
+	@Override
+	public boolean isRegiteredServicePackage(Class<?> cls) {
+		return lookupEngine.isRegisteredService(cls);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeServicePackage(java.lang.Class)
+	 */
+	@Override
+	public void removeServicePackage(Class<?> services) {
+		lookupEngine.removeServices(services);
 	}
 
 	@Override

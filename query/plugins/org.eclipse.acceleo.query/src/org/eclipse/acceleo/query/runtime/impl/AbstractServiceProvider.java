@@ -29,6 +29,12 @@ import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 public abstract class AbstractServiceProvider implements IServiceProvider {
 
 	/**
+	 * Wrong implementation of this {@link Class} message.
+	 */
+	private static final String WRONG_IMPLEMENETATION = "Wrong implementation of "
+			+ AbstractServiceProvider.class.getName();
+
+	/**
 	 * {@link List} of {@link IService}.
 	 */
 	private List<IService> services;
@@ -38,12 +44,13 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 			throws InvalidAcceleoPackageException {
 		try {
 			if (services == null) {
+				final Method getServicesMethod = getClass().getMethod("getServices", IReadOnlyQueryEnvironment.class);
 				services = new ArrayList<IService>();
 				final Method[] methods = this.getClass().getMethods();
 				for (Method method : methods) {
 					if (queryEnvironment.getLookupEngine().isCrossReferencerMethod(method)) {
 						method.invoke(this, queryEnvironment.getLookupEngine().getCrossReferencer());
-					} else if (queryEnvironment.getLookupEngine().isServiceMethod(method)) {
+					} else if (queryEnvironment.getLookupEngine().isServiceMethod(this, method) && !getServicesMethod.equals(method)) {
 						final IService service = getService(method);
 						if (service != null) {
 							services.add(service);
@@ -60,6 +67,10 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 		} catch (InvocationTargetException e) {
 			throw new InvalidAcceleoPackageException(ILookupEngine.INSTANTIATION_PROBLEM_MSG
 					+ getClass().getCanonicalName(), e);
+		} catch (NoSuchMethodException e) {
+			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENETATION, e);
+		} catch (SecurityException e) {
+			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENETATION, e);
 		}
 
 		return services;
