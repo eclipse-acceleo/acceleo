@@ -1589,6 +1589,27 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 	}
 
 	@Test
+	public void testEInverseFeatureNameObEObject() {
+		final IService service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE, "ePackage" });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	@Test
 	public void testEInverseFiltered() {
 		final IService service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE,
 				EcorePackage.eINSTANCE.eClass() });

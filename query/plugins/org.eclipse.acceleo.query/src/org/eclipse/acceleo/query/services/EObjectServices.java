@@ -454,7 +454,7 @@ public class EObjectServices extends AbstractServiceProvider {
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
+					if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClass)) {
 						result.add(new SetType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
 						result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
@@ -490,9 +490,10 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClassifier)) {
-				for (EClass inverseEClass : queryEnvironment.getEPackageProvider().getInverseEClasses(
-						receiverEClass)) {
+			final Set<EClass> inverseEClasses = queryEnvironment.getEPackageProvider().getInverseEClasses(
+					receiverEClass);
+			if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClass)) {
+				for (EClass inverseEClass : inverseEClasses) {
 					result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
 							inverseEClass)));
 				}
@@ -502,8 +503,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass inverseEClass : queryEnvironment.getEPackageProvider().getInverseEClasses(
-						receiverEClass)) {
+				for (EClass inverseEClass : inverseEClasses) {
 					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
 							inverseEClass), filterType);
 					if (lowerType != null) {
@@ -518,7 +518,6 @@ public class EObjectServices extends AbstractServiceProvider {
 
 			return result;
 		}
-
 	}
 
 	/**
