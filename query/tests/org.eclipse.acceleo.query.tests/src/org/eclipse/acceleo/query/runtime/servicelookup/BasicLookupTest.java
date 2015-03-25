@@ -10,19 +10,19 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 
 public class BasicLookupTest extends AbtractServiceLookupTest {
 
 	@Override
-	BasicLookupEngine getEngine() {
+	ILookupEngine getEngine() {
 		IQueryEnvironment queryEnvironment = new QueryEnvironment(null);
-		BasicLookupEngine engine = queryEnvironment.getLookupEngine();
+		ILookupEngine engine = queryEnvironment.getLookupEngine();
 		try {
-			engine.addServices(ServicesClass.class);
+			queryEnvironment.registerServicePackage(ServicesClass.class);
 		} catch (InvalidAcceleoPackageException e) {
 			throw new UnsupportedOperationException("shouldn't happen.", e);
 		}

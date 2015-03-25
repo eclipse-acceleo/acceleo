@@ -17,9 +17,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
-import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
@@ -42,16 +42,20 @@ import org.eclipse.emf.ecore.EObject;
 public class AnyServices extends AbstractServiceProvider {
 
 	/**
-	 * The Class constructor.
+	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
-	public AnyServices() {
-	}
+	private final IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 */
+	public AnyServices(IReadOnlyQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
+	}
+
 	@Override
 	protected IService getService(Method publicMethod) {
 		final IService result;
@@ -60,15 +64,15 @@ public class AnyServices extends AbstractServiceProvider {
 			result = new FilterService(publicMethod, this) {
 
 				@Override
-				public Set<IType> getType(ValidationServices services, EPackageProvider provider,
+				public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment environment,
 						List<IType> argTypes) {
 					final Set<IType> result = new LinkedHashSet<IType>();
 
 					final Object type = argTypes.get(1).getType();
 					if (type instanceof EClassifier) {
-						result.add(new EClassifierType((EClassifier)type));
+						result.add(new EClassifierType(environment, (EClassifier)type));
 					} else if (type instanceof Class) {
-						result.add(new ClassType((Class<?>)type));
+						result.add(new ClassType(environment, (Class<?>)type));
 					} else if (type != null) {
 						result.add(services.nothing("Don't know what kind of type is %s", type));
 					} else {
@@ -182,25 +186,6 @@ public class AnyServices extends AbstractServiceProvider {
 		return o1.compareTo(o2) >= 0;
 	}
 
-	//
-	// /**
-	// * Handles calls to the "eContainer" operation. This will retrieve the very first container in the
-	// * hierarchy that is of type <em>filter</em>.
-	// *
-	// * @param o1
-	// * the reference EObject we seek to retrieve a feature value of.
-	// * @param filter
-	// * Types of the container we seek to retrieve.
-	// * @return The first container of type <em>filter</em>.
-	// */
-	// public Object eContainer(EObject o1, EClassifier filter) {
-	// EObject container = o1.eContainer();
-	// while (container != null && !filter.isInstance(container)) {
-	// container = container.eContainer();
-	// }
-	// return container;
-	// }
-
 	/**
 	 * Returns the string representation of self object to which we concatenated the string "s".
 	 * 
@@ -269,7 +254,12 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			result = ((EClassifier)type).getInstanceClass().isAssignableFrom(object.getClass());
+			final Class<?> cls = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
+			if (cls == null) {
+				throw new IllegalArgumentException(String.format(
+						"%s is not registered in the current environment", type));
+			}
+			result = cls.isAssignableFrom(object.getClass());
 		} else if (type instanceof Class<?>) {
 			result = ((Class<?>)type).isAssignableFrom(object.getClass());
 		} else {
@@ -307,7 +297,12 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			result = ((EClassifier)type).getInstanceClass().isAssignableFrom(object.getClass());
+			final Class<?> cls = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
+			if (cls == null) {
+				throw new IllegalArgumentException(String.format(
+						"%s is not registered in the current environment", type));
+			}
+			result = cls.isAssignableFrom(object.getClass());
 		} else if (type instanceof Class<?>) {
 			result = ((Class<?>)type).equals(object.getClass());
 		} else {

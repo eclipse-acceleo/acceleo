@@ -12,8 +12,6 @@ package org.eclipse.acceleo.query.runtime;
 
 import java.util.List;
 
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
-
 /**
  * Interface that can be implemented by service {@link Class} to provides its own {@link IService}.
  * 
@@ -24,12 +22,13 @@ public interface IServiceProvider {
 	/**
 	 * Gets services offered by this class.
 	 * 
-	 * @param lookup
-	 *            the {@link BasicLookupEngine}
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @return services offered by this class
 	 * @throws InvalidAcceleoPackageException
 	 *             if the specified class doesn't follow the acceleo package rules.
 	 */
-	List<IService> getServices(BasicLookupEngine lookup) throws InvalidAcceleoPackageException;
+	List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment)
+			throws InvalidAcceleoPackageException;
 
 }

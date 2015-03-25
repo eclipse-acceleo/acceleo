@@ -24,9 +24,9 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
-import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
@@ -70,23 +70,24 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
-								.get(1)).getType())));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SequenceType(services.nothing(
+				result.add(new SequenceType(queryEnvironment, services.nothing(
 						"Only EClass can be contained into other EClasses not %s", argTypes.get(0))));
 			}
 
@@ -99,8 +100,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -108,27 +109,32 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : provider.getAllContainingEClasses(receiverEClass)) {
-					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getAllContainingEClasses(receiverEClass)) {
+					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+							containingEClass)));
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't be contained", argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing("%s can't be contained",
+							argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : provider.getAllContainingEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getAllContainingEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containingEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SequenceType(lowerType));
+						result.add(new SequenceType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing(
+					result.add(new SequenceType(queryEnvironment, services.nothing(
 							"%s can't contain directly or indirectly %s", filterType, argTypes.get(0))));
 				}
 			}
@@ -158,7 +164,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
@@ -167,10 +174,11 @@ public class EObjectServices extends AbstractServiceProvider {
 					if (argTypes.size() == 1) {
 						result.add(argTypes.get(0));
 					} else if (argTypes.size() == 2) {
-						result.add(new EClassifierType(((EClassifierLiteralType)argTypes.get(1)).getType()));
+						result.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType)argTypes
+								.get(1)).getType()));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(services.nothing("Only EClass can be contained into other EClasses not %s",
@@ -186,8 +194,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -195,21 +203,24 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : provider.getContainingEClasses(receiverEClass)) {
-					result.add(new EClassifierType(containingEClass));
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider().getContainingEClasses(
+						receiverEClass)) {
+					result.add(new EClassifierType(queryEnvironment, containingEClass));
 				}
 				if (result.isEmpty()) {
 					result.add(services.nothing("%s can't be contained", argTypes.get(0)));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : provider.getAllContainingEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getAllContainingEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containingEClass), filterType);
 					if (lowerType != null) {
 						result.add(lowerType);
 					}
@@ -245,24 +256,25 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
-								.get(1)).getType())));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SequenceType(services.nothing("Only EClass can contain other EClasses not %s",
-						argTypes.get(0))));
+				result.add(new SequenceType(queryEnvironment, services.nothing(
+						"Only EClass can contain other EClasses not %s", argTypes.get(0))));
 			}
 
 			return result;
@@ -274,8 +286,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -283,31 +295,35 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			final Set<IType> containedTypes = new LinkedHashSet<IType>();
-			for (EClass contained : provider.getContainedEClasses(receiverEClass)) {
-				containedTypes.add(new SequenceType(new EClassifierType(contained)));
+			for (EClass contained : queryEnvironment.getEPackageProvider().getContainedEClasses(
+					receiverEClass)) {
+				containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						contained)));
 			}
 			if (argTypes.size() == 1) {
 				result.addAll(containedTypes);
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s doesn't contain any other EClass",
-							argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s doesn't contain any other EClass", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containedEClass : provider.getContainedEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containedEClass), filterType);
+				for (EClass containedEClass : queryEnvironment.getEPackageProvider().getContainedEClasses(
+						receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containedEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SequenceType(lowerType));
+						result.add(new SequenceType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't contain %s direclty", argTypes
-							.get(0), filterType)));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s can't contain %s direclty", argTypes.get(0), filterType)));
 				}
 			}
 
@@ -336,24 +352,25 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
-								.get(1)).getType())));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SequenceType(services.nothing("Only EClass can contain other EClasses not %s",
-						argTypes.get(0))));
+				result.add(new SequenceType(queryEnvironment, services.nothing(
+						"Only EClass can contain other EClasses not %s", argTypes.get(0))));
 			}
 
 			return result;
@@ -365,8 +382,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -374,30 +391,34 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			final Set<IType> containedTypes = new LinkedHashSet<IType>();
-			for (EClass contained : provider.getAllContainedEClasses(receiverEClass)) {
-				containedTypes.add(new SequenceType(new EClassifierType(contained)));
+			for (EClass contained : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
+					receiverEClass)) {
+				containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						contained)));
 			}
 			if (argTypes.size() == 1) {
 				result.addAll(containedTypes);
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s doesn't contain any other EClass",
-							argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s doesn't contain any other EClass", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containedEClass : provider.getAllContainedEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containedEClass), filterType);
+				for (EClass containedEClass : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
+						receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containedEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SequenceType(lowerType));
+						result.add(new SequenceType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing(
+					result.add(new SequenceType(queryEnvironment, services.nothing(
 							"%s can't contain %s direclty or indirectly", argTypes.get(0), filterType)));
 				}
 			}
@@ -426,24 +447,25 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SetType(argTypes.get(0)));
+						result.add(new SetType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SetType(new EClassifierType(((EClassifierLiteralType)argTypes.get(1))
-								.getType())));
+						result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SetType(services.nothing("Only EClass can have inverse not %s", argTypes
-						.get(0))));
+				result.add(new SetType(queryEnvironment, services.nothing(
+						"Only EClass can have inverse not %s", argTypes.get(0))));
 			}
 
 			return result;
@@ -455,8 +477,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -464,28 +486,33 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClassifier)) {
-				for (EClass inverseEClass : provider.getInverseEClasses(receiverEClass)) {
-					result.add(new SetType(new EClassifierType(inverseEClass)));
+				for (EClass inverseEClass : queryEnvironment.getEPackageProvider().getInverseEClasses(
+						receiverEClass)) {
+					result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
+							inverseEClass)));
 				}
 				if (result.isEmpty()) {
-					result.add(new SetType(services.nothing("%s don't have inverse", argTypes.get(0))));
+					result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse",
+							argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass inverseEClass : provider.getInverseEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(inverseEClass), filterType);
+				for (EClass inverseEClass : queryEnvironment.getEPackageProvider().getInverseEClasses(
+						receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							inverseEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SetType(lowerType));
+						result.add(new SetType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SetType(services.nothing("%s don't have inverse to %s", argTypes.get(0),
-							filterType)));
+					result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse to %s",
+							argTypes.get(0), filterType)));
 				}
 			}
 
@@ -514,23 +541,24 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
-								.get(1)).getType())));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SequenceType(services.nothing(
+				result.add(new SequenceType(queryEnvironment, services.nothing(
 						"Only EClass can have following siblings not %s", argTypes.get(0))));
 			}
 
@@ -543,8 +571,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -552,29 +580,33 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : provider.getFollowingSiblingsEClasses(receiverEClass)) {
-					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getFollowingSiblingsEClasses(receiverEClass)) {
+					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+							containingEClass)));
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't have following siblings", argTypes
-							.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s can't have following siblings", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : provider.getFollowingSiblingsEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getFollowingSiblingsEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containingEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SequenceType(lowerType));
+						result.add(new SequenceType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't be a following sibling of %s",
-							filterType, argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s can't be a following sibling of %s", filterType, argTypes.get(0))));
 				}
 			}
 
@@ -603,23 +635,24 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
-								.get(1)).getType())));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SequenceType(services.nothing(
+				result.add(new SequenceType(queryEnvironment, services.nothing(
 						"Only EClass can have preceding siblings not %s", argTypes.get(0))));
 			}
 
@@ -632,8 +665,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -641,29 +674,33 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : provider.getPrecedingSiblingsEClasses(receiverEClass)) {
-					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getPrecedingSiblingsEClasses(receiverEClass)) {
+					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+							containingEClass)));
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't have preceding siblings", argTypes
-							.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s can't have preceding siblings", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : provider.getPrecedingSiblingsEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+						.getPrecedingSiblingsEClasses(receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containingEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SequenceType(lowerType));
+						result.add(new SequenceType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't be a preceding sibling of %s",
-							filterType, argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s can't be a preceding sibling of %s", filterType, argTypes.get(0))));
 				}
 			}
 
@@ -692,24 +729,25 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
-						result.add(new SequenceType(argTypes.get(0)));
+						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
 					} else if (argTypes.size() == 2) {
-						result.add(new SequenceType(new EClassifierType(((EClassifierLiteralType)argTypes
-								.get(1)).getType())));
+						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, provider, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(new SequenceType(services.nothing("Only EClass can have siblings not %s", argTypes
-						.get(0))));
+				result.add(new SequenceType(queryEnvironment, services.nothing(
+						"Only EClass can have siblings not %s", argTypes.get(0))));
 			}
 
 			return result;
@@ -721,8 +759,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * 
 		 * @param services
 		 *            the {@link ValidationServices}
-		 * @param provider
-		 *            the {@link EPackageProvider}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
 		 * @param argTypes
 		 *            arguments {@link IType}
 		 * @param receiverEClass
@@ -730,34 +768,38 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services, EPackageProvider provider,
-				List<IType> argTypes, final EClass receiverEClass) {
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : provider.getSiblingsEClasses(receiverEClass)) {
-					result.add(new SequenceType(new EClassifierType(containingEClass)));
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
+						receiverEClass)) {
+					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+							containingEClass)));
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't have siblings", argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing("%s can't have siblings",
+							argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
 				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : provider.getSiblingsEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(containingEClass), filterType);
+				for (EClass containingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
+						receiverEClass)) {
+					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+							containingEClass), filterType);
 					if (lowerType != null) {
-						result.add(new SequenceType(lowerType));
+						result.add(new SequenceType(queryEnvironment, lowerType));
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(new SequenceType(services.nothing("%s can't be a sibling of %s", filterType,
-							argTypes.get(0))));
+					result.add(new SequenceType(queryEnvironment, services.nothing(
+							"%s can't be a sibling of %s", filterType, argTypes.get(0))));
 				}
 			}
 
 			return result;
 		}
-
 	}
 
 	/**

@@ -28,10 +28,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -63,7 +63,7 @@ public class EvaluationServicesTest {
 
 	QueryEnvironment queryEnvironment;
 
-	BasicLookupEngine engine;
+	ILookupEngine engine;
 
 	EvaluationServices services;
 

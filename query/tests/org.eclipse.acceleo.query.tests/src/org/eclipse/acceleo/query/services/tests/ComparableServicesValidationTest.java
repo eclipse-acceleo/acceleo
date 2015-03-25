@@ -29,7 +29,7 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getLookupEngine().addServices(ComparableServices.class);
+		getQueryEnvironment().registerServicePackage(ComparableServices.class);
 	}
 
 	@Test
@@ -37,14 +37,13 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("lower", new Object[] {"", "" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -52,14 +51,13 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("lowerEqual", new Object[] {"", "" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -67,14 +65,13 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("greater", new Object[] {"", "" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -82,14 +79,13 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("greaterEqual", new Object[] {"", "" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -97,14 +93,13 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("equals", new Object[] {"", "" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -112,14 +107,13 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("differs", new Object[] {"", "" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 }

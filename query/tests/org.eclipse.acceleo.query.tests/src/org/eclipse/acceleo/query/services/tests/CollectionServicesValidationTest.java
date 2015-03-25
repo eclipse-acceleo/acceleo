@@ -44,7 +44,7 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getLookupEngine().addServices(CollectionServices.class);
+		getQueryEnvironment().registerServicePackage(CollectionServices.class);
 	}
 
 	@Test
@@ -54,23 +54,25 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		final NothingType nothingType = new NothingType("Empty");
-		argTypes.add(new SequenceType(nothingType));
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), nothingType));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(nothingType), it.next());
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), nothingType), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		final Set<IType> validatedTypes = service.validateAllType(getValidationServices(),
-				getQueryEnvironment().getEPackageProvider(), allTypes);
+				getQueryEnvironment(), allTypes);
 		assertEquals(1, validatedTypes.size());
 		it = validatedTypes.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 	}
 
 	@Test
@@ -80,23 +82,25 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		final NothingType nothingType = new NothingType("Empty");
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new SequenceType(nothingType));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), nothingType));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(nothingType), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), nothingType), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		final Set<IType> validatedTypes = service.validateAllType(getValidationServices(),
-				getQueryEnvironment().getEPackageProvider(), allTypes);
+				getQueryEnvironment(), allTypes);
 		assertEquals(1, validatedTypes.size());
 		it = validatedTypes.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 	}
 
 	@Test
@@ -105,15 +109,18 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new ArrayList<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new SequenceType(new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -123,23 +130,24 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		final NothingType nothingType = new NothingType("Empty");
-		argTypes.add(new SetType(nothingType));
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), nothingType));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(nothingType), it.next());
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), nothingType), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		final Set<IType> validatedTypes = service.validateAllType(getValidationServices(),
-				getQueryEnvironment().getEPackageProvider(), allTypes);
+				getQueryEnvironment(), allTypes);
 		assertEquals(1, validatedTypes.size());
 		it = validatedTypes.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -149,23 +157,24 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		final NothingType nothingType = new NothingType("Empty");
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new SetType(nothingType));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), nothingType));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
-		assertEquals(new SetType(nothingType), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
+		assertEquals(new SetType(getQueryEnvironment(), nothingType), it.next());
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		final Set<IType> validatedTypes = service.validateAllType(getValidationServices(),
-				getQueryEnvironment().getEPackageProvider(), allTypes);
+				getQueryEnvironment(), allTypes);
 		assertEquals(1, validatedTypes.size());
 		it = validatedTypes.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -174,15 +183,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new LinkedHashSet<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new SetType(new ClassType(Integer.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
-		assertEquals(new SetType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)),
+				it.next());
 	}
 
 	@Test
@@ -191,11 +201,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new ClassType(getQueryEnvironment(),
+						Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
 		IType next = it.next();
@@ -205,36 +217,50 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testAnySet() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("any", new Object[] {new LinkedHashSet<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("any", new Object[] {new LinkedHashSet<String>(), lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SetType(getQueryEnvironment(),
+					new ClassType(getQueryEnvironment(), String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(String.class), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
 	public void testAnyList() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(String.class), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
@@ -242,13 +268,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("asOrderedSet", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -256,13 +282,14 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("asOrderedSet", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -270,13 +297,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("asSequence", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 	}
 
 	@Test
@@ -284,13 +311,14 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("asSequence", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 	}
 
 	@Test
@@ -298,13 +326,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("asSet", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -312,13 +340,14 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("asSet", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -327,13 +356,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(String.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
 	}
 
 	@Test
@@ -342,14 +371,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("collect", new Object[] {new LinkedHashSet<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new ClassType(Integer.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new ClassType(getQueryEnvironment(),
+						Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)),
+				it.next());
 	}
 
 	@Test
@@ -358,14 +389,17 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("collect", new Object[] {new ArrayList<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new ClassType(getQueryEnvironment(),
+						Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -374,15 +408,18 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new ArrayList<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new SequenceType(new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -391,13 +428,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Integer.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
 	}
 
 	@Test
@@ -406,13 +442,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Integer.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
 	}
 
 	@Test
@@ -421,13 +457,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -436,13 +471,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -451,13 +486,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -466,13 +500,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -481,15 +515,17 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -498,15 +534,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
-		assertEquals(new SetType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)),
+				it.next());
 	}
 
 	@Test
@@ -515,14 +552,14 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Integer.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
 	}
 
 	@Test
@@ -531,16 +568,18 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0), Double.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
-		argTypes.add(new ClassType(Double.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), Double.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Double.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Double.class)), it.next());
 	}
 
 	@Test
@@ -562,11 +601,11 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 					new LinkedHashSet<Integer>() });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
-			argTypes.add(new SetType(new EClassifierType(eCls1)));
-			argTypes.add(new SetType(new EClassifierType(eCls2)));
+			argTypes.add(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(), eCls1)));
+			argTypes.add(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(), eCls2)));
 
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -610,11 +649,11 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 					new LinkedHashSet<Integer>() });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
-			argTypes.add(new SetType(new EClassifierType(eCls1)));
-			argTypes.add(new SetType(new EClassifierType(eCls2)));
+			argTypes.add(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(), eCls1)));
+			argTypes.add(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(), eCls2)));
 
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -632,14 +671,14 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -648,14 +687,15 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new LinkedHashSet<EClassifier>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(EClass.class)));
-		argTypes.add(new SetType(new ClassType(EClassifier.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), EClass.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				EClassifier.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(EClass.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), EClass.class)),
+				it.next());
 	}
 
 	@Test
@@ -664,14 +704,15 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new LinkedHashSet<EClassifier>(), new LinkedHashSet<EClass>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(EClassifier.class)));
-		argTypes.add(new SetType(new ClassType(EClass.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				EClassifier.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), EClass.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(EClass.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), EClass.class)),
+				it.next());
 	}
 
 	@Test
@@ -679,13 +720,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("isEmpty", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -693,13 +734,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("isEmpty", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -709,15 +749,15 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new Object[] {new LinkedHashSet<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEClass())));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new EClassifierType(
+						getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -726,15 +766,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("isUnique", new Object[] {new ArrayList<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEClass())));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new EClassifierType(
+						getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -742,13 +783,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("last", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(String.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
 	}
 
 	@Test
@@ -756,13 +797,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("notEmpty", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -770,13 +811,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("notEmpty", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
 	}
 
 	@Test
@@ -785,11 +825,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new ClassType(getQueryEnvironment(),
+						Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
 		IType next = it.next();
@@ -799,36 +841,52 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testOneSet() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("one", new Object[] {new LinkedHashSet<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("one", new Object[] {new LinkedHashSet<String>(), lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SetType(getQueryEnvironment(),
+					new ClassType(getQueryEnvironment(), String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBooleanObject()), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
 	public void testOneList() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Boolean.class), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBooleanObject()), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
@@ -837,15 +895,17 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -854,11 +914,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new ClassType(getQueryEnvironment(),
+						Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
 		IType next = it.next();
@@ -868,36 +930,53 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testRejectSet() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("reject", new Object[] {new LinkedHashSet<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("reject", new Object[] {new LinkedHashSet<String>(),
+					lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SetType(getQueryEnvironment(),
+					new ClassType(getQueryEnvironment(), String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new SetType(getQueryEnvironment(),
+					new ClassType(getQueryEnvironment(), String.class)), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
 	public void testRejectList() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class)), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
@@ -906,11 +985,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), lambda });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new LambdaType(getQueryEnvironment(),
+				new ClassType(getQueryEnvironment(), String.class), new ClassType(getQueryEnvironment(),
+						Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
 		IType next = it.next();
@@ -920,36 +1001,53 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testSelectSet() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("select", new Object[] {new LinkedHashSet<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("select", new Object[] {new LinkedHashSet<String>(),
+					lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SetType(getQueryEnvironment(),
+					new ClassType(getQueryEnvironment(), String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new SetType(getQueryEnvironment(),
+					new ClassType(getQueryEnvironment(), String.class)), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
 	public void testSelectList() {
-		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), lambda });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new LambdaType(new ClassType(String.class), new EClassifierType(EcorePackage.eINSTANCE
-				.getEBoolean())));
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
+			final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), lambda });
+			assertTrue(service != null);
+			final List<IType> argTypes = new ArrayList<IType>();
+			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class)));
+			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBoolean())));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+					String.class)), it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	@Test
@@ -958,15 +1056,17 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -975,15 +1075,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -992,17 +1093,19 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0), "", Double.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(Double.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), Double.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(3, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -1011,17 +1114,18 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0), "", Double.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
-		argTypes.add(new ClassType(String.class));
-		argTypes.add(new ClassType(Double.class));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), Double.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(3, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -1029,13 +1133,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("size", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Integer.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
 	}
 
 	@Test
@@ -1043,13 +1147,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("size", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Integer.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Integer.class), it.next());
 	}
 
 	@Test
@@ -1058,14 +1161,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new ArrayList<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new SequenceType(new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 	}
 
 	@Test
@@ -1074,14 +1179,14 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new LinkedHashSet<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new SetType(new ClassType(Integer.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -1090,15 +1195,15 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0), Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
 	}
 
 	@Test
@@ -1107,15 +1212,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				Integer.valueOf(0), Integer.valueOf(0) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new ClassType(Integer.class));
-		argTypes.add(new ClassType(Integer.class));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
 	}
 
 	@Test
@@ -1123,13 +1229,13 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("sum", new Object[] {new ArrayList<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Double.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Double.class), it.next());
 	}
 
 	@Test
@@ -1137,13 +1243,12 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("sum", new Object[] {new LinkedHashSet<String>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(Integer.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(Double.class), it.next());
+		assertEquals(new ClassType(getQueryEnvironment(), Double.class), it.next());
 	}
 
 	@Test
@@ -1152,15 +1257,18 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new ArrayList<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SequenceType(new ClassType(String.class)));
-		argTypes.add(new SequenceType(new ClassType(Integer.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SequenceType(new ClassType(String.class)), it.next());
-		assertEquals(new SequenceType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				Integer.class)), it.next());
 	}
 
 	@Test
@@ -1169,15 +1277,16 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 				new LinkedHashSet<Integer>() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new SetType(new ClassType(String.class)));
-		argTypes.add(new SetType(new ClassType(Integer.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
+		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)));
 
-		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-				.getEPackageProvider(), argTypes);
+		final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 		assertEquals(2, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new SetType(new ClassType(String.class)), it.next());
-		assertEquals(new SetType(new ClassType(Integer.class)), it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), Integer.class)),
+				it.next());
 	}
 
 }

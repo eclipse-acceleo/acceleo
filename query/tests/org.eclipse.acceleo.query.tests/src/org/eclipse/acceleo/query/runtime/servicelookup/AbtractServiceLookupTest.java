@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -22,14 +22,14 @@ public abstract class AbtractServiceLookupTest {
 
 	private static final Class<?>[] NO_ARG = {};
 
-	abstract BasicLookupEngine getEngine();
+	abstract ILookupEngine getEngine();
 
 	/**
 	 * Tests that the empty engine behaves as expected (returns null to any lookup).
 	 */
 	@Test
 	public void emptyEngineTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		assertNull(engine.lookup("method", NO_ARG));
 		assertNull(engine.lookup("method", new Class<?>[] {Object.class, Integer.class }));
 	}
@@ -40,7 +40,7 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void leafTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		assertEquals("service0", engine.lookup("service0", NO_ARG).getServiceMethod().getName());
 		assertEquals("service1", engine.lookup("service1", NO_ARG).getServiceMethod().getName());
 		assertEquals("service2", engine.lookup("service2", NO_ARG).getServiceMethod().getName());
@@ -53,7 +53,7 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgSingleMethodSameClassTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		assertEquals("service3", engine.lookup("service3", new Class<?>[] {Object.class }).getServiceMethod()
 				.getName());
 
@@ -65,7 +65,7 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void nullValueSingleMethodSameClassTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		/*
 		 * We should not fail if there is no ambiguity regarding which method we have to call, even if we
 		 * don't have type information regarding arguments.
@@ -81,7 +81,7 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgSingleMethodSubClassTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		assertEquals("service3", engine.lookup("service3", new Class<?>[] {Integer.class })
 				.getServiceMethod().getName());
 	}
@@ -91,7 +91,7 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgMultiMethodSameClassTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		IService service = engine.lookup("service4", new Class<?>[] {Integer.class });
 		assertEquals("service4", service.getServiceMethod().getName());
 		assertEquals(1, service.getServiceMethod().getParameterTypes().length);
@@ -111,7 +111,7 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgMultiMethodSubClassTest() {
-		BasicLookupEngine engine = getEngine();
+		ILookupEngine engine = getEngine();
 		IService service = engine.lookup("service4", new Class<?>[] {Integer.class });
 		assertEquals("service4", service.getServiceMethod().getName());
 		assertEquals(1, service.getServiceMethod().getParameterTypes().length);

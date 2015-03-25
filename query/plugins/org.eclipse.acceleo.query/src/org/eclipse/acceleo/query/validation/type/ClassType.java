@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+
 /**
  * {@link Class} validation type.
  * 
@@ -25,10 +27,13 @@ public class ClassType extends AbstractJavaType implements IJavaType {
 	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link Class}
 	 */
-	public ClassType(Class<?> type) {
+	public ClassType(IReadOnlyQueryEnvironment queryEnvironment, Class<?> type) {
+		super(queryEnvironment);
 		this.type = type;
 	}
 

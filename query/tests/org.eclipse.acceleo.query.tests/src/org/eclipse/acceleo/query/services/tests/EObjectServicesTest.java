@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
@@ -75,7 +75,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverse");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -109,7 +109,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverse");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -135,7 +135,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -167,7 +167,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -195,7 +195,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -222,7 +222,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -253,7 +253,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -280,7 +280,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 
@@ -307,7 +307,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		root.getESubpackages().add(sub);
 		clazz.getESuperTypes().add(clazz2);
 		Logger logger = Logger.getLogger("testEInverseWithFilter");
-		BasicLookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
+		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
 				clazz2, logger).getLookupEngine();
 		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
 

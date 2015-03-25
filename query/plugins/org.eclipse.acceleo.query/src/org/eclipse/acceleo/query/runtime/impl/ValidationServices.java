@@ -133,7 +133,7 @@ public class ValidationServices extends AbstractLanguageServices {
 						result.add(nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
 					} else {
 						if (feature.isMany()) {
-							result.add(new SequenceType(getFeatureBasicType(feature)));
+							result.add(new SequenceType(queryEnvironment, getFeatureBasicType(feature)));
 						} else {
 							result.add(getFeatureBasicType(feature));
 						}
@@ -163,7 +163,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return the basic type of the given {@link EStructuralFeature}. It doesn't bother with the cardinality.
 	 */
 	private IType getFeatureBasicType(EStructuralFeature feature) {
-		return new EClassifierType(feature.getEType());
+		return new EClassifierType(queryEnvironment, feature.getEType());
 	}
 
 	/**
@@ -186,9 +186,9 @@ public class ValidationServices extends AbstractLanguageServices {
 
 		// flatten
 		if (featureAccessType instanceof ICollectionType) {
-			result = new SetType(((ICollectionType)featureAccessType).getCollectionType());
+			result = new SetType(queryEnvironment, ((ICollectionType)featureAccessType).getCollectionType());
 		} else {
-			result = new SetType(featureAccessType);
+			result = new SetType(queryEnvironment, featureAccessType);
 		}
 
 		return result;
@@ -214,9 +214,10 @@ public class ValidationServices extends AbstractLanguageServices {
 
 		// flatten
 		if (featureAccessType instanceof ICollectionType) {
-			result = new SequenceType(((ICollectionType)featureAccessType).getCollectionType());
+			result = new SequenceType(queryEnvironment, ((ICollectionType)featureAccessType)
+					.getCollectionType());
 		} else {
-			result = new SequenceType(featureAccessType);
+			result = new SequenceType(queryEnvironment, featureAccessType);
 		}
 
 		return result;
@@ -244,13 +245,13 @@ public class ValidationServices extends AbstractLanguageServices {
 			while (it.hasNext()) {
 				List<IType> currentArgTypes = it.next();
 				Class<?>[] argumentTypes = getArgumentTypes(currentArgTypes);
-				IService service = this.lookupEngine.lookup(serviceName, argumentTypes);
+				IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 				if (service == null) {
 					if (currentArgTypes.get(0).getType() instanceof EClass) {
 						final List<EParameter> eParameters = getEParameters(currentArgTypes);
 						final EClass reveiverType = (EClass)eParameters.remove(0).getEType();
-						final EOperation eOperation = ePackageProvider.lookupEOperation(reveiverType,
-								serviceName, eParameters);
+						final EOperation eOperation = queryEnvironment.getEPackageProvider()
+								.lookupEOperation(reveiverType, serviceName, eParameters);
 						if (eOperation != null) {
 							result.add(getEOperationType(eOperation));
 						} else {
@@ -337,7 +338,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return the return {@link IType} of a {@link IService service}
 	 */
 	private Set<IType> getServiceTypes(IService service, List<IType> argTypes) {
-		return service.getType(this, ePackageProvider, argTypes);
+		return service.getType(this, queryEnvironment, argTypes);
 	}
 
 	/**
@@ -350,7 +351,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return the validated return {@link IType} of a {@link IService service}
 	 */
 	private Set<IType> validateServiceAllTypes(IService service, Map<List<IType>, Set<IType>> allTypes) {
-		return service.validateAllType(this, ePackageProvider, allTypes);
+		return service.validateAllType(this, queryEnvironment, allTypes);
 	}
 
 	/**
@@ -363,9 +364,9 @@ public class ValidationServices extends AbstractLanguageServices {
 	private IType getEOperationType(EOperation eOperation) {
 		final IType result;
 
-		final IType eClassifierType = new EClassifierType(eOperation.getEType());
+		final IType eClassifierType = new EClassifierType(queryEnvironment, eOperation.getEType());
 		if (eOperation.isMany()) {
-			result = new SequenceType(eClassifierType);
+			result = new SequenceType(queryEnvironment, eClassifierType);
 		} else {
 			result = eClassifierType;
 		}
@@ -437,9 +438,10 @@ public class ValidationServices extends AbstractLanguageServices {
 				if (!(rawResultType instanceof NothingType)) {
 					// flatten
 					if (rawResultType instanceof ICollectionType) {
-						result.add(new SequenceType(((ICollectionType)rawResultType).getCollectionType()));
+						result.add(new SequenceType(queryEnvironment, ((ICollectionType)rawResultType)
+								.getCollectionType()));
 					} else {
-						result.add(new SequenceType(rawResultType));
+						result.add(new SequenceType(queryEnvironment, rawResultType));
 					}
 				}
 			}
@@ -481,9 +483,10 @@ public class ValidationServices extends AbstractLanguageServices {
 				if (!(rawResultType instanceof NothingType)) {
 					// flatten
 					if (rawResultType instanceof ICollectionType) {
-						result.add(new SetType(((ICollectionType)rawResultType).getCollectionType()));
+						result.add(new SetType(queryEnvironment, ((ICollectionType)rawResultType)
+								.getCollectionType()));
 					} else {
-						result.add(new SetType(rawResultType));
+						result.add(new SetType(queryEnvironment, rawResultType));
 					}
 				}
 			}
@@ -517,7 +520,7 @@ public class ValidationServices extends AbstractLanguageServices {
 			for (IType receiverType : receiverTypes) {
 				if (!(receiverType instanceof ICollectionType) && !(receiverTypes instanceof NothingType)) {
 					// implicit set conversion.
-					newReceiverTypes.add(new SetType(receiverType));
+					newReceiverTypes.add(new SetType(queryEnvironment, receiverType));
 				} else {
 					newReceiverTypes.add(receiverType);
 				}
@@ -570,20 +573,20 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Class<?> cls = (Class<?>)((ParameterizedType)type).getRawType();
 			if (List.class.isAssignableFrom(cls)) {
 				for (IType t : getIType(((ParameterizedType)type).getActualTypeArguments()[0])) {
-					result.add(new SequenceType(t));
+					result.add(new SequenceType(queryEnvironment, t));
 				}
 			} else if (Set.class.isAssignableFrom(cls)) {
 				for (IType t : getIType(((ParameterizedType)type).getActualTypeArguments()[0])) {
-					result.add(new SetType(t));
+					result.add(new SetType(queryEnvironment, t));
 				}
 			} else {
-				result.add(new SetType(new ClassType(cls)));
+				result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, cls)));
 			}
 		} else if (type instanceof Class<?>) {
 			final Class<?> cls = (Class<?>)type;
 			result.addAll(getIType(cls));
 		} else {
-			result.add(new ClassType(Object.class));
+			result.add(new ClassType(queryEnvironment, Object.class));
 		}
 
 		return result;
@@ -600,17 +603,17 @@ public class ValidationServices extends AbstractLanguageServices {
 	public Set<IType> getIType(final Class<?> cls) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		final Set<EClassifier> classifiers = this.ePackageProvider.getEClass(cls);
+		final Set<EClassifier> classifiers = queryEnvironment.getEPackageProvider().getEClass(cls);
 		if (List.class.isAssignableFrom(cls)) {
-			result.add(new SequenceType(new ClassType(Object.class)));
+			result.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
 		} else if (Set.class.isAssignableFrom(cls)) {
-			result.add(new SetType(new ClassType(Object.class)));
+			result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
 		} else if (classifiers != null) {
 			for (EClassifier eCls : classifiers) {
-				result.add(new EClassifierType(eCls));
+				result.add(new EClassifierType(queryEnvironment, eCls));
 			}
 		} else {
-			result.add(new ClassType(cls));
+			result.add(new ClassType(queryEnvironment, cls));
 		}
 
 		return result;
@@ -655,14 +658,14 @@ public class ValidationServices extends AbstractLanguageServices {
 		} else {
 			if (type1.isAssignableFrom(type2) || type1.getType() == EcorePackage.eINSTANCE.getEObject()) {
 				if (type2 instanceof EClassifierLiteralType) {
-					result = new EClassifierType(((EClassifierLiteralType)type2).getType());
+					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type2).getType());
 				} else {
 					result = type2;
 				}
 			} else if (type2.isAssignableFrom(type1)
 					|| type2.getType() == EcorePackage.eINSTANCE.getEObject()) {
 				if (type1 instanceof EClassifierLiteralType) {
-					result = new EClassifierType(((EClassifierLiteralType)type1).getType());
+					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type1).getType());
 				} else {
 					result = type1;
 				}

@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.validation.type;
 
 import java.util.List;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+
 /**
  * Sequence validation type.
  * 
@@ -22,11 +24,13 @@ public class SequenceType extends AbstractCollectionType {
 	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link IType}
 	 */
-	public SequenceType(IType type) {
-		super(type);
+	public SequenceType(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
+		super(queryEnvironment, type);
 	}
 
 	/**

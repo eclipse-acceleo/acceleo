@@ -28,7 +28,7 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getLookupEngine().addServices(NumberServices.class);
+		getQueryEnvironment().registerServicePackage(NumberServices.class);
 		numServices = new NumberServices();
 	}
 

@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IJavaType;
@@ -72,14 +71,9 @@ public abstract class AbstractLanguageServices {
 	protected static final String UNKNOWN_FEATURE = "Feature %s not found in EClass %s";
 
 	/**
-	 * Lookup engine used to retrieve services.
+	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
-	protected final BasicLookupEngine lookupEngine;
-
-	/**
-	 * {@link org.eclipse.emf.ecore.EPackage} instances that are available during evaluation.
-	 */
-	protected EPackageProvider ePackageProvider;
+	protected final IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
 	 * Logger used to emit error and warning messages.
@@ -92,18 +86,17 @@ public abstract class AbstractLanguageServices {
 	protected final boolean doLog;
 
 	/**
-	 * Creates a new service instance given a {@link IQueryEnvironment} and logging flag.
+	 * Creates a new service instance given a {@link IReadOnlyQueryEnvironment} and logging flag.
 	 * 
-	 * @param queryEnv
-	 *            the {@link IQueryEnvironment} to use
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment} to use
 	 * @param doLog
 	 *            when <code>true</code> the resulting instance will log error and warning messages.
 	 */
-	public AbstractLanguageServices(IQueryEnvironment queryEnv, boolean doLog) {
-		this.lookupEngine = queryEnv.getLookupEngine();
-		this.ePackageProvider = queryEnv.getEPackageProvider();
+	public AbstractLanguageServices(IReadOnlyQueryEnvironment queryEnvironment, boolean doLog) {
+		this.queryEnvironment = queryEnvironment;
 		this.doLog = doLog;
-		logger = queryEnv.getLogger();
+		logger = queryEnvironment.getLogger();
 	}
 
 	public Logger getLogger() {
@@ -156,7 +149,7 @@ public abstract class AbstractLanguageServices {
 		if (iType instanceof EClassifierLiteralType) {
 			result = EClass.class;
 		} else if (iType instanceof EClassifierType) {
-			result = this.ePackageProvider.getClass(((EClassifierType)iType).getType());
+			result = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)iType).getType());
 		} else if (iType instanceof IJavaType) {
 			result = ((IJavaType)iType).getType();
 		} else {
@@ -174,6 +167,15 @@ public abstract class AbstractLanguageServices {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Gets the {@link IReadOnlyQueryEnvironment}.
+	 * 
+	 * @return the queryEnvironment the {@link IReadOnlyQueryEnvironment}
+	 */
+	public IReadOnlyQueryEnvironment getQueryEnvironment() {
+		return queryEnvironment;
 	}
 
 }

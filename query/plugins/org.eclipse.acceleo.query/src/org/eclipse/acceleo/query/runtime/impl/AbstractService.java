@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -28,7 +29,8 @@ import org.eclipse.acceleo.query.validation.type.IType;
 public abstract class AbstractService implements IService {
 
 	@Override
-	public Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes) {
+	public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+			List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 		Type returnType = getServiceMethod().getGenericReturnType();
 
@@ -37,15 +39,9 @@ public abstract class AbstractService implements IService {
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-	 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
-	 */
 	@Override
-	public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
-			Map<List<IType>, Set<IType>> allTypes) {
+	public Set<IType> validateAllType(ValidationServices services,
+			IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {

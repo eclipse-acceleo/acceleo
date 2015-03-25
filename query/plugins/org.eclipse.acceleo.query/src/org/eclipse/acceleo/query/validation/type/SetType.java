@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.validation.type;
 
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+
 /**
  * Set validation type.
  * 
@@ -22,11 +24,13 @@ public class SetType extends AbstractCollectionType {
 	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link IType}
 	 */
-	public SetType(IType type) {
-		super(type);
+	public SetType(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
+		super(queryEnvironment, type);
 	}
 
 	/**

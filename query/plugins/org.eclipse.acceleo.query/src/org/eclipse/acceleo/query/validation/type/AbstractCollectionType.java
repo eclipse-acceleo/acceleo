@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+
 /**
  * Abstract collection type implementation.
  * 
@@ -25,10 +27,13 @@ public abstract class AbstractCollectionType extends AbstractJavaType implements
 	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link IType}
 	 */
-	public AbstractCollectionType(IType type) {
+	public AbstractCollectionType(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
+		super(queryEnvironment);
 		this.type = type;
 	}
 

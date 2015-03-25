@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.acceleo.query.runtime.IEPackageProvider;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -38,7 +39,7 @@ import org.eclipse.emf.ecore.EcorePackage;
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
-public class EPackageProvider {
+public class EPackageProvider implements IEPackageProvider {
 
 	/**
 	 * Map nsPrefix to their corresponding package.
@@ -49,6 +50,11 @@ public class EPackageProvider {
 	 * {@link Class} to {@link EClassifier} mapping.
 	 */
 	private final Map<Class<?>, Set<EClassifier>> class2classifiers = new HashMap<Class<?>, Set<EClassifier>>();
+
+	/**
+	 * {@link EClassifier} to {@link Class} mapping.
+	 */
+	private final Map<EClassifier, Class<?>> classifier2class = new HashMap<EClassifier, Class<?>>();
 
 	/**
 	 * Maps of multi-EOperations : maps the arity to maps that maps {@link EOperation#getName() EOperation's
@@ -98,14 +104,11 @@ public class EPackageProvider {
 		this.logger = Logger.getLogger("EPackageProvider");
 	}
 
-	/**
-	 * Returns the package registered with the specified nsPrefix. Returns null if no such package is
-	 * registered.
-	 * 
-	 * @param nsPrefix
-	 *            the nsPrefix of the requested package.
-	 * @return the package registered with the specified nsPrefix.
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEPackage(java.lang.String)
 	 */
+	@Override
 	public EPackage getEPackage(String nsPrefix) {
 		return ePackages.get(nsPrefix);
 	}
@@ -214,7 +217,7 @@ public class EPackageProvider {
 	 *            the {@link EClassifier} to remove
 	 */
 	private void removeEClassifierClass(EClassifier eCls) {
-		final Class<?> instanceClass = eCls.getInstanceClass();
+		final Class<?> instanceClass = getClass(eCls);
 		final Set<EClassifier> classifiers = class2classifiers.get(instanceClass);
 		if (classifiers != null) {
 			if (classifiers.size() == 1) {
@@ -223,6 +226,7 @@ public class EPackageProvider {
 				classifiers.remove(eCls);
 			}
 		}
+		classifier2class.remove(eCls);
 	}
 
 	/**
@@ -304,7 +308,14 @@ public class EPackageProvider {
 	 *            the {@link EClassifier} to register
 	 */
 	private void registerEClassifierClass(EClassifier eCls) {
-		final Class<?> instanceClass = eCls.getInstanceClass();
+		final Class<?> customClass = classifier2class.get(eCls);
+		final Class<?> instanceClass;
+		if (customClass != null) {
+			instanceClass = customClass;
+		} else {
+			instanceClass = eCls.getInstanceClass();
+			classifier2class.put(eCls, instanceClass);
+		}
 		Set<EClassifier> classifiers = class2classifiers.get(instanceClass);
 		if (classifiers == null) {
 			classifiers = new LinkedHashSet<EClassifier>();
@@ -328,19 +339,11 @@ public class EPackageProvider {
 		}
 	}
 
-	/**
-	 * Lookups the {@link EOperation} with the given receiving {@link EClass}, given
-	 * {@link EOperation#getName() name} and {@link EOperation#getEParameters() parameters} type.
-	 * 
-	 * @param receiverEClass
-	 *            the receiver {@link EClass}
-	 * @param eOperationName
-	 *            the {@link EOperation#getName() EOperation's name}
-	 * @param parameterTypes
-	 *            the {@link EOperation#getEParameters() parameters} type
-	 * @return the {@link EOperation} with the given receiving {@link EClass}, given
-	 *         {@link EOperation#getName() name} and {@link EOperation#getEParameters() parameters} type
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#lookupEOperation(org.eclipse.emf.ecore.EClass, java.lang.String, java.util.List)
 	 */
+	@Override
 	public EOperation lookupEOperation(EClass receiverEClass, String eOperationName,
 			List<EParameter> parameterTypes) {
 		final EOperation result;
@@ -371,13 +374,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EOperation} for the given {@link Set} of receiver {@link EClass}.
-	 * 
-	 * @param receiverTypes
-	 *            the {@link Set} of receiver {@link EClass}
-	 * @return the {@link Set} of {@link EOperation} for the given {@link Set} of receiver {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEOperations(java.util.Set)
 	 */
+	@Override
 	public Set<EOperation> getEOperations(Set<EClass> receiverTypes) {
 		final Set<EOperation> result = new LinkedHashSet<EOperation>();
 
@@ -420,15 +421,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * the classifier with the specified name in the package registered with the specified nsPrefix.
-	 * 
-	 * @param nsPrefix
-	 *            the nsPrefix of the searched classifier's package
-	 * @param classifierName
-	 *            the name of the searched classifier
-	 * @return the classifier with the specified name in the package registered with the specified nsPrefix.
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public EClassifier getType(String nsPrefix, String classifierName) {
 		EPackage ePackage = ePackages.get(nsPrefix);
 		if (ePackage != null) {
@@ -438,14 +435,11 @@ public class EPackageProvider {
 		}
 	}
 
-	/**
-	 * Returns an {@link EClassifier} instance when a unique one is found in all the registered packages. If
-	 * several are found, returns <code>null</code> and log a warning.
-	 * 
-	 * @param classifierName
-	 *            the name of the search classifier.
-	 * @return the requested classifier unless several classifiers have the same name in different packages.
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String)
 	 */
+	@Override
 	public EClassifier getType(String classifierName) {
 		EClassifier result = null;
 		for (EPackage ePackage : ePackages.values()) {
@@ -467,17 +461,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum.
-	 * 
-	 * @param nsPrefix
-	 *            the nsPrefix of the package where to search the {@link EEnumLiteral}
-	 * @param enumName
-	 *            the name of the {@link EEnum} containing the literal.
-	 * @param literalName
-	 *            the name of the searched {@link EEnumLiteral}.
-	 * @return the specified {@link EEnumLiteral}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public EEnumLiteral getEnumLiteral(String nsPrefix, String enumName, String literalName) {
 		final EEnumLiteral result;
 
@@ -492,16 +480,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum if it exists in one of
-	 * the registered package. Returns <code>null</code> otherwise.
-	 * 
-	 * @param enumName
-	 *            the name of the {@link EEnum} containing the literal.
-	 * @param literalName
-	 *            the name of the searched {@link EEnumLiteral}.
-	 * @return the specified {@link EEnumLiteral}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public EEnumLiteral getEnumLiteral(String enumName, String literalName) {
 		EClassifier eClassifier = getType(enumName);
 		if (eClassifier == null) {
@@ -531,36 +514,56 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link EClassifier} represented by the given {@link Class}.
-	 * 
-	 * @param cls
-	 *            the {@link Class}
-	 * @return the {@link EClassifier} represented by the given {@link Class} if any, <code>null</code>
-	 *         otherwise
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEClass(java.lang.Class)
 	 */
+	@Override
 	public Set<EClassifier> getEClass(Class<?> cls) {
 		return class2classifiers.get(cls);
 	}
 
-	/**
-	 * Gets the {@link Class} of instance of the given {@link EClassifier}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClassifier}
-	 * @return the {@link Class} of instance of the given {@link EClassifier}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getClass(org.eclipse.emf.ecore.EClassifier)
 	 */
+	@Override
 	public Class<?> getClass(EClassifier eCls) {
-		return eCls.getInstanceClass();
+		return classifier2class.get(eCls);
 	}
 
 	/**
-	 * Gets the {@link EStructuralFeature} from the given {@link Set} of {@link EClass}.
+	 * Registers a custom mapping from an {@link EClassifier} to its {@link Class}.
 	 * 
-	 * @param receiverEClasses
-	 *            the {@link Set} of {@link EClass}.
-	 * @return the {@link EStructuralFeature} from the given {@link Set} of {@link EClass}
+	 * @param eClassifier
+	 *            the {@link EClassifier}
+	 * @param cls
+	 *            the {@link Class}
 	 */
+	void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
+		// remove old mappings
+		final Class<?> oldClass = classifier2class.remove(eClassifier);
+		if (oldClass != null) {
+			final Set<EClassifier> eClassifiers = class2classifiers.get(oldClass);
+			if (eClassifiers.remove(eClassifier) && eClassifiers.isEmpty()) {
+				class2classifiers.remove(oldClass);
+			}
+		}
+		// add new mappings
+		classifier2class.put(eClassifier, cls);
+		Set<EClassifier> eClassifiers = class2classifiers.get(cls);
+		if (eClassifiers == null) {
+			eClassifiers = new LinkedHashSet<EClassifier>();
+			class2classifiers.put(cls, eClassifiers);
+		}
+		eClassifiers.add(eClassifier);
+	}
+
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEStructuralFeatures(java.util.Set)
+	 */
+	@Override
 	public Set<EStructuralFeature> getEStructuralFeatures(Set<EClass> receiverEClasses) {
 		Set<EStructuralFeature> result = new LinkedHashSet<EStructuralFeature>();
 
@@ -571,13 +574,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EPackageProvider#registerPackage(EPackage) registered}
-	 * {@link EClassifier}.
-	 * 
-	 * @return the {@link Set} of {@link EPackageProvider#registerPackage(EPackage) registered}
-	 *         {@link EClassifier}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEClassifiers()
 	 */
+	@Override
 	public Set<EClassifier> getEClassifiers() {
 		final Set<EClassifier> result = new LinkedHashSet<EClassifier>();
 
@@ -588,13 +589,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EPackageProvider#registerPackage(EPackage) registered}
-	 * {@link EEnumLiteral}.
-	 * 
-	 * @return the {@link Set} of {@link EPackageProvider#registerPackage(EPackage) registered}
-	 *         {@link EEnumLiteral}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEEnumLiterals()
 	 */
+	@Override
 	public Set<EEnumLiteral> getEEnumLiterals() {
 		final Set<EEnumLiteral> result = new LinkedHashSet<EEnumLiteral>();
 
@@ -655,13 +654,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can directly contain in the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can directly contain in the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getContainingEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getContainingEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
@@ -672,15 +669,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can directly and indirectly contain in the given
-	 * {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can directly and indirectly contain in the given
-	 *         {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getAllContainingEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getAllContainingEClasses(EClass eCls) {
 		final Set<EClass> direcltyContainingEClasses = getContainingEClasses(eCls);
 		final Set<EClass> result = new LinkedHashSet<EClass>(direcltyContainingEClasses);
@@ -745,13 +738,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets all sub types for the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return all sub types for the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getAllSubTypes(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getAllSubTypes(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
@@ -766,13 +757,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can be directly contained in the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can be directly contained in the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getContainedEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getContainedEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
@@ -790,15 +779,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can be directly and indirectly contained in the given
-	 * {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can be directly and indirectly contained in the given
-	 *         {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getAllContainedEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getAllContainedEClasses(EClass eCls) {
 		final Set<EClass> direcltyContainedEClasses = getContainedEClasses(eCls);
 		final Set<EClass> result = new LinkedHashSet<EClass>(direcltyContainedEClasses);
@@ -819,13 +804,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can directly reference the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can directly reference in the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getInverseEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getInverseEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
@@ -867,13 +850,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can be following siblings of the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can be following siblings of the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getFollowingSiblingsEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getFollowingSiblingsEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
@@ -929,13 +910,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClass} that can be preceding siblings of the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClass} that can be preceding siblings of the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getPrecedingSiblingsEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getPrecedingSiblingsEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
@@ -984,13 +963,11 @@ public class EPackageProvider {
 		return result;
 	}
 
-	/**
-	 * Gets the {@link Set} of {@link EClassifier} that can be siblings of the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of {@link EClassifier} that can be siblings of the given {@link EClass}
+	/**{@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getSiblingsEClasses(org.eclipse.emf.ecore.EClass)
 	 */
+	@Override
 	public Set<EClass> getSiblingsEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 

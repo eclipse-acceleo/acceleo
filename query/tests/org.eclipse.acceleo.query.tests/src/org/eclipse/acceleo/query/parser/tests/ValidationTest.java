@@ -59,10 +59,10 @@ public class ValidationTest {
 
 		variableTypes.clear();
 		final Set<IType> selfTypes = new LinkedHashSet<IType>();
-		selfTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
 		variableTypes.put("self", selfTypes);
 		final Set<IType> stuffTypes = new LinkedHashSet<IType>();
-		stuffTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		stuffTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 		variableTypes.put("stuff", stuffTypes);
 	}
 

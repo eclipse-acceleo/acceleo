@@ -282,7 +282,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 		}
 		try {
 			Class<?>[] argumentTypes = getArgumentTypes(arguments);
-			IService service = this.lookupEngine.lookup(serviceName, argumentTypes);
+			IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 			if (service == null) {
 				if (arguments[0] instanceof EObject) {
 					final List<Set<EParameter>> eClassifiers = getEParameters(Arrays.copyOfRange(arguments,
@@ -291,12 +291,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 					if (arguments.length > 1) {
 						final Iterator<List<EParameter>> it = new CombineIterator<EParameter>(eClassifiers);
 						while (eOperation == null && it.hasNext()) {
-							eOperation = ePackageProvider.lookupEOperation(((EObject)arguments[0]).eClass(),
-									serviceName, it.next());
+							eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
+									((EObject)arguments[0]).eClass(), serviceName, it.next());
 						}
 					} else {
-						eOperation = ePackageProvider.lookupEOperation(((EObject)arguments[0]).eClass(),
-								serviceName, new ArrayList<EParameter>());
+						eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
+								((EObject)arguments[0]).eClass(), serviceName, new ArrayList<EParameter>());
 					}
 					if (eOperation != null) {
 						final EList<Object> eArguments = new BasicEList<Object>();
@@ -345,7 +345,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 				parameter.setEType(((EObject)object).eClass());
 				eParamters.add(parameter);
 			} else if (object != null) {
-				for (EClassifier eClassifier : ePackageProvider.getEClass(object.getClass())) {
+				for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getEClass(
+						object.getClass())) {
 					final EParameter parameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
 					parameter.setEType(eClassifier);
 					eParamters.add(parameter);

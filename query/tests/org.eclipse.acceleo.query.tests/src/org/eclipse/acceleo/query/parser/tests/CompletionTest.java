@@ -58,10 +58,10 @@ public class CompletionTest {
 
 		variableTypes.clear();
 		final Set<IType> selfTypes = new LinkedHashSet<IType>();
-		selfTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
 		variableTypes.put("self", selfTypes);
 		final Set<IType> stuffTypes = new LinkedHashSet<IType>();
-		stuffTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		stuffTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 		variableTypes.put("stuff", stuffTypes);
 	}
 
@@ -149,7 +149,7 @@ public class CompletionTest {
 	@Test
 	public void someIntTest() {
 		final Set<IType> someIntTypes = new LinkedHashSet<IType>();
-		someIntTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEInt()));
+		someIntTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEInt()));
 		variableTypes.put("someInt", someIntTypes);
 		final ICompletionResult completionResult = engine.getCompletion("someInt ", 8, variableTypes);
 
@@ -165,7 +165,7 @@ public class CompletionTest {
 	@Test
 	public void alfMultTest() {
 		final Set<IType> someIntTypes = new LinkedHashSet<IType>();
-		someIntTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEInt()));
+		someIntTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEInt()));
 		variableTypes.put("someInt", someIntTypes);
 		final ICompletionResult completionResult = engine.getCompletion("someInt * ", 10, variableTypes);
 
@@ -334,7 +334,7 @@ public class CompletionTest {
 				} else if (prop instanceof ServiceCompletionProposal) {
 					final Class<?> cls;
 					if (type instanceof EClass) {
-						cls = ((EClass)type).getInstanceClass();
+						cls = queryEnvironment.getEPackageProvider().getClass((EClass)type);
 					} else {
 						cls = (Class<?>)type;
 					}

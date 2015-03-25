@@ -10,12 +10,29 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+
 /**
  * Abstract implementation of {@link IJavaType}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractJavaType implements IJavaType {
+
+	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	private IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 */
+	public AbstractJavaType(IReadOnlyQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -29,7 +46,8 @@ public abstract class AbstractJavaType implements IJavaType {
 		if (otherType instanceof ClassType) {
 			result = getType().isAssignableFrom(((ClassType)otherType).getType());
 		} else if (otherType instanceof EClassifierType) {
-			final Class<?> otherClass = ((EClassifierType)otherType).getType().getInstanceClass();
+			final Class<?> otherClass = queryEnvironment.getEPackageProvider().getClass(
+					((EClassifierType)otherType).getType());
 			if (otherClass != null) {
 				result = getType().isAssignableFrom(otherClass);
 			} else {

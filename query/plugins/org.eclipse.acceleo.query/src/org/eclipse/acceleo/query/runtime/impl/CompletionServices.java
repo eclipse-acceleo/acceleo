@@ -88,7 +88,7 @@ public class CompletionServices extends ValidationServices {
 			classes.add(getClass(type));
 		}
 
-		for (IService service : lookupEngine.getServices(classes)) {
+		for (IService service : queryEnvironment.getLookupEngine().getServices(classes)) {
 			if (keepOperators
 					|| !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getServiceMethod()
 							.getName())) {
@@ -115,7 +115,7 @@ public class CompletionServices extends ValidationServices {
 				eClasses.add((EClass)type.getType());
 			}
 		}
-		for (EOperation eOperation : ePackageProvider.getEOperations(eClasses)) {
+		for (EOperation eOperation : queryEnvironment.getEPackageProvider().getEOperations(eClasses)) {
 			result.add(new EOperationCompletionProposal(eOperation));
 		}
 
@@ -139,7 +139,8 @@ public class CompletionServices extends ValidationServices {
 			}
 		}
 
-		for (EStructuralFeature feature : ePackageProvider.getEStructuralFeatures(eClasses)) {
+		for (EStructuralFeature feature : queryEnvironment.getEPackageProvider().getEStructuralFeatures(
+				eClasses)) {
 			result.add(new EFeatureCompletionProposal(feature));
 		}
 
@@ -154,7 +155,7 @@ public class CompletionServices extends ValidationServices {
 	public List<EClassifierCompletionProposal> getEClassifierProposals() {
 		final List<EClassifierCompletionProposal> result = new ArrayList<EClassifierCompletionProposal>();
 
-		for (EClassifier eClassifier : ePackageProvider.getEClassifiers()) {
+		for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getEClassifiers()) {
 			result.add(new EClassifierCompletionProposal(eClassifier));
 		}
 
@@ -171,7 +172,7 @@ public class CompletionServices extends ValidationServices {
 	public List<EClassifierCompletionProposal> getEClassifierProposals(String nsPrefix) {
 		final List<EClassifierCompletionProposal> result = new ArrayList<EClassifierCompletionProposal>();
 
-		final EPackage ePkg = ePackageProvider.getEPackage(nsPrefix);
+		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(nsPrefix);
 		if (ePkg != null) {
 			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 				result.add(new EClassifierCompletionProposal(eClassifier));
@@ -189,7 +190,7 @@ public class CompletionServices extends ValidationServices {
 	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals() {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		for (EEnumLiteral literal : ePackageProvider.getEEnumLiterals()) {
+		for (EEnumLiteral literal : queryEnvironment.getEPackageProvider().getEEnumLiterals()) {
 			result.add(new EEnumLiteralCompletionProposal(literal));
 		}
 
@@ -206,7 +207,7 @@ public class CompletionServices extends ValidationServices {
 	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String nsPrefix) {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		final EPackage ePkg = ePackageProvider.getEPackage(nsPrefix);
+		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(nsPrefix);
 		if (ePkg != null) {
 			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 				if (eClassifier instanceof EEnum) {
@@ -232,7 +233,7 @@ public class CompletionServices extends ValidationServices {
 	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String nsPrefix, String eEnumName) {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		final EPackage ePkg = ePackageProvider.getEPackage(nsPrefix);
+		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(nsPrefix);
 		if (ePkg != null) {
 			EClassifier eClassifier = ePkg.getEClassifier(eEnumName);
 			if (eClassifier instanceof EEnum) {

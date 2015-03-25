@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -30,12 +32,7 @@ import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
-public class BasicLookupEngine {
-
-	/**
-	 * Message used when a service cannot be instanciated.
-	 */
-	public static final String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
+public class BasicLookupEngine implements ILookupEngine {
 
 	/**
 	 * The method name a query service that needs to use a registered cross referencer must have so it can be
@@ -59,6 +56,11 @@ public class BasicLookupEngine {
 	private final List<IService> servicesList = new ArrayList<IService>();
 
 	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	private IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
 	 * The {@link CrossReferencer} that will be used to resolve eReference requests in EObject service.
 	 */
 	private CrossReferenceProvider crossReferencer;
@@ -66,19 +68,19 @@ public class BasicLookupEngine {
 	/**
 	 * Constructor. Initializes the lookup engine with a cross referencer.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param crossReferencer
 	 *            The {@link CrossReferencer} that will be used to resolve eReference requests in EObject
 	 *            service.
 	 */
-	public BasicLookupEngine(CrossReferenceProvider crossReferencer) {
+	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
+			CrossReferenceProvider crossReferencer) {
+		this.queryEnvironment = queryEnvironment;
 		this.crossReferencer = crossReferencer;
 	}
 
-	/**
-	 * Returns the {@link CrossReferencer} that this engine uses.
-	 * 
-	 * @return The {@link CrossReferencer} that this engine uses.
-	 */
+	@Override
 	public CrossReferenceProvider getCrossReferencer() {
 		return crossReferencer;
 	}
@@ -173,19 +175,7 @@ public class BasicLookupEngine {
 		return false;
 	}
 
-	/**
-	 * Returns the service that has the specified name and that best matches the specified argument types if
-	 * any is found. Services are ordered according to their parameter types. A type <em>T1</em> is lower than
-	 * a type <em>T2</em> if <em>T1</em>is a sub-class of <em>T2</em>. A method <em>M1</em> is lower than a
-	 * method <em>M2</em> if all the types of the former are lower than the type of the later at the same
-	 * index.
-	 * 
-	 * @param name
-	 *            the name of the service to retrieve.
-	 * @param argumentTypes
-	 *            the types of the arguments to best match.
-	 * @return the best service's match of the registered services if any.
-	 */
+	@Override
 	public IService lookup(String name, Class<?>[] argumentTypes) {
 		List<IService> multiMethod = getMultimethod(name, argumentTypes.length);
 		if (multiMethod == null) {
@@ -203,28 +193,13 @@ public class BasicLookupEngine {
 		}
 	}
 
-	/**
-	 * Tells if a given method is considered as a service to provide when querying.
-	 * 
-	 * @param method
-	 *            the method we want to know if it must be considered as a service to provide when querying.
-	 * @return true if a given method is considered as a service to provide when querying. False otherwise.
-	 */
-	public boolean registerMethod(Method method) {
+	@Override
+	public boolean isServiceMethod(Method method) {
 		boolean objectMethod = method.getDeclaringClass() != Object.class;
 		return objectMethod;
 	}
 
-	/**
-	 * Tells if the given method is the one that indicates we have to set the cross referencer to the service
-	 * instance.
-	 * 
-	 * @param method
-	 *            The method we want to know if it the one that indicates we have to set the cross referencer
-	 *            to the service instance.
-	 * @return true if the given method is the one that indicates we have to set the cross referencer to the
-	 *         service instance. False otherwise.
-	 */
+	@Override
 	public boolean isCrossReferencerMethod(Method method) {
 		// We do not register java.lang.Object method as
 		// having an expression calling the 'wait' or the notify service
@@ -244,7 +219,7 @@ public class BasicLookupEngine {
 	 *             if the specified class doesn't follow the acceleo package rules.
 	 */
 	public void addServices(IServiceProvider provider) throws InvalidAcceleoPackageException {
-		for (IService service : provider.getServices(this)) {
+		for (IService service : provider.getServices(queryEnvironment)) {
 			final List<IService> multiMethod = getOrCreateMultimethod(service.getServiceMethod().getName(),
 					service.getServiceMethod().getParameterTypes().length);
 			multiMethod.add(service);
@@ -262,16 +237,26 @@ public class BasicLookupEngine {
 	 */
 	public void addServices(Class<?> newServices) throws InvalidAcceleoPackageException {
 		try {
-			Constructor<?> cstr = newServices.getConstructor(new Class[] {});
-			Object instance = cstr.newInstance(new Object[] {});
+			Constructor<?> cstr = null;
+			Object instance = null;
+			try {
+				cstr = newServices.getConstructor(new Class[] {});
+				instance = cstr.newInstance(new Object[] {});
+			} catch (NoSuchMethodException e) {
+				try {
+					cstr = newServices.getConstructor(new Class[] {IReadOnlyQueryEnvironment.class });
+					instance = cstr.newInstance(new Object[] {queryEnvironment });
+				} catch (NoSuchMethodException e1) {
+					throw new InvalidAcceleoPackageException(PACKAGE_PROBLEM_MSG
+							+ newServices.getCanonicalName(), e);
+				}
+			}
 			if (instance instanceof IServiceProvider) {
 				addServices((IServiceProvider)instance);
 			} else {
 				Method[] methods = newServices.getMethods();
 				getServicesFromInstance(instance, methods);
 			}
-		} catch (NoSuchMethodException e) {
-			throw new InvalidAcceleoPackageException(PACKAGE_PROBLEM_MSG + newServices.getCanonicalName(), e);
 		} catch (SecurityException e) {
 			throw new InvalidAcceleoPackageException(PACKAGE_PROBLEM_MSG + newServices.getCanonicalName(), e);
 		} catch (InstantiationException e) {
@@ -306,7 +291,7 @@ public class BasicLookupEngine {
 		for (Method method : methods) {
 			if (isCrossReferencerMethod(method)) {
 				method.invoke(instance, crossReferencer);
-			} else if (registerMethod(method)) {
+			} else if (isServiceMethod(method)) {
 				List<IService> multiMethod = getOrCreateMultimethod(method.getName(), method
 						.getParameterTypes().length);
 				final IService service = new Service(method, instance);
@@ -316,13 +301,7 @@ public class BasicLookupEngine {
 		}
 	}
 
-	/**
-	 * Gets the {@link Set} of known {@link IService} with a compatible receiver type.
-	 * 
-	 * @param receiverTypes
-	 *            the receiver types
-	 * @return the {@link Set} of known {@link IService} with a compatible receiver type
-	 */
+	@Override
 	public Set<IService> getServices(Set<Class<?>> receiverTypes) {
 		final Set<IService> result = new LinkedHashSet<IService>();
 

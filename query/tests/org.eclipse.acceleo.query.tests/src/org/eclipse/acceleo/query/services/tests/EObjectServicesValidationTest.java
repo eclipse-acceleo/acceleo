@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
@@ -45,7 +46,7 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getLookupEngine().addServices(EObjectServices.class);
+		getQueryEnvironment().registerServicePackage(EObjectServices.class);
 	}
 
 	@Test
@@ -63,12 +64,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("ancestors", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -86,26 +87,28 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("ancestors", new Object[] {EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(7, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEModelElement())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEEnum())), it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEOperation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEModelElement())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEEnum())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEOperation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -116,16 +119,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("ancestors", new Object[] {EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -146,13 +149,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("ancestors", new Object[] {EcoreUtil.create(eCls2), eCls1 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls2));
-		argTypes.add(new EClassifierLiteralType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls2));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -171,16 +174,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -192,16 +196,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -213,19 +218,20 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getETypedElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getETypedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(2, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getETypedElement())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEOperation())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getETypedElement())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEOperation())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -237,16 +243,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -272,13 +279,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("ancestors", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -306,12 +313,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eAllContents", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -329,37 +336,36 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eAllContents", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(11, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE
-					.getEStringToStringMapEntry())), it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getETypeParameter())),
-					it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEOperation())), it
-					.next());
-			assertEquals(
-					new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())), it
-							.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEGenericType())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEParameter())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStringToStringMapEntry())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getETypeParameter())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEOperation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStructuralFeature())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEGenericType())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEEnumLiteral())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEParameter())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -370,16 +376,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eAllContents", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -400,13 +406,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eAllContents", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -425,17 +431,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -447,17 +453,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -469,34 +475,34 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEModelElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEModelElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(9, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEModelElement())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getETypeParameter())),
-					it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEOperation())), it
-					.next());
-			assertEquals(
-					new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())), it
-							.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEParameter())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEModelElement())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getETypeParameter())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEOperation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStructuralFeature())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEEnumLiteral())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEParameter())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -508,16 +514,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -543,13 +550,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eAllContents", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -567,15 +574,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eClass", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEClass()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -596,12 +604,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContainer", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -617,16 +625,65 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContainer", new Object[] {EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(2, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()), it.next());
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()), it
+					.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEAnnotation()),
+					it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	// TODO move to BasicLookupEngineTest see https://git.eclipse.org/r/#/c/44251/
+	@Test
+	public void testEContainerOnEStringToStringMapEntryBasicMapping() {
+		final List<Set<IType>> argTypes = new ArrayList<Set<IType>>();
+		argTypes.add(createTypeSet(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEStringToStringMapEntry())));
+		argTypes.add(createTypeSet(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEAnnotation())));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Set<IType> types = getValidationServices().callType("eContainer", argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			IType type = it.next();
+			assertTrue(type instanceof NothingType);
+			assertEquals(
+					"Couldn't find the eContainer(EClassifier=EStringToStringMapEntry,EClassifierLiteral=EAnnotation) service or EOperation",
+					((NothingType)type).getMessage());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	// TODO move to BasicLookupEngineTest see https://git.eclipse.org/r/#/c/44251/
+	@Test
+	public void testEContainerOnEStringToStringMapEntryCustomMapping() {
+		final List<Set<IType>> argTypes = new ArrayList<Set<IType>>();
+		argTypes.add(createTypeSet(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEStringToStringMapEntry())));
+		argTypes.add(createTypeSet(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEAnnotation())));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			getQueryEnvironment().registerCustomClassMapping(
+					EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
+			final Set<IType> types = getValidationServices().callType("eContainer", argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEAnnotation()),
+					it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -637,15 +694,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContainer", new Object[] {EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEObject()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()), it
+					.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -666,13 +724,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContainer", new Object[] {EcoreUtil.create(eCls2), eCls1 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls2));
-		argTypes.add(new EClassifierLiteralType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls2));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -690,16 +748,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEClass()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -711,16 +770,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEClass()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -732,17 +792,21 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getETypedElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getETypedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(2, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getETypedElement()), it.next());
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEOperation()), it.next());
+			assertEquals(
+					new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getETypedElement()), it
+							.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEOperation()),
+					it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -754,16 +818,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEClass()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -789,13 +854,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContainer", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -822,12 +887,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContents", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -845,20 +910,20 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContents", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(3, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -869,16 +934,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContents", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -899,13 +964,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContents", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -924,17 +989,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -946,17 +1011,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -968,21 +1033,22 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEModelElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEModelElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEModelElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(3, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -994,16 +1060,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1029,13 +1096,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eContents", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1053,16 +1120,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eGet", new Object[] {EcorePackage.eINSTANCE, "name" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new EClassifierType(EcorePackage.eINSTANCE.getEJavaObject()), it.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEJavaObject()),
+					it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1073,18 +1141,22 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(4, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEFactory())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEFactory())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1095,19 +1167,23 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE, "ePackage" });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new ClassType(String.class));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(4, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEFactory())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEFactory())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1119,16 +1195,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1140,16 +1217,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEEnum() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEEnum()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEEnum()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEEnum())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEEnum())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1161,19 +1239,24 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEEnum() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEModelElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEModelElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(4, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEFactory())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it.next());
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEFactory())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1184,15 +1267,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("eInverse", new Object[] {EcorePackage.eINSTANCE });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1204,16 +1288,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEEnum() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEEnum()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEEnum()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SetType(new EClassifierType(EcorePackage.eINSTANCE.getEEnum())), it.next());
+			assertEquals(new SetType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEEnum())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1225,13 +1310,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEEnum() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEOperation()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEOperation()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1259,12 +1344,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("followingSiblings", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1283,20 +1368,20 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(3, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1308,16 +1393,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1339,13 +1424,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				eCls1 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls2));
-		argTypes.add(new EClassifierLiteralType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls2));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1364,17 +1449,18 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClassifier() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClassifier()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEClassifier()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1386,16 +1472,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1407,19 +1494,20 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getENamedElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getENamedElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getENamedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(2, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getENamedElement())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getENamedElement())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1431,16 +1519,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1467,13 +1556,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1501,12 +1590,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("precedingSiblings", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1525,22 +1614,22 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(4, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE
-					.getEStringToStringMapEntry())), it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStringToStringMapEntry())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1552,16 +1641,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1583,13 +1672,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				eCls1 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls2));
-		argTypes.add(new EClassifierLiteralType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls2));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1608,17 +1697,18 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClassifier() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClassifier()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEClassifier()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1630,16 +1720,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1651,21 +1742,22 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getENamedElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getENamedElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getENamedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(3, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getENamedElement())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getENamedElement())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1677,16 +1769,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1713,13 +1806,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1747,12 +1840,12 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("siblings", new Object[] {EcoreUtil.create(eCls1) });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1770,24 +1863,24 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("siblings", new Object[] {EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(5, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEAnnotation())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE
-					.getEStringToStringMapEntry())), it.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEAnnotation())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStringToStringMapEntry())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1798,16 +1891,16 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("siblings", new Object[] {EcorePackage.eINSTANCE.eClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEObject())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEObject())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1828,13 +1921,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("siblings", new Object[] {EcoreUtil.create(eCls2), eCls1 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls2));
-		argTypes.add(new EClassifierLiteralType(eCls1));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls2));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls1));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();
@@ -1853,17 +1946,18 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClassifier() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClassifier()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getEClassifier()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1875,16 +1969,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEObject()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1896,21 +1991,22 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getENamedElement() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getENamedElement()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getENamedElement()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(3, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClassifier())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEPackage())), it
-					.next());
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getENamedElement())), it
-					.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClassifier())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEPackage())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getENamedElement())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1922,16 +2018,17 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(EcorePackage.eINSTANCE.getEPackage()));
-		argTypes.add(new EClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
-			assertEquals(new SequenceType(new EClassifierType(EcorePackage.eINSTANCE.getEClass())), it.next());
+			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEClass())), it.next());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
@@ -1957,13 +2054,13 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		final IService service = serviceLookUp("siblings", new Object[] {EcoreUtil.create(eCls1), eCls2 });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new EClassifierType(eCls1));
-		argTypes.add(new EClassifierLiteralType(eCls2));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
 
 		try {
 			getQueryEnvironment().registerEPackage(ePkg);
-			final Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment()
-					.getEPackageProvider(), argTypes);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType next = it.next();

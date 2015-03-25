@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.validation.type;
 
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 
 /**
  * {@link Lambda} type.
@@ -32,12 +33,16 @@ public class LambdaType extends AbstractJavaType implements IJavaType {
 	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param lambdaEvaluatorType
 	 *            the {@link IType} of this {@link Lambda#getEvaluator() evaluator} type
 	 * @param lambdaExpressionType
 	 *            the {@link IType} of this {@link Lambda#getExpression() expression} type
 	 */
-	public LambdaType(IType lambdaEvaluatorType, IType lambdaExpressionType) {
+	public LambdaType(IReadOnlyQueryEnvironment queryEnvironment, IType lambdaEvaluatorType,
+			IType lambdaExpressionType) {
+		super(queryEnvironment);
 		this.lambdaEvaluatorType = lambdaEvaluatorType;
 		this.lambdaExpressionType = lambdaExpressionType;
 	}

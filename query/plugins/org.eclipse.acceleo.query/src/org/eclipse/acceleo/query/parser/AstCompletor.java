@@ -165,8 +165,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 
 		final Set<IType> collectionTypes = new LinkedHashSet<IType>();
 		for (IType type : validationResult.getPossibleTypes(object.getTarget())) {
-			collectionTypes.add(new SequenceType(type));
-			collectionTypes.add(new SetType(type));
+			collectionTypes.add(new SequenceType(services.getQueryEnvironment(), type));
+			collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
 		}
 		result.addAll(services.getServiceProposals(collectionTypes, false));
 

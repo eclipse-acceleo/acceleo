@@ -11,12 +11,15 @@
 package org.eclipse.acceleo.query.services.tests;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Before;
 
 import static org.junit.Assert.assertEquals;
@@ -24,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractServicesTest {
 
-	private BasicLookupEngine lookupEngine;
+	private ILookupEngine lookupEngine;
 
 	private IQueryEnvironment queryEnvironment;
 
@@ -37,7 +40,7 @@ public abstract class AbstractServicesTest {
 		validationServices = new ValidationServices(queryEnvironment, true);
 	}
 
-	public BasicLookupEngine getLookupEngine() {
+	public ILookupEngine getLookupEngine() {
 		return lookupEngine;
 	}
 
@@ -58,6 +61,23 @@ public abstract class AbstractServicesTest {
 	}
 
 	/**
+	 * Creates a {@link Set} of {@link IType} with the given {@link IType}.
+	 * 
+	 * @param types
+	 *            {@link IType}
+	 * @return a new {@link Set} of {@link IType} with the given {@link IType}
+	 */
+	protected Set<IType> createTypeSet(IType... types) {
+		final Set<IType> result = new LinkedHashSet<IType>();
+
+		for (IType type : types) {
+			result.add(type);
+		}
+
+		return result;
+	}
+
+	/**
 	 * Looks up for a service according to the given name and arguments.
 	 * 
 	 * @param serviceName
@@ -74,4 +94,5 @@ public abstract class AbstractServicesTest {
 		IService service = lookupEngine.lookup(serviceName, argTypes);
 		return service;
 	}
+
 }

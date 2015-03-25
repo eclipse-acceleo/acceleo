@@ -32,6 +32,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
 import org.eclipse.acceleo.query.services.StringServices;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -65,7 +66,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	public QueryEnvironment(CrossReferenceProvider crossReferencer) {
 		ePackageProvider = new EPackageProvider();
-		lookupEngine = new BasicLookupEngine(crossReferencer);
+		lookupEngine = new BasicLookupEngine(this, crossReferencer);
 		this.initStandardServices();
 		this.logger = Logger.getLogger(this.getClass().getName());
 	}
@@ -97,6 +98,17 @@ public class QueryEnvironment implements IQueryEnvironment {
 	@Override
 	public void removeEPackage(String nsPrefix) {
 		ePackageProvider.removePackage(nsPrefix);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#registerCustomClassMapping(org.eclipse.emf.ecore.EClassifier,
+	 *      java.lang.Class)
+	 */
+	@Override
+	public void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
+		ePackageProvider.registerCustomClassMapping(eClassifier, cls);
 	}
 
 	@Override

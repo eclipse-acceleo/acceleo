@@ -84,7 +84,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		@Override
 		public Set<IType> caseEObjectVariable(EObjectVariable object) {
 			Set<IType> types = new LinkedHashSet<IType>();
-			types.add(new EClassifierType(object.getValue().getTarget().eClass()));
+			types.add(new EClassifierType(queryEnvironment, object.getValue().getTarget().eClass()));
 			return types;
 		}
 	};
@@ -160,7 +160,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		}
 		Map<String, Set<IType>> variableTypes = Maps.newHashMap();
 		Set<IType> startingTypes = new LinkedHashSet<IType>();
-		startingTypes.add(new EClassifierType(startingPoint.eClass()));
+		startingTypes.add(new EClassifierType(queryEnvironment, startingPoint.eClass()));
 		variableTypes.put("self", startingTypes);
 		for (Variable var : q.getVariables()) {
 			variableTypes.put(var.getName(), varTypeSwitch.doSwitch(var));

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.ecore.EClassifier;
 
 /**
@@ -22,11 +23,13 @@ public class EClassifierLiteralType extends EClassifierType {
 	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link EClassifier}
 	 */
-	public EClassifierLiteralType(EClassifier type) {
-		super(type);
+	public EClassifierLiteralType(IReadOnlyQueryEnvironment queryEnvironment, EClassifier type) {
+		super(queryEnvironment, type);
 	}
 
 	/**

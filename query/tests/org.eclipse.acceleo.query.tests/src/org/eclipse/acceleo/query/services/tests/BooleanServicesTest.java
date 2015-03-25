@@ -20,7 +20,7 @@ public class BooleanServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getLookupEngine().addServices(BooleanServices.class);
+		getQueryEnvironment().registerServicePackage(BooleanServices.class);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)

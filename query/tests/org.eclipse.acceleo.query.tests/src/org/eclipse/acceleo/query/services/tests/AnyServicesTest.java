@@ -50,8 +50,8 @@ public class AnyServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getLookupEngine().addServices(AnyServices.class);
-		any = new AnyServices();
+		getQueryEnvironment().registerServicePackage(AnyServices.class);
+		any = new AnyServices(getQueryEnvironment());
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 	}
 
@@ -461,17 +461,36 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsTypeOf(Color.BLACK, AnydslPackage.Literals.CALIBER));
 	}
 
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testOCLIsTypeOfEDataTypeNotRegistered() {
+		any.oclIsTypeOf("a string", AnydslPackage.Literals.SINGLE_STRING);
+	}
+
 	@Test
 	public void testOCLIsTypeOfEDataType() {
-		assertTrue(any.oclIsTypeOf("a string", AnydslPackage.Literals.SINGLE_STRING));
-		assertFalse(any.oclIsTypeOf(new Integer(1), AnydslPackage.Literals.SINGLE_STRING));
+		try {
+			getQueryEnvironment().registerEPackage(AnydslPackage.eINSTANCE);
+			assertTrue(any.oclIsTypeOf("a string", AnydslPackage.Literals.SINGLE_STRING));
+			assertFalse(any.oclIsTypeOf(new Integer(1), AnydslPackage.Literals.SINGLE_STRING));
+		} finally {
+			getQueryEnvironment().removeEPackage(AnydslPackage.eINSTANCE.getNsPrefix());
+		}
+	}
 
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testOCLIsKindOfEDataTypeNotRegistered() {
+		any.oclIsKindOf("a string", AnydslPackage.Literals.SINGLE_STRING);
 	}
 
 	@Test
 	public void testOCLIsKindOfEDataType() {
-		assertTrue(any.oclIsKindOf("a string", AnydslPackage.Literals.SINGLE_STRING));
-		assertFalse(any.oclIsKindOf(new Integer(1), AnydslPackage.Literals.SINGLE_STRING));
+		try {
+			getQueryEnvironment().registerEPackage(AnydslPackage.eINSTANCE);
+			assertTrue(any.oclIsKindOf("a string", AnydslPackage.Literals.SINGLE_STRING));
+			assertFalse(any.oclIsKindOf(new Integer(1), AnydslPackage.Literals.SINGLE_STRING));
+		} finally {
+			getQueryEnvironment().removeEPackage(AnydslPackage.eINSTANCE.getNsPrefix());
+		}
 	}
 
 	/**

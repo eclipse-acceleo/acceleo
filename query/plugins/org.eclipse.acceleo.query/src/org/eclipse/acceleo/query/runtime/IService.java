@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -44,13 +43,14 @@ public interface IService {
 	 * 
 	 * @param services
 	 *            the {@link ValidationServices}
-	 * @param provider
-	 *            the {@link EPackageProvider}
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param argTypes
 	 *            arguments {@link IType}
 	 * @return the {@link IType} of elements returned by the service
 	 */
-	Set<IType> getType(ValidationServices services, EPackageProvider provider, List<IType> argTypes);
+	Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+			List<IType> argTypes);
 
 	/**
 	 * Validates all couple of arguments {@link IType} and the {@link IType} of elements returned by the
@@ -58,14 +58,14 @@ public interface IService {
 	 * 
 	 * @param services
 	 *            the {@link ValidationServices}
-	 * @param provider
-	 *            the {@link EPackageProvider}
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param allTypes
 	 *            all couple of arguments {@link IType} and the {@link IType} of elements returned by the
 	 *            service
 	 * @return validated {@link IType}
 	 */
-	Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
+	Set<IType> validateAllType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
 			Map<List<IType>, Set<IType>> allTypes);
 
 }

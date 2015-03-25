@@ -20,10 +20,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import java.util.logging.Logger;
-
-import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
-import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -31,7 +28,7 @@ import org.eclipse.emf.ecore.EPackage;
  * 
  * @author <a href="mailto:pierre.guilet@obeo.fr">Pierre Guilet</a>
  */
-public interface IQueryEnvironment {
+public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 
 	/**
 	 * Register a set of services. The specified {@link Class} must have a default constructor with no
@@ -67,24 +64,13 @@ public interface IQueryEnvironment {
 	void removeEPackage(String nsPrefix);
 
 	/**
-	 * Return the engine providing query services.
+	 * Registers a custom mapping from an {@link EClassifier} to its {@link Class}.
 	 * 
-	 * @return the engine providing query services.
+	 * @param eClassifier
+	 *            the {@link EClassifier}
+	 * @param cls
+	 *            the {@link Class}
 	 */
-	BasicLookupEngine getLookupEngine();
-
-	/**
-	 * Return the EPackageProvider providing access to registered ecore packages.
-	 * 
-	 * @return the EPackageProvider providing access to registered ecore packages.
-	 */
-	EPackageProvider getEPackageProvider();
-
-	/**
-	 * Returns the logger used to log messages in this evaluation environment.
-	 * 
-	 * @return the logger used to log messages in this evaluation environment.
-	 */
-	Logger getLogger();
+	void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls);
 
 }

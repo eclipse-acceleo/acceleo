@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -51,15 +51,9 @@ public class FilterService extends Service {
 		super(serviceMethod, serviceInstance);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-	 *      org.eclipse.acceleo.query.runtime.impl.EPackageProvider, java.util.Map)
-	 */
 	@Override
-	public Set<IType> validateAllType(ValidationServices services, EPackageProvider provider,
-			Map<List<IType>, Set<IType>> allTypes) {
+	public Set<IType> validateAllType(ValidationServices services,
+			IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 		final StringBuilder builder = new StringBuilder();
 
@@ -79,7 +73,7 @@ public class FilterService extends Service {
 						}
 						final IType loweredType = services.lower(filterType, rawType);
 						if (loweredType != null) {
-							result.add(unrawType(possibleType, loweredType));
+							result.add(unrawType(queryEnvironment, possibleType, loweredType));
 							break;
 						}
 					}
@@ -100,9 +94,9 @@ public class FilterService extends Service {
 			final NothingType nothing = services.nothing("Nothing will be left after calling %s:"
 					+ builder.toString(), getServiceMethod().getName());
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-				result.add(new SequenceType(nothing));
+				result.add(new SequenceType(queryEnvironment, nothing));
 			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-				result.add(new SetType(nothing));
+				result.add(new SetType(queryEnvironment, nothing));
 			} else {
 				result.add(nothing);
 			}
@@ -115,6 +109,8 @@ public class FilterService extends Service {
 	 * Puts the given raw type into an {@link ICollectionType} or leave it raw according to the given original
 	 * {@link IType}.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param originalType
 	 *            the original {@link IType}
 	 * @param rawType
@@ -122,13 +118,13 @@ public class FilterService extends Service {
 	 * @return the given raw type into an {@link ICollectionType} or leave it raw according to the given
 	 *         original {@link IType}
 	 */
-	private IType unrawType(IType originalType, IType rawType) {
+	private IType unrawType(IReadOnlyQueryEnvironment queryEnvironment, IType originalType, IType rawType) {
 		final IType result;
 
 		if (originalType instanceof SequenceType) {
-			result = new SequenceType(rawType);
+			result = new SequenceType(queryEnvironment, rawType);
 		} else if (originalType instanceof SetType) {
-			result = new SetType(rawType);
+			result = new SetType(queryEnvironment, rawType);
 		} else {
 			result = rawType;
 		}

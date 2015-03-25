@@ -196,9 +196,9 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		for (IType type : doSwitch(object.getElementType())) {
 			if (object.getValue() == List.class) {
-				possibleTypes.add(new SequenceType(type));
+				possibleTypes.add(new SequenceType(services.getQueryEnvironment(), type));
 			} else if (object.getValue() == Set.class) {
-				possibleTypes.add(new SetType(type));
+				possibleTypes.add(new SetType(services.getQueryEnvironment(), type));
 			} else {
 				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 			}
@@ -215,7 +215,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	@Override
 	public Set<IType> caseEnumLiteral(EnumLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
-		possibleTypes.add(new EClassifierType(object.getLiteral().getEEnum()));
+		possibleTypes
+				.add(new EClassifierType(services.getQueryEnvironment(), object.getLiteral().getEEnum()));
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -282,7 +283,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				.getName());
 		for (IType lambdaEvaluatorPossibleType : lambdaEvaluatorPossibleTypes) {
 			for (IType lambdaExpressionType : lambdaExpressionPossibleTypes) {
-				lambdaExpressionTypes.add(new LambdaType(lambdaEvaluatorPossibleType, lambdaExpressionType));
+				lambdaExpressionTypes.add(new LambdaType(services.getQueryEnvironment(),
+						lambdaEvaluatorPossibleType, lambdaExpressionType));
 			}
 		}
 		variableTypesStack.pop();
@@ -350,7 +352,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		if (object.getValue() instanceof EClassifier) {
 			possibleTypes = new LinkedHashSet<IType>();
-			possibleTypes.add(new EClassifierLiteralType((EClassifier)object.getValue()));
+			possibleTypes.add(new EClassifierLiteralType(services.getQueryEnvironment(), (EClassifier)object
+					.getValue()));
 		} else if (object.getValue() instanceof Class<?>) {
 			possibleTypes = services.getIType((Class<?>)object.getValue());
 		} else {
@@ -411,7 +414,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseNullLiteral(NullLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
-		possibleTypes.add(new ClassType(null));
+		possibleTypes.add(new ClassType(services.getQueryEnvironment(), null));
 
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
@@ -427,7 +430,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		for (Expression expression : object.getValues()) {
 			for (IType type : doSwitch(expression)) {
-				possibleTypes.add(new SetType(type));
+				possibleTypes.add(new SetType(services.getQueryEnvironment(), type));
 			}
 		}
 
@@ -445,7 +448,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		for (Expression expression : object.getValues()) {
 			for (IType type : doSwitch(expression)) {
-				possibleTypes.add(new SequenceType(type));
+				possibleTypes.add(new SequenceType(services.getQueryEnvironment(), type));
 			}
 		}
 

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
@@ -27,12 +28,20 @@ public class EClassifierType extends AbstractType {
 	private final EClassifier type;
 
 	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	private final IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
 	 * Constructor.
 	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param type
 	 *            the {@link EClassifier}
 	 */
-	public EClassifierType(EClassifier type) {
+	public EClassifierType(IReadOnlyQueryEnvironment queryEnvironment, EClassifier type) {
+		this.queryEnvironment = queryEnvironment;
 		this.type = type;
 	}
 
@@ -64,7 +73,7 @@ public class EClassifierType extends AbstractType {
 				result = false;
 			}
 		} else if (otherType instanceof IJavaType) {
-			Class<?> ourClass = getType().getInstanceClass();
+			Class<?> ourClass = queryEnvironment.getEPackageProvider().getClass(getType());
 			if (ourClass != null) {
 				result = ourClass.isAssignableFrom(((IJavaType)otherType).getType());
 			} else {
