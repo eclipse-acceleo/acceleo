@@ -384,6 +384,47 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	/**
+	 * Tests {@link EObjectServices#eContainerOrSelf(EObject, EClass)} method.</br> This test uses the
+	 * "resources/ecore/reverse.ecore" model to test if the eContainerOrSelf is calculated correctly.
+	 * <ul>
+	 * <li>For the EClass "unused" it must return the EPackage "full-sirius-code" as container.</li>
+	 * <li>For the EAttribute "newEReference1" it must return the EClass "unused" as container if the filter
+	 * is the EClass.</li>
+	 * <li>For the EAttribute "newEReference1" it must return the EPackage "full-sirius-code" as container if
+	 * the filter is the EPackage.</li>
+	 * </ul>
+	 */
+	@Test
+	public void testEContainerOrSelf() {
+		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
+		fullSiriusCodePackage.eAllContents().next();
+		EObject unused = fullSiriusCodePackage.eAllContents().next();
+		assertEquals(fullSiriusCodePackage, eObjectServices.eContainerOrSelf(unused, fullSiriusCodePackage
+				.eClass()));
+
+		unused.eAllContents().next();
+		EObject newEReference1 = unused.eAllContents().next();
+
+		assertEquals(unused, eObjectServices.eContainerOrSelf(newEReference1, unused.eClass()));
+		assertEquals(fullSiriusCodePackage, eObjectServices.eContainerOrSelf(newEReference1,
+				fullSiriusCodePackage.eClass()));
+
+		try {
+			eObjectServices.eContainerOrSelf(newEReference1, null);
+			fail("The 'eClass' operation service must throw a NPE.");
+		} catch (NullPointerException exception) {
+			// Do nothing the exception is expected
+		}
+
+		try {
+			eObjectServices.eContainerOrSelf(null, unused.eClass());
+			fail("The 'eClass' operation service must throw a NPE.");
+		} catch (NullPointerException exception) {
+			// Do nothing the exception is expected
+		}
+	}
+
+	/**
 	 * Tests {@link EObjectServices#eContainer(EObject)} method.</br> This test uses the
 	 * "resources/ecore/reverse.ecore" model to test if the eContainer is calculated correctly.
 	 * <ul>

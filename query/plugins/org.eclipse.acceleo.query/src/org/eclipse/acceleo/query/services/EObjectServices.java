@@ -51,6 +51,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 public class EObjectServices extends AbstractServiceProvider {
 
 	/**
+	 * {@link EClass} containment message.
+	 */
+	private static final String ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S = "Only EClass can be contained into other EClasses not %s";
+
+	/**
+	 * Can't contain directly or indirectly message.
+	 */
+	private static final String S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S = "%s can't contain directly or indirectly %s";
+
+	/**
 	 * Ancestors {@link IService}.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -88,7 +98,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				}
 			} else {
 				result.add(new SequenceType(queryEnvironment, services.nothing(
-						"Only EClass can be contained into other EClasses not %s", argTypes.get(0))));
+						ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S, argTypes.get(0))));
 			}
 
 			return result;
@@ -135,7 +145,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't contain directly or indirectly %s", filterType, argTypes.get(0))));
+							S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterType, argTypes.get(0))));
 				}
 			}
 
@@ -181,7 +191,7 @@ public class EObjectServices extends AbstractServiceProvider {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
-				result.add(services.nothing("Only EClass can be contained into other EClasses not %s",
+				result.add(services.nothing(ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S,
 						argTypes.get(0)));
 			}
 
@@ -226,9 +236,91 @@ public class EObjectServices extends AbstractServiceProvider {
 					}
 				}
 				if (result.isEmpty()) {
-					result.add(services.nothing("%s can't contain directly or indirectly %s", filterType,
+					result.add(services.nothing(S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterType,
 							argTypes.get(0)));
 				}
+			}
+
+			return result;
+		}
+
+	}
+
+	/**
+	 * EContainerOrSelf {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class EContainerOrSelfService extends FilterService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private EContainerOrSelfService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvoronment,
+				List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (argTypes.get(0).getType() instanceof EClass) {
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
+					result.add(new EClassifierType(queryEnvoronment,
+							((EClassifierLiteralType)argTypes.get(1)).getType()));
+				} else {
+					result.addAll(getTypeForSpecificType(services, queryEnvoronment, argTypes, eCls));
+				}
+			} else {
+				result.add(services.nothing(ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S,
+						argTypes.get(0)));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
+		 * {@link EObject} {@link EClass}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param receiverEClass
+		 *            the receiver type can't be {@link EObject} {@link EClass}
+		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
+		 *         {@link EObject} {@link EClass}
+		 */
+		private Set<IType> getTypeForSpecificType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final IType lowerSelfType = services.lower(argTypes.get(0), argTypes.get(1));
+			if (lowerSelfType != null) {
+				result.add(lowerSelfType);
+			}
+			final IType filterType = argTypes.get(1);
+			for (EClass containingEClass : queryEnvironment.getEPackageProvider().getAllContainingEClasses(
+					receiverEClass)) {
+				final IType lowerType = services.lower(
+						new EClassifierType(queryEnvironment, containingEClass), filterType);
+				if (lowerType != null) {
+					result.add(lowerType);
+				}
+			}
+			if (result.isEmpty()) {
+				result.add(services.nothing(S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterType, argTypes
+						.get(0)));
 			}
 
 			return result;
@@ -821,6 +913,8 @@ public class EObjectServices extends AbstractServiceProvider {
 			result = new EAllContentsService(publicMethod, this);
 		} else if ("eContainer".equals(publicMethod.getName())) {
 			result = new EContainerService(publicMethod, this);
+		} else if ("eContainerOrSelf".equals(publicMethod.getName())) {
+			result = new EContainerOrSelfService(publicMethod, this);
 		} else if ("ancestors".equals(publicMethod.getName())) {
 			result = new AncestorsService(publicMethod, this);
 		} else if ("eInverse".equals(publicMethod.getName())) {
@@ -949,6 +1043,29 @@ public class EObjectServices extends AbstractServiceProvider {
 			result = current;
 		} else {
 			result = null;
+		}
+
+		return result;
+	}
+
+	/**
+	 * <p>
+	 * Returns self or the first container of the receiver that if of the given type.
+	 * </p>
+	 * 
+	 * @param eObject
+	 *            the eObject which container is seeked.
+	 * @param type
+	 *            the type filter.
+	 * @return self or the first container of the receiver that if of the given type.
+	 */
+	public EObject eContainerOrSelf(EObject eObject, EClass type) {
+		final EObject result;
+
+		if (type.isSuperTypeOf(eObject.eClass())) {
+			result = eObject;
+		} else {
+			result = eContainer(eObject, type);
 		}
 
 		return result;

@@ -101,7 +101,7 @@ public class CompletionTest {
 	public void navigationSegmentEmptyTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, variableTypes);
 
-		assertEquals(60, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(61, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -196,7 +196,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(60, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(61, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}

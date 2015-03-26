@@ -1157,6 +1157,171 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 	}
 
 	@Test
+	public void testEContainerOrSelfFilteredNotContainedEClass() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		final IService service = serviceLookUp("eContainerOrSelf", new Object[] {EcoreUtil.create(eCls2),
+				eCls1 });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls2));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls1));
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			IType next = it.next();
+			assertTrue(next instanceof NothingType);
+			assertEquals("EClassifierLiteral=eCls1 can't contain directly or indirectly EClassifier=eCls2",
+					((NothingType)next).getMessage());
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testEContainerOrSelfFiltered() {
+		final IService service = serviceLookUp("eContainerOrSelf", new Object[] {EcorePackage.eINSTANCE,
+				EcorePackage.eINSTANCE.getEClass() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testEContainerOrSelfFilteredOnEObject() {
+		final IService service = serviceLookUp("eContainerOrSelf", new Object[] {EcorePackage.eINSTANCE,
+				EcorePackage.eINSTANCE.getEClass() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEObject()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testEContainerOrSelfFilteredLoweredByTypes() {
+		final IService service = serviceLookUp("eContainerOrSelf", new Object[] {EcorePackage.eINSTANCE,
+				EcorePackage.eINSTANCE.getEModelElement() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
+				.getETypedElement()));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(2, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(
+					new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getETypedElement()), it
+							.next());
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEOperation()),
+					it.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testEContainerOrSelfFilteredLoweredByFilter() {
+		final IService service = serviceLookUp("eContainerOrSelf", new Object[] {EcorePackage.eINSTANCE,
+				EcorePackage.eINSTANCE.getEClass() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+					.next());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testEContainerOrSelfFilteredNoType() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		final EReference ref1 = EcorePackage.eINSTANCE.getEcoreFactory().createEReference();
+		ref1.setName("ref1");
+		ref1.setContainment(true);
+		ref1.setEType(eCls1);
+		eCls1.getEStructuralFeatures().add(ref1);
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		final IService service = serviceLookUp("eContainerOrSelf", new Object[] {EcoreUtil.create(eCls1),
+				eCls2 });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), eCls1));
+		argTypes.add(new EClassifierLiteralType(getQueryEnvironment(), eCls2));
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+			final Set<IType> types = service
+					.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			IType next = it.next();
+			assertTrue(next instanceof NothingType);
+			assertEquals("EClassifierLiteral=eCls2 can't contain directly or indirectly EClassifier=eCls1",
+					((NothingType)next).getMessage());
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
 	public void testEContentsNoContainingEClass() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 		ePkg.setName("ePkg");
