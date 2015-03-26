@@ -456,9 +456,26 @@
       <expectedResult interpreter="manual">
         <possibleTypes>Set(EClassifier=TemplateParameter)</possibleTypes>
         <possibleTypes>Set(Sequence(EClassifier=PackageableElement))</possibleTypes>
-        <possibleTypes>Set(Sequence(EClassifier=StringExpression))</possibleTypes>
         <possibleTypes>Set(Sequence(EClassifier=UseCase))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Substitution))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=InterfaceRealization))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Behavior))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Classifier))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Node))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=ComponentRealization))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Manifestation))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Artifact))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=EnumerationLiteral))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=ProtocolStateMachine))</possibleTypes>
         <possibleTypes>Set(Sequence(EClassifier=ValueSpecification))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=StringExpression))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=DeploymentSpecification))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=OpaqueExpression))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=TimeExpression))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Dependency))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Constraint))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=InteractionConstraint))</possibleTypes>
+        <possibleTypes>Set(Sequence(EClassifier=Deployment))</possibleTypes>
         <possibleTypes>Set(EClassifier=TemplateParameterSubstitution)</possibleTypes>
         <possibleTypes>Set(EClassifier=Package)</possibleTypes>
         <possibleTypes>Set(EClassifier=Component)</possibleTypes>
@@ -911,6 +928,16 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=Component</possibleTypes>
+        <possibleTypes>EClassifier=Class</possibleTypes>
+        <possibleTypes>EClassifier=BehavioredClassifier</possibleTypes>
+        <possibleTypes>EClassifier=Node</possibleTypes>
+        <possibleTypes>EClassifier=StateMachine</possibleTypes>
+        <possibleTypes>EClassifier=Activity</possibleTypes>
+        <possibleTypes>EClassifier=Behavior</possibleTypes>
+        <possibleTypes>EClassifier=UseCase</possibleTypes>
+        <possibleTypes>EClassifier=Interaction</possibleTypes>
+        <possibleTypes>EClassifier=Stereotype</possibleTypes>
+        <possibleTypes>EClassifier=ProtocolStateMachine</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>

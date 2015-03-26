@@ -629,7 +629,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				result.add(services.nothing("Nothing left after intersection:" + builder.toString()));
+				result.add(new SetType(queryEnvironment, services.nothing("Nothing left after intersection:"
+						+ builder.toString())));
 			}
 
 			return result;
