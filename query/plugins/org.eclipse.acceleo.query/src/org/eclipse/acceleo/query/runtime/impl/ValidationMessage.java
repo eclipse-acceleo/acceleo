@@ -109,4 +109,15 @@ public class ValidationMessage implements IValidationMessage {
 		return endPosition;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s from %d to %d: %s", getLevel().toString(), getStartPosition(),
+				getEndPosition(), getMessage());
+	}
+
 }
