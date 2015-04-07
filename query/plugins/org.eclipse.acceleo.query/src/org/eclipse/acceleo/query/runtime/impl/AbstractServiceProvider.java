@@ -31,7 +31,7 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 	/**
 	 * Wrong implementation of this {@link Class} message.
 	 */
-	private static final String WRONG_IMPLEMENETATION = "Wrong implementation of "
+	private static final String WRONG_IMPLEMENTATION = "Wrong implementation of "
 			+ AbstractServiceProvider.class.getName();
 
 	/**
@@ -68,9 +68,9 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 			throw new InvalidAcceleoPackageException(ILookupEngine.INSTANTIATION_PROBLEM_MSG
 					+ getClass().getCanonicalName(), e);
 		} catch (NoSuchMethodException e) {
-			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENETATION, e);
+			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENTATION, e);
 		} catch (SecurityException e) {
-			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENETATION, e);
+			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENTATION, e);
 		}
 
 		return services;

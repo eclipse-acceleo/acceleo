@@ -40,13 +40,13 @@ public class BasicLookupEngine implements ILookupEngine {
 	/**
 	 * Message used when a service cannot be instantiated.
 	 */
-	public static final String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
+	private static final String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
 
 	/**
 	 * The method name a query service that needs to use a registered cross referencer must have so it can be
 	 * pass to the services.
 	 */
-	public static final String SET_CROSS_REFERENCER_METHOD_NAME = "setCrossReferencer";
+	private static final String SET_CROSS_REFERENCER_METHOD_NAME = "setCrossReferencer";
 
 	/**
 	 * Message used when a service doesn't have a zero-argument constructor.

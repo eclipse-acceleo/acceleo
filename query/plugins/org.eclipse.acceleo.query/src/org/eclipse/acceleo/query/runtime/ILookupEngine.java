@@ -88,6 +88,6 @@ public interface ILookupEngine {
 	 * @return <code>true</code> if the given {@link Class} is already registered, <code>false</code>
 	 *         otherwise
 	 */
-	public boolean isRegisteredService(Class<?> cls);
+	boolean isRegisteredService(Class<?> cls);
 
 }
