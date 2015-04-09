@@ -868,7 +868,6 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		}
 	}
 
-	// TODO move to BasicLookupEngineTest see https://git.eclipse.org/r/#/c/44251/
 	@Test
 	public void testEContainerOnEStringToStringMapEntryBasicMapping() {
 		final List<Set<IType>> argTypes = new ArrayList<Set<IType>>();
@@ -892,7 +891,6 @@ public class EObjectServicesValidationTest extends AbstractServicesTest {
 		}
 	}
 
-	// TODO move to BasicLookupEngineTest see https://git.eclipse.org/r/#/c/44251/
 	@Test
 	public void testEContainerOnEStringToStringMapEntryCustomMapping() {
 		final List<Set<IType>> argTypes = new ArrayList<Set<IType>>();
