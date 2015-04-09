@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.lookup.basic;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -19,24 +22,30 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class BasicLookupEngineTest {
+@RunWith(Parameterized.class)
+public class LookupEngineTest {
 
 	private static final class TestCrossReferenceProvider implements CrossReferenceProvider {
 
@@ -47,9 +56,39 @@ public class BasicLookupEngineTest {
 
 	}
 
-	private static class TestBasicLookupEngine extends BasicLookupEngine {
+	private interface ITestLookupEngine extends ILookupEngine {
+
+		ServiceRegistrationResult registerServices(Class<?> newServices)
+				throws InvalidAcceleoPackageException;
+
+		void removeServices(Class<?> servicesClass);
+
+		Map<Integer, Map<String, List<IService>>> getServices();
+
+		Map<Class<?>, Set<IService>> getClassToServices();
+	}
+
+	private static class TestBasicLookupEngine extends BasicLookupEngine implements ITestLookupEngine {
 
 		public TestBasicLookupEngine(CrossReferenceProvider crossReferencer) {
+			super(new QueryEnvironment(crossReferencer), crossReferencer);
+		}
+
+		@Override
+		public Map<Integer, Map<String, List<IService>>> getServices() {
+			return super.getServices();
+		}
+
+		@Override
+		public Map<Class<?>, Set<IService>> getClassToServices() {
+			return super.getClassToServices();
+		}
+
+	}
+
+	private static class TestCacheLookupEngine extends CacheLookupEngine implements ITestLookupEngine {
+
+		public TestCacheLookupEngine(CrossReferenceProvider crossReferencer) {
 			super(new QueryEnvironment(crossReferencer), crossReferencer);
 		}
 
@@ -257,11 +296,45 @@ public class BasicLookupEngineTest {
 
 	}
 
+	private final Class<ITestLookupEngine> cls;
+
+	public LookupEngineTest(Class<ITestLookupEngine> cls) {
+		this.cls = cls;
+	}
+
+	@Parameters(name = "{0}")
+	public static Collection<Object[]> classes() {
+		return Arrays.asList(new Object[][] { {TestBasicLookupEngine.class, },
+				{TestCacheLookupEngine.class, }, });
+	}
+
+	ITestLookupEngine instanciate(CrossReferenceProvider provider) {
+		try {
+			final Constructor<ITestLookupEngine> constructor = cls
+					.getConstructor(CrossReferenceProvider.class);
+			return constructor.newInstance(provider);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	@Test
 	public void simpleRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -283,7 +356,7 @@ public class BasicLookupEngineTest {
 	public void staticRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(TestStaticServices.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -306,7 +379,7 @@ public class BasicLookupEngineTest {
 	public void extendedRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(ExtendedTestServices1.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -334,7 +407,7 @@ public class BasicLookupEngineTest {
 	public void doubleRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
 		assertEquals(1, result.getRegistered().size());
@@ -359,7 +432,7 @@ public class BasicLookupEngineTest {
 	public void duplicateRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
 
@@ -393,7 +466,7 @@ public class BasicLookupEngineTest {
 	public void maskRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
 
@@ -428,7 +501,7 @@ public class BasicLookupEngineTest {
 	public void maskedByRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
 			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestMaskServices1.class);
 
@@ -463,7 +536,7 @@ public class BasicLookupEngineTest {
 	public void withCrossReferencerRegistration() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -490,7 +563,7 @@ public class BasicLookupEngineTest {
 	public void simpleRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -512,7 +585,7 @@ public class BasicLookupEngineTest {
 	public void extendedRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(ExtendedTestServicesProvider1.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -542,7 +615,7 @@ public class BasicLookupEngineTest {
 	public void doubleRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
 
@@ -570,7 +643,7 @@ public class BasicLookupEngineTest {
 	public void duplicateRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
 
@@ -606,7 +679,7 @@ public class BasicLookupEngineTest {
 	public void maskRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
 
@@ -646,7 +719,7 @@ public class BasicLookupEngineTest {
 	public void maskedByRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		ServiceRegistrationResult result = engine.registerServices(TestMaskServicesProvider1.class);
 
@@ -686,7 +759,7 @@ public class BasicLookupEngineTest {
 	public void withCrossReferencerRegistrationServiceProvider() throws InvalidAcceleoPackageException,
 			NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
 		assertEquals(0, result.getDuplicated().size());
@@ -714,12 +787,12 @@ public class BasicLookupEngineTest {
 	@Test
 	public void isServiceMethod() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		final Method toStringMethod = Object.class.getMethod("toString");
 		assertFalse(engine.isServiceMethod(this, toStringMethod));
 
-		final Method shouldRegisterMethod = BasicLookupEngineTest.class.getMethod("isServiceMethod");
+		final Method shouldRegisterMethod = LookupEngineTest.class.getMethod("isServiceMethod");
 		assertTrue(engine.isServiceMethod(this, shouldRegisterMethod));
 		assertFalse(engine.isServiceMethod(null, shouldRegisterMethod));
 	}
@@ -727,9 +800,9 @@ public class BasicLookupEngineTest {
 	@Test
 	public void isCrossReferencerMethod() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
-		final Method isCrossReferencerMethod = BasicLookupEngineTest.class
+		final Method isCrossReferencerMethod = LookupEngineTest.class
 				.getMethod("isCrossReferencerMethod");
 		assertFalse(engine.isCrossReferencerMethod(isCrossReferencerMethod));
 
@@ -741,7 +814,7 @@ public class BasicLookupEngineTest {
 	@Test
 	public void isRegisteredService() throws InvalidAcceleoPackageException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		assertFalse(engine.isRegisteredService(TestServices1.class));
 		engine.registerServices(TestServices1.class);
@@ -751,7 +824,7 @@ public class BasicLookupEngineTest {
 	@Test
 	public void removeServicesEmpty() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		engine.removeServices(ExtendedTestServices1.class);
 
@@ -762,7 +835,7 @@ public class BasicLookupEngineTest {
 	@Test
 	public void removeServices() throws InvalidAcceleoPackageException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		engine.registerServices(ExtendedTestServices1.class);
 
@@ -778,7 +851,7 @@ public class BasicLookupEngineTest {
 	@Test
 	public void getServicesEmpty() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
 		types.add(EClassifier.class);
 
@@ -788,7 +861,7 @@ public class BasicLookupEngineTest {
 	@Test
 	public void getServices() throws InvalidAcceleoPackageException, NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
 		types.add(EClassifier.class);
 
@@ -805,7 +878,7 @@ public class BasicLookupEngineTest {
 	@Test
 	public void lookupEmpty() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final TestBasicLookupEngine engine = new TestBasicLookupEngine(provider);
+		final ITestLookupEngine engine = instanciate(provider);
 
 		assertEquals(null, engine.lookup("service", new Class<?>[] {}));
 	}
