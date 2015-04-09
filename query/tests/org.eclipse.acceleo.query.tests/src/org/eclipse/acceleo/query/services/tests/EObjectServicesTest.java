@@ -488,7 +488,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject newEReference1 = unused.eAllContents().next();
 
 		List<EObject> contents = eObjectServices.eContents(fullSiriusCodePackage, unused.eClass());
-		assertEquals(30, contents.size());
+		assertEquals(31, contents.size());
 		contents = eObjectServices.eContents(fullSiriusCodePackage, newEReference1.eClass());
 		assertEquals(0, contents.size());
 		contents = eObjectServices.eContents(unused, newEReference1.eClass());
@@ -549,9 +549,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject newEReference1 = unused.eAllContents().next();
 
 		List<EObject> contents = eObjectServices.eAllContents(fullSiriusCodePackage, unused.eClass());
-		assertEquals(30, contents.size());
+		assertEquals(31, contents.size());
 		contents = eObjectServices.eAllContents(fullSiriusCodePackage, newEReference1.eClass());
-		assertEquals(30, contents.size());
+		assertEquals(31, contents.size());
 		contents = eObjectServices.eAllContents(unused, newEReference1.eClass());
 		assertEquals(1, contents.size());
 		try {
@@ -714,7 +714,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 		result = eObjectServices.siblings(query);
 		assertNotNull(result);
-		assertEquals(36, result.size());
+		assertEquals(37, result.size());
 
 		result = eObjectServices.siblings(resultExpectation);
 		assertNotNull(result);

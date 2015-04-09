@@ -67,6 +67,7 @@ callExp :     'filter(' typeLiteral ')'        #Filter
 			| 'siblings(' typeLiteral? ')'       #Siblings
 			| 'eContents(' typeLiteral? ')'       #EContent
 			| 'eAllContents(' typeLiteral? ')'      #EAContent
+			| 'eContainerOrSelf(' typeLiteral ')'       #EContainerOrSelf
 			| 'eContainer(' typeLiteral? ')'       #EContainer
 			| 'eInverse(' (typeLiteral | expression)? ')'       #EInverse
 			| collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall

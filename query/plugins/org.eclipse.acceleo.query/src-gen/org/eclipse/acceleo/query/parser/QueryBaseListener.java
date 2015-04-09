@@ -485,6 +485,19 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEContainerOrSelf(@NotNull QueryParser.EContainerOrSelfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEContainerOrSelf(@NotNull QueryParser.EContainerOrSelfContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAs(@NotNull QueryParser.AsContext ctx) { }
 	/**
 	 * {@inheritDoc}

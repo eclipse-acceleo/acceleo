@@ -469,6 +469,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitCompOp(@NotNull QueryParser.CompOpContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code EContainerOrSelf}
+	 * labeled alternative in {@link QueryParser#callExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterEContainerOrSelf(@NotNull QueryParser.EContainerOrSelfContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EContainerOrSelf}
+	 * labeled alternative in {@link QueryParser#callExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitEContainerOrSelf(@NotNull QueryParser.EContainerOrSelfContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code As}
 	 * labeled alternative in {@link QueryParser#callExp}.
 	 * @param ctx the parse tree

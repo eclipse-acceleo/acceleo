@@ -64,6 +64,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.CallServiceContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CompContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EAContentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EContainerContext;
+import org.eclipse.acceleo.query.parser.QueryParser.EContainerOrSelfContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EContentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EInverseContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EnumOrClassifierLitContext;
@@ -989,6 +990,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitEContainer(EContainerContext ctx) {
 		callFilteredService("eContainer", ctx);
+	}
+
+	/**
+	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEContainerOrSelf(org.eclipse.acceleo.query.parser.QueryParser.EContainerOrSelfContext)
+	 */
+	@Override
+	public void exitEContainerOrSelf(EContainerOrSelfContext ctx) {
+		callFilteredService("eContainerOrSelf", ctx);
 	}
 
 	/**

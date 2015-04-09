@@ -398,6 +398,18 @@
       </expectedResult>
     </expectations>
   </queries>
+  <queries expression="[self.eContainerOrSelf(ecore::EPackage)/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:EObjectResult" interpreter="mtl">
+        <value href="reverse.ecore#//org.eclipse.sirius.business.api.session"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>EClassifier=EPackage</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
   <modelElements name="Session">
     <target href="reverse.ecore#//org.eclipse.sirius.business.api.session/Session"/>
   </modelElements>
