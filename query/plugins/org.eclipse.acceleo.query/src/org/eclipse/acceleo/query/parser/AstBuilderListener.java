@@ -109,7 +109,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
- * The {@link AstBuilderListener} builds an AST when pluged into the parser.
+ * The {@link AstBuilderListener} builds an AST when plugged into the parser.
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
@@ -296,129 +296,206 @@ public class AstBuilderListener extends QueryBaseListener {
 				int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
 			if (e != null) {
 				if (e.getCtx() instanceof IterationCallContext) {
-					errorRule = QueryParser.RULE_expression;
-					final ErrorExpression errorExpression = builder.errorExpression();
-					pushError(errorExpression);
-					final Integer position = Integer.valueOf(((IterationCallContext)e.getCtx()).start
-							.getStartIndex());
-					startPositions.put(errorExpression, position);
-					endPositions.put(errorExpression, position);
+					iterationCallContextError(e);
 				} else if (e.getCtx() instanceof TypeLiteralContext) {
-					final Integer startPosition = Integer.valueOf(((TypeLiteralContext)e.getCtx()).start
-							.getStartIndex());
-					final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-					if (e.getCtx().getParent() instanceof VariableDefinitionContext) {
-						errorRule = QueryParser.RULE_expression;
-						final String variableName = e.getCtx().getParent().getChild(0).getText();
-						final ErrorTypeLiteral type = builder.errorTypeLiteral(new String[] {});
-						startPositions.put(type, startPosition);
-						endPositions.put(type, endPosition);
-						errors.add(type);
-						final Expression variableExpression = pop();
-						final VariableDeclaration variableDeclaration = builder.variableDeclaration(
-								variableName, type, variableExpression);
-						startPositions.put(variableDeclaration, startPosition);
-						endPositions.put(variableDeclaration, endPosition);
-						push(variableDeclaration);
-						final ErrorExpression errorExpression = builder.errorExpression();
-						pushError(errorExpression);
-						startPositions.put(errorExpression, startPosition);
-						endPositions.put(errorExpression, endPosition);
-					} else if (!(stack.peek() instanceof TypeLiteral)) {
-						errorRule = QueryParser.RULE_typeLiteral;
-						final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {});
-						startPositions.put(errorTypeLiteral, startPosition);
-						endPositions.put(errorTypeLiteral, endPosition);
-						pushError(errorTypeLiteral);
-					}
+					typeLiteralContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
-					final Integer startPosition = Integer
-							.valueOf(((VariableDefinitionContext)e.getCtx()).start.getStartIndex());
-					final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-					if (e.getCtx().getChildCount() > 0) {
-						errorRule = QueryParser.RULE_expression;
-						final String variableName = e.getCtx().getChild(0).getText();
-						final TypeLiteral type = createModelType((ModelObjectTypeContext)e.getCtx().getChild(
-								2));
-						// overwrite the end position to the current error position (the start position is
-						// fine)
-						endPositions.put(type, endPosition);
-						final Expression variableExpression = pop();
-						final VariableDeclaration variableDeclaration = builder.variableDeclaration(
-								variableName, type, variableExpression);
-						startPositions.put(variableDeclaration, startPosition);
-						endPositions.put(variableDeclaration, endPosition);
-						push(variableDeclaration);
-					} else {
-						final Expression variableExpression = pop();
-						errorRule = QueryParser.RULE_variableDefinition;
-						final ErrorVariableDeclaration errorVariableDeclaration = builder
-								.errorVariableDeclaration(variableExpression);
-						startPositions.put(errorVariableDeclaration, startPosition);
-						endPositions.put(errorVariableDeclaration, endPosition);
-						pushError(errorVariableDeclaration);
-					}
-					final ErrorExpression errorExpression = builder.errorExpression();
-					startPositions.put(errorExpression, endPosition);
-					endPositions.put(errorExpression, endPosition);
-					pushError(errorExpression);
+					variableDefinitionContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof CallExpContext) {
-					errorRule = QueryParser.RULE_navigationSegment;
-					final Expression receiver = pop();
-					final ErrorCollectionCall errorCollectionCall = builder.errorCollectionCall(receiver);
-					startPositions.put(errorCollectionCall, startPositions.get(receiver));
-					endPositions.put(errorCollectionCall, Integer.valueOf(((Token)offendingSymbol)
-							.getStopIndex() + 1));
-					pushError(errorCollectionCall);
+					callExpContextError(offendingSymbol);
 				} else if (e.getCtx() instanceof NavigationSegmentContext) {
-					errorRule = QueryParser.RULE_navigationSegment;
-					final Expression receiver = pop();
-					final ErrorFeatureAccessOrCall errorFeatureAccessOrCall = builder
-							.errorFeatureAccessOrCall(receiver);
-					startPositions.put(errorFeatureAccessOrCall, startPositions.get(receiver));
-					endPositions.put(errorFeatureAccessOrCall, Integer.valueOf(((Token)offendingSymbol)
-							.getStopIndex() + 1));
-					pushError(errorFeatureAccessOrCall);
+					navigationSegmentContextError(offendingSymbol);
 				} else {
-					errorRule = e.getCtx().getRuleIndex();
-					switch (e.getCtx().getRuleIndex()) {
-						case QueryParser.RULE_expression:
-							final ErrorExpression errorExpression = builder.errorExpression();
-							final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
-									.getStartIndex());
-							startPositions.put(errorExpression, position);
-							endPositions.put(errorExpression, Integer.valueOf(((Token)offendingSymbol)
-									.getStopIndex() + 1));
-							pushError(errorExpression);
-							break;
-
-						default:
-							break;
-					}
+					defaultError(offendingSymbol, e);
 				}
 			} else if (recognizer instanceof QueryParser) {
-				final QueryParser parser = (QueryParser)recognizer;
-				if (parser.getContext() instanceof EnumOrClassifierLitContext) {
-					final Integer startPosition = Integer.valueOf(((EnumOrClassifierLitContext)parser
-							.getContext()).start.getStartIndex());
-					final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-					errorRule = QueryParser.RULE_typeLiteral;
-					final ParseTree firstChild = parser.getContext().getChild(0);
-					if (firstChild.getChildCount() == 1) {
-						final ErrorTypeLiteral errorTypeLiteral = builder
-								.errorTypeLiteral(new String[] {firstChild.getChild(0).getText(), });
-						startPositions.put(errorTypeLiteral, startPosition);
-						endPositions.put(errorTypeLiteral, endPosition);
-						pushError(errorTypeLiteral);
-					} else if (firstChild.getChildCount() == 3) {
-						final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {
-								firstChild.getChild(0).getText(), firstChild.getChild(2).getText(), });
-						startPositions.put(errorTypeLiteral, startPosition);
-						endPositions.put(errorTypeLiteral, endPosition);
-						pushError(errorTypeLiteral);
-					} else {
-						throw new UnsupportedOperationException("there is no error then...");
-					}
+				noRecognitionException(recognizer, offendingSymbol);
+			}
+		}
+
+		/**
+		 * {@link IterationCallContext} error case.
+		 * 
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void iterationCallContextError(RecognitionException e) {
+			errorRule = QueryParser.RULE_expression;
+			final ErrorExpression errorExpression = builder.errorExpression();
+			pushError(errorExpression);
+			final Integer position = Integer
+					.valueOf(((IterationCallContext)e.getCtx()).start.getStartIndex());
+			startPositions.put(errorExpression, position);
+			endPositions.put(errorExpression, position);
+		}
+
+		/**
+		 * {@link TypeLiteralContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void typeLiteralContextError(Object offendingSymbol, RecognitionException e) {
+			final Integer startPosition = Integer.valueOf(((TypeLiteralContext)e.getCtx()).start
+					.getStartIndex());
+			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
+			if (e.getCtx().getParent() instanceof VariableDefinitionContext) {
+				errorRule = QueryParser.RULE_expression;
+				final String variableName = e.getCtx().getParent().getChild(0).getText();
+				final ErrorTypeLiteral type = builder.errorTypeLiteral(new String[] {});
+				startPositions.put(type, startPosition);
+				endPositions.put(type, endPosition);
+				errors.add(type);
+				final Expression variableExpression = pop();
+				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
+						type, variableExpression);
+				startPositions.put(variableDeclaration, startPosition);
+				endPositions.put(variableDeclaration, endPosition);
+				push(variableDeclaration);
+				final ErrorExpression errorExpression = builder.errorExpression();
+				pushError(errorExpression);
+				startPositions.put(errorExpression, startPosition);
+				endPositions.put(errorExpression, endPosition);
+			} else if (!(stack.peek() instanceof TypeLiteral)) {
+				errorRule = QueryParser.RULE_typeLiteral;
+				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {});
+				startPositions.put(errorTypeLiteral, startPosition);
+				endPositions.put(errorTypeLiteral, endPosition);
+				pushError(errorTypeLiteral);
+			}
+		}
+
+		/**
+		 * {@link VariableDefinitionContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void variableDefinitionContextError(Object offendingSymbol, RecognitionException e) {
+			final Integer startPosition = Integer.valueOf(((VariableDefinitionContext)e.getCtx()).start
+					.getStartIndex());
+			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
+			if (e.getCtx().getChildCount() > 0) {
+				errorRule = QueryParser.RULE_expression;
+				final String variableName = e.getCtx().getChild(0).getText();
+				final TypeLiteral type = createModelType((ModelObjectTypeContext)e.getCtx().getChild(2));
+				// overwrite the end position to the current error position (the start position is
+				// fine)
+				endPositions.put(type, endPosition);
+				final Expression variableExpression = pop();
+				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
+						type, variableExpression);
+				startPositions.put(variableDeclaration, startPosition);
+				endPositions.put(variableDeclaration, endPosition);
+				push(variableDeclaration);
+			} else {
+				final Expression variableExpression = pop();
+				errorRule = QueryParser.RULE_variableDefinition;
+				final ErrorVariableDeclaration errorVariableDeclaration = builder
+						.errorVariableDeclaration(variableExpression);
+				startPositions.put(errorVariableDeclaration, startPosition);
+				endPositions.put(errorVariableDeclaration, endPosition);
+				pushError(errorVariableDeclaration);
+			}
+			final ErrorExpression errorExpression = builder.errorExpression();
+			startPositions.put(errorExpression, endPosition);
+			endPositions.put(errorExpression, endPosition);
+			pushError(errorExpression);
+		}
+
+		/**
+		 * {@link CallExpContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 */
+		private void callExpContextError(Object offendingSymbol) {
+			errorRule = QueryParser.RULE_navigationSegment;
+			final Expression receiver = pop();
+			final ErrorCollectionCall errorCollectionCall = builder.errorCollectionCall(receiver);
+			startPositions.put(errorCollectionCall, startPositions.get(receiver));
+			endPositions.put(errorCollectionCall, Integer
+					.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+			pushError(errorCollectionCall);
+		}
+
+		/**
+		 * {@link NavigationSegmentContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 */
+		private void navigationSegmentContextError(Object offendingSymbol) {
+			errorRule = QueryParser.RULE_navigationSegment;
+			final Expression receiver = pop();
+			final ErrorFeatureAccessOrCall errorFeatureAccessOrCall = builder
+					.errorFeatureAccessOrCall(receiver);
+			startPositions.put(errorFeatureAccessOrCall, startPositions.get(receiver));
+			endPositions.put(errorFeatureAccessOrCall, Integer.valueOf(((Token)offendingSymbol)
+					.getStopIndex() + 1));
+			pushError(errorFeatureAccessOrCall);
+		}
+
+		/**
+		 * Default error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void defaultError(Object offendingSymbol, RecognitionException e) {
+			errorRule = e.getCtx().getRuleIndex();
+			switch (e.getCtx().getRuleIndex()) {
+				case QueryParser.RULE_expression:
+					final ErrorExpression errorExpression = builder.errorExpression();
+					final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
+							.getStartIndex());
+					startPositions.put(errorExpression, position);
+					endPositions.put(errorExpression, Integer
+							.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+					pushError(errorExpression);
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		/**
+		 * Handles parser error when the {@link RecognitionException} is <code>null</code>.
+		 * 
+		 * @param recognizer
+		 *            the {@link Recognizer}
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 */
+		private void noRecognitionException(Recognizer<?, ?> recognizer, Object offendingSymbol) {
+			final QueryParser parser = (QueryParser)recognizer;
+			if (parser.getContext() instanceof EnumOrClassifierLitContext) {
+				final Integer startPosition = Integer.valueOf(((EnumOrClassifierLitContext)parser
+						.getContext()).start.getStartIndex());
+				final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
+				errorRule = QueryParser.RULE_typeLiteral;
+				final ParseTree firstChild = parser.getContext().getChild(0);
+				if (firstChild.getChildCount() == 1) {
+					final ErrorTypeLiteral errorTypeLiteral = builder
+							.errorTypeLiteral(new String[] {firstChild.getChild(0).getText(), });
+					startPositions.put(errorTypeLiteral, startPosition);
+					endPositions.put(errorTypeLiteral, endPosition);
+					pushError(errorTypeLiteral);
+				} else if (firstChild.getChildCount() == 3) {
+					final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {
+							firstChild.getChild(0).getText(), firstChild.getChild(2).getText(), });
+					startPositions.put(errorTypeLiteral, startPosition);
+					endPositions.put(errorTypeLiteral, endPosition);
+					pushError(errorTypeLiteral);
+				} else {
+					throw new UnsupportedOperationException("there is no error then...");
 				}
 			}
 		}
