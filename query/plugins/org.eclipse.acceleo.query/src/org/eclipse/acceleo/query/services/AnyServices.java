@@ -101,7 +101,15 @@ public class AnyServices extends AbstractServiceProvider {
 	 *         <code>false</code> otherwise.
 	 */
 	public Boolean equals(Object o1, Object o2) {
-		return o1.equals(o2);
+		final boolean result;
+
+		if (o1 == null) {
+			result = o2 == null;
+		} else {
+			result = o1.equals(o2);
+		}
+
+		return Boolean.valueOf(result);
 	}
 
 	/**
@@ -115,75 +123,7 @@ public class AnyServices extends AbstractServiceProvider {
 	 *         <code>false</code> otherwise.
 	 */
 	public Boolean differs(Object o1, Object o2) {
-		return !o1.equals(o2);
-	}
-
-	/**
-	 * Indicates whether the comparable object <code>o1</code> is less than the comparable object
-	 * <code>o2</code>.
-	 * 
-	 * @param o1
-	 *            the reference object to compare
-	 * @param o2
-	 *            the reference object with which to compare
-	 * @param <T>
-	 *            the compared element type
-	 * @return <code>true</code> if the object <code>o1</code> is less than the object <code>o2</code>,
-	 *         <code>false</code> otherwise.
-	 */
-	public <T extends Comparable<T>> Boolean lessThan(T o1, T o2) {
-		return o1.compareTo(o2) < 0;
-	}
-
-	/**
-	 * Indicates whether the comparable object <code>o1</code> is greater than the comparable object
-	 * <code>o2</code>.
-	 * 
-	 * @param o1
-	 *            the reference object to compare
-	 * @param o2
-	 *            the reference object with which to compare
-	 * @param <T>
-	 *            the compared element type
-	 * @return <code>true</code> if the object <code>o1</code> is greater than the object <code>o2</code>,
-	 *         <code>false</code> otherwise.
-	 */
-	public <T extends Comparable<T>> Boolean greaterThan(T o1, T o2) {
-		return o1.compareTo(o2) > 0;
-	}
-
-	/**
-	 * Indicates whether the comparable object <code>o1</code> is less than or equal to the comparable object
-	 * <code>o2</code>.
-	 * 
-	 * @param o1
-	 *            the reference object to compare
-	 * @param o2
-	 *            the reference object with which to compare
-	 * @param <T>
-	 *            the compared element type
-	 * @return <code>true</code> if the object <code>o1</code> is less than or equal to the object
-	 *         <code>o2</code>, <code>false</code> otherwise.
-	 */
-	public <T extends Comparable<T>> Boolean lessThanEqual(T o1, T o2) {
-		return o1.compareTo(o2) <= 0;
-	}
-
-	/**
-	 * Indicates whether the comparable object <code>o1</code> is greater than or equal to the comparable
-	 * object <code>o2</code>.
-	 * 
-	 * @param o1
-	 *            the reference object to compare
-	 * @param o2
-	 *            the reference object with which to compare
-	 * @param <T>
-	 *            the compared element type
-	 * @return <code>true</code> if the object <code>o1</code> is greater than or equal to the object
-	 *         <code>o2</code>, <code>false</code> otherwise.
-	 */
-	public <T extends Comparable<T>> Boolean greaterThanEqual(T o1, T o2) {
-		return o1.compareTo(o2) >= 0;
+		return Boolean.valueOf(!equals(o1, o2));
 	}
 
 	/**
@@ -238,6 +178,7 @@ public class AnyServices extends AbstractServiceProvider {
 	public Boolean oclIsKindOf(Object object, Object type) {
 		Boolean result;
 		if (type instanceof EClass) {
+			checkRegistered((EClass)type);
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
 				result = eClass.isSuperTypeOf(((EObject)object).eClass());
@@ -245,6 +186,7 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EEnum) {
+			checkRegistered((EEnum)type);
 			if (object instanceof EEnumLiteral) {
 				result = ((EEnumLiteral)object).getEEnum().equals(type);
 			} else if (object instanceof Enumerator) {
@@ -254,13 +196,13 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			final Class<?> cls = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
-			if (cls == null) {
-				throw new IllegalArgumentException(String.format(
-						"%s is not registered in the current environment", type));
+			final Class<?> cls = checkRegistered((EDataType)type);
+			if (object != null) {
+				result = cls.isAssignableFrom(object.getClass());
+			} else {
+				result = false;
 			}
-			result = cls.isAssignableFrom(object.getClass());
-		} else if (type instanceof Class<?>) {
+		} else if (object != null && type instanceof Class<?>) {
 			result = ((Class<?>)type).isAssignableFrom(object.getClass());
 		} else {
 			result = false;
@@ -281,13 +223,15 @@ public class AnyServices extends AbstractServiceProvider {
 	public Boolean oclIsTypeOf(Object object, Object type) {
 		Boolean result;
 		if (type instanceof EClass) {
+			checkRegistered((EClass)type);
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
-				result = eClass.equals(((EObject)object).eClass());
+				result = eClass == ((EObject)object).eClass();
 			} else {
 				result = false;
 			}
 		} else if (type instanceof EEnum) {
+			checkRegistered((EEnum)type);
 			if (object instanceof EEnumLiteral) {
 				result = ((EEnumLiteral)object).getEEnum().equals(type);
 			} else if (object instanceof Enumerator) {
@@ -297,17 +241,37 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			final Class<?> cls = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
-			if (cls == null) {
-				throw new IllegalArgumentException(String.format(
-						"%s is not registered in the current environment", type));
+			final Class<?> cls = checkRegistered((EDataType)type);
+			if (object != null) {
+				result = cls.isAssignableFrom(object.getClass());
+			} else {
+				result = false;
 			}
-			result = cls.isAssignableFrom(object.getClass());
-		} else if (type instanceof Class<?>) {
+		} else if (object != null && type instanceof Class<?>) {
 			result = ((Class<?>)type).equals(object.getClass());
 		} else {
 			result = false;
 		}
+		return result;
+	}
+
+	/**
+	 * Checks if the given {@link EClassifier} is registered.
+	 * 
+	 * @param type
+	 *            the {@link EClassifier} to check
+	 * @return the registered {@link Class} if any.
+	 * @throws IllegalArgumentException
+	 *             if the type is not registered
+	 */
+	private Class<?> checkRegistered(EClassifier type) throws IllegalArgumentException {
+		final Class<?> result = queryEnvironment.getEPackageProvider().getClass(type);
+
+		if (result == null) {
+			throw new IllegalArgumentException(String.format(
+					"%s is not registered in the current environment", type));
+		}
+
 		return result;
 	}
 
@@ -327,7 +291,10 @@ public class AnyServices extends AbstractServiceProvider {
 				buffer.append(toString(childrenIterator.next()));
 			}
 		} else if (object != null && object != EvaluationServices.NOTHING) {
-			buffer.append(object.toString());
+			final String toString = object.toString();
+			if (toString != null) {
+				buffer.append(toString);
+			}
 		}
 		// else return empty String
 		return buffer.toString();
