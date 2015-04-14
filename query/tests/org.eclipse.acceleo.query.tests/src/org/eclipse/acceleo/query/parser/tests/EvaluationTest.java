@@ -300,4 +300,64 @@ public class EvaluationTest {
 		assertEquals(Boolean.FALSE, it.next());
 	}
 
+	/**
+	 * This test ensures variable definitions are pushed into the scope of lambda that are define within the
+	 * variable scope.
+	 */
+	@Test
+	public void testVariableUsedInLambda() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("selector", "str");
+		Object result = engine.eval(builder
+				.build("['str1','str2','out']->select(i | i.startsWith(selector))"), varDefinitions);
+		assertTrue(result instanceof List);
+		assertEquals(2, ((List)result).size());
+		assertEquals("str1", ((List)result).get(0));
+		assertEquals("str2", ((List)result).get(1));
+	}
+
+	@Test
+	public void testLetOneDefinition() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals("prefixsuffix", engine.eval(builder.build("let x='prefix' in x.concat('suffix')"),
+				varDefinitions));
+	}
+
+	@Test
+	public void testLetBasic() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals("prefixsuffix", engine.eval(builder.build("let x='prefix', y='suffix' in x.concat(y)"),
+				varDefinitions));
+	}
+
+	@Test
+	public void testNotRecursiveLet() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("x", "suffix");
+		assertEquals("prefixsuffix", engine.eval(builder.build("let x='prefix', y=x in x.concat(y)"),
+				varDefinitions));
+	}
+
+	@Test
+	public void letWithUnusedNothingBoundTest() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals("prefixsuffix", engine.eval(builder
+				.build("let x='prefix', y=x,z='suffix' in x.concat(z)"), varDefinitions));
+	}
+
+	@Test
+	public void letWithNothingBoundTest() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals(null, engine.eval(builder
+				.build("let x='prefix', y=x,z='suffix' in x.concat(z).concat(y)"), varDefinitions));
+	}
+
+	@Test
+	public void letWithAffixNotation() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("x", "suffix");
+		assertEquals("prefixsuffix", engine.eval(builder.build("let x='prefix', y='suffix' in x+y"),
+				varDefinitions));
+	}
+
 }

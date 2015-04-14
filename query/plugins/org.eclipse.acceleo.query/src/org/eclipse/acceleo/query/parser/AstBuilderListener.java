@@ -30,6 +30,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
@@ -58,6 +59,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.AndContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ApplyContext;
 import org.eclipse.acceleo.query.parser.QueryParser.AsContext;
 import org.eclipse.acceleo.query.parser.QueryParser.AsTypeContext;
+import org.eclipse.acceleo.query.parser.QueryParser.BindingContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BooleanTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallServiceContext;
@@ -70,6 +72,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.EInverseContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EnumOrClassifierLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSeqLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ExpressionContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FalseLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FeatureContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FilterContext;
@@ -79,6 +82,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.IntegerLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IsKindContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IsTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IterationCallContext;
+import org.eclipse.acceleo.query.parser.QueryParser.LetExprContext;
 import org.eclipse.acceleo.query.parser.QueryParser.LiteralContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MinContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ModelObjectTypeContext;
@@ -124,6 +128,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * <code>not<code> operator.
 	 */
 	public static final String NOT_OPERATOR = "not";
+
+	/**
+	 * <code>not<code> operator.
+	 */
+	public static final String LET_OPERATOR = "let";
 
 	/**
 	 * <code>&lt;&gt;<code> service name.
@@ -628,6 +637,21 @@ public class AstBuilderListener extends QueryBaseListener {
 	private String popString() {
 		try {
 			return (String)stack.pop();
+		} catch (EmptyStackException e) {
+			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
+		} catch (ClassCastException e2) {
+			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e2);
+		}
+	}
+
+	/**
+	 * Pop the top of the stack and returns it as a type literal.
+	 * 
+	 * @return the value on top of the stack.
+	 */
+	private Binding popBinding() {
+		try {
+			return (Binding)stack.pop();
 		} catch (EmptyStackException e) {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		} catch (ClassCastException e2) {
@@ -1388,4 +1412,36 @@ public class AstBuilderListener extends QueryBaseListener {
 		push(sequenceInExtension);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitBinding(org.eclipse.acceleo.query.parser.QueryParser.BindingContext)
+	 */
+	@Override
+	public void exitBinding(BindingContext ctx) {
+		String variable = ctx.getChild(0).getText();
+		Expression expression = pop();
+		push(builder.binding(variable, expression));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitLetExpr(org.eclipse.acceleo.query.parser.QueryParser.LetExprContext)
+	 */
+	@Override
+	public void exitLetExpr(LetExprContext ctx) {
+		Expression body;
+		if (!(ctx.getChild(ctx.getChildCount() - 1) instanceof ExpressionContext)) {
+			body = builder.errorExpression();
+		} else {
+			body = pop();
+		}
+		int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
+		Binding[] bindings = new Binding[bindingNumber];
+		for (int i = 0; i < bindingNumber; i++) {
+			bindings[i] = popBinding();
+		}
+		push(builder.let(body, bindings));
+	}
 }

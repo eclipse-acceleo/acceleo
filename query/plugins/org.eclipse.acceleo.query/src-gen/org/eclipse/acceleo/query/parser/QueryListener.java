@@ -113,6 +113,17 @@ public interface QueryListener extends ParseTreeListener {
 	void exitApply(@NotNull QueryParser.ApplyContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link QueryParser#binding}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinding(@NotNull QueryParser.BindingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#binding}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinding(@NotNull QueryParser.BindingContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code FalseLit}
 	 * labeled alternative in {@link QueryParser#literal}.
 	 * @param ctx the parse tree
@@ -261,6 +272,19 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLambdaExpression(@NotNull QueryParser.LambdaExpressionContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code LetExpr}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLetExpr(@NotNull QueryParser.LetExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LetExpr}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLetExpr(@NotNull QueryParser.LetExprContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link QueryParser#qualifiedName}.

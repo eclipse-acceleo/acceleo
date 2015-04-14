@@ -25,6 +25,7 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
@@ -1567,6 +1568,24 @@ public class BuildTest {
 		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
+	}
+
+	@Test
+	public void incompleteLetTest1() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a=2 in");
+		assertExpression(build, Let.class, -1, -1, build.getAst());
+	}
+
+	@Test
+	public void incompleteLetTest2() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a=2 i");
+		assertExpression(build, Let.class, -1, -1, build.getAst());
+	}
+
+	@Test
+	public void incompleteLetTest3() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b=");
+		assertExpression(build, Let.class, -1, -1, build.getAst());
 	}
 
 }

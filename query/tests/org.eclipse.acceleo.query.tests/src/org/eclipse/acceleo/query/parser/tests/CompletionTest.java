@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.parser.tests;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class CompletionTest {
@@ -68,7 +70,7 @@ public class CompletionTest {
 	@Test
 	public void nullTest() {
 		final ICompletionResult completionResult = engine.getCompletion(null, 0, variableTypes);
-		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals(null, completionResult.getPrefix());
 		assertEquals(null, completionResult.getRemaining());
 		assertNoServiceCompletionProposal(completionResult);
@@ -90,7 +92,7 @@ public class CompletionTest {
 	@Test
 	public void emptyTest() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
-		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoServiceCompletionProposal(completionResult);
@@ -171,7 +173,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -184,7 +186,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -274,11 +276,51 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testLetCompletionFromNothing() {
+		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		List<ICompletionProposal> proposals = completionResult
+				.getProposals(new BasicFilter(completionResult));
+		boolean found = false;
+		for (ICompletionProposal proposal : proposals) {
+			if ("let ".equals(proposal.getProposal())) {
+				found = true;
+				break;
+			}
+		}
+		assertTrue(found);
+	}
+
+	@Test
+	public void testLetCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("le", 2, variableTypes);
+		assertEquals("le", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
+				.get(0);
+		assertEquals("let ", proposal.getProposal());
+	}
+
+	@Test
+	public void testBindingCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("let a=", 6, variableTypes);
+		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+	}
+
+	@Test
+	public void testLetBodyCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("let a=3 in ", 11, variableTypes);
+		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {

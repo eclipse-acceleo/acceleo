@@ -41,7 +41,11 @@ expression : expression navigationSegment #Nav
 		     | varRef       #Var
 		     | literal      #Lit
 		     | '(' expression ')'    #Paren 
+		     | 'let' binding (',' binding)* 'in' expression #LetExpr
 ; 
+
+binding : Ident (':' typeLiteral)? '=' expression
+;
 
 addOp: '+' | '-';
 compOp :     '<='

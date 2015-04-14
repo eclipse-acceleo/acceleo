@@ -29,44 +29,42 @@ import org.eclipse.emf.ecore.EReference;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.acceleo.query.ast.AstFactory
  * @model kind="package"
  * @generated
  */
 public interface AstPackage extends EPackage {
 	/**
-	 * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The package name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNAME = "ast";
 
 	/**
-	 * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The package namespace URI.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_URI = "http://www.eclipse.org/acceleo/query/1.0";
 
 	/**
-	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The package namespace name.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_PREFIX = "ast";
 
 	/**
-	 * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The singleton instance of the package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
 	AstPackage eINSTANCE = org.eclipse.acceleo.query.ast.impl.AstPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ExpressionImpl
-	 * <em>Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ExpressionImpl <em>Expression</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.ExpressionImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getExpression()
 	 * @generated
@@ -74,9 +72,9 @@ public interface AstPackage extends EPackage {
 	int EXPRESSION = 0;
 
 	/**
-	 * The number of structural features of the '<em>Expression</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Expression</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -92,9 +90,8 @@ public interface AstPackage extends EPackage {
 	int EXPRESSION_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.VarRefImpl <em>Var Ref</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.VarRefImpl <em>Var Ref</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.VarRefImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getVarRef()
 	 * @generated
@@ -102,35 +99,34 @@ public interface AstPackage extends EPackage {
 	int VAR_REF = 1;
 
 	/**
-	 * The feature id for the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Variable Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int VAR_REF__VARIABLE_NAME = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Var Ref</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Var Ref</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int VAR_REF_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Var Ref</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The number of operations of the '<em>Var Ref</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int VAR_REF_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
-	 * <em>Feature Access</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl <em>Feature Access</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getFeatureAccess()
 	 * @generated
@@ -138,36 +134,36 @@ public interface AstPackage extends EPackage {
 	int FEATURE_ACCESS = 2;
 
 	/**
-	 * The feature id for the '<em><b>Feature Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Feature Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int FEATURE_ACCESS__FEATURE_NAME = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Target</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int FEATURE_ACCESS__TARGET = EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of structural features of the '<em>Feature Access</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Feature Access</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int FEATURE_ACCESS_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of operations of the '<em>Feature Access</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Feature Access</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -176,7 +172,6 @@ public interface AstPackage extends EPackage {
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.CallImpl <em>Call</em>}' class.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see org.eclipse.acceleo.query.ast.impl.CallImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCall()
 	 * @generated
@@ -184,52 +179,51 @@ public interface AstPackage extends EPackage {
 	int CALL = 3;
 
 	/**
-	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Service Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int CALL__SERVICE_NAME = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int CALL__TYPE = EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int CALL__ARGUMENTS = EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Call</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Call</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int CALL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
 
 	/**
-	 * The number of operations of the '<em>Call</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The number of operations of the '<em>Call</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int CALL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.LiteralImpl <em>Literal</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.LiteralImpl <em>Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.LiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLiteral()
 	 * @generated
@@ -237,26 +231,25 @@ public interface AstPackage extends EPackage {
 	int LITERAL = 4;
 
 	/**
-	 * The number of structural features of the '<em>Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int LITERAL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Literal</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The number of operations of the '<em>Literal</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int LITERAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.IntegerLiteralImpl
-	 * <em>Integer Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.IntegerLiteralImpl <em>Integer Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.IntegerLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getIntegerLiteral()
 	 * @generated
@@ -264,35 +257,34 @@ public interface AstPackage extends EPackage {
 	int INTEGER_LITERAL = 5;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int INTEGER_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Integer Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Integer Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int INTEGER_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Integer Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Integer Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int INTEGER_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.RealLiteralImpl
-	 * <em>Real Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.RealLiteralImpl <em>Real Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.RealLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getRealLiteral()
 	 * @generated
@@ -300,35 +292,34 @@ public interface AstPackage extends EPackage {
 	int REAL_LITERAL = 6;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int REAL_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Real Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Real Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int REAL_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Real Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Real Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int REAL_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.StringLiteralImpl
-	 * <em>String Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.StringLiteralImpl <em>String Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.StringLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getStringLiteral()
 	 * @generated
@@ -336,35 +327,34 @@ public interface AstPackage extends EPackage {
 	int STRING_LITERAL = 7;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int STRING_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>String Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>String Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int STRING_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>String Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>String Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int STRING_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.BooleanLiteralImpl
-	 * <em>Boolean Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.BooleanLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBooleanLiteral()
 	 * @generated
@@ -372,35 +362,34 @@ public interface AstPackage extends EPackage {
 	int BOOLEAN_LITERAL = 8;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int BOOLEAN_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Boolean Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Boolean Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int BOOLEAN_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Boolean Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Boolean Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int BOOLEAN_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.EnumLiteralImpl
-	 * <em>Enum Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.EnumLiteralImpl <em>Enum Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.EnumLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getEnumLiteral()
 	 * @generated
@@ -417,27 +406,26 @@ public interface AstPackage extends EPackage {
 	int ENUM_LITERAL__LITERAL = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Enum Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Enum Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ENUM_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Enum Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Enum Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ENUM_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.TypeLiteralImpl
-	 * <em>Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.TypeLiteralImpl <em>Type Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.TypeLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getTypeLiteral()
 	 * @generated
@@ -445,35 +433,34 @@ public interface AstPackage extends EPackage {
 	int TYPE_LITERAL = 10;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int TYPE_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Type Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Type Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int TYPE_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Type Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Type Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int TYPE_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl
-	 * <em>Collection Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl <em>Collection Type Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCollectionTypeLiteral()
 	 * @generated
@@ -481,44 +468,43 @@ public interface AstPackage extends EPackage {
 	int COLLECTION_TYPE_LITERAL = 11;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int COLLECTION_TYPE_LITERAL__VALUE = TYPE_LITERAL__VALUE;
 
 	/**
-	 * The feature id for the '<em><b>Element Type</b></em>' containment reference. <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Element Type</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int COLLECTION_TYPE_LITERAL__ELEMENT_TYPE = TYPE_LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Collection Type Literal</em>' class. <!-- begin-user-doc
+	 * The number of structural features of the '<em>Collection Type Literal</em>' class.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int COLLECTION_TYPE_LITERAL_FEATURE_COUNT = TYPE_LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Collection Type Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Collection Type Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int COLLECTION_TYPE_LITERAL_OPERATION_COUNT = TYPE_LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.LambdaImpl <em>Lambda</em>}'
-	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.LambdaImpl <em>Lambda</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.LambdaImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLambda()
 	 * @generated
@@ -526,18 +512,18 @@ public interface AstPackage extends EPackage {
 	int LAMBDA = 12;
 
 	/**
-	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int LAMBDA__PARAMETERS = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -553,34 +539,33 @@ public interface AstPackage extends EPackage {
 	int LAMBDA__EVALUATOR = LITERAL_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Lambda</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Lambda</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int LAMBDA_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 3;
 
 	/**
-	 * The operation id for the '<em>Eval</em>' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The operation id for the '<em>Eval</em>' operation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int LAMBDA___EVAL__OBJECT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Lambda</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The number of operations of the '<em>Lambda</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int LAMBDA_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.NullLiteralImpl
-	 * <em>Null Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.NullLiteralImpl <em>Null Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.NullLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getNullLiteral()
 	 * @generated
@@ -588,27 +573,26 @@ public interface AstPackage extends EPackage {
 	int NULL_LITERAL = 13;
 
 	/**
-	 * The number of structural features of the '<em>Null Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Null Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int NULL_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Null Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Null Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int NULL_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.SetInExtensionLiteralImpl
-	 * <em>Set In Extension Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.SetInExtensionLiteralImpl <em>Set In Extension Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.SetInExtensionLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getSetInExtensionLiteral()
 	 * @generated
@@ -616,36 +600,35 @@ public interface AstPackage extends EPackage {
 	int SET_IN_EXTENSION_LITERAL = 14;
 
 	/**
-	 * The feature id for the '<em><b>Values</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Values</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int SET_IN_EXTENSION_LITERAL__VALUES = LITERAL_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Set In Extension Literal</em>' class. <!-- begin-user-doc
+	 * The number of structural features of the '<em>Set In Extension Literal</em>' class.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int SET_IN_EXTENSION_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Set In Extension Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Set In Extension Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int SET_IN_EXTENSION_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl
-	 * <em>Sequence In Extension Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl <em>Sequence In Extension Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getSequenceInExtensionLiteral()
 	 * @generated
@@ -653,9 +636,9 @@ public interface AstPackage extends EPackage {
 	int SEQUENCE_IN_EXTENSION_LITERAL = 15;
 
 	/**
-	 * The feature id for the '<em><b>Values</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * The feature id for the '<em><b>Values</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -671,18 +654,17 @@ public interface AstPackage extends EPackage {
 	int SEQUENCE_IN_EXTENSION_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Sequence In Extension Literal</em>' class. <!-- begin-user-doc -->
+	 * The number of operations of the '<em>Sequence In Extension Literal</em>' class.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int SEQUENCE_IN_EXTENSION_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl
-	 * <em>Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl <em>Variable Declaration</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getVariableDeclaration()
 	 * @generated
@@ -690,44 +672,44 @@ public interface AstPackage extends EPackage {
 	int VARIABLE_DECLARATION = 16;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int VARIABLE_DECLARATION__NAME = 0;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Type</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int VARIABLE_DECLARATION__TYPE = 1;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Expression</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int VARIABLE_DECLARATION__EXPRESSION = 2;
 
 	/**
-	 * The number of structural features of the '<em>Variable Declaration</em>' class. <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Variable Declaration</em>' class.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int VARIABLE_DECLARATION_FEATURE_COUNT = 3;
 
 	/**
-	 * The number of operations of the '<em>Variable Declaration</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Variable Declaration</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -744,26 +726,25 @@ public interface AstPackage extends EPackage {
 	int ERROR = 17;
 
 	/**
-	 * The number of structural features of the '<em>Error</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of structural features of the '<em>Error</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_FEATURE_COUNT = 0;
 
 	/**
-	 * The number of operations of the '<em>Error</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The number of operations of the '<em>Error</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl
-	 * <em>Error Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl <em>Error Expression</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorExpression()
 	 * @generated
@@ -771,27 +752,26 @@ public interface AstPackage extends EPackage {
 	int ERROR_EXPRESSION = 18;
 
 	/**
-	 * The number of structural features of the '<em>Error Expression</em>' class. <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Error Expression</em>' class.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_EXPRESSION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of operations of the '<em>Error Expression</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Error Expression</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_EXPRESSION_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl
-	 * <em>Error Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl <em>Error Type Literal</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorTypeLiteral()
 	 * @generated
@@ -799,44 +779,43 @@ public interface AstPackage extends EPackage {
 	int ERROR_TYPE_LITERAL = 19;
 
 	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_TYPE_LITERAL__VALUE = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Segments</b></em>' attribute list. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Segments</b></em>' attribute list.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_TYPE_LITERAL__SEGMENTS = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of structural features of the '<em>Error Type Literal</em>' class. <!-- begin-user-doc -->
+	 * The number of structural features of the '<em>Error Type Literal</em>' class.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_TYPE_LITERAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of operations of the '<em>Error Type Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Error Type Literal</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_TYPE_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
-	 * <em>Error Feature Access Or Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl <em>Error Feature Access Or Call</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorFeatureAccessOrCall()
 	 * @generated
@@ -844,9 +823,9 @@ public interface AstPackage extends EPackage {
 	int ERROR_FEATURE_ACCESS_OR_CALL = 20;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Target</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -862,18 +841,17 @@ public interface AstPackage extends EPackage {
 	int ERROR_FEATURE_ACCESS_OR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Error Feature Access Or Call</em>' class. <!-- begin-user-doc -->
+	 * The number of operations of the '<em>Error Feature Access Or Call</em>' class.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_FEATURE_ACCESS_OR_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
-	 * <em>Error Collection Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl <em>Error Collection Call</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCollectionCall()
 	 * @generated
@@ -881,36 +859,35 @@ public interface AstPackage extends EPackage {
 	int ERROR_COLLECTION_CALL = 21;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Target</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_COLLECTION_CALL__TARGET = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Error Collection Call</em>' class. <!-- begin-user-doc
+	 * The number of structural features of the '<em>Error Collection Call</em>' class.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_COLLECTION_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Error Collection Call</em>' class. <!-- begin-user-doc --> <!--
+	 * The number of operations of the '<em>Error Collection Call</em>' class.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_COLLECTION_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
-	 * <em>Error Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl <em>Error Variable Declaration</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
 	 * @generated
@@ -918,26 +895,26 @@ public interface AstPackage extends EPackage {
 	int ERROR_VARIABLE_DECLARATION = 22;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_VARIABLE_DECLARATION__NAME = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Type</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_VARIABLE_DECLARATION__TYPE = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Expression</b></em>' reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Expression</b></em>' reference.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -953,23 +930,109 @@ public interface AstPackage extends EPackage {
 	int ERROR_VARIABLE_DECLARATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
 
 	/**
-	 * The number of operations of the '<em>Error Variable Declaration</em>' class. <!-- begin-user-doc -->
+	 * The number of operations of the '<em>Error Variable Declaration</em>' class.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int ERROR_VARIABLE_DECLARATION_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.BindingImpl <em>Binding</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.query.ast.impl.BindingImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBinding()
+	 * @generated
+	 */
+	int BINDING = 23;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BINDING__NAME = 0;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BINDING__VALUE = 1;
+
+	/**
+	 * The number of structural features of the '<em>Binding</em>' class.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BINDING_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>Binding</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BINDING_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.LetImpl <em>Let</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.query.ast.impl.LetImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
+	 * @generated
+	 */
+	int LET = 24;
+
+	/**
+	 * The feature id for the '<em><b>Bindings</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LET__BINDINGS = EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Body</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LET__BODY = EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Let</em>' class.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LET_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Let</em>' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LET_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @see org.eclipse.acceleo.query.ast.CallType
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 23;
+	int CALL_TYPE = 25;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -979,7 +1042,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 24;
+	int OBJECT_TYPE = 26;
 
 	/**
 	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -989,7 +1052,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 	 * @generated
 	 */
-	int AST_EVALUATOR = 25;
+	int AST_EVALUATOR = 27;
 
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -998,12 +1061,11 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 26;
+	int OBJECT_ARRAY = 28;
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
-	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Expression</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Expression
 	 * @generated
@@ -1021,9 +1083,8 @@ public interface AstPackage extends EPackage {
 	EClass getVarRef();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.VarRef#getVariableName
-	 * <em>Variable Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.VarRef#getVariableName <em>Variable Name</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Variable Name</em>'.
 	 * @see org.eclipse.acceleo.query.ast.VarRef#getVariableName()
 	 * @see #getVarRef()
@@ -1032,9 +1093,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getVarRef_VariableName();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.FeatureAccess
-	 * <em>Feature Access</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.FeatureAccess <em>Feature Access</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Feature Access</em>'.
 	 * @see org.eclipse.acceleo.query.ast.FeatureAccess
 	 * @generated
@@ -1054,10 +1114,9 @@ public interface AstPackage extends EPackage {
 	EAttribute getFeatureAccess_FeatureName();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.FeatureAccess#getTarget <em>Target</em>}'. <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.FeatureAccess#getTarget <em>Target</em>}'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference '<em>Target</em>'.
 	 * @see org.eclipse.acceleo.query.ast.FeatureAccess#getTarget()
 	 * @see #getFeatureAccess()
@@ -1076,9 +1135,8 @@ public interface AstPackage extends EPackage {
 	EClass getCall();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Call#getServiceName
-	 * <em>Service Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Call#getServiceName <em>Service Name</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Service Name</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Call#getServiceName()
 	 * @see #getCall()
@@ -1087,9 +1145,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getCall_ServiceName();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Call#getType
-	 * <em>Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Call#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Call#getType()
 	 * @see #getCall()
@@ -1098,10 +1155,9 @@ public interface AstPackage extends EPackage {
 	EAttribute getCall_Type();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.query.ast.Call#getArguments <em>Arguments</em>}'. <!-- begin-user-doc -->
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.query.ast.Call#getArguments <em>Arguments</em>}'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference list '<em>Arguments</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Call#getArguments()
 	 * @see #getCall()
@@ -1112,7 +1168,6 @@ public interface AstPackage extends EPackage {
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Literal <em>Literal</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for class '<em>Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Literal
 	 * @generated
@@ -1120,9 +1175,8 @@ public interface AstPackage extends EPackage {
 	EClass getLiteral();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.IntegerLiteral
-	 * <em>Integer Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.IntegerLiteral <em>Integer Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Integer Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.IntegerLiteral
 	 * @generated
@@ -1130,10 +1184,9 @@ public interface AstPackage extends EPackage {
 	EClass getIntegerLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.ast.IntegerLiteral#getValue <em>Value</em>}'. <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.IntegerLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.IntegerLiteral#getValue()
 	 * @see #getIntegerLiteral()
@@ -1142,9 +1195,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getIntegerLiteral_Value();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.RealLiteral
-	 * <em>Real Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.RealLiteral <em>Real Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Real Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.RealLiteral
 	 * @generated
@@ -1152,9 +1204,8 @@ public interface AstPackage extends EPackage {
 	EClass getRealLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.RealLiteral#getValue
-	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.RealLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.RealLiteral#getValue()
 	 * @see #getRealLiteral()
@@ -1163,9 +1214,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getRealLiteral_Value();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.StringLiteral
-	 * <em>String Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.StringLiteral <em>String Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>String Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.StringLiteral
 	 * @generated
@@ -1173,9 +1223,8 @@ public interface AstPackage extends EPackage {
 	EClass getStringLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.StringLiteral#getValue
-	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.StringLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.StringLiteral#getValue()
 	 * @see #getStringLiteral()
@@ -1184,9 +1233,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getStringLiteral_Value();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.BooleanLiteral
-	 * <em>Boolean Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.BooleanLiteral <em>Boolean Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Boolean Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.BooleanLiteral
 	 * @generated
@@ -1194,9 +1242,8 @@ public interface AstPackage extends EPackage {
 	EClass getBooleanLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.BooleanLiteral#isValue
-	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.BooleanLiteral#isValue <em>Value</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.BooleanLiteral#isValue()
 	 * @see #getBooleanLiteral()
@@ -1205,9 +1252,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getBooleanLiteral_Value();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.EnumLiteral
-	 * <em>Enum Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.EnumLiteral <em>Enum Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Enum Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.EnumLiteral
 	 * @generated
@@ -1215,9 +1261,8 @@ public interface AstPackage extends EPackage {
 	EClass getEnumLiteral();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.query.ast.EnumLiteral#getLiteral
-	 * <em>Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.query.ast.EnumLiteral#getLiteral <em>Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.EnumLiteral#getLiteral()
 	 * @see #getEnumLiteral()
@@ -1226,9 +1271,8 @@ public interface AstPackage extends EPackage {
 	EReference getEnumLiteral_Literal();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.TypeLiteral
-	 * <em>Type Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.TypeLiteral <em>Type Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Type Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.TypeLiteral
 	 * @generated
@@ -1236,9 +1280,8 @@ public interface AstPackage extends EPackage {
 	EClass getTypeLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.TypeLiteral#getValue
-	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.TypeLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.TypeLiteral#getValue()
 	 * @see #getTypeLiteral()
@@ -1247,9 +1290,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getTypeLiteral_Value();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.CollectionTypeLiteral
-	 * <em>Collection Type Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.CollectionTypeLiteral <em>Collection Type Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Collection Type Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.CollectionTypeLiteral
 	 * @generated
@@ -1279,10 +1321,9 @@ public interface AstPackage extends EPackage {
 	EClass getLambda();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link org.eclipse.acceleo.query.ast.Lambda#getParameters <em>Parameters</em>}'. <!-- begin-user-doc
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.query.ast.Lambda#getParameters <em>Parameters</em>}'.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference list '<em>Parameters</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Lambda#getParameters()
 	 * @see #getLambda()
@@ -1291,10 +1332,9 @@ public interface AstPackage extends EPackage {
 	EReference getLambda_Parameters();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.Lambda#getExpression <em>Expression</em>}'. <!-- begin-user-doc
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Lambda#getExpression <em>Expression</em>}'.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference '<em>Expression</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Lambda#getExpression()
 	 * @see #getLambda()
@@ -1303,9 +1343,8 @@ public interface AstPackage extends EPackage {
 	EReference getLambda_Expression();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator
-	 * <em>Evaluator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator <em>Evaluator</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Evaluator</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Lambda#getEvaluator()
 	 * @see #getLambda()
@@ -1314,9 +1353,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getLambda_Evaluator();
 
 	/**
-	 * Returns the meta object for the '{@link org.eclipse.acceleo.query.ast.Lambda#eval(java.lang.Object[])
-	 * <em>Eval</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for the '{@link org.eclipse.acceleo.query.ast.Lambda#eval(java.lang.Object[]) <em>Eval</em>}' operation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for the '<em>Eval</em>' operation.
 	 * @see org.eclipse.acceleo.query.ast.Lambda#eval(java.lang.Object[])
 	 * @generated
@@ -1324,9 +1362,8 @@ public interface AstPackage extends EPackage {
 	EOperation getLambda__Eval__Object();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.NullLiteral
-	 * <em>Null Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.NullLiteral <em>Null Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Null Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.NullLiteral
 	 * @generated
@@ -1334,9 +1371,8 @@ public interface AstPackage extends EPackage {
 	EClass getNullLiteral();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.SetInExtensionLiteral
-	 * <em>Set In Extension Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.SetInExtensionLiteral <em>Set In Extension Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Set In Extension Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.SetInExtensionLiteral
 	 * @generated
@@ -1356,9 +1392,8 @@ public interface AstPackage extends EPackage {
 	EReference getSetInExtensionLiteral_Values();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral
-	 * <em>Sequence In Extension Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral <em>Sequence In Extension Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Sequence In Extension Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral
 	 * @generated
@@ -1378,9 +1413,8 @@ public interface AstPackage extends EPackage {
 	EReference getSequenceInExtensionLiteral_Values();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.VariableDeclaration
-	 * <em>Variable Declaration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.VariableDeclaration <em>Variable Declaration</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Variable Declaration</em>'.
 	 * @see org.eclipse.acceleo.query.ast.VariableDeclaration
 	 * @generated
@@ -1388,10 +1422,9 @@ public interface AstPackage extends EPackage {
 	EClass getVariableDeclaration();
 
 	/**
-	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration#getName <em>Name</em>}'. <!-- begin-user-doc
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.VariableDeclaration#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the attribute '<em>Name</em>'.
 	 * @see org.eclipse.acceleo.query.ast.VariableDeclaration#getName()
 	 * @see #getVariableDeclaration()
@@ -1400,10 +1433,9 @@ public interface AstPackage extends EPackage {
 	EAttribute getVariableDeclaration_Name();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration#getType <em>Type</em>}'. <!-- begin-user-doc
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.VariableDeclaration#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for the containment reference '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.query.ast.VariableDeclaration#getType()
 	 * @see #getVariableDeclaration()
@@ -1434,9 +1466,8 @@ public interface AstPackage extends EPackage {
 	EClass getError();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorExpression
-	 * <em>Error Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorExpression <em>Error Expression</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Error Expression</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorExpression
 	 * @generated
@@ -1444,9 +1475,8 @@ public interface AstPackage extends EPackage {
 	EClass getErrorExpression();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorTypeLiteral
-	 * <em>Error Type Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorTypeLiteral <em>Error Type Literal</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Error Type Literal</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorTypeLiteral
 	 * @generated
@@ -1466,9 +1496,8 @@ public interface AstPackage extends EPackage {
 	EAttribute getErrorTypeLiteral_Segments();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
-	 * <em>Error Feature Access Or Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall <em>Error Feature Access Or Call</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Error Feature Access Or Call</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
 	 * @generated
@@ -1488,9 +1517,8 @@ public interface AstPackage extends EPackage {
 	EReference getErrorFeatureAccessOrCall_Target();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorCollectionCall
-	 * <em>Error Collection Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorCollectionCall <em>Error Collection Call</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Error Collection Call</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorCollectionCall
 	 * @generated
@@ -1510,9 +1538,8 @@ public interface AstPackage extends EPackage {
 	EReference getErrorCollectionCall_Target();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
-	 * <em>Error Variable Declaration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration <em>Error Variable Declaration</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Error Variable Declaration</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
 	 * @generated
@@ -1520,9 +1547,70 @@ public interface AstPackage extends EPackage {
 	EClass getErrorVariableDeclaration();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Binding <em>Binding</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Binding</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Binding
+	 * @generated
+	 */
+	EClass getBinding();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Binding#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Binding#getName()
+	 * @see #getBinding()
+	 * @generated
+	 */
+	EAttribute getBinding_Name();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Binding#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Value</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Binding#getValue()
+	 * @see #getBinding()
+	 * @generated
+	 */
+	EReference getBinding_Value();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Let <em>Let</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Let</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Let
+	 * @generated
+	 */
+	EClass getLet();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.query.ast.Let#getBindings <em>Bindings</em>}'.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Bindings</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Let#getBindings()
+	 * @see #getLet()
+	 * @generated
+	 */
+	EReference getLet_Bindings();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Let#getBody <em>Body</em>}'.
+	 * <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Body</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Let#getBody()
+	 * @see #getLet()
+	 * @generated
+	 */
+	EReference getLet_Body();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
 	 * @return the meta object for enum '<em>Call Type</em>'.
 	 * @see org.eclipse.acceleo.query.ast.CallType
 	 * @generated
@@ -1541,9 +1629,8 @@ public interface AstPackage extends EPackage {
 	EDataType getObjectType();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstEvaluator
-	 * <em>Evaluator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstEvaluator <em>Evaluator</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>Evaluator</em>'.
 	 * @see org.eclipse.acceleo.query.parser.AstEvaluator
 	 * @model instanceClass="org.eclipse.acceleo.query.parser.AstEvaluator"
@@ -1552,9 +1639,9 @@ public interface AstPackage extends EPackage {
 	EDataType getAstEvaluator();
 
 	/**
-	 * Returns the meta object for data type '<em>Object Array</em>'. <!-- begin-user-doc --> <!--
+	 * Returns the meta object for data type '<em>Object Array</em>'.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
 	 * @return the meta object for data type '<em>Object Array</em>'.
 	 * @model instanceClass="java.lang.Object[]"
 	 * @generated
@@ -1580,14 +1667,12 @@ public interface AstPackage extends EPackage {
 	 * <li>and each data type</li>
 	 * </ul>
 	 * <!-- end-user-doc -->
-	 * 
 	 * @generated
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ExpressionImpl
-		 * <em>Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ExpressionImpl <em>Expression</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.ExpressionImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getExpression()
 		 * @generated
@@ -1595,9 +1680,8 @@ public interface AstPackage extends EPackage {
 		EClass EXPRESSION = eINSTANCE.getExpression();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.VarRefImpl
-		 * <em>Var Ref</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.VarRefImpl <em>Var Ref</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.VarRefImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getVarRef()
 		 * @generated
@@ -1613,9 +1697,8 @@ public interface AstPackage extends EPackage {
 		EAttribute VAR_REF__VARIABLE_NAME = eINSTANCE.getVarRef_VariableName();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
-		 * <em>Feature Access</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl <em>Feature Access</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getFeatureAccess()
 		 * @generated
@@ -1639,9 +1722,8 @@ public interface AstPackage extends EPackage {
 		EReference FEATURE_ACCESS__TARGET = eINSTANCE.getFeatureAccess_Target();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.CallImpl <em>Call</em>}'
-		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.CallImpl <em>Call</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.CallImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCall()
 		 * @generated
@@ -1657,9 +1739,9 @@ public interface AstPackage extends EPackage {
 		EAttribute CALL__SERVICE_NAME = eINSTANCE.getCall_ServiceName();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute CALL__TYPE = eINSTANCE.getCall_Type();
@@ -1667,15 +1749,13 @@ public interface AstPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Arguments</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference CALL__ARGUMENTS = eINSTANCE.getCall_Arguments();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LiteralImpl
-		 * <em>Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LiteralImpl <em>Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.LiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLiteral()
 		 * @generated
@@ -1683,9 +1763,8 @@ public interface AstPackage extends EPackage {
 		EClass LITERAL = eINSTANCE.getLiteral();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.IntegerLiteralImpl
-		 * <em>Integer Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.IntegerLiteralImpl <em>Integer Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.IntegerLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getIntegerLiteral()
 		 * @generated
@@ -1693,17 +1772,16 @@ public interface AstPackage extends EPackage {
 		EClass INTEGER_LITERAL = eINSTANCE.getIntegerLiteral();
 
 		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute INTEGER_LITERAL__VALUE = eINSTANCE.getIntegerLiteral_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.RealLiteralImpl
-		 * <em>Real Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.RealLiteralImpl <em>Real Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.RealLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getRealLiteral()
 		 * @generated
@@ -1711,17 +1789,16 @@ public interface AstPackage extends EPackage {
 		EClass REAL_LITERAL = eINSTANCE.getRealLiteral();
 
 		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute REAL_LITERAL__VALUE = eINSTANCE.getRealLiteral_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.StringLiteralImpl
-		 * <em>String Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.StringLiteralImpl <em>String Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.StringLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getStringLiteral()
 		 * @generated
@@ -1729,17 +1806,16 @@ public interface AstPackage extends EPackage {
 		EClass STRING_LITERAL = eINSTANCE.getStringLiteral();
 
 		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute STRING_LITERAL__VALUE = eINSTANCE.getStringLiteral_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.BooleanLiteralImpl
-		 * <em>Boolean Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.BooleanLiteralImpl <em>Boolean Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.BooleanLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBooleanLiteral()
 		 * @generated
@@ -1747,17 +1823,16 @@ public interface AstPackage extends EPackage {
 		EClass BOOLEAN_LITERAL = eINSTANCE.getBooleanLiteral();
 
 		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute BOOLEAN_LITERAL__VALUE = eINSTANCE.getBooleanLiteral_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.EnumLiteralImpl
-		 * <em>Enum Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.EnumLiteralImpl <em>Enum Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.EnumLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getEnumLiteral()
 		 * @generated
@@ -1765,17 +1840,16 @@ public interface AstPackage extends EPackage {
 		EClass ENUM_LITERAL = eINSTANCE.getEnumLiteral();
 
 		/**
-		 * The meta object literal for the '<em><b>Literal</b></em>' reference feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>Literal</b></em>' reference feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference ENUM_LITERAL__LITERAL = eINSTANCE.getEnumLiteral_Literal();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.TypeLiteralImpl
-		 * <em>Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.TypeLiteralImpl <em>Type Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.TypeLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getTypeLiteral()
 		 * @generated
@@ -1783,18 +1857,16 @@ public interface AstPackage extends EPackage {
 		EClass TYPE_LITERAL = eINSTANCE.getTypeLiteral();
 
 		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute TYPE_LITERAL__VALUE = eINSTANCE.getTypeLiteral_Value();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl
-		 * <em>Collection Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl <em>Collection Type Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCollectionTypeLiteral()
 		 * @generated
@@ -1810,9 +1882,8 @@ public interface AstPackage extends EPackage {
 		EReference COLLECTION_TYPE_LITERAL__ELEMENT_TYPE = eINSTANCE.getCollectionTypeLiteral_ElementType();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LambdaImpl
-		 * <em>Lambda</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LambdaImpl <em>Lambda</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.LambdaImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLambda()
 		 * @generated
@@ -1822,7 +1893,6 @@ public interface AstPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference LAMBDA__PARAMETERS = eINSTANCE.getLambda_Parameters();
@@ -1836,25 +1906,24 @@ public interface AstPackage extends EPackage {
 		EReference LAMBDA__EXPRESSION = eINSTANCE.getLambda_Expression();
 
 		/**
-		 * The meta object literal for the '<em><b>Evaluator</b></em>' attribute feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>Evaluator</b></em>' attribute feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute LAMBDA__EVALUATOR = eINSTANCE.getLambda_Evaluator();
 
 		/**
-		 * The meta object literal for the '<em><b>Eval</b></em>' operation. <!-- begin-user-doc --> <!--
+		 * The meta object literal for the '<em><b>Eval</b></em>' operation.
+		 * <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EOperation LAMBDA___EVAL__OBJECT = eINSTANCE.getLambda__Eval__Object();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.NullLiteralImpl
-		 * <em>Null Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.NullLiteralImpl <em>Null Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.NullLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getNullLiteral()
 		 * @generated
@@ -1862,10 +1931,8 @@ public interface AstPackage extends EPackage {
 		EClass NULL_LITERAL = eINSTANCE.getNullLiteral();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.query.ast.impl.SetInExtensionLiteralImpl
-		 * <em>Set In Extension Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.SetInExtensionLiteralImpl <em>Set In Extension Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.SetInExtensionLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getSetInExtensionLiteral()
 		 * @generated
@@ -1881,10 +1948,8 @@ public interface AstPackage extends EPackage {
 		EReference SET_IN_EXTENSION_LITERAL__VALUES = eINSTANCE.getSetInExtensionLiteral_Values();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl
-		 * <em>Sequence In Extension Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl <em>Sequence In Extension Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getSequenceInExtensionLiteral()
 		 * @generated
@@ -1900,9 +1965,8 @@ public interface AstPackage extends EPackage {
 		EReference SEQUENCE_IN_EXTENSION_LITERAL__VALUES = eINSTANCE.getSequenceInExtensionLiteral_Values();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl
-		 * <em>Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl <em>Variable Declaration</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getVariableDeclaration()
 		 * @generated
@@ -1910,9 +1974,9 @@ public interface AstPackage extends EPackage {
 		EClass VARIABLE_DECLARATION = eINSTANCE.getVariableDeclaration();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EAttribute VARIABLE_DECLARATION__NAME = eINSTANCE.getVariableDeclaration_Name();
@@ -1926,9 +1990,9 @@ public interface AstPackage extends EPackage {
 		EReference VARIABLE_DECLARATION__TYPE = eINSTANCE.getVariableDeclaration_Type();
 
 		/**
-		 * The meta object literal for the '<em><b>Expression</b></em>' reference feature. <!-- begin-user-doc
+		 * The meta object literal for the '<em><b>Expression</b></em>' reference feature.
+		 * <!-- begin-user-doc
 		 * --> <!-- end-user-doc -->
-		 * 
 		 * @generated
 		 */
 		EReference VARIABLE_DECLARATION__EXPRESSION = eINSTANCE.getVariableDeclaration_Expression();
@@ -1936,7 +2000,6 @@ public interface AstPackage extends EPackage {
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.Error <em>Error</em>}' class.
 		 * <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
 		 * @see org.eclipse.acceleo.query.ast.Error
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getError()
 		 * @generated
@@ -1944,9 +2007,8 @@ public interface AstPackage extends EPackage {
 		EClass ERROR = eINSTANCE.getError();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl
-		 * <em>Error Expression</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl <em>Error Expression</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorExpression()
 		 * @generated
@@ -1954,9 +2016,8 @@ public interface AstPackage extends EPackage {
 		EClass ERROR_EXPRESSION = eINSTANCE.getErrorExpression();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl
-		 * <em>Error Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl <em>Error Type Literal</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorTypeLiteral()
 		 * @generated
@@ -1972,10 +2033,8 @@ public interface AstPackage extends EPackage {
 		EAttribute ERROR_TYPE_LITERAL__SEGMENTS = eINSTANCE.getErrorTypeLiteral_Segments();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
-		 * <em>Error Feature Access Or Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl <em>Error Feature Access Or Call</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorFeatureAccessOrCall()
 		 * @generated
@@ -1991,9 +2050,8 @@ public interface AstPackage extends EPackage {
 		EReference ERROR_FEATURE_ACCESS_OR_CALL__TARGET = eINSTANCE.getErrorFeatureAccessOrCall_Target();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
-		 * <em>Error Collection Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl <em>Error Collection Call</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCollectionCall()
 		 * @generated
@@ -2009,10 +2067,8 @@ public interface AstPackage extends EPackage {
 		EReference ERROR_COLLECTION_CALL__TARGET = eINSTANCE.getErrorCollectionCall_Target();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
-		 * <em>Error Variable Declaration</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl <em>Error Variable Declaration</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
 		 * @generated
@@ -2020,9 +2076,58 @@ public interface AstPackage extends EPackage {
 		EClass ERROR_VARIABLE_DECLARATION = eINSTANCE.getErrorVariableDeclaration();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'
-		 * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.BindingImpl <em>Binding</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.query.ast.impl.BindingImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBinding()
+		 * @generated
+		 */
+		EClass BINDING = eINSTANCE.getBinding();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute BINDING__NAME = eINSTANCE.getBinding_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
+		 * @generated
+		 */
+		EReference BINDING__VALUE = eINSTANCE.getBinding_Value();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LetImpl <em>Let</em>}' class.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.query.ast.impl.LetImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
+		 * @generated
+		 */
+		EClass LET = eINSTANCE.getLet();
+
+		/**
+		 * The meta object literal for the '<em><b>Bindings</b></em>' containment reference list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference LET__BINDINGS = eINSTANCE.getLet_Bindings();
+
+		/**
+		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference LET__BODY = eINSTANCE.getLet_Body();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}' enum.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * @see org.eclipse.acceleo.query.ast.CallType
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 		 * @generated
@@ -2030,9 +2135,9 @@ public interface AstPackage extends EPackage {
 		EEnum CALL_TYPE = eINSTANCE.getCallType();
 
 		/**
-		 * The meta object literal for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!--
+		 * The meta object literal for the '<em>Object Type</em>' data type.
+		 * <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
-		 * 
 		 * @see java.lang.Object
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 		 * @generated
@@ -2040,9 +2145,9 @@ public interface AstPackage extends EPackage {
 		EDataType OBJECT_TYPE = eINSTANCE.getObjectType();
 
 		/**
-		 * The meta object literal for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!--
+		 * The meta object literal for the '<em>Evaluator</em>' data type.
+		 * <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
-		 * 
 		 * @see org.eclipse.acceleo.query.parser.AstEvaluator
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 		 * @generated
@@ -2050,9 +2155,9 @@ public interface AstPackage extends EPackage {
 		EDataType AST_EVALUATOR = eINSTANCE.getAstEvaluator();
 
 		/**
-		 * The meta object literal for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!--
+		 * The meta object literal for the '<em>Object Array</em>' data type.
+		 * <!-- begin-user-doc --> <!--
 		 * end-user-doc -->
-		 * 
 		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 		 * @generated
 		 */

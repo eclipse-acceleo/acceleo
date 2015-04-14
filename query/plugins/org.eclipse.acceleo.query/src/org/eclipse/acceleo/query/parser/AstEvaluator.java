@@ -11,12 +11,14 @@
 package org.eclipse.acceleo.query.parser;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
@@ -24,6 +26,7 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
@@ -258,6 +261,23 @@ public class AstEvaluator extends AstSwitch<Object> {
 			result.add(doSwitch(expression));
 		}
 
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseLet(org.eclipse.acceleo.query.ast.Let)
+	 */
+	@Override
+	public Object caseLet(Let object) {
+		Map<String, Object> letEnv = Maps.newHashMap();
+		for (Binding binding : object.getBindings()) {
+			letEnv.put(binding.getName(), doSwitch(binding.getValue()));
+		}
+		environment.pushScope(letEnv);
+		Object result = doSwitch(object.getBody());
+		environment.popScope();
 		return result;
 	}
 

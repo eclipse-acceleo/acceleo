@@ -23,10 +23,12 @@ import java.util.logging.Logger;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
@@ -245,6 +247,40 @@ public class AstEvaluatorTest extends AstBuilder {
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
 		assertEquals(Boolean.TRUE, it.next());
 		assertEquals(Boolean.FALSE, it.next());
+	}
+
+	@Test
+	public void testLetBasic() {
+		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
+				stringLiteral("prefix")), binding("y", stringLiteral("suffix")));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals("prefixsuffix", evaluator.eval(varDefinitions, let));
+	}
+
+	@Test
+	public void testLetArenotRecursive() {
+		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
+				stringLiteral("prefix")), binding("y", callService(CallType.CALLSERVICE, "concat",
+				varRef("x"), stringLiteral("end"))));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("x", "firstx");
+		assertEquals("prefixfirstxend", evaluator.eval(varDefinitions, let));
+	}
+
+	@Test
+	public void testLetWithNothingBound() {
+		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
+				varRef("prefix")), binding("y", stringLiteral("suffix")));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals(AbstractLanguageServices.NOTHING, evaluator.eval(varDefinitions, let));
+	}
+
+	@Test
+	public void testLetWithNothingBody() {
+		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("novar"), varRef("y")), binding("x",
+				stringLiteral("prefix")), binding("y", stringLiteral("suffix")));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals(AbstractLanguageServices.NOTHING, evaluator.eval(varDefinitions, let));
 	}
 
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
@@ -31,6 +32,7 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
@@ -417,6 +419,40 @@ public class AstBuilder {
 		result.setExpression(expression);
 
 		return result;
+	}
+
+	/**
+	 * Creates a new {@link Binding} instance.
+	 * 
+	 * @param varName
+	 *            the variable name of the binding
+	 * @param expression
+	 *            the expression which value is bound to the variable.
+	 * @return the new {@link Binding} instance created.
+	 */
+	public Binding binding(String varName, Expression expression) {
+		Binding binding = (Binding)EcoreUtil.create(AstPackage.Literals.BINDING);
+		binding.setName(varName);
+		binding.setValue(expression);
+		return binding;
+	}
+
+	/**
+	 * Creates a new {@link Let} operator.
+	 * 
+	 * @param body
+	 *            the body of the let
+	 * @param bindings
+	 *            the bindings of the let
+	 * @return the new {@link Let} created.
+	 */
+	public Let let(Expression body, Binding... bindings) {
+		Let let = (Let)EcoreUtil.create(AstPackage.Literals.LET);
+		let.setBody(body);
+		for (Binding binding : bindings) {
+			let.getBindings().add(binding);
+		}
+		return let;
 	}
 
 }
