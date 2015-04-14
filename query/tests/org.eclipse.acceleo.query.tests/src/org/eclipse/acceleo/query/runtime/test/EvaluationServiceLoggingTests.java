@@ -15,7 +15,6 @@ import com.google.common.collect.Sets;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -23,6 +22,7 @@ import java.util.logging.LogRecord;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -48,7 +48,7 @@ public class EvaluationServiceLoggingTests {
 
 	private static final String SERVICE_RETURNS_NULL = "Service serviceReturnsNull(java.lang.Integer) returned a null value";
 
-	Map<String, Object> variables = new HashMap<String, Object>();
+	ScopedEnvironment variables;
 
 	BasicLookupEngine engine;
 
@@ -77,8 +77,10 @@ public class EvaluationServiceLoggingTests {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		variables.put("x", 1);
-		variables.put("y", 2);
+		variables = new ScopedEnvironment();
+		variables.pushScope(new HashMap<String, Object>());
+		variables.defineVariable("x", 1);
+		variables.defineVariable("y", 2);
 		services = new EvaluationServices(queryEnvironment, true);
 		services.getLogger().addHandler(new Handler() {
 

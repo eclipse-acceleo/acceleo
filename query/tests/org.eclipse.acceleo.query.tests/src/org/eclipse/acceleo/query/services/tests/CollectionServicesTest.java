@@ -33,6 +33,7 @@ import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -494,11 +495,11 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		List<Object> nullList = null;
 		try {
-			collectionServices.select(nullList, lambda);
+			collectionServices.select(nullList, new LambdaValue(lambda, evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -518,7 +519,7 @@ public class CollectionServicesTest {
 		List<Object> newList = collectionServices.select(list, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.select(list, lambda);
+		newList = collectionServices.select(list, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -532,11 +533,11 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		List<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, lambda);
+			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -556,7 +557,7 @@ public class CollectionServicesTest {
 		List<Object> newList = collectionServices.reject(list, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(list, lambda);
+		newList = collectionServices.reject(list, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -570,11 +571,11 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		Set<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, lambda);
+			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -594,7 +595,7 @@ public class CollectionServicesTest {
 		Set<Object> newList = collectionServices.reject(set, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(set, lambda);
+		newList = collectionServices.reject(set, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -608,11 +609,11 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		List<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, lambda);
+			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -632,7 +633,7 @@ public class CollectionServicesTest {
 		List<Object> newList = collectionServices.reject(list, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(list, lambda);
+		newList = collectionServices.reject(list, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -646,11 +647,11 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		Set<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, lambda);
+			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -670,7 +671,7 @@ public class CollectionServicesTest {
 		Set<Object> newList = collectionServices.reject(set, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(set, lambda);
+		newList = collectionServices.reject(set, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -684,11 +685,11 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		Set<Object> nullList = null;
 		try {
-			collectionServices.select(nullList, lambda);
+			collectionServices.select(nullList, new LambdaValue(lambda, evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -708,7 +709,7 @@ public class CollectionServicesTest {
 		Set<Object> newList = collectionServices.select(set, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.select(set, lambda);
+		newList = collectionServices.select(set, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -958,9 +959,9 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
-		collectionServices.any(null, lambda);
+		collectionServices.any(null, new LambdaValue(lambda, evaluator));
 	}
 
 	@Test
@@ -997,7 +998,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1005,7 +1006,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(set, lambda);
+		Object result = collectionServices.any(set, new LambdaValue(lambda, evaluator));
 		assertEquals(null, result);
 	}
 
@@ -1019,7 +1020,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1027,7 +1028,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(list, lambda);
+		Object result = collectionServices.any(list, new LambdaValue(lambda, evaluator));
 		assertEquals(null, result);
 	}
 
@@ -1041,7 +1042,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1049,7 +1050,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(set, lambda);
+		Object result = collectionServices.any(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Integer.valueOf(3), result);
 	}
 
@@ -1063,7 +1064,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1071,7 +1072,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(list, lambda);
+		Object result = collectionServices.any(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Integer.valueOf(3), result);
 	}
 
@@ -1143,9 +1144,9 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
-		collectionServices.exists(null, lambda);
+		collectionServices.exists(null, new LambdaValue(lambda, evaluator));
 	}
 
 	@Test
@@ -1182,7 +1183,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1190,7 +1191,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, lambda);
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1204,7 +1205,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1212,7 +1213,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(list, lambda);
+		Boolean result = collectionServices.exists(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1226,7 +1227,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1234,7 +1235,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, lambda);
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1248,7 +1249,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1256,7 +1257,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(list, lambda);
+		Boolean result = collectionServices.exists(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1270,9 +1271,9 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
-		collectionServices.forAll(null, lambda);
+		collectionServices.forAll(null, new LambdaValue(lambda, evaluator));
 	}
 
 	@Test
@@ -1309,7 +1310,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1317,7 +1318,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, lambda);
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1331,7 +1332,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				evaluator, selfDeclaration);
+				selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1339,7 +1340,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, lambda);
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1353,7 +1354,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(0)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(0)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1361,7 +1362,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, lambda);
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1375,7 +1376,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(0)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(0)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1383,7 +1384,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, lambda);
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1397,7 +1398,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1405,7 +1406,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, lambda);
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1419,7 +1420,7 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1427,7 +1428,7 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, lambda);
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1820,13 +1821,13 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(set, lambda);
+		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1840,14 +1841,14 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(set, lambda);
+		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1861,13 +1862,13 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(list, lambda);
+		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1881,14 +1882,14 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(list, lambda);
+		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1927,13 +1928,13 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(set, lambda);
+		Boolean result = collectionServices.one(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1947,14 +1948,14 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(3)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(3)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(set, lambda);
+		Boolean result = collectionServices.one(set, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1968,13 +1969,13 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(list, lambda);
+		Boolean result = collectionServices.one(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1988,14 +1989,14 @@ public class CollectionServicesTest {
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(3)), evaluator, selfDeclaration);
+				.varRef("self"), builder.integerLiteral(3)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(list, lambda);
+		Boolean result = collectionServices.one(list, new LambdaValue(lambda, evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 

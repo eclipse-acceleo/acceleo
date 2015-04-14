@@ -8,16 +8,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
 import com.google.common.collect.Lists;
@@ -43,6 +33,8 @@ import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
+import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 
 /**
  * Evaluates the asts.
@@ -50,10 +42,11 @@ import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstEvaluator extends AstSwitch<Object> {
+
 	/**
 	 * Variable definitions used during evaluation.
 	 */
-	private Map<String, Object> variables;
+	private final ScopedEnvironment environment;
 
 	/**
 	 * The evaluation services.
@@ -61,12 +54,27 @@ public class AstEvaluator extends AstSwitch<Object> {
 	private final EvaluationServices services;
 
 	/**
-	 * Creates a new AstEvaluator.
+	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
 	 * 
 	 * @param evalServices
-	 *            the evaluation services.
+	 *            the evaluation services used in this evaluator.
 	 */
 	public AstEvaluator(EvaluationServices evalServices) {
+		this.services = evalServices;
+		this.environment = new ScopedEnvironment();
+	}
+
+	/**
+	 * Creates a new {@link AstEvaluator} given an {@link EvaluationServices} instance and an existing
+	 * {@link ScopedEnvironment}.
+	 * 
+	 * @param evalServices
+	 *            the evaluation services
+	 * @param existingEnvironment
+	 *            the scoped environment
+	 */
+	public AstEvaluator(EvaluationServices evalServices, ScopedEnvironment existingEnvironment) {
+		this.environment = existingEnvironment;
 		this.services = evalServices;
 	}
 
@@ -80,8 +88,10 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 * @return the evaluation of the specified ast.
 	 */
 	public Object eval(Map<String, Object> varDefinitions, Expression ast) {
-		this.variables = varDefinitions;
-		return doSwitch(ast);
+		this.environment.pushScope(varDefinitions);
+		Object result = doSwitch(ast);
+		this.environment.popScope();
+		return result;
 	}
 
 	/**
@@ -184,7 +194,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseVarRef(VarRef object) {
-		return services.getVariableValue(variables, object.getVariableName());
+		return services.getVariableValue(environment, object.getVariableName());
 	}
 
 	/**
@@ -194,8 +204,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLambda(Lambda object) {
-		// We should revive the ILambda and InterpretedLambda as values of the Lambda literal.
-		return object;
+		return new LambdaValue(object, new AstEvaluator(services, environment.copy()));
 	}
 
 	/**

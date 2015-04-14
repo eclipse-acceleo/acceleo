@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -32,6 +31,7 @@ import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -59,7 +59,7 @@ public class EvaluationServicesTest {
 
 	private static final String LOCAL_MODEL_PATH = "ecore/reverse.ecore";
 
-	Map<String, Object> variables = new HashMap<String, Object>();
+	ScopedEnvironment variables = new ScopedEnvironment();
 
 	QueryEnvironment queryEnvironment;
 
@@ -75,8 +75,9 @@ public class EvaluationServicesTest {
 	public void setup() throws InvalidAcceleoPackageException {
 		queryEnvironment = new QueryEnvironment(null);
 		queryEnvironment.registerServicePackage(TestServiceDefinition.class);
-		variables.put("x", 1);
-		variables.put("y", 2);
+		variables.pushScope(new HashMap<String, Object>());
+		variables.defineVariable("x", 1);
+		variables.defineVariable("y", 2);
 		services = new EvaluationServices(queryEnvironment, true);
 	}
 
@@ -188,7 +189,7 @@ public class EvaluationServicesTest {
 
 		final Object listResult = services.featureAccess(list, "noname");
 
-		assertEquals(true, listResult instanceof List);
+		assertTrue(listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
 	}
 
@@ -201,7 +202,7 @@ public class EvaluationServicesTest {
 
 		final Object setResult = services.featureAccess(set, "noname");
 
-		assertEquals(true, setResult instanceof Set);
+		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
 	}
 
@@ -216,7 +217,7 @@ public class EvaluationServicesTest {
 
 		Object listResult = services.featureAccess(list, "noname");
 
-		assertEquals(true, listResult instanceof List);
+		assertTrue(listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
 	}
 
@@ -231,7 +232,7 @@ public class EvaluationServicesTest {
 
 		Object setResult = services.featureAccess(set, "noname");
 
-		assertEquals(true, setResult instanceof Set);
+		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
 	}
 
@@ -252,7 +253,7 @@ public class EvaluationServicesTest {
 		Object result = services.featureAccess(list, "containment");
 		assertTrue(result instanceof List);
 		assertEquals(1, ((List<Object>)result).size());
-		assertEquals(true, ((List<Object>)result).get(0));
+		assertTrue((Boolean)((List<Object>)result).get(0));
 	}
 
 	/**
@@ -274,7 +275,7 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof Set);
 		assertEquals(1, ((Set<Object>)result).size());
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
-		assertEquals(true, iterator.next());
+		assertTrue((Boolean)iterator.next());
 	}
 
 	/**
@@ -400,7 +401,7 @@ public class EvaluationServicesTest {
 
 		final Object listResult = services.callOrApply("add", args);
 
-		assertEquals(true, listResult instanceof List);
+		assertTrue(listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
 	}
 
@@ -413,7 +414,7 @@ public class EvaluationServicesTest {
 
 		final Object setResult = services.callOrApply("add", args);
 
-		assertEquals(true, setResult instanceof Set);
+		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
 	}
 

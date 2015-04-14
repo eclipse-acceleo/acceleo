@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+//CHECKSTYLE:OFF
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+//CHECKSTYLE:ON
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 
 /**
  * {@link Lambda} type.
@@ -54,7 +57,7 @@ public final class LambdaType extends AbstractJavaType implements IJavaType {
 	 */
 	@Override
 	public Class<?> getType() {
-		return Lambda.class;
+		return LambdaValue.class;
 	}
 
 	/**

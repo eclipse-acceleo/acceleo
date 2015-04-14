@@ -251,16 +251,13 @@ public class AstBuilder {
 	 * 
 	 * @param expression
 	 *            the lambda expression
-	 * @param evaluator
-	 *            the evaluator
 	 * @param parameters
 	 *            the parameters.
 	 * @return a new {@link Lambda}.
 	 */
-	public Lambda lambda(Expression expression, AstEvaluator evaluator, VariableDeclaration... parameters) {
+	public Lambda lambda(Expression expression, VariableDeclaration... parameters) {
 		Lambda lambda = (Lambda)EcoreUtil.create(AstPackage.Literals.LAMBDA);
 		lambda.setExpression(expression);
-		lambda.setEvaluator(evaluator);
 		List<VariableDeclaration> params = Lists.newArrayList(parameters);
 		lambda.getParameters().addAll(params);
 		return lambda;

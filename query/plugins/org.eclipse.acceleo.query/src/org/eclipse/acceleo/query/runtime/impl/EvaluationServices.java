@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -75,16 +74,15 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 *            the name of the variable to lookup in the specified map.
 	 * @return Returns the value of the specified variable in the specified map or nothing.
 	 */
-	public Object getVariableValue(Map<String, Object> variableDefinitions, String variableName) {
+	public Object getVariableValue(ScopedEnvironment variableDefinitions, String variableName) {
 		try {
-			Object result = variableDefinitions.get(variableName);
+			Object result = variableDefinitions.getVariableValue(variableName);
 			// CHECKSTYLE:OFF
 			return result == null ? nothing(VARIABLE_NOT_FOUND, variableName) : result;
 			// CHECKSTYLE:ON
 		} catch (NullPointerException e) {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		}
-
 	}
 
 	/**

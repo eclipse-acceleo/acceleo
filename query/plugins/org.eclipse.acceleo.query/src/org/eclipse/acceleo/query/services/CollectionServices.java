@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IEPackageProvider;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
@@ -892,7 +892,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *            the predicate expression
 	 * @return a filtered version of the specified {@link List}.
 	 */
-	public List<Object> select(List<Object> l1, Lambda lambda) {
+	public List<Object> select(List<Object> l1, LambdaValue lambda) {
 		// TODO use lazy collection
 		final List<Object> newList;
 
@@ -925,7 +925,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *            the predicate expression
 	 * @return a filtered version of the specified {@link Set}.
 	 */
-	public Set<Object> select(Set<Object> l1, Lambda lambda) {
+	public Set<Object> select(Set<Object> l1, LambdaValue lambda) {
 		// TODO use lazy collection
 		final Set<Object> newSet;
 
@@ -958,7 +958,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *            the predicate expression
 	 * @return a filtered version of the specified {@link Set}.
 	 */
-	public Set<Object> reject(Set<Object> l1, Lambda lambda) {
+	public Set<Object> reject(Set<Object> l1, LambdaValue lambda) {
 		// TODO use lazy collection
 		final Set<Object> newSet;
 
@@ -991,7 +991,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *            the predicate expression
 	 * @return a filtered version of the specified {@link List}.
 	 */
-	public List<Object> reject(List<Object> l1, Lambda lambda) {
+	public List<Object> reject(List<Object> l1, LambdaValue lambda) {
 		// TODO use lazy collection
 		final List<Object> newList;
 
@@ -1016,7 +1016,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Collects elements from the given {@link Set} using the given navigation {@link Lambda}.
+	 * Collects elements from the given {@link Set} using the given navigation {@link LambdaValue}.
 	 * 
 	 * @param set
 	 *            the original {@link Set}
@@ -1024,7 +1024,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *            the predicate expression
 	 * @return a navigated version of the specified {@link Set}.
 	 */
-	public Set<Object> collect(Set<Object> set, Lambda lambda) {
+	public Set<Object> collect(Set<Object> set, LambdaValue lambda) {
 		// TODO use lazy collection
 		final Set<Object> result;
 
@@ -1047,7 +1047,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Collects elements from the given {@link List} using the given navigation {@link Lambda}.
+	 * Collects elements from the given {@link List} using the given navigation {@link LambdaValue}.
 	 * 
 	 * @param list
 	 *            the original {@link List}
@@ -1055,7 +1055,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *            the predicate expression
 	 * @return a navigated version of the specified {@link List}.
 	 */
-	public List<Object> collect(List<Object> list, Lambda lambda) {
+	public List<Object> collect(List<Object> list, LambdaValue lambda) {
 		// TODO use lazy collection
 		final List<Object> result;
 
@@ -1448,18 +1448,18 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Gets the first element in the given {@link Collection} for which the {@link Lambda} is
-	 * {@link Lambda#eval(Object[]) evaluated} to <code>true</code>.
+	 * Gets the first element in the given {@link Collection} for which the {@link LambdaValue} is
+	 * {@link LambdaValue#eval(Object[]) evaluated} to <code>true</code>.
 	 * 
 	 * @param self
 	 *            the {@link Collection}
 	 * @param lambda
-	 *            the {@link Lambda}
-	 * @return the first element in the given {@link Collection} for which the {@link Lambda} is
-	 *         {@link Lambda#eval(Object[]) evaluated} to <code>true</code> if any, <code>null</code>
+	 *            the {@link LambdaValue}
+	 * @return the first element in the given {@link Collection} for which the {@link LambdaValue} is
+	 *         {@link LambdaValue#eval(Object[]) evaluated} to <code>true</code> if any, <code>null</code>
 	 *         otherwise
 	 */
-	public Object any(Collection<Object> self, Lambda lambda) {
+	public Object any(Collection<Object> self, LambdaValue lambda) {
 		Object result = null;
 
 		if (self != null && lambda == null) {
@@ -1534,16 +1534,16 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	/**
 	 * Tells if it exists an {@link Object} from the given {@link Collection} that validate the given
-	 * {@link Lambda}.
+	 * {@link LambdaValue}.
 	 * 
 	 * @param collection
 	 *            the {@link Collection}
 	 * @param lambda
-	 *            the {@link Lambda}
+	 *            the {@link LambdaValue}
 	 * @return <code>true</code> if it exists an {@link Object} from the given {@link Collection} that
-	 *         validate the given {@link Lambda}, <code>false</code> otherwise
+	 *         validate the given {@link LambdaValue}, <code>false</code> otherwise
 	 */
-	public Boolean exists(Collection<Object> collection, Lambda lambda) {
+	public Boolean exists(Collection<Object> collection, LambdaValue lambda) {
 		Boolean result = Boolean.FALSE;
 
 		if (collection != null && lambda == null) {
@@ -1567,16 +1567,16 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Tells if all {@link Object} form the given {@link Collection} validates the given {@link Lambda}.
+	 * Tells if all {@link Object} form the given {@link Collection} validates the given {@link LambdaValue}.
 	 * 
 	 * @param collection
 	 *            the {@link Collection}
 	 * @param lambda
-	 *            the {@link Lambda}
+	 *            the {@link LambdaValue}
 	 * @return <code>true</code> if all {@link Object} form the given {@link Collection} validates the given
-	 *         {@link Lambda}, <code>false</code> otherwise
+	 *         {@link LambdaValue}, <code>false</code> otherwise
 	 */
-	public Boolean forAll(Collection<Object> collection, Lambda lambda) {
+	public Boolean forAll(Collection<Object> collection, LambdaValue lambda) {
 		Boolean result = Boolean.TRUE;
 
 		if (collection != null && lambda == null) {
@@ -1639,17 +1639,17 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Tells if {@link Lambda#eval(Object[]) evaluation} of the given lambda gives a different value for all
-	 * element of the given {@link Collection}.
+	 * Tells if {@link LambdaValue#eval(Object[]) evaluation} of the given lambda gives a different value for
+	 * all element of the given {@link Collection}.
 	 * 
 	 * @param self
 	 *            the {@link Collection}
 	 * @param lambda
-	 *            the {@link Lambda}
-	 * @return <code>true</code> if {@link Lambda#eval(Object[]) evaluation} of the given lambda gives a
+	 *            the {@link LambdaValue}
+	 * @return <code>true</code> if {@link LambdaValue#eval(Object[]) evaluation} of the given lambda gives a
 	 *         different value for all element of the given {@link Collection}, <code>false</code> otherwise
 	 */
-	public Boolean isUnique(Collection<Object> self, Lambda lambda) {
+	public Boolean isUnique(Collection<Object> self, LambdaValue lambda) {
 		boolean result = true;
 		final Set<Object> evaluated = Sets.newHashSet();
 
@@ -1674,16 +1674,17 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Tells if one and only one element of the given {@link Collection} validates the given {@link Lambda}.
+	 * Tells if one and only one element of the given {@link Collection} validates the given
+	 * {@link LambdaValue}.
 	 * 
 	 * @param self
 	 *            the current {@link Collection}
 	 * @param lambda
-	 *            the {@link Lambda}
+	 *            the {@link LambdaValue}
 	 * @return <code>true</code> if one and only one element of the given {@link Collection} validates the
-	 *         given {@link Lambda}, <code>false</code> otherwise
+	 *         given {@link LambdaValue}, <code>false</code> otherwise
 	 */
-	public Boolean one(Collection<Object> self, Lambda lambda) {
+	public Boolean one(Collection<Object> self, LambdaValue lambda) {
 		boolean result = false;
 
 		if (self != null && lambda == null) {

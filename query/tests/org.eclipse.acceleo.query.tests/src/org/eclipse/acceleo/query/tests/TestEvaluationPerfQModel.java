@@ -12,7 +12,7 @@ package org.eclipse.acceleo.query.tests;
 
 import com.google.common.collect.Iterators;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -52,8 +52,9 @@ public abstract class TestEvaluationPerfQModel {
 	@BeforeClass
 	public static void beforeClass() {
 		try {
-			out = new OutputStreamWriter(new FileOutputStream("/tmp/log.txt"));
-		} catch (FileNotFoundException e) {
+			File tmpLogFile = File.createTempFile("log.txt", "");
+			out = new OutputStreamWriter(new FileOutputStream(tmpLogFile));
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

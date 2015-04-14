@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -218,7 +219,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testAnyNoBooleanLambda() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -249,7 +251,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("any", new Object[] {new LinkedHashSet<String>(), lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("any", new Object[] {new LinkedHashSet<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SetType(getQueryEnvironment(),
@@ -257,7 +260,6 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
 					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
 					.getEBoolean())));
-
 			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
@@ -279,7 +281,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("any", new Object[] {new ArrayList<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -287,7 +290,6 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
 					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
 					.getEBoolean())));
-
 			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
@@ -464,7 +466,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testCollectSet() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("collect", new Object[] {new LinkedHashSet<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("collect", new Object[] {new LinkedHashSet<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
@@ -490,7 +493,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testCollectList() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("collect", new Object[] {new ArrayList<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("collect", new Object[] {new ArrayList<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1004,8 +1008,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testIsUniqueSet() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("isUnique",
-				new Object[] {new LinkedHashSet<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("isUnique", new Object[] {new LinkedHashSet<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)));
@@ -1029,7 +1033,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testIsUniqueList() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("isUnique", new Object[] {new ArrayList<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("isUnique", new Object[] {new ArrayList<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1116,7 +1121,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testOneNoBooleanLambda() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1147,7 +1153,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("one", new Object[] {new LinkedHashSet<String>(), lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("one", new Object[] {new LinkedHashSet<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SetType(getQueryEnvironment(),
@@ -1155,7 +1162,6 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
 					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
 					.getEBoolean())));
-
 			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
@@ -1179,7 +1185,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("one", new Object[] {new ArrayList<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1187,7 +1194,6 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
 					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
 					.getEBoolean())));
-
 			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
@@ -1238,7 +1244,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testRejectNoBooleanLambda() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1269,8 +1276,9 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("reject", new Object[] {new LinkedHashSet<String>(),
-					lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("reject",
+					new Object[] {new LinkedHashSet<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SetType(getQueryEnvironment(),
@@ -1302,7 +1310,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("reject", new Object[] {new ArrayList<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1332,7 +1341,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	@Test
 	public void testSelectNoBooleanLambda() {
 		final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-		final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), lambda });
+		LambdaValue value = new LambdaValue(lambda, null);
+		final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), value });
 		assertTrue(service != null);
 		final List<IType> argTypes = new ArrayList<IType>();
 		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1363,8 +1373,9 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("select", new Object[] {new LinkedHashSet<String>(),
-					lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("select",
+					new Object[] {new LinkedHashSet<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SetType(getQueryEnvironment(),
@@ -1372,7 +1383,6 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
 					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
 					.getEBoolean())));
-
 			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
@@ -1396,7 +1406,8 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 			final Lambda lambda = AstPackage.eINSTANCE.getAstFactory().createLambda();
-			final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), lambda });
+			LambdaValue value = new LambdaValue(lambda, null);
+			final IService service = serviceLookUp("select", new Object[] {new ArrayList<String>(), value });
 			assertTrue(service != null);
 			final List<IType> argTypes = new ArrayList<IType>();
 			argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
@@ -1404,7 +1415,6 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 			argTypes.add(new LambdaType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
 					String.class), new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
 					.getEBoolean())));
-
 			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();

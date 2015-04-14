@@ -20,17 +20,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
+import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
@@ -192,11 +191,11 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testLambda() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
-		selfDeclaration.setName("self");
-		Lambda lambda = lambda(featureAccess(varRef("self"), "name"), evaluator, selfDeclaration);
-		assertEquals(lambda, evaluator.eval(varDefinitions, lambda));
+		varDefinitions.put("x", new Integer(1));
+		Lambda lambda = lambda(varRef("x"));
+		Object value = evaluator.eval(varDefinitions, lambda);
+		assertTrue(value instanceof LambdaValue);
+		assertEquals(new Integer(1), ((LambdaValue)value).eval(new Object[0]));
 	}
 
 	@Test

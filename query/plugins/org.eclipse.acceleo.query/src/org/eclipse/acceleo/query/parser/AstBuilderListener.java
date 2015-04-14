@@ -1189,7 +1189,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		final VariableDeclaration iterator;
 		final EvaluationServices service = new EvaluationServices(environment, true);
 		iterator = popVariableDeclaration();
-		final Lambda lambda = builder.lambda(ast, new AstEvaluator(service), iterator);
+		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));
 		endPositions.put(lambda, Integer.valueOf(endPositions.get(ast)));
 		push(serviceName);
