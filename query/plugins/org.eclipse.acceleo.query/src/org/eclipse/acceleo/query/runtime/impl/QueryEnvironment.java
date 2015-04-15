@@ -30,6 +30,7 @@ import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.services.BooleanServices;
 import org.eclipse.acceleo.query.services.CollectionServices;
+import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
 import org.eclipse.acceleo.query.services.StringServices;
@@ -145,6 +146,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 		try {
 			this.registerServicePackage(AnyServices.class);
 			this.registerServicePackage(EObjectServices.class);
+			this.registerServicePackage(ComparableServices.class);
 			this.registerServicePackage(NumberServices.class);
 			this.registerServicePackage(StringServices.class);
 			this.registerServicePackage(BooleanServices.class);
