@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
+import com.google.common.collect.Sets;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +29,10 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class QueryCompletionEngine implements IQueryCompletionEngine {
+	/**
+	 * the set of keywords of the language.
+	 */
+	private static final Set<String> KEYWORD_SET = Sets.newHashSet("if", "then", "else", "endif");
 
 	/**
 	 * When <code>true</code> the evaluation services log the error and warning messages.
@@ -104,8 +110,11 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			}
 			result = expression.substring(start, offset);
 		}
-
-		return result;
+		if (KEYWORD_SET.contains(result)) {
+			return "";
+		} else {
+			return result;
+		}
 	}
 
 	/**

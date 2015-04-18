@@ -26,7 +26,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
-import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -140,7 +139,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 	@Override
 	public QueryEvaluationResult computeQuery(Query query) {
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment, true));
+		AstEvaluator evaluator = new AstEvaluator(queryEnvironment, true);
 		Object result = evaluator.eval(variables, astResult.getAst());
 		QueryEvaluationResultFactory factory = new QueryEvaluationResultFactory();
 

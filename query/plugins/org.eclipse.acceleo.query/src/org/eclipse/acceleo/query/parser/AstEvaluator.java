@@ -17,10 +17,12 @@ import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
@@ -35,6 +37,8 @@ import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
@@ -45,6 +49,10 @@ import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstEvaluator extends AstSwitch<Object> {
+	/**
+	 * Message used to report bad predicate typing runtime detection.
+	 */
+	private static final String BAD_PREDICATE_TYPE_MSG = "Conditional's predicate must evaluate to a boolean value.";
 
 	/**
 	 * Variable definitions used during evaluation.
@@ -57,14 +65,22 @@ public class AstEvaluator extends AstSwitch<Object> {
 	private final EvaluationServices services;
 
 	/**
+	 * Shared logger used to report problems.
+	 */
+	private Logger logger;
+
+	/**
 	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
 	 * 
-	 * @param evalServices
-	 *            the evaluation services used in this evaluator.
+	 * @param queryEnv
+	 *            the environment used to evaluate.
+	 * @param doLog
+	 *            flag that controls the logging.
 	 */
-	public AstEvaluator(EvaluationServices evalServices) {
-		this.services = evalServices;
+	public AstEvaluator(IQueryEnvironment queryEnv, boolean doLog) {
+		this.services = new EvaluationServices(queryEnv, doLog);
 		this.environment = new ScopedEnvironment();
+		this.logger = queryEnv.getLogger();
 	}
 
 	/**
@@ -261,6 +277,28 @@ public class AstEvaluator extends AstSwitch<Object> {
 			result.add(doSwitch(expression));
 		}
 
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseConditional(org.eclipse.acceleo.query.ast.Conditional)
+	 */
+	@Override
+	public Object caseConditional(Conditional object) {
+		Object selector = this.doSwitch(object.getPredicate());
+		Object result;
+		if (selector instanceof Boolean) {
+			if ((Boolean)selector) {
+				result = this.doSwitch(object.getTrueBranch());
+			} else {
+				result = this.doSwitch(object.getFalseBranch());
+			}
+		} else {
+			logger.warning(BAD_PREDICATE_TYPE_MSG);
+			result = AbstractLanguageServices.NOTHING;
+		}
 		return result;
 	}
 

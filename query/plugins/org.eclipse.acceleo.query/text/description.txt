@@ -86,6 +86,11 @@ Package ast <http://www.eclipse.org/acceleo/query/1.0>
     Reference bindings : Binding<<1..*>>
     Reference body : Expression<<1..1>>
 
+  Class Conditional -> Expression
+    Reference predicate : Expression<<1..1>>
+    Reference trueBranch : Expression<<1..1>>
+    Reference falseBranch : Expression<<1..1>>
+
   Enum CallType
     Literal CALLSERVICE = 0
     Literal CALLORAPPLY = 1

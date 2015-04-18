@@ -317,6 +317,38 @@ public class EvaluationTest {
 	}
 
 	@Test
+	public void testConditionnalTrue() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals("trueBranch", engine.eval(builder
+				.build("if true then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+	}
+
+	@Test
+	public void testConditionnalFalse() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals("falseBranch", engine.eval(builder
+				.build("if false then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+	}
+
+	@Test
+	public void testConditionnalCompletePredicate() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("x", new Integer(1));
+		assertEquals("trueBranch", engine.eval(builder
+				.build("if x > 0 then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+		varDefinitions.put("x", new Integer(0));
+		assertEquals("falseBranch", engine.eval(builder
+				.build("if x > 0 then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+	}
+
+	@Test
+	public void testConditionnalNotBoolean() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		assertEquals(null, engine.eval(builder
+				.build("if 'notboolean' then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+	}
+
+	@Test
 	public void testLetOneDefinition() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		assertEquals("prefixsuffix", engine.eval(builder.build("let x='prefix' in x.concat('suffix')"),

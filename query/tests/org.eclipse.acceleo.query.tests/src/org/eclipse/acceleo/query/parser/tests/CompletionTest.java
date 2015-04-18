@@ -42,6 +42,8 @@ import static org.junit.Assert.fail;
 
 public class CompletionTest {
 
+	private static final int TOTAL_NUMBER_OF_PROPOSAL = 131;
+
 	QueryCompletionEngine engine;
 
 	IQueryEnvironment queryEnvironment;
@@ -70,7 +72,8 @@ public class CompletionTest {
 	@Test
 	public void nullTest() {
 		final ICompletionResult completionResult = engine.getCompletion(null, 0, variableTypes);
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
 		assertEquals(null, completionResult.getPrefix());
 		assertEquals(null, completionResult.getRemaining());
 		assertNoServiceCompletionProposal(completionResult);
@@ -92,7 +95,8 @@ public class CompletionTest {
 	@Test
 	public void emptyTest() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoServiceCompletionProposal(completionResult);
@@ -173,7 +177,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(132, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -186,7 +190,8 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -276,7 +281,8 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -314,13 +320,67 @@ public class CompletionTest {
 	@Test
 	public void testBindingCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("let a=", 6, variableTypes);
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
 	@Test
 	public void testLetBodyCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("let a=3 in ", 11, variableTypes);
-		assertEquals(130, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
+	}
+
+	public void testIfCompletionFromNothing() {
+		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		List<ICompletionProposal> proposals = completionResult
+				.getProposals(new BasicFilter(completionResult));
+		boolean found = false;
+		for (ICompletionProposal proposal : proposals) {
+			if ("if".equals(proposal.getProposal())) {
+				found = true;
+				break;
+			}
+		}
+		assertTrue(found);
+	}
+
+	@Test
+	public void testIfCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("i", 1, variableTypes);
+		assertEquals("i", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
+				.get(0);
+		assertEquals("if ", proposal.getProposal());
+	}
+
+	@Test
+	public void testAfterIfCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("if ", 3, variableTypes);
+		assertEquals("", completionResult.getRemaining());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
+	}
+
+	/**
+	 * Tests that after 'if <predicate> then ' the completion proposes the variables and the if.
+	 */
+	@Test
+	public void testAfterThenCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("if stuff then ", 13, variableTypes);
+		assertEquals(4, completionResult.getProposals(new BasicFilter(completionResult)).size());
+	}
+
+	/**
+	 * Tests that after 'if <predicate> then <expr> else ' the completion proposes the variables and the if.
+	 */
+	@Test
+	public void testAfterElseCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion("if stuff then self else ", 23,
+				variableTypes);
+		assertEquals(4, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {

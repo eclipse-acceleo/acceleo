@@ -41,6 +41,7 @@ expression : expression navigationSegment #Nav
 		     | varRef       #Var
 		     | literal      #Lit
 		     | '(' expression ')'    #Paren 
+		     | 'if' expression 'then' expression 'else' expression 'endif' #Conditional 
 		     | 'let' binding (',' binding)* 'in' expression #LetExpr
 ; 
 

@@ -138,6 +138,6 @@ public class AstBuilderTest {
 	public void testNullLiteral() {
 		NullLiteral nullLiteral = new AstBuilder().nullLiteral();
 
-		assertEquals(true, nullLiteral != null);
+		assertTrue(nullLiteral != null);
 	}
 }

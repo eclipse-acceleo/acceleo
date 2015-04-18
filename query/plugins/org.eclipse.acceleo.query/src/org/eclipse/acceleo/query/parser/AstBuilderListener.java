@@ -64,6 +64,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.BooleanTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallServiceContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CompContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EAContentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EContainerContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EContainerOrSelfContext;
@@ -118,6 +119,10 @@ import org.eclipse.emf.ecore.EEnumLiteral;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstBuilderListener extends QueryBaseListener {
+	/**
+	 * <code>if<code> operator.
+	 */
+	public static final String CONDITIONAL_OPERATOR = "if";
 
 	/**
 	 * <code>not<code> service name.
@@ -675,7 +680,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	/**
-	 * Pop the top of the stack and returns it as a type literal.
+	 * Pop the top of the stack and returns it as a binding.
 	 * 
 	 * @return the value on top of the stack.
 	 */
@@ -1410,6 +1415,33 @@ public class AstBuilderListener extends QueryBaseListener {
 		endPositions.put(sequenceInExtension, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
 		push(sequenceInExtension);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitConditional(org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext)
+	 */
+	@Override
+	public void exitConditional(ConditionalContext ctx) {
+		int count = ctx.getChildCount();
+		Expression predicate;
+		Expression trueBranch;
+		Expression falseBranch;
+		if (count <= 3) {
+			predicate = pop();
+			trueBranch = builder.errorExpression();
+			falseBranch = builder.errorExpression();
+		} else if (count <= 5) {
+			trueBranch = pop();
+			predicate = pop();
+			falseBranch = builder.errorExpression();
+		} else {
+			falseBranch = pop();
+			trueBranch = pop();
+			predicate = pop();
+		}
+		push(builder.conditional(predicate, trueBranch, falseBranch));
 	}
 
 	/**

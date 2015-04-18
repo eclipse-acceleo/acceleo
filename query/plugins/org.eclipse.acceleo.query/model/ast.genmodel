@@ -93,5 +93,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Let/bindings"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Let/body"/>
     </genClasses>
+    <genClasses ecoreClass="ast.ecore#//Conditional">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Conditional/predicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Conditional/trueBranch"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Conditional/falseBranch"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

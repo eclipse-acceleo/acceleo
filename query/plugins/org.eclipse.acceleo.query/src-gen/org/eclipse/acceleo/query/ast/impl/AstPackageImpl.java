@@ -17,6 +17,7 @@ import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -207,6 +208,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass conditionalEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EEnum callTypeEEnum = null;
@@ -732,6 +740,42 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getConditional() {
+		return conditionalEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getConditional_Predicate() {
+		return (EReference)conditionalEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getConditional_TrueBranch() {
+		return (EReference)conditionalEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getConditional_FalseBranch() {
+		return (EReference)conditionalEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getCallType() {
 		return callTypeEEnum;
 	}
@@ -864,6 +908,11 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		createEReference(letEClass, LET__BINDINGS);
 		createEReference(letEClass, LET__BODY);
 
+		conditionalEClass = createEClass(CONDITIONAL);
+		createEReference(conditionalEClass, CONDITIONAL__PREDICATE);
+		createEReference(conditionalEClass, CONDITIONAL__TRUE_BRANCH);
+		createEReference(conditionalEClass, CONDITIONAL__FALSE_BRANCH);
+
 		// Create enums
 		callTypeEEnum = createEEnum(CALL_TYPE);
 
@@ -928,6 +977,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getError());
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getVariableDeclaration());
 		letEClass.getESuperTypes().add(this.getExpression());
+		conditionalEClass.getESuperTypes().add(this.getExpression());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(expressionEClass, Expression.class, "Expression", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1010,6 +1060,11 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEClass(letEClass, Let.class, "Let", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getLet_Bindings(), this.getBinding(), null, "bindings", null, 1, -1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLet_Body(), this.getExpression(), null, "body", null, 1, 1, Let.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(conditionalEClass, Conditional.class, "Conditional", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConditional_Predicate(), this.getExpression(), null, "predicate", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConditional_TrueBranch(), this.getExpression(), null, "trueBranch", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getConditional_FalseBranch(), this.getExpression(), null, "falseBranch", null, 1, 1, Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(callTypeEEnum, CallType.class, "CallType");

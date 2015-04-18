@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -418,6 +419,25 @@ public class AstBuilder {
 
 		result.setExpression(expression);
 
+		return result;
+	}
+
+	/**
+	 * Creates a new {@link Conditional} operator instance.
+	 * 
+	 * @param predicate
+	 *            the predicate
+	 * @param trueBranch
+	 *            the true branch
+	 * @param falseBranch
+	 *            the false branch
+	 * @return a conditionnal operator with the specified predicate, true branche and false branch.
+	 */
+	public Conditional conditional(Expression predicate, Expression trueBranch, Expression falseBranch) {
+		Conditional result = (Conditional)EcoreUtil.create(AstPackage.Literals.CONDITIONAL);
+		result.setPredicate(predicate);
+		result.setTrueBranch(trueBranch);
+		result.setFalseBranch(falseBranch);
 		return result;
 	}
 

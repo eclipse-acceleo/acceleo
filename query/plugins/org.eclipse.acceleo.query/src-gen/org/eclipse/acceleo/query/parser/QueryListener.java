@@ -137,6 +137,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitFalseLit(@NotNull QueryParser.FalseLitContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code Conditional}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditional(@NotNull QueryParser.ConditionalContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Conditional}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditional(@NotNull QueryParser.ConditionalContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link QueryParser#varRef}.
 	 * @param ctx the parse tree
 	 */

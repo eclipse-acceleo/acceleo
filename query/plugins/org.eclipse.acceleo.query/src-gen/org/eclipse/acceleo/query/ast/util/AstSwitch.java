@@ -15,6 +15,7 @@ import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -274,6 +275,13 @@ public class AstSwitch<T> extends Switch<T> {
 				Let let = (Let)theEObject;
 				T result = caseLet(let);
 				if (result == null) result = caseExpression(let);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.CONDITIONAL: {
+				Conditional conditional = (Conditional)theEObject;
+				T result = caseConditional(conditional);
+				if (result == null) result = caseExpression(conditional);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -638,6 +646,21 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseLet(Let object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Conditional</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Conditional</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseConditional(Conditional object) {
 		return null;
 	}
 

@@ -1026,13 +1026,68 @@ public interface AstPackage extends EPackage {
 	int LET_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl <em>Conditional</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.query.ast.impl.ConditionalImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
+	 * @generated
+	 */
+	int CONDITIONAL = 25;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONDITIONAL__PREDICATE = EXPRESSION_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>True Branch</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONDITIONAL__TRUE_BRANCH = EXPRESSION_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>False Branch</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONDITIONAL__FALSE_BRANCH = EXPRESSION_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Conditional</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONDITIONAL_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Conditional</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CONDITIONAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @see org.eclipse.acceleo.query.ast.CallType
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 25;
+	int CALL_TYPE = 26;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1042,7 +1097,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 26;
+	int OBJECT_TYPE = 27;
 
 	/**
 	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1052,7 +1107,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 	 * @generated
 	 */
-	int AST_EVALUATOR = 27;
+	int AST_EVALUATOR = 28;
 
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1061,7 +1116,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 28;
+	int OBJECT_ARRAY = 29;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}'.
@@ -1609,6 +1664,49 @@ public interface AstPackage extends EPackage {
 	EReference getLet_Body();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Conditional <em>Conditional</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Conditional</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Conditional
+	 * @generated
+	 */
+	EClass getConditional();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Conditional#getPredicate <em>Predicate</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Predicate</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Conditional#getPredicate()
+	 * @see #getConditional()
+	 * @generated
+	 */
+	EReference getConditional_Predicate();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Conditional#getTrueBranch <em>True Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>True Branch</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Conditional#getTrueBranch()
+	 * @see #getConditional()
+	 * @generated
+	 */
+	EReference getConditional_TrueBranch();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Conditional#getFalseBranch <em>False Branch</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>False Branch</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Conditional#getFalseBranch()
+	 * @see #getConditional()
+	 * @generated
+	 */
+	EReference getConditional_FalseBranch();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @return the meta object for enum '<em>Call Type</em>'.
@@ -2124,6 +2222,40 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LET__BODY = eINSTANCE.getLet_Body();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl <em>Conditional</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.query.ast.impl.ConditionalImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
+		 * @generated
+		 */
+		EClass CONDITIONAL = eINSTANCE.getConditional();
+
+		/**
+		 * The meta object literal for the '<em><b>Predicate</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONDITIONAL__PREDICATE = eINSTANCE.getConditional_Predicate();
+
+		/**
+		 * The meta object literal for the '<em><b>True Branch</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONDITIONAL__TRUE_BRANCH = eINSTANCE.getConditional_TrueBranch();
+
+		/**
+		 * The meta object literal for the '<em><b>False Branch</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CONDITIONAL__FALSE_BRANCH = eINSTANCE.getConditional_FalseBranch();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}' enum.

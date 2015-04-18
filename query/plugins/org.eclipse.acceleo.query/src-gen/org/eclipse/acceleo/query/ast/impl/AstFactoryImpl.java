@@ -17,6 +17,7 @@ import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -106,6 +107,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 			case AstPackage.ERROR_VARIABLE_DECLARATION: return createErrorVariableDeclaration();
 			case AstPackage.BINDING: return createBinding();
 			case AstPackage.LET: return createLet();
+			case AstPackage.CONDITIONAL: return createConditional();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -362,6 +364,16 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Conditional createConditional() {
+		ConditionalImpl conditional = new ConditionalImpl();
+		return conditional;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public CallType createCallTypeFromString(EDataType eDataType, String initialValue) {

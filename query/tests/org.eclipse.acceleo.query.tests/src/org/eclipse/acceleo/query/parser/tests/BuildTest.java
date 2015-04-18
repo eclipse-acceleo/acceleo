@@ -16,6 +16,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -46,6 +47,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class BuildTest {
 
@@ -144,7 +146,6 @@ public class BuildTest {
 		assertExpression(build, Call.class, 0, 12, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
-		assertExpression(build, IntegerLiteral.class, 0, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(2, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
 	}
 
@@ -1588,4 +1589,17 @@ public class BuildTest {
 		assertExpression(build, Let.class, -1, -1, build.getAst());
 	}
 
+	/**
+	 * Test the ast builder on a conditionnal expression
+	 */
+	@Test
+	public void testConditional() {
+		IQueryBuilderEngine.AstResult build = engine.build("if true then 5 else 'string' endif");
+		Expression ast = build.getAst();
+		assertTrue(ast instanceof Conditional);
+		Conditional cond = (Conditional)ast;
+		assertTrue(cond.getPredicate() instanceof BooleanLiteral);
+		assertTrue(cond.getTrueBranch() instanceof IntegerLiteral);
+		assertTrue(cond.getFalseBranch() instanceof StringLiteral);
+	}
 }

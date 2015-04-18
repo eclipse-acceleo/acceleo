@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -21,6 +23,7 @@ import java.util.Stack;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
@@ -474,4 +477,40 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		return null;
 	}
 
+	/**
+	 * Returns <code>true</code> iff the specified set contains the boolean type.
+	 * 
+	 * @param types
+	 *            the set of types that should contain the boolean type.
+	 * @return <code>true</code> if types contains the boolean type.
+	 */
+	private boolean containsBooleanType(Set<IType> types) {
+		for (IType type : types) {
+			if (Boolean.class.equals(type.getType())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseConditional(org.eclipse.acceleo.query.ast.Conditional)
+	 */
+	@Override
+	public Set<IType> caseConditional(Conditional object) {
+		Set<IType> result = Sets.newLinkedHashSet();
+		Set<IType> predicate = doSwitch(object.getPredicate());
+		if (containsBooleanType(predicate)) {
+			if (predicate.size() > 1) {
+				result.add(services.nothing("The predicate may evaluate to a value that is not a boolean."));
+				result.addAll(doSwitch(object.getTrueBranch()));
+				result.addAll(doSwitch(object.getFalseBranch()));
+			}
+		} else {
+			result.add(services.nothing("The predicate never evaluates to a boolean type."));
+		}
+		return result;
+	}
 }

@@ -15,6 +15,7 @@ import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -190,6 +191,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseLet(Let object) {
 				return createLetAdapter();
+			}
+			@Override
+			public Adapter caseConditional(Conditional object) {
+				return createConditionalAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -531,6 +536,20 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createLetAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Conditional <em>Conditional</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.Conditional
+	 * @generated
+	 */
+	public Adapter createConditionalAdapter() {
 		return null;
 	}
 

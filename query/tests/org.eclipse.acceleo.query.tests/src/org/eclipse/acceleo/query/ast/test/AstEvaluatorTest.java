@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
@@ -30,7 +31,6 @@ import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
-import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.emf.common.notify.Notifier;
@@ -124,7 +124,7 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void setup() {
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		evaluator = new AstEvaluator(environment, true);
 	}
 
 	@Test
@@ -219,7 +219,7 @@ public class AstEvaluatorTest extends AstBuilder {
 		values.add(booleanLiteral(false));
 
 		final Object result = evaluator.eval(varDefinitions, setInExtension(values));
-		assertEquals(true, result instanceof Set);
+		assertTrue(result instanceof Set);
 		assertEquals(3, ((Set<Object>)result).size());
 		Iterator<Object> it = ((Set<Object>)result).iterator();
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
@@ -240,13 +240,46 @@ public class AstEvaluatorTest extends AstBuilder {
 		values.add(booleanLiteral(false));
 
 		final Object result = evaluator.eval(varDefinitions, sequenceInExtension(values));
-		assertEquals(true, result instanceof List);
+		assertTrue(result instanceof List);
 		assertEquals(4, ((List<Object>)result).size());
 		Iterator<Object> it = ((List<Object>)result).iterator();
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
 		assertEquals(Boolean.TRUE, it.next());
 		assertEquals(Boolean.FALSE, it.next());
+	}
+
+	/**
+	 * Test that the true branch is properly evaluated when the predicate evaluates to <code>true</code>
+	 */
+	@Test
+	public void testConditionnalTrueBranch() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Conditional conditional = conditional(booleanLiteral(true), stringLiteral("trueBranch"),
+				stringLiteral("falseBranch"));
+		assertEquals("trueBranch", evaluator.eval(varDefinitions, conditional));
+	}
+
+	/**
+	 * Test that the false branch is properly evaluated when the predicate evaluates to <code>false</code>
+	 */
+	@Test
+	public void testConditionnalFalseBranch() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Conditional conditional = conditional(booleanLiteral(false), stringLiteral("trueBranch"),
+				stringLiteral("falseBranch"));
+		assertEquals("falseBranch", evaluator.eval(varDefinitions, conditional));
+	}
+
+	/**
+	 * Test that the result is <code>Nothing</code> when the predicate isn't a boolean
+	 */
+	@Test
+	public void testConditionnalBadPredicate() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Conditional conditional = conditional(stringLiteral("Hey, what's this?!"),
+				stringLiteral("trueBranch"), stringLiteral("falseBranch"));
+		assertEquals(AbstractLanguageServices.NOTHING, evaluator.eval(varDefinitions, conditional));
 	}
 
 	@Test

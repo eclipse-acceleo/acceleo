@@ -32,7 +32,6 @@ import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
-import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.services.CollectionServices;
@@ -490,7 +489,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -528,7 +527,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -566,7 +565,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -604,7 +603,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -642,7 +641,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -680,7 +679,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -752,7 +751,7 @@ public class CollectionServicesTest {
 		final Set<Object> result = collectionServices.filter(set, EcorePackage.eINSTANCE.getEPackage());
 
 		assertEquals(1, result.size());
-		assertEquals(true, result.contains(EcorePackage.eINSTANCE));
+		assertTrue(result.contains(EcorePackage.eINSTANCE));
 	}
 
 	@Test
@@ -794,7 +793,7 @@ public class CollectionServicesTest {
 		final List<Object> result = collectionServices.filter(list, EcorePackage.eINSTANCE.getEPackage());
 
 		assertEquals(1, result.size());
-		assertEquals(true, result.contains(EcorePackage.eINSTANCE));
+		assertTrue(result.contains(EcorePackage.eINSTANCE));
 	}
 
 	@Test
@@ -926,7 +925,7 @@ public class CollectionServicesTest {
 	public void testExcludes() {
 		final List<Object> list = Lists.newArrayList();
 
-		assertEquals(true, collectionServices.excludes(list, this));
+		assertTrue(collectionServices.excludes(list, this));
 
 		list.add(this);
 
@@ -941,7 +940,7 @@ public class CollectionServicesTest {
 
 		list.add(this);
 
-		assertEquals(true, collectionServices.includes(list, this));
+		assertTrue(collectionServices.includes(list, this));
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -954,7 +953,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -993,7 +992,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1015,7 +1014,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1037,7 +1036,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1059,7 +1058,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1139,7 +1138,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1178,7 +1177,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1200,7 +1199,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1222,7 +1221,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1244,7 +1243,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1266,7 +1265,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1305,7 +1304,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1327,7 +1326,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1349,7 +1348,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1371,7 +1370,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1393,7 +1392,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1415,7 +1414,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1816,7 +1815,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1836,7 +1835,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1857,7 +1856,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1877,7 +1876,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1923,7 +1922,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1943,7 +1942,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1964,7 +1963,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
@@ -1984,7 +1983,7 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(environment, true));
+		AstEvaluator evaluator = new AstEvaluator(environment, true);
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
