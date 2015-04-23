@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.runtime;
 
 import java.util.Map;
 
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+
 /**
  * / Evaluation Engine is used to evaluate acceleo expressions. The evaluation engine allows to register
  * packages of services that can be called.
@@ -33,7 +35,7 @@ public interface IQueryEvaluationEngine extends IQueryEngine {
 	 * @throws AcceleoQueryEvaluationException
 	 *             if the variable self isn't defined or if expression's syntax is invalid.
 	 */
-	Object eval(String expression, Map<String, Object> variables) throws AcceleoQueryEvaluationException;
+	Object eval(AstResult expression, Map<String, Object> variables) throws AcceleoQueryEvaluationException;
 
 	/**
 	 * When set to <code>true</code> evaluation will log evaluation impossibilities that lead to the nothing

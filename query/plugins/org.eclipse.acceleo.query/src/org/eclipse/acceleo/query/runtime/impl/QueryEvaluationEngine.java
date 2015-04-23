@@ -15,7 +15,6 @@ import java.util.Map;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
@@ -48,15 +47,18 @@ public class QueryEvaluationEngine implements IQueryEvaluationEngine {
 	}
 
 	@Override
-	public Object eval(String expression, Map<String, Object> environment)
+	public Object eval(AstResult expression, Map<String, Object> environment)
 			throws AcceleoQueryEvaluationException {
-		IQueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
-		// TODO test build.getErrors()
-		AstResult build = builder.build(expression);
-		Expression ast = build.getAst();
-		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment, log));
-
-		return evaluator.eval(environment, ast);
+		Object result = null;
+		if (expression != null && expression.getAst() != null) {
+			Expression ast = expression.getAst();
+			AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment, log));
+			result = evaluator.eval(environment, ast);
+			if (result instanceof Nothing) {
+				result = null;
+			}
+		}
+		return result;
 	}
 
 	@Override
