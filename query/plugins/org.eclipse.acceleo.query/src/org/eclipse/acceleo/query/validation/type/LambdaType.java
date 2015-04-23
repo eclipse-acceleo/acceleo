@@ -18,7 +18,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class LambdaType extends AbstractJavaType implements IJavaType {
+public final class LambdaType extends AbstractJavaType implements IJavaType {
 
 	/**
 	 * The {@link IType} of this {@link Lambda#getEvaluator() evaluator} type.

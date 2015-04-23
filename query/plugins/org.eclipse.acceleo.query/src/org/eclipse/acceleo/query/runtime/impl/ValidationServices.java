@@ -518,7 +518,7 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Set<IType> receiverTypes = newArguments.remove(0);
 			final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
 			for (IType receiverType : receiverTypes) {
-				if (!(receiverType instanceof ICollectionType) && !(receiverTypes instanceof NothingType)) {
+				if (!(receiverType instanceof ICollectionType) && !(receiverType instanceof NothingType)) {
 					// implicit set conversion.
 					newReceiverTypes.add(new SetType(queryEnvironment, receiverType));
 				} else {

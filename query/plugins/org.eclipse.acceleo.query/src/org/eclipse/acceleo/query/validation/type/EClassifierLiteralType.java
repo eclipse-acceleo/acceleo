@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EClassifier;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class EClassifierLiteralType extends EClassifierType {
+public final class EClassifierLiteralType extends EClassifierType {
 
 	/**
 	 * Constructor.

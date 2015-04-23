@@ -17,7 +17,7 @@ import org.eclipse.acceleo.query.runtime.impl.Nothing;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class NothingType extends AbstractType implements IJavaType {
+public final class NothingType extends AbstractType implements IJavaType {
 
 	/**
 	 * The {@link Class}.

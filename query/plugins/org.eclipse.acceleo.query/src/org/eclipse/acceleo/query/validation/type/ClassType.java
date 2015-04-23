@@ -17,7 +17,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ClassType extends AbstractJavaType implements IJavaType {
+public final class ClassType extends AbstractJavaType implements IJavaType {
 
 	/**
 	 * The {@link Class}.

@@ -19,7 +19,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class SequenceType extends AbstractCollectionType {
+public final class SequenceType extends AbstractCollectionType {
 
 	/**
 	 * Constructor.
