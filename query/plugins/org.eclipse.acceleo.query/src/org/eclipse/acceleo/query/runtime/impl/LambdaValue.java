@@ -61,7 +61,8 @@ public class LambdaValue {
 		for (int i = 0; i < argc; i++) {
 			variables.put(lambdaLiteral.getParameters().get(i).getName(), args[i]);
 		}
-		return evaluator.eval(variables, lambdaLiteral.getExpression());
+		// TODO isn't this redundant with LambdaImpl.eval? Should we return the EvaluationResult from here?
+		return evaluator.eval(variables, lambdaLiteral.getExpression()).getResult();
 	}
 
 }

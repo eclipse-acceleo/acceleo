@@ -28,12 +28,14 @@ import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -124,70 +126,73 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void setup() {
 		IQueryEnvironment environment = new QueryEnvironment(
 				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
-		evaluator = new AstEvaluator(environment, true);
+		evaluator = new AstEvaluator(environment);
 	}
 
 	@Test
 	public void testIntLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals(1, evaluator.eval(varDefinitions, integerLiteral(1)));
+		assertOKResultEquals(Integer.valueOf(1), evaluator.eval(varDefinitions, integerLiteral(1)));
 	}
 
 	@Test
 	public void testRealLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals(1.0, evaluator.eval(varDefinitions, realLiteral(1.0)));
+		assertOKResultEquals(Double.valueOf(1d), evaluator.eval(varDefinitions, realLiteral(1.0)));
 	}
 
 	@Test
 	public void testBoolLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertTrue((Boolean)evaluator.eval(varDefinitions, booleanLiteral(true)));
-		assertFalse((Boolean)evaluator.eval(varDefinitions, booleanLiteral(false)));
+		assertOKResultEquals(Boolean.TRUE, evaluator.eval(varDefinitions, booleanLiteral(true)));
+		assertOKResultEquals(Boolean.FALSE, evaluator.eval(varDefinitions, booleanLiteral(false)));
 	}
 
 	@Test
 	public void testStringLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals("john doe", evaluator.eval(varDefinitions, stringLiteral("john doe")));
+		assertOKResultEquals("john doe", evaluator.eval(varDefinitions, stringLiteral("john doe")));
 	}
 
 	@Test
 	public void testTypeLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions,
+		assertOKResultEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions,
 				typeLiteral(EcorePackage.Literals.ECLASS)));
-		assertEquals(Integer.class, evaluator.eval(varDefinitions, typeLiteral(Integer.class)));
+		assertOKResultEquals(Integer.class, evaluator.eval(varDefinitions, typeLiteral(Integer.class)));
 	}
 
 	@Test
 	public void testFeatureAccess() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		assertEquals("EClass", evaluator.eval(varDefinitions, featureAccess(varRef("self"), "name")));
-		Object result = evaluator.eval(varDefinitions, featureAccess(varRef("self"), "eAllSuperTypes"));
-		assertTrue(result instanceof List);
-		assertEquals(3, ((List<?>)result).size());
-		assertTrue(((List<?>)result).contains(EcorePackage.Literals.EMODEL_ELEMENT));
-		assertTrue(((List<?>)result).contains(EcorePackage.Literals.ENAMED_ELEMENT));
-		assertTrue(((List<?>)result).contains(EcorePackage.Literals.ECLASSIFIER));
+		assertOKResultEquals("EClass", evaluator.eval(varDefinitions, featureAccess(varRef("self"), "name")));
+		EvaluationResult result = evaluator.eval(varDefinitions, featureAccess(varRef("self"),
+				"eAllSuperTypes"));
+		assertTrue(result.getResult() instanceof List);
+		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
+		assertTrue(result.getDiagnostic().getChildren().isEmpty());
+		List<?> listResult = (List<?>)result.getResult();
+		assertEquals(3, listResult.size());
+		assertTrue(listResult.contains(EcorePackage.Literals.EMODEL_ELEMENT));
+		assertTrue(listResult.contains(EcorePackage.Literals.ENAMED_ELEMENT));
+		assertTrue(listResult.contains(EcorePackage.Literals.ECLASSIFIER));
 	}
 
 	@Test
 	public void testVarRef() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		assertEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions, varRef("self")));
+		assertOKResultEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions, varRef("self")));
 	}
 
 	@Test
 	public void testCall() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		Object result = evaluator.eval(varDefinitions, callService(CallType.COLLECTIONCALL, "size",
+		EvaluationResult result = evaluator.eval(varDefinitions, callService(CallType.COLLECTIONCALL, "size",
 				featureAccess(varRef("self"), "eAllSuperTypes")));
-		assertTrue(result instanceof Integer);
-		assertEquals(3, result);
+		assertOKResultEquals(Integer.valueOf(3), result);
 	}
 
 	@Test
@@ -195,15 +200,17 @@ public class AstEvaluatorTest extends AstBuilder {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("x", new Integer(1));
 		Lambda lambda = lambda(varRef("x"));
-		Object value = evaluator.eval(varDefinitions, lambda);
-		assertTrue(value instanceof LambdaValue);
-		assertEquals(new Integer(1), ((LambdaValue)value).eval(new Object[0]));
+		EvaluationResult value = evaluator.eval(varDefinitions, lambda);
+		assertTrue(value.getResult() instanceof LambdaValue);
+		assertEquals(Diagnostic.OK, value.getDiagnostic().getSeverity());
+		assertTrue(value.getDiagnostic().getChildren().isEmpty());
+		assertEquals(Integer.valueOf(1), ((LambdaValue)value.getResult()).eval(new Object[0]));
 	}
 
 	@Test
 	public void testNullLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals(null, evaluator.eval(varDefinitions, nullLiteral()));
+		assertOKResultEquals(null, evaluator.eval(varDefinitions, nullLiteral()));
 	}
 
 	@Test
@@ -218,13 +225,17 @@ public class AstEvaluatorTest extends AstBuilder {
 		values.add(booleanLiteral(true));
 		values.add(booleanLiteral(false));
 
-		final Object result = evaluator.eval(varDefinitions, setInExtension(values));
-		assertTrue(result instanceof Set);
-		assertEquals(3, ((Set<Object>)result).size());
-		Iterator<Object> it = ((Set<Object>)result).iterator();
+		final EvaluationResult result = evaluator.eval(varDefinitions, setInExtension(values));
+		assertTrue(result.getResult() instanceof Set);
+		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
+		assertTrue(result.getDiagnostic().getChildren().isEmpty());
+		Set<Object> setResult = (Set<Object>)result.getResult();
+		assertEquals(3, setResult.size());
+		Iterator<Object> it = setResult.iterator();
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
 		assertEquals(Boolean.TRUE, it.next());
 		assertEquals(Boolean.FALSE, it.next());
+		assertFalse(it.hasNext());
 	}
 
 	@Test
@@ -239,14 +250,18 @@ public class AstEvaluatorTest extends AstBuilder {
 		values.add(booleanLiteral(true));
 		values.add(booleanLiteral(false));
 
-		final Object result = evaluator.eval(varDefinitions, sequenceInExtension(values));
-		assertTrue(result instanceof List);
-		assertEquals(4, ((List<Object>)result).size());
-		Iterator<Object> it = ((List<Object>)result).iterator();
+		final EvaluationResult result = evaluator.eval(varDefinitions, sequenceInExtension(values));
+		assertTrue(result.getResult() instanceof List);
+		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
+		assertTrue(result.getDiagnostic().getChildren().isEmpty());
+		List<Object> listResult = (List<Object>)result.getResult();
+		assertEquals(4, listResult.size());
+		Iterator<Object> it = listResult.iterator();
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
 		assertEquals(EcorePackage.Literals.ECLASS, it.next());
 		assertEquals(Boolean.TRUE, it.next());
 		assertEquals(Boolean.FALSE, it.next());
+		assertFalse(it.hasNext());
 	}
 
 	/**
@@ -257,7 +272,7 @@ public class AstEvaluatorTest extends AstBuilder {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		Conditional conditional = conditional(booleanLiteral(true), stringLiteral("trueBranch"),
 				stringLiteral("falseBranch"));
-		assertEquals("trueBranch", evaluator.eval(varDefinitions, conditional));
+		assertOKResultEquals("trueBranch", evaluator.eval(varDefinitions, conditional));
 	}
 
 	/**
@@ -268,7 +283,7 @@ public class AstEvaluatorTest extends AstBuilder {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		Conditional conditional = conditional(booleanLiteral(false), stringLiteral("trueBranch"),
 				stringLiteral("falseBranch"));
-		assertEquals("falseBranch", evaluator.eval(varDefinitions, conditional));
+		assertOKResultEquals("falseBranch", evaluator.eval(varDefinitions, conditional));
 	}
 
 	/**
@@ -279,7 +294,13 @@ public class AstEvaluatorTest extends AstBuilder {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		Conditional conditional = conditional(stringLiteral("Hey, what's this?!"),
 				stringLiteral("trueBranch"), stringLiteral("falseBranch"));
-		assertEquals(AbstractLanguageServices.NOTHING, evaluator.eval(varDefinitions, conditional));
+		final EvaluationResult result = evaluator.eval(varDefinitions, conditional);
+		assertTrue(result.getResult() instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(1, result.getDiagnostic().getChildren().size());
+		String message = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertTrue(message.contains("Conditional"));
+		assertTrue(message.contains("boolean"));
 	}
 
 	@Test
@@ -287,7 +308,7 @@ public class AstEvaluatorTest extends AstBuilder {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
 				stringLiteral("prefix")), binding("y", stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals("prefixsuffix", evaluator.eval(varDefinitions, let));
+		assertOKResultEquals("prefixsuffix", evaluator.eval(varDefinitions, let));
 	}
 
 	@Test
@@ -297,7 +318,7 @@ public class AstEvaluatorTest extends AstBuilder {
 				varRef("x"), stringLiteral("end"))));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("x", "firstx");
-		assertEquals("prefixfirstxend", evaluator.eval(varDefinitions, let));
+		assertOKResultEquals("prefixfirstxend", evaluator.eval(varDefinitions, let));
 	}
 
 	@Test
@@ -305,7 +326,14 @@ public class AstEvaluatorTest extends AstBuilder {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
 				varRef("prefix")), binding("y", stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals(AbstractLanguageServices.NOTHING, evaluator.eval(varDefinitions, let));
+		final EvaluationResult result = evaluator.eval(varDefinitions, let);
+		assertTrue(result.getResult() instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(2, result.getDiagnostic().getChildren().size());
+		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertTrue(message1.contains("Couldn't find the prefix variable"));
+		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
+		assertTrue(message2.contains("Couldn't find the concat"));
 	}
 
 	@Test
@@ -313,7 +341,19 @@ public class AstEvaluatorTest extends AstBuilder {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("novar"), varRef("y")), binding("x",
 				stringLiteral("prefix")), binding("y", stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertEquals(AbstractLanguageServices.NOTHING, evaluator.eval(varDefinitions, let));
+		final EvaluationResult result = evaluator.eval(varDefinitions, let);
+		assertTrue(result.getResult() instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(2, result.getDiagnostic().getChildren().size());
+		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertTrue(message1.contains("Couldn't find the novar variable"));
+		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
+		assertTrue(message2.contains("Couldn't find the concat"));
 	}
 
+	private void assertOKResultEquals(Object expected, EvaluationResult result) {
+		assertEquals(expected, result.getResult());
+		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
+		assertTrue(result.getDiagnostic().getChildren().isEmpty());
+	}
 }

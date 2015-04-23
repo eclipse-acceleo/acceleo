@@ -47,11 +47,9 @@ public class CompletionServices extends ValidationServices {
 	 * 
 	 * @param queryEnv
 	 *            the {@link IQueryEnvironment} to use
-	 * @param doLog
-	 *            when <code>true</code> the resulting instance will log error and warning messages.
 	 */
-	public CompletionServices(IQueryEnvironment queryEnv, boolean doLog) {
-		super(queryEnv, doLog);
+	public CompletionServices(IQueryEnvironment queryEnv) {
+		super(queryEnv);
 	}
 
 	/**

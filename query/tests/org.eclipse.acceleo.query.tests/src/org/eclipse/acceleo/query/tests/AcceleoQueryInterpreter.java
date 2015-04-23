@@ -139,7 +139,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 	@Override
 	public QueryEvaluationResult computeQuery(Query query) {
-		AstEvaluator evaluator = new AstEvaluator(queryEnvironment, true);
+		AstEvaluator evaluator = new AstEvaluator(queryEnvironment);
 		Object result = evaluator.eval(variables, astResult.getAst());
 		QueryEvaluationResultFactory factory = new QueryEvaluationResultFactory();
 
@@ -164,7 +164,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		for (Variable var : q.getVariables()) {
 			variableTypes.put(var.getName(), varTypeSwitch.doSwitch(var));
 		}
-		final AstValidator validator = new AstValidator(queryEnvironment, variableTypes, true);
+		final AstValidator validator = new AstValidator(queryEnvironment, variableTypes);
 
 		return transformResult(q, validator.validate(astResult));
 	}

@@ -16,11 +16,32 @@ package org.eclipse.acceleo.query.runtime.impl;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class Nothing {
+	private final String message;
+
+	private final Throwable cause;
+
+	public Nothing(String message) {
+		this(message, null);
+	}
+
+	public Nothing(String message, Throwable cause) {
+		this.message = message;
+		this.cause = cause;
+	}
 
 	/**
-	 * "Nothing".
+	 * @return the message
 	 */
-	private static final String NOTHING_STRING = "Nothing";
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * @return the cause
+	 */
+	public Throwable getCause() {
+		return cause;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -29,7 +50,7 @@ public class Nothing {
 	 */
 	@Override
 	public String toString() {
-		return NOTHING_STRING;
+		return message;
 	}
 
 }

@@ -23,7 +23,6 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -39,11 +38,6 @@ import org.eclipse.emf.ecore.EClass;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractLanguageServices {
-
-	/**
-	 * instance of Nothing to be used as a unique instance.
-	 */
-	public static final Nothing NOTHING = new Nothing();
 
 	/**
 	 * Log message used when accessing a feature on a JavaObject.
@@ -76,31 +70,13 @@ public abstract class AbstractLanguageServices {
 	protected final IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
-	 * Logger used to emit error and warning messages.
-	 */
-	protected final Logger logger;
-
-	/**
-	 * Flag used to remember whether this instance should emit log messages or not.
-	 */
-	protected final boolean doLog;
-
-	/**
 	 * Creates a new service instance given a {@link IReadOnlyQueryEnvironment} and logging flag.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment} to use
-	 * @param doLog
-	 *            when <code>true</code> the resulting instance will log error and warning messages.
 	 */
-	public AbstractLanguageServices(IReadOnlyQueryEnvironment queryEnvironment, boolean doLog) {
+	public AbstractLanguageServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
-		this.doLog = doLog;
-		logger = queryEnvironment.getLogger();
-	}
-
-	public Logger getLogger() {
-		return logger;
 	}
 
 	/**

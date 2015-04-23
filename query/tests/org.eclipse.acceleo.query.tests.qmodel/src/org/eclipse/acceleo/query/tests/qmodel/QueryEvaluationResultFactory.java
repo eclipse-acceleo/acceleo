@@ -14,6 +14,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EObject;
 
@@ -21,45 +23,51 @@ public class QueryEvaluationResultFactory {
 
 	@SuppressWarnings("unchecked")
 	public QueryEvaluationResult createFromValue(Object value) {
+		Object actualValue = value;
+		if (actualValue instanceof EvaluationResult) {
+			actualValue = ((EvaluationResult)actualValue).getResult();
+		}
 		QueryEvaluationResult res = QmodelFactory.eINSTANCE.createEmptyResult();
-		if (value instanceof Set) {
+		if (actualValue instanceof Set) {
 			SetResult mtlResult = QmodelFactory.eINSTANCE.createSetResult();
-			for (Object object : (Collection<Object>)value) {
+			for (Object object : (Collection<Object>)actualValue) {
 				mtlResult.getValues().add(createFromValue(object));
 			}
 			res = mtlResult;
-		} else if (value instanceof Collection) {
+		} else if (actualValue instanceof Collection) {
 			ListResult mtlResult = QmodelFactory.eINSTANCE.createListResult();
-			for (Object object : (Collection<Object>)value) {
+			for (Object object : (Collection<Object>)actualValue) {
 				mtlResult.getValues().add(createFromValue(object));
 			}
 			res = mtlResult;
-		} else if (value instanceof String) {
+		} else if (actualValue instanceof String) {
 			StringResult strResult = QmodelFactory.eINSTANCE.createStringResult();
-			strResult.setValue((String)value);
+			strResult.setValue((String)actualValue);
 			res = strResult;
-		} else if (value instanceof Integer) {
+		} else if (actualValue instanceof Integer) {
 			IntegerResult bResult = QmodelFactory.eINSTANCE.createIntegerResult();
-			bResult.setValue(((Integer)value).intValue());
+			bResult.setValue(((Integer)actualValue).intValue());
 			res = bResult;
-		} else if (value instanceof Boolean) {
+		} else if (actualValue instanceof Boolean) {
 			BooleanResult bResult = QmodelFactory.eINSTANCE.createBooleanResult();
-			bResult.setValue(((Boolean)value).booleanValue());
+			bResult.setValue(((Boolean)actualValue).booleanValue());
 			res = bResult;
-		} else if (value != null
-				&& (value.toString().equals("invalid") || value.toString().equals("Nothing"))) {
+		} else if (actualValue != null
+				&& (actualValue.toString().equals("invalid") || actualValue.toString().equals("Nothing"))) {
 			res = QmodelFactory.eINSTANCE.createInvalidResult();
-		} else if (value instanceof EObject) {
+		} else if (actualValue instanceof Nothing) {
+			res = QmodelFactory.eINSTANCE.createInvalidResult();
+		} else if (actualValue instanceof EObject) {
 			EObjectResult mtlResult = QmodelFactory.eINSTANCE.createEObjectResult();
-			mtlResult.setValue((EObject)value);
+			mtlResult.setValue((EObject)actualValue);
 			res = mtlResult;
-		} else if (value instanceof Enumerator) {
+		} else if (actualValue instanceof Enumerator) {
 			EnumeratorResult sResult = QmodelFactory.eINSTANCE.createEnumeratorResult();
-			sResult.setValue(((Enumerator)value).getLiteral());
+			sResult.setValue(((Enumerator)actualValue).getLiteral());
 			res = sResult;
-		} else if (value instanceof Serializable) {
+		} else if (actualValue instanceof Serializable) {
 			SerializableResult sResult = QmodelFactory.eINSTANCE.createSerializableResult();
-			sResult.setValue((Serializable)value);
+			sResult.setValue((Serializable)actualValue);
 			res = sResult;
 		}
 		return res;

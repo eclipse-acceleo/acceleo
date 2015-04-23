@@ -30,9 +30,12 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.acceleo.query.tests.Setup;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -53,6 +56,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class EvaluationServicesTest {
@@ -78,7 +82,7 @@ public class EvaluationServicesTest {
 		variables.pushScope(new HashMap<String, Object>());
 		variables.defineVariable("x", 1);
 		variables.defineVariable("y", 2);
-		services = new EvaluationServices(queryEnvironment, true);
+		services = new EvaluationServices(queryEnvironment);
 	}
 
 	/**
@@ -86,7 +90,10 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void getExistingVariableTest() {
-		assertEquals(1, services.getVariableValue(variables, "x"));
+		Diagnostic status = new BasicDiagnostic();
+		assertEquals(1, services.getVariableValue(variables, "x", status));
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
@@ -95,7 +102,15 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void getNonExistingVariableTest() {
-		assertEquals(EvaluationServices.NOTHING, services.getVariableValue(variables, "xx"));
+		Diagnostic status = new BasicDiagnostic();
+		assertTrue(services.getVariableValue(variables, "xx", status) instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertNull(child.getException());
+		assertTrue(child.getMessage().contains("xx variable"));
 	}
 
 	/**
@@ -106,7 +121,11 @@ public class EvaluationServicesTest {
 	public void testExistingFeatureAccessOnEObject() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute.setName("attr0");
-		assertEquals("attr0", services.featureAccess(attribute, "name"));
+
+		Diagnostic status = new BasicDiagnostic();
+		assertEquals("attr0", services.featureAccess(attribute, "name", status));
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
@@ -116,7 +135,16 @@ public class EvaluationServicesTest {
 	public void testNonExistingFeatureAccessOnEObject() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute.setName("attr0");
-		assertEquals(EvaluationServices.NOTHING, services.featureAccess(attribute, "noname"));
+
+		Diagnostic status = new BasicDiagnostic();
+		assertTrue(services.featureAccess(attribute, "noname", status) instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertNull(child.getException());
+		assertTrue(child.getMessage().contains("Feature noname"));
 	}
 
 	/**
@@ -124,7 +152,17 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void testFeatureAccessOnObject() {
-		assertEquals(EvaluationServices.NOTHING, services.featureAccess(new Integer(3), "noname"));
+		Diagnostic status = new BasicDiagnostic();
+		assertTrue(services.featureAccess(new Integer(3), "noname", status) instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertNull(child.getException());
+		assertTrue(child.getMessage().contains("feature"));
+		assertTrue(child.getMessage().contains("noname"));
+		assertTrue(child.getMessage().contains("non ModelObject"));
 	}
 
 	/**
@@ -134,7 +172,11 @@ public class EvaluationServicesTest {
 	@Test
 	public void testUnsetFeature() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
-		assertEquals(null, services.featureAccess(attribute, "eType"));
+
+		Diagnostic status = new BasicDiagnostic();
+		assertNull(services.featureAccess(attribute, "eType", status));
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
@@ -153,10 +195,14 @@ public class EvaluationServicesTest {
 		List<EAttribute> list = new ArrayList<EAttribute>();
 		list.add(attribute0);
 		list.add(attribute1);
-		Object result = services.featureAccess(list, "name");
+
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(list, "name", status);
 		assertTrue(result instanceof List);
 		assertEquals("attr0", ((List<Object>)result).get(0));
 		assertEquals("attr1", ((List<Object>)result).get(1));
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
@@ -172,53 +218,112 @@ public class EvaluationServicesTest {
 		attribute1.setName("attr1");
 
 		Set<Object> set = createSet(attribute0, attribute1);
-		Object result = services.featureAccess(set, "name");
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(set, "name", status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
 		assertEquals("attr0", iterator.next());
 		assertEquals("attr1", iterator.next());
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
-	 * Test feature access on an empty list. Expected result : NOTHING.
+	 * Test feature access on an empty list. Expected result : empty list.
 	 */
 	@Test
 	public void testFeatureAccessOnEmptyList() {
 		List<EAttribute> list = new ArrayList<EAttribute>();
 
-		final Object listResult = services.featureAccess(list, "noname");
-
-		assertTrue(listResult instanceof List);
+		Diagnostic status = new BasicDiagnostic();
+		final Object listResult = services.featureAccess(list, "noname", status);
+		assertEquals(true, listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
-	 * Test feature access on an empty set. Expected result : NOTHING.
+	 * Test feature access on an empty set. Expected result : empty set.
 	 */
 	@Test
 	public void testFeatureAccessOnEmptySet() {
 		Set<EAttribute> set = new LinkedHashSet<EAttribute>();
 
-		final Object setResult = services.featureAccess(set, "noname");
+		Diagnostic status = new BasicDiagnostic();
+		final Object setResult = services.featureAccess(set, "noname", status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
 	}
 
 	/**
-	 * Test feature access on a {@link List} containing EObjects with a feature of the specified name and an
-	 * Object. Expected result : a list containing the result of getting the specified feature on all the
-	 * elements of the specified argument list excepted the Object element.
+	 * Test feature access on a {@link List} containing an EObject with the correct feature and one non-model
+	 * object.
+	 * <p>
+	 * Expected : a list with a NOTHING and the EObject's value for that feature
+	 * </p>
 	 */
-	@Test
-	public void testFeatureAccessOnListWithOneObject() {
-		List<Integer> list = Lists.newArrayList(1);
+	public void testFeatureAccessOnListOneObjectOneNonModel() {
+		List<Object> list = Lists.<Object> newArrayList(1);
+		EAttribute attribute0 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
+		attribute0.setName("attr0");
+		list.add(attribute0);
 
-		Object listResult = services.featureAccess(list, "noname");
+		Diagnostic status = new BasicDiagnostic();
+		Object listResult = services.featureAccess(list, "name", status);
 
-		assertTrue(listResult instanceof List);
-		assertEquals(0, ((List<?>)listResult).size());
+		assertEquals(true, listResult instanceof List);
+		assertEquals(2, ((List<?>)listResult).size());
+		assertTrue(((List<?>)listResult).contains("attr0"));
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertNull(child.getException());
+		assertTrue(child.getMessage().contains("feature"));
+		assertTrue(child.getMessage().contains("name"));
+		assertTrue(child.getMessage().contains("non ModelObject"));
+	}
+
+	/**
+	 * Test feature access on a {@link List} containing two EObject with the correct feature and one non-model
+	 * object.
+	 * <p>
+	 * Expected : a list with a NOTHING and the two EObjects' value for that feature
+	 * </p>
+	 */
+	public void testFeatureAccessOnListTwoObjectsOneNonModel() {
+		List<Object> list = Lists.<Object> newArrayList();
+		EAttribute attribute0 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
+		attribute0.setName("attr0");
+		EAttribute attribute1 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
+		attribute1.setName("attr1");
+
+		list.add(attribute0);
+		list.add(1);
+		list.add(attribute1);
+
+		Diagnostic status = new BasicDiagnostic();
+		Object listResult = services.featureAccess(list, "name", status);
+
+		assertEquals(true, listResult instanceof List);
+		assertEquals(3, ((List<?>)listResult).size());
+		assertTrue(((List<?>)listResult).contains("attr0"));
+		assertTrue(((List<?>)listResult).contains("attr1"));
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertNull(child.getException());
+		assertTrue(child.getMessage().contains("feature"));
+		assertTrue(child.getMessage().contains("name"));
+		assertTrue(child.getMessage().contains("non ModelObject"));
 	}
 
 	/**
@@ -230,7 +335,8 @@ public class EvaluationServicesTest {
 	public void testFeatureAccessOnSetWithOneObject() {
 		Set<Object> set = createSet(1);
 
-		Object setResult = services.featureAccess(set, "noname");
+		Diagnostic status = new BasicDiagnostic();
+		Object setResult = services.featureAccess(set, "noname", status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -250,7 +356,8 @@ public class EvaluationServicesTest {
 		ref.setContainment(true);
 
 		List<EStructuralFeature> list = Lists.newArrayList(attr, ref);
-		Object result = services.featureAccess(list, "containment");
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(list, "containment", status);
 		assertTrue(result instanceof List);
 		assertEquals(1, ((List<Object>)result).size());
 		assertTrue((Boolean)((List<Object>)result).get(0));
@@ -271,7 +378,8 @@ public class EvaluationServicesTest {
 		ref.setContainment(true);
 
 		Set<Object> set = createSet(attr, ref);
-		Object result = services.featureAccess(set, "containment");
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(set, "containment", status);
 		assertTrue(result instanceof Set);
 		assertEquals(1, ((Set<Object>)result).size());
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
@@ -294,7 +402,8 @@ public class EvaluationServicesTest {
 
 		List<Object> list1 = Lists.newArrayList((Object)attribute1);
 		List<Object> list0 = Lists.newArrayList(attribute0, list1);
-		Object result = services.featureAccess(list0, "name");
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(list0, "name", status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -318,7 +427,8 @@ public class EvaluationServicesTest {
 
 		Set<Object> list1 = createSet(attribute1);
 		List<Object> list0 = Lists.newArrayList(attribute0, list1);
-		Object result = services.featureAccess(list0, "name");
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(list0, "name", status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -339,7 +449,8 @@ public class EvaluationServicesTest {
 
 		List<Object> list1 = Lists.newArrayList((Object)1);
 		List<Object> list0 = Lists.newArrayList(attribute0, list1);
-		Object result = services.featureAccess(list0, "name");
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.featureAccess(list0, "name", status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
@@ -352,7 +463,8 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void serviceReturnsNullTest() {
-		assertEquals(null, services.call("serviceReturnsNull", new Object[] {1 }));
+		Diagnostic status = new BasicDiagnostic();
+		assertNull(services.call("serviceReturnsNull", new Object[] {1 }, status));
 	}
 
 	/**
@@ -360,7 +472,8 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void serviceNotFoundReturnsNothing() {
-		assertEquals(EvaluationServices.NOTHING, services.call("noService", new Object[] {1 }));
+		Diagnostic status = new BasicDiagnostic();
+		assertTrue(services.call("noService", new Object[] {1 }, status) instanceof Nothing);
 	}
 
 	/**
@@ -368,7 +481,8 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void serviceThrowsException() {
-		assertEquals(EvaluationServices.NOTHING, services.call("serviceThrowsException", new Object[] {1 }));
+		Diagnostic status = new BasicDiagnostic();
+		assertTrue(services.call("serviceThrowsException", new Object[] {1 }, status) instanceof Nothing);
 
 	}
 
@@ -378,7 +492,8 @@ public class EvaluationServicesTest {
 	@Test
 	public void serviceCallTest() {
 		Object[] args = {new Integer(1), new Integer(2) };
-		assertEquals(3, services.call("add", args));
+		Diagnostic status = new BasicDiagnostic();
+		assertEquals(3, services.call("add", args, status));
 	}
 
 	/**
@@ -388,7 +503,8 @@ public class EvaluationServicesTest {
 	@Test
 	public void callOrApplyOnScalarValueTest() {
 		Object[] args = {new Integer(1), new Integer(2) };
-		assertEquals(3, services.callOrApply("add", args));
+		Diagnostic status = new BasicDiagnostic();
+		assertEquals(3, services.callOrApply("add", args, status));
 
 	}
 
@@ -399,7 +515,8 @@ public class EvaluationServicesTest {
 	public void callOrApplyOnEmptyList() {
 		Object[] args = {new ArrayList<Object>() };
 
-		final Object listResult = services.callOrApply("add", args);
+		Diagnostic status = new BasicDiagnostic();
+		final Object listResult = services.callOrApply("add", args, status);
 
 		assertTrue(listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
@@ -412,7 +529,8 @@ public class EvaluationServicesTest {
 	public void callOrApplyOnEmptySet() {
 		Object[] args = {new LinkedHashSet<Object>() };
 
-		final Object setResult = services.callOrApply("add", args);
+		Diagnostic status = new BasicDiagnostic();
+		final Object setResult = services.callOrApply("add", args, status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -425,7 +543,8 @@ public class EvaluationServicesTest {
 	public void callOrApplyOnListTest() {
 		List<Integer> list = Lists.newArrayList(1, 2);
 		Object[] args = {list };
-		Object result = services.callOrApply("toString", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("toString", args, status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
@@ -441,7 +560,8 @@ public class EvaluationServicesTest {
 	public void callOrApplyOnSetTest() {
 		Set<Object> set = createSet(1, 2);
 		Object[] args = {set };
-		Object result = services.callOrApply("toString", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("toString", args, status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Set<Object> setResult = (Set<Object>)result;
@@ -460,7 +580,8 @@ public class EvaluationServicesTest {
 		List<Integer> list2 = Lists.newArrayList(3, 4);
 		List<Object> list1 = Lists.newArrayList(1, 2, list2);
 		Object[] args = {list1 };
-		Object result = services.callOrApply("toString", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("toString", args, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(4, listResult.size());
@@ -478,7 +599,8 @@ public class EvaluationServicesTest {
 		Set<Object> list2 = createSet(3, 4);
 		List<Object> list1 = Lists.newArrayList(1, 2, list2);
 		Object[] args = {list1 };
-		Object result = services.callOrApply("toString", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("toString", args, status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
@@ -499,13 +621,14 @@ public class EvaluationServicesTest {
 		List<Integer> list2 = Lists.newArrayList(3);
 		List<Object> list1 = Lists.newArrayList(1, 2, list2);
 		Object[] args = {list1 };
-		Object result = services.callOrApply("special", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("special", args, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(3, listResult.size());
 		assertEquals(1, listResult.get(0));
 		assertEquals(2, listResult.get(1));
-		assertEquals(null, listResult.get(2));
+		assertNull(listResult.get(2));
 	}
 
 	/**
@@ -516,14 +639,15 @@ public class EvaluationServicesTest {
 	public void callOrapplySpecialOnList() {
 		List<Integer> list1 = Lists.newArrayList(1, 2, 3);
 		Object[] args = {list1 };
-		Object result = services.callOrApply("special", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("special", args, status);
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(3, listResult.size());
 		assertEquals(1, listResult.get(0));
 		assertEquals(2, listResult.get(1));
-		assertEquals(null, listResult.get(2));
+		assertNull(listResult.get(2));
 	}
 
 	/**
@@ -534,7 +658,8 @@ public class EvaluationServicesTest {
 	public void callOrapplySpecialOnSet() {
 		Set<Object> set = createSet(1, 2, 3);
 		Object[] args = {set };
-		Object result = services.callOrApply("special", args);
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.callOrApply("special", args, status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Set<Object> setResult = (Set<Object>)result;
@@ -542,7 +667,9 @@ public class EvaluationServicesTest {
 		Iterator<Object> iterator = setResult.iterator();
 		assertEquals(1, iterator.next());
 		assertEquals(2, iterator.next());
-		assertEquals(null, iterator.next());
+		// TODO shouldn't hasNext here be "false" and a call to "next" a NoSuchElement exception? seems like
+		// "null" is inserted in the result
+		assertNull(iterator.next());
 	}
 
 	/**
@@ -550,7 +677,8 @@ public class EvaluationServicesTest {
 	 */
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testEmptyArgumentCall() {
-		services.call("toString", new Object[] {});
+		Diagnostic status = new BasicDiagnostic();
+		services.call("toString", new Object[] {}, status);
 	}
 
 	/**
@@ -558,30 +686,43 @@ public class EvaluationServicesTest {
 	 */
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testEmptyArgumentCallOrApply() {
-		services.callOrApply("toString", new Object[] {});
+		Diagnostic status = new BasicDiagnostic();
+		services.callOrApply("toString", new Object[] {}, status);
 	}
 
 	/**
 	 * Checks that a null argument can be valid.
 	 */
+	@Test
 	public void testNullArgumentCall() {
-		final Object result = services.call("toString", new Object[] {null });
-		assertEquals(null, result);
+		Diagnostic status = new BasicDiagnostic();
+		final Object result = services.call("toString", new Object[] {null }, status);
+		assertTrue(result instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+		assertTrue(status.getChildren().get(0).getException() instanceof NullPointerException);
 	}
 
 	/**
 	 * Checks that a null argument can be valid.
 	 */
+	@Test
 	public void testNullArgumentCallOrApply() {
-		final Object result = services.callOrApply("toString", new Object[] {null });
-		assertEquals(null, result);
+		Diagnostic status = new BasicDiagnostic();
+		final Object result = services.callOrApply("toString", new Object[] {null }, status);
+		assertTrue(result instanceof Nothing);
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+		assertTrue(status.getChildren().get(0).getException() instanceof NullPointerException);
 	}
 
 	/**
 	 * Checks a null context.
 	 */
+	@Test
 	public void testNullArgumentFeatureAccess() {
-		services.featureAccess(null, "name");
+		Diagnostic status = new BasicDiagnostic();
+		services.featureAccess(null, "name", status);
 	}
 
 	/**
@@ -589,7 +730,8 @@ public class EvaluationServicesTest {
 	 */
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testEmptyArgumentCollectionServiceCall() {
-		services.collectionServiceCall("toString", new Object[] {});
+		Diagnostic status = new BasicDiagnostic();
+		services.collectionServiceCall("toString", new Object[] {}, status);
 	}
 
 	/**
@@ -597,7 +739,8 @@ public class EvaluationServicesTest {
 	 */
 	@Test(expected = AcceleoQueryEvaluationException.class)
 	public void testNullArgumentcollectionServiceCall() {
-		services.collectionServiceCall("toString", null);
+		Diagnostic status = new BasicDiagnostic();
+		services.collectionServiceCall("toString", null, status);
 	}
 
 	@Test
@@ -617,22 +760,25 @@ public class EvaluationServicesTest {
 		assertTrue(target instanceof List);
 		EAnnotation annotation = (EAnnotation)((List<?>)target).get(0);
 		Entry<String, String> entry = annotation.getDetails().get(0);
-		assertEquals("archetype", services.featureAccess(entry, "key"));
+		Diagnostic status = new BasicDiagnostic();
+		assertEquals("archetype", services.featureAccess(entry, "key", status));
 	}
 
 	@Test
 	public void testEOperationGeneratedClass() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.call("getEClassifier",
-				new Object[] {EcorePackage.eINSTANCE, "EClass", });
+				new Object[] {EcorePackage.eINSTANCE, "EClass", }, status);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), result);
 	}
 
 	@Test
 	public void testEOperationGeneratedClassWithEObjectParameter() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.call("isSuperTypeOf", new Object[] {
-				EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE.getEPackage(), });
+				EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE.getEPackage(), }, status);
 		assertEquals(false, result);
 	}
 
@@ -665,7 +811,8 @@ public class EvaluationServicesTest {
 		queryEnvironment.registerEPackage(ePkg);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		final EObject receiver = EcoreUtil.create(eCls);
-		final Object result = services.call("dynamicEOperation", new Object[] {receiver, "EClass", });
+		Diagnostic status = new BasicDiagnostic();
+		final Object result = services.call("dynamicEOperation", new Object[] {receiver, "EClass", }, status);
 		assertEquals(eCls, result);
 	}
 
@@ -697,7 +844,8 @@ public class EvaluationServicesTest {
 		});
 		queryEnvironment.registerEPackage(ePkg);
 		final EObject receiver = EcoreUtil.create(eCls);
-		final Object result = services.call("dynamicEOperation", new Object[] {receiver, receiver, });
+		Diagnostic status = new BasicDiagnostic();
+		final Object result = services.call("dynamicEOperation", new Object[] {receiver, receiver, }, status);
 		assertEquals(eCls, result);
 	}
 

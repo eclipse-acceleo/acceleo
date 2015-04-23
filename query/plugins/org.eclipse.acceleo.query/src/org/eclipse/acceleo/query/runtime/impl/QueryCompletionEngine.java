@@ -35,11 +35,6 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 	private static final Set<String> KEYWORD_SET = Sets.newHashSet("if", "then", "else", "endif");
 
 	/**
-	 * When <code>true</code> the evaluation services log the error and warning messages.
-	 */
-	private boolean log;
-
-	/**
 	 * The environment containing all necessary information and used to execute query services.
 	 */
 	private IQueryEnvironment queryEnvironment;
@@ -65,7 +60,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			Map<String, Set<IType>> variableTypes) {
 		final ICompletionResult result;
 
-		final AstCompletor completor = new AstCompletor(new CompletionServices(queryEnvironment, log));
+		final AstCompletor completor = new AstCompletor(new CompletionServices(queryEnvironment));
 		if (offset < 0 || (expression != null && offset > expression.length())) {
 			throw new IllegalArgumentException("offset must be in the range of the given expression.");
 		}
@@ -172,11 +167,6 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 		}
 
 		return result;
-	}
-
-	@Override
-	public void setDoLog(boolean doLog) {
-		this.log = doLog;
 	}
 
 }

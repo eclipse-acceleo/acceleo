@@ -202,7 +202,8 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 		for (int i = 0; i < argc; i++) {
 			variables.put(getParameters().get(i).getName(), args[i]);
 		}
-		return this.getEvaluator().eval(variables, this.getExpression());
+		// TODO should we return the EvaluationResult object from here?
+		return this.getEvaluator().eval(variables, this.getExpression()).getResult();
 	}
 
 	/**

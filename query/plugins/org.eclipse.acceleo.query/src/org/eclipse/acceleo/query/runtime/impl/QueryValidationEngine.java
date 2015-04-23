@@ -29,11 +29,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
 public class QueryValidationEngine implements IQueryValidationEngine {
 
 	/**
-	 * When <code>true</code> the evaluation services log the error and warning messages.
-	 */
-	private boolean log;
-
-	/**
 	 * The environment containing all necessary information and used to execute query services.
 	 */
 	private IQueryEnvironment queryEnvironment;
@@ -57,13 +52,8 @@ public class QueryValidationEngine implements IQueryValidationEngine {
 	public IValidationResult validate(String expression, Map<String, Set<IType>> variableTypes) {
 		IQueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
 		AstResult build = builder.build(expression);
-		final AstValidator validator = new AstValidator(queryEnvironment, variableTypes, log);
+		final AstValidator validator = new AstValidator(queryEnvironment, variableTypes);
 		return validator.validate(build);
-	}
-
-	@Override
-	public void setDoLog(boolean doLog) {
-		this.log = doLog;
 	}
 
 }

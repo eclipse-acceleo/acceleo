@@ -35,14 +35,7 @@ public interface IQueryEvaluationEngine extends IQueryEngine {
 	 * @throws AcceleoQueryEvaluationException
 	 *             if the variable self isn't defined or if expression's syntax is invalid.
 	 */
-	Object eval(AstResult expression, Map<String, Object> variables) throws AcceleoQueryEvaluationException;
+	EvaluationResult eval(AstResult expression, Map<String, Object> variables)
+			throws AcceleoQueryEvaluationException;
 
-	/**
-	 * When set to <code>true</code> evaluation will log evaluation impossibilities that lead to the nothing
-	 * value.
-	 * 
-	 * @param log
-	 *            log when <code>true</code>.
-	 */
-	void setDoLog(boolean log);
 }

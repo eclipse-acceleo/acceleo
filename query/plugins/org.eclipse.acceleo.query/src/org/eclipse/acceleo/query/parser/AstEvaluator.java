@@ -17,7 +17,6 @@ import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -37,11 +36,14 @@ import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 
 /**
  * Evaluates the asts.
@@ -64,23 +66,18 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	private final EvaluationServices services;
 
-	/**
-	 * Shared logger used to report problems.
-	 */
-	private Logger logger;
+	/** Aggregated status of an evaluation. */
+	private Diagnostic diagnostic;
 
 	/**
 	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
 	 * 
 	 * @param queryEnv
 	 *            the environment used to evaluate.
-	 * @param doLog
-	 *            flag that controls the logging.
 	 */
-	public AstEvaluator(IQueryEnvironment queryEnv, boolean doLog) {
-		this.services = new EvaluationServices(queryEnv, doLog);
+	public AstEvaluator(IQueryEnvironment queryEnv) {
+		this.services = new EvaluationServices(queryEnv);
 		this.environment = new ScopedEnvironment();
-		this.logger = queryEnv.getLogger();
 	}
 
 	/**
@@ -106,11 +103,13 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 *            the ast to evaluate.
 	 * @return the evaluation of the specified ast.
 	 */
-	public Object eval(Map<String, Object> varDefinitions, Expression ast) {
+	public EvaluationResult eval(Map<String, Object> varDefinitions, Expression ast) {
 		this.environment.pushScope(varDefinitions);
+		diagnostic = new BasicDiagnostic();
 		Object result = doSwitch(ast);
 		this.environment.popScope();
-		return result;
+
+		return new EvaluationResult(result, diagnostic);
 	}
 
 	/**
@@ -171,7 +170,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	@Override
 	public Object caseFeatureAccess(FeatureAccess object) {
 		final Object target = doSwitch(object.getTarget());
-		return services.featureAccess(target, object.getFeatureName());
+		return services.featureAccess(target, object.getFeatureName(), diagnostic);
 	}
 
 	/**
@@ -192,13 +191,13 @@ public class AstEvaluator extends AstSwitch<Object> {
 		Object result;
 		switch (object.getType()) {
 			case CALLSERVICE:
-				result = services.call(object.getServiceName(), args);
+				result = services.call(object.getServiceName(), args, diagnostic);
 				break;
 			case CALLORAPPLY:
-				result = services.callOrApply(object.getServiceName(), args);
+				result = services.callOrApply(object.getServiceName(), args, diagnostic);
 				break;
 			case COLLECTIONCALL:
-				result = services.collectionServiceCall(object.getServiceName(), args);
+				result = services.collectionServiceCall(object.getServiceName(), args, diagnostic);
 				break;
 			default:
 				throw new UnsupportedOperationException("should never happen");
@@ -213,7 +212,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseVarRef(VarRef object) {
-		return services.getVariableValue(environment, object.getVariableName());
+		return services.getVariableValue(environment, object.getVariableName(), diagnostic);
 	}
 
 	/**
@@ -296,8 +295,11 @@ public class AstEvaluator extends AstSwitch<Object> {
 				result = this.doSwitch(object.getFalseBranch());
 			}
 		} else {
-			logger.warning(BAD_PREDICATE_TYPE_MSG);
-			result = AbstractLanguageServices.NOTHING;
+			Nothing nothing = new Nothing(BAD_PREDICATE_TYPE_MSG);
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, "org.eclipse.acceleo.query", 0, nothing
+					.getMessage(), new Object[] {});
+			((BasicDiagnostic)diagnostic).add(diag);
+			result = nothing;
 		}
 		return result;
 	}

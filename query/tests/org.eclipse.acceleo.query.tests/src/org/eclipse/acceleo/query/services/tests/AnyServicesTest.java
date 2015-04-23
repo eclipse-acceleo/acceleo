@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.anydsl.Caliber;
@@ -136,7 +136,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void addStringNothing() {
-		assertEquals("test ", any.add("test ", EvaluationServices.NOTHING));
+		assertEquals("test ", any.add("test ", new Nothing("whatever the message")));
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 		list.add(new ObjectCustom());
 		list.add(new ObjectCustomNullToString());
 		list.add(null);
-		list.add(EvaluationServices.NOTHING);
+		list.add(new Nothing("whatever the message"));
 		final List<Object> subList = new ArrayList<Object>();
 		subList.add("test3");
 		list.add(subList);
@@ -199,7 +199,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void addNothingString() {
-		assertEquals(" test", any.add(EvaluationServices.NOTHING, " test"));
+		assertEquals(" test", any.add(new Nothing("whatever the message"), " test"));
 	}
 
 	@Test
@@ -209,7 +209,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 		list.add(new ObjectCustom());
 		list.add(new ObjectCustomNullToString());
 		list.add(null);
-		list.add(EvaluationServices.NOTHING);
+		list.add(new Nothing("whatever the message"));
 		final List<Object> subList = new ArrayList<Object>();
 		subList.add("test3");
 		list.add(subList);
@@ -400,8 +400,8 @@ public class AnyServicesTest extends AbstractServicesTest {
 	}
 
 	@Test
-	public void toStringNothing() {
-		assertEquals("", any.toString(EvaluationServices.NOTHING));
+	public void testToStringNothing() {
+		assertEquals("", any.toString(new Nothing("whatever the message")));
 	}
 
 	@Test
@@ -411,7 +411,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 		list.add(new ObjectCustom());
 		list.add(new ObjectCustomNullToString());
 		list.add(null);
-		list.add(EvaluationServices.NOTHING);
+		list.add(new Nothing("whatever the message"));
 		final List<Object> subList = new ArrayList<Object>();
 		subList.add("test3");
 		list.add(subList);

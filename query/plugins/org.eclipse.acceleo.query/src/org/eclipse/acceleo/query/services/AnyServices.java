@@ -20,7 +20,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
-import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -290,7 +290,7 @@ public class AnyServices extends AbstractServiceProvider {
 			while (childrenIterator.hasNext()) {
 				buffer.append(toString(childrenIterator.next()));
 			}
-		} else if (object != null && object != EvaluationServices.NOTHING) {
+		} else if (object != null && !(object instanceof Nothing)) {
 			final String toString = object.toString();
 			if (toString != null) {
 				buffer.append(toString);

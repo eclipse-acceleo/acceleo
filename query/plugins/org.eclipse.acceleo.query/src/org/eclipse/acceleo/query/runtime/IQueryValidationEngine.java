@@ -31,13 +31,4 @@ public interface IQueryValidationEngine extends IQueryEngine {
 	 * @return a {@link IValidationResult}.
 	 */
 	IValidationResult validate(String expression, Map<String, Set<IType>> variableTypes);
-
-	/**
-	 * When set to <code>true</code> validation will log validation impossibilities that lead to the nothing
-	 * type.
-	 * 
-	 * @param log
-	 *            log when <code>true</code>.
-	 */
-	void setDoLog(boolean log);
 }

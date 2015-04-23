@@ -37,7 +37,7 @@ public abstract class AbstractServicesTest {
 	public void before() throws Exception {
 		queryEnvironment = new QueryEnvironment(null);
 		this.lookupEngine = queryEnvironment.getLookupEngine();
-		validationServices = new ValidationServices(queryEnvironment, true);
+		validationServices = new ValidationServices(queryEnvironment);
 	}
 
 	public ILookupEngine getLookupEngine() {

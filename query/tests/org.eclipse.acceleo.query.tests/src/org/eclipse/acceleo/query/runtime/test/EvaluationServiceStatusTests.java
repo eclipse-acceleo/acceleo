@@ -10,20 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
 
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -34,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class EvaluationServiceLoggingTests {
+public class EvaluationServiceStatusTests {
 
 	private static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (containment) on a non ModelObject value (java.lang.Integer).";
 
@@ -56,21 +51,10 @@ public class EvaluationServiceLoggingTests {
 
 	EvaluationServices services;
 
-	private String lastLogMessage;
-
-	private Level lastLogLevel;
-
-	private Throwable lastLogThrowable;
-
-	private LinkedHashSet<Object> createSet(Object... elements) {
-		return Sets.newLinkedHashSet(Lists.newArrayList(elements));
-	}
-
 	@Before
 	public void setup() {
 		queryEnvironment = new QueryEnvironment(null);
 		engine = queryEnvironment.getLookupEngine();
-		TestServiceDefinition instance = new TestServiceDefinition();
 		try {
 			engine.registerServices(TestServiceDefinition.class);
 		} catch (InvalidAcceleoPackageException e) {
@@ -81,83 +65,92 @@ public class EvaluationServiceLoggingTests {
 		variables.pushScope(new HashMap<String, Object>());
 		variables.defineVariable("x", 1);
 		variables.defineVariable("y", 2);
-		services = new EvaluationServices(queryEnvironment, true);
-		services.getLogger().addHandler(new Handler() {
-
-			@Override
-			public void close() throws SecurityException {
-
-			}
-
-			@Override
-			public void flush() {
-
-			}
-
-			@Override
-			public void publish(LogRecord record) {
-				lastLogMessage = record.getMessage();
-				lastLogLevel = record.getLevel();
-				lastLogThrowable = record.getThrown();
-			}
-		});
-		lastLogMessage = null;
-		lastLogLevel = null;
-		lastLogThrowable = null;
-
+		services = new EvaluationServices(queryEnvironment);
 	}
 
 	/**
 	 * Tests that, when an unknown variable is accessed, a warning is emitted with the following message :
 	 */
 	@Test
-	public void variableNotFoundLogTest() {
-		services.getVariableValue(variables, "novariable");
-		assertEquals(Level.WARNING, lastLogLevel);
-		assertEquals(VARIABLE_NOT_FOUND, lastLogMessage);
-		assertNull(lastLogThrowable);
+	public void variableNotFoundStatusTest() {
+		Diagnostic status = new BasicDiagnostic();
+		services.getVariableValue(variables, "novariable", status);
+
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(VARIABLE_NOT_FOUND, child.getMessage());
+		assertNull(child.getException());
 	}
 
 	@Test
-	public void featureNotFoundLogTest() {
+	public void featureNotFoundStatusTest() {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute.setName("attr0");
-		services.featureAccess(attribute, "noname");
-		assertEquals(Level.WARNING, lastLogLevel);
-		assertEquals(UNKNOWN_FEATURE, lastLogMessage);
-		assertNull(lastLogThrowable);
+
+		Diagnostic status = new BasicDiagnostic();
+		services.featureAccess(attribute, "noname", status);
+
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(UNKNOWN_FEATURE, child.getMessage());
+		assertNull(child.getException());
 	}
 
 	@Test
-	public void featureAccessOnObjectLogTest() {
-		services.featureAccess(new Integer(1), "containment");
-		assertEquals(Level.WARNING, lastLogLevel);
-		assertEquals(NON_EOBJECT_FEATURE_ACCESS, lastLogMessage);
-		assertNull(lastLogThrowable);
+	public void featureAccessOnObjectStatusTest() {
+		Diagnostic status = new BasicDiagnostic();
+		services.featureAccess(new Integer(1), "containment", status);
+
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(NON_EOBJECT_FEATURE_ACCESS, child.getMessage());
+		assertNull(child.getException());
 	}
 
 	@Test
-	public void serviceNotFoundLogTest() {
-		services.call("noservice", new Object[] {1 });
-		assertEquals(Level.WARNING, lastLogLevel);
-		assertEquals(SERVICE_NOT_FOUND, lastLogMessage);
-		assertNull(lastLogThrowable);
+	public void serviceNotFoundStatusTest() {
+		Diagnostic status = new BasicDiagnostic();
+		services.call("noservice", new Object[] {1 }, status);
+
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(SERVICE_NOT_FOUND, child.getMessage());
+		assertNull(child.getException());
 	}
 
 	@Test
-	public void serviceReturnsNullLogTest() {
-		services.call("serviceReturnsNull", new Object[] {1 });
-		assertEquals(Level.WARNING, lastLogLevel);
-		assertEquals(SERVICE_RETURNS_NULL, lastLogMessage);
-		assertNull(lastLogThrowable);
+	public void serviceReturnsNullStatusTest() {
+		Diagnostic status = new BasicDiagnostic();
+		services.call("serviceReturnsNull", new Object[] {1 }, status);
+
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(SERVICE_RETURNS_NULL, child.getMessage());
+		assertNull(child.getException());
 	}
 
 	@Test
-	public void serviceThrowsExceptionLogTest() {
-		services.call("serviceThrowsException", new Object[] {1 });
-		assertEquals(Level.WARNING, lastLogLevel);
-		assertEquals(SERVICE_THROWS_EXCEPTION, lastLogMessage);
-		assertTrue(lastLogThrowable instanceof NullPointerException);
+	public void serviceThrowsExceptionStatusTest() {
+		Diagnostic status = new BasicDiagnostic();
+		services.call("serviceThrowsException", new Object[] {1 }, status);
+
+		// TODO shouldn't this be an error level?
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(1, status.getChildren().size());
+
+		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(SERVICE_THROWS_EXCEPTION, child.getMessage());
+		assertTrue(child.getException() instanceof NullPointerException);
 	}
 
 }

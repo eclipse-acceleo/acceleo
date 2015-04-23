@@ -63,11 +63,9 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * 
 	 * @param queryEnv
 	 *            the {@link IQueryEnvironment} to use during evaluation
-	 * @param doLog
-	 *            when <code>true</code> the resulting instance will log error and warning messages.
 	 */
-	public ValidationServices(IQueryEnvironment queryEnv, boolean doLog) {
-		super(queryEnv, doLog);
+	public ValidationServices(IQueryEnvironment queryEnv) {
+		super(queryEnv);
 	}
 
 	/**

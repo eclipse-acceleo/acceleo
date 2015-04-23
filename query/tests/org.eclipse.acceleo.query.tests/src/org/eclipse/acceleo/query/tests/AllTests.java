@@ -22,7 +22,7 @@ import org.eclipse.acceleo.query.parser.tests.LexerTest;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupCrossReferencerTest;
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupTest;
-import org.eclipse.acceleo.query.runtime.test.EvaluationServiceLoggingTests;
+import org.eclipse.acceleo.query.runtime.test.EvaluationServiceStatusTests;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServicesTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesValidationTest;
@@ -59,7 +59,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses(value = {AstBuilderTest.class, AstEvaluatorTest.class, LazyListTest.class, LazySetTests.class,
 		BuildTest.class, CombineIteratorTest.class, CompletionTest.class, EvaluationTest.class,
 		LexerTest.class, ValidationTest.class, BasicLookupCrossReferencerTest.class, BasicLookupTest.class,
-		EvaluationServiceLoggingTests.class, EvaluationServicesTest.class, AnyServicesTest.class,
+		EvaluationServiceStatusTests.class, EvaluationServicesTest.class, AnyServicesTest.class,
 		AnyServicesValidationTest.class, BooleanServicesTest.class, BooleanServicesValidationTest.class,
 		CollectionServicesTest.class, CollectionServicesValidationTest.class, ComparableServicesTest.class,
 		ComparableServicesValidationTest.class, EObjectServicesTest.class,

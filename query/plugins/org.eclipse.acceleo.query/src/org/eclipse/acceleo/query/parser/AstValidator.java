@@ -100,12 +100,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 *            the {@link IQueryEnvironment} used to validate
 	 * @param variableTypes
 	 *            the set of defined variables.
-	 * @param log
-	 *            when <code>true</code> the evaluation services log the errors and warnings.
 	 */
-	public AstValidator(IQueryEnvironment environment, Map<String, Set<IType>> variableTypes, boolean log) {
+	public AstValidator(IQueryEnvironment environment, Map<String, Set<IType>> variableTypes) {
 		this.variableTypesStack.push(variableTypes);
-		this.services = new ValidationServices(environment, log);
+		this.services = new ValidationServices(environment);
 	}
 
 	/**
