@@ -823,10 +823,11 @@ public class AcceleoParser {
 			if (resource instanceof EMtlBinaryResourceImpl) {
 				((EMtlBinaryResourceImpl)resource).setTrimPosition(trimPosition);
 			}
-		}
-		resource = ModelUtils.createResource(oURI, oResourceSet);
-		if (resource instanceof EMtlResourceImpl) {
-			((EMtlResourceImpl)resource).setTrimPosition(trimPosition);
+		} else {
+			resource = ModelUtils.createResource(oURI, oResourceSet);
+			if (resource instanceof EMtlResourceImpl) {
+				((EMtlResourceImpl)resource).setTrimPosition(trimPosition);
+			}
 		}
 		return resource;
 	}
