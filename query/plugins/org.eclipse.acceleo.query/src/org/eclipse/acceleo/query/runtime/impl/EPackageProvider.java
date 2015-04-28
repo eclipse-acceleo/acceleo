@@ -351,19 +351,23 @@ public class EPackageProvider implements IEPackageProvider {
 		final List<EOperation> multiEOperations = getMultiEOperation(eOperationName, parameterTypes.size());
 		if (multiEOperations != null) {
 			EOperation compatibleEOperation = null;
-			for (EOperation eOperation : multiEOperations) {
-				compatibleEOperation = eOperation;
+			Iterator<EOperation> itOp = multiEOperations.iterator();
+			while (itOp.hasNext() && compatibleEOperation == null) {
+				EOperation eOperation = itOp.next();
 				if (eOperation.getEContainingClass().isSuperTypeOf(receiverEClass)) {
-					final Iterator<EParameter> it = parameterTypes.iterator();
-					for (EParameter parameter : eOperation.getEParameters()) {
-						if (!isCompatibleType(parameter, it.next())) {
-							compatibleEOperation = null;
-							break;
-						}
+
+					boolean parametersAreCompatibles = parameterTypes.size() == eOperation.getEParameters()
+							.size();
+					final Iterator<EParameter> itParamType = parameterTypes.iterator();
+					final Iterator<EParameter> itOperationParam = eOperation.getEParameters().iterator();
+
+					while (parametersAreCompatibles && itOperationParam.hasNext() && itParamType.hasNext()) {
+						parametersAreCompatibles = isCompatibleType(itOperationParam.next(), itParamType
+								.next());
 					}
-				}
-				if (compatibleEOperation != null) {
-					break;
+					if (parametersAreCompatibles) {
+						compatibleEOperation = eOperation;
+					}
 				}
 			}
 			result = compatibleEOperation;
