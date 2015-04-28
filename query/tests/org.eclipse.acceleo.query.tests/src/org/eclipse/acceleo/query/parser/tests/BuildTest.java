@@ -793,6 +793,56 @@ public class BuildTest {
 	}
 
 	@Test
+	public void precedingSiblings() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.precedingSiblings()");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 24, ast);
+		assertEquals("precedingSiblings", ((Call)ast).getServiceName());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+	}
+
+	@Test
+	public void precedingSiblingsType() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.precedingSiblings(ecore::EClass)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 37, ast);
+		assertEquals("precedingSiblings", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertExpression(build, TypeLiteral.class, 23, 36, ((Call)ast).getArguments().get(1));
+		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+	}
+
+	@Test
+	public void followingSiblingsType() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.followingSiblings(ecore::EClass)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 37, ast);
+		assertEquals("followingSiblings", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertExpression(build, TypeLiteral.class, 23, 36, ((Call)ast).getArguments().get(1));
+		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+	}
+
+	@Test
+	public void followingSiblings() {
+		IQueryBuilderEngine.AstResult build = engine.build("self.followingSiblings()");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 24, ast);
+		assertEquals("followingSiblings", ((Call)ast).getServiceName());
+		assertEquals(1, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+	}
+
+	@Test
 	public void eInverse() {
 		IQueryBuilderEngine.AstResult build = engine.build("self.eInverse()");
 		Expression ast = build.getAst();

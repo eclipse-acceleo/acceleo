@@ -92,6 +92,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.NavigationSegmentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NotContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NullLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.OrContext;
+import org.eclipse.acceleo.query.parser.QueryParser.PrecSiblingsContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.SeqLitContext;
@@ -1076,6 +1077,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitEContent(EContentContext ctx) {
 		callFilteredService("eContents", ctx);
+	}
+
+	/**
+	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitPrecSiblings(org.eclipse.acceleo.query.parser.QueryParser.PrecSiblingsContext)
+	 */
+	@Override
+	public void exitPrecSiblings(PrecSiblingsContext ctx) {
+		callFilteredService("precedingSiblings", ctx);
 	}
 
 	/**
