@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -1225,7 +1226,11 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return the first element of the {@link Collection}.
 	 */
 	public Object first(Collection<Object> collection) {
-		return collection.iterator().next();
+		Iterator<Object> iterator = collection.iterator();
+		if (iterator.hasNext()) {
+			return iterator.next();
+		}
+		return null;
 	}
 
 	/**
@@ -1412,7 +1417,11 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         <code>null</code>
 	 */
 	public Object last(List<Object> list) {
-		return list.get(list.size() - 1);
+		ListIterator<Object> it = list.listIterator(list.size());
+		if (it.hasPrevious()) {
+			return it.previous();
+		}
+		return null;
 	}
 
 	/**

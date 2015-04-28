@@ -393,7 +393,14 @@ public class CollectionServicesTest {
 		List<Object> list = Lists.newArrayList();
 		Object elt = new Object();
 		list.add(elt);
+		list.add(new Object());
 		assertEquals(elt, collectionServices.first(list));
+	}
+
+	@Test
+	public void testFirstEmptyList() {
+		List<Object> list = Lists.newArrayList();
+		assertEquals(null, collectionServices.first(list));
 	}
 
 	@Test
@@ -941,7 +948,7 @@ public class CollectionServicesTest {
 		assertEquals(null, result);
 	}
 
-	@Test(expected = java.lang.ArrayIndexOutOfBoundsException.class)
+	@Test
 	public void testLastEmptyList() {
 		final List<Object> list = Lists.newArrayList();
 
