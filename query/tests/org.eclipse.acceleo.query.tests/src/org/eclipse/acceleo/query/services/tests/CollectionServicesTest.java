@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -50,6 +51,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -332,6 +334,25 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testReverseSet() {
+		Set<Object> set = new LinkedHashSet<Object>();
+		assertEquals(0, collectionServices.reverse(set).size());
+		Object elt = new Object();
+		Object elt2 = new Object();
+		set.add(elt);
+		set.add(elt2);
+		assertEquals(2, collectionServices.reverse(set).size());
+
+		Iterator<Object> iterator = collectionServices.reverse(set).iterator();
+		assertSame(elt2, iterator.next());
+		assertSame(elt, iterator.next());
+		Object elt3 = new Object();
+		set.add(elt3);
+		iterator = collectionServices.reverse(set).iterator();
+		assertSame(elt3, iterator.next());
+	}
+
+	@Test
 	public void testExcludingSet() {
 		Set<Object> set = new HashSet<Object>();
 		Object elt = new Object();
@@ -442,6 +463,27 @@ public class CollectionServicesTest {
 		assertEquals(list, result);
 		assertTrue(result.contains(elt));
 		assertEquals(1, result.size());
+	}
+
+	@Test
+	public void testReverse() {
+		List<Object> list = Lists.newArrayList();
+		assertEquals(0, collectionServices.reverse(list).size());
+		Object elt = new Object();
+		Object elt2 = new Object();
+		list.add(elt);
+		list.add(elt);
+		list.add(elt);
+		list.add(elt2);
+		assertEquals(4, collectionServices.reverse(list).size());
+
+		List<Object> result = collectionServices.reverse(list);
+		assertSame(elt2, result.get(0));
+		assertSame(elt, result.get(1));
+		Object elt3 = new Object();
+		list.add(elt3);
+		result = collectionServices.reverse(list);
+		assertSame(elt3, result.get(0));
 	}
 
 	@Test

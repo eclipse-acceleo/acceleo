@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -699,7 +700,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("first".equals(publicMethod.getName()) || "at".equals(publicMethod.getName())
 				|| "last".equals(publicMethod.getName())) {
 			result = new FirstArgumentRawCollectionType(publicMethod, this);
-		} else if ("excluding".equals(publicMethod.getName()) || "sub".equals(publicMethod.getName())) {
+		} else if ("excluding".equals(publicMethod.getName()) || "sub".equals(publicMethod.getName())
+				|| "reverse".equals(publicMethod.getName())) {
 			result = new FirstCollectionTypeService(publicMethod, this);
 		} else if ("reject".equals(publicMethod.getName())) {
 			result = new RejectService(publicMethod, this);
@@ -1224,6 +1226,28 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 	public Object first(Collection<Object> collection) {
 		return collection.iterator().next();
+	}
+
+	/**
+	 * Returns a {@link List} in a reversed order.
+	 * 
+	 * @param collection
+	 *            the input {@link List}.
+	 * @return a {@link List} in the reversed order.
+	 */
+	public List<Object> reverse(List<Object> collection) {
+		return Lists.reverse(collection);
+	}
+
+	/**
+	 * Returns a {@link Set} in a reversed order.
+	 * 
+	 * @param collection
+	 *            the input {@link Set}.
+	 * @return a {@link Set} in the reversed order.
+	 */
+	public Set<Object> reverse(Set<Object> collection) {
+		return Sets.newLinkedHashSet(Lists.reverse(ImmutableList.copyOf(collection)));
 	}
 
 	/**

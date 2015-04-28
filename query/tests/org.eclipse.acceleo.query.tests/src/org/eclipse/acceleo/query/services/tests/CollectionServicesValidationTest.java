@@ -735,6 +735,54 @@ public class CollectionServicesValidationTest extends AbstractServicesTest {
 	}
 
 	@Test
+	public void testReverseList() {
+		final IService service = serviceLookUp("reverse", new Object[] {new ArrayList<String>() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+
+		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		assertEquals(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)), it.next());
+	}
+
+	@Test
+	public void testReverseSet() {
+		final IService service = serviceLookUp("reverse", new Object[] {new LinkedHashSet<String>() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new SequenceType(getQueryEnvironment(), new ClassType(getQueryEnvironment(),
+				String.class)));
+		argTypes.add(new ClassType(getQueryEnvironment(), Integer.class));
+
+		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		assertEquals(new SetType(getQueryEnvironment(), new ClassType(getQueryEnvironment(), String.class)),
+				it.next());
+	}
+
+	@Test
 	public void testIndexOf() {
 		final IService service = serviceLookUp("indexOf", new Object[] {new ArrayList<String>(),
 				Integer.valueOf(0) });
