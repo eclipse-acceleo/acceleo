@@ -1833,16 +1833,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         given {@link Set}
 	 */
 	public Set<Object> intersection(Set<Object> set1, Set<Object> set2) {
-		// TODO use lazy collection
-		final Set<Object> result = Sets.newHashSet();
-
-		for (Object input : set1) {
-			if (set2.contains(input)) {
-				result.add(input);
-			}
-		}
-
-		return result;
+		return Sets.intersection(set1, set2);
 	}
 
 	/**
