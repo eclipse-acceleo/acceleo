@@ -19,35 +19,6 @@ import static org.junit.Assert.assertTrue;
 
 public class ComparableServicesTest {
 
-	/**
-	 * A Test {@link Comparable}. When {@link Comparable#compareTo(Object) compared to} <code>null</code> the
-	 * value is returned.
-	 * 
-	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
-	 */
-	private final static class TestComparable implements Comparable<TestComparable> {
-
-		private final int value;
-
-		public TestComparable(int value) {
-			this.value = value;
-		}
-
-		@Override
-		public int compareTo(TestComparable o) {
-			final int result;
-
-			if (o == null) {
-				result = value;
-			} else {
-				result = value - o.value;
-			}
-
-			return result;
-		}
-
-	}
-
 	ComparableServices comparableServices;
 
 	@Before
@@ -175,4 +146,155 @@ public class ComparableServicesTest {
 		assertTrue(comparableServices.greaterThanEqual(comparable2, comparable2));
 	}
 
+	@Test
+	public void testLessThanCatCat() {
+		Cat meow = new Cat("Meow");
+		Cat nyan = new Cat("Nyan");
+		assertTrue(comparableServices.lessThan(meow, nyan));
+		assertFalse(comparableServices.lessThan(nyan, meow));
+		assertFalse(comparableServices.lessThan(meow, meow));
+	}
+
+	@Test
+	public void testLessThanCatDog() {
+		Cat nyan = new Cat("Nyan");
+		Dog bowwow = new Dog("Bow wow");
+
+		assertFalse(comparableServices.lessThan(nyan, bowwow));
+		assertTrue(comparableServices.lessThan(bowwow, nyan));
+		assertFalse(comparableServices.lessThan(bowwow, bowwow));
+	}
+
+	@Test
+	public void testLessThanEqualCatCat() {
+		Cat meow = new Cat("Meow");
+		Cat nyan = new Cat("Nyan");
+		assertTrue(comparableServices.lessThanEqual(meow, nyan));
+		assertFalse(comparableServices.lessThanEqual(nyan, meow));
+		assertTrue(comparableServices.lessThanEqual(meow, meow));
+	}
+
+	@Test
+	public void testLessThanEqualCatDog() {
+		Cat nyan = new Cat("Nyan");
+		Dog bowwow = new Dog("Bow wow");
+
+		assertFalse(comparableServices.lessThanEqual(nyan, bowwow));
+		assertTrue(comparableServices.lessThanEqual(bowwow, nyan));
+		assertTrue(comparableServices.lessThanEqual(bowwow, bowwow));
+	}
+
+	@Test
+	public void testGreaterThanCatCat() {
+		Cat meow = new Cat("Meow");
+		Cat nyan = new Cat("Nyan");
+		assertFalse(comparableServices.greaterThan(meow, nyan));
+		assertTrue(comparableServices.greaterThan(nyan, meow));
+		assertFalse(comparableServices.greaterThan(meow, meow));
+	}
+
+	@Test
+	public void testGreaterThanCatDog() {
+		Cat nyan = new Cat("Nyan");
+		Dog bowwow = new Dog("Bow wow");
+
+		assertTrue(comparableServices.greaterThan(nyan, bowwow));
+		assertFalse(comparableServices.greaterThan(bowwow, nyan));
+		assertFalse(comparableServices.greaterThan(bowwow, bowwow));
+	}
+
+	@Test
+	public void testGreaterThanEqualCatCat() {
+		Cat meow = new Cat("Meow");
+		Cat nyan = new Cat("Nyan");
+		assertFalse(comparableServices.greaterThanEqual(meow, nyan));
+		assertTrue(comparableServices.greaterThanEqual(nyan, meow));
+		assertTrue(comparableServices.greaterThanEqual(meow, meow));
+	}
+
+	@Test
+	public void testGreaterThanEqualCatDog() {
+		Cat nyan = new Cat("Nyan");
+		Dog bowwow = new Dog("Bow wow");
+
+		assertTrue(comparableServices.greaterThanEqual(nyan, bowwow));
+		assertFalse(comparableServices.greaterThanEqual(bowwow, nyan));
+		assertTrue(comparableServices.greaterThanEqual(bowwow, bowwow));
+	}
+
+	/**
+	 * A Test {@link Comparable}. When {@link Comparable#compareTo(Object) compared to} <code>null</code> the
+	 * value is returned.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private final static class TestComparable implements Comparable<TestComparable> {
+
+		private final int value;
+
+		public TestComparable(int value) {
+			this.value = value;
+		}
+
+		@Override
+		public int compareTo(TestComparable o) {
+			final int result;
+
+			if (o == null) {
+				result = value;
+			} else {
+				result = value - o.value;
+			}
+
+			return result;
+		}
+
+	}
+
+	private static interface Animal {
+		String getName();
+	}
+
+	private static class Cat implements Animal, Comparable<Animal> {
+		private String name;
+
+		public Cat(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public int compareTo(Animal o) {
+			if (!(o instanceof Cat)) {
+				// cats are superior to other animals :)
+				return 1;
+			}
+			return name.compareTo(((Cat)o).getName());
+		}
+	}
+
+	private static class Dog implements Animal, Comparable<Animal> {
+		private String name;
+
+		public Dog(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public int compareTo(Animal o) {
+			if (!(o instanceof Dog)) {
+				return -1;
+			}
+			return name.compareTo(((Dog)o).getName());
+		}
+	}
 }

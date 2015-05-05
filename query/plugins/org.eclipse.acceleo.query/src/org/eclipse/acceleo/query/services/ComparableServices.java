@@ -30,7 +30,7 @@ public class ComparableServices {
 	 * @param <T>
 	 *            the kind of {@link Comparable}
 	 */
-	private <T extends Comparable<T>> int safeCompare(T a, T b) {
+	private <T extends Comparable<? super T>> int safeCompare(T a, T b) {
 		final int result;
 
 		if (a == null) {
@@ -58,7 +58,7 @@ public class ComparableServices {
 	 * @return <code>true</code> if a < b.
 	 */
 
-	public <T extends Comparable<T>> Boolean lessThan(T a, T b) {
+	public <T extends Comparable<? super T>> Boolean lessThan(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) < 0);
 	}
 
@@ -74,7 +74,7 @@ public class ComparableServices {
 	 * @return <code>true</code> if a <= b.
 	 */
 
-	public <T extends Comparable<T>> Boolean lessThanEqual(T a, T b) {
+	public <T extends Comparable<? super T>> Boolean lessThanEqual(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) <= 0);
 	}
 
@@ -90,7 +90,7 @@ public class ComparableServices {
 	 * @return <code>true</code> if a > b.
 	 */
 
-	public <T extends Comparable<T>> Boolean greaterThan(T a, T b) {
+	public <T extends Comparable<? super T>> Boolean greaterThan(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) > 0);
 	}
 
@@ -106,7 +106,7 @@ public class ComparableServices {
 	 * @return <code>true</code> if a >= b.
 	 */
 
-	public <T extends Comparable<T>> Boolean greaterThanEqual(T a, T b) {
+	public <T extends Comparable<? super T>> Boolean greaterThanEqual(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) >= 0);
 	}
 
