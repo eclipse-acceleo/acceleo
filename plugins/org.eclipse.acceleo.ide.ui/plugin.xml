@@ -138,7 +138,7 @@ Contributors:
                menubarPath="additionsAcceleo"/>
       </objectContribution>
       <objectContribution
-            adaptable="true"
+            adaptable="false"
             id="org.eclipse.acceleo.ide.ui.popupMenus.contribution.Acceleo"
             objectClass="org.eclipse.core.resources.IResource">
          <menu
