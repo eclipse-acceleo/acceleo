@@ -2197,7 +2197,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIntersectionSetNullNull() {
-		collectionServices.intersection(null, null);
+		collectionServices.intersection((Set<?>)null, null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -2217,7 +2217,285 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		collectionServices.intersection(null, set);
+		collectionServices.intersection((Set<?>)null, set);
+	}
+
+	@Test
+	public void testIntersectionSetSameSize() {
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+		set1.add(Integer.valueOf(3));
+
+		Set<Object> set2 = Sets.newLinkedHashSet();
+		set2.add(Integer.valueOf(3));
+		set2.add(Integer.valueOf(4));
+		set2.add(Integer.valueOf(1));
+
+		Set<Object> result = collectionServices.intersection(set1, set2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first set)
+		Iterator<Object> it = result.iterator();
+		assertEquals(1, it.next());
+		assertEquals(3, it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionSetLongestFirst() {
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+		set1.add(Integer.valueOf(3));
+		set1.add(Integer.valueOf(4));
+
+		Set<Object> set2 = Sets.newLinkedHashSet();
+		set2.add(Integer.valueOf(3));
+		set2.add(Integer.valueOf(5));
+		set2.add(Integer.valueOf(1));
+
+		Set<Object> result = collectionServices.intersection(set1, set2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first set)
+		Iterator<Object> it = result.iterator();
+		assertEquals(1, it.next());
+		assertEquals(3, it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionSetLongestSecond() {
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+		set1.add(Integer.valueOf(3));
+
+		Set<Object> set2 = Sets.newLinkedHashSet();
+		set2.add(Integer.valueOf(3));
+		set2.add(Integer.valueOf(4));
+		set2.add(Integer.valueOf(1));
+		set2.add(Integer.valueOf(5));
+
+		Set<Object> result = collectionServices.intersection(set1, set2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first set)
+		Iterator<Object> it = result.iterator();
+		assertEquals(1, it.next());
+		assertEquals(3, it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionSetDifferentClasses() {
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add("aString");
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+		set1.add("anotherString");
+		set1.add("aThirdString");
+
+		Set<String> set2 = Sets.newLinkedHashSet();
+		set2.add("aThirdString");
+		set2.add("a");
+		set2.add("b");
+		set2.add("anotherString");
+		set2.add("c");
+
+		Set<Object> result = collectionServices.intersection(set1, set2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first set)
+		Iterator<Object> it = result.iterator();
+		assertEquals("anotherString", it.next());
+		assertEquals("aThirdString", it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIntersectionListNullNull() {
+		collectionServices.intersection((List<?>)null, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIntersectionListSetNull() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		collectionServices.intersection(list, null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testIntersectionListNullSet() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		collectionServices.intersection((List<?>)null, list);
+	}
+
+	@Test
+	public void testIntersectionListSameSize() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+		list1.add(Integer.valueOf(3));
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add(Integer.valueOf(3));
+		list2.add(Integer.valueOf(4));
+		list2.add(Integer.valueOf(1));
+
+		List<Object> result = collectionServices.intersection(list1, list2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<Object> it = result.iterator();
+		assertEquals(1, it.next());
+		assertEquals(3, it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListLongestFirst() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+		list1.add(Integer.valueOf(3));
+		list1.add(Integer.valueOf(4));
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add(Integer.valueOf(3));
+		list2.add(Integer.valueOf(5));
+		list2.add(Integer.valueOf(1));
+
+		List<Object> result = collectionServices.intersection(list1, list2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<Object> it = result.iterator();
+		assertEquals(1, it.next());
+		assertEquals(3, it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListLongestSecond() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+		list1.add(Integer.valueOf(3));
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add(Integer.valueOf(3));
+		list2.add(Integer.valueOf(4));
+		list2.add(Integer.valueOf(1));
+		list2.add(Integer.valueOf(5));
+
+		List<Object> result = collectionServices.intersection(list1, list2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<Object> it = result.iterator();
+		assertEquals(1, it.next());
+		assertEquals(3, it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListDifferentClasses() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add("aString");
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+		list1.add("anotherString");
+		list1.add("aThirdString");
+
+		List<String> list2 = Lists.newArrayList();
+		list2.add("aThirdString");
+		list2.add("a");
+		list2.add("b");
+		list2.add("anotherString");
+		list2.add("c");
+
+		List<Object> result = collectionServices.intersection(list1, list2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<Object> it = result.iterator();
+		assertEquals("anotherString", it.next());
+		assertEquals("aThirdString", it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListDuplicatesInFirst() {
+		List<String> list1 = Lists.newArrayList();
+		list1.add("a");
+		list1.add("b");
+		list1.add("a");
+		list1.add("c");
+		list1.add("b");
+
+		List<String> list2 = Lists.newArrayList();
+		list2.add("b");
+		list2.add("d");
+		list2.add("c");
+
+		List<String> result = collectionServices.intersection(list1, list2);
+		assertEquals(3, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<String> it = result.iterator();
+		assertEquals("b", it.next());
+		assertEquals("c", it.next());
+		assertEquals("b", it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListDuplicatesInSecond() {
+		List<String> list1 = Lists.newArrayList();
+		list1.add("b");
+		list1.add("d");
+		list1.add("c");
+
+		List<String> list2 = Lists.newArrayList();
+		list2.add("a");
+		list2.add("b");
+		list2.add("a");
+		list2.add("c");
+		list2.add("b");
+
+		List<String> result = collectionServices.intersection(list1, list2);
+		assertEquals(2, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<String> it = result.iterator();
+		assertEquals("b", it.next());
+		assertEquals("c", it.next());
+		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListDuplicatesOrder() {
+		List<String> list1 = Lists.newArrayList();
+		list1.add("a");
+		list1.add("b");
+		list1.add("a");
+		list1.add("c");
+		list1.add("b");
+
+		List<String> list2 = Lists.newArrayList();
+		list2.add("b");
+		list2.add("a");
+		list2.add("d");
+		list2.add("b");
+
+		List<String> result = collectionServices.intersection(list1, list2);
+		assertEquals(4, result.size());
+		// make sure the result is in the order we want (order of the first list)
+		Iterator<String> it = result.iterator();
+		assertEquals("a", it.next());
+		assertEquals("b", it.next());
+		assertEquals("a", it.next());
+		assertEquals("b", it.next());
+		assertFalse(it.hasNext());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)

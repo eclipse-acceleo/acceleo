@@ -1823,17 +1823,40 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	/**
 	 * Creates a {@link Set} with elements from the given {@link Set} that are also present in the given
-	 * {@link Set}.
+	 * {@link Collection}.
 	 * 
 	 * @param set1
 	 *            the {@link Set}
-	 * @param set2
+	 * @param collection
 	 *            the {@link Set}
 	 * @return the created {@link Set} with elements from the given {@link Set} that are also present in the
 	 *         given {@link Set}
 	 */
-	public Set<Object> intersection(Set<Object> set1, Set<Object> set2) {
-		return Sets.intersection(set1, set2);
+	public <T> Set<T> intersection(Set<T> set1, Collection<?> collection) {
+		if (collection instanceof Set<?>) {
+			return Sets.intersection(set1, (Set<?>)collection);
+		}
+		final Set<T> result = Sets.newLinkedHashSet(set1);
+		result.retainAll(collection);
+		return result;
+	}
+
+	/**
+	 * Creates a {@link List} with elements from the given {@link List} that are present in both {@code list1}
+	 * and the given other {@code Collection}. Iteration order will match that of {@code list1}. Duplicates
+	 * from the first list will all be kept in the result if they also are in the second one, but duplicates
+	 * from the second list will be dumped even if they are present in the first.
+	 * 
+	 * @param list1
+	 *            the first {@link List}
+	 * @param collection
+	 *            the second {@link List}
+	 * @return the intersection of both lists.
+	 */
+	public <T> List<T> intersection(List<T> list1, Collection<?> collection) {
+		final List<T> result = Lists.newArrayList(list1);
+		result.retainAll(collection);
+		return result;
 	}
 
 	/**
