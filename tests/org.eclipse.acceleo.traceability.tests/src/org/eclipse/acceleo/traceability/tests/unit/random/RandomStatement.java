@@ -99,8 +99,7 @@ public class RandomStatement extends Statement {
 
 			@Override
 			public Object createTest() throws Exception {
-				return getTestClass().getOnlyConstructor().newInstance(
-						complete.getConstructorArguments(nullsOk()));
+				return getTestClass().getOnlyConstructor().newInstance(complete.getConstructorArguments());
 			}
 		}.methodBlock(fTestMethod).evaluate();
 	}
@@ -111,7 +110,7 @@ public class RandomStatement extends Statement {
 			@Override
 			public void evaluate() throws Throwable {
 				try {
-					final Object[] values = complete.getMethodArguments(nullsOk());
+					final Object[] values = complete.getMethodArguments();
 					method.invokeExplosively(freshInstance, values);
 				} catch (CouldNotGenerateValueException e) {
 					// ignore
