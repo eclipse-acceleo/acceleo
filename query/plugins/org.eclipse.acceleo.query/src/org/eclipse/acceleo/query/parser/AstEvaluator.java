@@ -52,6 +52,16 @@ import org.eclipse.emf.common.util.Diagnostic;
  */
 public class AstEvaluator extends AstSwitch<Object> {
 	/**
+	 * Service named "or"
+	 */
+	private static final String OR = "or";
+
+	/**
+	 * Service named "and"
+	 */
+	private static final String AND = "and";
+
+	/**
 	 * Message used to report bad predicate typing runtime detection.
 	 */
 	private static final String BAD_PREDICATE_TYPE_MSG = "Conditional's predicate must evaluate to a boolean value.";
@@ -180,27 +190,44 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseCall(Call object) {
-		// eval arguments.
+		boolean shouldShortcut = false;
+		Boolean shortcutReturnValue = null;
+		if (AND.equals(object.getServiceName())) {
+			shouldShortcut = true;
+			shortcutReturnValue = Boolean.FALSE;
+		}
+		if (OR.equals(object.getServiceName())) {
+			shouldShortcut = true;
+			shortcutReturnValue = Boolean.TRUE;
+		}
 		List<Expression> exprArgs = object.getArguments();
+		Object result = null;
 		int argc = exprArgs.size();
 		Object[] args = new Object[argc];
-		for (int i = 0; i < argc; i++) {
+		int i = 0;
+		// eval arguments.
+		while (result == null && i < argc) {
 			args[i] = doSwitch(exprArgs.get(i));
+			if (shouldShortcut && args[i] != null && args[i].equals(shortcutReturnValue)) {
+				result = shortcutReturnValue;
+			}
+			i++;
 		}
-		// call the service.
-		Object result;
-		switch (object.getType()) {
-			case CALLSERVICE:
-				result = services.call(object.getServiceName(), args, diagnostic);
-				break;
-			case CALLORAPPLY:
-				result = services.callOrApply(object.getServiceName(), args, diagnostic);
-				break;
-			case COLLECTIONCALL:
-				result = services.collectionServiceCall(object.getServiceName(), args, diagnostic);
-				break;
-			default:
-				throw new UnsupportedOperationException("should never happen");
+		if (result == null) {
+			// call the service.
+			switch (object.getType()) {
+				case CALLSERVICE:
+					result = services.call(object.getServiceName(), args, diagnostic);
+					break;
+				case CALLORAPPLY:
+					result = services.callOrApply(object.getServiceName(), args, diagnostic);
+					break;
+				case COLLECTIONCALL:
+					result = services.collectionServiceCall(object.getServiceName(), args, diagnostic);
+					break;
+				default:
+					throw new UnsupportedOperationException("should never happen");
+			}
 		}
 		return result;
 	}
