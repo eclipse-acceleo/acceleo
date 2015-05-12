@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupCrossReference
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupTest;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServiceStatusTests;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServicesTest;
+import org.eclipse.acceleo.query.runtime.test.ScopedEnvironmentTests;
 import org.eclipse.acceleo.query.runtime.test.ShortcutEvaluationTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesValidationTest;
@@ -68,7 +69,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		StringServicesTest.class, StringServicesValidationTest.class, AnyDSLEvaluationTests.class,
 		AnyDSLValidationTests.class, EcoreReverseTests.class, EcoreValidationTests.class,
 		UMLEvaluationTests.class, UMLValidationTests.class, PrimitiveTypeTests.class, LookupEngineTest.class,
-		ShortcutEvaluationTest.class })
+		ShortcutEvaluationTest.class, ScopedEnvironmentTests.class })
 public class AllTests {
 
 }
