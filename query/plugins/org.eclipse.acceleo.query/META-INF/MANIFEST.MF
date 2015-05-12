@@ -22,10 +22,6 @@ Export-Package: org.eclipse.acceleo.query.ast;
   x-friends:="org.eclipse.acceleo.query.tests,
    org.eclipse.acceleo.query.ide.ui,
    org.eclipse.acceleo.query.ide.ui.test",
- org.eclipse.acceleo.query.collections;
-  x-friends:="org.eclipse.acceleo.query.tests,
-   org.eclipse.acceleo.query.ide.ui,
-   org.eclipse.acceleo.query.ide.ui.test",
  org.eclipse.acceleo.query.parser;
   x-friends:="org.eclipse.acceleo.query.tests,
    org.eclipse.acceleo.query.ide.ui,

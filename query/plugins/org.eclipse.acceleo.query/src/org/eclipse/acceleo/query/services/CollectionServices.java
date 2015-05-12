@@ -796,7 +796,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return the concatenation of the two specified operands.
 	 */
 	public List<Object> concat(List<Object> c1, List<Object> c2) {
-		// TODO use lazy collection
 		final List<Object> result;
 
 		if (c1.isEmpty()) {
@@ -836,7 +835,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 
 	public List<Object> sub(List<Object> l1, List<Object> l2) {
-		// TODO use lazy collection predicates + !contains
 		if (l2.isEmpty()) {
 			return l1;
 		} else {
@@ -859,7 +857,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 
 	public Set<Object> sub(Set<Object> l1, Set<Object> l2) {
-		// TODO use lazy collection predicates + !contains
 		if (l2.isEmpty()) {
 			return l1;
 		} else {
@@ -882,7 +879,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 */
 
 	public Set<Object> add(Set<Object> l1, Set<Object> l2) {
-		// TODO use lazy collection ? see union java doc
 		return Sets.union(l1, l2);
 	}
 
@@ -896,7 +892,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a filtered version of the specified {@link List}.
 	 */
 	public List<Object> select(List<Object> l1, LambdaValue lambda) {
-		// TODO use lazy collection
 		final List<Object> newList;
 
 		if (lambda == null) {
@@ -929,7 +924,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a filtered version of the specified {@link Set}.
 	 */
 	public Set<Object> select(Set<Object> l1, LambdaValue lambda) {
-		// TODO use lazy collection
 		final Set<Object> newSet;
 
 		if (lambda == null) {
@@ -962,7 +956,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a filtered version of the specified {@link Set}.
 	 */
 	public Set<Object> reject(Set<Object> l1, LambdaValue lambda) {
-		// TODO use lazy collection
 		final Set<Object> newSet;
 
 		if (lambda == null) {
@@ -995,7 +988,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a filtered version of the specified {@link List}.
 	 */
 	public List<Object> reject(List<Object> l1, LambdaValue lambda) {
-		// TODO use lazy collection
 		final List<Object> newList;
 
 		if (lambda == null) {
@@ -1028,7 +1020,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a navigated version of the specified {@link Set}.
 	 */
 	public Set<Object> collect(Set<Object> set, LambdaValue lambda) {
-		// TODO use lazy collection
 		final Set<Object> result;
 
 		if (lambda == null) {
@@ -1059,7 +1050,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a navigated version of the specified {@link List}.
 	 */
 	public List<Object> collect(List<Object> list, LambdaValue lambda) {
-		// TODO use lazy collection
 		final List<Object> result;
 
 		if (lambda == null) {
@@ -1101,7 +1091,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return the {@link Set} containing all elements of source {@link Set} plus the given {@link Object}.
 	 */
 	public Set<Object> including(Set<Object> source, Object object) {
-		// TODO use lazy collection
 		if (source.contains(object)) {
 			return source;
 		} else {
@@ -1121,7 +1110,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return the {@link Set} containing all elements of source {@link Set} without the given {@link Object}.
 	 */
 	public Set<Object> excluding(Set<Object> source, Object object) {
-		// TODO use lazy collection
 		if (!source.contains(object)) {
 			return source;
 		} else {
@@ -1141,7 +1129,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return the set containing all elements of source {@link List} plus the given {@link Object}.
 	 */
 	public List<Object> including(List<Object> source, Object object) {
-		// TODO use lazy collection
 		if (source.contains(object)) {
 			return source;
 		} else {
@@ -1163,7 +1150,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         {@link Object}.
 	 */
 	public List<Object> excluding(List<Object> source, Object object) {
-		// TODO use lazy collection
 		if (!source.contains(object)) {
 			return source;
 		} else {
@@ -1182,7 +1168,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a list with all the elements in collection.
 	 */
 	public List<Object> asSequence(Collection<Object> collection) {
-		// TODO use lazy collection
 		if (collection instanceof List) {
 			return (List<Object>)collection;
 		} else {
@@ -1199,7 +1184,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a {@link Set} with all the elements in {@link Collection}.
 	 */
 	public Set<Object> asSet(Collection<Object> collection) {
-		// TODO use lazy collection
 		if (collection instanceof Set) {
 			return (Set<Object>)collection;
 		} else {
@@ -1301,7 +1285,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         {@link Set}, or <code>null</code> if the given {@link Set} is <code>null</code>
 	 */
 	public Set<Object> filter(Set<Object> set, final EClass eClassifier) {
-		// TODO use lazy collection
 		final Set<Object> result;
 
 		if (set == null) {
@@ -1331,7 +1314,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         {@link List}, or <code>null</code> if the given {@link List} is <code>null</code>
 	 */
 	public List<Object> filter(List<Object> list, final EClassifier eClassifier) {
-		// TODO use lazy collection
 		final List<Object> result;
 
 		if (list == null) {
@@ -1360,7 +1342,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a new {@link List}, or <code>null</code> if the given {@link Collection} is <code>null</code>
 	 */
 	public List<Object> sep(Collection<Object> collection, Object separator) {
-		// TODO use lazy collection
 		final List<Object> result;
 
 		if (collection == null) {
@@ -1396,7 +1377,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a new {@link List}
 	 */
 	public List<Object> sep(Collection<Object> collection, Object prefix, Object separator, Object suffix) {
-		// TODO use lazy collection
 		final List<Object> result = Lists.newArrayList();
 
 		result.add(prefix);
@@ -1792,7 +1772,6 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (position < 1 || position > initialSize) {
 			throw new IndexOutOfBoundsException();
 		}
-		// TODO use lazy collection
 		final List<Object> result = new ArrayList<Object>(initialSize + 1);
 
 		result.addAll(list.subList(0, position - 1));
@@ -1812,7 +1791,6 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * @return a copy of the given {@link List}
 	 */
 	public List<Object> prepend(List<Object> list, Object object) {
-		// TODO use lazy collection
 		final List<Object> result = new ArrayList<Object>(list.size() + 1);
 
 		result.add(object);
@@ -1877,7 +1855,6 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (startIndex < 1 || endIndex > set.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
-		// TODO use lazy collection
 		final Set<Object> result = new LinkedHashSet<Object>(endIndex - startIndex + 1);
 
 		int index = 1;
@@ -1913,7 +1890,6 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (startIndex < 1 || endIndex > list.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
-		// TODO use lazy collection
 		final List<Object> result = new ArrayList<Object>(endIndex - startIndex + 1);
 
 		int index = 1;

@@ -279,7 +279,6 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseSetInExtensionLiteral(SetInExtensionLiteral object) {
-		// TODO use a LazySet..
 		final Set<Object> result = Sets.newLinkedHashSet();
 
 		for (Expression expression : object.getValues()) {
@@ -296,7 +295,6 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseSequenceInExtensionLiteral(SequenceInExtensionLiteral object) {
-		// TODO use a LazyList..
 		final List<Object> result = Lists.newArrayList();
 
 		for (Expression expression : object.getValues()) {

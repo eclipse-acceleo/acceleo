@@ -940,7 +940,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return the recursive content of the specified eObject.
 	 */
 	public List<EObject> eAllContents(EObject eObject) {
-		// TODO lazy collection
 		final List<EObject> result = Lists.newArrayList();
 
 		final Iterator<EObject> it = eObject.eAllContents();
@@ -963,7 +962,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 */
 	public List<EObject> eAllContents(EObject eObject, final EClass type) {
 		// TODO optimize by pruning dead branches according to EClasses.
-		// TODO lazy collection
 		final List<EObject> result = Lists.newArrayList();
 
 		final Iterator<EObject> it = eObject.eAllContents();
@@ -998,7 +996,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return the filtered content of the specified eObject
 	 */
 	public List<EObject> eContents(EObject eObject, final EClass type) {
-		// TODO lazy collection
 		final List<EObject> result = Lists.newArrayList();
 
 		for (EObject input : eObject.eContents()) {
@@ -1172,7 +1169,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return Sequence containing the full set of the receiver's ancestors.
 	 */
 	public List<EObject> ancestors(EObject object) {
-		// TODO lazy collection
 		return ancestors(object, null);
 	}
 
@@ -1186,7 +1182,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return Sequence containing the full set of the receiver's ancestors.
 	 */
 	public List<EObject> ancestors(EObject object, EClassifier filter) {
-		// TODO lazy collection + predicate
 		final List<EObject> result = new ArrayList<EObject>();
 
 		EObject container = object.eContainer();
@@ -1289,7 +1284,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
 	public List<EObject> siblings(final EObject eObject, final EClassifier filter) {
-		// TODO lazy collection
 		final List<EObject> result;
 
 		Object container = getContainer(eObject);
@@ -1323,7 +1317,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return Sequence containing the sought set of the receiver's siblings.
 	 */
 	private List<EObject> siblings(final EObject eObject, final EClassifier filter, Boolean preceding) {
-		// TODO lazy collection
 		final List<EObject> result;
 
 		final Object container = getContainer(eObject);

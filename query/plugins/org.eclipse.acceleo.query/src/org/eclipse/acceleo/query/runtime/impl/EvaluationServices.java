@@ -145,7 +145,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return a set made of the value of the features of context's elements.
 	 */
 	private Object applyGetFeatureOnSet(Set<Object> context, String featureName, Diagnostic diagnostic) {
-		// TODO use lazy collection
 		Set<Object> result = new LinkedHashSet<Object>(context.size());
 		for (Object element : context) {
 			Object newElt = featureAccess(element, featureName, diagnostic);
@@ -174,7 +173,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return a set made of the value of the features of context's elements.
 	 */
 	private Object applyGetFeatureOnSequence(List<Object> context, String featureName, Diagnostic diagnostic) {
-		// TODO use lazy collection
 		List<Object> result = new ArrayList<Object>(context.size());
 		for (Object element : context) {
 			Object newElt = featureAccess(element, featureName, diagnostic);
@@ -473,7 +471,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 	private Object applyCallOnSequence(String serviceName, List<Object> origin, Object[] arguments,
 			Diagnostic diagnostic) {
 		try {
-			// TODO use lazy collection
 			List<Object> result = new ArrayList<Object>(origin.size());
 			Object[] innerArguments = arguments.clone();
 			for (Object obj : origin) {
@@ -514,7 +511,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 	private Object applyCallOnSet(String serviceName, Set<Object> origin, Object[] arguments,
 			Diagnostic diagnostic) {
 		try {
-			// TODO use lazy collection
 			Set<Object> result = new LinkedHashSet<Object>(origin.size());
 			Object[] innerArguments = arguments.clone();
 			for (Object obj : origin) {
