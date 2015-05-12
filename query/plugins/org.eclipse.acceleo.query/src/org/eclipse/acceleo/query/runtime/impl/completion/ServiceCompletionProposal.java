@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
+import java.lang.reflect.Method;
+
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IService;
 
@@ -52,7 +54,19 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public int getCursorOffset() {
-		return service.getServiceMethod().getName().length() - 1;
+		Method serviceMethod = service.getServiceMethod();
+		int namelength = serviceMethod.getName().length();
+		if (serviceMethod.getParameterTypes().length == 1) {
+			/*
+			 * if we have only one parameter we return the offset: self.serviceCall()^
+			 */
+			return namelength + 2;
+		} else {
+			/*
+			 * if we more than one parameter we return the offset: self.serviceCall(^)
+			 */
+			return namelength + 1;
+		}
 	}
 
 	/**
