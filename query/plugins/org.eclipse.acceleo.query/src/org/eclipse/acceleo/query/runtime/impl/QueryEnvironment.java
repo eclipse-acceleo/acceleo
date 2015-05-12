@@ -34,6 +34,7 @@ import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
 import org.eclipse.acceleo.query.services.StringServices;
+import org.eclipse.acceleo.query.services.XPathServices;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -146,6 +147,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 		try {
 			this.registerServicePackage(AnyServices.class);
 			this.registerServicePackage(EObjectServices.class);
+			this.registerServicePackage(XPathServices.class);
 			this.registerServicePackage(ComparableServices.class);
 			this.registerServicePackage(NumberServices.class);
 			this.registerServicePackage(StringServices.class);

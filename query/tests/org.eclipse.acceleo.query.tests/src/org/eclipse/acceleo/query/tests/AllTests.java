@@ -38,6 +38,8 @@ import org.eclipse.acceleo.query.services.tests.NumberServicesTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesValidationTest;
+import org.eclipse.acceleo.query.services.tests.XPathServicesTest;
+import org.eclipse.acceleo.query.services.tests.XPathServicesValidationTest;
 import org.eclipse.acceleo.query.tests.runtime.lookup.basic.LookupEngineTest;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLEvaluationTests;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLValidationTests;
@@ -62,12 +64,13 @@ import org.junit.runners.Suite.SuiteClasses;
 		EvaluationServiceStatusTests.class, EvaluationServicesTest.class, AnyServicesTest.class,
 		AnyServicesValidationTest.class, BooleanServicesTest.class, BooleanServicesValidationTest.class,
 		CollectionServicesTest.class, CollectionServicesValidationTest.class, ComparableServicesTest.class,
-		ComparableServicesValidationTest.class, EObjectServicesTest.class,
-		EObjectServicesValidationTest.class, NumberServicesTest.class, NumberServicesValidationTest.class,
-		StringServicesTest.class, StringServicesValidationTest.class, AnyDSLEvaluationTests.class,
-		AnyDSLValidationTests.class, EcoreReverseTests.class, EcoreValidationTests.class,
-		UMLEvaluationTests.class, UMLValidationTests.class, PrimitiveTypeTests.class, LookupEngineTest.class,
-		ShortcutEvaluationTest.class, ScopedEnvironmentTests.class })
+		ComparableServicesValidationTest.class, EObjectServicesTest.class, XPathServicesTest.class,
+		EObjectServicesValidationTest.class, XPathServicesValidationTest.class, NumberServicesTest.class,
+		NumberServicesValidationTest.class, StringServicesTest.class, StringServicesValidationTest.class,
+		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
+		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
+		PrimitiveTypeTests.class, LookupEngineTest.class, ShortcutEvaluationTest.class,
+		ScopedEnvironmentTests.class })
 public class AllTests {
 
 }
