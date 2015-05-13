@@ -50,6 +50,12 @@ public class StringServices {
 	 * @return The concatenated String. Throws NullPointerException if "a" or "b" is null.
 	 */
 	public String add(String a, String b) {
+		if (a == null) {
+			a = "";
+		}
+		if (b == null) {
+			b = "";
+		}
 		return a + b;
 	}
 

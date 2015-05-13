@@ -583,8 +583,8 @@ public class StringServicesTest extends AbstractServicesTest {
 	@Test
 	public void testAdd() {
 		assertEquals("string1 string2", stringServices.add("string1 ", "string2"));
-		assertEquals("nullstring2", stringServices.add(null, "string2"));
-		assertEquals("string1 null", stringServices.add("string1 ", null));
+		assertEquals("string2", stringServices.add(null, "string2"));
+		assertEquals("string1 ", stringServices.add("string1 ", null));
 	}
 
 	@Test
