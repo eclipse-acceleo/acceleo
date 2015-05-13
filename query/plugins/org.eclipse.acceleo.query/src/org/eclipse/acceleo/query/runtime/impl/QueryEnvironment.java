@@ -27,14 +27,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
-import org.eclipse.acceleo.query.services.AnyServices;
-import org.eclipse.acceleo.query.services.BooleanServices;
-import org.eclipse.acceleo.query.services.CollectionServices;
-import org.eclipse.acceleo.query.services.ComparableServices;
-import org.eclipse.acceleo.query.services.EObjectServices;
-import org.eclipse.acceleo.query.services.NumberServices;
-import org.eclipse.acceleo.query.services.StringServices;
-import org.eclipse.acceleo.query.services.XPathServices;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -70,7 +62,6 @@ public class QueryEnvironment implements IQueryEnvironment {
 	public QueryEnvironment(CrossReferenceProvider crossReferencer) {
 		ePackageProvider = new EPackageProvider();
 		lookupEngine = new BasicLookupEngine(this, crossReferencer);
-		this.initStandardServices();
 		this.logger = Logger.getLogger(this.getClass().getName());
 	}
 
@@ -138,26 +129,6 @@ public class QueryEnvironment implements IQueryEnvironment {
 	@Override
 	public EPackageProvider getEPackageProvider() {
 		return ePackageProvider;
-	}
-
-	/**
-	 * Initialize standard services.
-	 */
-	private void initStandardServices() {
-		try {
-			this.registerServicePackage(AnyServices.class);
-			this.registerServicePackage(EObjectServices.class);
-			this.registerServicePackage(XPathServices.class);
-			this.registerServicePackage(ComparableServices.class);
-			this.registerServicePackage(NumberServices.class);
-			this.registerServicePackage(StringServices.class);
-			this.registerServicePackage(BooleanServices.class);
-			this.registerServicePackage(CollectionServices.class);
-		} catch (InvalidAcceleoPackageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	/**
