@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.core.resources.IProject;
 
 /**
@@ -101,8 +101,8 @@ public class AcceleoProjectState {
 		AcceleoProjectState newState = new AcceleoProjectState();
 		newState.projectName = in.readUTF();
 		if (!project.getName().equals(newState.projectName)) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages
-					.getString("AcceleoProjectState.ProjectDoesNotMatch"), false); //$NON-NLS-1$
+			AcceleoLogger.log(
+					AcceleoCommonMessages.getString("AcceleoProjectState.ProjectDoesNotMatch"), false); //$NON-NLS-1$
 			return null;
 		}
 		newState.lastStructuralBuildTime = in.readLong();

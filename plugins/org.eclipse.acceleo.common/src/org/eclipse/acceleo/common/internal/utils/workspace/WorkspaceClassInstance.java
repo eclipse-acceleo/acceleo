@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 
 /**
  * This will allow us to hold information about a workspace-loaded class' instance. Instances of this class
@@ -96,10 +96,10 @@ final class WorkspaceClassInstance {
 			try {
 				instance = clazz.newInstance();
 			} catch (InstantiationException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
+				AcceleoLogger.log(AcceleoCommonMessages.getString("BundleClassInstantiationFailure", //$NON-NLS-1$
 						clazz.getName(), bundle), e, false);
 			} catch (IllegalAccessException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
+				AcceleoLogger.log(AcceleoCommonMessages.getString("BundleClassConstructorFailure", //$NON-NLS-1$
 						clazz.getName(), bundle), e, false);
 			}
 		}

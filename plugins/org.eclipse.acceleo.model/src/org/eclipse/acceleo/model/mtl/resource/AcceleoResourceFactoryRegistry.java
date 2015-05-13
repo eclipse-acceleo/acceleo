@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Obeo.
+ * Copyright (c) 2006, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.core.runtime.content.IContentDescriber;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ContentHandler;
@@ -228,23 +228,23 @@ public class AcceleoResourceFactoryRegistry extends ResourceFactoryRegistryImpl 
 
 				}
 			} catch (FileNotFoundException e) {
-				AcceleoCommonPlugin.log(e, false);
+				AcceleoLogger.log(e, false);
 			} catch (IOException e) {
-				AcceleoCommonPlugin.log(e, false);
+				AcceleoLogger.log(e, false);
 			} finally {
 				try {
 					if (containingStream != null) {
 						containingStream.close();
 					}
 				} catch (IOException e) {
-					AcceleoCommonPlugin.log(e, false);
+					AcceleoLogger.log(e, false);
 				}
 				try {
 					if (stream != null) {
 						stream.close();
 					}
 				} catch (IOException e) {
-					AcceleoCommonPlugin.log(e, false);
+					AcceleoLogger.log(e, false);
 				}
 			}
 		}

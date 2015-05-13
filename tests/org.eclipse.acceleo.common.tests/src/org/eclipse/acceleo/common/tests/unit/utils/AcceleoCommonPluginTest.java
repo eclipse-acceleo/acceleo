@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.io.PrintStream;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.tests.AcceleoCommonTestPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -60,7 +61,7 @@ public class AcceleoCommonPluginTest {
 	 * exception other than {@link NullPointerException} and {@link CoreException} to be logged. Expects the
 	 * exception to be logged with the specified severity. The error message should be the one specified in
 	 * org.eclipse.acceleo.common.acceleocommonmessages.properties with key
-	 * &quot;AcceleoCommonPlugin.JavaException&quot;.
+	 * &quot;AcceleoLogger.JavaException&quot;.
 	 */
 	@Test
 	public void testLogExceptionArbitraryException() {
@@ -70,7 +71,7 @@ public class AcceleoCommonPluginTest {
 			// disables standard error to avoid all logged exception to be displayed in console.
 			final Exception exception = new IllegalArgumentException(message);
 			System.setErr(temporaryErr);
-			AcceleoCommonPlugin.log(exception, blocker);
+			AcceleoLogger.log(exception, blocker);
 			System.setErr(systemErr);
 
 			final int expectedSeverity;
@@ -104,7 +105,7 @@ public class AcceleoCommonPluginTest {
 				// disables standard error to avoid all logged exception to be displayed in console.
 				final PrintStream systemErr = System.err;
 				System.setErr(temporaryErr);
-				AcceleoCommonPlugin.log(new CoreException(coreExceptionStatus), true);
+				AcceleoLogger.log(new CoreException(coreExceptionStatus), true);
 				System.setErr(systemErr);
 
 				assertEquals("Unexpected message of the logged core exception.", message, loggedStatus
@@ -124,7 +125,7 @@ public class AcceleoCommonPluginTest {
 	@Test
 	public void testLogExceptionNullException() {
 		try {
-			AcceleoCommonPlugin.log((Exception)null, true);
+			AcceleoLogger.log((Exception)null, true);
 			fail("Logging null didn't throw expected NullPointerException.");
 		} catch (NullPointerException e) {
 			// This was expected behavior
@@ -136,7 +137,7 @@ public class AcceleoCommonPluginTest {
 	 * {@link NullPointerException} to be logged. Expects the exception to be logged with the specified
 	 * severity. The error message should be the one specified in
 	 * org.eclipse.acceleo.common.acceleocommonmessages.properties with key
-	 * &quot;AcceleoCommonPlugin.ElementNotFound&quot;.
+	 * &quot;AcceleoLogger.ElementNotFound&quot;.
 	 */
 	@Test
 	public void testLogExceptionNullPointerException() {
@@ -145,11 +146,10 @@ public class AcceleoCommonPluginTest {
 			// disables standard error to avoid all logged exception to be displayed in console.
 			final PrintStream systemErr = System.err;
 			System.setErr(temporaryErr);
-			AcceleoCommonPlugin.log(new NullPointerException(message), blocker);
+			AcceleoLogger.log(new NullPointerException(message), blocker);
 			System.setErr(systemErr);
 
-			final String expectedMessage = AcceleoCommonMessages
-					.getString("AcceleoCommonPlugin.ElementNotFound");
+			final String expectedMessage = AcceleoCommonMessages.getString("AcceleoLogger.ElementNotFound");
 			final int expectedSeverity;
 			if (blocker) {
 				expectedSeverity = IStatus.ERROR;
@@ -171,7 +171,7 @@ public class AcceleoCommonPluginTest {
 	 * Tests the behavior of {@link AcceleoCommonPlugin#log(String, boolean)} with <code>null</code> as the
 	 * message to be logged. Expects a new entry to be logged with the given severity and the message
 	 * specified in org.eclipse.acceleo.common.acceleocommonmessages.properties with key
-	 * &quot;AcceleoCommonPlugin.UnexpectedException&quot;.
+	 * &quot;AcceleoLogger.UnexpectedException&quot;.
 	 */
 	@Test
 	public void testLogMessageNullMessage() {
@@ -180,11 +180,11 @@ public class AcceleoCommonPluginTest {
 			final PrintStream systemErr = System.err;
 			// disables standard error to avoid all logged exception to be displayed in console.
 			System.setErr(temporaryErr);
-			AcceleoCommonPlugin.log((String)null, blocker);
+			AcceleoLogger.log((String)null, blocker);
 			System.setErr(systemErr);
 
 			final String expectedMessage = AcceleoCommonMessages
-					.getString("AcceleoCommonPlugin.UnexpectedException");
+					.getString("AcceleoLogger.UnexpectedException");
 			final int expectedSeverity;
 			if (blocker) {
 				expectedSeverity = IStatus.ERROR;
@@ -213,7 +213,7 @@ public class AcceleoCommonPluginTest {
 			final PrintStream systemErr = System.err;
 			// disables standard error to avoid all logged exception to be displayed in console.
 			System.setErr(temporaryErr);
-			AcceleoCommonPlugin.log(message, blocker);
+			AcceleoLogger.log(message, blocker);
 			System.setErr(systemErr);
 
 			final int expectedSeverity;
@@ -239,7 +239,7 @@ public class AcceleoCommonPluginTest {
 	@Test
 	public void testLogStatusNullStatus() {
 		try {
-			AcceleoCommonPlugin.log(null);
+			AcceleoLogger.log(null);
 			fail("Logging null status didn't throw expected NullPointerException.");
 		} catch (NullPointerException e) {
 			// This ws expected behavior
@@ -258,7 +258,7 @@ public class AcceleoCommonPluginTest {
 				final PrintStream systemErr = System.err;
 				// disables standard error to avoid all logged exception to be displayed in console.
 				System.setErr(temporaryErr);
-				AcceleoCommonPlugin.log(status);
+				AcceleoLogger.log(status);
 				System.setErr(systemErr);
 
 				assertEquals("Unexpected message of the logged exception.", message, loggedStatus

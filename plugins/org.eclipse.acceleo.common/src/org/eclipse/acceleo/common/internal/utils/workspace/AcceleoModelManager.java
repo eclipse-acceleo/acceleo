@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
-
-import com.google.common.io.Closeables;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -28,6 +26,7 @@ import java.util.Set;
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ISaveContext;
 import org.eclipse.core.resources.ISaveParticipant;
@@ -40,6 +39,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
+import com.google.common.io.Closeables;
 
 /**
  * This class, inspired by the JavaModelManager of the JDt will be used to save the state of the workspace
@@ -224,7 +225,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 				}
 			}
 		} catch (CoreException e) {
-			AcceleoCommonPlugin.log(e, true);
+			AcceleoLogger.log(e, true);
 		}
 	}
 
@@ -290,7 +291,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 				return info.getSavedState();
 			}
 		} catch (CoreException e) {
-			AcceleoCommonPlugin.log(e, true);
+			AcceleoLogger.log(e, true);
 		}
 
 		return null;
@@ -311,12 +312,12 @@ public final class AcceleoModelManager implements ISaveParticipant {
 				try {
 					String pluginID = in.readUTF();
 					if (!pluginID.equals(AcceleoCommonPlugin.PLUGIN_ID)) {
-						AcceleoCommonPlugin.log(AcceleoCommonMessages
+						AcceleoLogger.log(AcceleoCommonMessages
 								.getString("AcceleoModelManager.WrongFileFormat"), true); //$NON-NLS-1$
 					}
 					String kind = in.readUTF();
 					if (!"STATE".equals(kind)) { //$NON-NLS-1$
-						AcceleoCommonPlugin.log(AcceleoCommonMessages
+						AcceleoLogger.log(AcceleoCommonMessages
 								.getString("AcceleoModelManager.WrongFileFormat"), true); //$NON-NLS-1$
 					}
 					if (in.readBoolean()) {
@@ -328,7 +329,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 				// CHECKSTYLE:OFF
 			} catch (Exception e) {
 				// CHECKSTYLE:ON
-				AcceleoCommonPlugin.log(e, true);
+				AcceleoLogger.log(e, true);
 			}
 		}
 		return null;
@@ -346,7 +347,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 		try {
 			savedState.write(out);
 		} catch (IOException e) {
-			AcceleoCommonPlugin.log(e, true);
+			AcceleoLogger.log(e, true);
 		}
 	}
 
@@ -363,7 +364,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 		try {
 			return AcceleoProjectState.read(project, in);
 		} catch (IOException e) {
-			AcceleoCommonPlugin.log(e, true);
+			AcceleoLogger.log(e, true);
 		}
 		return null;
 	}

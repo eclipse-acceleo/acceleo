@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
 import org.eclipse.acceleo.common.internal.utils.AcceleoLibrariesEclipseUtil;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoModelManager;
@@ -39,7 +40,6 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -106,7 +106,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	public static AcceleoCommonPlugin getDefault() {
 		return plugin;
 	}
-
+	
 	/**
 	 * Trace an Exception in the error log.
 	 * 
@@ -115,61 +115,25 @@ public class AcceleoCommonPlugin extends Plugin {
 	 * @param blocker
 	 *            <code>True</code> if the exception must be logged as error, <code>False</code> to log it as
 	 *            a warning.
+	 * @deprecated
 	 */
+	@Deprecated
 	public static void log(Exception e, boolean blocker) {
-		if (e == null) {
-			throw new NullPointerException(AcceleoCommonMessages
-					.getString("AcceleoCommonPlugin.LogNullException")); //$NON-NLS-1$
-		}
-
-		if (getDefault() == null) {
-			// We are out of eclipse. Prints the stack trace on standard error.
-			// CHECKSTYLE:OFF
-			e.printStackTrace();
-			// CHECKSTYLE:ON
-		} else if (e instanceof CoreException) {
-			log(((CoreException)e).getStatus());
-		} else if (e instanceof NullPointerException) {
-			int severity = IStatus.WARNING;
-			if (blocker) {
-				severity = IStatus.ERROR;
-			}
-			log(new Status(severity, PLUGIN_ID, severity, AcceleoCommonMessages
-					.getString("AcceleoCommonPlugin.ElementNotFound"), e)); //$NON-NLS-1$
-		} else {
-			int severity = IStatus.WARNING;
-			if (blocker) {
-				severity = IStatus.ERROR;
-			}
-			log(new Status(severity, PLUGIN_ID, severity, e.getMessage(), e));
-		}
+		AcceleoLogger.log(e, blocker);
 	}
-
+	
 	/**
 	 * Puts the given status in the error log view.
 	 * 
 	 * @param status
 	 *            Error Status.
+	 * @deprecated
 	 */
+	@Deprecated
 	public static void log(IStatus status) {
-		// Eclipse platform displays NullPointer on standard error instead of throwing it.
-		// We'll handle this by throwing it ourselves.
-		if (status == null) {
-			throw new NullPointerException(AcceleoCommonMessages
-					.getString("AcceleoCommonPlugin.LogNullStatus")); //$NON-NLS-1$
-		}
-
-		if (getDefault() != null) {
-			getDefault().getLog().log(status);
-		} else {
-			// We are out of eclipse. Prints the message on standard error.
-			// CHECKSTYLE:OFF
-			System.err.println(status.getMessage());
-			status.getException().printStackTrace();
-			// CHECKSTYLE:ON
-		}
+		AcceleoLogger.log(status);
 	}
-
+	
 	/**
 	 * Puts the given message in the error log view, as error or warning.
 	 * 
@@ -178,26 +142,13 @@ public class AcceleoCommonPlugin extends Plugin {
 	 * @param blocker
 	 *            <code>True</code> if the message must be logged as error, <code>False</code> to log it as a
 	 *            warning.
+	 * @deprecated
 	 */
+	@Deprecated
 	public static void log(String message, boolean blocker) {
-		if (getDefault() == null) {
-			// We are out of eclipse. Prints the message on standard error.
-			// CHECKSTYLE:OFF
-			System.err.println(message);
-			// CHECKSTYLE:ON
-		} else {
-			int severity = IStatus.WARNING;
-			if (blocker) {
-				severity = IStatus.ERROR;
-			}
-			String errorMessage = message;
-			if (errorMessage == null || "".equals(errorMessage)) { //$NON-NLS-1$
-				errorMessage = AcceleoCommonMessages.getString("AcceleoCommonPlugin.UnexpectedException"); //$NON-NLS-1$
-			}
-			log(new Status(severity, PLUGIN_ID, errorMessage));
-		}
+		AcceleoLogger.log(message, blocker);
 	}
-
+	
 	/**
 	 * Traces an exception in the error log with the given log message.
 	 * <p>
@@ -213,15 +164,11 @@ public class AcceleoCommonPlugin extends Plugin {
 	 *            <code>True</code> if the exception must be logged as error, <code>False</code> to log it as
 	 *            a warning.
 	 * @since 0.8
+	 * @deprecated
 	 */
+	@Deprecated
 	public static void log(String message, Exception cause, boolean blocker) {
-		final int severity;
-		if (blocker) {
-			severity = IStatus.ERROR;
-		} else {
-			severity = IStatus.WARNING;
-		}
-		log(new Status(severity, PLUGIN_ID, message, cause));
+		AcceleoLogger.log(message, cause, blocker);
 	}
 
 	/**
@@ -325,7 +272,7 @@ public class AcceleoCommonPlugin extends Plugin {
 							.createExecutableExtension(CLASS_TAG_NAME).getClass(), service
 							.getAttribute(FILE_EXTENSION_TAG_NAME));
 				} catch (CoreException e) {
-					log(e, false);
+					AcceleoLogger.log(e, false);
 				}
 			}
 		}
@@ -344,12 +291,13 @@ public class AcceleoCommonPlugin extends Plugin {
 								.toString()));
 						AcceleoLibrariesEclipseUtil.addLibrary(lib);
 					} catch (InstantiationException e) {
-						log(e, true);
+						AcceleoLogger.log(e, true);
 					} catch (IllegalAccessException e) {
-						log(e, true);
+						AcceleoLogger.log(e, true);
 					}
 				} else {
-					log(AcceleoCommonMessages.getString("AcceleoCommonPlugin.MissingHandle", pathToFile), //$NON-NLS-1$
+					AcceleoLogger.log(AcceleoCommonMessages.getString(
+							"AcceleoLogger.MissingHandle", pathToFile), //$NON-NLS-1$
 							false);
 				}
 			}
@@ -380,12 +328,13 @@ public class AcceleoCommonPlugin extends Plugin {
 									.toString()));
 							AcceleoLibrariesEclipseUtil.addLibrary(lib);
 						} catch (InstantiationException e) {
-							log(e, true);
+							AcceleoLogger.log(e, true);
 						} catch (IllegalAccessException e) {
-							log(e, true);
+							AcceleoLogger.log(e, true);
 						}
 					} else {
-						log(AcceleoCommonMessages.getString("AcceleoCommonPlugin.MissingHandle", pathToFile), //$NON-NLS-1$
+						AcceleoLogger.log(AcceleoCommonMessages.getString(
+								"AcceleoLogger.MissingHandle", pathToFile), //$NON-NLS-1$
 								false);
 					}
 				}
@@ -444,7 +393,7 @@ public class AcceleoCommonPlugin extends Plugin {
 										CLASS_TAG_NAME).getClass(), service
 										.getAttribute(FILE_EXTENSION_TAG_NAME));
 					} catch (CoreException e) {
-						log(e, false);
+						AcceleoLogger.log(e, false);
 					}
 				}
 			}
@@ -550,7 +499,7 @@ public class AcceleoCommonPlugin extends Plugin {
 								}
 							}
 						} catch (CoreException e) {
-							AcceleoCommonPlugin.log(e, false);
+							AcceleoLogger.log(e, false);
 						}
 					}
 					break;

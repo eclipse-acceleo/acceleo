@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.BundleURLConverter;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
@@ -96,7 +95,7 @@ public final class AcceleoServicesEclipseUtil {
 				REGISTERED_CLASSES.put(qualifiedName, clazz);
 			}
 		} catch (ClassNotFoundException e) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+			AcceleoLogger.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
 					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return clazz;

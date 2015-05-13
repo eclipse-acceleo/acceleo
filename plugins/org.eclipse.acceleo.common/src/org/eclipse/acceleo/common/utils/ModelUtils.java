@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Obeo.
+ * Copyright (c) 2006, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoDynamicMetamodelResourceSetImpl;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
@@ -268,7 +268,7 @@ public final class ModelUtils {
 			if (diagnostic != null) {
 				String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, fileName);
 				errorMessage += '\n' + diagnosticString(diagnostic);
-				AcceleoCommonPlugin.log(errorMessage, false);
+				AcceleoLogger.log(errorMessage, false);
 			}
 		}
 
@@ -330,7 +330,7 @@ public final class ModelUtils {
 				if (diagnostic != null) {
 					String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, path);
 					errorMessage += '\n' + diagnosticString(diagnostic);
-					AcceleoCommonPlugin.log(errorMessage, false);
+					AcceleoLogger.log(errorMessage, false);
 				}
 			}
 		}
@@ -399,7 +399,7 @@ public final class ModelUtils {
 			if (diagnostic != null) {
 				String errorMessage = AcceleoCommonMessages.getString(LOADING_ERROR_KEY, modelURI.toString());
 				errorMessage += '\n' + diagnosticString(diagnostic);
-				AcceleoCommonPlugin.log(errorMessage, false);
+				AcceleoLogger.log(errorMessage, false);
 			}
 		}
 		return result;

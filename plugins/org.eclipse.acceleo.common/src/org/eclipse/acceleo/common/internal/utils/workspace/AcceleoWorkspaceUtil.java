@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
-
-import com.google.common.collect.Sets;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -33,6 +31,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -73,6 +72,8 @@ import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.PackageAdmin;
+
+import com.google.common.collect.Sets;
 
 /* TODO add model listeners to the workspace installed plugins to check for updates on required bundles
  * or imported packages.
@@ -415,7 +416,7 @@ public final class AcceleoWorkspaceUtil {
 			final IPath output = javaProject.getOutputLocation();
 			classpathEntries.add(output.removeFirstSegments(1).toString());
 		} catch (JavaModelException e) {
-			AcceleoCommonPlugin.log(e, false);
+			AcceleoLogger.log(e, false);
 		}
 		return classpathEntries;
 	}
@@ -482,7 +483,7 @@ public final class AcceleoWorkspaceUtil {
 			try {
 				uninstallBundle(bundle);
 			} catch (BundleException e) {
-				AcceleoCommonPlugin
+				AcceleoLogger
 						.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages
 								.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()), e));
 			}
@@ -549,7 +550,7 @@ public final class AcceleoWorkspaceUtil {
 		}
 
 		if (clazz == null) {
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+			AcceleoLogger.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
 					qualifiedName), false);
 		}
 
@@ -740,7 +741,7 @@ public final class AcceleoWorkspaceUtil {
 					uninstallBundle(bundle);
 				}
 			} catch (BundleException e) {
-				AcceleoCommonPlugin
+				AcceleoLogger
 						.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages
 								.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()), e));
 			}
@@ -908,8 +909,8 @@ public final class AcceleoWorkspaceUtil {
 					}
 				} catch (CoreException ex) {
 					// Logging both exceptions just to be sure
-					AcceleoCommonPlugin.log(e, false);
-					AcceleoCommonPlugin.log(ex, false);
+					AcceleoLogger.log(e, false);
+					AcceleoLogger.log(ex, false);
 				}
 			}
 
@@ -937,14 +938,14 @@ public final class AcceleoWorkspaceUtil {
 			String bundleName = model.getBundleDescription().getName();
 			if (!logOnceProjectLoad.contains(bundleName)) {
 				logOnceProjectLoad.add(bundleName);
-				AcceleoCommonPlugin.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
+				AcceleoLogger.log(new Status(IStatus.WARNING, AcceleoCommonPlugin.PLUGIN_ID,
 						AcceleoCommonMessages.getString("WorkspaceUtil.InstallationFailure", //$NON-NLS-1$
 								bundleName, e.getMessage()), e));
 			}
 		} catch (MalformedURLException e) {
-			AcceleoCommonPlugin.log(e, false);
+			AcceleoLogger.log(e, false);
 		} catch (UnsupportedEncodingException e) {
-			AcceleoCommonPlugin.log(e, false);
+			AcceleoLogger.log(e, false);
 		}
 	}
 
@@ -998,7 +999,7 @@ public final class AcceleoWorkspaceUtil {
 			return clazz;
 		} catch (ClassNotFoundException e) {
 			e.fillInStackTrace();
-			AcceleoCommonPlugin.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
+			AcceleoLogger.log(AcceleoCommonMessages.getString("BundleClassLookupFailure", //$NON-NLS-1$
 					qualifiedName, bundle.getSymbolicName()), e, false);
 		}
 		return null;
@@ -1071,7 +1072,7 @@ public final class AcceleoWorkspaceUtil {
 								try {
 									uninstallBundle(bundle);
 								} catch (BundleException e) {
-									AcceleoCommonPlugin
+									AcceleoLogger
 											.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
 													AcceleoCommonMessages.getString(
 															UNINSTALLATION_FAILURE_KEY, bundle
@@ -1113,7 +1114,7 @@ public final class AcceleoWorkspaceUtil {
 					try {
 						delta.accept(visitor);
 					} catch (CoreException e) {
-						AcceleoCommonPlugin.log(e, false);
+						AcceleoLogger.log(e, false);
 					}
 					for (IProject changed : visitor.getChangedProjects()) {
 						IPluginModelBase model = PluginRegistry.findModel(changed);
@@ -1151,7 +1152,7 @@ public final class AcceleoWorkspaceUtil {
 						try {
 							uninstallBundle(bundle);
 						} catch (BundleException e) {
-							AcceleoCommonPlugin.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
+							AcceleoLogger.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
 									AcceleoCommonMessages.getString(UNINSTALLATION_FAILURE_KEY, bundle
 											.getSymbolicName()), e));
 						}

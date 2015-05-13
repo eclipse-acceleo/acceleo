@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@ package org.eclipse.acceleo.common.utils;
 import java.io.IOException;
 
 import org.eclipse.acceleo.common.AcceleoCommonMessages;
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -206,8 +206,7 @@ public final class AcceleoStandardLibrary {
 				realType = (EClass)stdLibPackage.getEClassifier(PRIMITIVE_REAL_NAME);
 			}
 		} catch (IOException e) {
-			AcceleoCommonPlugin.log(
-					AcceleoCommonMessages.getString("AcceleoStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
+			AcceleoLogger.log(AcceleoCommonMessages.getString("AcceleoStandardLibrary.LoadFailure"), false); //$NON-NLS-1$
 		}
 	}
 

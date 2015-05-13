@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,8 @@ package org.eclipse.acceleo.ide.ui.popupMenus;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.AcceleoNewTemplatesWizardController;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newfile.CreateTemplateData;
 import org.eclipse.acceleo.internal.ide.ui.wizards.newproject.AcceleoNewProjectWizard;
@@ -118,7 +118,7 @@ public abstract class AbstractMigrateProjectWizardAction implements IWorkbenchWi
 					}
 				}
 			} catch (CoreException e) {
-				AcceleoCommonPlugin.log(e.getStatus());
+				AcceleoLogger.log(e.getStatus());
 			}
 		}
 	}

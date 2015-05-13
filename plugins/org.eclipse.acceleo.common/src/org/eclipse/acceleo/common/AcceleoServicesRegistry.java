@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 Obeo.
+ * Copyright (c) 2009, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.acceleo.common.utils.CompactLinkedHashSet;
 import org.eclipse.emf.common.EMFPlugin;
@@ -138,7 +139,7 @@ public final class AcceleoServicesRegistry {
 					registeredServices.add(clazz);
 				}
 			} catch (ClassNotFoundException e) {
-				AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+				AcceleoLogger.log(AcceleoCommonMessages.getString(
 						"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
 			}
 		}
@@ -206,7 +207,7 @@ public final class AcceleoServicesRegistry {
 				}
 			} catch (ClassNotFoundException e) {
 				if (!EMFPlugin.IS_ECLIPSE_RUNNING) {
-					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(
+					AcceleoLogger.log(AcceleoCommonMessages.getString(
 							"AcceleoServicesRegistry.ClassLookupFailure", qualifiedName), e, true); //$NON-NLS-1$
 				}
 			}
@@ -234,10 +235,10 @@ public final class AcceleoServicesRegistry {
 					serviceInstance = serviceClass.newInstance();
 					serviceInstances.put(serviceClass, serviceInstance);
 				} catch (InstantiationException e) {
-					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
+					AcceleoLogger.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
 							serviceClass.getName()), e, false);
 				} catch (IllegalAccessException e) {
-					AcceleoCommonPlugin.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
+					AcceleoLogger.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
 							serviceClass.getName()), e, false);
 				}
 			}

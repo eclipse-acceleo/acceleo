@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2012 Obeo.
+ * Copyright (c) 2006, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,15 +53,15 @@ public class MessagesTest {
 	 * These two are valid, parameterisable keys. See
 	 * org.eclipse.acceleo.common.acceleocommonmessages.properties.
 	 */
-	private final String[] parameterisableKeys = {"BundleClassLookupFailure",
-			"AcceleoCommonPlugin.MissingHandle", "WorkspaceUtil.InstallationFailure", };
+	private final String[] parameterisableKeys = {"BundleClassLookupFailure", "AcceleoLogger.MissingHandle",
+			"WorkspaceUtil.InstallationFailure", };
 
 	/**
 	 * These are valid, un-parameterisable keys. See
 	 * org.eclipse.acceleo.common.acceleocommonmessages.properties.
 	 */
-	private final String[] validKeys = {"AcceleoCommonPlugin.ElementNotFound",
-			"AcceleoCommonPlugin.LogNullStatus", "ModelUtils.NullPath", "AcceleoStandardLibrary.LoadFailure", };
+	private final String[] validKeys = {"AcceleoLogger.ElementNotFound", "AcceleoLogger.LogNullStatus",
+			"ModelUtils.NullPath", "AcceleoStandardLibrary.LoadFailure", };
 
 	/**
 	 * Tests {@link AcceleoCommonMessages#getString(String, Object...)} with an invalid key. Expects the

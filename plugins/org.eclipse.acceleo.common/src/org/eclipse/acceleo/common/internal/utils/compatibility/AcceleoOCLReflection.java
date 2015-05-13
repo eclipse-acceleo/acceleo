@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-import org.eclipse.acceleo.common.AcceleoCommonPlugin;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.utils.CompactHashSet;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.ocl.ecore.EcoreEnvironment;
@@ -70,17 +70,17 @@ public class AcceleoOCLReflection {
 				try {
 					oclInvalidMethod = stdLib.getClass().getMethod(methodName);
 				} catch (NoSuchMethodException e) {
-					AcceleoCommonPlugin.log(e, true);
+					AcceleoLogger.log(e, true);
 				}
 			}
 			try {
 				invalid = oclInvalidMethod.invoke(stdLib);
 			} catch (InvocationTargetException e) {
 				// cannot happen
-				AcceleoCommonPlugin.log(e, true);
+				AcceleoLogger.log(e, true);
 			} catch (IllegalAccessException e) {
 				// We know this method is public
-				AcceleoCommonPlugin.log(e, true);
+				AcceleoLogger.log(e, true);
 			}
 		}
 		return invalid;
@@ -103,13 +103,13 @@ public class AcceleoOCLReflection {
 				oclInvalid = (EClassifier)method.invoke(stdLib);
 			} catch (NoSuchMethodException e) {
 				// Shouldn't happen
-				AcceleoCommonPlugin.log(e, true);
+				AcceleoLogger.log(e, true);
 			} catch (InvocationTargetException e) {
 				// cannot happen
-				AcceleoCommonPlugin.log(e, true);
+				AcceleoLogger.log(e, true);
 			} catch (IllegalAccessException e) {
 				// We know this method is public
-				AcceleoCommonPlugin.log(e, true);
+				AcceleoLogger.log(e, true);
 			}
 		}
 		return oclInvalid;

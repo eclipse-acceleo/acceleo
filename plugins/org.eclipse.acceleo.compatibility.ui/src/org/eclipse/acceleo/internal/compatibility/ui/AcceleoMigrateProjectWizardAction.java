@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 Obeo.
+ * Copyright (c) 2008, 2015 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.common.AcceleoCommonPlugin;
 import org.eclipse.acceleo.common.IAcceleoConstants;
+import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.utils.ModelUtils;
 import org.eclipse.acceleo.compatibility.model.mt.Resource;
 import org.eclipse.acceleo.compatibility.model.mt.ResourceSet;
@@ -75,7 +76,7 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 				message.append("\n\n"); //$NON-NLS-1$
 			}
 			Status status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, message.toString());
-			AcceleoCommonPlugin.log(status);
+			AcceleoLogger.log(status);
 		}
 	}
 
@@ -111,11 +112,11 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 				try {
 					generateMTLWithProgress(baseFolder, mainTemplate, monitor);
 				} catch (CoreException e) {
-					AcceleoCommonPlugin.log(e.getStatus());
+					AcceleoLogger.log(e.getStatus());
 				} catch (IOException e) {
 					Status status = new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, e.getMessage()
 							.toString(), e);
-					AcceleoCommonPlugin.log(status);
+					AcceleoLogger.log(status);
 				}
 			}
 		};
