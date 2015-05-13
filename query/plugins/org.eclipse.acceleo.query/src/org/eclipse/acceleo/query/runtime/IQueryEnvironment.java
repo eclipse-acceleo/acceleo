@@ -56,7 +56,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * @return <code>true</code> if the given {@link Class} is already registered, <code>false</code>
 	 *         otherwise
 	 */
-	boolean isRegiteredServicePackage(Class<?> services);
+	boolean isRegisteredServicePackage(Class<?> services);
 
 	/**
 	 * Removes the given {@link Class} from registered the service package.

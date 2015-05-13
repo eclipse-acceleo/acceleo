@@ -86,7 +86,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	}
 
 	@Override
-	public boolean isRegiteredServicePackage(Class<?> cls) {
+	public boolean isRegisteredServicePackage(Class<?> cls) {
 		return lookupEngine.isRegisteredService(cls);
 	}
 
