@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.runtime.test;
 import java.util.HashMap;
 
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
@@ -53,7 +54,7 @@ public class EvaluationServiceStatusTests {
 
 	@Before
 	public void setup() {
-		queryEnvironment = new QueryEnvironment(null);
+		queryEnvironment = (QueryEnvironment)Query.newEnvironmentWithDefaultServices(null);
 		engine = queryEnvironment.getLookupEngine();
 		try {
 			engine.registerServices(TestServiceDefinition.class);

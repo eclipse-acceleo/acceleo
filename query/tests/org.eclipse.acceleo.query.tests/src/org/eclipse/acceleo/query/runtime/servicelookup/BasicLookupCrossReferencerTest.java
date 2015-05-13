@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
-import java.util.logging.Logger;
-
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -32,10 +30,9 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 
 	@Before
 	public void setup() {
-		Logger logger = Logger.getLogger("BasicLookupCrossReferenceTest");
 		EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 
-		IQueryEnvironment queryEnvironment = getQueryEnvironnementWithCrossReferencer(eClass, logger);
+		IQueryEnvironment queryEnvironment = getQueryEnvironnementWithCrossReferencer(eClass);
 		engine = queryEnvironment.getLookupEngine();
 		try {
 			queryEnvironment.registerServicePackage(CrossReferencerClass.class);

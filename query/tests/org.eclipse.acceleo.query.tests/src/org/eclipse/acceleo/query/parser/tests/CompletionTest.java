@@ -20,9 +20,9 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
@@ -55,7 +55,7 @@ public class CompletionTest {
 
 	@Before
 	public void setup() throws InvalidAcceleoPackageException {
-		queryEnvironment = new QueryEnvironment(null);
+		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		engine = new QueryCompletionEngine(queryEnvironment);

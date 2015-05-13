@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Conditional;
@@ -30,10 +29,10 @@ import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
@@ -124,8 +123,8 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Before
 	public void setup() {
-		IQueryEnvironment environment = new QueryEnvironment(
-				createEInverseCrossreferencer(EcorePackage.eINSTANCE), Logger.getLogger("AstEvaluatorTest"));
+		IQueryEnvironment environment = Query
+				.newEnvironmentWithDefaultServices(createEInverseCrossreferencer(EcorePackage.eINSTANCE));
 		evaluator = new AstEvaluator(environment);
 	}
 

@@ -39,8 +39,8 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
@@ -57,7 +57,7 @@ public class BuildTest {
 
 	@Before
 	public void setup() throws InvalidAcceleoPackageException {
-		queryEnvironment = new QueryEnvironment(null);
+		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		engine = new QueryBuilderEngine(queryEnvironment);

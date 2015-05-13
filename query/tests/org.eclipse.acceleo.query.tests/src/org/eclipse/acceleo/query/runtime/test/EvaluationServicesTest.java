@@ -28,10 +28,11 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -65,7 +66,7 @@ public class EvaluationServicesTest {
 
 	ScopedEnvironment variables = new ScopedEnvironment();
 
-	QueryEnvironment queryEnvironment;
+	IQueryEnvironment queryEnvironment;
 
 	ILookupEngine engine;
 
@@ -77,7 +78,7 @@ public class EvaluationServicesTest {
 
 	@Before
 	public void setup() throws InvalidAcceleoPackageException {
-		queryEnvironment = new QueryEnvironment(null);
+		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerServicePackage(TestServiceDefinition.class);
 		variables.pushScope(new HashMap<String, Object>());
 		variables.defineVariable("x", 1);

@@ -25,9 +25,9 @@ import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
@@ -71,7 +71,7 @@ public class LookupEngineTest {
 	private static class TestBasicLookupEngine extends BasicLookupEngine implements ITestLookupEngine {
 
 		public TestBasicLookupEngine(CrossReferenceProvider crossReferencer) {
-			super(new QueryEnvironment(crossReferencer), crossReferencer);
+			super(Query.newEnvironmentWithDefaultServices(crossReferencer), crossReferencer);
 		}
 
 		@Override
@@ -89,7 +89,7 @@ public class LookupEngineTest {
 	private static class TestCacheLookupEngine extends CacheLookupEngine implements ITestLookupEngine {
 
 		public TestCacheLookupEngine(CrossReferenceProvider crossReferencer) {
-			super(new QueryEnvironment(crossReferencer), crossReferencer);
+			super(Query.newEnvironmentWithDefaultServices(crossReferencer), crossReferencer);
 		}
 
 		@Override
@@ -802,8 +802,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final Method isCrossReferencerMethod = LookupEngineTest.class
-				.getMethod("isCrossReferencerMethod");
+		final Method isCrossReferencerMethod = LookupEngineTest.class.getMethod("isCrossReferencerMethod");
 		assertFalse(engine.isCrossReferencerMethod(isCrossReferencerMethod));
 
 		final Method setCrossReferencer = TestServices1.class.getMethod("setCrossReferencer",

@@ -12,12 +12,11 @@ package org.eclipse.acceleo.query.services.tests;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -34,11 +33,9 @@ public class AbstractEngineInitializationWithCrossReferencer {
 	public AbstractEngineInitializationWithCrossReferencer() {
 	}
 
-	public IQueryEnvironment getQueryEnvironnementWithCrossReferencer(EObject eObject, Logger logger) {
+	public IQueryEnvironment getQueryEnvironnementWithCrossReferencer(EObject eObject) {
 		CrossReferenceProvider crossReferencer = createEInverseCrossreferencer(eObject);
-		QueryEnvironment queryEnvironment = new QueryEnvironment(crossReferencer, logger);
-
-		return queryEnvironment;
+		return Query.newEnvironmentWithDefaultServices(crossReferencer);
 	}
 
 	/**

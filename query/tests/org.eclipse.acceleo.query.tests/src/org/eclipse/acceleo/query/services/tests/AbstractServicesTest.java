@@ -17,7 +17,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
+import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public abstract class AbstractServicesTest {
 
 	@Before
 	public void before() throws Exception {
-		queryEnvironment = new QueryEnvironment(null);
+		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		this.lookupEngine = queryEnvironment.getLookupEngine();
 		validationServices = new ValidationServices(queryEnvironment);
 	}

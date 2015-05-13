@@ -91,7 +91,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public AcceleoQueryInterpreter(Query q) {
 		expressionToEvaluate = stripQuery(q.getExpression());
 		startingPoint = q.getStartingPoint().getTarget();
-		queryEnvironment = getQueryEnvironnementWithCrossReferencer(startingPoint, logger);
+		queryEnvironment = getQueryEnvironnementWithCrossReferencer(startingPoint);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(UMLPackage.eINSTANCE);
