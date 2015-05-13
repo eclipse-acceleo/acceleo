@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * An {@link EClassifier} {@link ICompletionProposal}.
@@ -75,4 +76,27 @@ public class EClassifierCompletionProposal implements ICompletionProposal {
 		return getProposal();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		StringBuffer result = new StringBuffer();
+		result.append(eClassifier.eClass().getName());
+		result.append(" named ");
+		result.append(eClassifier.getName());
+		result.append(" in ");
+		result.append(eClassifier.getEPackage().getNsPrefix());
+		result.append('(');
+		result.append(eClassifier.getEPackage().getNsURI());
+		result.append(')');
+		String doc = EcoreUtil.getDocumentation(eClassifier);
+		if (doc != null) {
+			result.append('\n');
+			result.append(doc);
+		}
+		return result.toString();
+	}
 }

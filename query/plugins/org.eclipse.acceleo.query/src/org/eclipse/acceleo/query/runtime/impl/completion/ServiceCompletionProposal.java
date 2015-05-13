@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.emf.ecore.EClass;
 
 /**
  * An {@link IService} proposal.
@@ -87,6 +88,36 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	@Override
 	public String toString() {
 		return getProposal();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		StringBuffer result = new StringBuffer();
+		result.append("Service ");
+		result.append(service.getServiceMethod().getName()).append('(');
+		boolean first = true;
+		for (Object argType : service.getServiceMethod().getParameterTypes()) {
+			if (!first) {
+				result.append(", ");
+			} else {
+				first = false;
+			}
+			if (argType instanceof Class<?>) {
+				result.append(((Class<?>)argType).getCanonicalName());
+			} else if (argType instanceof EClass) {
+				result.append("EClass=" + ((EClass)argType).getName());
+			} else {
+				// should not happen
+				result.append("Object=" + argType.toString());
+			}
+		}
+		result.append(')');
+		return result.toString();
 	}
 
 }

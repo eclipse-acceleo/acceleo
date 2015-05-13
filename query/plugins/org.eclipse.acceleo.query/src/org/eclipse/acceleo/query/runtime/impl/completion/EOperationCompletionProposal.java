@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * An {@link EOperation} {@link ICompletionProposal}.
@@ -73,6 +74,30 @@ public class EOperationCompletionProposal implements ICompletionProposal {
 	@Override
 	public String toString() {
 		return getProposal();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		StringBuffer result = new StringBuffer();
+		result.append(eOperation.eClass().getName());
+		result.append(" named ");
+		result.append(eOperation.getName());
+		result.append(" in ");
+		result.append(eOperation.getEContainingClass().getName());
+		result.append('(');
+		result.append(eOperation.getEContainingClass().getEPackage().getNsURI());
+		result.append(')');
+		String doc = EcoreUtil.getDocumentation(eOperation);
+		if (doc != null) {
+			result.append('\n');
+			result.append(doc);
+		}
+		return result.toString();
 	}
 
 }

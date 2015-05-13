@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * An {@link EEnumLiteral} {@link ICompletionProposal}.
@@ -74,6 +75,31 @@ public class EEnumLiteralCompletionProposal implements ICompletionProposal {
 	@Override
 	public String toString() {
 		return getProposal();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		StringBuffer result = new StringBuffer();
+		result.append(literal.eClass().getName());
+		result.append(" named ");
+		result.append(literal.getName());
+		result.append(" in ");
+		result.append(literal.getEEnum().getName());
+		result.append('(');
+		result.append(literal.getEEnum().getEPackage().getNsURI());
+		result.append(')');
+		String doc = EcoreUtil.getDocumentation(literal);
+		if (doc != null) {
+			result.append('\n');
+			result.append(doc);
+		}
+		return result.toString();
+
 	}
 
 }

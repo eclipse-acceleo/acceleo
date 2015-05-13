@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
  * An {@link EStructuralFeature} proposal.
@@ -73,6 +74,30 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 	@Override
 	public String toString() {
 		return getProposal();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		StringBuffer result = new StringBuffer();
+		result.append(feature.eClass().getName());
+		result.append(" named ");
+		result.append(feature.getName());
+		result.append(" in ");
+		result.append(feature.getEContainingClass().getName());
+		result.append('(');
+		result.append(feature.getEContainingClass().getEPackage().getNsURI());
+		result.append(')');
+		String doc = EcoreUtil.getDocumentation(feature);
+		if (doc != null) {
+			result.append('\n');
+			result.append(doc);
+		}
+		return result.toString();
 	}
 
 }

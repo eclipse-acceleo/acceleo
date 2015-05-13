@@ -38,4 +38,11 @@ public interface ICompletionProposal {
 	 */
 	Object getObject();
 
+	/**
+	 * Return a description that describes this proposal.
+	 * 
+	 * @return a description that describes this proposal.
+	 */
+	String getDescription();
+
 }

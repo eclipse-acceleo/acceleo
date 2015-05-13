@@ -129,4 +129,14 @@ public class VariableDeclarationCompletionProposal implements ICompletionProposa
 		return resultString;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return toString();
+	}
+
 }
