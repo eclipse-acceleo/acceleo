@@ -51,15 +51,6 @@ import org.eclipse.emf.common.util.Diagnostic;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstEvaluator extends AstSwitch<Object> {
-	/**
-	 * Service named "or"
-	 */
-	private static final String OR = "or";
-
-	/**
-	 * Service named "and"
-	 */
-	private static final String AND = "and";
 
 	/**
 	 * Message used to report bad predicate typing runtime detection.
@@ -192,11 +183,11 @@ public class AstEvaluator extends AstSwitch<Object> {
 	public Object caseCall(Call object) {
 		boolean shouldShortcut = false;
 		Boolean shortcutReturnValue = null;
-		if (AND.equals(object.getServiceName())) {
+		if (AstBuilderListener.AND_SERVICE_NAME.equals(object.getServiceName())) {
 			shouldShortcut = true;
 			shortcutReturnValue = Boolean.FALSE;
 		}
-		if (OR.equals(object.getServiceName())) {
+		if (AstBuilderListener.OR_SERVICE_NAME.equals(object.getServiceName())) {
 			shouldShortcut = true;
 			shortcutReturnValue = Boolean.TRUE;
 		}
