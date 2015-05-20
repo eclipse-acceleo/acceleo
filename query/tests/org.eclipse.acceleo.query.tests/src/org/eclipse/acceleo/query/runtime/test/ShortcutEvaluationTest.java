@@ -90,10 +90,28 @@ public class ShortcutEvaluationTest {
 	}
 
 	@Test
-	public void orPrematureStopWhenFalse() {
+	public void orNoStopWhenFalse() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.FALSE, evaluator.eval(
-				parser.build("self.checkAlwaysFalse() and self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(
+				parser.build("self.checkAlwaysFalse() or self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(2, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
+	}
+
+	@Test
+	public void impliesPrematureStopWhenFalse() {
+		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(
+				parser.build("self.checkAlwaysFalse() implies self.checkAlwaysTrue()"), variables)
+				.getResult());
 		assertEquals(1, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 	}
+
+	@Test
+	public void impliesNoStopWhenTrue() {
+		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(
+				parser.build("self.checkAlwaysTrue() implies self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(2, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
+	}
+
 }

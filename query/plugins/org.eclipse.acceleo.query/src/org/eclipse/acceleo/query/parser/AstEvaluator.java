@@ -181,28 +181,24 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseCall(Call object) {
-		boolean shouldShortcut = false;
-		Boolean shortcutReturnValue = null;
-		if (AstBuilderListener.AND_SERVICE_NAME.equals(object.getServiceName())) {
-			shouldShortcut = true;
-			shortcutReturnValue = Boolean.FALSE;
-		}
-		if (AstBuilderListener.OR_SERVICE_NAME.equals(object.getServiceName())) {
-			shouldShortcut = true;
-			shortcutReturnValue = Boolean.TRUE;
-		}
 		List<Expression> exprArgs = object.getArguments();
 		Object result = null;
-		int argc = exprArgs.size();
-		Object[] args = new Object[argc];
-		int i = 0;
-		// eval arguments.
-		while (result == null && i < argc) {
+		final int argc = exprArgs.size();
+		final Object[] args = new Object[argc];
+		if (argc > 0) {
+			int i = 0;
 			args[i] = doSwitch(exprArgs.get(i));
-			if (shouldShortcut && args[i] != null && args[i].equals(shortcutReturnValue)) {
-				result = shortcutReturnValue;
+			if (args[i] != null && args[i].getClass() == Boolean.class) {
+				result = booleanShortcut(object.getServiceName(), (Boolean)args[i]);
 			}
-			i++;
+			if (result == null) {
+				i++; // go to the second argument
+				// eval remaining arguments.
+				while (i < argc) {
+					args[i] = doSwitch(exprArgs.get(i));
+					i++;
+				}
+			}
 		}
 		if (result == null) {
 			// call the service.
@@ -219,6 +215,41 @@ public class AstEvaluator extends AstSwitch<Object> {
 				default:
 					throw new UnsupportedOperationException("should never happen");
 			}
+		}
+		return result;
+	}
+
+	/**
+	 * Tries to apply a shortcut for boolean operator (or, and, implies).
+	 * 
+	 * @param serviceName
+	 *            the service name
+	 * @param firstArg
+	 *            the first argument value
+	 * @return the {@link Boolean} result of the shortcut is any found, <code>null</code> otherwise
+	 */
+	private Boolean booleanShortcut(String serviceName, Boolean firstArg) {
+		final Boolean result;
+		if (AstBuilderListener.AND_SERVICE_NAME.equals(serviceName)) {
+			if (Boolean.FALSE.equals(firstArg)) {
+				result = Boolean.FALSE;
+			} else {
+				result = null;
+			}
+		} else if (AstBuilderListener.OR_SERVICE_NAME.equals(serviceName)) {
+			if (Boolean.TRUE.equals(firstArg)) {
+				result = Boolean.TRUE;
+			} else {
+				result = null;
+			}
+		} else if (AstBuilderListener.IMPLIES_SERVICE_NAME.equals(serviceName)) {
+			if (Boolean.FALSE.equals(firstArg)) {
+				result = Boolean.TRUE;
+			} else {
+				result = null;
+			}
+		} else {
+			result = null;
 		}
 		return result;
 	}
