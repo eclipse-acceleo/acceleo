@@ -36,10 +36,10 @@ public class StringServices {
 	 *            the "self" string from which we concatenate the string "b".
 	 * @param b
 	 *            the string that will be concatenated to the string "self".
-	 * @return The concatenated String. Throws NullPointerException if "self" or "b" is null.
+	 * @return The concatenated String.
 	 */
 	public String concat(String self, String b) {
-		return self + b;
+		return Strings.nullToEmpty(self) + Strings.nullToEmpty(b);
 	}
 
 	/**
@@ -103,11 +103,10 @@ public class StringServices {
 	 *            the "self" string that will be append at the end of the given prefix.
 	 * @param prefix
 	 *            the string prefix that will be append at the beginning of the self string.
-	 * @return the self String prefixed by the String given as argument. Throws NullPointerException if "self"
-	 *         or "b" is null.
+	 * @return the self String prefixed by the String given as argument.
 	 */
 	public String prefix(String self, String prefix) {
-		return prefix + self;
+		return Strings.nullToEmpty(prefix) + Strings.nullToEmpty(self);
 	}
 
 	/**

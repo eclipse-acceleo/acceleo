@@ -53,10 +53,9 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals("" + "a", stringServices.concat("", "a"));
 		assertEquals("aa" + "bb", stringServices.concat("aa", "bb"));
 
-		assertEquals(null + "bb", stringServices.concat(null, "bb"));
-		assertEquals("aa" + null, stringServices.concat("aa", null));
-		String a = null;
-		assertEquals(a + null, stringServices.concat(null, null));
+		assertEquals("bb", stringServices.concat(null, "bb"));
+		assertEquals("aa", stringServices.concat("aa", null));
+		assertEquals("", stringServices.concat(null, null));
 	}
 
 	@Test
@@ -68,10 +67,9 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals("a" + "", stringServices.prefix("", "a"));
 		assertEquals("bbaa", stringServices.prefix("aa", "bb"));
 
-		assertEquals("bb" + null, stringServices.prefix(null, "bb"));
-		assertEquals(null + "aa", stringServices.prefix("aa", null));
-		String a = null;
-		assertEquals(a + null, stringServices.prefix(null, null));
+		assertEquals("bb", stringServices.prefix(null, "bb"));
+		assertEquals("aa", stringServices.prefix("aa", null));
+		assertEquals("", stringServices.prefix(null, null));
 	}
 
 	@Test

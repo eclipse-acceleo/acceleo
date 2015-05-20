@@ -136,7 +136,15 @@ public class AnyServices extends AbstractServiceProvider {
 	 * @return The string representation of self for which we added the string "s".
 	 */
 	public String add(Object self, String s) {
-		return toString(self) + toString(s);
+		final String result;
+
+		if (s == null) {
+			result = toString(self);
+		} else {
+			result = toString(self) + s;
+		}
+
+		return result;
 	}
 
 	/**
@@ -149,7 +157,15 @@ public class AnyServices extends AbstractServiceProvider {
 	 * @return The string representation of self for which we added the string "s".
 	 */
 	public String add(String self, Object any) {
-		return toString(self) + toString(any);
+		final String result;
+
+		if (self == null) {
+			result = toString(any);
+		} else {
+			result = self + toString(any);
+		}
+
+		return result;
 	}
 
 	/**
