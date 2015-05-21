@@ -83,6 +83,14 @@ public class ResourceServices extends AbstractServiceProvider {
 		return uri.fileExtension();
 	}
 
+	public Boolean isPlatformResource(URI uri) {
+		return uri.isPlatformResource();
+	}
+
+	public Boolean isPlatformPlugin(URI uri) {
+		return uri.isPlatformPlugin();
+	}
+
 	/**
 	 * Resource#getContents {@link IService}.
 	 * 

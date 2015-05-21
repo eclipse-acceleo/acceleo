@@ -185,4 +185,28 @@ public class ResourceServicesTest extends AbstractEngineInitializationWithCrossR
 		URI fragmentURI = umlFragment.getURI();
 		assertEquals("uml", resourceServices.fileExtension(fragmentURI));
 	}
+
+	@Test
+	public void testIsPlatformResource() {
+		URI typoUri = URI.createURI("platform:/ressource/typo");
+		assertFalse(resourceServices.isPlatformResource(typoUri));
+
+		URI fileUri = URI.createURI("file://absolute/uri");
+		assertFalse(resourceServices.isPlatformResource(fileUri));
+
+		URI goodURI = URI.createURI("platform:/resource/good/one");
+		assertTrue(resourceServices.isPlatformResource(goodURI));
+	}
+
+	@Test
+	public void testIsPlatformPlugin() {
+		URI typoUri = URI.createURI("platform:/plug-in/typo");
+		assertFalse(resourceServices.isPlatformPlugin(typoUri));
+
+		URI fileUri = URI.createURI("file://absolute/uri");
+		assertFalse(resourceServices.isPlatformPlugin(fileUri));
+
+		URI goodURI = URI.createURI("platform:/plugin/good/one");
+		assertTrue(resourceServices.isPlatformPlugin(goodURI));
+	}
 }

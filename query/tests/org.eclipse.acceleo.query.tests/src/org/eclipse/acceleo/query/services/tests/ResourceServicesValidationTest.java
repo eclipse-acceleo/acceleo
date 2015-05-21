@@ -215,4 +215,62 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
 		}
 	}
+
+	@Test
+	public void testIsPlatformResource() {
+		final IService service = serviceLookUp("isPlatformResource", new Object[] {URI.createFileURI("") });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBooleanObject()), it.next());
+			assertFalse(it.hasNext());
+
+			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+			allTypes.put(argTypes, types);
+			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+			assertEquals(1, types.size());
+			it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBooleanObject()), it.next());
+			assertFalse(it.hasNext());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIsPlatformPlugin() {
+		final IService service = serviceLookUp("isPlatformPlugin", new Object[] {URI.createFileURI("") });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new ClassType(getQueryEnvironment(), URI.class));
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			assertEquals(1, types.size());
+			Iterator<IType> it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBooleanObject()), it.next());
+			assertFalse(it.hasNext());
+
+			final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+			allTypes.put(argTypes, types);
+			types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+			assertEquals(1, types.size());
+			it = types.iterator();
+			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
+					.getEBooleanObject()), it.next());
+			assertFalse(it.hasNext());
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+		}
+	}
 }
