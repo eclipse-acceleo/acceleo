@@ -17,6 +17,7 @@ import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
 
@@ -52,6 +53,7 @@ public final class Query {
 			env.registerServicePackage(StringServices.class);
 			env.registerServicePackage(BooleanServices.class);
 			env.registerServicePackage(CollectionServices.class);
+			env.registerServicePackage(ResourceServices.class);
 		} catch (InvalidAcceleoPackageException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

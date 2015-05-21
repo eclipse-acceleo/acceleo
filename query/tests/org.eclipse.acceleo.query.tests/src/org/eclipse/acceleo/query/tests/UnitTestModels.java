@@ -44,6 +44,11 @@ public class UnitTestModels {
 		return loadResource(localPath);
 	}
 
+	public Resource umlWithFragment() throws URISyntaxException, IOException {
+		String localPath = "fragmented/container.uml";
+		return loadResource(localPath);
+	}
+
 	private Resource loadResource(String localPath) throws URISyntaxException, IOException {
 		set = setup.newConfiguredResourceSet();
 		URL url = this.getClass().getClassLoader().getResource(localPath);
