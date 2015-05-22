@@ -51,7 +51,6 @@ import org.eclipse.emf.common.util.Diagnostic;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstEvaluator extends AstSwitch<Object> {
-
 	/**
 	 * Message used to report bad predicate typing runtime detection.
 	 */

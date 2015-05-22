@@ -18,17 +18,19 @@ import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
  * @author <a href="mailto:cedric.brun@obeo.fr">Cedric Brun</a>
  */
 public final class QueryValidation {
-
+	/** Hides the default constructor. */
 	private QueryValidation() {
-
+		// Shouldn't be instantiated.
 	}
 
 	/**
-	 * Create a new {@link IQueryValidationEngine} suitable for validating and analyzing parsed expressions.
+	 * Create a new {@link IQueryValidationEngine} suitable for validating and analyzing
+	 * {@link IQueryBuilderEngine#build(String) parsed} expressions.
 	 * 
 	 * @param environment
 	 *            the environment to use.
-	 * @return a new {@link IQueryValidationEngine} suitable for validating and analyzing parsed expressions.
+	 * @return a new {@link IQueryValidationEngine} suitable for validating and analyzing
+	 *         {@link IQueryBuilderEngine#build(String) parsed} expressions.
 	 */
 	public static IQueryValidationEngine newEngine(IQueryEnvironment environment) {
 		return new QueryValidationEngine(environment);

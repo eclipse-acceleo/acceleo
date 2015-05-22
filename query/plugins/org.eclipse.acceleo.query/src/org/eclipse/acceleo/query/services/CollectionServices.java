@@ -1803,6 +1803,8 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * Creates a {@link Set} with elements from the given {@link Set} that are also present in the given
 	 * {@link Collection}.
 	 * 
+	 * @param <T>
+	 *            Type of the sets' elements.
 	 * @param set1
 	 *            the {@link Set}
 	 * @param collection
@@ -1825,6 +1827,8 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * from the first list will all be kept in the result if they also are in the second one, but duplicates
 	 * from the second list will be dumped even if they are present in the first.
 	 * 
+	 * @param <T>
+	 *            Type of the collections' elements.
 	 * @param list1
 	 *            the first {@link List}
 	 * @param collection

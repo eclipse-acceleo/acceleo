@@ -27,9 +27,9 @@ import org.eclipse.acceleo.query.services.XPathServices;
  * @author <a href="mailto:cedric.brun@obeo.fr">Cedric Brun</a>
  */
 public final class Query {
-
+	/** Hides the default constructor. */
 	private Query() {
-
+		// Shouldn't be instantiated.
 	}
 
 	/**

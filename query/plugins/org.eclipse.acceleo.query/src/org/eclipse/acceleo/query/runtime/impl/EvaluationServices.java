@@ -568,6 +568,16 @@ public class EvaluationServices extends AbstractLanguageServices {
 		return builder.append(')').toString();
 	}
 
+	/**
+	 * Adds a child to the given diagnostic chain with the information from that Nothing instance.
+	 * 
+	 * @param chain
+	 *            The parent chain.
+	 * @param severity
+	 *            Severity to give that issue.
+	 * @param nothing
+	 *            The nothing we've obtained as a result of an evaluation failure.
+	 */
 	private void addDiagnosticFor(Diagnostic chain, int severity, Nothing nothing) {
 		if (chain instanceof DiagnosticChain) {
 			Diagnostic child = new BasicDiagnostic(severity, "org.eclipse.acceleo.query", 0, nothing

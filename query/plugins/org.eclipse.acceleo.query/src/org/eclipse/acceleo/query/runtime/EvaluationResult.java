@@ -18,16 +18,29 @@ import org.eclipse.emf.common.util.Diagnostic;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class EvaluationResult {
+	/** The actual result of this evaluation. */
 	private final Object result;
 
+	/** Diagnostic of the evaluation. */
 	private final Diagnostic diagnostic;
 
+	/**
+	 * Creates an evaluation result given the actual Object result of said evaluation, and the diagnostic to
+	 * associate to it.
+	 * 
+	 * @param result
+	 *            The actual result of this evaluation.
+	 * @param diagnostic
+	 *            Diagnostic of the evaluation.
+	 */
 	public EvaluationResult(Object result, Diagnostic diagnostic) {
 		this.result = result;
 		this.diagnostic = diagnostic;
 	}
 
 	/**
+	 * Returns the actual evaluation result.
+	 * 
 	 * @return the actual evaluation result.
 	 */
 	public Object getResult() {
@@ -35,6 +48,8 @@ public class EvaluationResult {
 	}
 
 	/**
+	 * Returns the status of this evaluation.
+	 * 
 	 * @return the status of this evaluation.
 	 */
 	public Diagnostic getDiagnostic() {

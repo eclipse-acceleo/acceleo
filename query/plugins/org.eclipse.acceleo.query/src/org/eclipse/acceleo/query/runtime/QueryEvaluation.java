@@ -18,17 +18,20 @@ import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
  * @author <a href="mailto:cedric.brun@obeo.fr">Cedric Brun</a>
  */
 public final class QueryEvaluation {
-
+	/** Hides the default constructor. */
 	private QueryEvaluation() {
-
+		// Shouldn't be instantiated.
 	}
 
 	/**
-	 * Create a new {@link IQueryEvaluationEngine} suitable for evaluating parsed expressions.
+	 * Create a new {@link IQueryEvaluationEngine} suitable for evaluating
+	 * {@link IQueryBuilderEngine#build(String) parsed} expressions into the given {@link IQuery Environment}.
 	 * 
 	 * @param environment
-	 *            the environment to use during evaluation.
-	 * @return a new {@link IQueryEvaluationEngine} suitable for evaluating parsed expressions.
+	 *            the {@link IQueryEnvironment} to use during evaluation.
+	 * @return a new {@link IQueryEvaluationEngine} suitable for evaluating
+	 *         {@link IQueryBuilderEngine#build(String) parsed} expressions into the given
+	 *         {@link IQueryEnvironment}.
 	 */
 	public static IQueryEvaluationEngine newEngine(IQueryEnvironment environment) {
 		return new QueryEvaluationEngine(environment);

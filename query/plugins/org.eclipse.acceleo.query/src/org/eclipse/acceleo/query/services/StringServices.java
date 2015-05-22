@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import com.google.common.base.Strings;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,16 +49,10 @@ public class StringServices {
 	 *            the self string from which we concatenate the string "b".
 	 * @param b
 	 *            the string that will be concatenated to the string "a".
-	 * @return The concatenated String. Throws NullPointerException if "a" or "b" is null.
+	 * @return The concatenated String.
 	 */
 	public String add(String a, String b) {
-		if (a == null) {
-			a = "";
-		}
-		if (b == null) {
-			b = "";
-		}
-		return a + b;
+		return Strings.nullToEmpty(a) + Strings.nullToEmpty(b);
 	}
 
 	/**

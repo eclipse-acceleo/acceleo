@@ -110,7 +110,6 @@ import org.eclipse.acceleo.query.parser.QueryParser.XorContext;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 
@@ -136,7 +135,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	public static final String NOT_OPERATOR = "not";
 
 	/**
-	 * <code>not<code> operator.
+	 * <code>let<code> operator.
 	 */
 	public static final String LET_OPERATOR = "let";
 
@@ -1227,7 +1226,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		final String serviceName = ctx.getChild(0).getText();
 		final Expression ast = pop();
 		final VariableDeclaration iterator;
-		final EvaluationServices service = new EvaluationServices(environment);
 		iterator = popVariableDeclaration();
 		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));

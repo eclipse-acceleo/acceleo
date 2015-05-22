@@ -54,18 +54,50 @@ public class ResourceServices extends AbstractServiceProvider {
 		return new Service(method, this);
 	}
 
+	/**
+	 * Returns the eResource containing the given EObject. Equivalent to a direct call to
+	 * {@link EObject#eResource()}.
+	 * 
+	 * @param eObject
+	 *            the EObject.
+	 * @return the eResource containing the given EObject.
+	 */
 	public Resource eResource(EObject eObject) {
 		return eObject.eResource();
 	}
 
+	/**
+	 * Returns the URI of the given Resource. Equivalent to a direct call to {@link Resource#getURI()}.
+	 * 
+	 * @param resource
+	 *            The resource which URI we seek.
+	 * @return The URI of the given Resource.
+	 */
 	public URI getURI(Resource resource) {
 		return resource.getURI();
 	}
 
+	/**
+	 * Returns the direct content of the given Resource. Equivalent to a direct call to
+	 * {@link Resource#getContents()}.
+	 * 
+	 * @param resource
+	 *            The resource of which to retrieve the direct contents.
+	 * @return The direct content of the given Resource.
+	 */
 	public List<EObject> getContents(Resource resource) {
 		return new ArrayList<EObject>(resource.getContents());
 	}
 
+	/**
+	 * Returns the objects of the given type from the direct content of the given Resource.
+	 * 
+	 * @param resource
+	 *            The resource from which we'll filter the content.
+	 * @param type
+	 *            the type that the returned objects must be.
+	 * @return The objects that correspond to the given type from the direct content of the given Resource.
+	 */
 	public List<EObject> getContents(Resource resource, final EClass type) {
 		return Lists.newArrayList(Iterables.filter(resource.getContents(), new Predicate<EObject>() {
 			@Override
@@ -75,18 +107,49 @@ public class ResourceServices extends AbstractServiceProvider {
 		}));
 	}
 
+	/**
+	 * Returns the last segment of the given URI. Equivalent to a direct call to {@link URI#lastSegment()}.
+	 * 
+	 * @param uri
+	 *            The URI.
+	 * @return The last segment of the given URI.
+	 */
 	public String lastSegment(URI uri) {
 		return uri.lastSegment();
 	}
 
+	/**
+	 * Returns the extension of the file referred to by the given URI. Equivalent to a direct call to
+	 * {@link URI#fileExtension()}.
+	 * 
+	 * @param uri
+	 *            The URI.
+	 * @return The extension of the file referred to by the given URI.
+	 */
 	public String fileExtension(URI uri) {
 		return uri.fileExtension();
 	}
 
+	/**
+	 * Returns <code>true</code> if the given URI is a platform resource URI. Equivalent to a direct call to
+	 * {@link URI#isPlatformResource()}.
+	 * 
+	 * @param uri
+	 *            The URI.
+	 * @return <code>true</code> if the given URI is a platform resource URI, <code>false</code> otherwise.
+	 */
 	public Boolean isPlatformResource(URI uri) {
 		return uri.isPlatformResource();
 	}
 
+	/**
+	 * Returns <code>true</code> if the given URI is a platform plugin URI. Equivalent to a direct call to
+	 * {@link URI#isPlatformPlugin()}.
+	 * 
+	 * @param uri
+	 *            The URI.
+	 * @return <code>true</code> if the given URI is a platform plugin URI, <code>false</code> otherwise.
+	 */
 	public Boolean isPlatformPlugin(URI uri) {
 		return uri.isPlatformPlugin();
 	}

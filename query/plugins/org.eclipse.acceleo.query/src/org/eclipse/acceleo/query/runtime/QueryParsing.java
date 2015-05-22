@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 
 /**
@@ -19,19 +18,19 @@ import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
  * @author <a href="mailto:cedric.brun@obeo.fr">Cedric Brun</a>
  */
 public final class QueryParsing {
-
+	/** Hides the default constructor. */
 	private QueryParsing() {
-
+		// Shouldn't be instantiated.
 	}
 
 	/**
-	 * Create a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances into
-	 * {@link AstResult}.
+	 * Create a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances into the given
+	 * {@link IQueryEnvironment}.
 	 * 
 	 * @param environment
 	 *            the query environment to use.
-	 * @return a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances into
-	 *         {@link AstResult}.
+	 * @return a new {@link IQueryBuilderEngine} suitable for parsing {@link String} instances into the given
+	 *         {@link IQueryEnvironment}.
 	 */
 	public static IQueryBuilderEngine newBuilder(IQueryEnvironment environment) {
 		return new QueryBuilderEngine(environment);

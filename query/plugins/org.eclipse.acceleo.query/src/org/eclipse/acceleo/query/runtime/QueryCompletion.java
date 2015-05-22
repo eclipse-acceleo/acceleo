@@ -22,17 +22,17 @@ import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
  * @author <a href="mailto:cedric.brun@obeo.fr">Cedric Brun</a>
  */
 public final class QueryCompletion {
-
+	/** Hides the default constructor. */
 	private QueryCompletion() {
-
+		// Shouldn't be instantiated.
 	}
 
 	/**
-	 * Create a new {@link IQueryCompletionEngine} for the given environment.
+	 * Create a new {@link IQueryCompletionEngine} for the given {@link IQueryEnvironment}.
 	 * 
 	 * @param environment
-	 *            the query environment to use.
-	 * @return a new {@link IQueryCompletionEngine} for the given environment.
+	 *            the {@link IQueryEnvironment} to use.
+	 * @return a new {@link IQueryCompletionEngine} for the given {@link IQueryEnvironment}.
 	 */
 	public static IQueryCompletionEngine newEngine(IQueryEnvironment environment) {
 		return new QueryCompletionEngine(environment);
