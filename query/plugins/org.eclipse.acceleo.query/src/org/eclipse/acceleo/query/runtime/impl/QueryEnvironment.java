@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import java.util.logging.Logger;
-
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -26,12 +24,6 @@ import org.eclipse.emf.ecore.EPackage;
  * @author @author <a href="mailto:pierre.guilet@obeo.fr">Pierre Guilet</a>
  */
 public class QueryEnvironment implements IQueryEnvironment {
-
-	/**
-	 * The logger used to report problems and information.
-	 */
-	private Logger logger;
-
 	/**
 	 * The lookupEngine to be used for this evaluator.
 	 */
@@ -52,21 +44,6 @@ public class QueryEnvironment implements IQueryEnvironment {
 	public QueryEnvironment(CrossReferenceProvider crossReferencer) {
 		ePackageProvider = new EPackageProvider();
 		lookupEngine = new BasicLookupEngine(this, crossReferencer);
-		this.logger = Logger.getLogger(this.getClass().getName());
-	}
-
-	/**
-	 * Creates a new {@link QueryEvaluationEngine} instance.
-	 * 
-	 * @param crossReferencer
-	 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in services
-	 *            needed it.
-	 * @param providedLogger
-	 *            the provided logger.
-	 */
-	public QueryEnvironment(CrossReferenceProvider crossReferencer, Logger providedLogger) {
-		this(crossReferencer);
-		this.logger = providedLogger;
 	}
 
 	@Override
@@ -120,15 +97,4 @@ public class QueryEnvironment implements IQueryEnvironment {
 	public EPackageProvider getEPackageProvider() {
 		return ePackageProvider;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#getLogger()
-	 */
-	@Override
-	public Logger getLogger() {
-		return this.logger;
-	}
-
 }

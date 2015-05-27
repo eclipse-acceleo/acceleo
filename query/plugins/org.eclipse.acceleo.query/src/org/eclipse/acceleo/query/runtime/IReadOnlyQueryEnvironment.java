@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import java.util.logging.Logger;
 
 /**
  * An IQueryEnvironment contains all informations needed to execute query.
@@ -32,12 +31,5 @@ public interface IReadOnlyQueryEnvironment {
 	 * @return the EPackageProvider providing access to registered ecore packages.
 	 */
 	IEPackageProvider getEPackageProvider();
-
-	/**
-	 * Returns the logger used to log messages in this evaluation environment.
-	 * 
-	 * @return the logger used to log messages in this evaluation environment.
-	 */
-	Logger getLogger();
 
 }
