@@ -81,7 +81,7 @@ public class BuildTest {
 	private void assertExpression(IQueryBuilderEngine.AstResult astResult,
 			Class<? extends Expression> expectedClass, int expectedStart, int expectedEnd,
 			Expression actualExpression) {
-		assertEquals(true, expectedClass.isAssignableFrom(actualExpression.getClass()));
+		assertTrue(expectedClass.isAssignableFrom(actualExpression.getClass()));
 		assertEquals(expectedStart, astResult.getStartPosition(actualExpression));
 		assertEquals(expectedEnd, astResult.getEndPosition(actualExpression));
 	}
@@ -1799,7 +1799,7 @@ public class BuildTest {
 	}
 
 	/**
-	 * Test the ast builder on a conditionnal expression
+	 * Test the ast builder on a conditional expression
 	 */
 	@Test
 	public void testConditional() {
@@ -1811,4 +1811,53 @@ public class BuildTest {
 		assertTrue(cond.getTrueBranch() instanceof IntegerLiteral);
 		assertTrue(cond.getFalseBranch() instanceof StringLiteral);
 	}
+
+	@Test
+	public void testNotPrecedenceEqual() {
+		IQueryBuilderEngine.AstResult build = engine.build("not self.name = 'self'");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 22, ast);
+		assertEquals("equals", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, Call.class, 0, 13, ((Call)ast).getArguments().get(0));
+		Call not = (Call)((Call)ast).getArguments().get(0);
+		assertEquals("not", not.getServiceName());
+		assertEquals(1, not.getArguments().size());
+	}
+
+	@Test
+	public void testBooleanOperatorsPrecedence1() {
+		IQueryBuilderEngine.AstResult build = engine.build("not a.abstract and b.abstract or c.abstract");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 43, ast);
+		assertEquals("or", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, Call.class, 0, 29, ((Call)ast).getArguments().get(0));
+		Call and = (Call)((Call)ast).getArguments().get(0);
+		assertEquals("and", and.getServiceName());
+		assertEquals(2, and.getArguments().size());
+		assertExpression(build, Call.class, 0, 14, ((Call)and).getArguments().get(0));
+		Call not = (Call)((Call)and).getArguments().get(0);
+		assertEquals("not", not.getServiceName());
+	}
+
+	@Test
+	public void testBooleanOperatorsPrecedence2() {
+		IQueryBuilderEngine.AstResult build = engine.build("a.abstract or not b.abstract and c.abstract");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 43, ast);
+		assertEquals("or", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, Call.class, 14, 43, ((Call)ast).getArguments().get(1));
+		Call and = (Call)((Call)ast).getArguments().get(1);
+		assertEquals("and", and.getServiceName());
+		assertEquals(2, and.getArguments().size());
+		assertExpression(build, Call.class, 14, 28, ((Call)and).getArguments().get(0));
+		Call not = (Call)((Call)and).getArguments().get(0);
+		assertEquals("not", not.getServiceName());
+	}
+
 }
