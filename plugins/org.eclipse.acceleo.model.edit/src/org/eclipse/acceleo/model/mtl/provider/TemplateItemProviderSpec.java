@@ -46,7 +46,8 @@ public class TemplateItemProviderSpec extends TemplateItemProvider {
 		text.append("template "); //$NON-NLS-1$
 		text.append(eTemplate.getName());
 		text.append("("); //$NON-NLS-1$
-		for (Iterator<Variable> eParameters = eTemplate.getParameter().iterator(); eParameters.hasNext();) {
+		Iterator<Variable> eParameters = eTemplate.getParameter().iterator();
+		while (eParameters.hasNext()) {
 			Variable eVariable = eParameters.next();
 			if (eVariable.getType() != null) {
 				text.append(eVariable.getType().getName());

@@ -184,9 +184,9 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			}
 		}
 
-		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
+		Iterator<AcceleoFile> iterator = iFiles.iterator();
+		while (iterator.hasNext()) {
 			AcceleoFile iFile = iterator.next();
-
 			AcceleoParserProblems problems = parser.getProblems(iFile);
 			AcceleoParserWarnings warnings = parser.getWarnings(iFile);
 			AcceleoParserInfos infos = parser.getInfos(iFile);
@@ -196,8 +196,8 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 
 			if (workspaceFile != null && workspaceFile.isAccessible()) {
 				if (problems != null) {
-					List<AcceleoParserProblem> list = problems.getList();
-					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
+					Iterator<AcceleoParserProblem> itProblems = problems.getList().iterator();
+					while (itProblems.hasNext()) {
 						AcceleoParserProblem problem = itProblems.next();
 						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.PROBLEM_MARKER_ID,
 								workspaceFile, problem.getLine(), problem.getPosBegin(), problem.getPosEnd(),
@@ -205,8 +205,8 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 					}
 				}
 				if (warnings != null) {
-					List<AcceleoParserWarning> list = warnings.getList();
-					for (Iterator<AcceleoParserWarning> itWarnings = list.iterator(); itWarnings.hasNext();) {
+					Iterator<AcceleoParserWarning> itWarnings = warnings.getList().iterator();
+					while (itWarnings.hasNext()) {
 						AcceleoParserWarning warning = itWarnings.next();
 						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.WARNING_MARKER_ID,
 								workspaceFile, warning.getLine(), warning.getPosBegin(), warning.getPosEnd(),
@@ -214,8 +214,8 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 					}
 				}
 				if (infos != null) {
-					List<AcceleoParserInfo> list = infos.getList();
-					for (Iterator<AcceleoParserInfo> itInfos = list.iterator(); itInfos.hasNext();) {
+					Iterator<AcceleoParserInfo> itInfos = infos.getList().iterator();
+					while (itInfos.hasNext()) {
 						AcceleoParserInfo info = itInfos.next();
 						AcceleoMarkerUtils.createMarkerOnFile(AcceleoMarkerUtils.INFO_MARKER_ID,
 								workspaceFile, info.getLine(), info.getPosBegin(), info.getPosEnd(), info
@@ -229,7 +229,6 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 			AcceleoFile acceleoFile = iFiles.get(0);
 			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 					new Path(acceleoFile.getMtlFile().getAbsolutePath()));
-
 			// FIXME Performance problem? We will only check for the first file to compile.
 			AcceleoSourceBuffer buffer = new AcceleoSourceBuffer(acceleoFile);
 			buffer.createCST();
@@ -238,8 +237,9 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		}
 		checkCanceled(monitor);
 		List<IFile> filesWithMainTag = new ArrayList<IFile>();
-		for (Iterator<AcceleoFile> iterator = iFiles.iterator(); iterator.hasNext();) {
-			AcceleoFile iFile = iterator.next();
+		Iterator<AcceleoFile> iFilesIterator = iFiles.iterator();
+		while (iFilesIterator.hasNext()) {
+			AcceleoFile iFile = iFilesIterator.next();
 			IFile workspaceFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
 					new Path(iFile.getMtlFile().getAbsolutePath()));
 			if (workspaceFile != null && workspaceFile.isAccessible() && hasMainTag(workspaceFile)) {
@@ -253,8 +253,8 @@ public class AcceleoCompileOperation implements IWorkspaceRunnable {
 		settings = new AcceleoBuilderSettings(project);
 		if (AcceleoBuilderSettings.BUILD_STRICT_MTL_COMPLIANCE == settings.getCompliance()) {
 			Iterator<AcceleoFile> itFiles = iFiles.iterator();
-			for (Iterator<URI> itURIs = oURIs.iterator(); !monitor.isCanceled() && itURIs.hasNext()
-					&& itFiles.hasNext();) {
+			Iterator<URI> itURIs = oURIs.iterator();
+			while (!monitor.isCanceled() && itURIs.hasNext() && itFiles.hasNext()) {
 				AcceleoFile iFile = itFiles.next();
 				URI oURI = itURIs.next();
 				checkFullOMGCompliance(iFile.getMtlFile(), oURI);

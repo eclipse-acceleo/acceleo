@@ -217,8 +217,8 @@ public class CreateForIfAction extends AbstractRefactoringWithVariableContextAct
 		} else {
 			EReference eRef = null;
 			String currentType = getCurrentVariableTypeName(currentNode, ""); //$NON-NLS-1$
-			for (Iterator<EClassifier> eTypes = content.getTypes().iterator(); eRef == null
-					&& eTypes.hasNext();) {
+			Iterator<EClassifier> eTypes = content.getTypes().iterator();
+			while (eRef == null && eTypes.hasNext()) {
 				EClassifier eType = eTypes.next();
 				if (eType instanceof EClass && ((EClass)eType).getName() != null
 						&& ((EClass)eType).getName().equals(currentType)) {

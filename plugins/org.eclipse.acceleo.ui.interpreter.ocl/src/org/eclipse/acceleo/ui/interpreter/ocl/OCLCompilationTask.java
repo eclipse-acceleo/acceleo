@@ -56,8 +56,6 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 	 *            The current interpreter context.
 	 * @param editor
 	 *            The current editor.
-	 * @param metamodelManager
-	 *            The Metamodel Manager.
 	 */
 	public OCLCompilationTask(InterpreterContext context, EmbeddedXtextEditor editor) {
 		this.context = context;
@@ -192,8 +190,6 @@ public class OCLCompilationTask implements Callable<CompilationResult> {
 		 * 
 		 * @param editor
 		 *            The editor which document will be refreshed.
-		 * @param metamodelManager
-		 *            The current metamodel manager.
 		 * @param target
 		 *            The context EObject for the incoming parsing.
 		 */

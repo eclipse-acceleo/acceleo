@@ -85,7 +85,8 @@ public class AcceleoQuickFixProcessor implements IQuickAssistProcessor {
 		if (sourceViewer != null && offset > -1) {
 			IAnnotationModel annotationModel = sourceViewer.getAnnotationModel();
 			if (annotationModel != null) {
-				for (Iterator<?> it = annotationModel.getAnnotationIterator(); it.hasNext();) {
+				Iterator<?> it = annotationModel.getAnnotationIterator();
+				while (it.hasNext()) {
 					Annotation annotation = (Annotation)it.next();
 					Position position = annotationModel.getPosition(annotation);
 					if (position != null && offset >= position.offset

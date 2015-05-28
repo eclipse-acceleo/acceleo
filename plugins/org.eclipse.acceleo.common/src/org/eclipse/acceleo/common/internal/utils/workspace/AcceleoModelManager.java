@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import com.google.common.io.Closeables;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -39,8 +41,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-
-import com.google.common.io.Closeables;
 
 /**
  * This class, inspired by the JavaModelManager of the JDt will be used to save the state of the workspace

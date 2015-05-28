@@ -951,8 +951,8 @@ public final class OpenDeclarationUtils {
 	 */
 	public static List<Match> getMatchesFromTheFile(final List<Match> matches, final IFile file) {
 		final List<Match> list = new ArrayList<Match>();
-
-		for (Iterator<Match> iterator = matches.iterator(); iterator.hasNext();) {
+		Iterator<Match> iterator = matches.iterator();
+		while (iterator.hasNext()) {
 			Match match = iterator.next();
 			if (((ReferenceEntry)match.getElement()).getTemplateFile().equals(file)) {
 				list.add(match);

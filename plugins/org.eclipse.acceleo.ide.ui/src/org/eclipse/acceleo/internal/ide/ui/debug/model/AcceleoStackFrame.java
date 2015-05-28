@@ -75,7 +75,8 @@ public class AcceleoStackFrame extends AbstractDebugElement implements IStackFra
 		IVariable[] ret = new AcceleoVariable[stackInfo.getVariables().keySet().size()];
 		// Start at 1, index 0 will be used by self.
 		int i = 1;
-		for (Iterator<String> iterator = stackInfo.getVariables().keySet().iterator(); iterator.hasNext();) {
+		Iterator<String> iterator = stackInfo.getVariables().keySet().iterator();
+		while (iterator.hasNext()) {
 			String name = iterator.next();
 			Object value = stackInfo.getVariables().get(name);
 			AcceleoVariable var = new AcceleoVariable(this, name, value, AcceleoVariable.DEFAULT_TYPE);

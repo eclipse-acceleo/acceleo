@@ -246,14 +246,16 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 		Set<String> metamodels = new TreeSet<String>();
 		Set<String> imports = new TreeSet<String>();
 		computeMinimizedHeaderInformation(templates, metamodels, imports);
-		for (Iterator<String> metamodelsIt = metamodels.iterator(); metamodelsIt.hasNext();) {
+		Iterator<String> metamodelsIt = metamodels.iterator();
+		while (metamodelsIt.hasNext()) {
 			buffer.append(metamodelsIt.next());
 			if (metamodelsIt.hasNext()) {
 				buffer.append("', '"); //$NON-NLS-1$
 			}
 		}
 		buffer.append("')/]\n"); //$NON-NLS-1$
-		for (Iterator<String> importsIt = imports.iterator(); importsIt.hasNext();) {
+		Iterator<String> importsIt = imports.iterator();
+		while (importsIt.hasNext()) {
 			buffer.append("[import " + importsIt.next() + "/]\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		buffer.append("\n"); //$NON-NLS-1$
@@ -301,8 +303,8 @@ public class AcceleoNewMainTemplateWizard extends Wizard implements INewWizard {
 					buffer.append("\t[" + var + "."); //$NON-NLS-1$ //$NON-NLS-2$
 					buffer.append(template.getName());
 					buffer.append('(');
-					for (Iterator<String> argumentTypesIt = getTemplateArgumentTypes(template).iterator(); argumentTypesIt
-							.hasNext();) {
+					Iterator<String> argumentTypesIt = getTemplateArgumentTypes(template).iterator();
+					while (argumentTypesIt.hasNext()) {
 						buffer.append(argumentTypesIt.next());
 						if (argumentTypesIt.hasNext()) {
 							buffer.append(", "); //$NON-NLS-1$

@@ -71,8 +71,9 @@ public final class AcceleoLibraryConnectorsRegistry {
 			if (attribute.equals(connector.getName())) {
 				this.registeredLibraryConnectors.remove(connector);
 
-				for (Iterator<Map.Entry<String, Class<?>>> it = this.connectorByFileExtension.entrySet()
-						.iterator(); it.hasNext();) {
+				Iterator<Map.Entry<String, Class<?>>> it = this.connectorByFileExtension.entrySet()
+						.iterator();
+				while (it.hasNext()) {
 					Map.Entry<String, Class<?>> entry = it.next();
 					if (entry.getValue().equals(connector)) {
 						it.remove();

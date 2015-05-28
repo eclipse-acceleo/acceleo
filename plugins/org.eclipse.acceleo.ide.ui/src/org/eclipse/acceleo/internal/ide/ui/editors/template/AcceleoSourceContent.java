@@ -995,7 +995,8 @@ public class AcceleoSourceContent {
 	 */
 	protected void loadImportsDependencies(org.eclipse.acceleo.model.mtl.Module vAST,
 			List<URI> dependenciesURIs) {
-		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
+		Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator();
+		while (itDependenciesURIs.hasNext()) {
 			URI oURI = itDependenciesURIs.next();
 			String oName = new Path(oURI.lastSegment()).removeFileExtension().lastSegment();
 			Iterator<ModuleImportsValue> values = getCST().getImports().iterator();
@@ -1030,7 +1031,8 @@ public class AcceleoSourceContent {
 	 */
 	protected void loadExtendsDependencies(org.eclipse.acceleo.model.mtl.Module vAST,
 			List<URI> dependenciesURIs) {
-		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
+		Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator();
+		while (itDependenciesURIs.hasNext()) {
 			URI oURI = itDependenciesURIs.next();
 			String oName = new Path(oURI.lastSegment()).removeFileExtension().lastSegment();
 			Iterator<ModuleExtendsValue> values = getCST().getExtends().iterator();

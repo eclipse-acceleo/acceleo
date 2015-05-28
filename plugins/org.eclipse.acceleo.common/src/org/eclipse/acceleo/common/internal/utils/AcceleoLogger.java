@@ -26,7 +26,12 @@ import org.eclipse.emf.common.EMFPlugin;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoLogger {
+public final class AcceleoLogger {
+	/** hides default constructor. */
+	private AcceleoLogger() {
+		// hides default constructor
+	}
+
 	/**
 	 * Trace an Exception in the error log.
 	 * 
@@ -142,6 +147,11 @@ public class AcceleoLogger {
 		log(new Status(severity, AcceleoCommonPlugin.PLUGIN_ID, message, cause));
 	}
 
+	/**
+	 * Returns the plugin instance if eclipse is running.
+	 * 
+	 * @return The plugin instance if eclipse is running.
+	 */
 	private static Plugin getCommonPlugin() {
 		if (EMFPlugin.IS_ECLIPSE_RUNNING) {
 			return AcceleoCommonPlugin.getDefault();

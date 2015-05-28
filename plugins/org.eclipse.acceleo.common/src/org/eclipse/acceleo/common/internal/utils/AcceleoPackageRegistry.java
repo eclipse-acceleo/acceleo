@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.io.IOException;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
@@ -31,9 +34,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * This registry will act as an extension of the global package registry : dynamic models will be registered

@@ -1546,7 +1546,8 @@ public final class AcceleoLibraryOperationVisitor {
 		// (i.e., they are all roots)
 		List<EObject> result = resource.getContents();
 
-		for (ListIterator<EObject> iter = result.listIterator(); iter.hasNext();) {
+		ListIterator<EObject> iter = result.listIterator();
+		while (iter.hasNext()) {
 			if (iter.next().eContainer() != null) {
 				// don't include this in the result
 

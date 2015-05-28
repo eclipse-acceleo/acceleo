@@ -35,6 +35,11 @@ import org.eclipse.ocl.pivot.values.OrderedSetValue;
 import org.eclipse.ocl.pivot.values.SetValue;
 import org.eclipse.ocl.pivot.values.Value;
 
+/**
+ * Provides the basic facilities to evaluate "pure" OCL expressions.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
 public abstract class AbstractOCLEvaluator {
 	/**
 	 * Return the metamodel manager this evaluator should use.

@@ -262,7 +262,8 @@ public abstract class AbstractAcceleoInitializationStrategy implements IAcceleoI
 			if (replaceStart > -1 && replaceEnd > -1) {
 				String newString = replacingString;
 				int i = 1;
-				for (Iterator<String> it = vars.iterator(); it.hasNext();) {
+				Iterator<String> it = vars.iterator();
+				while (it.hasNext()) {
 					String var = it.next();
 					newString = newString.replace(VAR + i, var);
 					i++;

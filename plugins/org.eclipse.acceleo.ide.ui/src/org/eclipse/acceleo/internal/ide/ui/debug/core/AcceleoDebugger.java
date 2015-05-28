@@ -204,7 +204,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 			AcceleoProject acceleoProject = acceleoProjects.next();
 			try {
 				List<IFile> mtlFiles = acceleoProject.getInputFiles();
-				for (Iterator<IFile> iterator = mtlFiles.iterator(); iterator.hasNext();) {
+				Iterator<IFile> iterator = mtlFiles.iterator();
+				while (iterator.hasNext()) {
 					IFile mtlFile = iterator.next();
 					IPath outputFilePath = acceleoProject.getOutputFilePath(mtlFile);
 					if (outputFilePath != null) {
@@ -260,7 +261,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	public void updateVariables(Map<String, Object> variables) {
 		if (variables != null && !stackDebugger.isEmpty()) {
 			StackInfo stackInfo = stackDebugger.peek();
-			for (Iterator<String> iterator = variables.keySet().iterator(); iterator.hasNext();) {
+			Iterator<String> iterator = variables.keySet().iterator();
+			while (iterator.hasNext()) {
 				String name = iterator.next();
 				Object value = variables.get(name);
 				stackInfo.addVariable(name, value);
@@ -491,7 +493,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * Suspend on a breakpoint. Informs all debugger event listeners.
 	 */
 	private void fireSuspendedBreakpointEvent() {
-		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
+		Iterator<ITemplateDebuggerListener> iterator = listeners.iterator();
+		while (iterator.hasNext()) {
 			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.suspendBreakpoint();
 		}
@@ -501,7 +504,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * Resume after client action. Informs all debugger event listeners.
 	 */
 	private void fireResumedClientEvent() {
-		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
+		Iterator<ITemplateDebuggerListener> iterator = listeners.iterator();
+		while (iterator.hasNext()) {
 			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.resumeClient();
 		}
@@ -511,7 +515,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * Resume after one step. Informs all debugger event listeners.
 	 */
 	private void fireResumedStepEvent() {
-		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
+		Iterator<ITemplateDebuggerListener> iterator = listeners.iterator();
+		while (iterator.hasNext()) {
 			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.resumeStep();
 		}
@@ -521,7 +526,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * Suspend after a step. Informs all debugger event listeners.
 	 */
 	private void fireSuspendedStepEvent() {
-		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
+		Iterator<ITemplateDebuggerListener> iterator = listeners.iterator();
+		while (iterator.hasNext()) {
 			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.suspendStep();
 		}
@@ -531,7 +537,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * Beginning action. Informs all debugger event listeners.
 	 */
 	private void fireStartEvent() {
-		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
+		Iterator<ITemplateDebuggerListener> iterator = listeners.iterator();
+		while (iterator.hasNext()) {
 			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.start();
 		}
@@ -541,7 +548,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	 * Ending action. Informs all debugger event listeners.
 	 */
 	private void fireEndEvent() {
-		for (Iterator<ITemplateDebuggerListener> iterator = listeners.iterator(); iterator.hasNext();) {
+		Iterator<ITemplateDebuggerListener> iterator = listeners.iterator();
+		while (iterator.hasNext()) {
 			ITemplateDebuggerListener debugListener = iterator.next();
 			debugListener.end();
 		}
@@ -557,7 +565,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 		if (state == SUSPENDED && !stackDebugger.isEmpty()) {
 			if (variables != null) {
 				StackInfo stackInfo = stackDebugger.peek();
-				for (Iterator<String> iterator = variables.keySet().iterator(); iterator.hasNext();) {
+				Iterator<String> iterator = variables.keySet().iterator();
+				while (iterator.hasNext()) {
 					String name = iterator.next();
 					Object value = variables.get(name);
 					stackInfo.addVariable(name, value);
@@ -598,7 +607,8 @@ public class AcceleoDebugger implements IDebugAST, ITemplateDebugger {
 	public StackInfo[] getStack() {
 		StackInfo[] ret = new StackInfo[stackDebugger.size()];
 		int i = 0;
-		for (Iterator<StackInfo> iterator = stackDebugger.iterator(); iterator.hasNext();) {
+		Iterator<StackInfo> iterator = stackDebugger.iterator();
+		while (iterator.hasNext()) {
 			StackInfo current = iterator.next();
 			ret[i] = current;
 			++i;

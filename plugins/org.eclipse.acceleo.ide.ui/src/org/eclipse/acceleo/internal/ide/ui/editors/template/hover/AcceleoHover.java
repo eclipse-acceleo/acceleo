@@ -134,7 +134,8 @@ public class AcceleoHover implements IAnnotationHover, ITextHover {
 		}
 		if (annotationModel != null) {
 			synchronized(getLockObject(annotationModel)) {
-				for (Iterator<?> it = annotationModel.getAnnotationIterator(); it.hasNext();) {
+				Iterator<?> it = annotationModel.getAnnotationIterator();
+				while (it.hasNext()) {
 					Annotation annotation = (Annotation)it.next();
 					Position position = annotationModel.getPosition(annotation);
 					try {

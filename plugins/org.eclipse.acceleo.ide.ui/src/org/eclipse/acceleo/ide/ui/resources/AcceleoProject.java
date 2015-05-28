@@ -197,7 +197,8 @@ public class AcceleoProject {
 	 */
 	public List<IFile> getInputFiles() throws CoreException {
 		List<IFile> filesInput = new ArrayList<IFile>();
-		for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
+		Iterator<IPath> itSourceFolders = sourceFolders.iterator();
+		while (itSourceFolders.hasNext()) {
 			IPath sourceFolderPath = itSourceFolders.next();
 			if (sourceFolderPath.segmentCount() > 1) {
 				IFolder sourceFolder = ResourcesPlugin.getWorkspace().getRoot().getFolder(sourceFolderPath);
@@ -259,7 +260,8 @@ public class AcceleoProject {
 		IPath filePath = makeRelativeTo(acceleoFilePath, projectPath);
 		IFolder folder = getOutputFolder(project);
 		if (folder != null) {
-			for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
+			Iterator<IPath> itSourceFolders = sourceFolders.iterator();
+			while (itSourceFolders.hasNext()) {
 				IPath sourcePath = makeRelativeTo(itSourceFolders.next(), project.getFullPath());
 				if (sourcePath.isPrefixOf(filePath)) {
 					IPath relativePath = filePath.removeFirstSegments(sourcePath.segmentCount());
@@ -287,7 +289,8 @@ public class AcceleoProject {
 			IPath relativePath = fileEMTL.removeFileExtension().addFileExtension(
 					IAcceleoConstants.MTL_FILE_EXTENSION).removeFirstSegments(
 					folder.getFullPath().segmentCount());
-			for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
+			Iterator<IPath> itSourceFolders = sourceFolders.iterator();
+			while (itSourceFolders.hasNext()) {
 				IPath sourcePath = itSourceFolders.next().append(relativePath);
 				if (ResourcesPlugin.getWorkspace().getRoot().exists(sourcePath)) {
 					return sourcePath;
@@ -339,7 +342,8 @@ public class AcceleoProject {
 		}
 
 		IPath filePath = makeRelativeTo(acceleoFilePath, projectPath);
-		for (Iterator<IPath> itSourceFolders = sourceFolders.iterator(); itSourceFolders.hasNext();) {
+		Iterator<IPath> itSourceFolders = sourceFolders.iterator();
+		while (itSourceFolders.hasNext()) {
 			IPath sourcePath = makeRelativeTo(itSourceFolders.next(), project.getFullPath());
 			if (sourcePath.isPrefixOf(filePath)) {
 				StringBuffer name = new StringBuffer();
@@ -649,8 +653,8 @@ public class AcceleoProject {
 	public ResourceSet loadAccessibleOutputFiles(IProgressMonitor monitor) {
 		ResourceSet oResourceSet = new ResourceSetImpl();
 		List<URI> outputURIs = getAccessibleOutputFiles();
-		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext()
-				&& !monitor.isCanceled();) {
+		Iterator<URI> itOutputURIs = outputURIs.iterator();
+		while (itOutputURIs.hasNext() && !monitor.isCanceled()) {
 			URI oURI = itOutputURIs.next();
 			try {
 				ModelUtils.load(oURI, oResourceSet);
@@ -726,8 +730,8 @@ public class AcceleoProject {
 		} else {
 			excludeURIs = null;
 		}
-		for (Iterator<URI> itOutputURIs = outputURIs.iterator(); itOutputURIs.hasNext()
-				&& !monitor.isCanceled();) {
+		Iterator<URI> itOutputURIs = outputURIs.iterator();
+		while (itOutputURIs.hasNext() && !monitor.isCanceled()) {
 			URI oURI = itOutputURIs.next();
 			if (excludeURIs == null || !excludeURIs.contains(oURI)) {
 				try {

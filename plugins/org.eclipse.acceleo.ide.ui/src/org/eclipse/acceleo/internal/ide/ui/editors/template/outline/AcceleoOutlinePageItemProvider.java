@@ -252,7 +252,8 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 	private StringBuffer getTextForTypedModel(org.eclipse.acceleo.parser.cst.TypedModel eTypedModel) {
 		StringBuffer text = new StringBuffer();
 		text.append("model "); //$NON-NLS-1$
-		for (Iterator<EPackage> ePackages = eTypedModel.getTakesTypesFrom().iterator(); ePackages.hasNext();) {
+		Iterator<EPackage> ePackages = eTypedModel.getTakesTypesFrom().iterator();
+		while (ePackages.hasNext()) {
 			text.append(ePackages.next().getName());
 			if (ePackages.hasNext()) {
 				text.append(IAcceleoConstants.COMMA_SEPARATOR + " "); //$NON-NLS-1$
@@ -272,8 +273,8 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 		StringBuffer text = new StringBuffer();
 		text.append(eQuery.getName());
 		text.append("("); //$NON-NLS-1$
-		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eQuery.getParameter().iterator(); eParameters
-				.hasNext();) {
+		Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eQuery.getParameter().iterator();
+		while (eParameters.hasNext()) {
 			org.eclipse.acceleo.parser.cst.Variable eVariable = eParameters.next();
 			if (eVariable.getType() != null) {
 				text.append(eVariable.getType());
@@ -298,8 +299,8 @@ public class AcceleoOutlinePageItemProvider extends ReflectiveItemProvider {
 		StringBuffer text = new StringBuffer();
 		text.append(eTemplate.getName());
 		text.append("("); //$NON-NLS-1$
-		for (Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eTemplate.getParameter()
-				.iterator(); eParameters.hasNext();) {
+		Iterator<org.eclipse.acceleo.parser.cst.Variable> eParameters = eTemplate.getParameter().iterator();
+		while (eParameters.hasNext()) {
 			org.eclipse.acceleo.parser.cst.Variable eVariable = eParameters.next();
 			if (eVariable.getType() != null) {
 				text.append(eVariable.getType());

@@ -112,7 +112,8 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 		}
 
 		if (selection instanceof IStructuredSelection) {
-			for (Iterator<?> it = ((IStructuredSelection)selection).iterator(); it.hasNext();) {
+			Iterator<?> it = ((IStructuredSelection)selection).iterator();
+			while (it.hasNext()) {
 				Object element = it.next();
 				IProject project = null;
 				if (element instanceof IProject) {
@@ -158,7 +159,8 @@ public class AcceleoToggleNatureAction extends AbstractHandler {
 					project.setDescription(description, null);
 					List<IFile> files = new ArrayList<IFile>();
 					members(files, project);
-					for (Iterator<IFile> itFiles = files.iterator(); itFiles.hasNext();) {
+					Iterator<IFile> itFiles = files.iterator();
+					while (itFiles.hasNext()) {
 						IFile file = itFiles.next();
 						try {
 							file.deleteMarkers(AcceleoMarkerUtils.PROBLEM_MARKER_ID, false,

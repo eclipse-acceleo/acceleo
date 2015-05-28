@@ -1268,8 +1268,9 @@ public class AcceleoModuleComposite extends Composite {
 	private void updateStrategies() {
 		if (initializeContentKind != null) {
 			List<String> descriptions = new ArrayList<String>();
-			for (Iterator<IAcceleoInitializationStrategy> iterator = AcceleoInitializationStrategyUtils
-					.getInitializationStrategy().iterator(); iterator.hasNext();) {
+			Iterator<IAcceleoInitializationStrategy> iterator = AcceleoInitializationStrategyUtils
+					.getInitializationStrategy().iterator();
+			while (iterator.hasNext()) {
 				descriptions.add(iterator.next().getDescription());
 			}
 			initializeContentKind.setItems(descriptions.toArray(new String[descriptions.size()]));

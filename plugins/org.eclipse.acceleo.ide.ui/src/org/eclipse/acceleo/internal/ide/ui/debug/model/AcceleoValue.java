@@ -179,8 +179,8 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 	private IVariable[] computeEObjectVariables(EObject object) {
 		List<IVariable> variables = new ArrayList<IVariable>();
 		List<EStructuralFeature> structuralFeatures = object.eClass().getEAllStructuralFeatures();
-		for (Iterator<EStructuralFeature> iterFeatures = structuralFeatures.iterator(); iterFeatures
-				.hasNext();) {
+		Iterator<EStructuralFeature> iterFeatures = structuralFeatures.iterator();
+		while (iterFeatures.hasNext()) {
 			EStructuralFeature currentFeature = iterFeatures.next();
 			String featureName = currentFeature.getName();
 			Object featureValue = object.eGet(currentFeature);
@@ -210,7 +210,8 @@ public class AcceleoValue extends AbstractDebugElement implements IValue {
 	 */
 	private IVariable[] computeCollectionVariables(Collection<?> collection) throws DebugException {
 		List<IVariable> variables = new ArrayList<IVariable>();
-		for (Iterator<?> iterObjects = collection.iterator(); iterObjects.hasNext();) {
+		Iterator<?> iterObjects = collection.iterator();
+		while (iterObjects.hasNext()) {
 			Object element = iterObjects.next();
 			if (element instanceof EObject) {
 				variables.add(this.eObjectToVariable((EObject)element));

@@ -41,8 +41,8 @@ public class OCLEvaluationTask extends AbstractOCLEvaluator implements Callable<
 	 * 
 	 * @param context
 	 *            The Current interpreter context.
-	 * @param metamodelManager
-	 *            The Current Metamodel Manager.
+	 * @param environmentFactory
+	 *            The environment factory for this evaluation task.
 	 */
 	public OCLEvaluationTask(EvaluationContext context, EnvironmentFactory environmentFactory) {
 		this.context = context;

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.internal.utils.workspace;
 
+import com.google.common.collect.Sets;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -72,8 +74,6 @@ import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.PackageAdmin;
-
-import com.google.common.collect.Sets;
 
 /* TODO add model listeners to the workspace installed plugins to check for updates on required bundles
  * or imported packages.
