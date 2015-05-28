@@ -10,23 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.services.ComparableServices;
-import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-public class ComparableServicesValidationTest extends AbstractServicesTest {
+public class ComparableServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Override
 	public void before() throws Exception {
@@ -36,86 +24,34 @@ public class ComparableServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testLower() {
-		final IService service = serviceLookUp("lessThan", new Object[] {"", "" });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		final IType[] parameterTypes = new IType[] {classType(String.class), classType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "lessThan", parameterTypes);
 	}
 
 	@Test
 	public void testLowerEqual() {
-		final IService service = serviceLookUp("lessThanEqual", new Object[] {"", "" });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		final IType[] parameterTypes = new IType[] {classType(String.class), classType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "lessThanEqual", parameterTypes);
 	}
 
 	@Test
 	public void testGreater() {
-		final IService service = serviceLookUp("greaterThan", new Object[] {"", "" });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		final IType[] parameterTypes = new IType[] {classType(String.class), classType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "greaterThan", parameterTypes);
 	}
 
 	@Test
 	public void testGreaterEqual() {
-		final IService service = serviceLookUp("greaterThanEqual", new Object[] {"", "" });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		final IType[] parameterTypes = new IType[] {classType(String.class), classType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertValidation(expectedReturnTypes, "greaterThanEqual", parameterTypes);
 	}
 
 }

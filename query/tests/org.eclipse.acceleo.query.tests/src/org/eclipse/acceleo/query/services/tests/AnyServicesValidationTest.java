@@ -29,7 +29,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AnyServicesValidationTest extends AbstractServicesTest {
+public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Override
 	public void before() throws Exception {
@@ -39,319 +39,94 @@ public class AnyServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testEqualsPrimitive() {
-		final IService service = serviceLookUp("equals", new Boolean[] {true, true });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertNoService("equals", parameterTypes);
 	}
 
 	@Test
 	public void testEquals() {
-		final IService service = serviceLookUp("equals", new Boolean[] {Boolean.TRUE, Boolean.TRUE });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(Boolean.class), classType(Boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "equals", parameterTypes);
 	}
 
 	@Test
 	public void testDiffersPrimitive() {
-		final IService service = serviceLookUp("differs", new Boolean[] {true, true });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertNoService("differs", parameterTypes);
 	}
 
 	@Test
 	public void testDiffers() {
-		final IService service = serviceLookUp("differs", new Boolean[] {Boolean.TRUE, Boolean.TRUE });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(Boolean.class), classType(Boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "differs", parameterTypes);
 	}
 
 	@Test
 	public void testAddAnyObjectStringPrimitive() {
-		final IService service = serviceLookUp("add", new Object[] {true, "" });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(String.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		assertNoService("add", parameterTypes);
 	}
 
 	@Test
 	public void testAddAnyObjectString() {
-		final IService service = serviceLookUp("add", new Object[] {Boolean.TRUE, "" });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
+		final IType[] parameterTypes = new IType[] {classType(Object.class), classType(String.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		assertValidation(expectedReturnTypes, "add", parameterTypes);
 	}
 
 	@Test
 	public void testAddAnyStringObjectPrimitive() {
-		final IService service = serviceLookUp("add", new Object[] {"", true });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(String.class), classType(boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		assertNoService("add", parameterTypes);
 	}
 
 	@Test
 	public void testAddAnyStringObject() {
-		final IService service = serviceLookUp("add", new Object[] {"", Boolean.TRUE });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), String.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(String.class), classType(Object.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-	}
-
-	@Test
-	public void testOCLIsKindOfClassPrimitive() {
-		final IService service = serviceLookUp("oclIsKindOf", new Object[] {new Object(), int.class });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Class.class));
-
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "add", parameterTypes);
 	}
 
 	@Test
 	public void testOCLIsKindOfClass() {
-		final IService service = serviceLookUp("oclIsKindOf", new Object[] {new Object(), Integer.class });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Class.class));
+		final IType[] parameterTypes = new IType[] {classType(Object.class), classType(Class.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "oclIsKindOf", parameterTypes);
 	}
 
 	@Test
 	public void testOCLIsKindOfEClass() {
-		final IService service = serviceLookUp("oclIsKindOf", new Object[] {new Object(),
-				EcorePackage.eINSTANCE.getEClass() });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), EClass.class));
+		final IType[] parameterTypes = new IType[] {classType(Object.class), classType(EClass.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-	}
-
-	@Test
-	public void testOCLIsTypeOfClassPrimitive() {
-		final IService service = serviceLookUp("oclIsTypeOf", new Object[] {new Object(), int.class });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Class.class));
-
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "oclIsKindOf", parameterTypes);
 	}
 
 	@Test
 	public void testOCLIsTypeOfClass() {
-		final IService service = serviceLookUp("oclIsTypeOf", new Object[] {new Object(), Integer.class });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), Class.class));
+		final IType[] parameterTypes = new IType[] {classType(Object.class), classType(Class.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
+		assertValidation(expectedReturnTypes, "oclIsTypeOf", parameterTypes);
 	}
 
 	@Test
 	public void testOCLIsTypeOfEClass() {
-		final IService service = serviceLookUp("oclIsTypeOf", new Object[] {new Object(),
-				EcorePackage.eINSTANCE.getEClass() });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), EClass.class));
+		final IType[] parameterTypes = new IType[] {classType(Object.class), classType(EClass.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), Boolean.class), it.next());
-	}
-
-	@Test
-	public void testOCLAsTypeClassPrimitive() {
-		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(), int.class });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
-		argTypes.add(new ClassType(getQueryEnvironment(), int.class));
-
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), int.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), int.class), it.next());
+		assertValidation(expectedReturnTypes, "oclIsTypeOf", parameterTypes);
 	}
 
 	@Test
@@ -423,42 +198,17 @@ public class AnyServicesValidationTest extends AbstractServicesTest {
 
 	@Test
 	public void testToStringPrimitive() {
-		final IService service = serviceLookUp("toString", new Boolean[] {true });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(boolean.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		assertNoService("toString", parameterTypes);
 	}
 
 	@Test
 	public void testToString() {
-		final IService service = serviceLookUp("toString", new Boolean[] {Boolean.TRUE });
-		assertTrue(service != null);
-		final List<IType> argTypes = new ArrayList<IType>();
-		argTypes.add(new ClassType(getQueryEnvironment(), Boolean.class));
+		final IType[] parameterTypes = new IType[] {classType(Boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
-		assertEquals(1, types.size());
-		Iterator<IType> it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
-
-		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
-		allTypes.put(argTypes, types);
-		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
-		assertEquals(1, types.size());
-		it = types.iterator();
-		assertEquals(new ClassType(getQueryEnvironment(), String.class), it.next());
+		assertValidation(expectedReturnTypes, "toString", parameterTypes);
 	}
 
 }
