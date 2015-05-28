@@ -631,8 +631,13 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				result.add(new SetType(queryEnvironment, services.nothing("Nothing left after intersection:"
-						+ builder.toString())));
+				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SequenceType(queryEnvironment, services
+							.nothing("Nothing left after intersection:" + builder.toString())));
+				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SetType(queryEnvironment, services
+							.nothing("Nothing left after intersection:" + builder.toString())));
+				}
 			}
 
 			return result;

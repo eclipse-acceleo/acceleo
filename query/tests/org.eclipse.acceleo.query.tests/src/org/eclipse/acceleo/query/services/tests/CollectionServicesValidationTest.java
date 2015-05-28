@@ -329,7 +329,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testIntersectionNothingLeft() {
+	public void testIntersectionSetSetNothingLeft() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 		ePkg.setName("ePkg");
 		ePkg.setNsPrefix("ePkg");
@@ -355,7 +355,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testIntersectionTopSubType() {
+	public void testIntersectionSetSetTopSubType() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 		ePkg.setName("ePkg");
 		ePkg.setNsPrefix("ePkg");
@@ -391,7 +391,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testIntersectionSameType() {
+	public void testIntersectionSetSetSameType() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
 				setType(classType(String.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
@@ -400,7 +400,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testIntersectionEClassEClassifier() {
+	public void testIntersectionSetSetEClassEClassifier() {
 		final IType[] parameterTypes = new IType[] {setType(classType(EClass.class)),
 				setType(classType(EClassifier.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
@@ -409,9 +409,276 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testIntersectionEClassifierEClass() {
+	public void testIntersectionSetSetEClassifierEClass() {
 		final IType[] parameterTypes = new IType[] {setType(classType(EClassifier.class)),
 				setType(classType(EClass.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionListListNothingLeft() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
+					sequenceType(eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection of Sequence(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Sequence(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+
+			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIntersectionListListTopSubType() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+		final EClass eCls3 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls3.setName("eCls3");
+		eCls3.getESuperTypes().add(eCls1);
+		eCls3.getESuperTypes().add(eCls2);
+		ePkg.getEClassifiers().add(eCls3);
+		final EClass eCls4 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls4.setName("eCls4");
+		eCls4.getESuperTypes().add(eCls1);
+		eCls4.getESuperTypes().add(eCls2);
+		eCls4.getESuperTypes().add(eCls3);
+		ePkg.getEClassifiers().add(eCls4);
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
+					sequenceType(eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls3)) };
+
+			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIntersectionListListSameType() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
+				sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionListListEClassEClassifier() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClass.class)),
+				sequenceType(classType(EClassifier.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionListListEClassifierEClass() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClassifier.class)),
+				sequenceType(classType(EClass.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionListSetNothingLeft() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
+					setType(eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection of Sequence(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Sequence(EClassifier=eCls1) and Set(EClassifier=eCls2)")) };
+
+			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIntersectionListSetTopSubType() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+		final EClass eCls3 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls3.setName("eCls3");
+		eCls3.getESuperTypes().add(eCls1);
+		eCls3.getESuperTypes().add(eCls2);
+		ePkg.getEClassifiers().add(eCls3);
+		final EClass eCls4 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls4.setName("eCls4");
+		eCls4.getESuperTypes().add(eCls1);
+		eCls4.getESuperTypes().add(eCls2);
+		eCls4.getESuperTypes().add(eCls3);
+		ePkg.getEClassifiers().add(eCls4);
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+
+			final IType[] parameterTypes = new IType[] {sequenceType(eClassifierType(eCls1)),
+					setType(eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls3)) };
+
+			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIntersectionListSetSameType() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
+				setType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionListSetEClassEClassifier() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClass.class)),
+				setType(classType(EClassifier.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionListSetEClassifierEClass() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(EClassifier.class)),
+				setType(classType(EClass.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EClass.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionSetListNothingLeft() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+
+			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)),
+					sequenceType(eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {setType(nothingType("Nothing left after intersection of Set(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+			final IType[] expectedAllReturnTypes = new IType[] {setType(nothingType("Nothing left after intersection:\n Nothing left after intersection of Set(EClassifier=eCls1) and Sequence(EClassifier=eCls2)")) };
+
+			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIntersectionSetListTopSubType() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("ePkg");
+		ePkg.setNsPrefix("ePkg");
+		final EClass eCls1 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls1.setName("eCls1");
+		ePkg.getEClassifiers().add(eCls1);
+		final EClass eCls2 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls2.setName("eCls2");
+		ePkg.getEClassifiers().add(eCls2);
+		final EClass eCls3 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls3.setName("eCls3");
+		eCls3.getESuperTypes().add(eCls1);
+		eCls3.getESuperTypes().add(eCls2);
+		ePkg.getEClassifiers().add(eCls3);
+		final EClass eCls4 = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls4.setName("eCls4");
+		eCls4.getESuperTypes().add(eCls1);
+		eCls4.getESuperTypes().add(eCls2);
+		eCls4.getESuperTypes().add(eCls3);
+		ePkg.getEClassifiers().add(eCls4);
+
+		try {
+			getQueryEnvironment().registerEPackage(ePkg);
+
+			final IType[] parameterTypes = new IType[] {setType(eClassifierType(eCls1)),
+					sequenceType(eClassifierType(eCls2)) };
+			final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(eCls3)) };
+
+			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@Test
+	public void testIntersectionSetListSameType() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
+				sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionSetListEClassEClassifier() {
+		final IType[] parameterTypes = new IType[] {setType(classType(EClass.class)),
+				sequenceType(classType(EClassifier.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
+
+		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
+	}
+
+	@Test
+	public void testIntersectionSetListEClassifierEClass() {
+		final IType[] parameterTypes = new IType[] {setType(classType(EClassifier.class)),
+				sequenceType(classType(EClass.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(EClass.class)) };
 
 		assertValidation(expectedReturnTypes, "intersection", parameterTypes);
