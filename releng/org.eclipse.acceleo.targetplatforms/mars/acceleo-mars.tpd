@@ -14,7 +14,7 @@ location "http://download.eclipse.org/releases/mars" {
 	org.eclipse.uml2.feature.group lazy
 	
 	org.eclipse.sirius.runtime.feature.group lazy
-	org.eclipse.sirius.runtime.acceleo.feature.group lazy
+	org.eclipse.sirius.specifier.feature.group lazy
 }
 
 location "https://hudson.eclipse.org/ocl/job/ocl-mars-master/lastSuccessfulBuild/artifact/MDT-OCL.p2.repository" {
