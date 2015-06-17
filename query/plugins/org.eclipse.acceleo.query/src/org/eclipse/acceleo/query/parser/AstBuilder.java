@@ -53,6 +53,22 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstBuilder {
+
+	/**
+	 * Escape \x01 sequence.
+	 */
+	private static final String ESCAPE_X = "\\x";
+
+	/**
+	 * Escape \u0123 sequence.
+	 */
+	private static final String ESCAPE_U = "\\u";
+
+	/**
+	 * Invalid escape sequence message.
+	 */
+	private static final String INVALID_ESCAPE_SEQUENCE = "Invalid escape sequence : ";
+
 	/**
 	 * Creates a new {@link EnumLiteral} instance given an {@link EEnumLiteral}.
 	 * 
@@ -120,7 +136,7 @@ public class AstBuilder {
 			char c = text.charAt(i);
 			if (c != '\\') {
 				res.append(c);
-			} else {
+			} else if (i + 1 < end) {
 				char c1 = text.charAt(++i);
 				switch (c1) {
 					case 'b':
@@ -141,13 +157,126 @@ public class AstBuilder {
 					case '\\':
 						res.append('\\');
 						break;
+					case '\"':
+						res.append('\"');
+						break;
+					case '\'':
+						res.append('\'');
+						break;
+					case 'x':
+						res.append(stripXChar(text, end, i));
+						i += 2;
+						break;
+					case 'u':
+						res.append(stripUChar(text, end, i));
+						i += 4;
+						break;
 					default:
-						throw new IllegalArgumentException("Invalid escape sequence : " + c + c1);
+						throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + c + c1);
 				}
+			} else {
+				throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + c);
 			}
 			++i;
 		}
 		return res.toString();
+	}
+
+	/**
+	 * Gets the array of chars from a \x01 escape sequence.
+	 * 
+	 * @param text
+	 *            the input text
+	 * @param end
+	 *            the input text length
+	 * @param i
+	 *            the current position to read
+	 * @return the array of chars from a \x01 escape sequence
+	 */
+	private static char[] stripXChar(String text, final int end, int i) {
+		if (i + 2 < end) {
+			return charFromHexaCode(text.charAt(i + 1), text.charAt(i + 2));
+		} else if (i + 1 < end) {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_X + text.charAt(i + 1));
+		} else {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_X);
+		}
+	}
+
+	/**
+	 * Gets the array of chars from a \x01 escape sequence.
+	 * 
+	 * @param text
+	 *            the input text
+	 * @param end
+	 *            the input text length
+	 * @param i
+	 *            the current position to read
+	 * @return the array of chars from a \x01 escape sequence
+	 */
+	private static char[] stripUChar(String text, final int end, int i) {
+		if (i + 4 < end) {
+			return charFromHexaCode(text.charAt(i + 1), text.charAt(i + 2), text.charAt(i + 3), text
+					.charAt(i + 4));
+		} else if (i + 3 < end) {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1)
+					+ text.charAt(i + 2) + text.charAt(i + 3));
+		} else if (i + 2 < end) {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1)
+					+ text.charAt(i + 2));
+		} else if (i + 1 < end) {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1));
+		} else {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U);
+		}
+	}
+
+	/**
+	 * Gets the array of chars from a \x01 escape sequence.
+	 * 
+	 * @param c0
+	 *            the first char
+	 * @param c1
+	 *            the second char
+	 * @return the array of chars from a \x01 escape sequence
+	 */
+	private static char[] charFromHexaCode(char c0, char c1) {
+		try {
+			final int codePoint = Integer.parseInt(String.valueOf(new char[] {c0, c1, }), 16);
+			if (Character.isValidCodePoint(codePoint)) {
+				return Character.toChars(codePoint);
+			} else {
+				throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_X + c0 + c1);
+			}
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_X + c0 + c1);
+		}
+	}
+
+	/**
+	 * Gets the array of chars from a \u0123 escape sequence.
+	 * 
+	 * @param c0
+	 *            the first char
+	 * @param c1
+	 *            the second char
+	 * @param c2
+	 *            the third char
+	 * @param c3
+	 *            the forth char
+	 * @return the array of chars from a \u0123 escape sequence
+	 */
+	private static char[] charFromHexaCode(char c0, char c1, char c2, char c3) {
+		try {
+			final int codePoint = Integer.parseInt(String.valueOf(new char[] {c0, c1, c2, c3 }), 16);
+			if (Character.isValidCodePoint(codePoint)) {
+				return Character.toChars(codePoint);
+			} else {
+				throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + c0 + c1 + c2 + c3);
+			}
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + c0 + c1 + c2 + c3);
+		}
 	}
 
 	/**

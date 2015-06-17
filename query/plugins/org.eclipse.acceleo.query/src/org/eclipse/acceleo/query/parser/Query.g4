@@ -116,7 +116,9 @@ Integer : [0-9]+
 ;
 Real : [0-9]+'.'[0-9]+
 ;
-String :  '\'' .*? '\''
+String :  '\'' (Escape|.)*? '\''
+;
+fragment Escape : '\\\\' | '\\\''
 ;
 Ident : (Letter | '_') (Letter | [0-9]|'_')*
 ;

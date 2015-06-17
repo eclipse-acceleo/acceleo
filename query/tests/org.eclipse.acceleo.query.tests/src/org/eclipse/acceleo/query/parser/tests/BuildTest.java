@@ -229,6 +229,165 @@ public class BuildTest {
 	}
 
 	@Test
+	public void stringliteralEscapeTest() {
+		IQueryBuilderEngine.AstResult build = engine.build("'\\b'");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\b", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\b'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 5, ast);
+		assertEquals("\\b", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\t'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\t", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\t'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 5, ast);
+		assertEquals("\\t", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\n'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\n", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\n'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 5, ast);
+		assertEquals("\\n", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\f'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\f", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\f'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 5, ast);
+		assertEquals("\\f", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\r'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\r", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\r'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 5, ast);
+		assertEquals("\\r", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\"'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\"", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\\"'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 5, ast);
+		assertEquals("\\\"", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\''");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\'", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 4, ast);
+		assertEquals("\\", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\x09'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 6, ast);
+		assertEquals("\t", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\x09'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 7, ast);
+		assertEquals("\\x09", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\u0041'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 8, ast);
+		assertEquals("A", ((StringLiteral)ast).getValue());
+
+		build = engine.build("'\\\\u0041'");
+		ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertExpression(build, StringLiteral.class, 0, 9, ast);
+		assertEquals("\\u0041", ((StringLiteral)ast).getValue());
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void invalidStringliteralEscapeTest() {
+		engine.build("'\\w'");
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void incompletStringliteralEscapeTest() {
+		engine.build("'\\'");
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void invalidXStringliteralEscapeTest() {
+		engine.build("'\\xZZ'");
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void incompletXStringliteralEscapeTest() {
+		engine.build("'\\x0'");
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void invalidUStringliteralEscapeTest() {
+		engine.build("'\\uZZZZ'");
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void incompletUStringliteralEscapeTest() {
+		engine.build("'\\u0'");
+	}
+
+	@Test
 	public void stringliteralCallTest() {
 		IQueryBuilderEngine.AstResult build = engine.build("'acceleo query is great'.toString()");
 		Expression ast = build.getAst();
