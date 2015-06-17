@@ -911,4 +911,19 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals("foobar foobar foobar", stringServices.substitute("f..bar f..bar f..bar", ".", "o"));
 	}
 
+	@Test
+	public void trimNull() {
+		assertEquals("", stringServices.trim(null));
+	}
+
+	@Test
+	public void trimEmptyString() {
+		assertEquals("", stringServices.trim(""));
+	}
+
+	@Test
+	public void trim() {
+		assertEquals("azerty", stringServices.trim("\n\t    \razerty \t\t"));
+	}
+
 }

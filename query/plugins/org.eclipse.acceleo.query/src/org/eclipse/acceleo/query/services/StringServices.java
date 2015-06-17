@@ -517,4 +517,15 @@ public class StringServices {
 		return Pattern.compile(r, Pattern.LITERAL).matcher(self).replaceAll(Matcher.quoteReplacement(t));
 	}
 
+	/**
+	 * Trims the given {@link String}.
+	 * 
+	 * @param self
+	 *            the {@link String} to trim
+	 * @return the trimmed {@link String}
+	 */
+	public String trim(String self) {
+		return Strings.nullToEmpty(self).trim();
+	}
+
 }
