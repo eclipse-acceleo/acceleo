@@ -342,8 +342,8 @@ public class AstEvaluator extends AstSwitch<Object> {
 			}
 		} else {
 			Nothing nothing = new Nothing(BAD_PREDICATE_TYPE_MSG);
-			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, "org.eclipse.acceleo.query", 0, nothing
-					.getMessage(), new Object[] {});
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0,
+					nothing.getMessage(), new Object[] {});
 			((BasicDiagnostic)diagnostic).add(diag);
 			result = nothing;
 		}

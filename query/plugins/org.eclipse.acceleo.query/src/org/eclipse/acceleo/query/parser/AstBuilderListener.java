@@ -89,6 +89,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.LiteralContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MinContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ModelObjectTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MultContext;
+import org.eclipse.acceleo.query.parser.QueryParser.NavContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NavigationSegmentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NotContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NullLitContext;
@@ -111,6 +112,8 @@ import org.eclipse.acceleo.query.parser.QueryParser.XorContext;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 
@@ -120,6 +123,12 @@ import org.eclipse.emf.ecore.EEnumLiteral;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstBuilderListener extends QueryBaseListener {
+
+	/**
+	 * The plugin ID.
+	 */
+	public static final String PLUGIN_ID = "org.eclipse.acceleo.query";
+
 	/**
 	 * <code>if<code> operator.
 	 */
@@ -306,6 +315,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
 	private final class QueryErrorListener extends BaseErrorListener {
+
+		/**
+		 * Missing expression message.
+		 */
+		private static final String MISSING_EXPRESSION = "missing expression";
+
 		@Override
 		public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol,
 				int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
@@ -313,7 +328,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				if (e.getCtx() instanceof IterationCallContext) {
 					iterationCallContextError(e);
 				} else if (e.getCtx() instanceof TypeLiteralContext) {
-					typeLiteralContextError(offendingSymbol, e);
+					typeLiteralContextError(offendingSymbol, msg, e);
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
 					variableDefinitionContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof CallExpContext) {
@@ -324,7 +339,14 @@ public class AstBuilderListener extends QueryBaseListener {
 					defaultError(offendingSymbol, e);
 				}
 			} else if (recognizer instanceof QueryParser) {
-				noRecognitionException(recognizer, offendingSymbol);
+				noRecognitionException(recognizer, offendingSymbol, msg);
+			} else {
+				final QueryParser parser = (QueryParser)recognizer;
+				final Integer startPosition = Integer.valueOf(((EnumOrClassifierLitContext)parser
+						.getContext()).start.getStartIndex());
+				final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
+				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
+						startPosition, endPosition, }));
 			}
 		}
 
@@ -337,7 +359,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		private void iterationCallContextError(RecognitionException e) {
 			errorRule = QueryParser.RULE_expression;
 			final ErrorExpression errorExpression = builder.errorExpression();
-			pushError(errorExpression);
+			pushError(errorExpression, MISSING_EXPRESSION);
 			final Integer position = Integer
 					.valueOf(((IterationCallContext)e.getCtx()).start.getStartIndex());
 			startPositions.put(errorExpression, position);
@@ -349,10 +371,12 @@ public class AstBuilderListener extends QueryBaseListener {
 		 * 
 		 * @param offendingSymbol
 		 *            the offending symbol
+		 * @param msg
+		 *            the error message
 		 * @param e
 		 *            the {@link RecognitionException}
 		 */
-		private void typeLiteralContextError(Object offendingSymbol, RecognitionException e) {
+		private void typeLiteralContextError(Object offendingSymbol, String msg, RecognitionException e) {
 			final Integer startPosition = Integer.valueOf(((TypeLiteralContext)e.getCtx()).start
 					.getStartIndex());
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
@@ -362,6 +386,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral type = builder.errorTypeLiteral(new String[] {});
 				startPositions.put(type, startPosition);
 				endPositions.put(type, endPosition);
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, "invalid type literal",
+						new Object[] {type }));
 				errors.add(type);
 				final Expression variableExpression = pop();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
@@ -370,7 +396,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				endPositions.put(variableDeclaration, endPosition);
 				push(variableDeclaration);
 				final ErrorExpression errorExpression = builder.errorExpression();
-				pushError(errorExpression);
+				pushError(errorExpression, MISSING_EXPRESSION);
 				startPositions.put(errorExpression, startPosition);
 				endPositions.put(errorExpression, endPosition);
 			} else if (!(stack.peek() instanceof TypeLiteral)) {
@@ -378,7 +404,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {});
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
-				pushError(errorTypeLiteral);
+				pushError(errorTypeLiteral, "invalid type literal");
+			} else {
+				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
+						startPosition, endPosition, }));
 			}
 		}
 
@@ -414,12 +443,12 @@ public class AstBuilderListener extends QueryBaseListener {
 						.errorVariableDeclaration(variableExpression);
 				startPositions.put(errorVariableDeclaration, startPosition);
 				endPositions.put(errorVariableDeclaration, endPosition);
-				pushError(errorVariableDeclaration);
+				pushError(errorVariableDeclaration, "missing variable declaration");
 			}
 			final ErrorExpression errorExpression = builder.errorExpression();
 			startPositions.put(errorExpression, endPosition);
 			endPositions.put(errorExpression, endPosition);
-			pushError(errorExpression);
+			pushError(errorExpression, MISSING_EXPRESSION);
 		}
 
 		/**
@@ -435,7 +464,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			startPositions.put(errorCollectionCall, startPositions.get(receiver));
 			endPositions.put(errorCollectionCall, Integer
 					.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
-			pushError(errorCollectionCall);
+			pushError(errorCollectionCall, "missing collection service call");
 		}
 
 		/**
@@ -451,7 +480,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			startPositions.put(errorFeatureAccessOrCall, startPositions.get(receiver));
 			endPositions.put(errorFeatureAccessOrCall, Integer.valueOf(((Token)offendingSymbol)
 					.getStopIndex() + 1));
-			pushError(errorFeatureAccessOrCall);
+			pushError(errorFeatureAccessOrCall, "missing feature access or service call");
 		}
 
 		/**
@@ -472,7 +501,7 @@ public class AstBuilderListener extends QueryBaseListener {
 					startPositions.put(errorExpression, position);
 					endPositions.put(errorExpression, Integer
 							.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
-					pushError(errorExpression);
+					pushError(errorExpression, MISSING_EXPRESSION);
 					break;
 
 				default:
@@ -487,13 +516,15 @@ public class AstBuilderListener extends QueryBaseListener {
 		 *            the {@link Recognizer}
 		 * @param offendingSymbol
 		 *            the offending symbol
+		 * @param msg
+		 *            the error message
 		 */
-		private void noRecognitionException(Recognizer<?, ?> recognizer, Object offendingSymbol) {
+		private void noRecognitionException(Recognizer<?, ?> recognizer, Object offendingSymbol, String msg) {
 			final QueryParser parser = (QueryParser)recognizer;
+			final Integer startPosition = Integer.valueOf(((ParserRuleContext)parser.getContext()).start
+					.getStartIndex());
+			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 			if (parser.getContext() instanceof EnumOrClassifierLitContext) {
-				final Integer startPosition = Integer.valueOf(((EnumOrClassifierLitContext)parser
-						.getContext()).start.getStartIndex());
-				final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 				errorRule = QueryParser.RULE_typeLiteral;
 				final ParseTree firstChild = parser.getContext().getChild(0);
 				if (firstChild.getChildCount() == 1) {
@@ -501,16 +532,33 @@ public class AstBuilderListener extends QueryBaseListener {
 							.errorTypeLiteral(new String[] {firstChild.getChild(0).getText(), });
 					startPositions.put(errorTypeLiteral, startPosition);
 					endPositions.put(errorTypeLiteral, endPosition);
-					pushError(errorTypeLiteral);
+					pushError(errorTypeLiteral, msg);
 				} else if (firstChild.getChildCount() == 3) {
 					final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {
 							firstChild.getChild(0).getText(), firstChild.getChild(2).getText(), });
 					startPositions.put(errorTypeLiteral, startPosition);
 					endPositions.put(errorTypeLiteral, endPosition);
-					pushError(errorTypeLiteral);
+					pushError(errorTypeLiteral, msg);
 				} else {
 					throw new UnsupportedOperationException("there is no error then...");
 				}
+			} else if (parser.getContext() instanceof CallExpContext) {
+				ParserRuleContext parentNavContext = parser.getContext().getParent();
+				while (!(parentNavContext instanceof NavContext) && parentNavContext != null) {
+					parentNavContext = parentNavContext.getParent();
+				}
+				final Integer callStartPosition;
+				if (parentNavContext == null) {
+					callStartPosition = Integer.valueOf(0);
+				} else {
+					callStartPosition = Integer.valueOf(parentNavContext.start.getStartIndex());
+				}
+
+				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
+						callStartPosition, endPosition, }));
+			} else {
+				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
+						startPosition, endPosition, }));
 			}
 		}
 	}
@@ -558,6 +606,14 @@ public class AstBuilderListener extends QueryBaseListener {
 	private final List<Error> errors = new ArrayList<Error>();
 
 	/**
+	 * Temporary lexing warnings waiting for their {@link Expression}.
+	 */
+	private Stack<Diagnostic> diagnosticStack = new Stack<Diagnostic>();
+
+	/** Aggregated status of the parsing. */
+	private final BasicDiagnostic diagnostic = new BasicDiagnostic();
+
+	/**
 	 * The {@link ANTLRErrorListener} pushing {@link org.eclipse.acceleo.query.ast.Error Error}.
 	 */
 	private final ANTLRErrorListener errorListener = new QueryErrorListener();
@@ -565,12 +621,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * Ast Builder.
 	 */
-	private AstBuilder builder = new AstBuilder();
+	private final AstBuilder builder = new AstBuilder();
 
 	/**
 	 * {@link org.eclipse.emf.ecore.EPackage} instances that are available during evaluation.
 	 */
-	private IQueryEnvironment environment;
+	private final IQueryEnvironment environment;
 
 	/**
 	 * Creates a new {@link AstBuilderListener}.
@@ -616,7 +672,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @return the {@link AstResult}.
 	 */
 	public AstResult getAstResult() {
-		return new AstResult(pop(), startPositions, endPositions, errors);
+		return new AstResult(pop(), startPositions, endPositions, errors, diagnostic);
 	}
 
 	/**
@@ -626,7 +682,20 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	private Expression pop() {
 		try {
-			return (Expression)stack.pop();
+			final Expression expression = (Expression)stack.pop();
+
+			if (!diagnosticStack.isEmpty()) {
+				final List<?> data = diagnosticStack.peek().getData();
+				if (data.get(0).equals(startPositions.get(expression))
+						&& data.get(1).equals(endPositions.get(expression))) {
+					final Diagnostic tmpDiagnostic = diagnosticStack.pop();
+					diagnostic.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(),
+							tmpDiagnostic.getSource(), tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(),
+							new Object[] {expression }));
+				}
+			}
+
+			return expression;
 		} catch (EmptyStackException e) {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		} catch (ClassCastException cce) {
@@ -724,9 +793,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * 
 	 * @param error
 	 *            the {@link Error} to push
+	 * @param msg
+	 *            the error message
 	 */
-	private void pushError(Error error) {
+	private void pushError(Error error, String msg) {
 		errors.add(error);
+		diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, msg, new Object[] {error }));
 		this.stack.push(error);
 	}
 
@@ -1024,6 +1096,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			}
 			result = builder.errorTypeLiteral(segments.toArray(new String[segments.size()]));
 			errors.add((ErrorTypeLiteral)result);
+			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, "Type not found.",
+					new Object[] {result }));
 		} else {
 			result = builder.typeLiteral(type);
 		}
@@ -1252,8 +1326,11 @@ public class AstBuilderListener extends QueryBaseListener {
 			} else {
 				toPush = threeSegmentEnumLiteral(ctx, literalName);
 			}
-
-			push(toPush);
+			if (toPush instanceof Error) {
+				pushError((Error)toPush, "invalid type or enum literal");
+			} else {
+				push(toPush);
+			}
 		}
 	}
 

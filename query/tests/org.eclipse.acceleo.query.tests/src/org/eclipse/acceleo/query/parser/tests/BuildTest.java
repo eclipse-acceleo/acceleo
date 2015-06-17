@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,6 +111,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, VarRef.class, 0, 1, ast);
 		assertEquals("x", ((VarRef)ast).getVariableName());
 	}
@@ -120,6 +123,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, FeatureAccess.class, 0, 9, ast);
 		assertEquals("name", ((FeatureAccess)ast).getFeatureName());
 		assertExpression(build, VarRef.class, 0, 4, ((FeatureAccess)ast).getTarget());
@@ -133,6 +138,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, IntegerLiteral.class, 0, 1, ast);
 		assertEquals(2, ((IntegerLiteral)ast).getValue());
 	}
@@ -143,6 +150,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 12, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -155,6 +164,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, RealLiteral.class, 0, 3, ast);
 		assertEquals(1.0, ((RealLiteral)ast).getValue(), 0.1);
 	}
@@ -165,6 +176,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 14, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -178,6 +191,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, BooleanLiteral.class, 0, 4, ast);
 		assertEquals(true, ((BooleanLiteral)ast).isValue());
 	}
@@ -188,6 +203,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 15, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -201,6 +218,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, BooleanLiteral.class, 0, 5, ast);
 		assertEquals(false, ((BooleanLiteral)ast).isValue());
 	}
@@ -211,6 +230,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 16, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -224,6 +245,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, StringLiteral.class, 0, 24, ast);
 		assertEquals("acceleo query is great", ((StringLiteral)ast).getValue());
 	}
@@ -393,7 +416,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
-		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 35, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -407,6 +431,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, NullLiteral.class, 0, 4, ast);
 	}
 
@@ -416,7 +442,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
-		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 15, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -429,6 +456,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 4, ast);
 		assertEquals("lessThanEqual", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -445,6 +474,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("lessThan", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -461,6 +492,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 4, ast);
 		assertEquals("greaterThanEqual", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -477,6 +510,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("greaterThan", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -493,6 +528,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 9, ast);
 		assertEquals("add", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -509,6 +546,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 13, ast);
 		assertEquals("or", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -525,6 +564,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 14, ast);
 		assertEquals("xor", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -541,6 +582,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 18, ast);
 		assertEquals("implies", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -557,6 +600,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 14, ast);
 		assertEquals("and", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -573,6 +618,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 8, ast);
 		assertEquals("not", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -587,6 +634,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("mult", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
@@ -603,6 +652,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 12, ast);
 		assertEquals("size", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
@@ -617,6 +668,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 22, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
@@ -640,6 +693,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 24, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
@@ -661,6 +716,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 33, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
@@ -686,6 +743,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 2, ast);
 		assertEquals(0, ((SetInExtensionLiteral)ast).getValues().size());
 	}
@@ -696,6 +755,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 8, ast);
 		assertEquals(1, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -707,6 +768,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 14, ast);
 		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -719,6 +782,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 25, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -731,6 +796,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 2, ast);
 		assertEquals(0, ((SequenceInExtensionLiteral)ast).getValues().size());
 	}
@@ -741,6 +808,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 8, ast);
 		assertEquals(1, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -752,6 +821,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 14, ast);
 		assertEquals(2, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -765,6 +836,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 25, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -777,6 +850,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 10, ast);
 		assertEquals(0, ((SequenceInExtensionLiteral)ast).getValues().size());
 	}
@@ -787,6 +862,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 16, ast);
 		assertEquals(1, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 10, 14, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -798,6 +875,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 22, ast);
 		assertEquals(2, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 10, 14, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -811,6 +890,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 33, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -823,6 +904,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 12, ast);
 		assertEquals(0, ((SetInExtensionLiteral)ast).getValues().size());
 	}
@@ -833,6 +916,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 18, ast);
 		assertEquals(1, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 12, 16, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -844,6 +929,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 24, ast);
 		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 12, 16, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -856,6 +943,8 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 35, ast);
 		assertEquals("toString", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
@@ -880,6 +969,8 @@ public class BuildTest {
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
 				.getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -899,6 +990,8 @@ public class BuildTest {
 		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -908,6 +1001,9 @@ public class BuildTest {
 
 		assertExpression(build, TypeLiteral.class, 0, 13, ast);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((TypeLiteral)ast).getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -918,6 +1014,9 @@ public class BuildTest {
 		assertExpression(build, EnumLiteral.class, 0, 11, ast);
 		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other"), ((EnumLiteral)ast)
 				.getLiteral());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -928,6 +1027,12 @@ public class BuildTest {
 		assertExpression(build, ErrorTypeLiteral.class, 0, 14, ast);
 		assertEquals("anydsl", ((ErrorTypeLiteral)ast).getSegments().get(0));
 		assertEquals("EClass", ((ErrorTypeLiteral)ast).getSegments().get(1));
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type or enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -938,6 +1043,9 @@ public class BuildTest {
 		assertExpression(build, EnumLiteral.class, 0, 19, ast);
 		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other"), ((EnumLiteral)ast)
 				.getLiteral());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -949,6 +1057,12 @@ public class BuildTest {
 		assertEquals("anydsl", ((ErrorTypeLiteral)ast).getSegments().get(0));
 		assertEquals("Part", ((ErrorTypeLiteral)ast).getSegments().get(1));
 		assertEquals("NotExisting", ((ErrorTypeLiteral)ast).getSegments().get(2));
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type or enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -960,6 +1074,9 @@ public class BuildTest {
 		assertEquals("precedingSiblings", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -974,6 +1091,9 @@ public class BuildTest {
 		assertExpression(build, TypeLiteral.class, 23, 36, ((Call)ast).getArguments().get(1));
 		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -988,6 +1108,9 @@ public class BuildTest {
 		assertExpression(build, TypeLiteral.class, 23, 36, ((Call)ast).getArguments().get(1));
 		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -999,6 +1122,9 @@ public class BuildTest {
 		assertEquals("followingSiblings", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -1010,6 +1136,9 @@ public class BuildTest {
 		assertEquals("eInverse", ((Call)ast).getServiceName());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -1024,6 +1153,9 @@ public class BuildTest {
 		assertExpression(build, TypeLiteral.class, 14, 27, ((Call)ast).getArguments().get(1));
 		final TypeLiteral typeLiteral = (TypeLiteral)((Call)ast).getArguments().get(1);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), typeLiteral.getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -1038,6 +1170,9 @@ public class BuildTest {
 		assertExpression(build, StringLiteral.class, 14, 20, ((Call)ast).getArguments().get(1));
 		final StringLiteral stringLiteral = (StringLiteral)((Call)ast).getArguments().get(1);
 		assertEquals("name", stringLiteral.getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -1047,6 +1182,10 @@ public class BuildTest {
 
 		assertExpression(build, ErrorExpression.class, -1, -1, ast);
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("null or empty string.", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1056,6 +1195,10 @@ public class BuildTest {
 
 		assertExpression(build, ErrorExpression.class, 0, 0, ast);
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("null or empty string.", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1069,6 +1212,11 @@ public class BuildTest {
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, ErrorExpression.class, 3, 3, ((Call)ast).getArguments().get(0));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1083,6 +1231,11 @@ public class BuildTest {
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, ErrorExpression.class, 1, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1097,6 +1250,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1111,6 +1269,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1125,6 +1288,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1139,6 +1307,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 
 		build = engine.build("self - ");
 		ast = build.getAst();
@@ -1150,6 +1323,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1164,6 +1342,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1178,6 +1361,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1192,6 +1380,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1206,6 +1399,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1220,6 +1418,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1234,6 +1437,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1249,6 +1457,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 8, 8, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1263,6 +1476,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1277,6 +1495,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 8, 8, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1291,6 +1514,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 12, 12, ((Call)ast).getArguments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1302,6 +1530,12 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((ErrorFeatureAccessOrCall)ast).getTarget());
 		assertEquals("self", ((VarRef)((ErrorFeatureAccessOrCall)ast).getTarget()).getVariableName());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing feature access or service call", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1313,6 +1547,12 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((ErrorCollectionCall)ast).getTarget());
 		assertEquals("self", ((VarRef)((ErrorCollectionCall)ast).getTarget()).getVariableName());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1322,6 +1562,11 @@ public class BuildTest {
 
 		assertExpression(build, ErrorExpression.class, 0, 1, ast);
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1333,6 +1578,12 @@ public class BuildTest {
 		assertExpression(build, ErrorFeatureAccessOrCall.class, 0, 2, ast);
 		assertEquals(1, build.getErrors().size());
 		assertEquals(ast, build.getErrors().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing feature access or service call", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1341,8 +1592,13 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertExpression(build, SetInExtensionLiteral.class, 0, 1, ast);
 		assertEquals(0, ((SetInExtensionLiteral)ast).getValues().size());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1351,6 +1607,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SetInExtensionLiteral.class, 0, 6, ast);
 		assertEquals(1, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -1362,6 +1623,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SetInExtensionLiteral.class, 0, 7, ast);
 		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -1375,8 +1641,13 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ']' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 1, ast);
 		assertEquals(0, ((SequenceInExtensionLiteral)ast).getValues().size());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1385,6 +1656,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ']' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 6, ast);
 		assertEquals(1, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -1396,6 +1672,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 7, ast);
 		assertEquals(2, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -1410,6 +1691,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 9, ast);
 		assertEquals(0, ((SequenceInExtensionLiteral)ast).getValues().size());
 	}
@@ -1420,6 +1706,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 14, ast);
 		assertEquals(1, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 10, 14, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -1431,6 +1722,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SequenceInExtensionLiteral.class, 0, 15, ast);
 		assertEquals(2, ((SequenceInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 10, 14, ((SequenceInExtensionLiteral)ast).getValues().get(0));
@@ -1445,6 +1741,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SetInExtensionLiteral.class, 0, 11, ast);
 		assertEquals(0, ((SetInExtensionLiteral)ast).getValues().size());
 	}
@@ -1455,6 +1756,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SetInExtensionLiteral.class, 0, 16, ast);
 		assertEquals(1, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 12, 16, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -1466,6 +1772,11 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertExpression(build, SetInExtensionLiteral.class, 0, 17, ast);
 		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 12, 16, ((SetInExtensionLiteral)ast).getValues().get(0));
@@ -1483,6 +1794,11 @@ public class BuildTest {
 		assertEquals(1, ((ErrorTypeLiteral)ast).getSegments().size());
 		assertEquals("toto", ((ErrorTypeLiteral)ast).getSegments().get(0));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1495,6 +1811,11 @@ public class BuildTest {
 		assertEquals("toto", ((ErrorTypeLiteral)ast).getSegments().get(0));
 		assertEquals("tata", ((ErrorTypeLiteral)ast).getSegments().get(1));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1514,6 +1835,14 @@ public class BuildTest {
 		assertEquals(1, lambda.getParameters().size());
 		assertVariableDeclaration(build, 13, 13, (VariableDeclaration)lambda.getParameters().get(0));
 		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing variable declaration", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1530,6 +1859,11 @@ public class BuildTest {
 		assertExpression(build, BooleanLiteral.class, 17, 21, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1546,6 +1880,11 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 17, 17, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1562,6 +1901,11 @@ public class BuildTest {
 		assertExpression(build, BooleanLiteral.class, 18, 22, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1584,6 +1928,14 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 17, 17, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1608,6 +1960,14 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 25, 25, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("Type not found.", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1630,6 +1990,11 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 24, 24, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1646,6 +2011,11 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 26, 26, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1662,6 +2032,11 @@ public class BuildTest {
 		assertExpression(build, BooleanLiteral.class, 27, 31, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1675,6 +2050,11 @@ public class BuildTest {
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1689,6 +2069,11 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, BooleanLiteral.class, 14, 18, ((Call)ast).getArguments().get(1));
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1704,6 +2089,11 @@ public class BuildTest {
 		assertExpression(build, BooleanLiteral.class, 14, 18, ((Call)ast).getArguments().get(1));
 		assertExpression(build, ErrorExpression.class, 19, 19, ((Call)ast).getArguments().get(2));
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1722,6 +2112,11 @@ public class BuildTest {
 		assertExpression(build, ErrorTypeLiteral.class, 21, 21, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1742,6 +2137,13 @@ public class BuildTest {
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
 				.getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("mismatched input '' expecting ')'", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(((Call)ast).getArguments().get(1), build.getDiagnostic().getChildren().get(0).getData()
+				.get(0));
 	}
 
 	@Test
@@ -1759,6 +2161,11 @@ public class BuildTest {
 		assertExpression(build, ErrorTypeLiteral.class, 23, 23, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
 		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1778,6 +2185,13 @@ public class BuildTest {
 		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("mismatched input '' expecting ')'", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(((Call)ast).getArguments().get(1), build.getDiagnostic().getChildren().get(0).getData()
+				.get(0));
 	}
 
 	@Test
@@ -1824,6 +2238,8 @@ public class BuildTest {
 		Call not = (Call)((Call)ast).getArguments().get(0);
 		assertEquals("not", not.getServiceName());
 		assertEquals(1, not.getArguments().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -1841,6 +2257,8 @@ public class BuildTest {
 		assertExpression(build, Call.class, 0, 14, ((Call)and).getArguments().get(0));
 		Call not = (Call)((Call)and).getArguments().get(0);
 		assertEquals("not", not.getServiceName());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 	@Test
@@ -1858,6 +2276,8 @@ public class BuildTest {
 		assertExpression(build, Call.class, 14, 28, ((Call)and).getArguments().get(0));
 		Call not = (Call)((Call)and).getArguments().get(0);
 		assertEquals("not", not.getServiceName());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
 	}
 
 }

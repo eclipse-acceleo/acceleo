@@ -20,6 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -580,7 +581,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 */
 	private void addDiagnosticFor(Diagnostic chain, int severity, Nothing nothing) {
 		if (chain instanceof DiagnosticChain) {
-			Diagnostic child = new BasicDiagnostic(severity, "org.eclipse.acceleo.query", 0, nothing
+			Diagnostic child = new BasicDiagnostic(severity, AstBuilderListener.PLUGIN_ID, 0, nothing
 					.getMessage(), new Object[] {nothing.getCause(), });
 			((DiagnosticChain)chain).add(child);
 		}

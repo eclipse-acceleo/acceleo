@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.emf.common.util.Diagnostic;
 
 /**
  * / Evaluation Engine is used to evaluate acceleo expressions. The evaluation engine allows to register
@@ -55,6 +56,11 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		private final Map<Object, Integer> endPositions;
 
 		/**
+		 * The {@link Diagnostic} of the parsing.
+		 */
+		private Diagnostic diagnostic;
+
+		/**
 		 * Constructor.
 		 * 
 		 * @param ast
@@ -67,13 +73,16 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		 *            position in the parsed text
 		 * @param errors
 		 *            the {@link List} of {@link Error}
+		 * @param diagnostic
+		 *            the {@link Diagnostic} of the parsing
 		 */
 		public AstResult(Expression ast, Map<Object, Integer> startPositions,
-				Map<Object, Integer> endPositions, List<Error> errors) {
+				Map<Object, Integer> endPositions, List<Error> errors, Diagnostic diagnostic) {
 			this.ast = ast;
-			this.errors = errors;
 			this.startPositions = startPositions;
 			this.endPositions = endPositions;
+			this.errors = errors;
+			this.diagnostic = diagnostic;
 		}
 
 		/**
@@ -184,6 +193,15 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 			}
 
 			return res;
+		}
+
+		/**
+		 * Gets the {@link Diagnostic} of the parsing.
+		 * 
+		 * @return the {@link Diagnostic} of the parsing
+		 */
+		public Diagnostic getDiagnostic() {
+			return diagnostic;
 		}
 
 	}

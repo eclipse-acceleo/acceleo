@@ -31,6 +31,8 @@ import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
@@ -67,6 +69,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			QueryParser parser = new QueryParser(tokens);
 			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
 			parser.addParseListener(astBuilder);
+			parser.removeErrorListeners();
 			parser.addErrorListener(astBuilder.getErrorListener());
 			// parser.setTrace(true);
 			parser.entry();
@@ -80,7 +83,10 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			if (expression != null) {
 				positions.put(errorExpression, Integer.valueOf(0));
 			}
-			result = new AstResult(errorExpression, positions, positions, errors);
+			final BasicDiagnostic diagnostic = new BasicDiagnostic();
+			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
+					"null or empty string.", new Object[] {errorExpression }));
+			result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
 		}
 
 		return result;
