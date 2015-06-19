@@ -383,6 +383,68 @@ public class CompletionTest {
 		assertEquals(4, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
+	/**
+	 * Test for <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=470195">Bug 470195</a>.
+	 */
+	@Test
+	public void test470195Completion() {
+		final ICompletionResult completionResult = engine.getCompletion(
+				"self.eClassifiers->select(p | self.)", 35, variableTypes);
+
+		assertEquals(62, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	/**
+	 * Test for <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=470195">Bug 470195</a>.
+	 */
+	@Test
+	public void test470195ArrowCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion(
+				"self.eClassifiers->select(p | self->)", 36, variableTypes);
+
+		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	/**
+	 * Test for <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=470195">Bug 470195</a>.
+	 */
+	@Test
+	public void test470195DoubleCallCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion(
+				"self.eClassifiers->select(w | self.eClassifiers->select(p | self.))", 65, variableTypes);
+
+		assertEquals(62, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	/**
+	 * Test for <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=470195">Bug 470195</a>.
+	 */
+	@Test
+	public void test470195ArrowDoubleCallCompletion() {
+		final ICompletionResult completionResult = engine.getCompletion(
+				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
+
+		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);

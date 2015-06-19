@@ -444,7 +444,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		 *            the offending symbol
 		 */
 		private void navigationSegmentContextError(Object offendingSymbol) {
-			errorRule = QueryParser.RULE_navigationSegment;
 			final Expression receiver = pop();
 			final ErrorFeatureAccessOrCall errorFeatureAccessOrCall = builder
 					.errorFeatureAccessOrCall(receiver);
@@ -1162,6 +1161,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			startPositions.put(callService, startPositions.get(args[0]));
 			endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 			push(callService);
+		} else {
+			errorRule = NO_ERROR;
 		}
 	}
 
