@@ -35,6 +35,7 @@ import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -1451,7 +1452,12 @@ public class AstBuilderListener extends QueryBaseListener {
 			trueBranch = pop();
 			predicate = pop();
 		}
-		push(builder.conditional(predicate, trueBranch, falseBranch));
+		final Conditional conditional = builder.conditional(predicate, trueBranch, falseBranch);
+
+		startPositions.put(conditional, Integer.valueOf(ctx.start.getStartIndex()));
+		endPositions.put(conditional, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		push(conditional);
 	}
 
 	/**

@@ -476,22 +476,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	}
 
 	/**
-	 * Returns <code>true</code> iff the specified set contains the boolean type.
-	 * 
-	 * @param types
-	 *            the set of types that should contain the boolean type.
-	 * @return <code>true</code> if types contains the boolean type.
-	 */
-	private boolean containsBooleanType(Set<IType> types) {
-		for (IType type : types) {
-			if (Boolean.class.equals(type.getType())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseConditional(org.eclipse.acceleo.query.ast.Conditional)
@@ -499,16 +483,43 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	@Override
 	public Set<IType> caseConditional(Conditional object) {
 		Set<IType> result = Sets.newLinkedHashSet();
-		Set<IType> predicate = doSwitch(object.getPredicate());
-		if (containsBooleanType(predicate)) {
-			if (predicate.size() > 1) {
-				result.add(services.nothing("The predicate may evaluate to a value that is not a boolean."));
-				result.addAll(doSwitch(object.getTrueBranch()));
-				result.addAll(doSwitch(object.getFalseBranch()));
+
+		final Set<IType> trueTypes = doSwitch(object.getTrueBranch());
+		final Set<IType> falseTypes = doSwitch(object.getFalseBranch());
+		Set<IType> selectorTypes = doSwitch(object.getPredicate());
+		if (!selectorTypes.isEmpty()) {
+			boolean onlyBoolean = true;
+			boolean onlyNotBoolean = true;
+			final IType booleanObjectType = new ClassType(services.getQueryEnvironment(), Boolean.class);
+			final IType booleanType = new ClassType(services.getQueryEnvironment(), boolean.class);
+			for (IType type : selectorTypes) {
+				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type)
+						|| booleanType.isAssignableFrom(type);
+				onlyBoolean = onlyBoolean && assignableFrom;
+				onlyNotBoolean = onlyNotBoolean && !assignableFrom;
+				if (!onlyBoolean && !onlyNotBoolean) {
+					break;
+				}
+			}
+			if (onlyBoolean) {
+				result.addAll(trueTypes);
+				result.addAll(falseTypes);
+			} else if (onlyNotBoolean) {
+				result.add(services.nothing("The predicate never evaluates to a boolean type (%s).",
+						selectorTypes));
+			} else {
+				result.add(services.nothing(
+						"The predicate may evaluate to a value that is not a boolean type (%s).",
+						selectorTypes));
+				result.addAll(trueTypes);
+				result.addAll(falseTypes);
 			}
 		} else {
-			result.add(services.nothing("The predicate never evaluates to a boolean type."));
+			result.add(services.nothing("The predicate never evaluates to a boolean type (%s).",
+					selectorTypes));
 		}
-		return result;
+
+		return checkWarningsAndErrors(object, result);
 	}
+
 }

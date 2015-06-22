@@ -16,6 +16,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -30,6 +31,7 @@ import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -37,6 +39,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ValidationTest {
 
@@ -468,6 +471,120 @@ public class ValidationTest {
 		assertEquals(true, ((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(),
 				((EClassifierType)((SequenceType)possibleType).getCollectionType()).getType());
+	}
+
+	@Test
+	public void testConditionNothingCondition() {
+		final Set<IType> selectorTypes = new LinkedHashSet<IType>();
+		selectorTypes.add(new NothingType("nothing"));
+		variableTypes.put("selector", selectorTypes);
+		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(2, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"nothing", 3, 11);
+		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.ERROR,
+				"The predicate never evaluates to a boolean type ([]).", 0, 38);
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getFalseBranch()));
+	}
+
+	@Test
+	public void testConditionNotBooleanCondition() {
+		final Set<IType> selectorTypes = new LinkedHashSet<IType>();
+		selectorTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		variableTypes.put("selector", selectorTypes);
+		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"The predicate never evaluates to a boolean type ([EClassifier=EClass]).", 0, 38);
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getFalseBranch()));
+	}
+
+	@Test
+	public void testConditionOneBooleanTypeCondition() {
+		final Set<IType> selectorTypes = new LinkedHashSet<IType>();
+		selectorTypes.add(new ClassType(queryEnvironment, Boolean.class));
+		variableTypes.put("selector", selectorTypes);
+		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getFalseBranch()));
+	}
+
+	@Test
+	public void testConditionManyBooleanTypesCondition() {
+		final Set<IType> selectorTypes = new LinkedHashSet<IType>();
+		selectorTypes.add(new ClassType(queryEnvironment, Boolean.class));
+		selectorTypes.add(new ClassType(queryEnvironment, boolean.class));
+		variableTypes.put("selector", selectorTypes);
+		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getFalseBranch()));
+	}
+
+	@Test
+	public void testConditionNotOnlyBooleanTypesCondition() {
+		final Set<IType> selectorTypes = new LinkedHashSet<IType>();
+		selectorTypes.add(new ClassType(queryEnvironment, Boolean.class));
+		selectorTypes.add(new ClassType(queryEnvironment, Object.class));
+		variableTypes.put("selector", selectorTypes);
+		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.WARNING,
+				"The predicate may evaluate to a value that is not a boolean type ([java.lang.Boolean, java.lang.Object]).",
+				0, 38);
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
+		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getFalseBranch()));
 	}
 
 	/**
