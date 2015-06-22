@@ -587,6 +587,40 @@ public class ValidationTest {
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getFalseBranch()));
 	}
 
+	@Test
+	public void testLetMaskingBinding() {
+		final IValidationResult validationResult = engine
+				.validate("let stuff = self in stuff", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
+				"Variable stuff overrides an existing value.", 0, 25);
+	}
+
+	@Test
+	public void testLet() {
+		final IValidationResult validationResult = engine.validate("let newVar = self in newVar",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 

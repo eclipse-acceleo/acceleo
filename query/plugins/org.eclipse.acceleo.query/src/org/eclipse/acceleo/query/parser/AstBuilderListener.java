@@ -46,6 +46,7 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
@@ -1546,7 +1547,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitBinding(BindingContext ctx) {
 		String variable = ctx.getChild(0).getText();
 		Expression expression = pop();
-		push(builder.binding(variable, expression));
+		final Binding binding = builder.binding(variable, expression);
+
+		startPositions.put(binding, Integer.valueOf(ctx.start.getStartIndex()));
+		endPositions.put(binding, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		push(binding);
 	}
 
 	/**
@@ -1567,6 +1573,11 @@ public class AstBuilderListener extends QueryBaseListener {
 		for (int i = 0; i < bindingNumber; i++) {
 			bindings[i] = popBinding();
 		}
-		push(builder.let(body, bindings));
+		final Let let = builder.let(body, bindings);
+
+		startPositions.put(let, Integer.valueOf(ctx.start.getStartIndex()));
+		endPositions.put(let, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		push(let);
 	}
 }

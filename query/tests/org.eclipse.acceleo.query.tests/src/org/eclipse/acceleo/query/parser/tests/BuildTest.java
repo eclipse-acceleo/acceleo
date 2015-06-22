@@ -2197,19 +2197,19 @@ public class BuildTest {
 	@Test
 	public void incompleteLetTest1() {
 		IQueryBuilderEngine.AstResult build = engine.build("let a=2 in");
-		assertExpression(build, Let.class, -1, -1, build.getAst());
+		assertExpression(build, Let.class, 0, 10, build.getAst());
 	}
 
 	@Test
 	public void incompleteLetTest2() {
 		IQueryBuilderEngine.AstResult build = engine.build("let a=2 i");
-		assertExpression(build, Let.class, -1, -1, build.getAst());
+		assertExpression(build, Let.class, 0, 9, build.getAst());
 	}
 
 	@Test
 	public void incompleteLetTest3() {
 		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b=");
-		assertExpression(build, Let.class, -1, -1, build.getAst());
+		assertExpression(build, Let.class, 0, 11, build.getAst());
 	}
 
 	/**

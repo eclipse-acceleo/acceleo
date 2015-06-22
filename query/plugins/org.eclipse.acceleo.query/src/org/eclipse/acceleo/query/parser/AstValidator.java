@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
@@ -34,6 +35,7 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
@@ -517,6 +519,35 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		} else {
 			result.add(services.nothing("The predicate never evaluates to a boolean type (%s).",
 					selectorTypes));
+		}
+
+		return checkWarningsAndErrors(object, result);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseLet(org.eclipse.acceleo.query.ast.Let)
+	 */
+	@Override
+	public Set<IType> caseLet(Let object) {
+		Set<IType> result = Sets.newLinkedHashSet();
+
+		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
+				.peek());
+		for (Binding binding : object.getBindings()) {
+			if (newVariableTypes.containsKey(binding.getName())) {
+				result.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE, binding.getName()));
+			}
+			newVariableTypes.put(binding.getName(), doSwitch(binding.getValue()));
+		}
+
+		variableTypesStack.push(newVariableTypes);
+		try {
+			final Set<IType> bodyTypes = doSwitch(object.getBody());
+			result.addAll(bodyTypes);
+		} finally {
+			variableTypesStack.pop();
 		}
 
 		return checkWarningsAndErrors(object, result);
