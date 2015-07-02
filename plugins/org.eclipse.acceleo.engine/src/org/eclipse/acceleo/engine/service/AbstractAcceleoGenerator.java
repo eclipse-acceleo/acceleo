@@ -640,6 +640,8 @@ public abstract class AbstractAcceleoGenerator {
 					EPackage ePackage = (EPackage)object;
 					if (AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackage.getClass())) {
 						instance.remove(entry.getKey());
+					} else if (ePackage.eResource() != null && ePackage.eResource().getResourceSet() != null && ePackage.eResource().getResourceSet().getPackageRegistry() == instance) {
+						instance.remove(entry.getKey());
 					}
 				}
 			}

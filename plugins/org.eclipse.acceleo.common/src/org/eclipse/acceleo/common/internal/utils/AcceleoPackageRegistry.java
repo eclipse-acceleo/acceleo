@@ -251,7 +251,14 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 	 */
 	@Override
 	public Object put(String key, Object value) {
-		if (dynamicEcorePackagePaths.containsKey(key)) {
+		boolean isInAcceleoResourceSet = false;
+		if (value instanceof EPackage) {
+			EPackage ePackage = (EPackage)value;
+			if (ePackage.eResource() != null && ePackage.eResource().getResourceSet() != null && ePackage.eResource().getResourceSet().getPackageRegistry() == this) {
+				isInAcceleoResourceSet = true;
+			}
+		}
+		if (dynamicEcorePackagePaths.containsKey(key) || isInAcceleoResourceSet) {
 			return super.put(key, value);
 		}
 		return delegate.put(key, value);
