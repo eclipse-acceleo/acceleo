@@ -370,7 +370,7 @@ public class CompletionTest {
 	@Test
 	public void testAfterThenCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if stuff then ", 13, variableTypes);
-		assertEquals(4, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
 	/**
@@ -380,7 +380,7 @@ public class CompletionTest {
 	public void testAfterElseCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if stuff then self else ", 23,
 				variableTypes);
-		assertEquals(4, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
 	/**
@@ -440,6 +440,18 @@ public class CompletionTest {
 
 		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test472179TypeLiteralComletion() {
+		final ICompletionResult completionResult = engine.getCompletion("self.eContainer(ecore::EP)", 25,
+				variableTypes);
+
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("EP", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);

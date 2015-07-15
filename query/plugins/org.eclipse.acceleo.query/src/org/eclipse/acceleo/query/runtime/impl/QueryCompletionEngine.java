@@ -132,7 +132,7 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			int length = expression.length();
 			int end = offset;
 			while (end < length) {
-				char charAt = expression.charAt(end - 1);
+				char charAt = expression.charAt(end);
 				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_') {
 					++end;
 				} else {

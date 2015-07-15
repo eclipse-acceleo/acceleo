@@ -1135,7 +1135,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				push(serviceName);
 				push(new Expression[] {receiver });
 			}
-		} else {
+		} else if (errorRule != QueryParser.RULE_navigationSegment) {
 			TypeLiteral type = popTypeLiteral();
 			Expression receiver = pop();
 			push(serviceName);
@@ -1244,12 +1244,16 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitApply(ApplyContext ctx) {
-		final Expression[] args = popArgs();
-		final String serviceName = popString();
-		final Call callService = builder.callService(CallType.CALLORAPPLY, serviceName, args);
-		startPositions.put(callService, startPositions.get(args[0]));
-		endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-		push(callService);
+		if (errorRule != QueryParser.RULE_navigationSegment) {
+			final Expression[] args = popArgs();
+			final String serviceName = popString();
+			final Call callService = builder.callService(CallType.CALLORAPPLY, serviceName, args);
+			startPositions.put(callService, startPositions.get(args[0]));
+			endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			push(callService);
+		} else {
+			errorRule = NO_ERROR;
+		}
 	}
 
 	@Override
