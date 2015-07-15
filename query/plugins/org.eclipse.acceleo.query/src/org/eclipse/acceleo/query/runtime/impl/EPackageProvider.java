@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IEPackageProvider;
+import org.eclipse.acceleo.query.runtime.IEPackageProvider2;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -37,7 +39,7 @@ import org.eclipse.emf.ecore.EcorePackage;
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
-public class EPackageProvider implements IEPackageProvider {
+public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 
 	/**
 	 * Map the name to their corresponding package.
@@ -66,9 +68,20 @@ public class EPackageProvider implements IEPackageProvider {
 	private final List<EOperation> eOperationsList = new ArrayList<EOperation>();
 
 	/**
+	 * Mapping from an {@link EClass} to its containing {@link EStructuralFeature} for one {@link EClass}
+	 * hierarchy.
+	 */
+	private final Map<EClass, Set<EStructuralFeature>> containingFeaturesForOneClassHierarchy = new HashMap<EClass, Set<EStructuralFeature>>();
+
+	/**
 	 * Mapping from an {@link EClass} to its containing {@link EStructuralFeature}.
 	 */
 	private final Map<EClass, Set<EStructuralFeature>> containingFeatures = new HashMap<EClass, Set<EStructuralFeature>>();
+
+	/**
+	 * Mapping from an {@link EClass} to all its containing {@link EStructuralFeature} (transitive).
+	 */
+	private final Map<EClass, Set<EStructuralFeature>> allContainingFeatures = new HashMap<EClass, Set<EStructuralFeature>>();
 
 	/**
 	 * Mapping from an {@link EClass} to its inverse {@link EStructuralFeature}.
@@ -109,6 +122,8 @@ public class EPackageProvider implements IEPackageProvider {
 			for (EPackage childPkg : ePackage.getESubpackages()) {
 				removePackage(childPkg.getName());
 			}
+			containingFeatures.clear();
+			allContainingFeatures.clear();
 		}
 	}
 
@@ -143,11 +158,11 @@ public class EPackageProvider implements IEPackageProvider {
 					inverseFeatures.remove(feature.getEType());
 				}
 				if (isContainingEStructuralFeature(feature)) {
-					Set<EStructuralFeature> possibleContainementFeatures = containingFeatures.get(feature
-							.getEType());
+					Set<EStructuralFeature> possibleContainementFeatures = containingFeaturesForOneClassHierarchy
+							.get(feature.getEType());
 					if (possibleContainementFeatures != null && possibleContainementFeatures.remove(feature)
 							&& possibleContainementFeatures.size() == 0) {
-						containingFeatures.remove(feature.getEType());
+						containingFeaturesForOneClassHierarchy.remove(feature.getEType());
 					}
 				}
 			}
@@ -227,6 +242,8 @@ public class EPackageProvider implements IEPackageProvider {
 				for (EPackage childPkg : ePackage.getESubpackages()) {
 					registerPackage(childPkg);
 				}
+				containingFeatures.clear();
+				allContainingFeatures.clear();
 			} else {
 				throw new IllegalStateException("Couldn't register package " + ePackage.getName()
 						+ " because it's name is null.");
@@ -267,11 +284,12 @@ public class EPackageProvider implements IEPackageProvider {
 				}
 				possibleInverseFeatures.add(feature);
 				if (isContainingEStructuralFeature(feature)) {
-					Set<EStructuralFeature> possibleContainementFeatures = containingFeatures.get(feature
-							.getEType());
+					Set<EStructuralFeature> possibleContainementFeatures = containingFeaturesForOneClassHierarchy
+							.get(feature.getEType());
 					if (possibleContainementFeatures == null) {
 						possibleContainementFeatures = new LinkedHashSet<EStructuralFeature>();
-						containingFeatures.put((EClass)feature.getEType(), possibleContainementFeatures);
+						containingFeaturesForOneClassHierarchy.put((EClass)feature.getEType(),
+								possibleContainementFeatures);
 					}
 					possibleContainementFeatures.add(feature);
 				}
@@ -673,45 +691,74 @@ public class EPackageProvider implements IEPackageProvider {
 	 */
 	@Override
 	public Set<EClass> getAllContainingEClasses(EClass eCls) {
-		final Set<EClass> direcltyContainingEClasses = getContainingEClasses(eCls);
-		final Set<EClass> result = new LinkedHashSet<EClass>(direcltyContainingEClasses);
+		final Set<EClass> result = new LinkedHashSet<EClass>();
 
-		Set<EClass> added = new LinkedHashSet<EClass>(direcltyContainingEClasses);
-		while (!added.isEmpty()) {
-			final Set<EClass> toDig = new LinkedHashSet<EClass>();
-			for (EClass a : added) {
-				for (EClass containing : getContainingEClasses(a)) {
-					if (result.add(containing)) {
-						toDig.add(containing);
-					}
-				}
-			}
-			added = toDig;
+		for (EStructuralFeature feature : getAllContainingEStructuralFeatures(eCls)) {
+			result.add(feature.getEContainingClass());
 		}
 
 		return result;
 	}
 
 	/**
-	 * Gets the {@link Set} of containing {@link EStructuralFeature} for the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 * @return the {@link Set} of containing {@link EStructuralFeature} for the given {@link EClass}
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider2#getAllContainingEStructuralFeatures(org.eclipse.emf.ecore.EClass)
 	 */
-	private Set<EStructuralFeature> getContainingEStructuralFeatures(EClass eCls) {
-		final Set<EStructuralFeature> result = new LinkedHashSet<EStructuralFeature>();
+	public Set<EStructuralFeature> getAllContainingEStructuralFeatures(EClass type) {
+		Set<EStructuralFeature> result = allContainingFeatures.get(type);
 
-		result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(eCls));
-		for (EClass superType : eCls.getEAllSuperTypes()) {
-			result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(superType));
+		if (result == null) {
+			result = new LinkedHashSet<EStructuralFeature>();
+			allContainingFeatures.put(type, result);
+
+			final Set<EClass> knownECls = new HashSet<EClass>();
+			Set<EStructuralFeature> previousAdded = new LinkedHashSet<EStructuralFeature>(
+					getContainingEStructuralFeatures(type));
+			result.addAll(previousAdded);
+			while (!previousAdded.isEmpty()) {
+				Set<EStructuralFeature> currentAdded = new LinkedHashSet<EStructuralFeature>();
+				for (EStructuralFeature feature : previousAdded) {
+					final EClass eContainingClass = feature.getEContainingClass();
+					if (!knownECls.contains(eContainingClass)) {
+						for (EStructuralFeature parentFeature : getContainingEStructuralFeatures(eContainingClass)) {
+							if (result.add(parentFeature)) {
+								knownECls.add(eContainingClass);
+								currentAdded.add(parentFeature);
+							}
+						}
+					}
+				}
+				previousAdded = currentAdded;
+			}
 		}
-		for (EClass subType : getAllSubTypes(eCls)) {
-			result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(subType));
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider2#getContainingEStructuralFeatures(org.eclipse.emf.ecore.EClass)
+	 */
+	public Set<EStructuralFeature> getContainingEStructuralFeatures(EClass eCls) {
+		Set<EStructuralFeature> result = containingFeatures.get(eCls);
+
+		if (result == null) {
+			result = new LinkedHashSet<EStructuralFeature>();
+			containingFeatures.put(eCls, result);
+
+			result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(eCls));
+			for (EClass superType : eCls.getEAllSuperTypes()) {
+				result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(superType));
+			}
+			for (EClass subType : getAllSubTypes(eCls)) {
+				result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(subType));
+			}
+			// always add EObject EClass containing EStructuralFeatures
+			result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(EcorePackage.eINSTANCE
+					.getEObject()));
 		}
-		// always add EObject EClass containing EStructuralFeatures
-		result.addAll(getContainingEStructuralFeaturesForOneEClassHierarchyLevel(EcorePackage.eINSTANCE
-				.getEObject()));
 
 		return result;
 	}
@@ -728,7 +775,7 @@ public class EPackageProvider implements IEPackageProvider {
 	private Set<EStructuralFeature> getContainingEStructuralFeaturesForOneEClassHierarchyLevel(EClass eCls) {
 		final Set<EStructuralFeature> result = new LinkedHashSet<EStructuralFeature>();
 
-		Set<EStructuralFeature> features = containingFeatures.get(eCls);
+		Set<EStructuralFeature> features = containingFeaturesForOneClassHierarchy.get(eCls);
 		if (features != null) {
 			result.addAll(features);
 		}

@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 /**
  * @author PGUILET_OBEO
  */
-public class AbstractEngineInitializationWithCrossReferencer {
+public class AbstractEngineInitializationWithCrossReferencer extends AbstractServicesTest {
 
 	public AbstractEngineInitializationWithCrossReferencer() {
 	}

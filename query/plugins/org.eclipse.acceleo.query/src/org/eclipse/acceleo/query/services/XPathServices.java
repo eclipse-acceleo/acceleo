@@ -431,6 +431,21 @@ public class XPathServices extends AbstractServiceProvider {
 	}
 
 	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	private final IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 */
+	public XPathServices(IReadOnlyQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)

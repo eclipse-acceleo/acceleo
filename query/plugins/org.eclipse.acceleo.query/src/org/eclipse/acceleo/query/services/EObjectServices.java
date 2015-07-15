@@ -26,6 +26,7 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.IEPackageProvider2;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
@@ -525,6 +526,21 @@ public class EObjectServices extends AbstractServiceProvider {
 	private CrossReferenceProvider crossReferencer;
 
 	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	private final IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 */
+	public EObjectServices(IReadOnlyQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider#getService(java.lang.reflect.Method)
@@ -594,14 +610,96 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject, final EClass type) {
-		// TODO optimize by pruning dead branches according to EClasses.
+		final Set<EStructuralFeature> features = ((IEPackageProvider2)queryEnvironment.getEPackageProvider())
+				.getAllContainingEStructuralFeatures(type);
+
+		return eAllContents(eObject, type, features);
+	}
+
+	/**
+	 * Returns a list of the {@link EObject} recursively contained in the specified root eObject and that are
+	 * instances of the specified {@link EClass} or one of its {@link EClass#getEAllSuperTypes() super types}.
+	 * 
+	 * @param eObject
+	 *            the root {@link EObject} to visit.
+	 * @param type
+	 *            the filtering {@link EClass}
+	 * @param features
+	 *            the set of {@link EStructuralFeature} to navigate
+	 * @return the recursive filtered content of the given {@link EObject}
+	 */
+	private List<EObject> eAllContents(EObject eObject, EClass type, Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
-		final Iterator<EObject> it = eObject.eAllContents();
-		while (it.hasNext()) {
-			final EObject input = it.next();
-			if (type.isSuperTypeOf(input.eClass())) {
-				result.add(input);
+		if (!features.isEmpty()) {
+			for (EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {
+				if (features.contains(feature)) {
+					final Object child = eObject.eGet(feature);
+					if (child != null) {
+						result.addAll(eAllContentsVisitChild(child, type, feature.isMany(), features));
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Visits a given child for {@link EObjectServices#eAllContents(EObject, EClass, Set)}.
+	 * 
+	 * @param child
+	 *            the child to visit
+	 * @param type
+	 *            the filtering {@link EClass}
+	 * @param isMany
+	 *            <code>true</code> if the containing {@link EStructuralFeature}
+	 *            {@link EStructuralFeature#isMany() is many}, <code>false</code> otherwise
+	 * @param features
+	 *            the set of {@link EStructuralFeature} to navigate
+	 * @return the recursive filtered content of the given child and the child itself if it match the type
+	 */
+	private List<EObject> eAllContentsVisitChild(Object child, EClass type, boolean isMany,
+			Set<EStructuralFeature> features) {
+		final List<EObject> result = Lists.newArrayList();
+
+		if (isMany) {
+			if (child instanceof Collection<?>) {
+				result.addAll(eAllContentsVisitCollectionChild((Collection<?>)child, type, features));
+			} else {
+				throw new IllegalStateException("don't know what to do with " + child.getClass());
+			}
+		} else if (child instanceof EObject) {
+			if (type.isSuperTypeOf(((EObject)child).eClass())) {
+				result.add((EObject)child);
+			}
+			result.addAll(eAllContents((EObject)child, type, features));
+		}
+
+		return result;
+	}
+
+	/**
+	 * Visits a given {@link Collection} child for {@link EObjectServices#eAllContents(EObject, EClass, Set)}.
+	 * 
+	 * @param child
+	 *            the child to visit
+	 * @param type
+	 *            the filtering {@link EClass}
+	 * @param features
+	 *            the set of {@link EStructuralFeature} to navigate
+	 * @return the recursive filtered content of the given child and the child itself if it match the type
+	 */
+	private List<EObject> eAllContentsVisitCollectionChild(Collection<?> child, final EClass type,
+			Set<EStructuralFeature> features) {
+		final List<EObject> result = Lists.newArrayList();
+
+		for (Object object : (Collection<?>)child) {
+			if (object instanceof EObject) {
+				if (type.isSuperTypeOf(((EObject)object).eClass())) {
+					result.add((EObject)object);
+				}
+				result.addAll(eAllContents((EObject)object, type, features));
 			}
 		}
 
@@ -644,11 +742,94 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eContents(EObject eObject, final EClass type) {
+		final Set<EStructuralFeature> features = ((IEPackageProvider2)queryEnvironment.getEPackageProvider())
+				.getContainingEStructuralFeatures(type);
+
+		return eContents(eObject, type, features);
+	}
+
+	/**
+	 * Returns a list of the {@link EObject} directly contained in the specified root eObject and that are
+	 * instances of the specified {@link EClass} or one of its {@link EClass#getEAllSuperTypes() super types}.
+	 * 
+	 * @param eObject
+	 *            the root {@link EObject} to visit.
+	 * @param type
+	 *            the filtering {@link EClass}
+	 * @param features
+	 *            the set of {@link EStructuralFeature} to navigate
+	 * @return the recursive filtered content of the given {@link EObject}
+	 */
+	private List<EObject> eContents(EObject eObject, EClass type, Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
-		for (EObject input : eObject.eContents()) {
-			if (type.isSuperTypeOf(input.eClass())) {
-				result.add(input);
+		if (!features.isEmpty()) {
+			for (EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {
+				if (features.contains(feature)) {
+					final Object child = eObject.eGet(feature);
+					if (child != null) {
+						result.addAll(eContentsVisitChild(child, type, feature.isMany(), features));
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Visits a given child for {@link EObjectServices#eContents(EObject, EClass, Set)}.
+	 * 
+	 * @param child
+	 *            the child to visit
+	 * @param type
+	 *            the filtering {@link EClass}
+	 * @param isMany
+	 *            <code>true</code> if the containing {@link EStructuralFeature}
+	 *            {@link EStructuralFeature#isMany() is many}, <code>false</code> otherwise
+	 * @param features
+	 *            the set of {@link EStructuralFeature} to navigate
+	 * @return the child itself if it match the type
+	 */
+	private Collection<? extends EObject> eContentsVisitChild(Object child, EClass type, boolean isMany,
+			Set<EStructuralFeature> features) {
+		final List<EObject> result = Lists.newArrayList();
+
+		if (isMany) {
+			if (child instanceof Collection<?>) {
+				result.addAll(eContentsVisitCollectionChild((Collection<?>)child, type, features));
+			} else {
+				throw new IllegalStateException("don't know what to do with " + child.getClass());
+			}
+		} else if (child instanceof EObject) {
+			if (type.isSuperTypeOf(((EObject)child).eClass())) {
+				result.add((EObject)child);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Visits a given {@link Collection} child for {@link EObjectServices#eContents(EObject, EClass, Set)}.
+	 * 
+	 * @param child
+	 *            the child to visit
+	 * @param type
+	 *            the filtering {@link EClass}
+	 * @param features
+	 *            the set of {@link EStructuralFeature} to navigate
+	 * @return the child itself if it match the type
+	 */
+	private List<EObject> eContentsVisitCollectionChild(Collection<?> child, final EClass type,
+			Set<EStructuralFeature> features) {
+		final List<EObject> result = Lists.newArrayList();
+
+		for (Object object : (Collection<?>)child) {
+			if (object instanceof EObject) {
+				if (type.isSuperTypeOf(((EObject)object).eClass())) {
+					result.add((EObject)object);
+				}
 			}
 		}
 

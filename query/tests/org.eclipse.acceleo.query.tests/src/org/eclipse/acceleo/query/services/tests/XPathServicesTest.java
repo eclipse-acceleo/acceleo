@@ -42,7 +42,7 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 
 	@Before
 	public void setup() throws URISyntaxException, IOException {
-		this.eObjectServices = new XPathServices();
+		this.eObjectServices = new XPathServices(getQueryEnvironment());
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 	}
 

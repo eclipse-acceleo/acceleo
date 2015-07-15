@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
+import org.eclipse.acceleo.query.tests.qmodel.QmodelPackage;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -28,9 +29,11 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +53,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 	@Before
 	public void setup() throws URISyntaxException, IOException {
-		this.eObjectServices = new EObjectServices();
+		this.eObjectServices = new EObjectServices(getQueryEnvironment());
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 	}
 
@@ -476,6 +479,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
 
+		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
 		List<EObject> contents = eObjectServices.eContents(fullSiriusCodePackage, unused.eClass());
 		assertEquals(31, contents.size());
 		contents = eObjectServices.eContents(fullSiriusCodePackage, newEReference1.eClass());
@@ -537,6 +541,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
 
+		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
 		List<EObject> contents = eObjectServices.eAllContents(fullSiriusCodePackage, unused.eClass());
 		assertEquals(31, contents.size());
 		contents = eObjectServices.eAllContents(fullSiriusCodePackage, newEReference1.eClass());
@@ -548,6 +553,80 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 			fail("The 'eClass' operation service must throw a NPE.");
 		} catch (NullPointerException exception) {
 			// Do nothing the exception is expected
+		}
+	}
+
+	@Test
+	public void eAllContentFilteredSingleContainementFeature() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("testPackage");
+		ePkg.setNsPrefix("testPackage");
+		ePkg.setNsURI("testPackage");
+
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("TestCls");
+		ePkg.getEClassifiers().add(eCls);
+		final EReference reference = EcorePackage.eINSTANCE.getEcoreFactory().createEReference();
+		reference.setName("testReference");
+		reference.setContainment(true);
+		reference.setEType(eCls);
+		reference.setUpperBound(1);
+		eCls.getEStructuralFeatures().add(reference);
+
+		final EObject eObj1 = EcoreUtil.create(eCls);
+		final EObject eObj2 = EcoreUtil.create(eCls);
+		final EObject eObj3 = EcoreUtil.create(eCls);
+		eObj1.eSet(reference, eObj2);
+		eObj2.eSet(reference, eObj3);
+
+		getQueryEnvironment().registerEPackage(ePkg);
+		try {
+			final List<EObject> result = eObjectServices.eAllContents(eObj1, eCls);
+
+			assertEquals(2, result.size());
+			assertEquals(eObj2, result.get(0));
+			assertEquals(eObj3, result.get(1));
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+		}
+	}
+
+	@SuppressWarnings({"unchecked" })
+	@Test
+	public void eAllContentFilteredMultiContainementFeature() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("testPackage");
+		ePkg.setNsPrefix("testPackage");
+		ePkg.setNsURI("testPackage");
+
+		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		eCls.setName("TestCls");
+		ePkg.getEClassifiers().add(eCls);
+		final EReference reference = EcorePackage.eINSTANCE.getEcoreFactory().createEReference();
+		reference.setName("testReference");
+		reference.setContainment(true);
+		reference.setEType(eCls);
+		reference.setUpperBound(-1);
+		eCls.getEStructuralFeatures().add(reference);
+
+		final EObject eObj1 = EcoreUtil.create(eCls);
+		final EObject eObj2 = EcoreUtil.create(eCls);
+		final EObject eObj3 = EcoreUtil.create(eCls);
+		final EObject eObj4 = EcoreUtil.create(eCls);
+		((List<EObject>)eObj1.eGet(reference)).add(eObj2);
+		((List<EObject>)eObj2.eGet(reference)).add(eObj3);
+		((List<EObject>)eObj2.eGet(reference)).add(eObj4);
+
+		getQueryEnvironment().registerEPackage(ePkg);
+		try {
+			final List<EObject> result = eObjectServices.eAllContents(eObj1, eCls);
+
+			assertEquals(3, result.size());
+			assertEquals(eObj2, result.get(0));
+			assertEquals(eObj3, result.get(1));
+			assertEquals(eObj4, result.get(2));
+		} finally {
+			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
 		}
 	}
 
