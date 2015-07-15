@@ -457,6 +457,18 @@ public class CompletionTest {
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
+	@Test
+	public void test471583TypeLiteralComletion() {
+		final ICompletionResult completionResult = engine.getCompletion(
+				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
+
+		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);

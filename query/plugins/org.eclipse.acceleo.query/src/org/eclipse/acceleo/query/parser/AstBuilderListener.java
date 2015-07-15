@@ -994,18 +994,20 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitServiceCall(ServiceCallContext ctx) {
-		int childCount = ctx.getChild(2).getChildCount();
-		// CHECKSTYLE:OFF
-		int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
-		// CHECKSTYLE:ON
-		Expression[] args = new Expression[argc];
-		for (int i = argc - 1; i >= 1; i--) {
-			args[i] = pop();
+		if (errorRule != QueryParser.RULE_navigationSegment) {
+			int childCount = ctx.getChild(2).getChildCount();
+			// CHECKSTYLE:OFF
+			int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
+			// CHECKSTYLE:ON
+			Expression[] args = new Expression[argc];
+			for (int i = argc - 1; i >= 1; i--) {
+				args[i] = pop();
+			}
+			String serviceName = ctx.getChild(0).getText().replace("::", ".");
+			args[0] = pop();
+			push(serviceName);
+			push(args);
 		}
-		String serviceName = ctx.getChild(0).getText().replace("::", ".");
-		args[0] = pop();
-		push(serviceName);
-		push(args);
 	}
 
 	@Override
