@@ -17,8 +17,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.eclipse.acceleo.query.runtime.IEPackageProvider;
 import org.eclipse.emf.ecore.EAttribute;
@@ -83,28 +81,7 @@ public class EPackageProvider implements IEPackageProvider {
 	private final Map<EClass, Set<EClass>> subTypes = new HashMap<EClass, Set<EClass>>();
 
 	/**
-	 * Logger used to report package problems.
-	 */
-	private Logger logger;
-
-	/**
-	 * Creates a new {@link EPackageProvider} with a specified logger.
-	 * 
-	 * @param logger
-	 *            the logger to be used to report package problems.
-	 */
-	public EPackageProvider(Logger logger) {
-		this.logger = logger;
-	}
-
-	/**
-	 * Creates a new {@link EPackageProvider}.
-	 */
-	public EPackageProvider() {
-		this.logger = Logger.getLogger("EPackageProvider");
-	}
-
-	/**{@inheritDoc}
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEPackage(java.lang.String)
 	 */
@@ -250,7 +227,7 @@ public class EPackageProvider implements IEPackageProvider {
 				registerPackage(childPkg);
 			}
 		} else {
-			logger.log(Level.WARNING, "Couldn't register package " + ePackage.getName()
+			throw new IllegalStateException("Couldn't register package " + ePackage.getName()
 					+ " because it's nsPrefix is null.");
 		}
 	}
@@ -339,9 +316,11 @@ public class EPackageProvider implements IEPackageProvider {
 		}
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#lookupEOperation(org.eclipse.emf.ecore.EClass, java.lang.String, java.util.List)
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#lookupEOperation(org.eclipse.emf.ecore.EClass,
+	 *      java.lang.String, java.util.List)
 	 */
 	@Override
 	public EOperation lookupEOperation(EClass receiverEClass, String eOperationName,
@@ -378,7 +357,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEOperations(java.util.Set)
 	 */
@@ -425,7 +405,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String, java.lang.String)
 	 */
@@ -439,7 +420,8 @@ public class EPackageProvider implements IEPackageProvider {
 		}
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String)
 	 */
@@ -457,17 +439,19 @@ public class EPackageProvider implements IEPackageProvider {
 					String secondFullyQualifiedName = foundClassifier.getEPackage().getNsPrefix() + "."
 							+ foundClassifier.getName();
 					String message = "Ambiguous classifier request. At least two classifiers matches %s : %s and %s";
-					logger.warning(String.format(message, classifierName, firstFullyQualifiedName,
-							secondFullyQualifiedName));
+					throw new IllegalStateException(String.format(message, classifierName,
+							firstFullyQualifiedName, secondFullyQualifiedName));
 				}
 			}
 		}
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String,
+	 *      java.lang.String, java.lang.String)
 	 */
 	@Override
 	public EEnumLiteral getEnumLiteral(String nsPrefix, String enumName, String literalName) {
@@ -484,9 +468,11 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String, java.lang.String)
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String,
+	 *      java.lang.String)
 	 */
 	@Override
 	public EEnumLiteral getEnumLiteral(String enumName, String literalName) {
@@ -518,7 +504,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEClass(java.lang.Class)
 	 */
@@ -527,7 +514,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return class2classifiers.get(cls);
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getClass(org.eclipse.emf.ecore.EClassifier)
 	 */
@@ -563,7 +551,8 @@ public class EPackageProvider implements IEPackageProvider {
 		eClassifiers.add(eClassifier);
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEStructuralFeatures(java.util.Set)
 	 */
@@ -578,7 +567,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEClassifiers()
 	 */
@@ -593,7 +583,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEEnumLiterals()
 	 */
@@ -658,7 +649,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getContainingEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -673,7 +665,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getAllContainingEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -742,7 +735,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getAllSubTypes(org.eclipse.emf.ecore.EClass)
 	 */
@@ -761,7 +755,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getContainedEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -783,7 +778,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getAllContainedEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -808,7 +804,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getInverseEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -854,7 +851,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getFollowingSiblingsEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -914,7 +912,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getPrecedingSiblingsEClasses(org.eclipse.emf.ecore.EClass)
 	 */
@@ -967,7 +966,8 @@ public class EPackageProvider implements IEPackageProvider {
 		return result;
 	}
 
-	/**{@inheritDoc}
+	/**
+	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getSiblingsEClasses(org.eclipse.emf.ecore.EClass)
 	 */
