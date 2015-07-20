@@ -1,4 +1,4 @@
-target "Acceleo Mars Target Platform"
+target "Acceleo Luna Target Platform"
 
 include "orbit.tpd"
 include "license.tpd"
@@ -6,7 +6,7 @@ include "swtbot.tpd"
 
 with source requirements
 
-location "http://download.eclipse.org/releases/mars" {
+location "http://download.eclipse.org/releases/luna" {
 	org.eclipse.platform.sdk lazy
 	org.eclipse.emf.sdk.feature.group lazy
 	org.eclipse.jdt.feature.group lazy
@@ -14,10 +14,10 @@ location "http://download.eclipse.org/releases/mars" {
 	org.eclipse.uml2.feature.group lazy
 	
 	org.eclipse.sirius.runtime.feature.group lazy
-	org.eclipse.sirius.specifier.feature.group lazy
+	// org.eclipse.sirius.specifier.feature.group lazy
 }
 
-location "http://download.eclipse.org/releases/mars" {
+location "http://download.eclipse.org/releases/luna" {
 	lpg.runtime.java lazy
 	
 	org.eclipse.ocl lazy
@@ -28,6 +28,6 @@ location "http://download.eclipse.org/releases/mars" {
 	org.eclipse.ocl.examples.xtext.completeocl lazy
 	org.eclipse.ocl.examples.xtext.completeocl.ui lazy
 	
-	org.eclipse.ocl.pivot.uml lazy
-	org.eclipse.ocl.pivot.ui lazy
+	// org.eclipse.ocl.pivot.uml lazy
+	// org.eclipse.ocl.pivot.ui lazy
 }
