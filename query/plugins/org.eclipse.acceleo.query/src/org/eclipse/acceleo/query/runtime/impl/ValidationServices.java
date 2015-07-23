@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
+import com.google.common.collect.Sets;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,11 +23,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -224,13 +228,18 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Gets the {@link IType} for the given service name and {@link IType} of parameters.
 	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param serviceName
 	 *            the service name
 	 * @param argTypes
 	 *            the {@link IType} of parameters
 	 * @return the {@link IType} for the given service name and {@link IType} of parameters
 	 */
-	public Set<IType> callType(String serviceName, List<Set<IType>> argTypes) {
+	public Set<IType> callType(Call call, IValidationResult validationResult, String serviceName,
+			List<Set<IType>> argTypes) {
 		if (argTypes.size() == 0) {
 			throw new AcceleoQueryValidationException(
 					"An internal error occured during validation of a query : at least one argument must be specified for service "
@@ -265,7 +274,8 @@ public class ValidationServices extends AbstractLanguageServices {
 						typeMapping = new LinkedHashMap<List<IType>, Set<IType>>();
 						typesPerService.put(service, typeMapping);
 					}
-					Set<IType> serviceTypes = getServiceTypes(service, currentArgTypes);
+					Set<IType> serviceTypes = getServiceTypes(call, validationResult, service,
+							currentArgTypes);
 					typeMapping.put(currentArgTypes, serviceTypes);
 				}
 			}
@@ -329,14 +339,19 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Gets the return {@link IType} of a {@link IService service}.
 	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param service
 	 *            the {@link IService}
 	 * @param argTypes
 	 *            the {@link IType} of parameters
 	 * @return the return {@link IType} of a {@link IService service}
 	 */
-	private Set<IType> getServiceTypes(IService service, List<IType> argTypes) {
-		return service.getType(this, queryEnvironment, argTypes);
+	private Set<IType> getServiceTypes(Call call, IValidationResult validationResult, IService service,
+			List<IType> argTypes) {
+		return service.getType(call, this, validationResult, queryEnvironment, argTypes);
 	}
 
 	/**
@@ -378,29 +393,35 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * then callOrApply is applied recursively to all elements of the collection thus returning a collection
 	 * of the result of this application(nothing values not being added).
 	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param serviceName
 	 *            the name of the service to call.
 	 * @param argTypes
 	 *            the arguments to pass to the called service.
 	 * @return the result of validating the specified service on the specified arguments.
 	 */
-	public Set<IType> callOrApplyTypes(String serviceName, List<Set<IType>> argTypes) {
+	public Set<IType> callOrApplyTypes(Call call, IValidationResult validationResult, String serviceName,
+			List<Set<IType>> argTypes) {
 		try {
 			Set<IType> result = new LinkedHashSet<IType>();
 			final List<Set<IType>> argTypesNoReceiver = new ArrayList<Set<IType>>(argTypes);
 			final Set<IType> receiverTypes = argTypesNoReceiver.remove(0);
 			for (IType receiverType : receiverTypes) {
 				if (receiverType instanceof SequenceType) {
-					result.addAll(validateCallOnSequence(serviceName, (SequenceType)receiverType,
-							argTypesNoReceiver));
+					result.addAll(validateCallOnSequence(call, validationResult, serviceName,
+							(SequenceType)receiverType, argTypesNoReceiver));
 				} else if (receiverType instanceof SetType) {
-					result.addAll(validateCallOnSet(serviceName, (SetType)receiverType, argTypesNoReceiver));
+					result.addAll(validateCallOnSet(call, validationResult, serviceName,
+							(SetType)receiverType, argTypesNoReceiver));
 				} else {
 					final List<Set<IType>> newArgTypes = new ArrayList<Set<IType>>(argTypesNoReceiver);
 					final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
 					newReceiverTypes.add(receiverType);
 					newArgTypes.add(0, newReceiverTypes);
-					result.addAll(callType(serviceName, newArgTypes));
+					result.addAll(callType(call, validationResult, serviceName, newArgTypes));
 				}
 			}
 			return result;
@@ -414,6 +435,10 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Validates a service call on a sequence of objects.
 	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param serviceName
 	 *            the name of the service to be called.
 	 * @param receiverType
@@ -422,8 +447,8 @@ public class ValidationServices extends AbstractLanguageServices {
 	 *            the argument types to pass to the service
 	 * @return types resulting from the validation
 	 */
-	private Set<IType> validateCallOnSequence(String serviceName, SequenceType receiverType,
-			List<Set<IType>> argTypesNoReceiver) {
+	private Set<IType> validateCallOnSequence(Call call, IValidationResult validationResult,
+			String serviceName, SequenceType receiverType, List<Set<IType>> argTypesNoReceiver) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		try {
@@ -431,7 +456,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
 			newReceiverTypes.add(receiverType.getCollectionType());
 			newArgTypes.add(0, newReceiverTypes);
-			final Set<IType> rawResultTypes = callOrApplyTypes(serviceName, newArgTypes);
+			final Set<IType> rawResultTypes = callOrApplyTypes(call, validationResult, serviceName,
+					newArgTypes);
 			for (IType rawResultType : rawResultTypes) {
 				if (!(rawResultType instanceof NothingType)) {
 					// flatten
@@ -459,6 +485,10 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Validates a service call on a set of objects.
 	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param serviceName
 	 *            the name of the service to be called.
 	 * @param receiverType
@@ -467,8 +497,8 @@ public class ValidationServices extends AbstractLanguageServices {
 	 *            the argument types to pass to the service
 	 * @return types resulting from the validation
 	 */
-	private Set<IType> validateCallOnSet(String serviceName, SetType receiverType,
-			List<Set<IType>> argTypesNoReceiver) {
+	private Set<IType> validateCallOnSet(Call call, IValidationResult validationResult, String serviceName,
+			SetType receiverType, List<Set<IType>> argTypesNoReceiver) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		try {
@@ -476,7 +506,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
 			newReceiverTypes.add(receiverType.getCollectionType());
 			newArgTypes.add(0, newReceiverTypes);
-			final Set<IType> rawResultTypes = callOrApplyTypes(serviceName, newArgTypes);
+			final Set<IType> rawResultTypes = callOrApplyTypes(call, validationResult, serviceName,
+					newArgTypes);
 			for (IType rawResultType : rawResultTypes) {
 				if (!(rawResultType instanceof NothingType)) {
 					// flatten
@@ -504,13 +535,18 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Calls a collection's service.
 	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param serviceName
 	 *            the name of the service.
 	 * @param argTypes
 	 *            the service's arguments.
 	 * @return the result of validating the specified service on the specified arguments.
 	 */
-	public Set<IType> collectionServiceCallTypes(String serviceName, List<Set<IType>> argTypes) {
+	public Set<IType> collectionServiceCallTypes(Call call, IValidationResult validationResult,
+			String serviceName, List<Set<IType>> argTypes) {
 		List<Set<IType>> newArguments = new ArrayList<Set<IType>>(argTypes);
 		try {
 			final Set<IType> receiverTypes = newArguments.remove(0);
@@ -524,7 +560,7 @@ public class ValidationServices extends AbstractLanguageServices {
 				}
 			}
 			newArguments.add(0, newReceiverTypes);
-			return callType(serviceName, newArguments);
+			return callType(call, validationResult, serviceName, newArguments);
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
@@ -625,7 +661,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return the {@link Error} types
 	 */
 	public Set<IType> getErrorTypes(Error error) {
-		final Set<IType> result = new HashSet<IType>();
+		final Set<IType> result = new LinkedHashSet<IType>();
 
 		/*
 		 * TODO when there are parsing errors, provide a better message than just the error EClass
@@ -674,4 +710,58 @@ public class ValidationServices extends AbstractLanguageServices {
 
 		return result;
 	}
+
+	/**
+	 * Gets the {@link Set} of the higher {@link EClass} in the super types hierarchy inheriting from both
+	 * given {@link EClass}.
+	 * 
+	 * @param eCls1
+	 *            the first {@link EClass}
+	 * @param eCls2
+	 *            the second {@link EClass}
+	 * @return the {@link Set} of the higher {@link EClass} in the super types hierarchy inheriting from both
+	 *         given {@link EClass}
+	 */
+	public Set<EClass> getSubTypesTopIntersection(EClass eCls1, EClass eCls2) {
+		final Set<EClass> result = new LinkedHashSet<EClass>();
+
+		final Set<EClass> subTypes1 = queryEnvironment.getEPackageProvider().getAllSubTypes(eCls1);
+		final Set<EClass> subTypes2 = queryEnvironment.getEPackageProvider().getAllSubTypes(eCls2);
+
+		final Set<EClass> intersection = Sets.intersection(subTypes1, subTypes2);
+
+		for (EClass eCls : intersection) {
+			final boolean isTopEClass = Collections.disjoint(eCls.getEAllSuperTypes(), intersection);
+			if (isTopEClass) {
+				result.add(eCls);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IType} that are both type1 and type2.
+	 * 
+	 * @param type1
+	 *            the first {@link IType}
+	 * @param type2
+	 *            the second {@link IType}
+	 * @return the {@link Set} of {@link IType} that are both type1 and type2
+	 */
+	public Set<IType> intersection(IType type1, IType type2) {
+		final Set<IType> result = new LinkedHashSet<IType>();
+
+		final IType lowerType = lower(type1, type2);
+		if (lowerType != null) {
+			result.add(lowerType);
+		} else if (type1.getType() instanceof EClass && type2.getType() instanceof EClass) {
+			for (EClass eCls : getSubTypesTopIntersection((EClass)type1.getType(), (EClass)type2.getType())) {
+				result.add(new EClassifierType(getQueryEnvironment(), eCls));
+			}
+		}
+
+		return result;
+	}
+
 }

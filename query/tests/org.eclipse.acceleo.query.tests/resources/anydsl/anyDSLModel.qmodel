@@ -258,6 +258,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when i (EClassifier=World) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=Producer) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=EAnnotation) is kind of EClassifierLiteral=Food" startPosition="131" endPosition="158"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when i (EClassifier=Producer) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=EAnnotation) is kind of EClassifierLiteral=Food" startPosition="131" endPosition="158"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -388,6 +390,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Plant) is not kind of EClassifierLiteral=MultiNamedElement" endPosition="43"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -398,6 +401,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Plant) is type of EClassifierLiteral=MultiNamedElement" endPosition="43"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -408,6 +412,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Plant) is type of EClassifierLiteral=Source" endPosition="32"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -418,6 +423,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Plant) is not type of EClassifierLiteral=Plant" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -448,6 +454,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when a (EClassifier=Company) is type of EClassifierLiteral=Restaurant" startPosition="25" endPosition="58"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -468,6 +475,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when content (EClassifier=Company) is type of EClassifierLiteral=ProductionCompany&#xA;Nothing inferred when content (EClassifier=Food) is type of EClassifierLiteral=ProductionCompany&#xA;Nothing inferred when content (EClassifier=Source) is type of EClassifierLiteral=ProductionCompany&#xA;Nothing inferred when content (EClassifier=Adress) is type of EClassifierLiteral=ProductionCompany&#xA;Nothing inferred when content (EClassifier=Producer) is type of EClassifierLiteral=ProductionCompany&#xA;Nothing inferred when content (EClassifier=Chef) is type of EClassifierLiteral=ProductionCompany&#xA;Nothing inferred when content (EClassifier=Recipe) is type of EClassifierLiteral=ProductionCompany" startPosition="37" endPosition="83"/>
       </expectedResult>
     </expectations>
   </queries>

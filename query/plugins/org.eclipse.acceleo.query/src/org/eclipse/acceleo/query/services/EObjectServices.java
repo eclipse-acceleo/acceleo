@@ -25,10 +25,12 @@ import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IEPackageProvider2;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
@@ -82,8 +84,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
@@ -173,9 +175,17 @@ public class EObjectServices extends AbstractServiceProvider {
 			super(serviceMethod, serviceInstance);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
@@ -256,8 +266,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
@@ -352,8 +362,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
@@ -447,8 +457,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {

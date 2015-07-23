@@ -17,8 +17,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -29,8 +31,8 @@ import org.eclipse.acceleo.query.validation.type.IType;
 public abstract class AbstractService implements IService {
 
 	@Override
-	public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-			List<IType> argTypes) {
+	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 		Type returnType = getServiceMethod().getGenericReturnType();
 

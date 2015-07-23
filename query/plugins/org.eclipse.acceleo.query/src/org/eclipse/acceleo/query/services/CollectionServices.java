@@ -33,9 +33,12 @@ import org.eclipse.acceleo.annotations.api.documentation.Other;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.annotations.api.documentation.Throw;
-import org.eclipse.acceleo.query.runtime.IEPackageProvider;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
@@ -85,13 +88,13 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
 			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
 			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-				result.addAll(super.getType(services, queryEnvironment, argTypes));
+				result.addAll(super.getType(call, services, validationResult, queryEnvironment, argTypes));
 			} else {
 				result.add(services.nothing("expression in %s must return a boolean", getServiceMethod()
 						.getName()));
@@ -120,18 +123,35 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
 			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
 			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-				IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
-				if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
-					lambdaEvaluatorType = new EClassifierType(queryEnvironment,
-							((EClassifierLiteralType)lambdaEvaluatorType).getType());
+				final Expression expression;
+				if (call != null) {
+					expression = ((Lambda)call.getArguments().get(1)).getExpression();
+				} else {
+					expression = null;
 				}
-				result.add(lambdaEvaluatorType);
+				final Set<IType> inferredTypes;
+				if (validationResult != null) {
+					inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.TRUE).get(
+							lambdaType.getLambdaEvaluatorName());
+				} else {
+					inferredTypes = null;
+				}
+				if (inferredTypes == null) {
+					IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
+					if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
+						lambdaEvaluatorType = new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)lambdaEvaluatorType).getType());
+					}
+					result.add(lambdaEvaluatorType);
+				} else {
+					result.addAll(inferredTypes);
+				}
 			} else {
 				result.add(services.nothing("expression in an any must return a boolean"));
 			}
@@ -159,8 +179,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
@@ -220,8 +240,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
@@ -253,21 +273,44 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
 			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
 			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-				IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
-				if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
-					lambdaEvaluatorType = new EClassifierType(queryEnvironment,
-							((EClassifierLiteralType)lambdaEvaluatorType).getType());
+				final Expression expression;
+				if (call != null) {
+					expression = ((Lambda)call.getArguments().get(1)).getExpression();
+				} else {
+					expression = null;
 				}
-				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-					result.add(new SequenceType(queryEnvironment, lambdaEvaluatorType));
-				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-					result.add(new SetType(queryEnvironment, lambdaEvaluatorType));
+				final Set<IType> inferredTypes;
+				if (validationResult != null) {
+					inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.TRUE).get(
+							lambdaType.getLambdaEvaluatorName());
+				} else {
+					inferredTypes = null;
+				}
+				if (inferredTypes == null) {
+					IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
+					if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
+						lambdaEvaluatorType = new EClassifierType(queryEnvironment,
+								((EClassifierLiteralType)lambdaEvaluatorType).getType());
+					}
+					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						result.add(new SequenceType(queryEnvironment, lambdaEvaluatorType));
+					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						result.add(new SetType(queryEnvironment, lambdaEvaluatorType));
+					}
+				} else {
+					for (IType inferredType : inferredTypes) {
+						if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+							result.add(new SequenceType(queryEnvironment, inferredType));
+						} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+							result.add(new SetType(queryEnvironment, inferredType));
+						}
+					}
 				}
 			} else {
 				result.add(services.nothing("expression in a select must return a boolean"));
@@ -296,19 +339,42 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
 			final Object lambdaExpressionType = lambdaType.getLambdaExpressionType().getType();
 			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
-				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-					result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-							.getCollectionType()));
-				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-					result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-							.getCollectionType()));
+				final Expression expression;
+				if (call != null) {
+					expression = ((Lambda)call.getArguments().get(1)).getExpression();
+				} else {
+					expression = null;
+				}
+				final Set<IType> inferredTypes;
+				if (validationResult != null) {
+					inferredTypes = validationResult.getInferredVariableTypes(expression, Boolean.FALSE).get(
+							lambdaType.getLambdaEvaluatorName());
+				} else {
+					inferredTypes = null;
+				}
+				if (inferredTypes == null) {
+					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
+								.getCollectionType()));
+					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
+								.getCollectionType()));
+					}
+				} else {
+					for (IType inferredType : inferredTypes) {
+						if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+							result.add(new SequenceType(queryEnvironment, inferredType));
+						} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+							result.add(new SetType(queryEnvironment, inferredType));
+						}
+					}
 				}
 			} else {
 				result.add(services.nothing("expression in a reject must return a boolean"));
@@ -338,8 +404,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			result.add(((ICollectionType)argTypes.get(0)).getCollectionType());
@@ -370,8 +436,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
@@ -408,8 +474,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
@@ -477,8 +543,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public java.util.Set<IType> getType(ValidationServices services,
-				IReadOnlyQueryEnvironment queryEnvironment, java.util.List<IType> argTypes) {
+		public java.util.Set<IType> getType(Call call, ValidationServices services,
+				IValidationResult validationResult, IReadOnlyQueryEnvironment queryEnvironment,
+				java.util.List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			final EClassifierType rawType = new EClassifierType(queryEnvironment,
@@ -514,8 +581,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
@@ -549,8 +616,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
@@ -585,28 +652,16 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			IType selfRawType = ((ICollectionType)argTypes.get(0)).getCollectionType();
 			IType otherRawType = ((ICollectionType)argTypes.get(1)).getCollectionType();
-			final Set<IType> resultRawTypes = new LinkedHashSet<IType>();
-			final IType loweredType = services.lower(selfRawType, otherRawType);
-			if (loweredType != null) {
-				resultRawTypes.add(loweredType);
-			} else if (selfRawType.getType() instanceof EClass && otherRawType.getType() instanceof EClass) {
-				for (EClass eCls : getSubTypesTopIntersection(queryEnvironment.getEPackageProvider(),
-						(EClass)selfRawType.getType(), (EClass)otherRawType.getType())) {
-					resultRawTypes.add(new EClassifierType(queryEnvironment, eCls));
-				}
-				if (resultRawTypes.isEmpty()) {
-					resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s",
-							argTypes.get(0), argTypes.get(1)));
-				}
-			} else {
-				resultRawTypes.add(selfRawType);
-				resultRawTypes.add(otherRawType);
+			final Set<IType> resultRawTypes = services.intersection(selfRawType, otherRawType);
+			if (resultRawTypes.isEmpty()) {
+				resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s", argTypes
+						.get(0), argTypes.get(1)));
 			}
 			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
 				for (IType resultRawType : resultRawTypes) {
@@ -651,50 +706,6 @@ public class CollectionServices extends AbstractServiceProvider {
 
 			return result;
 		}
-
-		/**
-		 * Gets the {@link Set} of the higher {@link EClass} in the super types hierarchy inheriting from both
-		 * given {@link EClass} according to the given {@link IEPackageProvider} .
-		 * 
-		 * @param provider
-		 *            the {@link IEPackageProvider}
-		 * @param eCls1
-		 *            the first {@link EClass}
-		 * @param eCls2
-		 *            the second {@link EClass}
-		 * @return the {@link Set} of the higher {@link EClass} in the super types hierarchy inheriting from
-		 *         both given {@link EClass} according to the given {@link IEPackageProvider}
-		 */
-		private Set<EClass> getSubTypesTopIntersection(IEPackageProvider provider, EClass eCls1, EClass eCls2) {
-			final Set<EClass> result = new LinkedHashSet<EClass>();
-
-			final Set<EClass> subTypes1 = provider.getAllSubTypes(eCls1);
-			final Set<EClass> subTypes2 = provider.getAllSubTypes(eCls2);
-
-			final Set<EClass> intersection = new LinkedHashSet<EClass>();
-			for (EClass subType1 : subTypes1) {
-				if (subTypes2.contains(subType1)) {
-					intersection.add(subType1);
-				}
-			}
-
-			for (EClass eCls : intersection) {
-				boolean isTopEClass = true;
-
-				for (EClass superECls : eCls.getEAllSuperTypes()) {
-					if (intersection.contains(superECls)) {
-						isTopEClass = false;
-						break;
-					}
-				}
-
-				if (isTopEClass) {
-					result.add(eCls);
-				}
-			}
-
-			return result;
-		}
 	}
 
 	@Override
@@ -731,8 +742,9 @@ public class CollectionServices extends AbstractServiceProvider {
 				result = new Service(publicMethod, this) {
 
 					@Override
-					public Set<IType> getType(ValidationServices services,
-							IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+					public Set<IType> getType(Call call, ValidationServices services,
+							IValidationResult validationResult, IReadOnlyQueryEnvironment queryEnvironment,
+							List<IType> argTypes) {
 						final Set<IType> result = new LinkedHashSet<IType>();
 
 						result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
@@ -746,8 +758,9 @@ public class CollectionServices extends AbstractServiceProvider {
 				result = new Service(publicMethod, this) {
 
 					@Override
-					public Set<IType> getType(ValidationServices services,
-							IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+					public Set<IType> getType(Call call, ValidationServices services,
+							IValidationResult validationResult, IReadOnlyQueryEnvironment queryEnvironment,
+							List<IType> argTypes) {
 						final Set<IType> result = new LinkedHashSet<IType>();
 
 						result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))

@@ -11,7 +11,10 @@
 package org.eclipse.acceleo.query.validation.type;
 
 //CHECKSTYLE:OFF
+import java.util.List;
+
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 //CHECKSTYLE:ON
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
@@ -22,6 +25,11 @@ import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class LambdaType extends AbstractJavaType implements IJavaType {
+
+	/**
+	 * The {@link List} of parameter names.
+	 */
+	final String evaluatorName;
 
 	/**
 	 * The {@link IType} of this {@link Lambda#getEvaluator() evaluator} type.
@@ -38,14 +46,17 @@ public final class LambdaType extends AbstractJavaType implements IJavaType {
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param evaluatorNames
+	 *            the {@link Lambda#getEvaluator() evaluator} {@link VariableDeclaration#getName() name}
 	 * @param lambdaEvaluatorType
 	 *            the {@link IType} of this {@link Lambda#getEvaluator() evaluator} type
 	 * @param lambdaExpressionType
 	 *            the {@link IType} of this {@link Lambda#getExpression() expression} type
 	 */
-	public LambdaType(IReadOnlyQueryEnvironment queryEnvironment, IType lambdaEvaluatorType,
-			IType lambdaExpressionType) {
+	public LambdaType(IReadOnlyQueryEnvironment queryEnvironment, String evaluatorNames,
+			IType lambdaEvaluatorType, IType lambdaExpressionType) {
 		super(queryEnvironment);
+		this.evaluatorName = evaluatorNames;
 		this.lambdaEvaluatorType = lambdaEvaluatorType;
 		this.lambdaExpressionType = lambdaExpressionType;
 	}
@@ -109,6 +120,15 @@ public final class LambdaType extends AbstractJavaType implements IJavaType {
 	@Override
 	public String toString() {
 		return "Lambda(" + getLambdaEvaluatorType() + ", " + getLambdaExpressionType().toString() + ")";
+	}
+
+	/**
+	 * The {@link Lambda#getEvaluator() evaluator} {@link VariableDeclaration#getName() name}.
+	 * 
+	 * @return the {@link Lambda#getEvaluator() evaluator} {@link VariableDeclaration#getName() name}
+	 */
+	public String getLambdaEvaluatorName() {
+		return evaluatorName;
 	}
 
 }

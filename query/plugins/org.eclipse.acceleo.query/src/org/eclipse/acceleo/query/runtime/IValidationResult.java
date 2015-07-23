@@ -21,6 +21,7 @@
 package org.eclipse.acceleo.query.runtime;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Expression;
@@ -56,5 +57,19 @@ public interface IValidationResult {
 	 * @return the {@link List} of link IValidationMessage}
 	 */
 	List<IValidationMessage> getMessages();
+
+	/**
+	 * Gets inferred variable {@link IType} when the given boolean {@link Expression} has the given
+	 * {@link Boolean value}.
+	 * 
+	 * @param expression
+	 *            the boolean {@link Expression}
+	 * @param value
+	 *            the {@link Boolean} value
+	 * @return inferred variable {@link IType} when the given boolean {@link Expression} has the given
+	 *         {@link Boolean value}
+	 * @since 4.0.0
+	 */
+	Map<String, Set<IType>> getInferredVariableTypes(Expression expression, Boolean value);
 
 }

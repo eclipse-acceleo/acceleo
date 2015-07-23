@@ -17,10 +17,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ide.ui.ProposalLabelProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
@@ -56,11 +58,11 @@ public class ProposalLabelProviderTests {
 		/**
 		 * {@inheritDoc}
 		 *
-		 * @see org.eclipse.acceleo.query.runtime.IService#getType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
-		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 * @see org.eclipse.acceleo.query.runtime.IService#getType(Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices, IValidationResult, org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
 		 */
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-				List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services,
+				IValidationResult validationResult, IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			result.add(new ClassType(queryEnvironment, String.class));

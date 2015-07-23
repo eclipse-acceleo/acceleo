@@ -621,8 +621,9 @@ public class ValidationTest {
 	 * @param expectedEndPosition
 	 *            the expected {@link IValidationMessage#getEndPosition() end position}
 	 */
-	private void assertValidationMessage(IValidationMessage message, ValidationMessageLevel expectedLevel,
-			String expectedMessage, int expectedStartPosition, int expectedEndPosition) {
+	public static void assertValidationMessage(IValidationMessage message,
+			ValidationMessageLevel expectedLevel, String expectedMessage, int expectedStartPosition,
+			int expectedEndPosition) {
 		assertEquals(expectedLevel, message.getLevel());
 		assertEquals(expectedMessage, message.getMessage());
 		assertEquals(expectedStartPosition, message.getStartPosition());

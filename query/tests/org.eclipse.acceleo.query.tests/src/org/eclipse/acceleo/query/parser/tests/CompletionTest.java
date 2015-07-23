@@ -20,6 +20,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
@@ -116,7 +117,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
-		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
@@ -128,7 +129,7 @@ public class CompletionTest {
 		assertEquals("na", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
-		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
@@ -140,7 +141,7 @@ public class CompletionTest {
 		assertEquals("m", completionResult.getRemaining());
 		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
-		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
@@ -459,7 +460,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
-		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
@@ -490,7 +491,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
-		assertApplyOn(completionResult, EcorePackage.eINSTANCE.getEClass());
+		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
@@ -825,43 +826,44 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
-	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
+	public static void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);
 		}
 	}
 
-	public void assertNoFeatureCompletionProposal(ICompletionResult completionResult) {
+	public static void assertNoFeatureCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof EFeatureCompletionProposal);
 		}
 	}
 
-	public void assertNoEOperationCompletionProposal(ICompletionResult completionResult) {
+	public static void assertNoEOperationCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof EOperationCompletionProposal);
 		}
 	}
 
-	public void assertNoVariableDeclarationCompletionProposal(ICompletionResult completionResult) {
+	public static void assertNoVariableDeclarationCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableDeclarationCompletionProposal);
 		}
 	}
 
-	public void assertNoServiceCompletionProposal(ICompletionResult completionResult) {
+	public static void assertNoServiceCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof ServiceCompletionProposal);
 		}
 	}
 
-	public void assertOnlyVariableCompletionProposal(ICompletionResult completionResult) {
+	public static void assertOnlyVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(true, prop instanceof VariableCompletionProposal);
 		}
 	}
 
-	public void assertApplyOn(ICompletionResult completionResult, Object... types) {
+	public static void assertApplyOn(ICompletionResult completionResult,
+			IReadOnlyQueryEnvironment environment, Object... types) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			for (Object type : types) {
 				if (prop instanceof EFeatureCompletionProposal) {
@@ -878,7 +880,7 @@ public class CompletionTest {
 				} else if (prop instanceof ServiceCompletionProposal) {
 					final Class<?> cls;
 					if (type instanceof EClass) {
-						cls = queryEnvironment.getEPackageProvider().getClass((EClass)type);
+						cls = environment.getEPackageProvider().getClass((EClass)type);
 					} else {
 						cls = (Class<?>)type;
 					}

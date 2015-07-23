@@ -96,7 +96,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testAnyNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in an any must return a boolean") };
 
 		assertValidation(expectedReturnTypes, "any", parameterTypes);
@@ -109,7 +109,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					setType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+							.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
 			assertValidation(expectedReturnTypes, "any", parameterTypes);
@@ -125,7 +126,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					sequenceType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+							.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
 			assertValidation(expectedReturnTypes, "any", parameterTypes);
@@ -194,7 +196,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testSortedBySet() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(Object.class)) };
 
 		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
@@ -203,7 +205,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testSortedByList() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(Object.class)) };
 
 		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
@@ -212,7 +214,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testCollectSet() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {setType(classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "collect", parameterTypes);
@@ -221,7 +223,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testCollectList() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(Integer.class)) };
 
 		assertValidation(expectedReturnTypes, "collect", parameterTypes);
@@ -721,7 +723,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testIsUniqueSet() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Object.class)) };
+				lambdaType("i", classType(String.class), classType(Object.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "isUnique", parameterTypes);
@@ -730,7 +732,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testIsUniqueList() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Object.class)) };
+				lambdaType("i", classType(String.class), classType(Object.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 		assertValidation(expectedReturnTypes, "isUnique", parameterTypes);
@@ -763,7 +765,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testOneNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in one must return a boolean") };
 
 		assertValidation(expectedReturnTypes, "one", parameterTypes);
@@ -776,7 +778,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					setType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
 							.getEBooleanObject())) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEBooleanObject()) };
@@ -794,7 +796,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					sequenceType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
 							.getEBooleanObject())) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEBooleanObject()) };
@@ -818,7 +820,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testRejectNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in a reject must return a boolean") };
 
 		assertValidation(expectedReturnTypes, "reject", parameterTypes);
@@ -831,7 +833,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					setType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+							.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "reject", parameterTypes);
@@ -847,7 +850,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					sequenceType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+							.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "reject", parameterTypes);
@@ -859,7 +863,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Test
 	public void testSelectNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
-				lambdaType(classType(String.class), classType(Integer.class)) };
+				lambdaType("i", classType(String.class), classType(Integer.class)) };
 		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in a select must return a boolean") };
 
 		assertValidation(expectedReturnTypes, "select", parameterTypes);
@@ -872,7 +876,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					setType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+							.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "select", parameterTypes);
@@ -888,7 +893,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			final IType[] parameterTypes = new IType[] {
 					sequenceType(classType(String.class)),
-					lambdaType(classType(String.class), eClassifierType(EcorePackage.eINSTANCE.getEBoolean())) };
+					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
+							.getEBoolean())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
 
 			assertValidation(expectedReturnTypes, "select", parameterTypes);

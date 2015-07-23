@@ -228,6 +228,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Class" startPosition="5" endPosition="33"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -261,6 +262,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Class" startPosition="1" endPosition="29"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -272,6 +274,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Class" startPosition="1" endPosition="29"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -283,6 +286,9 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when source (EClassifier=ActivityPartition) is type of EClassifierLiteral=Property" startPosition="1" endPosition="34"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when source (EClassifier=ActivityPartition) is kind of EClassifierLiteral=StructuredClassifier" startPosition="92" endPosition="137"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when source (EClassifier=ActivityPartition) is kind of EClassifierLiteral=Port" startPosition="195" endPosition="224"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.3"/>
@@ -296,6 +302,9 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=ActivityPartition) is type of EClassifierLiteral=Property" startPosition="1" endPosition="34"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=ActivityPartition) is kind of EClassifierLiteral=StructuredClassifier" startPosition="92" endPosition="137"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=ActivityPartition) is kind of EClassifierLiteral=Port" startPosition="195" endPosition="224"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.3"/>
@@ -735,6 +744,9 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when container (EClassifier=Class) is not kind of EClassifierLiteral=StructuredClassifier" startPosition="40" endPosition="88"/>
+        <validationMessages message="Always true:&#xA;Nothing inferred when container (EClassifier=Class) is not kind of EClassifierLiteral=StructuredClassifier" startPosition="40" endPosition="88"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when container (EClassifier=Class) is kind of EClassifierLiteral=Property" endPosition="36"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
@@ -848,6 +860,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Class" startPosition="33" endPosition="58"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Interface" startPosition="62" endPosition="91"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1024,17 +1038,9 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=Comment)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=StringExpression)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=Constraint)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=ElementImport)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=PackageImport)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=TemplateBinding)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=TemplateSignature)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=PackageMerge)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=ProfileApplication)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Component)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1076,7 +1082,6 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=Comment)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=StringExpression)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=Constraint)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=ElementImport)</possibleTypes>
@@ -1172,6 +1177,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Operation" endPosition="32"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1362,7 +1368,9 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=EObject)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Component)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -1381,17 +1389,9 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=EAnnotation)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=Comment)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=StringExpression)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=Constraint)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=ElementImport)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=PackageImport)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=TemplateBinding)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=TemplateSignature)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=PackageMerge)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=ProfileApplication)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Component)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1483,6 +1483,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is kind of EClassifierLiteral=InterfaceRealization" startPosition="4" endPosition="47"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1493,6 +1494,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="4" endPosition="34"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1503,6 +1505,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=InputPin) is type of EClassifierLiteral=Actor" startPosition="4" endPosition="32"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=InputPin) is type of EClassifierLiteral=UseCase" startPosition="41" endPosition="71"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1513,6 +1517,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Manifestation" startPosition="4" endPosition="40"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1523,6 +1528,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is type of EClassifierLiteral=Comment" startPosition="4" endPosition="34"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1533,6 +1539,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when source (EClassifier=Association) is not kind of EClassifierLiteral=Association" startPosition="4" endPosition="40"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.6"/>
@@ -1555,6 +1562,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when object (EClassifier=Model) is kind of EClassifierLiteral=EncapsulatedClassifier" endPosition="47"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.1"/>
@@ -1566,6 +1574,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when object (EClassifier=Model) is kind of EClassifierLiteral=Property" endPosition="33"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.1"/>
@@ -1629,6 +1638,12 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" startPosition="67" endPosition="112"/>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" startPosition="67" endPosition="112"/>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=PackageableElement" startPosition="116" endPosition="157"/>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=PackageableElement" startPosition="116" endPosition="157"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=Interface" endPosition="32"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=Port" startPosition="36" endPosition="63"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1639,6 +1654,9 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="31" endPosition="61"/>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="31" endPosition="61"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is kind of EClassifierLiteral=Node" endPosition="27"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1649,6 +1667,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" endPosition="30"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is kind of EClassifierLiteral=StructuredClassifier" startPosition="34" endPosition="77"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1659,6 +1679,12 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Package" endPosition="30"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Component" startPosition="34" endPosition="66"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=ExecutionEnvironment" startPosition="70" endPosition="113"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Node" startPosition="117" endPosition="144"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Device" startPosition="148" endPosition="177"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Artifact" startPosition="181" endPosition="212"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1669,6 +1695,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Property) is not type of EClassifierLiteral=Property" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1679,6 +1706,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Property) is not type of EClassifierLiteral=Property" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1689,6 +1717,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1699,6 +1728,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1709,6 +1739,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Operation" startPosition="35" endPosition="67"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1719,6 +1751,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Package" startPosition="33" endPosition="60"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1781,6 +1814,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when preSource (EClassifier=Model) is kind of EClassifierLiteral=Classifier" endPosition="38"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.1"/>
@@ -1803,6 +1837,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when preTarget (EClassifier=Model) is kind of EClassifierLiteral=Classifier" endPosition="38"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
@@ -1814,6 +1849,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when preTarget (EClassifier=Model) is kind of EClassifierLiteral=Component" endPosition="37"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
@@ -2020,6 +2056,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=Class" endPosition="28"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -2030,6 +2067,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" endPosition="30"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -2040,6 +2078,8 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=Class" startPosition="110" endPosition="135"/>
+        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=DataType" startPosition="139" endPosition="167"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -2060,6 +2100,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=Enumeration" startPosition="80" endPosition="111"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -2129,6 +2170,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=Class) is kind of EClassifierLiteral=Interface" endPosition="34"/>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.4"/>
@@ -2203,6 +2245,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" endPosition="45"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -2213,6 +2256,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=InterfaceRealization" endPosition="43"/>
       </expectedResult>
     </expectations>
   </queries>

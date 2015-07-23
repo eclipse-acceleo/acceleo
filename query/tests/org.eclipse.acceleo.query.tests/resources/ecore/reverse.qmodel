@@ -344,6 +344,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=EClass) is type of EClassifierLiteral=ENamedElement" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -354,6 +355,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=EClass) is not type of EClassifierLiteral=EClass" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -364,6 +366,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=EClass) is not kind of EClassifierLiteral=ENamedElement" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>

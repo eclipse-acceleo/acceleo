@@ -120,4 +120,34 @@ public class ValidationMessage implements IValidationMessage {
 				getEndPosition(), getMessage());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return level.hashCode() ^ (startPosition << Byte.SIZE + endPosition) ^ message.hashCode();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		final boolean result;
+
+		if (obj instanceof ValidationMessage) {
+			final ValidationMessage other = (ValidationMessage)obj;
+			result = other.level == level && other.startPosition == startPosition
+					&& other.endPosition == endPosition
+					&& (other.message != null && other.message.equals(message) || other.message == message);
+		} else {
+			result = false;
+		}
+
+		return result;
+	}
 }

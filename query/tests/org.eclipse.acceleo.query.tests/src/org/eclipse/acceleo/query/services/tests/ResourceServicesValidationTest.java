@@ -51,7 +51,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEResource()),
@@ -80,7 +81,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new ClassType(getQueryEnvironment(), URI.class), it.next());
@@ -108,7 +110,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
@@ -139,7 +142,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
@@ -167,7 +171,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEString()), it
@@ -196,7 +201,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEString()), it
@@ -225,7 +231,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
@@ -254,7 +261,8 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), argTypes);
+			Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+					argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE

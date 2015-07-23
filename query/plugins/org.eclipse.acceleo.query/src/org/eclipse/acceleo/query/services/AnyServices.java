@@ -22,8 +22,10 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Other;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -71,7 +73,8 @@ public class AnyServices extends AbstractServiceProvider {
 			result = new FilterService(publicMethod, this) {
 
 				@Override
-				public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment environment,
+				public Set<IType> getType(Call call, ValidationServices services,
+						IValidationResult validationResult, IReadOnlyQueryEnvironment environment,
 						List<IType> argTypes) {
 					final Set<IType> result = new LinkedHashSet<IType>();
 

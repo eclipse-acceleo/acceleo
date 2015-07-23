@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
@@ -48,6 +49,7 @@ import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
@@ -62,6 +64,7 @@ import org.eclipse.acceleo.query.validation.type.LambdaType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 
 /**
@@ -95,6 +98,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * Local variable types usable during validation.
 	 */
 	private final Stack<Map<String, Set<IType>>> variableTypesStack = new Stack<Map<String, Set<IType>>>();
+
+	/**
+	 * Set of {@link IValidationMessage}.
+	 */
+	private Set<IValidationMessage> messages = new LinkedHashSet<IValidationMessage>();
 
 	/**
 	 * Constructor.
@@ -148,7 +156,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			}
 		}
 
-		validationResult.getMessages().addAll(msgs);
+		messages.addAll(msgs);
 		validationResult.addTypes(expression, result);
 
 		return result;
@@ -171,30 +179,439 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseCall(org.eclipse.acceleo.query.ast.Call)
 	 */
 	@Override
-	public Set<IType> caseCall(Call object) {
+	public Set<IType> caseCall(Call call) {
 		final Set<IType> possibleTypes;
 
-		final List<Set<IType>> argTypes = new ArrayList<Set<IType>>();
-		for (Expression arg : object.getArguments()) {
-			argTypes.add(doSwitch(arg));
-		}
+		final List<Set<IType>> argTypes = inferArgTypes(call);
 
-		final String serviceName = object.getServiceName();
-		switch (object.getType()) {
+		final String serviceName = call.getServiceName();
+		switch (call.getType()) {
 			case CALLSERVICE:
-				possibleTypes = services.callType(serviceName, argTypes);
+				possibleTypes = services.callType(call, validationResult, serviceName, argTypes);
 				break;
 			case CALLORAPPLY:
-				possibleTypes = services.callOrApplyTypes(serviceName, argTypes);
+				possibleTypes = services.callOrApplyTypes(call, validationResult, serviceName, argTypes);
 				break;
 			case COLLECTIONCALL:
-				possibleTypes = services.collectionServiceCallTypes(serviceName, argTypes);
+				possibleTypes = services.collectionServiceCallTypes(call, validationResult, serviceName,
+						argTypes);
 				break;
 			default:
 				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 		}
 
-		return checkWarningsAndErrors(object, possibleTypes);
+		return checkWarningsAndErrors(call, possibleTypes);
+	}
+
+	/**
+	 * Computes argument types and inferred types.
+	 * 
+	 * @param call
+	 *            the {@link Call}
+	 * @return the {@link List} of arguments possible types
+	 */
+	private List<Set<IType>> inferArgTypes(Call call) {
+		final List<Set<IType>> result = new ArrayList<Set<IType>>();
+
+		if (call.getArguments().size() == 1) {
+			if (AstBuilderListener.NOT_SERVICE_NAME.equals(call.getServiceName())) {
+				final Expression operand = call.getArguments().get(0);
+				final Set<IType> operandTypes = doSwitch(operand);
+				result.add(operandTypes);
+				inferNotTypes(call, operand);
+			} else {
+				result.add(doSwitch(call.getArguments().get(0)));
+			}
+		} else if (call.getArguments().size() == 2) {
+			if (AstBuilderListener.OCL_IS_KIND_OF_SERVICE_NAME.equals(call.getServiceName())) {
+				final Expression receiver = call.getArguments().get(0);
+				final Set<IType> receiverTypes = doSwitch(receiver);
+				final Set<IType> argTypes = doSwitch(call.getArguments().get(1));
+				result.add(receiverTypes);
+				result.add(argTypes);
+				if (receiver instanceof VarRef) {
+					inferOclIsKindOfTypes(call, (VarRef)receiver, argTypes);
+				}
+			} else if (AstBuilderListener.OCL_IS_TYPE_OF_SERVICE_NAME.equals(call.getServiceName())) {
+				final Expression receiver = call.getArguments().get(0);
+				final Set<IType> receiverTypes = doSwitch(receiver);
+				final Set<IType> argTypes = doSwitch(call.getArguments().get(1));
+				result.add(receiverTypes);
+				result.add(argTypes);
+				if (receiver instanceof VarRef) {
+					inferOclIsTypeOfTypes(call, (VarRef)receiver, argTypes);
+				}
+			} else if (AstBuilderListener.AND_SERVICE_NAME.equals(call.getServiceName())) {
+				final Expression leftOperand = call.getArguments().get(0);
+				final Set<IType> leftOperandTypes = doSwitch(leftOperand);
+				final Map<String, Set<IType>> rightOperandInferredTypes = new HashMap<String, Set<IType>>(
+						variableTypesStack.peek());
+				rightOperandInferredTypes.putAll(validationResult.getInferredVariableTypes(leftOperand,
+						Boolean.TRUE));
+				// compute and inferred types before propagating the right operand inferred types
+				doSwitch(call.getArguments().get(1));
+				inferAndTypes(call);
+				// propagate the right operand inferred types
+				variableTypesStack.push(rightOperandInferredTypes);
+				final Set<IType> rightOperandTypes = new LinkedHashSet<IType>();
+				try {
+					// compute right operand types with right operand inferred types
+					rightOperandTypes.addAll(doSwitch(call.getArguments().get(1)));
+					result.add(leftOperandTypes);
+					result.add(rightOperandTypes);
+				} finally {
+					variableTypesStack.pop();
+				}
+			} else if (AstBuilderListener.OR_SERVICE_NAME.equals(call.getServiceName())
+					|| AstBuilderListener.XOR_SERVICE_NAME.equals(call.getServiceName())) {
+				final Expression leftOperand = call.getArguments().get(0);
+				final Set<IType> leftOperandTypes = doSwitch(leftOperand);
+				final Map<String, Set<IType>> rightOperandInferredTypes = new HashMap<String, Set<IType>>(
+						variableTypesStack.peek());
+				rightOperandInferredTypes.putAll(validationResult.getInferredVariableTypes(leftOperand,
+						Boolean.FALSE));
+				// compute or inferred types before propagating the right operand inferred types
+				doSwitch(call.getArguments().get(1));
+				inferOrTypes(call);
+				// propagate the right operand inferred types
+				variableTypesStack.push(rightOperandInferredTypes);
+				final Set<IType> rightOperandTypes = new LinkedHashSet<IType>();
+				try {
+					// compute right operand types with right operand inferred types
+					rightOperandTypes.addAll(doSwitch(call.getArguments().get(1)));
+					result.add(leftOperandTypes);
+					result.add(rightOperandTypes);
+				} finally {
+					variableTypesStack.pop();
+				}
+			} else {
+				result.add(doSwitch(call.getArguments().get(0)));
+				result.add(doSwitch(call.getArguments().get(1)));
+			}
+		} else {
+			for (Expression arg : call.getArguments()) {
+				result.add(doSwitch(arg));
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#NOT_SERVICE_NAME} {@link Call}.
+	 * 
+	 * @param call
+	 *            the {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
+	 * @param operand
+	 *            operand the {@link Expression} operand
+	 */
+	private void inferNotTypes(Call call, final Expression operand) {
+		final Map<String, Set<IType>> inferredOperandTrueTypes = validationResult.getInferredVariableTypes(
+				operand, Boolean.TRUE);
+		final Map<String, Set<IType>> inferredOperandFalseTypes = validationResult.getInferredVariableTypes(
+				operand, Boolean.FALSE);
+		validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredOperandFalseTypes);
+		validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredOperandTrueTypes);
+	}
+
+	/**
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
+	 * .
+	 * 
+	 * @param call
+	 *            the {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
+	 * @param varRef
+	 *            receiver {@link VarRef}
+	 * @param argTypes
+	 *            argument {@link IType} of the {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME}
+	 *            {@link Call}
+	 */
+	private void inferOclIsKindOfTypes(Call call, VarRef varRef, Set<IType> argTypes) {
+		final Set<IType> originalTypes = variableTypesStack.peek().get(varRef.getVariableName());
+		if (originalTypes != null) {
+			final Set<IType> inferredTrueTypes = new LinkedHashSet<IType>();
+			final Set<IType> inferredFalseTypes = new LinkedHashSet<IType>();
+			final StringBuilder messageWhenTrue = new StringBuilder("Always false:");
+			final StringBuilder messageWhenFalse = new StringBuilder("Always true:");
+
+			for (IType originalType : originalTypes) {
+				if (originalType instanceof NothingType) {
+					inferredTrueTypes.add(originalType);
+					inferredFalseTypes.add(originalType);
+				} else {
+					for (IType argType : argTypes) {
+						inferOclIsKindOfForArgType(varRef, inferredTrueTypes, inferredFalseTypes,
+								messageWhenTrue, messageWhenFalse, originalType, argType);
+					}
+				}
+			}
+			if (!inferredTrueTypes.isEmpty()) {
+				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
+				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
+				validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
+			} else {
+				final AstResult astResult = validationResult.getAstResult();
+				final int startPostion = astResult.getStartPosition(call);
+				final int endPosition = astResult.getEndPosition(call);
+				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+						messageWhenTrue.toString(), startPostion, endPosition);
+				messages.add(message);
+			}
+			if (!inferredFalseTypes.isEmpty()) {
+				Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
+				inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
+				validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
+			} else {
+				final AstResult astResult = validationResult.getAstResult();
+				final int startPostion = astResult.getStartPosition(call);
+				final int endPosition = astResult.getEndPosition(call);
+				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+						messageWhenFalse.toString(), startPostion, endPosition);
+				validationResult.getMessages().add(message);
+			}
+		}
+	}
+
+	/**
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
+	 * for one argument {@link IType}.
+	 * 
+	 * @param varRef
+	 *            the {@link Call} {@link VarRef}
+	 * @param inferredTrueTypes
+	 *            the {@link Set} of inferred {@link IType} when {@link Boolean#TRUE}
+	 * @param inferredFalseTypes
+	 *            the {@link Set} of inferred {@link IType} when {@link Boolean#FALSE}
+	 * @param messageWhenTrue
+	 *            the message when {@link Boolean#TRUE}
+	 * @param messageWhenFalse
+	 *            the message when {@link Boolean#FALSE}
+	 * @param originalType
+	 *            the original {@link VarRef} {@link IType}
+	 * @param argType
+	 *            the argument {@link IType}
+	 */
+	private void inferOclIsKindOfForArgType(VarRef varRef, final Set<IType> inferredTrueTypes,
+			final Set<IType> inferredFalseTypes, final StringBuilder messageWhenTrue,
+			final StringBuilder messageWhenFalse, IType originalType, IType argType) {
+		final IType lowerType = services.lower(originalType, argType);
+		if (lowerType != null) {
+			inferredTrueTypes.add(lowerType);
+			if (lowerType.isAssignableFrom(argType) && !lowerType.equals(originalType)) {
+				inferredFalseTypes.add(originalType);
+			} else {
+				messageWhenFalse.append(String.format("\nNothing inferred when %s (%s) is not kind of %s",
+						varRef.getVariableName(), originalType, argType));
+			}
+		} else if (originalType.getType() instanceof EClass && argType.getType() instanceof EClass) {
+			Set<IType> intesectionTypes = new LinkedHashSet<IType>();
+			for (EClass eCls : services.getSubTypesTopIntersection((EClass)originalType.getType(),
+					(EClass)argType.getType())) {
+				intesectionTypes.add(new EClassifierType(services.getQueryEnvironment(), eCls));
+			}
+			if (intesectionTypes.isEmpty()) {
+				messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is kind of %s", varRef
+						.getVariableName(), originalType, argType));
+			} else {
+				inferredTrueTypes.addAll(intesectionTypes);
+			}
+			inferredFalseTypes.add(originalType);
+		} else {
+			messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is kind of %s", varRef
+					.getVariableName(), originalType, argType));
+			inferredFalseTypes.add(originalType);
+		}
+	}
+
+	/**
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#OCL_IS_TYPE_OF_SERVICE_NAME} {@link Call}
+	 * .
+	 * 
+	 * @param call
+	 *            the {@link AstBuilderListener#OCL_IS_TYPE_OF_SERVICE_NAME} {@link Call}
+	 * @param varRef
+	 *            receiver {@link VarRef}
+	 * @param argTypes
+	 *            argument {@link IType} of the {@link AstBuilderListener#OCL_IS_TYPE_OF_SERVICE_NAME}
+	 *            {@link Call}
+	 */
+	private void inferOclIsTypeOfTypes(Call call, VarRef varRef, Set<IType> argTypes) {
+		final Set<IType> originalTypes = variableTypesStack.peek().get(varRef.getVariableName());
+		if (originalTypes != null) {
+			final Set<IType> inferredTrueTypes = new LinkedHashSet<IType>();
+			final Set<IType> inferredFalseTypes = new LinkedHashSet<IType>();
+			final StringBuilder messageWhenTrue = new StringBuilder("Always false:");
+			final StringBuilder messageWhenFalse = new StringBuilder("Always true:");
+
+			for (IType originalType : originalTypes) {
+				if (originalType instanceof NothingType) {
+					inferredTrueTypes.add(originalType);
+					inferredFalseTypes.add(originalType);
+				} else {
+					for (IType argType : argTypes) {
+						final IType lowerType = services.lower(argType, argType);
+						if (lowerType.equals(originalType)) {
+							inferredTrueTypes.add(lowerType);
+							messageWhenFalse.append(String.format(
+									"\nNothing inferred when %s (%s) is not type of %s", varRef
+											.getVariableName(), originalType, argType));
+						} else {
+							messageWhenTrue.append(String.format(
+									"\nNothing inferred when %s (%s) is type of %s",
+									varRef.getVariableName(), originalType, argType));
+							inferredFalseTypes.add(originalType);
+						}
+					}
+				}
+			}
+			if (!inferredTrueTypes.isEmpty()) {
+				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
+				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
+				validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
+			} else {
+				final AstResult astResult = validationResult.getAstResult();
+				final int startPostion = astResult.getStartPosition(call);
+				final int endPosition = astResult.getEndPosition(call);
+				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+						messageWhenTrue.toString(), startPostion, endPosition);
+				messages.add(message);
+			}
+			if (!inferredFalseTypes.isEmpty()) {
+				Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
+				inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
+				validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
+			} else {
+				final AstResult astResult = validationResult.getAstResult();
+				final int startPostion = astResult.getStartPosition(call);
+				final int endPosition = astResult.getEndPosition(call);
+				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+						messageWhenFalse.toString(), startPostion, endPosition);
+				validationResult.getMessages().add(message);
+			}
+		}
+	}
+
+	/**
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#OR_SERVICE_NAME} {@link Call}.
+	 * <ul>
+	 * <li>then true {@link AstValidator#unionInferredTypes(Map, Map) union}(true, true)
+	 * <li>
+	 * <li>then false {@link AstValidator#intersectionInferredTypes(Map, Map) intersection}(false, false)
+	 * <li>
+	 * </ul>
+	 * 
+	 * @param call
+	 *            the {@link AstBuilderListener#OR_SERVICE_NAME} {@link Call}
+	 */
+	private void inferOrTypes(Call call) {
+		final Expression leftOperand = call.getArguments().get(0);
+		final Expression rightOperand = call.getArguments().get(1);
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenTrue = validationResult
+				.getInferredVariableTypes(leftOperand, Boolean.TRUE);
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenTrue = validationResult
+				.getInferredVariableTypes(rightOperand, Boolean.TRUE);
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenFalse = validationResult
+				.getInferredVariableTypes(leftOperand, Boolean.FALSE);
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenFalse = validationResult
+				.getInferredVariableTypes(rightOperand, Boolean.FALSE);
+		final Map<String, Set<IType>> orInferredTypesWhenTrue = unionInferredTypes(
+				inferredLeftVariableTypesWhenTrue, inferredRightVariableTypesWhenTrue);
+		final Map<String, Set<IType>> orInferredTypesWhenFalse = intersectionInferredTypes(
+				inferredLeftVariableTypesWhenFalse, inferredRightVariableTypesWhenFalse);
+		validationResult.putInferredVariableTypes(call, Boolean.TRUE, orInferredTypesWhenTrue);
+		validationResult.putInferredVariableTypes(call, Boolean.FALSE, orInferredTypesWhenFalse);
+	}
+
+	/**
+	 * Creates the union of inferred types.
+	 * 
+	 * @param inferredLeftVariableTypes
+	 *            first operand
+	 * @param inferredRightVariableTypes
+	 *            second operand
+	 * @return the union of inferred types
+	 */
+	private Map<String, Set<IType>> unionInferredTypes(Map<String, Set<IType>> inferredLeftVariableTypes,
+			Map<String, Set<IType>> inferredRightVariableTypes) {
+		final Map<String, Set<IType>> result = new HashMap<String, Set<IType>>();
+		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(inferredRightVariableTypes);
+
+		for (Entry<String, Set<IType>> entry : inferredLeftVariableTypes.entrySet()) {
+			final Set<IType> inferredTypes = new LinkedHashSet<IType>(entry.getValue());
+			final Set<IType> inferredRightTypes = rightLocal.remove(entry.getKey());
+			if (inferredRightTypes != null) {
+				inferredTypes.addAll(inferredRightTypes);
+			}
+			result.put(entry.getKey(), inferredTypes);
+		}
+		result.putAll(rightLocal);
+
+		return result;
+	}
+
+	/**
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#AND_SERVICE_NAME} {@link Call}.
+	 * <ul>
+	 * <li>then true {@link AstValidator#intersectionInferredTypes(Map, Map) intersection}(true, true)
+	 * <li>
+	 * <li>then and {@link AstValidator#unionInferredTypes(Map, Map) union}(false, false)
+	 * <li>
+	 * </ul>
+	 * 
+	 * @param call
+	 *            the {@link AstBuilderListener#AND_SERVICE_NAME} {@link Call}
+	 */
+	private void inferAndTypes(Call call) {
+		final Expression leftOperand = call.getArguments().get(0);
+		final Expression rightOperand = call.getArguments().get(1);
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenTrue = validationResult
+				.getInferredVariableTypes(leftOperand, Boolean.TRUE);
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenTrue = validationResult
+				.getInferredVariableTypes(rightOperand, Boolean.TRUE);
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenFalse = validationResult
+				.getInferredVariableTypes(leftOperand, Boolean.FALSE);
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenFalse = validationResult
+				.getInferredVariableTypes(rightOperand, Boolean.FALSE);
+		final Map<String, Set<IType>> andInferredTypesWhenTrue = intersectionInferredTypes(
+				inferredLeftVariableTypesWhenTrue, inferredRightVariableTypesWhenTrue);
+		final Map<String, Set<IType>> andInferredTypesWhenFalse = unionInferredTypes(
+				inferredLeftVariableTypesWhenFalse, inferredRightVariableTypesWhenFalse);
+		validationResult.putInferredVariableTypes(call, Boolean.TRUE, andInferredTypesWhenTrue);
+		validationResult.putInferredVariableTypes(call, Boolean.FALSE, andInferredTypesWhenFalse);
+	}
+
+	/**
+	 * Creates the intersection of inferred types.
+	 * 
+	 * @param inferredLeftVariableTypes
+	 *            first operand
+	 * @param inferredRightVariableTypes
+	 *            second operand
+	 * @return the intersection of inferred types
+	 */
+	private Map<String, Set<IType>> intersectionInferredTypes(
+			final Map<String, Set<IType>> inferredLeftVariableTypes,
+			final Map<String, Set<IType>> inferredRightVariableTypes) {
+		final Map<String, Set<IType>> result = new HashMap<String, Set<IType>>();
+
+		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(inferredRightVariableTypes);
+		for (Entry<String, Set<IType>> entry : inferredLeftVariableTypes.entrySet()) {
+			final Set<IType> inferredTypes = new LinkedHashSet<IType>();
+			final Set<IType> inferredRightTypes = rightLocal.remove(entry.getKey());
+			if (inferredRightTypes != null) {
+				for (IType leftType : entry.getValue()) {
+					for (IType rightType : inferredRightTypes) {
+						inferredTypes.addAll(services.intersection(leftType, rightType));
+					}
+				}
+			} else {
+				inferredTypes.addAll(entry.getValue());
+			}
+			result.put(entry.getKey(), inferredTypes);
+		}
+		result.putAll(rightLocal);
+
+		return result;
 	}
 
 	/**
@@ -291,11 +708,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		variableTypesStack.push(newVariableTypes);
 		final Set<IType> lambdaExpressionPossibleTypes = doSwitch(object.getExpression());
-		final Set<IType> lambdaEvaluatorPossibleTypes = newVariableTypes.get(object.getParameters().get(0)
-				.getName());
+		final String evaluatorName = object.getParameters().get(0).getName();
+		final Set<IType> lambdaEvaluatorPossibleTypes = newVariableTypes.get(evaluatorName);
 		for (IType lambdaEvaluatorPossibleType : lambdaEvaluatorPossibleTypes) {
 			for (IType lambdaExpressionType : lambdaExpressionPossibleTypes) {
-				lambdaExpressionTypes.add(new LambdaType(services.getQueryEnvironment(),
+				lambdaExpressionTypes.add(new LambdaType(services.getQueryEnvironment(), evaluatorName,
 						lambdaEvaluatorPossibleType, lambdaExpressionType));
 			}
 		}
@@ -349,6 +766,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		validationResult = new ValidationResult(astResult);
 
 		doSwitch(astResult.getAst());
+		validationResult.getMessages().addAll(messages);
+		messages = new LinkedHashSet<IValidationMessage>();
 
 		return validationResult;
 	}
@@ -497,9 +916,29 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseConditional(Conditional object) {
 		Set<IType> result = Sets.newLinkedHashSet();
 
-		final Set<IType> trueTypes = doSwitch(object.getTrueBranch());
-		final Set<IType> falseTypes = doSwitch(object.getFalseBranch());
 		Set<IType> selectorTypes = doSwitch(object.getPredicate());
+		final Map<String, Set<IType>> trueBranchInferredTypes = new HashMap<String, Set<IType>>(
+				variableTypesStack.peek());
+		trueBranchInferredTypes.putAll(validationResult.getInferredVariableTypes(object.getPredicate(),
+				Boolean.TRUE));
+		variableTypesStack.push(trueBranchInferredTypes);
+		final Set<IType> trueTypes = new LinkedHashSet<IType>();
+		try {
+			trueTypes.addAll(doSwitch(object.getTrueBranch()));
+		} finally {
+			variableTypesStack.pop();
+		}
+		final Map<String, Set<IType>> falseBranchInferredTypes = new HashMap<String, Set<IType>>(
+				variableTypesStack.peek());
+		falseBranchInferredTypes.putAll(validationResult.getInferredVariableTypes(object.getPredicate(),
+				Boolean.FALSE));
+		variableTypesStack.push(falseBranchInferredTypes);
+		final Set<IType> falseTypes = new LinkedHashSet<IType>();
+		try {
+			falseTypes.addAll(doSwitch(object.getFalseBranch()));
+		} finally {
+			variableTypesStack.pop();
+		}
 		if (!selectorTypes.isEmpty()) {
 			boolean onlyBoolean = true;
 			boolean onlyNotBoolean = true;

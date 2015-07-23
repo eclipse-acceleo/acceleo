@@ -21,6 +21,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,12 @@ public class ValidationResult implements IValidationResult {
 	 * Query possible types for a known {@link Expression}.
 	 */
 	private final Map<Expression, Set<IType>> types = new HashMap<Expression, Set<IType>>();
+
+	/**
+	 * Override of variables {@link IType} after an {@link Expression} is {@link Boolean#TRUE} or
+	 * {@link Boolean#FALSE}.
+	 */
+	private final Map<Expression, Map<Boolean, Map<String, Set<IType>>>> inferredVariableType = new HashMap<Expression, Map<Boolean, Map<String, Set<IType>>>>();
 
 	/**
 	 * Messages.
@@ -106,6 +113,55 @@ public class ValidationResult implements IValidationResult {
 	@Override
 	public AstResult getAstResult() {
 		return astResult;
+	}
+
+	/**
+	 * Adds inferred {@link IType} for the given {@link Expression} and {@link Boolean value}.
+	 * 
+	 * @param expression
+	 *            the {@link Expression}
+	 * @param value
+	 *            the {@link Boolean} value
+	 * @param inferredTypes
+	 *            the inferred {@link IType}
+	 */
+	public void putInferredVariableTypes(Expression expression, Boolean value,
+			Map<String, Set<IType>> inferredTypes) {
+		Map<Boolean, Map<String, Set<IType>>> map = inferredVariableType.get(expression);
+		if (map == null) {
+			map = new HashMap<Boolean, Map<String, Set<IType>>>();
+			inferredVariableType.put(expression, map);
+		}
+		Map<String, Set<IType>> t = map.get(value);
+		if (t == null) {
+			t = new HashMap<String, Set<IType>>();
+			map.put(value, t);
+		}
+		t.putAll(inferredTypes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IValidationResult#getInferredVariableTypes(org.eclipse.acceleo.query.ast.Expression,
+	 *      java.lang.Boolean)
+	 */
+	public Map<String, Set<IType>> getInferredVariableTypes(Expression expression, Boolean value) {
+		final Map<String, Set<IType>> result;
+
+		final Map<Boolean, Map<String, Set<IType>>> map = inferredVariableType.get(expression);
+		if (map != null) {
+			final Map<String, Set<IType>> inferedTypes = map.get(value);
+			if (inferedTypes != null) {
+				result = inferedTypes;
+			} else {
+				result = Collections.emptyMap();
+			}
+		} else {
+			result = Collections.emptyMap();
+		}
+
+		return result;
 	}
 
 }

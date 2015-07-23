@@ -56,7 +56,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 		assertNotNull("Service not found.", service != null);
 
-		Set<IType> types = service.getType(getValidationServices(), getQueryEnvironment(), Arrays
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(), Arrays
 				.asList(parameterTypes));
 		assertEquals(expectedReturnTypes.length, types.size());
 		int i = 0;
@@ -120,8 +120,9 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 		return new NothingType(message);
 	}
 
-	protected LambdaType lambdaType(IType lambdaEvaluatorType, IType lambdaExpressionType) {
-		return new LambdaType(getQueryEnvironment(), lambdaEvaluatorType, lambdaExpressionType);
+	protected LambdaType lambdaType(String evaluatorName, IType lambdaEvaluatorType,
+			IType lambdaExpressionType) {
+		return new LambdaType(getQueryEnvironment(), evaluatorName, lambdaEvaluatorType, lambdaExpressionType);
 	}
 
 	/**

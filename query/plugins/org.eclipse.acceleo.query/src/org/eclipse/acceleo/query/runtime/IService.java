@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -41,16 +42,21 @@ public interface IService {
 	/**
 	 * Gets the {@link IType} of elements returned by the service.
 	 * 
+	 * @param call
+	 *            the {@link Call}
 	 * @param services
 	 *            the {@link ValidationServices}
+	 * @param validationResult
+	 *            the {@link IValidationResult} being constructed
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param argTypes
 	 *            arguments {@link IType}
 	 * @return the {@link IType} of elements returned by the service
+	 * @since 4.0.0
 	 */
-	Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
-			List<IType> argTypes);
+	Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes);
 
 	/**
 	 * Validates all couple of arguments {@link IType} and the {@link IType} of elements returned by the

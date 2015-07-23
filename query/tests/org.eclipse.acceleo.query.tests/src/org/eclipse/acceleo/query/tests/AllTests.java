@@ -17,6 +17,7 @@ import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
 import org.eclipse.acceleo.query.parser.tests.CompletionTest;
 import org.eclipse.acceleo.query.parser.tests.EvaluationTest;
 import org.eclipse.acceleo.query.parser.tests.LexerTest;
+import org.eclipse.acceleo.query.parser.tests.ValidationInferrenceTest;
 import org.eclipse.acceleo.query.parser.tests.ValidationTest;
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupCrossReferencerTest;
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupTest;
@@ -77,7 +78,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		PrimitiveTypeTests.class, LookupEngineTest.class, ShortcutEvaluationTest.class,
 		ScopedEnvironmentTests.class, ResourceServicesTest.class, ResourceServicesValidationTest.class,
 		ServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
-		EOperationCompletionProposalTests.class })
+		EOperationCompletionProposalTests.class, ValidationInferrenceTest.class, })
 public class AllTests {
 
 }

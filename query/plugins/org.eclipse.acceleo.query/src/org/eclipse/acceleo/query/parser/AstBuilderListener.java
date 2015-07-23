@@ -123,6 +123,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	public static final String PLUGIN_ID = "org.eclipse.acceleo.query";
 
 	/**
+	 * OCL is kind of service name.
+	 */
+	public static final String OCL_IS_KIND_OF_SERVICE_NAME = "oclIsKindOf";
+
+	/**
+	 * OCL is type of service name.
+	 */
+	public static final String OCL_IS_TYPE_OF_SERVICE_NAME = "oclIsTypeOf";
+
+	/**
 	 * <code>if<code> operator.
 	 */
 	public static final String CONDITIONAL_OPERATOR = "if";

@@ -309,7 +309,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = getValidationServices().callType("eContainer", argTypes);
+			final Set<IType> types = getValidationServices().callType(null, null, "eContainer", argTypes);
 			assertEquals(1, types.size());
 			Iterator<IType> it = types.iterator();
 			IType type = it.next();
