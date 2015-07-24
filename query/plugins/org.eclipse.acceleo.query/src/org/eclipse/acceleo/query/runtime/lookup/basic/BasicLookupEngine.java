@@ -495,10 +495,12 @@ public class BasicLookupEngine implements ILookupEngine {
 		final Set<IService> result = new LinkedHashSet<IService>();
 
 		for (Class<?> cls : receiverTypes) {
-			for (Set<IService> servicesSet : classToServices.values()) {
-				for (IService service : servicesSet) {
-					if (service.getServiceMethod().getParameterTypes()[0].isAssignableFrom(cls)) {
-						result.add(service);
+			if (cls != null) {
+				for (Set<IService> servicesSet : classToServices.values()) {
+					for (IService service : servicesSet) {
+						if (service.getServiceMethod().getParameterTypes()[0].isAssignableFrom(cls)) {
+							result.add(service);
+						}
 					}
 				}
 			}
