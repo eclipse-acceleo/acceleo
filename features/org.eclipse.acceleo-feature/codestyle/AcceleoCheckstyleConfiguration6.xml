@@ -13,6 +13,7 @@ Acceleo Checkstyle 6 configuration.
   <property name="severity" value="warning"/>
   <module name="TreeWalker">
     <module name="FileContentsHolder"/>
+    <module name="SuppressWarningsHolder"/>
     <module name="JavadocMethod">
       <property name="severity" value="error"/>
       <property name="allowMissingPropertyJavadoc" value="true"/>
@@ -334,4 +335,5 @@ Acceleo Checkstyle 6 configuration.
     <property name="max" value="3000"/>
   </module>
   <module name="SuppressionCommentFilter"/>
+  <module name="SuppressWarningsFilter"/>
 </module>

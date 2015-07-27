@@ -37,7 +37,7 @@ public class StringServicesTest extends AbstractServicesTest {
 	}
 
 	private void assertException(Exception e, Class<?> class1) throws AssertionFailedError {
-		if (e.getClass().isAssignableFrom(class1)) {
+		if (class1.isAssignableFrom(e.getClass())) {
 			assertTrue(true);
 		} else {
 			throw new AssertionFailedError();
@@ -260,7 +260,7 @@ public class StringServicesTest extends AbstractServicesTest {
 			stringServices.first("ab", Integer.valueOf(-1));
 			throw new AssertionFailedError();
 		} catch (Exception e) {
-			assertException(e, StringIndexOutOfBoundsException.class);
+			assertException(e, IndexOutOfBoundsException.class);
 		}
 	}
 
@@ -297,7 +297,7 @@ public class StringServicesTest extends AbstractServicesTest {
 			stringServices.last("ab", Integer.valueOf(-1));
 			throw new AssertionFailedError();
 		} catch (Exception e) {
-			assertException(e, IllegalArgumentException.class);
+			assertException(e, IndexOutOfBoundsException.class);
 		}
 	}
 

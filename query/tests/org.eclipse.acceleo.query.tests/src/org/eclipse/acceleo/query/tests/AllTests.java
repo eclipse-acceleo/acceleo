@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.services.tests.StringServicesTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesValidationTest;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.ServiceCompletionProposalTests;
 import org.eclipse.acceleo.query.tests.runtime.lookup.basic.LookupEngineTest;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLEvaluationTests;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLValidationTests;
@@ -72,7 +73,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
 		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
 		PrimitiveTypeTests.class, LookupEngineTest.class, ShortcutEvaluationTest.class,
-		ScopedEnvironmentTests.class, ResourceServicesTest.class, ResourceServicesValidationTest.class, })
+		ScopedEnvironmentTests.class, ResourceServicesTest.class, ResourceServicesValidationTest.class,
+		ServiceCompletionProposalTests.class })
 public class AllTests {
 
 }
