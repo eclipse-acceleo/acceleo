@@ -12,6 +12,9 @@ package org.eclipse.acceleo.query.services;
 
 import com.google.common.base.Strings;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -477,6 +480,22 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
+		value = "Returns a string containing all characters from self starting from index lower up to the end of the string " +
+	            "included. The lower parameter should be contained between 1 and self.size() included. Lower cannot be greater " +
+				"than the size of the String.",
+		params = {
+			@Param(name = "self", value = "The current String"),
+			@Param(name = "lower", value = "The lower bound")
+		},
+		result = "A string containing all characters from self starting from index lower included."
+	)
+	// @formatter:on
+	public String substring(String self, Integer lower) {
+		return self.substring(lower.intValue() - 1);
+	}
+
+	// @formatter:off
+	@Documentation(
 		value = "Returns a string containing all characters from self starting from index lower up to index upper " +
 	            "included. Both lower and upper parameters should be contained between 1 and self.size() included. Lower " +
 				"cannot be greater than upper.",
@@ -560,8 +579,8 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Substitutes substring r in self by substring t and returns the resulting string. Will return self if it " +
-	            "contains no occurrence of the substring r.",
+		value = "Substitutes the first occurrence of the substring \"r\" in self by \"t\" and returns the resulting string." +
+		        " Will return self if it contains no occurrence of the substring r.",
 		params = {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "r", value = "The String to replace"),
@@ -571,6 +590,22 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substitute(String self, String r, String t) {
+		return Pattern.compile(r, Pattern.LITERAL).matcher(self).replaceFirst(Matcher.quoteReplacement(t));
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Substitutes all occurences of the substring \"r\" in self by \"t\" and returns the resulting string." +
+	            " Will return self if it contains no occurrence of the substring r.",
+		params = {
+			@Param(name = "self", value = "The current String"),
+			@Param(name = "r", value = "The String to replace"),
+			@Param(name = "t", value = "The replacement String")
+		},
+		result = "A new String"
+	)
+	// @formatter:on
+	public String substituteAll(String self, String r, String t) {
 		return Pattern.compile(r, Pattern.LITERAL).matcher(self).replaceAll(Matcher.quoteReplacement(t));
 	}
 
@@ -585,6 +620,43 @@ public class StringServices {
 	// @formatter:on
 	public String trim(String self) {
 		return Strings.nullToEmpty(self).trim();
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Splits the current String by whitespace delimiter into a collection of String",
+		params = {
+			@Param(name = "self", value = "The current String")
+		},
+		result = "The collection of substrings of the current String delimited by whitespaces"
+	)
+	// @formatter:on
+	public List<String> tokenize(String self) {
+		List<String> segments = new ArrayList<String>();
+		StringTokenizer tokenizer = new StringTokenizer(self);
+		while (tokenizer.hasMoreTokens()) {
+			segments.add(tokenizer.nextToken());
+		}
+		return segments;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Splits the current String by using the given \"delimiter\" into a collection of String",
+		params = {
+			@Param(name = "self", value = "The current String"),
+			@Param(name = "delimiter", value = "The current String")
+		},
+		result = "The collection of substrings of the current String delimited by the given \"delimiter\""
+	)
+	// @formatter:on
+	public List<String> tokenize(String self, String delimiter) {
+		List<String> segments = new ArrayList<String>();
+		StringTokenizer tokenizer = new StringTokenizer(self, delimiter);
+		while (tokenizer.hasMoreTokens()) {
+			segments.add(tokenizer.nextToken());
+		}
+		return segments;
 	}
 
 }

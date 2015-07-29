@@ -17,6 +17,7 @@ import junit.framework.AssertionFailedError;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -779,6 +780,9 @@ public class StringServicesTest extends AbstractServicesTest {
 	public void substring() {
 		String result = stringServices.substring("some string", 4, 7);
 		assertEquals("some string".substring(3, 7), result);
+
+		result = stringServices.substring("some string", 4);
+		assertEquals("some string".substring(3), result);
 	}
 
 	@Test
@@ -906,9 +910,16 @@ public class StringServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void substitute() {
-		assertEquals("subsTiTuTe operaTion", stringServices.substitute("substitute operation", "t", "T"));
+		assertEquals("subsTitute operation", stringServices.substitute("substitute operation", "t", "T"));
 		assertEquals("foobar foobar foobar", stringServices.substitute("foobar foobar foobar", "t", "T"));
-		assertEquals("foobar foobar foobar", stringServices.substitute("f..bar f..bar f..bar", ".", "o"));
+		assertEquals("fo.bar f..bar f..bar", stringServices.substitute("f..bar f..bar f..bar", ".", "o"));
+	}
+
+	@Test
+	public void substituteAll() {
+		assertEquals("subsTiTuTe operaTion", stringServices.substituteAll("substitute operation", "t", "T"));
+		assertEquals("foobar foobar foobar", stringServices.substituteAll("foobar foobar foobar", "t", "T"));
+		assertEquals("foobar foobar foobar", stringServices.substituteAll("f..bar f..bar f..bar", ".", "o"));
 	}
 
 	@Test
@@ -924,6 +935,15 @@ public class StringServicesTest extends AbstractServicesTest {
 	@Test
 	public void trim() {
 		assertEquals("azerty", stringServices.trim("\n\t    \razerty \t\t"));
+	}
+
+	@Test
+	public void tokenize() {
+		assertArrayEquals(new String[] {"a", "b", "c", "d" }, stringServices.tokenize("a b c d").toArray());
+		assertArrayEquals(new String[] {"Hello", "World" }, stringServices.tokenize("Hello World").toArray());
+
+		assertArrayEquals(new String[] {"Test", "Value" }, stringServices.tokenize("Test-Value", "-")
+				.toArray());
 	}
 
 }

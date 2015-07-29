@@ -167,17 +167,17 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		@Override
-		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvoronment,
+		public Set<IType> getType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
 				List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.get(0).getType() instanceof EClass) {
 				final EClass eCls = (EClass)argTypes.get(0).getType();
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					result.add(new EClassifierType(queryEnvoronment,
+					result.add(new EClassifierType(queryEnvironment,
 							((EClassifierLiteralType)argTypes.get(1)).getType()));
 				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvoronment, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(services.nothing(ONLY_E_CLASS_CAN_BE_CONTAINED_INTO_OTHER_E_CLASSES_NOT_S,
