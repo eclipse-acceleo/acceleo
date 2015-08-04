@@ -326,6 +326,8 @@
         <module>query/plugins/org.eclipse.acceleo.query</module>
         <module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
 
+        <module>query/plugins/org.eclipse.acceleo.query.doc</module>
+
         <module>query/features/org.eclipse.acceleo.query-feature</module>
 
         <module>query/tests/org.eclipse.acceleo.query.tests.nestedpackages</module>
@@ -376,6 +378,8 @@
         <module>query/plugins/org.eclipse.acceleo.annotations</module>
         <module>query/plugins/org.eclipse.acceleo.query</module>
         <module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
+
+        <module>query/plugins/org.eclipse.acceleo.query.doc</module>
 
         <module>query/features/org.eclipse.acceleo.query-feature</module>
 

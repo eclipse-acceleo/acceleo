@@ -10,46 +10,72 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-/**
- * Boolean services.
- * 
- * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
- */
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+
+//@formatter:off
+@ServiceProvider(
+	value = "Services available for Booleans"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class BooleanServices {
 
-	/**
-	 * Logical or.
-	 * 
-	 * @param op1
-	 *            the first operand
-	 * @param op2
-	 *            the second operand
-	 * @return the logical or of the two operands.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Logical or.",
+		params = {
+			@Param(name = "op1", value = "The first operand"),
+			@Param(name = "op2", value = "The second operand")
+		},
+		result = "The logical or of the two operands",
+		examples = {
+			@Example(expression = "true.or(false)", result = "true"),
+			@Example(expression = "false.or(true)", result = "true"),
+			@Example(expression = "true.or(true)", result = "true"),
+			@Example(expression = "false.or(false)", result = "false")
+		}
+	)
+	// @formatter:on
 	public Boolean or(Boolean op1, Boolean op2) {
 		return Boolean.valueOf(op1.booleanValue() || op2.booleanValue());
 	}
 
-	/**
-	 * Logical and.
-	 * 
-	 * @param op1
-	 *            the first operand
-	 * @param op2
-	 *            the second operand
-	 * @return the logical and of the two operands.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Logical and.",
+		params = {
+			@Param(name = "op1", value = "The first operand"),
+			@Param(name = "op2", value = "The second operand")
+		},
+		result = "The logical and of the two operands",
+		examples = {
+			@Example(expression = "true.and(false)", result = "false"),
+			@Example(expression = "false.and(true)", result = "false"),
+			@Example(expression = "true.and(true)", result = "true"),
+			@Example(expression = "false.and(false)", result = "false")
+		}
+	)
+	// @formatter:on
 	public Boolean and(Boolean op1, Boolean op2) {
 		return Boolean.valueOf(op1.booleanValue() && op2.booleanValue());
 	}
 
-	/**
-	 * Logical negation.
-	 * 
-	 * @param op1
-	 *            the operand
-	 * @return the logical negation of the operand.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Logical negation.",
+		params = {
+			@Param(name = "op1", value = "The operand")
+		},
+		result = "The logical negation of the operand",
+		examples = {
+			@Example(expression = "true.not()", result = "false"),
+			@Example(expression = "false.not()", result = "true")
+		}
+	)
+	// @formatter:on
 	public Boolean not(Boolean op1) {
 		return Boolean.valueOf(!op1.booleanValue());
 	}
@@ -63,6 +89,22 @@ public class BooleanServices {
 	 *            the second operand
 	 * @return the logical implies of the two operands
 	 */
+	// @formatter:off
+	@Documentation(
+		value = "Logical implies.",
+		params = {
+			@Param(name = "op1", value = "The first operand"),
+			@Param(name = "op2", value = "The second operand"),
+		},
+		result = "The logical implies of the operands",
+		examples = {
+			@Example(expression = "true.implies(true)", result = "true"),
+			@Example(expression = "true.implies(false)", result = "false"),
+			@Example(expression = "false.implies(true)", result = "true"),
+			@Example(expression = "false.implies(false)", result = "true"),
+		}
+	)
+	// @formatter:on
 	public Boolean implies(Boolean op1, Boolean op2) {
 		final Boolean result;
 
@@ -75,15 +117,22 @@ public class BooleanServices {
 		return result;
 	}
 
-	/**
-	 * Logical and.
-	 * 
-	 * @param op1
-	 *            the first operand
-	 * @param op2
-	 *            the second operand
-	 * @return the logical and of the two operands.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Logical xor.",
+		params = {
+			@Param(name = "op1", value = "The first operand"),
+			@Param(name = "op2", value = "The second operand"),
+		},
+		result = "The logical xor of the operands",
+		examples = {
+			@Example(expression = "true.xor(true)", result = "false"),
+			@Example(expression = "true.xor(false)", result = "true"),
+			@Example(expression = "false.xor(true)", result = "true"),
+			@Example(expression = "false.xor(false)", result = "false"),
+		}
+	)
+	// @formatter:on
 	public Boolean xor(Boolean op1, Boolean op2) {
 		return Boolean.valueOf(op1.booleanValue() ^ op2.booleanValue());
 	}

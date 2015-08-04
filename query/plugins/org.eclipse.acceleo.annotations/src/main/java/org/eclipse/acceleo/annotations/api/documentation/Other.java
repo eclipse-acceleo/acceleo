@@ -16,40 +16,35 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to document a Java method that will be used as a service by AQL.
+ * This annotation is used to document an example of the expression in other languages.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD })
-public @interface Documentation {
+public @interface Other {
 	/**
-	 * The documentation of the method.
+	 * The identifier for the Acceleo 3 (MTL) language.
 	 */
-	String value();
+	String ACCELEO_3 = "Acceleo 3 (MTL)"; //$NON-NLS-1$
 
 	/**
-	 * The input parameters of the method.
+	 * The identifier for the Acceleo 2 language.
 	 */
-	Param[] params() default {};
+	String ACCELEO_2 = "Acceleo 2"; //$NON-NLS-1$
 
 	/**
-	 * The documentation of the result.
+	 * The name of the language.
 	 */
-	String result() default "";
+	String language();
 
 	/**
-	 * The exceptions that can be thrown.
+	 * The expression.
 	 */
-	Throw[] exceptions() default {};
+	String expression();
 
 	/**
-	 * The examples for this service.
+	 * The result.
 	 */
-	Example[] examples() default {};
-
-	/**
-	 * Additional comments for the example of this service.
-	 */
-	String comment() default "";
+	String result();
 }

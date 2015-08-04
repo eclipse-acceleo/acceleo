@@ -17,6 +17,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Other;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
@@ -34,11 +39,12 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 
-/**
- * The purpose of this class is to allow execution of <code>Any</code> operations.
- * 
- * @author <a href="mailto:marwa.rostren@obeo.fr">Marwa Rostren</a>
- */
+//@formatter:off
+@ServiceProvider(
+	value = "Services available for all types"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class AnyServices extends AbstractServiceProvider {
 
 	/**
@@ -89,17 +95,22 @@ public class AnyServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Indicates whether the object <code>o1</code> is the same as the object <code>o2</code>. For more
-	 * information refer to the {@link Object#equals(Object)} method.
-	 * 
-	 * @param o1
-	 *            the reference object to compare
-	 * @param o2
-	 *            the reference object with which to compare
-	 * @return <code>true</code> if the object <code>o1</code> is the same as the object <code>o2</code>,
-	 *         <code>false</code> otherwise.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Indicates whether the object <code>o1</code> is the same as the object <code>o2</code>. For more " +
+	            "information refer to the Object#equals(Object) method.",
+	    params = {
+			@Param(name = "o1", value = "The object to compare for equality"),
+			@Param(name = "o2", value = "The reference object with which to compare")
+		},
+		result = "true</code> if the object <code>o1</code> is the same as the object <code>o2</code>, " +
+		         "<code>false</code> otherwise",
+		examples = {
+			@Example(expression = "'Hello'.equals('World')", result = "false"),
+			@Example(expression = "'Hello'.equals('Hello')", result = "true")
+		}
+	)
+	// @formatter:on
 	public Boolean equals(Object o1, Object o2) {
 		final boolean result;
 
@@ -112,29 +123,38 @@ public class AnyServices extends AbstractServiceProvider {
 		return Boolean.valueOf(result);
 	}
 
-	/**
-	 * Indicates whether the object <code>o1</code> is a different object from the object <code>o2</code>.
-	 * 
-	 * @param o1
-	 *            the reference object to compare
-	 * @param o2
-	 *            the reference object with which to compare
-	 * @return <code>true</code> if the object <code>o1</code> is not the same as the object <code>o2</code>,
-	 *         <code>false</code> otherwise.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Indicates whether the object <code>o1</code> is a different object from the object <code>o2</code>.",
+		params = {
+			@Param(name = "o1", value = "The object to compare"),
+			@Param(name = "o2", value = "The reference object with which to compare")
+		},
+		result = "<code>true</code> if the object <code>o1</code> is not the same as the object <code>o2</code>, " +
+				 "<code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "'Hello'.differs('World')", result = "true"),
+			@Example(expression = "'Hello'.differs('Hello')", result = "false")
+		}
+	)
+	// @formatter:on
 	public Boolean differs(Object o1, Object o2) {
 		return Boolean.valueOf(!equals(o1, o2));
 	}
 
-	/**
-	 * Returns the string representation of self object to which we concatenated the string "s".
-	 * 
-	 * @param self
-	 *            The self object from which we want the string representation.
-	 * @param s
-	 *            The string we want to concatenate to the self object representation.
-	 * @return The string representation of self for which we added the string "s".
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the concatenation of self (as a String) and the given string \"s\".",
+		params = {
+			@Param(name = "self", value = "The current object at the end of which to append \"s\"."),
+			@Param(name = "s", value = "The string we want to append at the end of the current object's string representation.")
+		},
+		result = "The string representation of self for which we added the string \"s\".",
+		examples = {
+			@Example(expression = "42.add(' times')", result = "'42 times'")
+		}
+	)
+	// @formatter:on
 	public String add(Object self, String s) {
 		final String result;
 
@@ -147,15 +167,19 @@ public class AnyServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the self string to which we concatenated the any object string representation.
-	 * 
-	 * @param self
-	 *            The string to which the any object string representation will be concatenated to.
-	 * @param any
-	 *            The self object we want to concatenate to the self string.
-	 * @return The string representation of self for which we added the string "s".
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the concatenation of the current string and the given object \"any\" (as a String).",
+		params = {
+			@Param(name = "self", value = "The current string."),
+			@Param(name = "any", value = "The object we want to append, as a string, at the end of the current string.")
+		},
+		result = "The current string with the object \"any\" appended (as a String).",
+		examples = {
+			@Example(expression = "'times '.add(42)", result = "'times 42'")
+		}
+	)
+	// @formatter:on
 	public String add(String self, Object any) {
 		final String result;
 
@@ -168,29 +192,54 @@ public class AnyServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * oclAsType is a mere return with the dynamic typing.
-	 * 
-	 * @param object
-	 *            the casted object.
-	 * @param type
-	 *            the filter.
-	 * @return the parameter
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Casts the current object to the given type.",
+		params = {
+			@Param(name = "object", value = "The object to cast"),
+			@Param(name = "type", value = "The type to cast the object to")
+		},
+		result = "The current object cast to a \"type\"",
+		examples = {
+			@Example(
+				expression = "anEPackage.oclAsType(ecore::EPackage)", result = "anEPackage",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3, expression = "anEPackage.oclAsType(ecore::EPackage)", result = "anEPackage"
+					)
+				}
+			),
+			@Example(
+				expression = "anEPackage.oclAsType(ecore::EClass)", result = "anEPackage",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3, expression = "anEPackage.oclAsType(ecore::EClass)", result = "oclInvalid"
+					)
+				}
+			),
+		},
+		comment = "Contrary to Acceleo 3, the type is ignored, the given object will be returned directly."
+	)
+	// @formatter:on
 	public Object oclAsType(Object object, Object type) {
 		return object;
 	}
 
-	/**
-	 * Evaluates to <code>true</code> if the type of the object o1 conforms to the type "classifier". That is,
-	 * o1 is of type "classifier" or a subtype of "classifier".
-	 * 
-	 * @param object
-	 *            the reference Object we seek to test.
-	 * @param type
-	 *            the expected supertype classifier.
-	 * @return <code>true</code> if the object o1 is a kind of the classifier, <code>false</code> otherwise.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Evaluates to <code>true</code> if the type of the object o1 conforms to the type \"classifier\". That is, " +
+				"o1 is of type \"classifier\" or a subtype of \"classifier\".",
+		params = {
+			@Param(name = "object", value = "The reference Object we seek to test."),
+			@Param(name = "type", value = "The expected supertype classifier.")
+		},
+		result = "<code>true</code> if the object o1 is a kind of the classifier, <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "anEPackage.oclIsKindOf(ecore::EPackage)", result = "true"),
+			@Example(expression = "anEPackage.oclIsKindOf(ecore::ENamedElement)", result = "true")
+		}
+	)
+	// @formatter:on
 	public Boolean oclIsKindOf(Object object, Object type) {
 		Boolean result;
 		if (type instanceof EClass) {
@@ -226,16 +275,21 @@ public class AnyServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Evaluates to <code>true</code> if the object o1 if of the type "classifier" but not a subtype of the
-	 * "classifier".
-	 * 
-	 * @param object
-	 *            the reference Object we seek to test.
-	 * @param type
-	 *            the expected supertype classifier.
-	 * @return <code>true</code> if the object o1 is a kind of the classifier, <code>false</code> otherwise.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Evaluates to <code>true</code> if the object o1 if of the type \"classifier\" but not a subtype of the " +
+				"\"classifier\".",
+		params = {
+			@Param(name = "object", value = "The reference Object we seek to test."),
+			@Param(name = "type", value = "The expected type classifier.")
+		},
+		result = "<code>true</code> if the object o1 is a type of the classifier, <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "anEPackage.oclIsKindOf(ecore::EPackage)", result = "true"),
+			@Example(expression = "anEPackage.oclIsKindOf(ecore::ENamedElement)", result = "false")
+		}
+	)
+	// @formatter:on
 	public Boolean oclIsTypeOf(Object object, Object type) {
 		Boolean result;
 		if (type instanceof EClass) {
@@ -291,14 +345,20 @@ public class AnyServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Collections need special handling when generated from Acceleo.
-	 * 
-	 * @param object
-	 *            The object we wish the String representation of.
-	 * @return String representation of the given Object. For Collections, this will be the concatenation of
-	 *         all contained Objects' toString.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns a string representation of the current object.",
+		params = {
+			@Param(name = "self", value = "The current object"),
+			@Param(name = "", value = "")
+		},
+		result = "a String representation of the given Object. For Collections, this will be the concatenation of " +
+				 "all contained Objects' toString.",
+		examples = {
+			@Example(expression = "42.toString()", result = "'42'")
+		}
+	)
+	// @formatter:on
 	public String toString(Object object) {
 		final StringBuffer buffer = new StringBuffer();
 		if (object instanceof Collection<?>) {

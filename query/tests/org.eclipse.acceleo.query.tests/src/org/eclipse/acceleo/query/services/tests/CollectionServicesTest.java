@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -47,12 +53,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class CollectionServicesTest {
 	CollectionServices collectionServices;
@@ -1174,7 +1174,6 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(1), result);
 	}
 
-	@Test(expected = java.lang.NullPointerException.class)
 	public void testExistsNullCollection() {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
@@ -1185,7 +1184,7 @@ public class CollectionServicesTest {
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
 				selfDeclaration);
 
-		collectionServices.exists(null, new LambdaValue(lambda, evaluator));
+		assertEquals(Boolean.FALSE, collectionServices.exists(null, new LambdaValue(lambda, evaluator)));
 	}
 
 	@Test
@@ -1296,7 +1295,7 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.TRUE, result);
 	}
 
-	@Test(expected = java.lang.NullPointerException.class)
+	@Test
 	public void testForAllNullCollection() {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
@@ -1307,7 +1306,7 @@ public class CollectionServicesTest {
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
 				selfDeclaration);
 
-		collectionServices.forAll(null, new LambdaValue(lambda, evaluator));
+		assertEquals(Boolean.FALSE, collectionServices.forAll(null, new LambdaValue(lambda, evaluator)));
 	}
 
 	@Test

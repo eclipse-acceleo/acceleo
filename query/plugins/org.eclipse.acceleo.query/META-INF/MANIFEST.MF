@@ -43,6 +43,7 @@ Export-Package: org.eclipse.acceleo.query.ast;
  org.eclipse.acceleo.query.services;
   x-friends:="org.eclipse.acceleo.query.tests,
    org.eclipse.acceleo.query.ide.ui,
+   org.eclipse.acceleo.query.doc,
    org.eclipse.acceleo.query.ide.ui.test",
  org.eclipse.acceleo.query.type;
   x-friends:="org.eclipse.acceleo.query.tests,

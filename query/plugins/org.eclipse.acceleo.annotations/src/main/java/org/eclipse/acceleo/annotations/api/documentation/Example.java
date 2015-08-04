@@ -16,40 +16,25 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used to document a Java method that will be used as a service by AQL.
+ * This annotation is used to document an example of the method.
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD })
-public @interface Documentation {
+public @interface Example {
 	/**
-	 * The documentation of the method.
+	 * The expression used in this example.
 	 */
-	String value();
+	String expression();
 
 	/**
-	 * The input parameters of the method.
+	 * The result of the expression.
 	 */
-	Param[] params() default {};
+	String result();
 
 	/**
-	 * The documentation of the result.
+	 * Examples in other languages.
 	 */
-	String result() default "";
-
-	/**
-	 * The exceptions that can be thrown.
-	 */
-	Throw[] exceptions() default {};
-
-	/**
-	 * The examples for this service.
-	 */
-	Example[] examples() default {};
-
-	/**
-	 * Additional comments for the example of this service.
-	 */
-	String comment() default "";
+	Other[] others() default {};
 }

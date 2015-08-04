@@ -10,11 +10,17 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-/**
- * Services on {@link Comparable} instances.
- * 
- * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
- */
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
+
+//@formatter:off
+@ServiceProvider(
+	value = "Services available for Comparables"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class ComparableServices {
 
 	/**
@@ -46,66 +52,74 @@ public class ComparableServices {
 		return result;
 	}
 
-	/**
-	 * Compares two comparable instances. Returns <code>true</code> if a < b.
-	 * 
-	 * @param a
-	 *            the first operand
-	 * @param b
-	 *            the second operand
-	 * @param <T>
-	 *            the type been compared
-	 * @return <code>true</code> if a < b.
-	 */
-
+	// @formatter:off
+	@Documentation(
+		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is less than \"b\".",
+	    params = {
+			@Param(name = "a", value = "The first comparable (can be null)"),
+			@Param(name = "b", value = "The second comparable (can be null)")
+		},
+		result = "<code>true</code> \"a\" is less than \"b\", <code>false</code> otherwise.",
+		examples = {
+				@Example(expression = "'Hello'.lessThan('Hello')", result = "false"),
+				@Example(expression = "'Hello'.lessThan('World')", result = "true")
+		}
+	)
+	// @formatter:on
 	public <T extends Comparable<? super T>> Boolean lessThan(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) < 0);
 	}
 
-	/**
-	 * Compares two comparable instances. Returns <code>true</code> if a <= b.
-	 * 
-	 * @param a
-	 *            the first operand
-	 * @param b
-	 *            the second operand
-	 * @param <T>
-	 *            the type been compared
-	 * @return <code>true</code> if a <= b.
-	 */
-
+	// @formatter:off
+	@Documentation(
+		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is less than or equal to \"b\".",
+	    params = {
+			@Param(name = "a", value = "The first comparable (can be null)"),
+			@Param(name = "b", value = "The second comparable (can be null)")
+		},
+		result = "<code>true</code> \"a\" is less than or equal to \"b\", <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "'Hello'.lessThanEqual('Hello')", result = "true"),
+			@Example(expression = "'Hello'.lessThanEqual('World')", result = "true")
+		}
+	)
+	// @formatter:on
 	public <T extends Comparable<? super T>> Boolean lessThanEqual(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) <= 0);
 	}
 
-	/**
-	 * Compares two comparable instances. Returns <code>true</code> if a > b.
-	 * 
-	 * @param a
-	 *            the first operand
-	 * @param b
-	 *            the second operand
-	 * @param <T>
-	 *            the type been compared
-	 * @return <code>true</code> if a > b.
-	 */
-
+	// @formatter:off
+	@Documentation(
+		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is greater than \"b\".",
+	    params = {
+			@Param(name = "a", value = "The first comparable (can be null)"),
+			@Param(name = "b", value = "The second comparable (can be null)")
+		},
+		result = "<code>true</code> \"a\" is greater than \"b\", <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "'Hello'.greaterThan('Abc')", result = "true"),
+			@Example(expression = "'Hello'.greaterThan('Hello')", result = "false")
+		}
+	)
+	// @formatter:on
 	public <T extends Comparable<? super T>> Boolean greaterThan(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) > 0);
 	}
 
-	/**
-	 * Compares two comparable instances. Returns <code>true</code> if a >= b.
-	 * 
-	 * @param a
-	 *            the first operand
-	 * @param b
-	 *            the second operand
-	 * @param <T>
-	 *            the type been compared
-	 * @return <code>true</code> if a >= b.
-	 */
-
+	// @formatter:off
+	@Documentation(
+		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is greater than or equal to \"b\".",
+	    params = {
+			@Param(name = "a", value = "The first comparable (can be null)"),
+			@Param(name = "b", value = "The second comparable (can be null)")
+		},
+		result = "<code>true</code> \"a\" is greater than or equal to \"b\", <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "'Hello'.greaterThanEqual('Abc')", result = "true"),
+			@Example(expression = "'Hello'.greaterThanEqual('Hello')", result = "true")
+		}
+	)
+	// @formatter:on
 	public <T extends Comparable<? super T>> Boolean greaterThanEqual(T a, T b) {
 		return Boolean.valueOf(safeCompare(a, b) >= 0);
 	}

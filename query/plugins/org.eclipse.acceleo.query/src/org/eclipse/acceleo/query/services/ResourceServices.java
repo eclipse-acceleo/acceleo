@@ -20,6 +20,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
@@ -35,11 +38,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
-/**
- * {@link Resource} related services.
- * 
- * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
- */
+//@formatter:off
+@ServiceProvider(
+	value = "Services available for Resources and URIs"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class ResourceServices extends AbstractServiceProvider {
 	/**
 	 * {@inheritDoc}
@@ -54,50 +58,56 @@ public class ResourceServices extends AbstractServiceProvider {
 		return new Service(method, this);
 	}
 
-	/**
-	 * Returns the eResource containing the given EObject. Equivalent to a direct call to
-	 * {@link EObject#eResource()}.
-	 * 
-	 * @param eObject
-	 *            the EObject.
-	 * @return the eResource containing the given EObject.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the Resource containing the given EObject. This service is equivalent to a direct call " +
+				"to EObject#eResource().",
+	    params = {
+			@Param(name = "eObject", value = "The EObject")
+		},
+		result = "The Resource containing the given EObject."
+	)
+	// @formatter:on
 	public Resource eResource(EObject eObject) {
 		return eObject.eResource();
 	}
 
-	/**
-	 * Returns the URI of the given Resource. Equivalent to a direct call to {@link Resource#getURI()}.
-	 * 
-	 * @param resource
-	 *            The resource which URI we seek.
-	 * @return The URI of the given Resource.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the URI of the given Resource. This service is equivalent to a direct call to Resource#getURI()",
+	    params = {
+			@Param(name = "resource", value = "The Resource which URI we seek")
+		},
+		result = "The URI of the given Resource."
+	)
+	// @formatter:on
 	public URI getURI(Resource resource) {
 		return resource.getURI();
 	}
 
-	/**
-	 * Returns the direct content of the given Resource. Equivalent to a direct call to
-	 * {@link Resource#getContents()}.
-	 * 
-	 * @param resource
-	 *            The resource of which to retrieve the direct contents.
-	 * @return The direct content of the given Resource.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the direct content of the given Resource. This service is equivalent to a direct call to Resource#getContents()",
+	    params = {
+			@Param(name = "resource", value = "The Resource which contents we seek")
+		},
+		result = "The direct content of the given Resource."
+	)
+	// @formatter:on
 	public List<EObject> getContents(Resource resource) {
 		return new ArrayList<EObject>(resource.getContents());
 	}
 
-	/**
-	 * Returns the objects of the given type from the direct content of the given Resource.
-	 * 
-	 * @param resource
-	 *            The resource from which we'll filter the content.
-	 * @param type
-	 *            the type that the returned objects must be.
-	 * @return The objects that correspond to the given type from the direct content of the given Resource.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the EObjects of the given type from the direct content of the given Resource.",
+	    params = {
+			@Param(name = "resource", value = "The Resource which filtered contents we seek"),
+			@Param(name = "type", value = "The type that the returned EObjects must match")
+		},
+		result = "The EObjects from the direct content of the given Resource that match the given type."
+	)
+	// @formatter:on
 	public List<EObject> getContents(Resource resource, final EClass type) {
 		return Lists.newArrayList(Iterables.filter(resource.getContents(), new Predicate<EObject>() {
 			@Override
@@ -107,49 +117,57 @@ public class ResourceServices extends AbstractServiceProvider {
 		}));
 	}
 
-	/**
-	 * Returns the last segment of the given URI. Equivalent to a direct call to {@link URI#lastSegment()}.
-	 * 
-	 * @param uri
-	 *            The URI.
-	 * @return The last segment of the given URI.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the last segment of the given URI. This service is equivalent to a direct call to URI#lastSegment()",
+	    params = {
+			@Param(name = "uri", value = "The URI")
+		},
+		result = "The last segment of the given URI."
+	)
+	// @formatter:on
 	public String lastSegment(URI uri) {
 		return uri.lastSegment();
 	}
 
-	/**
-	 * Returns the extension of the file referred to by the given URI. Equivalent to a direct call to
-	 * {@link URI#fileExtension()}.
-	 * 
-	 * @param uri
-	 *            The URI.
-	 * @return The extension of the file referred to by the given URI.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the extension of the file referred to by the given URI. This service is equivalent " +
+				"to a direct call to URI#fileExtension()",
+	    params = {
+			@Param(name = "uri", value = "The URI")
+		},
+		result = "The extension of the file referred to by the given URI."
+	)
+	// @formatter:on
 	public String fileExtension(URI uri) {
 		return uri.fileExtension();
 	}
 
-	/**
-	 * Returns <code>true</code> if the given URI is a platform resource URI. Equivalent to a direct call to
-	 * {@link URI#isPlatformResource()}.
-	 * 
-	 * @param uri
-	 *            The URI.
-	 * @return <code>true</code> if the given URI is a platform resource URI, <code>false</code> otherwise.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns <code>true</code> if the given URI is a platform resource URI. This service is equivalent " +
+				"to a direct call to URI#isPlatformResource()",
+	    params = {
+			@Param(name = "uri", value = "The URI")
+		},
+		result = "<code>true</code> if the given URI is a platform resource URI, <code>false</code> otherwise."
+	)
+	// @formatter:on
 	public Boolean isPlatformResource(URI uri) {
 		return uri.isPlatformResource();
 	}
 
-	/**
-	 * Returns <code>true</code> if the given URI is a platform plugin URI. Equivalent to a direct call to
-	 * {@link URI#isPlatformPlugin()}.
-	 * 
-	 * @param uri
-	 *            The URI.
-	 * @return <code>true</code> if the given URI is a platform plugin URI, <code>false</code> otherwise.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns <code>true</code> if the given URI is a platform plugin URI. This service is equivalent " +
+				"to a direct call to URI#isPlatformPlugin()",
+	    params = {
+			@Param(name = "uri", value = "The URI")
+		},
+		result = "<code>true</code> if the given URI is a platform plugin URI, <code>false</code> otherwise."
+	)
+	// @formatter:on
 	public Boolean isPlatformPlugin(URI uri) {
 		return uri.isPlatformPlugin();
 	}

@@ -21,6 +21,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -38,11 +42,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
-/**
- * Services on {@link EObject}.
- * 
- * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
- */
+//@formatter:off
+@ServiceProvider(
+	value = "Services available for EObjects"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class EObjectServices extends AbstractServiceProvider {
 
 	/**
@@ -544,13 +549,21 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns a list of the {@link EObject} recursively contained in the specified root eObject.
-	 * 
-	 * @param eObject
-	 *            the root of the content tree
-	 * @return the recursive content of the specified eObject.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence of the EObjects recursively contained in the specified root eObject.",
+		params = {
+			@Param(name = "eObject", value = "The root of the content tree")
+		},
+		result = "The recursive content of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "anEPackage.eAllContents()",
+				result = "Sequence{firstEClass, firstEAttribute, secondEClass, firstDataType}"
+			)
+		}
+	)
+	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject) {
 		final List<EObject> result = Lists.newArrayList();
 
@@ -562,16 +575,23 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns a list of the {@link EObject} recursively contained in the specified root eObject and that are
-	 * instances of the specified EClass.
-	 * 
-	 * @param eObject
-	 *            the root of the content tree
-	 * @param type
-	 *            the type used to select elements.
-	 * @return the recursive content of the specified eObject.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence of the EObjects recursively contained in the specified root eObject and that are " +
+				"instances of the specified EClass",
+		params = {
+			@Param(name = "eObject", value = "The root of the content tree"),
+			@Param(name = "type", value = "The type used to select elements")
+		},
+		result = "The recursive content of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "anEPackage.eAllContents(ecore::EClass)",
+				result = "Sequence{firstEClass, secondEClass}"
+			)
+		}
+	)
+	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject, final EClass type) {
 		// TODO optimize by pruning dead branches according to EClasses.
 		final List<EObject> result = Lists.newArrayList();
@@ -587,26 +607,41 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the contents of the specified {@link EObject} instance.
-	 * 
-	 * @param eObject
-	 *            the eObject which content is requested.
-	 * @return the content of the specified eObject.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the contents of the specified EObject instance.",
+		params = {
+			@Param(name = "eObject", value = "The eObject which content is requested.")
+		},
+		result = "The content of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "anEPackage.eContents()",
+				result = "Sequence{firstEClass, secondEClass, firstDataType}"
+			)
+		}
+	)
+	// @formatter:on
 	public List<EObject> eContents(EObject eObject) {
 		return eObject.eContents();
 	}
 
-	/**
-	 * Returns a list made of the instances of the specified type in the contents of the specified eObject.
-	 * 
-	 * @param eObject
-	 *            the eObject which content is requested.
-	 * @param type
-	 *            the type filter
-	 * @return the filtered content of the specified eObject
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence made of the instances of the specified type in the contents of the specified eObject.",
+		params = {
+			@Param(name = "eObject", value = "The eObject which content is requested."),
+			@Param(name = "type", value = "The type filter.")
+		},
+		result = "The filtered content of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "anEPackage.eContents(ecore::EDataType)",
+				result = "Sequence{firstDataType}"
+			)
+		}
+	)
+	// @formatter:on
 	public List<EObject> eContents(EObject eObject, final EClass type) {
 		final List<EObject> result = Lists.newArrayList();
 
@@ -619,28 +654,41 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * the container of the specified eObject.
-	 * 
-	 * @param eObject
-	 *            the eObject which container is requested.
-	 * @return the container of the specified eObject.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the container of the specified EObject",
+		params = {
+			@Param(name = "eObject", value = "The eObject which container is requested.")
+		},
+		result = "The container of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "firstEAttribute.eContainer()",
+				result = "firstEClass"
+			)
+		}
+	)
+	// @formatter:on
 	public EObject eContainer(EObject eObject) {
 		return eObject.eContainer();
 	}
 
-	/**
-	 * <p>
-	 * Returns the first container of the receiver that if of the given type.
-	 * </p>
-	 * 
-	 * @param eObject
-	 *            the eObject which container is seeked.
-	 * @param type
-	 *            the type filter.
-	 * @return the first container of the receiver that if of the given type.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the first container of the specified EObject that matches the given type",
+		params = {
+			@Param(name = "eObject", value = "The eObject which container is requested."),
+			@Param(name = "type", value = "The type filter.")
+		},
+		result = "The first container of the specified eObject that matches the given type.",
+		examples = {
+			@Example(
+				expression = "firstEAttribute.eContainer(ecore::EPackage)",
+				result = "anEPackage"
+			)
+		}
+	)
+	// @formatter:on
 	public EObject eContainer(EObject eObject, EClass type) {
 		final EObject result;
 
@@ -657,17 +705,22 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * <p>
-	 * Returns self or the first container of the receiver that if of the given type.
-	 * </p>
-	 * 
-	 * @param eObject
-	 *            the eObject which container is seeked.
-	 * @param type
-	 *            the type filter.
-	 * @return self or the first container of the receiver that if of the given type.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns self or the first container of the specified EObject that matches the given type",
+		params = {
+			@Param(name = "eObject", value = "The eObject which container is requested."),
+			@Param(name = "type", value = "The type filter.")
+		},
+		result = "Self or the first container of the specified eObject that matches the given type.",
+		examples = {
+			@Example(
+				expression = "firstEAttribute.eContainerOrSelf(ecore::EAttribute)",
+				result = "firstEAttribute"
+			)
+		}
+	)
+	// @formatter:on
 	public EObject eContainerOrSelf(EObject eObject, EClass type) {
 		final EObject result;
 
@@ -680,13 +733,15 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the {@link EClass} of the specified {@link EObject}.
-	 * 
-	 * @param eObject
-	 *            the eObject which {@link EClass} is seeked.
-	 * @return the {@link EClass} of the specified {@link EObject}.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the EClass of the specified EObject",
+		params = {
+			@Param(name = "eObject", value = "The eObject which EClass is requested.")
+		},
+		result = "The EClass of the specified EObject"
+	)
+	// @formatter:on
 	public EClass eClass(EObject eObject) {
 		return eObject.eClass();
 	}
@@ -695,13 +750,15 @@ public class EObjectServices extends AbstractServiceProvider {
 		this.crossReferencer = crossReferencer;
 	}
 
-	/**
-	 * Returns the sequence containing the full set of inverse references.
-	 * 
-	 * @param self
-	 *            The EObject we seek the inverse references of.
-	 * @return The sequence containing the full set of inverse references.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the set containing the inverse references.",
+		params = {
+			@Param(name = "eObject", value = "The eObject which inverse references are requested.")
+		},
+		result = "The set of the inverse references"
+	)
+	// @formatter:on
 	public Set<EObject> eInverse(EObject self) {
 		final Set<EObject> result;
 
@@ -718,25 +775,26 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the elements of the given type from the set of the inverse references of the receiver.
-	 * 
-	 * @param self
-	 *            The EObject we seek the inverse references of.
-	 * @param filter
-	 *            Types of the EObjects we seek to retrieve.
-	 * @return The sequence containing the full set of inverse references.
-	 */
-	public Set<EObject> eInverse(EObject self, EClassifier filter) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns the elements of the given type from the set of the inverse references of the receiver.",
+		params = {
+			@Param(name = "eObject", value = "The eObject which inverse references are requested."),
+			@Param(name = "type", value = "The type filter."),
+		},
+		result = "The set of the inverse references"
+	)
+	// @formatter:on
+	public Set<EObject> eInverse(EObject self, EClassifier type) {
 		final Set<EObject> result;
 
 		final Collection<EStructuralFeature.Setting> settings = crossReferencer.getInverseReferences(self);
-		if (settings == null || filter == null) {
+		if (settings == null || type == null) {
 			result = Collections.emptySet();
 		} else {
 			result = Sets.newLinkedHashSet();
 			for (EStructuralFeature.Setting setting : settings) {
-				if (filter.isInstance(setting.getEObject())) {
+				if (type.isInstance(setting.getEObject())) {
 					result.add(setting.getEObject());
 				}
 			}
@@ -745,16 +803,17 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns the elements from the set of the inverse {@link EStructuralFeature#getName() feature name} of
-	 * the receiver.
-	 * 
-	 * @param self
-	 *            The EObject we seek the inverse references of.
-	 * @param featureName
-	 *            the {@link EStructuralFeature#getName() feature name}.
-	 * @return The sequence containing the full set of inverse references.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the elements from the set of the inverse references of the receiver that are referencing the receiver " +
+				"using a feature with the given name.",
+		params = {
+			@Param(name = "eObject", value = "The eObject which inverse references are requested."),
+			@Param(name = "featureName", value = "The feature name."),
+		},
+		result = "The set of the inverse references"
+	)
+	// @formatter:on
 	public Set<EObject> eInverse(EObject self, String featureName) {
 		final Set<EObject> result;
 
@@ -773,20 +832,21 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Handles calls to the operation "eGet". This will fetch the value of the feature named
-	 * <em>featureName</em> on <em>source</em>.
-	 * 
-	 * @param source
-	 *            The EObject we seek to retrieve a feature value of.
-	 * @param featureName
-	 *            Name of the feature which value we need to retrieve.
-	 * @return Value of the given feature on the given object.
-	 */
-	public Object eGet(EObject source, String featureName) {
-		for (EStructuralFeature feature : source.eClass().getEAllStructuralFeatures()) {
+	// @formatter:off
+	@Documentation(
+		value = "Handles calls to the operation \"eGet\". This will fetch the value of the feature named " +
+				"<em>featureName</em> on <em>source</em>",
+		params = {
+			@Param(name = "eObject", value = "The eObject we seek to retrieve a feature value of."),
+			@Param(name = "featureName", value = "The name of the feature which value we need to retrieve."),
+		},
+		result = "The value of the given feature on the given EObject"
+	)
+	// @formatter:on
+	public Object eGet(EObject eObject, String featureName) {
+		for (EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {
 			if (feature.getName().equals(featureName)) {
-				return source.eGet(feature);
+				return eObject.eGet(feature);
 			}
 		}
 

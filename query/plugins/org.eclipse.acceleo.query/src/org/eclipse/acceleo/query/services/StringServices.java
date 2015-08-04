@@ -20,15 +20,17 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
+import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.annotations.api.documentation.Throw;
 
-/**
- * This class provides methods for String queries.
- * 
- * @author <a href="mailto:pierre.guilet@obeo.fr">Pierre Guilet</a>
- */
-@SuppressWarnings({"checkstyle:javadocmethod" })
+//@formatter:off
+@ServiceProvider(
+	value = "Services available for Strings"
+)
+//@formatter:on
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class StringServices {
 
 	/**
@@ -44,7 +46,11 @@ public class StringServices {
 			@Param(name = "self", value = "The current String."),
 			@Param(name = "b", value = "The String that will be appended at the end of the current String.")
 		},
-		result = "The concatenated String."
+		result = "The concatenated String.",
+		examples = {
+			@Example(expression = "'Hello'.concat('World')", result = "HelloWorld")
+		},
+		comment = "This operation behaves like '+' between two strings."
 	)
 	// @formatter:on
 	public String concat(String self, String b) {
@@ -58,7 +64,11 @@ public class StringServices {
 			@Param(name = "self", value = "The current String."),
 			@Param(name = "b", value = "The String that will be appended at the end of the current String.")
 		},
-		result = "The concatenated String."
+		result = "The concatenated String.",
+		examples = {
+			@Example(expression = "'Hello'.add('World')", result = "HelloWorld")
+		},
+		comment = "This operation behaves like '+' between two strings."
 	)
 	// @formatter:on
 	public String add(String self, String b) {
@@ -78,6 +88,9 @@ public class StringServices {
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"regex\" or \"replacement\" is null."),
 			@Throw(type = PatternSyntaxException.class, value = "If the regular expression's syntax is invalid")
+		},
+		examples = {
+			@Example(expression = "'Hello'.replace('(.*)ll', 'Wh')", result = "'Who'")
 		}
 	)
 	// @formatter:on
@@ -98,6 +111,9 @@ public class StringServices {
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"regex\" or \"replacement\" is null."),
 			@Throw(type = PatternSyntaxException.class, value = "If the regular expression's syntax is invalid")
+		},
+		examples = {
+			@Example(expression = "'TestTest'.replace('.st', 'erminated')", result = "'TerminatedTerminated'")
 		}
 	)
 	// @formatter:on
@@ -112,7 +128,10 @@ public class StringServices {
 			@Param(name = "self", value = "The current String that will be prefixed"),
 			@Param(name = "prefix", value = "The String that will be prepended before the current String")
 		},
-		result = "The current String prefixed with the given \"prefix\""
+		result = "The current String prefixed with the given \"prefix\"",
+		examples = {
+			@Example(expression = "'World'.prefix('Hello')", result = "'HelloWorld'")
+		}
 	)
 	// @formatter:on
 	public String prefix(String self, String prefix) {
@@ -129,6 +148,9 @@ public class StringServices {
 		result = "<code>true</code> if the current String contains the String \"b\", <code>false</code> otherwise",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
+		},
+		examples = {
+			@Example(expression = "'Hello'.contains('llo')", result = "true")
 		}
 	)
 	// @formatter:on
@@ -146,6 +168,9 @@ public class StringServices {
 		result = "<code>true</code> if <code>self</code> matches the given regex, <code>false</code> otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"regex\" is null.")
+		},
+		examples = {
+			@Example(expression = "'Hello'.matches('*llo')", result = "true")
 		}
 	)
 	// @formatter:on
@@ -163,6 +188,9 @@ public class StringServices {
 		result = "<code>true</code> if the current String ends with the string \"b\", <code>false</code> otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
+		},
+		examples = {
+			@Example(expression = "'Hello'.endsWidth('llo')", result = "true")
 		}
 	)
 	// @formatter:on
@@ -180,6 +208,9 @@ public class StringServices {
 		result = "<code>true</code> if the current String starts with the string \"b\", <code>false</code> otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
+		},
+		examples = {
+			@Example(expression = "'Hello'.startsWith('Hell')", result = "true")
 		}
 	)
 	// @formatter:on
@@ -197,6 +228,9 @@ public class StringServices {
 		result = "<code>true</code> if the current String is equal to the string \"b\", without considering case, <code>false</code> otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
+		},
+		examples = {
+			@Example(expression = "'Hello'.equalsIgnoreCase('hello')", result = "true")
 		}
 	)
 	// @formatter:on
@@ -215,6 +249,9 @@ public class StringServices {
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"n\" is null."),
 			@Throw(type = IndexOutOfBoundsException.class, value = "If \"n\" is not a valid index of self (i.e it is inferior to 0).")
+		},
+		examples = {
+			@Example(expression = "'HelloWorld'.first(5)", result = "'Hello'")
 		}
 	)
 	// @formatter:on
@@ -239,6 +276,9 @@ public class StringServices {
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"n\" is null."),
 			@Throw(type = IndexOutOfBoundsException.class, value = "If \"n\" is not a valid index of self (i.e it is greater than the size of the current String).")
+		},
+		examples = {
+			@Example(expression = "'HelloWorld'.last(5)", result = "'World'")
 		}
 	)
 	// @formatter:on
@@ -263,6 +303,9 @@ public class StringServices {
 		result = "The index of the last occurrence of subString in the current String or -1 if not found",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"subString\" is null.")
+		},
+		examples = {
+			@Example(expression = "'HelloHello'.lastIndex('World')", result = "6")
 		}
 	)
 	// @formatter:on
@@ -285,6 +328,9 @@ public class StringServices {
 		result = "The index of the first occurrence of subString in the current String or -1 if not found",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"subString\" is null.")
+		},
+		examples = {
+			@Example(expression = "'HelloHello'.index('Hello')", result = "1")
 		}
 	)
 	// @formatter:on
@@ -308,6 +354,9 @@ public class StringServices {
 		result = "The index of the first occurrence of subString in the current String or -1 if not found",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String, \"subString\" or index is null.")
+		},
+		examples = {
+			@Example(expression = "'HelloHello'.index('Hello', 2)", result = "6")
 		}
 	)
 	// @formatter:on
@@ -331,6 +380,9 @@ public class StringServices {
 		result = "The index of the last occurrence of subString in the current String or -1 if not found",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String, \"subString\" or index is null.")
+		},
+		examples = {
+			@Example(expression = "'HelloHello'.lastIndex('Hello', 7)", result = "1")
 		}
 	)
 	// @formatter:on
@@ -352,6 +404,9 @@ public class StringServices {
 		result = "The current String with all upper case characters converted to lower case.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+		},
+		examples = {
+			@Example(expression = "'HelloWorld'.toLower()", result = "'helloworld'")
 		}
 	)
 	// @formatter:on
@@ -368,6 +423,9 @@ public class StringServices {
 		result = "The current String with the first character transformed to lower case.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+		},
+		examples = {
+			@Example(expression = "'HelloWorld'.toLowerFirst()", result = "'helloWorld'")
 		}
 	)
 	// @formatter:on
@@ -394,6 +452,9 @@ public class StringServices {
 		result = "The current String with all lower case characters converted to upper case.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+		},
+		examples = {
+			@Example(expression = "'HelloWorld'.toUpper()", result = "'HELLOWORLD'")
 		}
 	)
 	// @formatter:on
@@ -410,6 +471,9 @@ public class StringServices {
 		result = "The current String with the first character transformed to upper case.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+		},
+		examples = {
+			@Example(expression = "'helloworld'.toUpperFirst()", result = "'Helloworld'")
 		}
 	)
 	// @formatter:on
@@ -433,7 +497,11 @@ public class StringServices {
 		params = {
 			@Param(name = "self", value = "The string we want to ensure it consists only of alphabetical characters.")
 		},
-		result = "<code>true</code> if self consists only of alphabetical characters, <code>false</code> otherwise."
+		result = "<code>true</code> if self consists only of alphabetical characters, <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "'abc123'.isAlpha()", result = "false"),
+			@Example(expression = "'abcdef'.isAlpha()", result = "true"),
+		}
 	)
 	// @formatter:on
 	public Boolean isAlpha(String self) {
@@ -452,7 +520,11 @@ public class StringServices {
 		params = {
 			@Param(name = "self", value = "The string we want to ensure it consists only of alphanumeric characters.")
 		},
-		result = "<code>true</code> if self consists only of alphanumeric characters, <code>false</code> otherwise."
+		result = "<code>true</code> if self consists only of alphanumeric characters, <code>false</code> otherwise.",
+		examples = {
+			@Example(expression = "'abc123'.isAlphaNum()", result = "true"),
+			@Example(expression = "'abcdef'.isAlphaNum()", result = "true"),
+		}
 	)
 	// @formatter:on
 	public Boolean isAlphaNum(String self) {
@@ -471,7 +543,10 @@ public class StringServices {
 		params = {
 			@Param(name = "self", value = "The current String")
 		},
-		result = "The length of the specified string"
+		result = "The length of the specified string",
+		examples = {
+			@Example(expression = "'HelloWorld'.size()", result = "10")
+		}
 	)
 	// @formatter:on
 	public Integer size(String self) {
@@ -487,7 +562,11 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "lower", value = "The lower bound")
 		},
-		result = "A string containing all characters from self starting from index lower included."
+		result = "A string containing all characters from self starting from index lower included.",
+		examples = {
+			@Example(expression = "'HelloWorld'.substring(5)", result = "'World'"),
+			@Example(expression = "'HelloWorld'.substring(1)", result = "'HelloWorld'"),
+		}
 	)
 	// @formatter:on
 	public String substring(String self, Integer lower) {
@@ -506,7 +585,10 @@ public class StringServices {
 		},
 		result = "a string containing all characters from self starting from index lower up to index upper " +
 		         "included. Both lower and upper parameters should be contained between 1 and self.size() " +
-				 "included. lower cannot be greater than upper"
+				 "included. lower cannot be greater than upper",
+		examples = {
+				@Example(expression = "'HelloWorld'.substring(1, 5)", result = "'Hello'")
+		}
 	)
 	// @formatter:on
 	public String substring(String self, Integer lower, Integer upper) {
@@ -522,6 +604,9 @@ public class StringServices {
 		result = "An integer of value equal to self",
 		exceptions = {
 			@Throw(type = NumberFormatException.class, value = "Thrown if self does not represent an integer")
+		},
+		examples = {
+			@Example(expression = "'42'.toInteger()", result = "42")
 		}
 	)
 	// @formatter:on
@@ -538,6 +623,9 @@ public class StringServices {
 		result = "A real of value equal to self",
 		exceptions = {
 			@Throw(type = NumberFormatException.class, value = "Thrown if self does not represent a real")
+		},
+		examples = {
+			@Example(expression = "'41.9'.toReal()", result = "41.9")
 		}
 	)
 	// @formatter:on
@@ -556,7 +644,12 @@ public class StringServices {
 		},
 		result = "An integer that is either negative, zero or positive depending on whether s1 is alphabetically " +
 		         "less than, equal to or greater than self. Note that upper case letters come before lower case " +
-				 "ones, so that 'AA' is closer to 'AC' than it is to 'Ab'"
+				 "ones, so that 'AA' is closer to 'AC' than it is to 'Ab'",
+		examples = {
+			@Example(expression = "'strcmp operation'.strcmp('strcmp')", result = "10"),
+			@Example(expression = "'strcmp operation'.strcmp('strcmp operation')", result = "0"),
+			@Example(expression = "'strcmp operation'.strcmp('strtok')", result = "-17")
+		}
 	)
 	// @formatter:on
 	public Integer strcmp(String self, String s1) {
@@ -570,7 +663,10 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "r", value = "The String to search")
 		},
-		result = "<code>true</code> if r is found, <code>false</code> otherwise"
+		result = "<code>true</code> if r is found, <code>false</code> otherwise",
+		examples = {
+			@Example(expression = "'HelloWorld'.strstr('World')", result = "true")
+		}
 	)
 	// @formatter:on
 	public Boolean strstr(String self, String r) {
@@ -586,7 +682,10 @@ public class StringServices {
 			@Param(name = "r", value = "The String to replace"),
 			@Param(name = "t", value = "The replacement String")
 		},
-		result = "A new String"
+		result = "A new String",
+		examples = {
+			@Example(expression = "'WorldWorld'.substitute('World', 'Hello')", result = "'HelloWorld'")
+		}
 	)
 	// @formatter:on
 	public String substitute(String self, String r, String t) {
@@ -602,7 +701,10 @@ public class StringServices {
 			@Param(name = "r", value = "The String to replace"),
 			@Param(name = "t", value = "The replacement String")
 		},
-		result = "A new String"
+		result = "A new String",
+		examples = {
+			@Example(expression = "'WorldWorld'.substituteAll('World', 'Hello')", result = "'HelloHello'")
+		}
 	)
 	// @formatter:on
 	public String substituteAll(String self, String r, String t) {
@@ -615,7 +717,10 @@ public class StringServices {
 		params = {
 			@Param(name = "self", value = "The String to trim")
 		},
-		result = "The trimmed String"
+		result = "The trimmed String",
+		examples = {
+			@Example(expression = "'  Hello World   '.trim()", result = "'Hello World'")
+		}
 	)
 	// @formatter:on
 	public String trim(String self) {
@@ -628,7 +733,10 @@ public class StringServices {
 		params = {
 			@Param(name = "self", value = "The current String")
 		},
-		result = "The collection of substrings of the current String delimited by whitespaces"
+		result = "The collection of substrings of the current String delimited by whitespaces",
+		examples = {
+			@Example(expression = "'a, b, c, d'.tokenize()", result = "['a,', 'b,', 'c,', 'd']")
+		}
 	)
 	// @formatter:on
 	public List<String> tokenize(String self) {
@@ -647,7 +755,10 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "delimiter", value = "The current String")
 		},
-		result = "The collection of substrings of the current String delimited by the given \"delimiter\""
+		result = "The collection of substrings of the current String delimited by the given \"delimiter\"",
+		examples = {
+			@Example(expression = "'a, b, c, d'.tokenize(', ')", result = "['a', 'b', 'c', 'd']")
+		}
 	)
 	// @formatter:on
 	public List<String> tokenize(String self, String delimiter) {
