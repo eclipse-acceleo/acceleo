@@ -1,8 +1,8 @@
 target "Acceleo Mars Target Platform"
 
-include "orbit.tpd"
-include "license.tpd"
-include "swtbot.tpd"
+include "../common/orbit.tpd"
+include "../common/license.tpd"
+include "../common/swtbot.tpd"
 
 with source requirements
 

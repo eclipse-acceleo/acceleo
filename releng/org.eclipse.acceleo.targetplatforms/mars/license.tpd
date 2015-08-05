@@ -1,7 +1,0 @@
-target "CBI Licenses"
-
-with source, requirements
-
-location "http://download.eclipse.org/cbi/updates/license" {
-	org.eclipse.license.feature.group [1.0.1,1.1.0)
-}
