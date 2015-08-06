@@ -57,6 +57,7 @@
     <module>releng/org.eclipse.acceleo.targetplatforms/kepler</module>
     <module>releng/org.eclipse.acceleo.targetplatforms/juno</module>
     <module>releng/org.eclipse.acceleo.targetplatforms/indigo</module>
+    <module>releng/org.eclipse.acceleo.targetplatforms/helios</module>
 
     <module>plugins/org.eclipse.acceleo.common</module>
     <module>plugins/org.eclipse.acceleo.common.ide</module>
@@ -474,11 +475,23 @@
           <value>helios</value>
         </property>
       </activation>
-      <properties>
-        <eclipse-site>http://download.eclipse.org/releases/helios</eclipse-site>
-        <platform-version>[3.6,3.7)</platform-version>
-        <swtbot-site>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site</swtbot-site>
-      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <target>
+                <artifact>
+                  <groupId>org.eclipse.acceleo</groupId>
+                  <artifactId>acceleo-helios</artifactId>
+                  <version>1.0.0-SNAPSHOT</version>
+                </artifact>
+              </target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 	<profile>
       <id>platform-galileo</id>
