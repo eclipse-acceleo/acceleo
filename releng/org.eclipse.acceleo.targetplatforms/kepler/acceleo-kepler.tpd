@@ -1,0 +1,26 @@
+target "Acceleo Kepler Target Platform"
+
+include "../common/orbit.tpd"
+include "../common/license.tpd"
+include "../common/swtbot.tpd"
+
+with source requirements
+
+location "http://download.eclipse.org/releases/kepler" {
+	org.eclipse.platform.sdk lazy
+	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.jdt.feature.group lazy
+	org.eclipse.pde.feature.group lazy
+	org.eclipse.uml2.feature.group lazy
+	
+	lpg.runtime.java lazy
+	
+	org.eclipse.ocl lazy
+	org.eclipse.ocl.ecore lazy
+	org.eclipse.ocl.common lazy
+}
+
+location "http://download.eclipse.org/sirius/updates/releases/0.9.0/kepler" {
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius.runtime.acceleo.feature.group lazy
+}
