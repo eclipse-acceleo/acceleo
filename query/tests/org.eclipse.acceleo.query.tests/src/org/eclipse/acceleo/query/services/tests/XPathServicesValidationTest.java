@@ -60,7 +60,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -81,7 +81,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -121,7 +121,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -138,7 +138,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -154,7 +154,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -172,7 +172,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -189,7 +189,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -219,7 +219,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "ancestors", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -243,7 +243,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -260,7 +260,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -275,7 +275,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -300,7 +300,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -317,7 +317,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -333,7 +333,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -351,7 +351,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -368,7 +368,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -398,7 +398,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -422,7 +422,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -440,7 +440,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -455,7 +455,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -480,7 +480,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -497,7 +497,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -513,7 +513,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -532,7 +532,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -549,7 +549,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -579,7 +579,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -603,7 +603,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -622,7 +622,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -637,7 +637,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -662,7 +662,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -680,7 +680,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -696,7 +696,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -715,7 +715,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -732,7 +732,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -768,7 +768,7 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "siblings", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 

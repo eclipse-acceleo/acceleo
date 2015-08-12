@@ -67,7 +67,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -94,7 +94,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new ClassType(getQueryEnvironment(), URI.class), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -124,7 +124,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					EcorePackage.eINSTANCE.getEObject())), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -154,7 +154,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 			assertEquals(new SequenceType(getQueryEnvironment(), new EClassifierType(getQueryEnvironment(),
 					EcorePackage.eINSTANCE.getEPackage())), it.next());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -183,7 +183,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -212,7 +212,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -241,7 +241,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					.getEBooleanObject()), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -270,7 +270,7 @@ public class ResourceServicesValidationTest extends AbstractServicesTest {
 					.getEBooleanObject()), it.next());
 			assertFalse(it.hasNext());
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 }

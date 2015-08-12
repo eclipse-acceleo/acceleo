@@ -114,7 +114,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "any", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -130,7 +130,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "any", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -350,7 +350,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -386,7 +386,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -439,7 +439,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -475,7 +475,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -528,7 +528,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -564,7 +564,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -617,7 +617,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -653,7 +653,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "intersection", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getNsPrefix());
+			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
 	}
 
@@ -765,7 +765,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -783,7 +783,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -818,7 +818,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "reject", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -834,7 +834,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "reject", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -859,7 +859,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "select", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 
@@ -875,7 +875,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 			assertValidation(expectedReturnTypes, "select", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getNsPrefix());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
 	}
 

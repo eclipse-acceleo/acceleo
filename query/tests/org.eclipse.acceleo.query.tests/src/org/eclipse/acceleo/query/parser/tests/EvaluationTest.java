@@ -25,6 +25,15 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.RootEClass;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.RootFactory;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.RootPackage;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.child.ChildEClass;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.child.ChildFactory;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.child.ChildPackage;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.GrandChildEClass;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childFactory;
+import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -48,10 +57,34 @@ public class EvaluationTest {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+		queryEnvironment.registerEPackage(RootPackage.eINSTANCE);
 		queryEnvironment.registerServicePackage(EObjectServices.class);
 		engine = new QueryEvaluationEngine(queryEnvironment);
 		builder = new QueryBuilderEngine(queryEnvironment);
+	}
 
+	@Test
+	public void testNestedPackages() {
+		RootFactory rootFactory = RootPackage.eINSTANCE.getRootFactory();
+		RootEClass rootEClass = rootFactory.createRootEClass();
+
+		ChildFactory childFactory = ChildPackage.eINSTANCE.getChildFactory();
+		ChildEClass childEClass = childFactory.createChildEClass();
+
+		Grand_childFactory grand_childFactory = Grand_childPackage.eINSTANCE.getGrand_childFactory();
+		GrandChildEClass grandChildEClass = grand_childFactory.createGrandChildEClass();
+
+		Map<String, Object> variables = Maps.newHashMap();
+		variables.put("rootEClass", rootEClass);
+		variables.put("childEClass", childEClass);
+		variables.put("grandChildEClass", grandChildEClass);
+
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
+				.build("rootEClass.oclIsKindOf(root::RootEClass)"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
+				.build("childEClass.oclIsKindOf(child::ChildEClass)"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
+				.build("grandChildEClass.oclIsKindOf(grand_child::GrandChildEClass)"), variables));
 	}
 
 	@Test

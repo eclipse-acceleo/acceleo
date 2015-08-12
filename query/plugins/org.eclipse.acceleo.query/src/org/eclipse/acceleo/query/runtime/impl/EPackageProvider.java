@@ -40,7 +40,7 @@ import org.eclipse.emf.ecore.EcorePackage;
 public class EPackageProvider implements IEPackageProvider {
 
 	/**
-	 * Map nsPrefix to their corresponding package.
+	 * Map the name to their corresponding package.
 	 */
 	private Map<String, EPackage> ePackages = new HashMap<String, EPackage>();
 
@@ -86,8 +86,8 @@ public class EPackageProvider implements IEPackageProvider {
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEPackage(java.lang.String)
 	 */
 	@Override
-	public EPackage getEPackage(String nsPrefix) {
-		return ePackages.get(nsPrefix);
+	public EPackage getEPackage(String name) {
+		return ePackages.get(name);
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class EPackageProvider implements IEPackageProvider {
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#removePackage(java.lang.String)
 	 */
-	public void removePackage(String nsPrefix) {
-		final EPackage ePackage = ePackages.remove(nsPrefix);
+	public void removePackage(String name) {
+		final EPackage ePackage = ePackages.remove(name);
 		if (ePackage != null) {
 			for (EClassifier eCls : ePackage.getEClassifiers()) {
 				removeEClassifierClass(eCls);
@@ -107,7 +107,7 @@ public class EPackageProvider implements IEPackageProvider {
 				}
 			}
 			for (EPackage childPkg : ePackage.getESubpackages()) {
-				removePackage(childPkg.getNsPrefix());
+				removePackage(childPkg.getName());
 			}
 		}
 	}
@@ -213,8 +213,8 @@ public class EPackageProvider implements IEPackageProvider {
 	 *            the package to be registered.
 	 */
 	public void registerPackage(EPackage ePackage) {
-		if (ePackage.getNsPrefix() != null) {
-			ePackages.put(ePackage.getNsPrefix(), ePackage);
+		if (ePackage.getName() != null) {
+			ePackages.put(ePackage.getName(), ePackage);
 			for (EClassifier eCls : ePackage.getEClassifiers()) {
 				registerEClassifierClass(eCls);
 				if (eCls instanceof EClass) {
@@ -228,7 +228,7 @@ public class EPackageProvider implements IEPackageProvider {
 			}
 		} else {
 			throw new IllegalStateException("Couldn't register package " + ePackage.getName()
-					+ " because it's nsPrefix is null.");
+					+ " because it's name is null.");
 		}
 	}
 
@@ -411,8 +411,8 @@ public class EPackageProvider implements IEPackageProvider {
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public EClassifier getType(String nsPrefix, String classifierName) {
-		EPackage ePackage = ePackages.get(nsPrefix);
+	public EClassifier getType(String name, String classifierName) {
+		EPackage ePackage = ePackages.get(name);
 		if (ePackage != null) {
 			return ePackage.getEClassifier(classifierName);
 		} else {
@@ -434,9 +434,8 @@ public class EPackageProvider implements IEPackageProvider {
 				if (result == null) {
 					result = foundClassifier;
 				} else {
-					String firstFullyQualifiedName = result.getEPackage().getNsPrefix() + "."
-							+ result.getName();
-					String secondFullyQualifiedName = foundClassifier.getEPackage().getNsPrefix() + "."
+					String firstFullyQualifiedName = result.getEPackage().getName() + "." + result.getName();
+					String secondFullyQualifiedName = foundClassifier.getEPackage().getName() + "."
 							+ foundClassifier.getName();
 					String message = "Ambiguous classifier request. At least two classifiers matches %s : %s and %s";
 					throw new IllegalStateException(String.format(message, classifierName,
@@ -454,10 +453,10 @@ public class EPackageProvider implements IEPackageProvider {
 	 *      java.lang.String, java.lang.String)
 	 */
 	@Override
-	public EEnumLiteral getEnumLiteral(String nsPrefix, String enumName, String literalName) {
+	public EEnumLiteral getEnumLiteral(String name, String enumName, String literalName) {
 		final EEnumLiteral result;
 
-		final EPackage ePackage = ePackages.get(nsPrefix);
+		final EPackage ePackage = ePackages.get(name);
 		if (ePackage != null) {
 			final EClassifier eClassifier = ePackage.getEClassifier(enumName);
 			result = getEnumLiteral(eClassifier, literalName);

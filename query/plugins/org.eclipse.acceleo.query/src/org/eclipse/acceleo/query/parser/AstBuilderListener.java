@@ -1078,24 +1078,24 @@ public class AstBuilderListener extends QueryBaseListener {
 		final TypeLiteral result;
 
 		EClassifier type;
-		String nsPrefix = null;
-		String name = null;
+		String ePackageName = null;
+		String eClassName = null;
 		if (ctx.getChild(0).getChildCount() == FULLY_QUALIFIED_NAME) {
 			// fully qualified name encountered.
-			nsPrefix = ctx.getChild(0).getChild(0).getText();
-			name = ctx.getChild(0).getChild(2).getText();
-			type = environment.getEPackageProvider().getType(nsPrefix, name);
+			ePackageName = ctx.getChild(0).getChild(0).getText();
+			eClassName = ctx.getChild(0).getChild(2).getText();
+			type = environment.getEPackageProvider().getType(ePackageName, eClassName);
 		} else {
-			name = ctx.getChild(0).getChild(0).getText();
-			type = environment.getEPackageProvider().getType(name);
+			eClassName = ctx.getChild(0).getChild(0).getText();
+			type = environment.getEPackageProvider().getType(eClassName);
 		}
 		if (type == null) {
 			List<String> segments = new ArrayList<String>(2);
-			if (nsPrefix != null) {
-				segments.add(nsPrefix);
+			if (ePackageName != null) {
+				segments.add(ePackageName);
 			}
-			if (name != null) {
-				segments.add(name);
+			if (eClassName != null) {
+				segments.add(eClassName);
 			}
 			result = builder.errorTypeLiteral(segments.toArray(new String[segments.size()]));
 			errors.add((ErrorTypeLiteral)result);
@@ -1388,14 +1388,14 @@ public class AstBuilderListener extends QueryBaseListener {
 	private Literal threeSegmentEnumLiteral(EnumOrClassifierLitContext ctx, String literalName) {
 		final Literal toPush;
 
-		final String nsPrefix = ctx.getChild(0).getChild(0).getText();
+		final String name = ctx.getChild(0).getChild(0).getText();
 		final String enumName = ctx.getChild(0).getChild(2).getText();
-		final EEnumLiteral literal = environment.getEPackageProvider().getEnumLiteral(nsPrefix, enumName,
+		final EEnumLiteral literal = environment.getEPackageProvider().getEnumLiteral(name, enumName,
 				literalName);
 		if (literal != null) {
 			toPush = builder.enumLiteral(literal);
 		} else {
-			toPush = builder.errorTypeLiteral(new String[] {nsPrefix, enumName, literalName, });
+			toPush = builder.errorTypeLiteral(new String[] {name, enumName, literalName, });
 		}
 		startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));

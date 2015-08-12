@@ -29,14 +29,13 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 public interface IEPackageProvider {
 
 	/**
-	 * Returns the package registered with the specified nsPrefix. Returns null if no such package is
-	 * registered.
+	 * Returns the package registered with the specified name. Returns null if no such package is registered.
 	 * 
-	 * @param nsPrefix
-	 *            the nsPrefix of the requested package.
-	 * @return the package registered with the specified nsPrefix.
+	 * @param name
+	 *            the name of the requested package.
+	 * @return the package registered with the specified name.
 	 */
-	EPackage getEPackage(String nsPrefix);
+	EPackage getEPackage(String name);
 
 	/**
 	 * Lookups the {@link EOperation} with the given receiving {@link EClass}, given
@@ -63,15 +62,15 @@ public interface IEPackageProvider {
 	Set<EOperation> getEOperations(Set<EClass> receiverTypes);
 
 	/**
-	 * the classifier with the specified name in the package registered with the specified nsPrefix.
+	 * the classifier with the specified name in the package registered with the specified name.
 	 * 
-	 * @param nsPrefix
-	 *            the nsPrefix of the searched classifier's package
+	 * @param name
+	 *            the name of the searched classifier's package
 	 * @param classifierName
 	 *            the name of the searched classifier
-	 * @return the classifier with the specified name in the package registered with the specified nsPrefix.
+	 * @return the classifier with the specified name in the package registered with the specified name.
 	 */
-	EClassifier getType(String nsPrefix, String classifierName);
+	EClassifier getType(String name, String classifierName);
 
 	/**
 	 * Returns an {@link EClassifier} instance when a unique one is found in all the registered packages. If
@@ -86,15 +85,15 @@ public interface IEPackageProvider {
 	/**
 	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum.
 	 * 
-	 * @param nsPrefix
-	 *            the nsPrefix of the package where to search the {@link EEnumLiteral}
+	 * @param name
+	 *            the name of the package where to search the {@link EEnumLiteral}
 	 * @param enumName
 	 *            the name of the {@link org.eclipse.emf.ecore.EEnum EEnum} containing the literal.
 	 * @param literalName
 	 *            the name of the searched {@link EEnumLiteral}.
 	 * @return the specified {@link EEnumLiteral}
 	 */
-	EEnumLiteral getEnumLiteral(String nsPrefix, String enumName, String literalName);
+	EEnumLiteral getEnumLiteral(String name, String enumName, String literalName);
 
 	/**
 	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum if it exists in one of

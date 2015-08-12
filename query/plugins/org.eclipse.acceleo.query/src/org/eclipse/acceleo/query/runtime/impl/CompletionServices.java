@@ -163,14 +163,14 @@ public class CompletionServices extends ValidationServices {
 	/**
 	 * Gets the {@link List} of {@link EClassifierCompletionProposal} for {@link EClassifier}.
 	 * 
-	 * @param nsPrefix
-	 *            the {@link EPackage#getNsPrefix() name space prefix}
+	 * @param name
+	 *            the {@link EPackage#getName() name space name}
 	 * @return the {@link List} of {@link EClassifierCompletionProposal} for {@link EClassifier}
 	 */
-	public List<EClassifierCompletionProposal> getEClassifierProposals(String nsPrefix) {
+	public List<EClassifierCompletionProposal> getEClassifierProposals(String name) {
 		final List<EClassifierCompletionProposal> result = new ArrayList<EClassifierCompletionProposal>();
 
-		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(nsPrefix);
+		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(name);
 		if (ePkg != null) {
 			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 				result.add(new EClassifierCompletionProposal(eClassifier));
@@ -198,14 +198,14 @@ public class CompletionServices extends ValidationServices {
 	/**
 	 * Gets the {@link List} of {@link EEnumLiteralCompletionProposal} for {@link EEnumLiteral}.
 	 * 
-	 * @param nsPrefix
-	 *            the {@link EPackage#getNsPrefix() name space prefix}
+	 * @param name
+	 *            the {@link EPackage#getName() name space name}
 	 * @return the {@link List} of {@link EEnumLiteralCompletionProposal} for {@link EEnumLiteral}
 	 */
-	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String nsPrefix) {
+	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String name) {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(nsPrefix);
+		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(name);
 		if (ePkg != null) {
 			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 				if (eClassifier instanceof EEnum) {
@@ -222,16 +222,16 @@ public class CompletionServices extends ValidationServices {
 	/**
 	 * Gets the {@link List} of {@link EEnumLiteralCompletionProposal} for {@link EEnumLiteral}.
 	 * 
-	 * @param nsPrefix
-	 *            the {@link EPackage#getNsPrefix() name space prefix}
+	 * @param name
+	 *            the {@link EPackage#getName() name space name}
 	 * @param eEnumName
 	 *            the {@link EEnum#getName() eenum name}
 	 * @return the {@link List} of {@link EEnumLiteralCompletionProposal} for {@link EEnumLiteral}
 	 */
-	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String nsPrefix, String eEnumName) {
+	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String name, String eEnumName) {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(nsPrefix);
+		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(name);
 		if (ePkg != null) {
 			EClassifier eClassifier = ePkg.getEClassifier(eEnumName);
 			if (eClassifier instanceof EEnum) {

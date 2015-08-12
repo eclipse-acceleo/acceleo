@@ -73,8 +73,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 	}
 
 	@Override
-	public void removeEPackage(String nsPrefix) {
-		ePackageProvider.removePackage(nsPrefix);
+	public void removeEPackage(String name) {
+		ePackageProvider.removePackage(name);
 	}
 
 	/**
