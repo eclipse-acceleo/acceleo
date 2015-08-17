@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -73,7 +74,38 @@ public class EFeatureCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String toString() {
-		return getProposal();
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(this.feature.getName());
+
+		buffer.append(": ");
+
+		EClassifier eType = this.feature.getEType();
+		buffer.append(eType.getEPackage().getName());
+		buffer.append("::");
+		buffer.append(this.feature.getEType().getName());
+
+		buffer.append(" [");
+
+		buffer.append(this.getBoundString(this.feature.getLowerBound()));
+		buffer.append("..");
+		buffer.append(this.getBoundString(this.feature.getUpperBound()));
+		buffer.append("]");
+
+		return buffer.toString();
+	}
+
+	/**
+	 * Returns a value to display for the given bound.
+	 * 
+	 * @param bound
+	 *            An integer representing the bound
+	 * @return * if the bound is equal to -1, the string representation of the given integer otherwise
+	 */
+	private String getBoundString(int bound) {
+		if (-1 == bound) {
+			return "*";
+		}
+		return String.valueOf(bound);
 	}
 
 	/**

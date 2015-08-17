@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl.completion;
 
+import java.util.List;
+
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
@@ -73,7 +77,34 @@ public class EOperationCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String toString() {
-		return getProposal();
+		StringBuffer buffer = new StringBuffer();
+
+		buffer.append(this.eOperation.getName());
+		buffer.append('(');
+		List<EParameter> eParameters = this.eOperation.getEParameters();
+		for (int i = 0; i < eParameters.size(); i = i + 1) {
+			EParameter eParameter = eParameters.get(i);
+			buffer.append(eParameter.getName());
+			buffer.append(": ");
+			EClassifier eType = eParameter.getEType();
+			if (eType != null) {
+				buffer.append(eType.getEPackage().getName());
+				buffer.append("::");
+				buffer.append(eType.getName());
+			}
+
+			if (i + 1 < eParameters.size()) {
+				buffer.append(", ");
+			}
+		}
+		buffer.append("): ");
+		EClassifier eType = this.eOperation.getEType();
+		if (eType != null) {
+			buffer.append(eType.getEPackage().getName());
+			buffer.append("::");
+			buffer.append(eType.getName());
+		}
+		return buffer.toString();
 	}
 
 	/**

@@ -43,7 +43,7 @@ public class EEnumLiteralCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String getProposal() {
-		return literal.getEEnum().getEPackage().getNsPrefix() + "::" + literal.getEEnum().getName() + "::"
+		return literal.getEEnum().getEPackage().getName() + "::" + literal.getEEnum().getName() + "::"
 				+ literal.getName();
 	}
 

@@ -43,7 +43,7 @@ public class EClassifierCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String getProposal() {
-		return eClassifier.getEPackage().getNsPrefix() + "::" + eClassifier.getName();
+		return eClassifier.getEPackage().getName() + "::" + eClassifier.getName();
 	}
 
 	/**

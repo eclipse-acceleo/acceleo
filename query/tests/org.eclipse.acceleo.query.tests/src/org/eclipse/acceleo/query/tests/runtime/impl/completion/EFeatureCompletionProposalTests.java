@@ -1,0 +1,43 @@
+/*******************************************************************************
+ * Copyright (c) 2015 Obeo.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.acceleo.query.tests.runtime.impl.completion;
+
+import static org.junit.Assert.assertEquals;
+
+import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.junit.Test;
+
+/**
+ * Tests of the EFeature completion proposal.
+ * 
+ * @author <a href="mailto:stephane.begaudeau@obeo.fr">St&eacute;phane B&eacute;gaudeau</a>
+ */
+public class EFeatureCompletionProposalTests {
+	@Test
+	public void testNameCompletionProposal() {
+		EAttribute nameEAttribute = EcorePackage.eINSTANCE.getENamedElement_Name();
+		EFeatureCompletionProposal eFeatureCompletionProposal = new EFeatureCompletionProposal(nameEAttribute);
+
+		assertEquals("name: ecore::EString [0..1]", eFeatureCompletionProposal.toString());
+	}
+
+	@Test
+	public void testEClassifierCompletionProposal() {
+		EReference eClassifiersEReference = EcorePackage.eINSTANCE.getEPackage_EClassifiers();
+		EFeatureCompletionProposal eFeatureCompletionProposal = new EFeatureCompletionProposal(
+				eClassifiersEReference);
+
+		assertEquals("eClassifiers: ecore::EClassifier [0..*]", eFeatureCompletionProposal.toString());
+	}
+}
