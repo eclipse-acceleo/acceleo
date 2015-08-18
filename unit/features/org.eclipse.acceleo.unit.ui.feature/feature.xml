@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.unit.ui.feature"
       label="Acceleo Unit UI"
-      version="3.5.0.qualifier"
+      version="3.6.1.qualifier"
       provider-name="Eclipse Modeling Project">
 
    <description url="http://www.example.com/description">
