@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -195,6 +196,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass errorTypeLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass errorEnumLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -730,6 +738,24 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getErrorEnumLiteral() {
+		return errorEnumLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getErrorEnumLiteral_Segments() {
+		return (EAttribute)errorEnumLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getErrorFeatureAccessOrCall() {
 		return errorFeatureAccessOrCallEClass;
 	}
@@ -996,6 +1022,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorTypeLiteralEClass = createEClass(ERROR_TYPE_LITERAL);
 		createEAttribute(errorTypeLiteralEClass, ERROR_TYPE_LITERAL__SEGMENTS);
 
+		errorEnumLiteralEClass = createEClass(ERROR_ENUM_LITERAL);
+		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__SEGMENTS);
+
 		errorFeatureAccessOrCallEClass = createEClass(ERROR_FEATURE_ACCESS_OR_CALL);
 		createEReference(errorFeatureAccessOrCallEClass, ERROR_FEATURE_ACCESS_OR_CALL__TARGET);
 
@@ -1079,6 +1108,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorExpressionEClass.getESuperTypes().add(this.getExpression());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getError());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getTypeLiteral());
+		errorEnumLiteralEClass.getESuperTypes().add(this.getError());
+		errorEnumLiteralEClass.getESuperTypes().add(this.getEnumLiteral());
 		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getError());
 		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getExpression());
 		errorCollectionCallEClass.getESuperTypes().add(this.getError());
@@ -1217,6 +1248,12 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getErrorTypeLiteral_Segments(), ecorePackage.getEString(), "segments", null, 0, -1,
 				ErrorTypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(errorEnumLiteralEClass, ErrorEnumLiteral.class, "ErrorEnumLiteral", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getErrorEnumLiteral_Segments(), ecorePackage.getEString(), "segments", null, 0, -1,
+				ErrorEnumLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorFeatureAccessOrCallEClass, ErrorFeatureAccessOrCall.class,

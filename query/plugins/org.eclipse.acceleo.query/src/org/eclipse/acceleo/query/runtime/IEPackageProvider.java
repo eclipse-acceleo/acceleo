@@ -85,7 +85,7 @@ public interface IEPackageProvider {
 	/**
 	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum.
 	 * 
-	 * @param name
+	 * @param packageName
 	 *            the name of the package where to search the {@link EEnumLiteral}
 	 * @param enumName
 	 *            the name of the {@link org.eclipse.emf.ecore.EEnum EEnum} containing the literal.
@@ -93,7 +93,7 @@ public interface IEPackageProvider {
 	 *            the name of the searched {@link EEnumLiteral}.
 	 * @return the specified {@link EEnumLiteral}
 	 */
-	EEnumLiteral getEnumLiteral(String name, String enumName, String literalName);
+	EEnumLiteral getEnumLiteral(String packageName, String enumName, String literalName);
 
 	/**
 	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum if it exists in one of

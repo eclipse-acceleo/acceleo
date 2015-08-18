@@ -178,6 +178,15 @@ public interface AstFactory extends EFactory {
 	ErrorTypeLiteral createErrorTypeLiteral();
 
 	/**
+	 * Returns a new object of class '<em>Error Enum Literal</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @return a new object of class '<em>Error Enum Literal</em>'.
+	 * @generated
+	 */
+	ErrorEnumLiteral createErrorEnumLiteral();
+
+	/**
 	 * Returns a new object of class '<em>Error Feature Access Or Call</em>'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -713,28 +714,28 @@ public class BuildTest {
 
 	@Test
 	public void selectWithVariableNameAndTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select(var : EClass | true)");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select(var : ecore::EClass | true)");
 		Expression ast = build.getAst();
 
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, Call.class, 0, 33, ast);
+		assertExpression(build, Call.class, 0, 40, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
-		assertExpression(build, Lambda.class, 28, 32, ((Call)ast).getArguments().get(1));
-		assertVariableDeclaration(build, 13, 25, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+		assertExpression(build, Lambda.class, 35, 39, ((Call)ast).getArguments().get(1));
+		assertVariableDeclaration(build, 13, 32, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0));
 		assertEquals("var", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
-		assertExpression(build, TypeLiteral.class, 19, 25, ((VariableDeclaration)((Lambda)((Call)ast)
+		assertExpression(build, TypeLiteral.class, 19, 32, ((VariableDeclaration)((Lambda)((Call)ast)
 				.getArguments().get(1)).getParameters().get(0)).getType());
 		assertEquals(true, ((TypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
 				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
-		assertExpression(build, BooleanLiteral.class, 28, 32, ((Lambda)((Call)ast).getArguments().get(1))
+		assertExpression(build, BooleanLiteral.class, 35, 39, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 	}
 
@@ -996,7 +997,7 @@ public class BuildTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsEClassifier() {
+	public void typeLiteral() {
 		IQueryBuilderEngine.AstResult build = engine.build("ecore::EClass");
 		Expression ast = build.getAst();
 
@@ -1008,20 +1009,7 @@ public class BuildTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsEEnumLiteral() {
-		IQueryBuilderEngine.AstResult build = engine.build("Part::Other");
-		Expression ast = build.getAst();
-
-		assertExpression(build, EnumLiteral.class, 0, 11, ast);
-		assertEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other"), ((EnumLiteral)ast)
-				.getLiteral());
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-	}
-
-	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsError() {
+	public void classifierError() {
 		IQueryBuilderEngine.AstResult build = engine.build("anydsl::EClass");
 		Expression ast = build.getAst();
 
@@ -1032,12 +1020,12 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type or enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierThreeSegments() {
+	public void enumLiteral() {
 		IQueryBuilderEngine.AstResult build = engine.build("anydsl::Part::Other");
 		Expression ast = build.getAst();
 
@@ -1050,19 +1038,19 @@ public class BuildTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierThreeSegmentsError() {
+	public void enumLiteralError() {
 		IQueryBuilderEngine.AstResult build = engine.build("anydsl::Part::NotExisting");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorTypeLiteral.class, 0, 25, ast);
-		assertEquals("anydsl", ((ErrorTypeLiteral)ast).getSegments().get(0));
-		assertEquals("Part", ((ErrorTypeLiteral)ast).getSegments().get(1));
-		assertEquals("NotExisting", ((ErrorTypeLiteral)ast).getSegments().get(2));
+		assertExpression(build, ErrorEnumLiteral.class, 0, 25, ast);
+		assertEquals("anydsl", ((ErrorEnumLiteral)ast).getSegments().get(0));
+		assertEquals("Part", ((ErrorEnumLiteral)ast).getSegments().get(1));
+		assertEquals("NotExisting", ((ErrorEnumLiteral)ast).getSegments().get(2));
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type or enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
@@ -1808,7 +1796,7 @@ public class BuildTest {
 	}
 
 	@Test
-	public void incompletEnumLitTest() {
+	public void incompletClassifierTypeTest() {
 		IQueryBuilderEngine.AstResult build = engine.build("toto::");
 		Expression ast = build.getAst();
 
@@ -1819,7 +1807,7 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
@@ -1962,15 +1950,15 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithErrorTypeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore:: |");
 		Expression ast = build.getAst();
 
-		assertExpression(build, Call.class, 0, 25, ast);
+		assertExpression(build, Call.class, 0, 27, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 25, 25, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 27, 27, ((Call)ast).getArguments().get(1));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
 		assertExpression(build, ErrorTypeLiteral.class, 18, 25, ((VariableDeclaration)((Lambda)((Call)ast)
@@ -1979,15 +1967,13 @@ public class BuildTest {
 				.getParameters().get(0)).getType()).getSegments().size());
 		assertEquals("ecore", ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments()
 				.get(1)).getParameters().get(0)).getType()).getSegments().get(0));
-		assertExpression(build, ErrorExpression.class, 25, 25, ((Lambda)((Call)ast).getArguments().get(1))
+		assertExpression(build, ErrorExpression.class, 27, 27, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("The type \"ecore\" has not been found", build.getDiagnostic().getChildren().get(0)
-				.getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
@@ -1995,22 +1981,22 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableDeclarationNoPipeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : EClass");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::EClass");
 		Expression ast = build.getAst();
 
-		assertExpression(build, Call.class, 0, 24, ast);
+		assertExpression(build, Call.class, 0, 31, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 24, 24, ((Call)ast).getArguments().get(1));
+		assertExpression(build, Lambda.class, 31, 31, ((Call)ast).getArguments().get(1));
 		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
 				.get(0)).getName());
-		assertExpression(build, TypeLiteral.class, 18, 24, ((VariableDeclaration)((Lambda)((Call)ast)
+		assertExpression(build, TypeLiteral.class, 18, 31, ((VariableDeclaration)((Lambda)((Call)ast)
 				.getArguments().get(1)).getParameters().get(0)).getType());
 		assertEquals(true, ((TypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
 				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
-		assertExpression(build, ErrorExpression.class, 24, 24, ((Lambda)((Call)ast).getArguments().get(1))
+		assertExpression(build, ErrorExpression.class, 31, 31, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2022,16 +2008,16 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableDeclarationWithPipeTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : EClass |");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::EClass |");
 		Expression ast = build.getAst();
 
-		assertExpression(build, Call.class, 0, 26, ast);
+		assertExpression(build, Call.class, 0, 33, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 26, 26, ((Call)ast).getArguments().get(1));
-		assertExpression(build, ErrorExpression.class, 26, 26, ((Lambda)((Call)ast).getArguments().get(1))
+		assertExpression(build, Lambda.class, 33, 33, ((Call)ast).getArguments().get(1));
+		assertExpression(build, ErrorExpression.class, 33, 33, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
@@ -2043,16 +2029,16 @@ public class BuildTest {
 
 	@Test
 	public void incompletIterationCallWithVariableDeclarationAndExpressionTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : EClass | true");
+		IQueryBuilderEngine.AstResult build = engine.build("self->select( a : ecore::EClass | true");
 		Expression ast = build.getAst();
 
-		assertExpression(build, Call.class, 0, 31, ast);
+		assertExpression(build, Call.class, 0, 38, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
-		assertExpression(build, Lambda.class, 27, 31, ((Call)ast).getArguments().get(1));
-		assertExpression(build, BooleanLiteral.class, 27, 31, ((Lambda)((Call)ast).getArguments().get(1))
+		assertExpression(build, Lambda.class, 34, 38, ((Call)ast).getArguments().get(1));
+		assertExpression(build, BooleanLiteral.class, 34, 38, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(0, build.getErrors().size());
 		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());

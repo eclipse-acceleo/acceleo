@@ -28,6 +28,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.misc.Nullable;
+import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -36,6 +37,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -48,7 +50,6 @@ import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
-import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
@@ -60,44 +61,33 @@ import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.QueryParser.AddContext;
 import org.eclipse.acceleo.query.parser.QueryParser.AndContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ApplyContext;
-import org.eclipse.acceleo.query.parser.QueryParser.AsContext;
-import org.eclipse.acceleo.query.parser.QueryParser.AsTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BindingContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BooleanTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallServiceContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CompContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext;
-import org.eclipse.acceleo.query.parser.QueryParser.EAContentContext;
-import org.eclipse.acceleo.query.parser.QueryParser.EContainerContext;
-import org.eclipse.acceleo.query.parser.QueryParser.EContainerOrSelfContext;
-import org.eclipse.acceleo.query.parser.QueryParser.EContentContext;
-import org.eclipse.acceleo.query.parser.QueryParser.EInverseContext;
-import org.eclipse.acceleo.query.parser.QueryParser.EnumOrClassifierLitContext;
+import org.eclipse.acceleo.query.parser.QueryParser.EnumLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ErrorStringLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSeqLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExpressionContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FalseLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.FeatureContext;
-import org.eclipse.acceleo.query.parser.QueryParser.FilterContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ImpliesContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IntTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IntegerLitContext;
-import org.eclipse.acceleo.query.parser.QueryParser.IsKindContext;
-import org.eclipse.acceleo.query.parser.QueryParser.IsTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.IterationCallContext;
 import org.eclipse.acceleo.query.parser.QueryParser.LetExprContext;
 import org.eclipse.acceleo.query.parser.QueryParser.LiteralContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MinContext;
-import org.eclipse.acceleo.query.parser.QueryParser.ModelObjectTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MultContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NavContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NavigationSegmentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NotContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NullLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.OrContext;
-import org.eclipse.acceleo.query.parser.QueryParser.PrecSiblingsContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.SeqLitContext;
@@ -119,7 +109,6 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EPackage;
 
 /**
  * The {@link AstBuilderListener} builds an AST when plugged into the parser.
@@ -314,6 +303,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	private static final String THIS_SHOULDN_T_HAPPEN = "This shouldn't happen.";
 
 	/**
+	 * Invalid type literal.
+	 */
+	private static final String INVALID_TYPE_LITERAL = "invalid type literal";
+
+	/**
 	 * Error listener.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -333,6 +327,8 @@ public class AstBuilderListener extends QueryBaseListener {
 					iterationCallContextError(e);
 				} else if (e.getCtx() instanceof TypeLiteralContext) {
 					typeLiteralContextError(offendingSymbol, msg, e);
+				} else if (e.getCtx() instanceof LiteralContext) {
+					literalContextError(offendingSymbol, msg, e);
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
 					variableDefinitionContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof CallExpContext) {
@@ -346,8 +342,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				noRecognitionException(recognizer, offendingSymbol, msg);
 			} else {
 				final QueryParser parser = (QueryParser)recognizer;
-				final Integer startPosition = Integer.valueOf(((EnumOrClassifierLitContext)parser
-						.getContext()).start.getStartIndex());
+				final Integer startPosition = Integer.valueOf(((EnumLitContext)parser.getContext()).start
+						.getStartIndex());
 				final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
 						startPosition, endPosition, }));
@@ -390,7 +386,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral type = builder.errorTypeLiteral(new String[] {});
 				startPositions.put(type, startPosition);
 				endPositions.put(type, endPosition);
-				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, "invalid type literal",
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, INVALID_TYPE_LITERAL,
 						new Object[] {type }));
 				errors.add(type);
 				final Expression variableExpression = pop();
@@ -408,11 +404,33 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {});
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
-				pushError(errorTypeLiteral, "invalid type literal");
+				pushError(errorTypeLiteral, INVALID_TYPE_LITERAL);
 			} else {
 				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
 						startPosition, endPosition, }));
 			}
+		}
+
+		/**
+		 * {@link TypeLiteralContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 * @param msg
+		 *            the error message
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void literalContextError(Object offendingSymbol, String msg, RecognitionException e) {
+			final LiteralContext ctx = (LiteralContext)e.getCtx();
+			final Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
+			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
+			final String ePackage = ctx.getParent().getStart().getText();
+			errorRule = QueryParser.RULE_typeLiteral;
+			final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {ePackage });
+			startPositions.put(errorTypeLiteral, startPosition);
+			endPositions.put(errorTypeLiteral, endPosition);
+			pushError(errorTypeLiteral, INVALID_TYPE_LITERAL);
 		}
 
 		/**
@@ -430,7 +448,12 @@ public class AstBuilderListener extends QueryBaseListener {
 			if (e.getCtx().getChildCount() > 0) {
 				errorRule = QueryParser.RULE_expression;
 				final String variableName = e.getCtx().getChild(0).getText();
-				final TypeLiteral type = createModelType((ModelObjectTypeContext)e.getCtx().getChild(2));
+				final TypeLiteral type;
+				if (e.getCtx().getChildCount() > 2) {
+					type = popTypeLiteral();
+				} else {
+					type = null;
+				}
 				// overwrite the end position to the current error position (the start position is
 				// fine)
 				endPositions.put(type, endPosition);
@@ -528,18 +551,12 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Integer startPosition = Integer.valueOf(((ParserRuleContext)parser.getContext()).start
 					.getStartIndex());
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-			if (parser.getContext() instanceof EnumOrClassifierLitContext) {
+			if (parser.getContext() instanceof EnumLitContext) {
 				errorRule = QueryParser.RULE_typeLiteral;
-				final ParseTree firstChild = parser.getContext().getChild(0);
-				if (firstChild.getChildCount() == 1) {
-					final ErrorTypeLiteral errorTypeLiteral = builder
-							.errorTypeLiteral(new String[] {firstChild.getChild(0).getText(), });
-					startPositions.put(errorTypeLiteral, startPosition);
-					endPositions.put(errorTypeLiteral, endPosition);
-					pushError(errorTypeLiteral, msg);
-				} else if (firstChild.getChildCount() == 3) {
+				final ParseTree context = parser.getContext();
+				if (context.getChildCount() == 4) {
 					final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {
-							firstChild.getChild(0).getText(), firstChild.getChild(2).getText(), });
+							context.getChild(0).getText(), context.getChild(2).getText(), });
 					startPositions.put(errorTypeLiteral, startPosition);
 					endPositions.put(errorTypeLiteral, endPosition);
 					pushError(errorTypeLiteral, msg);
@@ -571,11 +588,6 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * No error rule marker.
 	 */
 	private static final int NO_ERROR = -1;
-
-	/**
-	 * Child count used to identify fully qualified names in a production.
-	 */
-	private static final int FULLY_QUALIFIED_NAME = 3;
 
 	/**
 	 * Message logged when an internal error occurs.
@@ -1087,195 +1099,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	/**
-	 * Creates a {@link TypeLiteral} given a {@link ModelObjectTypeContext}.
-	 * 
-	 * @param ctx
-	 *            the context
-	 * @return the type literal.
-	 */
-	private TypeLiteral createModelType(ModelObjectTypeContext ctx) {
-		final TypeLiteral result;
-
-		EClassifier type;
-		String ePackageName = null;
-		String eClassName = null;
-		if (ctx.getChild(0).getChildCount() == FULLY_QUALIFIED_NAME) {
-			// fully qualified name encountered.
-			ePackageName = ctx.getChild(0).getChild(0).getText();
-			eClassName = ctx.getChild(0).getChild(2).getText();
-			type = environment.getEPackageProvider().getType(ePackageName, eClassName);
-		} else {
-			eClassName = ctx.getChild(0).getChild(0).getText();
-			type = environment.getEPackageProvider().getType(eClassName);
-		}
-		if (type == null) {
-			List<String> segments = new ArrayList<String>(2);
-			if (ePackageName != null) {
-				segments.add(ePackageName);
-			}
-			if (eClassName != null) {
-				segments.add(eClassName);
-			}
-			result = builder.errorTypeLiteral(segments.toArray(new String[segments.size()]));
-			errors.add((ErrorTypeLiteral)result);
-
-			StringBuffer message = new StringBuffer("The type ");
-			if (eClassName != null) {
-				message.append('\"');
-				message.append(eClassName);
-				message.append("\" ");
-			}
-			message.append("has not been found");
-			if (ePackageName != null) {
-				EPackage ePackage = this.environment.getEPackageProvider().getEPackage(ePackageName);
-				if (ePackage != null) {
-					message.append(" in the EPackage named \"");
-					message.append(ePackageName);
-					message.append('\"');
-					message.append(" [nsUri=");
-					message.append(ePackage.getNsURI());
-					message.append(", nsPrefix=");
-					message.append(ePackage.getNsPrefix());
-					message.append("]");
-				} else {
-					message.append(" nor the EPackage named \"");
-					message.append(ePackageName);
-					message.append('\"');
-				}
-			}
-
-			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, message.toString(),
-					new Object[] {result }));
-		} else {
-			result = builder.typeLiteral(type);
-		}
-		startPositions.put(result, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(result, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		return result;
-	}
-
-	/**
-	 * Factorization of the filtered services call (eContainer, eContents, eAllContents, etc.).
-	 * 
-	 * @param serviceName
-	 *            the name of the called service
-	 * @param ctx
-	 *            the rule context
-	 */
-	private void callFilteredService(String serviceName, ParserRuleContext ctx) {
-		if (errorRule == NO_ERROR) {
-			if (ctx.getChildCount() == 3) {
-				// filtered version.
-				// Expression type = pop();
-				final Expression type;
-				if (ctx.getChild(1) instanceof ModelObjectTypeContext) {
-					type = createModelType((ModelObjectTypeContext)ctx.getChild(1));
-				} else {
-					type = pop();
-				}
-				Expression receiver = pop();
-				push(serviceName);
-				push(new Expression[] {receiver, type });
-			} else {
-				Expression receiver = pop();
-				push(serviceName);
-				push(new Expression[] {receiver });
-			}
-		} else if (errorRule != QueryParser.RULE_navigationSegment) {
-			TypeLiteral type = popTypeLiteral();
-			Expression receiver = pop();
-			push(serviceName);
-			push(new Expression[] {receiver, type });
-		}
-	}
-
-	/**
-	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEContent(org.eclipse.acceleo.query.parser.QueryParser.EContentContext)
-	 */
-	@Override
-	public void exitEContent(EContentContext ctx) {
-		callFilteredService("eContents", ctx);
-	}
-
-	/**
-	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitPrecSiblings(org.eclipse.acceleo.query.parser.QueryParser.PrecSiblingsContext)
-	 */
-	@Override
-	public void exitPrecSiblings(PrecSiblingsContext ctx) {
-		callFilteredService("precedingSiblings", ctx);
-	}
-
-	/**
-	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEContent(org.eclipse.acceleo.query.parser.QueryParser.EContentContext)
-	 */
-	@Override
-	public void exitEAContent(EAContentContext ctx) {
-		callFilteredService("eAllContents", ctx);
-	}
-
-	/**
-	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEContent(org.eclipse.acceleo.query.parser.QueryParser.EContentContext)
-	 */
-	@Override
-	public void exitEContainer(EContainerContext ctx) {
-		callFilteredService("eContainer", ctx);
-	}
-
-	/**
-	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEContainerOrSelf(org.eclipse.acceleo.query.parser.QueryParser.EContainerOrSelfContext)
-	 */
-	@Override
-	public void exitEContainerOrSelf(EContainerOrSelfContext ctx) {
-		callFilteredService("eContainerOrSelf", ctx);
-	}
-
-	/**
-	 * The stack contains, in that order, [receiver, type literal] {@inheritDoc}.
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEContent(org.eclipse.acceleo.query.parser.QueryParser.EContentContext)
-	 */
-	@Override
-	public void exitEInverse(EInverseContext ctx) {
-		callFilteredService("eInverse", ctx);
-	}
-
-	@Override
-	public void exitFilter(FilterContext ctx) {
-		callFilteredService("filter", ctx);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitAs(org.eclipse.acceleo.query.parser.QueryParser.AsContext)
-	 */
-	@Override
-	public void exitAs(AsContext ctx) {
-		callFilteredService("oclAsType", ctx);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitAsType(org.eclipse.acceleo.query.parser.QueryParser.AsTypeContext)
-	 */
-	@Override
-	public void exitAsType(AsTypeContext ctx) {
-		callFilteredService("oclAsType", ctx);
-	}
-
 	@Override
 	public void exitCallService(CallServiceContext ctx) {
 		if (errorRule != QueryParser.RULE_navigationSegment) {
@@ -1304,16 +1127,6 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 	}
 
-	@Override
-	public void exitIsType(IsTypeContext ctx) {
-		callFilteredService("oclIsTypeOf", ctx);
-	}
-
-	@Override
-	public void exitIsKind(IsKindContext ctx) {
-		callFilteredService("oclIsKindOf", ctx);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1326,13 +1139,15 @@ public class AstBuilderListener extends QueryBaseListener {
 		if (errorRule == NO_ERROR) {
 			final VariableDeclaration variableDeclaration;
 
-			final Expression variableExpression = pop();
 			if (ctx.getChildCount() == 4) {
-				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
-						createModelType((ModelObjectTypeContext)ctx.getChild(2)), variableExpression);
+				final TypeLiteral typeLiteral = popTypeLiteral();
+				final Expression variableExpression = pop();
+				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(), typeLiteral,
+						variableExpression);
 				endPositions.put(variableDeclaration, Integer
 						.valueOf(((ParserRuleContext)ctx.getChild(2)).stop.getStopIndex() + 1));
 			} else {
+				final Expression variableExpression = pop();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
 						variableExpression);
 				endPositions.put(variableDeclaration, Integer.valueOf(((TerminalNode)ctx.getChild(0))
@@ -1366,87 +1181,67 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEnumOrClassifierLit(org.eclipse.acceleo.query.parser.QueryParser.EnumOrClassifierLitContext)
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitEnumLit(org.eclipse.acceleo.query.parser.QueryParser.EnumLitContext)
 	 */
 	@Override
-	public void exitEnumOrClassifierLit(EnumOrClassifierLitContext ctx) {
+	public void exitEnumLit(EnumLitContext ctx) {
 		if (errorRule == NO_ERROR) {
-			final Literal toPush;
-			// checks whether the enum name is fully qualified or not
-			String literalName = ctx.getChild(2).getText();
-			if (ctx.getChild(0).getChildCount() == 1) { // unqualified
-				toPush = twoSegmentEnumOrClassifierLiteral(ctx, literalName);
+			final EnumLiteral toPush;
+			final String ePackageName = ctx.getChild(0).getText();
+			final String eEnumName = ctx.getChild(2).getText();
+			final String eEnumLiteralName = ctx.getChild(4).getText();
+			final EEnumLiteral eEnumLiteral = environment.getEPackageProvider().getEnumLiteral(ePackageName,
+					eEnumName, eEnumLiteralName);
+			if (eEnumLiteral == null) {
+				List<String> segments = new ArrayList<String>(2);
+				segments.add(ePackageName);
+				segments.add(eEnumName);
+				segments.add(eEnumLiteralName);
+				toPush = builder.errorEnumLiteral(segments.toArray(new String[segments.size()]));
+				pushError((Error)toPush, "invalid enum literal");
 			} else {
-				toPush = threeSegmentEnumLiteral(ctx, literalName);
-			}
-			if (toPush instanceof Error) {
-				pushError((Error)toPush, "invalid type or enum literal");
-			} else {
+				toPush = builder.enumLiteral(eEnumLiteral);
 				push(toPush);
 			}
+			startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
+			endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 		}
 	}
 
 	/**
-	 * Gets the {@link Literal} for the given {@link EnumOrClassifierLitContext} with two segments and the
-	 * given {@link EEnumLiteral#getName() literal name} or {@link EClassifier#getName() eclassifier name}.
-	 * 
-	 * @param ctx
-	 *            the {@link EnumOrClassifierLitContext} with two segments
-	 * @param literalName
-	 *            the {@link EEnumLiteral#getName()} or {@link EClassifier#getName() eclassifier name}
-	 * @return the {@link Literal} for the given {@link EnumOrClassifierLitContext} with two segments and the
-	 *         given {@link EEnumLiteral#getName() literal name} or {@link EClassifier#getName() eclassifier
-	 *         name}
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitClassifierType(org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext)
 	 */
-	private Literal twoSegmentEnumOrClassifierLiteral(EnumOrClassifierLitContext ctx, String literalName) {
-		final Literal toPush;
-
-		final String enumName = ctx.getChild(0).getChild(0).getText();
-		final EEnumLiteral literal = environment.getEPackageProvider().getEnumLiteral(enumName, literalName);
-		if (literal != null) {
-			toPush = builder.enumLiteral(literal);
-		} else {
-			final EClassifier classifier = environment.getEPackageProvider().getType(enumName, literalName);
-			if (classifier != null) {
-				toPush = builder.typeLiteral(classifier);
+	@Override
+	public void exitClassifierType(ClassifierTypeContext ctx) {
+		if (errorRule == NO_ERROR) {
+			final TypeLiteral toPush;
+			final String ePackageName = ctx.getChild(0).getText();
+			final String eClassName;
+			final EClassifier type;
+			if (ctx.getChild(2) instanceof ErrorNode) {
+				eClassName = null;
+				type = null;
 			} else {
-				toPush = builder.errorTypeLiteral(new String[] {enumName, literalName, });
+				eClassName = ctx.getChild(2).getText();
+				type = environment.getEPackageProvider().getType(ePackageName, eClassName);
 			}
+			if (type == null) {
+				List<String> segments = new ArrayList<String>(2);
+				segments.add(ePackageName);
+				if (eClassName != null) {
+					segments.add(eClassName);
+				}
+				toPush = builder.errorTypeLiteral(segments.toArray(new String[segments.size()]));
+				pushError((Error)toPush, INVALID_TYPE_LITERAL);
+			} else {
+				toPush = builder.typeLiteral(type);
+				push(toPush);
+			}
+			startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
+			endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 		}
-		startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		return toPush;
-	}
-
-	/**
-	 * Gets the {@link Literal} for the given {@link EnumOrClassifierLitContext} with two segments and the
-	 * given {@link EEnumLiteral#getName() literal name}.
-	 * 
-	 * @param ctx
-	 *            the {@link EnumOrClassifierLitContext} with two segments
-	 * @param literalName
-	 *            the {@link EEnumLiteral#getName() literal name}
-	 * @return the {@link Literal} for the given {@link EnumOrClassifierLitContext} with two segments and the
-	 *         given {@link EEnumLiteral#getName() literal name}
-	 */
-	private Literal threeSegmentEnumLiteral(EnumOrClassifierLitContext ctx, String literalName) {
-		final Literal toPush;
-
-		final String name = ctx.getChild(0).getChild(0).getText();
-		final String enumName = ctx.getChild(0).getChild(2).getText();
-		final EEnumLiteral literal = environment.getEPackageProvider().getEnumLiteral(name, enumName,
-				literalName);
-		if (literal != null) {
-			toPush = builder.enumLiteral(literal);
-		} else {
-			toPush = builder.errorTypeLiteral(new String[] {name, enumName, literalName, });
-		}
-		startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		return toPush;
 	}
 
 	/**

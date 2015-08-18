@@ -288,13 +288,6 @@ public class EvaluationTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsEEnumLiteral() {
-		Map<String, Object> variables = Maps.newHashMap();
-		assertOKResultEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getInstance(), engine
-				.eval(builder.build("Part::Other"), variables));
-	}
-
-	@Test
 	public void enumLiteralOrEClassifierThreeSegments() {
 		Map<String, Object> variables = Maps.newHashMap();
 		assertOKResultEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getInstance(), engine

@@ -28,6 +28,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
@@ -413,6 +414,16 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorTypeLiteral(ErrorTypeLiteral object) {
+		return checkWarningsAndErrors(object, services.getErrorTypes(object));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEnumLiteral(org.eclipse.acceleo.query.ast.ErrorEnumLiteral)
+	 */
+	@Override
+	public Set<IType> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		return checkWarningsAndErrors(object, services.getErrorTypes(object));
 	}
 

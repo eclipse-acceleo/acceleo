@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -293,6 +294,21 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(errorTypeLiteral);
 				if (result == null)
 					result = caseExpression(errorTypeLiteral);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.ERROR_ENUM_LITERAL: {
+				ErrorEnumLiteral errorEnumLiteral = (ErrorEnumLiteral)theEObject;
+				T result = caseErrorEnumLiteral(errorEnumLiteral);
+				if (result == null)
+					result = caseError(errorEnumLiteral);
+				if (result == null)
+					result = caseEnumLiteral(errorEnumLiteral);
+				if (result == null)
+					result = caseLiteral(errorEnumLiteral);
+				if (result == null)
+					result = caseExpression(errorEnumLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -673,6 +689,23 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseErrorTypeLiteral(ErrorTypeLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Enum Literal</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate Returns
+	 * the result of interpreting the object as an instance of '<em>Error Enum Literal</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Enum Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		return null;
 	}
 

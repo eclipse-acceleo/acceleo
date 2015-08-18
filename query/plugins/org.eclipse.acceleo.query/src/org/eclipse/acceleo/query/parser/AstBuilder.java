@@ -25,6 +25,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -429,6 +430,26 @@ public class AstBuilder {
 	public ErrorTypeLiteral errorTypeLiteral(String... segments) {
 		final ErrorTypeLiteral result = (ErrorTypeLiteral)EcoreUtil
 				.create(AstPackage.Literals.ERROR_TYPE_LITERAL);
+
+		for (String segment : segments) {
+			if (segment != null && segment.length() != 0) {
+				result.getSegments().add(segment);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Creates a new {@link ErrorEnumLiteral}.
+	 * 
+	 * @param segments
+	 *            known segments of the {@link ErrorEnumLiteral}
+	 * @return a new {@link ErrorEnumLiteral}.
+	 */
+	public ErrorEnumLiteral errorEnumLiteral(String... segments) {
+		final ErrorEnumLiteral result = (ErrorEnumLiteral)EcoreUtil
+				.create(AstPackage.Literals.ERROR_ENUM_LITERAL);
 
 		for (String segment : segments) {
 			if (segment != null && segment.length() != 0) {

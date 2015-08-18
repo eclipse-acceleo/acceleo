@@ -48,35 +48,23 @@ expression : expression navigationSegment #Nav
 binding : Ident (':' typeLiteral)? '=' expression
 ;
 
-addOp: '+' | '-';
+addOp: '+' | '-'
+;
 compOp :     '<='
 	    	|'>='
 	  		|'<>'
 	  		|'='
 	 		|'<'
 	  		|'>'
-  ;
+;
 varRef : Ident
 ;
 navigationSegment :     '.'Ident #Feature
 				      | '.' callExp  #Apply
 				      | '->' callExp #CallService
 ;      
-callExp :     'filter(' typeLiteral ')'        #Filter
-			| 'oclAsType(' typeLiteral ')'       #AsType
-			| 'as(' typeLiteral ')'         #As
-			| 'oclIsKindOf(' typeLiteral ')'        #IsKind
-			| 'oclIsTypeOf(' typeLiteral ')'        #IsType
-			| 'is(' typeLiteral ')'         #Is
-			| 'precedingSiblings(' typeLiteral? ')'     #PrecSiblings
-			| 'siblings(' typeLiteral? ')'       #Siblings
-			| 'eContents(' typeLiteral? ')'       #EContent
-			| 'eAllContents(' typeLiteral? ')'      #EAContent
-			| 'eContainerOrSelf(' typeLiteral ')'       #EContainerOrSelf
-			| 'eContainer(' typeLiteral? ')'       #EContainer
-			| 'eInverse(' (typeLiteral | expression)? ')'       #EInverse
-			| collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall
-			| qualifiedName'(' expressionSequence ')'    #ServiceCall
+callExp :     collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall
+			| Ident'(' expressionSequence ')'    #ServiceCall
 ;
 lambdaExpression : expression
 ;
@@ -97,7 +85,8 @@ literal :    String         #StringLit
 		   |'[' expressionSequence ']'   #SeqLit
 		   |'Sequence{' expressionSequence'}'  #ExplicitSeqLit
 		   |'OrderedSet{' expressionSequence '}'  #ExplicitSetLit
-		   | qualifiedName '::' Ident     #EnumOrClassifierLit
+		   | Ident '::' Ident '::' Ident     #EnumLit
+		   | typeLiteral #TypeLit
 ;
 typeLiteral :   'String'        #StrType
 		      | 'Integer'        #IntType
@@ -105,10 +94,8 @@ typeLiteral :   'String'        #StrType
 		      | 'Boolean'        #BooleanType
 		      | 'Sequence(' typeLiteral')'   #SeqType
 		      | 'OrderedSet(' typeLiteral')' #SetType
-		      | qualifiedName       #ModelObjectType
-      ;
-qualifiedName : Ident('::'Ident)? 
-     ; 
+		      | Ident '::' Ident #ClassifierType
+;
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
 
 MultOp : [*/]
@@ -123,7 +110,7 @@ ErrorString : '\'' (Escape|~'\'')*
 ;
 fragment Escape : '\\\\' | '\\\''
 ;
-Ident : (Letter | '_') (Letter | [0-9]|'_')*
+Ident : (Letter | '_') (Letter | [0-9] | '_')*
 ;
 fragment Letter : [a-zA-Z]
 ;

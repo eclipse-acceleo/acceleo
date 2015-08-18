@@ -69,13 +69,13 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEContainer(@NotNull QueryParser.EContainerContext ctx) { }
+	@Override public void enterTypeLit(@NotNull QueryParser.TypeLitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEContainer(@NotNull QueryParser.EContainerContext ctx) { }
+	@Override public void exitTypeLit(@NotNull QueryParser.TypeLitContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -225,19 +225,6 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEInverse(@NotNull QueryParser.EInverseContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEInverse(@NotNull QueryParser.EInverseContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSetLit(@NotNull QueryParser.SetLitContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -316,19 +303,6 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterQualifiedName(@NotNull QueryParser.QualifiedNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitQualifiedName(@NotNull QueryParser.QualifiedNameContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIntegerLit(@NotNull QueryParser.IntegerLitContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -349,19 +323,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariableDefinition(@NotNull QueryParser.VariableDefinitionContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIsType(@NotNull QueryParser.IsTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIsType(@NotNull QueryParser.IsTypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -401,19 +362,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMin(@NotNull QueryParser.MinContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEAContent(@NotNull QueryParser.EAContentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEAContent(@NotNull QueryParser.EAContentContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -485,6 +433,19 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSeqType(@NotNull QueryParser.SeqTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -492,58 +453,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSeqType(@NotNull QueryParser.SeqTypeContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterPrecSiblings(@NotNull QueryParser.PrecSiblingsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrecSiblings(@NotNull QueryParser.PrecSiblingsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEnumOrClassifierLit(@NotNull QueryParser.EnumOrClassifierLitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEnumOrClassifierLit(@NotNull QueryParser.EnumOrClassifierLitContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIs(@NotNull QueryParser.IsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIs(@NotNull QueryParser.IsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAsType(@NotNull QueryParser.AsTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAsType(@NotNull QueryParser.AsTypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -576,52 +485,13 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterModelObjectType(@NotNull QueryParser.ModelObjectTypeContext ctx) { }
+	@Override public void enterEnumLit(@NotNull QueryParser.EnumLitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitModelObjectType(@NotNull QueryParser.ModelObjectTypeContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAs(@NotNull QueryParser.AsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAs(@NotNull QueryParser.AsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEContent(@NotNull QueryParser.EContentContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEContent(@NotNull QueryParser.EContentContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEContainerOrSelf(@NotNull QueryParser.EContainerOrSelfContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEContainerOrSelf(@NotNull QueryParser.EContainerOrSelfContext ctx) { }
+	@Override public void exitEnumLit(@NotNull QueryParser.EnumLitContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -661,19 +531,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCallService(@NotNull QueryParser.CallServiceContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSiblings(@NotNull QueryParser.SiblingsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSiblings(@NotNull QueryParser.SiblingsContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -752,32 +609,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMult(@NotNull QueryParser.MultContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterIsKind(@NotNull QueryParser.IsKindContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIsKind(@NotNull QueryParser.IsKindContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFilter(@NotNull QueryParser.FilterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFilter(@NotNull QueryParser.FilterContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -352,7 +352,7 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsEClassifier() {
+	public void classifierType() {
 		final IValidationResult validationResult = engine.validate("ecore::EClass", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -366,21 +366,7 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsEEnumLiteral() {
-		final IValidationResult validationResult = engine.validate("Part::Other", variableTypes);
-		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
-
-		assertEquals(1, possibleTypes.size());
-		final Iterator<IType> it = possibleTypes.iterator();
-		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
-		assertEquals(AnydslPackage.eINSTANCE.getPart(), possibleType.getType());
-		assertEquals(0, validationResult.getMessages().size());
-	}
-
-	@Test
-	public void enumLiteralOrEClassifierTwoSegmentsError() {
+	public void classifierTypeError() {
 		final IValidationResult validationResult = engine.validate("anydsl::EClass", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -392,7 +378,7 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierThreeSegments() {
+	public void enumLiteral() {
 		final IValidationResult validationResult = engine.validate("anydsl::Part::Other", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -406,7 +392,7 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void enumLiteralOrEClassifierThreeSegmentsError() {
+	public void enumLiteralError() {
 		final IValidationResult validationResult = engine
 				.validate("anydsl::Part::NotExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
@@ -415,7 +401,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorTypeLiteral", 0, 25);
+				"ErrorEnumLiteral", 0, 25);
 	}
 
 	@Test

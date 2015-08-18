@@ -70,7 +70,7 @@
     <classesToImport>org.eclipse.acceleo.query.tests.services.EObjectServices</classesToImport>
     <pluginsInClassPath>org.eclipse.acceleo.query.tests</pluginsInClassPath>
   </queries>
-  <queries expression="[self.eAllContents(ecore::EClass)->select(a: EClass | a.name.startsWith('Abst'))->select( a | a.interface)/]" startingPoint="//@modelElements.2">
+  <queries expression="[self.eAllContents(ecore::EClass)->select(a: ecore::EClass | a.name.startsWith('Abst'))->select( a | a.interface)/]" startingPoint="//@modelElements.2">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
       <expectedResult xsi:type="qmodel:ListResult" interpreter="mtl">
         <values xsi:type="qmodel:EObjectResult">

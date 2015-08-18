@@ -834,6 +834,52 @@ public interface AstPackage extends EPackage {
 	int ERROR_TYPE_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl
+	 * <em>Error Enum Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorEnumLiteral()
+	 * @generated
+	 */
+	int ERROR_ENUM_LITERAL = 20;
+
+	/**
+	 * The feature id for the '<em><b>Literal</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ENUM_LITERAL__LITERAL = ERROR_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Segments</b></em>' attribute list. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ENUM_LITERAL__SEGMENTS = ERROR_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Error Enum Literal</em>' class. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ENUM_LITERAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Error Enum Literal</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ENUM_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
 	 * <em>Error Feature Access Or Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -841,7 +887,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorFeatureAccessOrCall()
 	 * @generated
 	 */
-	int ERROR_FEATURE_ACCESS_OR_CALL = 20;
+	int ERROR_FEATURE_ACCESS_OR_CALL = 21;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -878,7 +924,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCollectionCall()
 	 * @generated
 	 */
-	int ERROR_COLLECTION_CALL = 21;
+	int ERROR_COLLECTION_CALL = 22;
 
 	/**
 	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -915,7 +961,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
 	 * @generated
 	 */
-	int ERROR_VARIABLE_DECLARATION = 22;
+	int ERROR_VARIABLE_DECLARATION = 23;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -969,7 +1015,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorStringLiteral()
 	 * @generated
 	 */
-	int ERROR_STRING_LITERAL = 23;
+	int ERROR_STRING_LITERAL = 24;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1005,7 +1051,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 24;
+	int BINDING = 25;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1049,7 +1095,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
 	 * @generated
 	 */
-	int LET = 25;
+	int LET = 26;
 
 	/**
 	 * The feature id for the '<em><b>Bindings</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -1094,7 +1140,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
 	 * @generated
 	 */
-	int CONDITIONAL = 26;
+	int CONDITIONAL = 27;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1149,7 +1195,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 27;
+	int CALL_TYPE = 28;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1159,7 +1205,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 28;
+	int OBJECT_TYPE = 29;
 
 	/**
 	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1169,7 +1215,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 	 * @generated
 	 */
-	int AST_EVALUATOR = 29;
+	int AST_EVALUATOR = 30;
 
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1178,7 +1224,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 30;
+	int OBJECT_ARRAY = 31;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -1644,6 +1690,28 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorTypeLiteral_Segments();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral
+	 * <em>Error Enum Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Error Enum Literal</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorEnumLiteral
+	 * @generated
+	 */
+	EClass getErrorEnumLiteral();
+
+	/**
+	 * Returns the meta object for the attribute list '
+	 * {@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral#getSegments <em>Segments</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute list '<em>Segments</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorEnumLiteral#getSegments()
+	 * @see #getErrorEnumLiteral()
+	 * @generated
+	 */
+	EAttribute getErrorEnumLiteral_Segments();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
@@ -2273,6 +2341,24 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ERROR_TYPE_LITERAL__SEGMENTS = eINSTANCE.getErrorTypeLiteral_Segments();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl
+		 * <em>Error Enum Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorEnumLiteral()
+		 * @generated
+		 */
+		EClass ERROR_ENUM_LITERAL = eINSTANCE.getErrorEnumLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>Segments</b></em>' attribute list feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_ENUM_LITERAL__SEGMENTS = eINSTANCE.getErrorEnumLiteral_Segments();
 
 		/**
 		 * The meta object literal for the '
