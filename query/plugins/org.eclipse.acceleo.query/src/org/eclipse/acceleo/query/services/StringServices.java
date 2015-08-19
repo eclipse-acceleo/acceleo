@@ -140,12 +140,12 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> if the current String contains the String \"b\"",
+		value = "Returns \"true\" if the current String contains the String \"b\"",
 		params = {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "b", value = "The String that we will look for in the current String")
 		},
-		result = "<code>true</code> if the current String contains the String \"b\", <code>false</code> otherwise",
+		result = "\"true\" if the current String contains the String \"b\", \"false\" otherwise",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
 		},
@@ -160,12 +160,12 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> if the current String matches the given <code>regex</code>.",
+		value = "Returns \"true\" if the current String matches the given \"regex\".",
 		params = {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "regex", value = "The regex used for the match")
 		},
-		result = "<code>true</code> if <code>self</code> matches the given regex, <code>false</code> otherwise.",
+		result = "\"true\" if \"self\" matches the given regex, \"false\" otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"regex\" is null.")
 		},
@@ -185,7 +185,7 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "b", value = "The String that may be at the end of the current String")
 		},
-		result = "<code>true</code> if the current String ends with the string \"b\", <code>false</code> otherwise.",
+		result = "\"true\" if the current String ends with the string \"b\", \"false\" otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
 		},
@@ -205,7 +205,7 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "b", value = "The String that may be at the beginning of the current String")
 		},
-		result = "<code>true</code> if the current String starts with the string \"b\", <code>false</code> otherwise.",
+		result = "\"true\" if the current String starts with the string \"b\", \"false\" otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
 		},
@@ -225,7 +225,7 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "b", value = "The String to compare with the current String")
 		},
-		result = "<code>true</code> if the current String is equal to the string \"b\", without considering case, <code>false</code> otherwise.",
+		result = "\"true\" if the current String is equal to the string \"b\", without considering case, \"false\" otherwise.",
 		exceptions = {
 			@Throw(type = NullPointerException.class, value = "Thrown if the current String or \"b\" is null.")
 		},
@@ -294,7 +294,7 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the index of the last occurrence of \"subString\" in the current String, <code>-1</code> if " +
+		value = "Returns the index of the last occurrence of \"subString\" in the current String, \"-1\" if " +
 	            "the current String doesn't contain this particular substring. The index referential is 1 as in OCL and not 0.",
 		params = {
 			@Param(name = "self", value = "The current String"),
@@ -403,7 +403,7 @@ public class StringServices {
 		},
 		result = "The current String with all upper case characters converted to lower case.",
 		exceptions = {
-			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is \"null\".")
 		},
 		examples = {
 			@Example(expression = "'HelloWorld'.toLower()", result = "'helloworld'")
@@ -422,7 +422,7 @@ public class StringServices {
 		},
 		result = "The current String with the first character transformed to lower case.",
 		exceptions = {
-			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is \"null\".")
 		},
 		examples = {
 			@Example(expression = "'HelloWorld'.toLowerFirst()", result = "'helloWorld'")
@@ -451,7 +451,7 @@ public class StringServices {
 		},
 		result = "The current String with all lower case characters converted to upper case.",
 		exceptions = {
-			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is \"null\".")
 		},
 		examples = {
 			@Example(expression = "'HelloWorld'.toUpper()", result = "'HELLOWORLD'")
@@ -470,7 +470,7 @@ public class StringServices {
 		},
 		result = "The current String with the first character transformed to upper case.",
 		exceptions = {
-			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is <code>null</code>.")
+			@Throw(type = NullPointerException.class, value = "Thrown if \"self\" is \"null\".")
 		},
 		examples = {
 			@Example(expression = "'helloworld'.toUpperFirst()", result = "'Helloworld'")
@@ -493,11 +493,11 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> if self consists only of alphabetical characters, <code>false</code> otherwise.",
+		value = "Returns \"true\" if self consists only of alphabetical characters, \"false\" otherwise.",
 		params = {
 			@Param(name = "self", value = "The string we want to ensure it consists only of alphabetical characters.")
 		},
-		result = "<code>true</code> if self consists only of alphabetical characters, <code>false</code> otherwise.",
+		result = "\"true\" if self consists only of alphabetical characters, \"false\" otherwise.",
 		examples = {
 			@Example(expression = "'abc123'.isAlpha()", result = "false"),
 			@Example(expression = "'abcdef'.isAlpha()", result = "true"),
@@ -516,11 +516,11 @@ public class StringServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> if self consists only of alphanumeric characters, <code>false</code> otherwise.",
+		value = "Returns \"true\" if self consists only of alphanumeric characters, \"false\" otherwise.",
 		params = {
 			@Param(name = "self", value = "The string we want to ensure it consists only of alphanumeric characters.")
 		},
-		result = "<code>true</code> if self consists only of alphanumeric characters, <code>false</code> otherwise.",
+		result = "\"true\" if self consists only of alphanumeric characters, \"false\" otherwise.",
 		examples = {
 			@Example(expression = "'abc123'.isAlphaNum()", result = "true"),
 			@Example(expression = "'abcdef'.isAlphaNum()", result = "true"),
@@ -663,7 +663,7 @@ public class StringServices {
 			@Param(name = "self", value = "The current String"),
 			@Param(name = "r", value = "The String to search")
 		},
-		result = "<code>true</code> if r is found, <code>false</code> otherwise",
+		result = "\"true\" if r is found, \"false\" otherwise",
 		examples = {
 			@Example(expression = "'HelloWorld'.strstr('World')", result = "true")
 		}

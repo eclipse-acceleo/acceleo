@@ -103,13 +103,22 @@ public class AcceleoDocViewer extends SourceViewer {
 		}
 
 		TextPresentation textPresentation = new TextPresentation();
-		HTML2TextReader reader = new HTML2TextReader(new StringReader(text), textPresentation);
-		try {
-			text = reader.getString();
-		} catch (IOException e) {
-			AcceleoUIActivator.getDefault().getLog().log(
-					new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
-			text = ""; //$NON-NLS-1$
+		if (text != null && text.contains("<") && text.contains(">") && text.contains("</")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			// We will consider that the text should be parsed as HTML
+			HTML2TextReader reader = new HTML2TextReader(new StringReader(text), textPresentation);
+			try {
+				text = reader.getString();
+			} catch (IOException e) {
+				AcceleoUIActivator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+			} finally {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					AcceleoUIActivator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				}
+			}
 		}
 
 		this.document = new Document(text);

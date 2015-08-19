@@ -1402,11 +1402,11 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> when the input collection is empty.",
+		value = "Returns \"true\" when the input collection is empty.",
 		params = {
 			@Param(name = "collection", value = "The input collection")
 		},
-		result = "<code>true</code> when the input collection is empty.",
+		result = "\"true\" when the input collection is empty.",
 		examples = {
 			@Example(expression = "Set{'a', 'b', 'c'}->isEmpty()", result = "false"),
 			@Example(expression = "Sequence{}->isEmpty()", result = "true"),
@@ -1419,11 +1419,11 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> when the input collection is not empty.",
+		value = "Returns \"true\" when the input collection is not empty.",
 		params = {
 			@Param(name = "collection", value = "The input collection")
 		},
-		result = "<code>true</code> when the input collection is not empty.",
+		result = "\"true\" when the input collection is not empty.",
 		examples = {
 			@Example(expression = "Set{'a', 'b', 'c'}->notEmpty()", result = "true"),
 			@Example(expression = "Sequence{}->notEmpty()", result = "false"),
@@ -1608,7 +1608,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection", value = "The input collection"),
 			@Param(name = "object", value = "The object"),
 		},
-		result = "<code>true</code> if the given collection doesn't contain the given object, <code>false</code> otherwise",
+		result = "\"true\" if the given collection doesn't contain the given object, \"false\" otherwise",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->excludes('a')", result = "false"),
 			@Example(expression = "Sequence{'a', 'b', 'c'}->excludes('d')", result = "true")
@@ -1626,7 +1626,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection", value = "The input collection"),
 			@Param(name = "object", value = "The object"),
 		},
-		result = "<code>true</code> if the given collection contains the given object, <code>false</code> otherwise",
+		result = "\"true\" if the given collection contains the given object, \"false\" otherwise",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->includes('a')", result = "true"),
 			@Example(expression = "Sequence{'a', 'b', 'c'}->includes('d')", result = "false")
@@ -1674,12 +1674,12 @@ public class CollectionServices extends AbstractServiceProvider {
 	// @formatter:off
 	@Documentation(
 		value = "Gets the first element in the current collection for which the value returned by the lambda evaluates " +
-				"to <code>true</code>.",
+				"to \"true\".",
 		params = {
 			@Param(name = "collection", value = "The input collection"),
 			@Param(name = "lambda", value = "The lamba"),
 		},
-		result = "The first element in the given collection for which the value returned by the lambda is <code>true</code>",
+		result = "The first element in the given collection for which the value returned by the lambda is \"true\"",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->any(str | str.size() = 1)", result = "'a'")
 		}
@@ -1710,12 +1710,12 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>1</code> if the current set contains the given object, <code>0</code> otherwise.",
+		value = "Returns \"1\" if the current set contains the given object, \"0\" otherwise.",
 		params = {
 			@Param(name = "set", value = "The set"),
 			@Param(name = "object", value = "The object"),
 		},
-		result = "<code>1</code> if the current set contains the given object, <code>0</code> otherwise.",
+		result = "\"1\" if the current set contains the given object, \"0\" otherwise.",
 		examples = {
 			@Example(expression = "Set{'a', 'b', 'c'}->count('d')", result = "0"),
 			@Example(expression = "Set{'a', 'b', 'c'}->count('a')", result = "1")
@@ -1755,13 +1755,13 @@ public class CollectionServices extends AbstractServiceProvider {
 	// @formatter:off
 	@Documentation(
 		value = "Indicates if it exists an object from the given collection for which the given lambda evaluates " +
-				"to <code>true</code>",
+				"to \"true\"",
 		params = {
 			@Param(name = "collection", value = "The collection"),
 			@Param(name = "lambda", value = "The lambda"),
 		},
-		result = "<code>true</code> if it exists an object from the given collection that validate the given lamba " +
-				 "<code>false</code> otherwise.",
+		result = "\"true\" if it exists an object from the given collection that validate the given lamba " +
+				 "\"false\" otherwise.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->exists(str | str.size() > 5)", result = "false")
 		}
@@ -1795,8 +1795,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection", value = "The collection"),
 			@Param(name = "lambda", value = "The lambda"),
 		},
-		result = "<code>true</code> if all the objects from the given collection validate the given lamba " +
-				 "<code>false</code> otherwise.",
+		result = "\"true\" if all the objects from the given collection validate the given lamba " +
+				 "\"false\" otherwise.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'ccc'}->forAll(str | str.size() = 1)", result = "false"),
 			@Example(expression = "Sequence{'a', 'b', 'c'}->forAll(str | str.size() = 1)", result = "false")
@@ -1835,8 +1835,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection1", value = "The first collection"),
 			@Param(name = "collection2", value = "The second collection")
 		},
-		result = "<code>true</code> if no elements of the second collection are contained in the first one " +
-				 "<code>false</code> otherwise.",
+		result = "\"true\" if no elements of the second collection are contained in the first one " +
+				 "\"false\" otherwise.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b'}->excludesAll(Set{'f'})", result = "true"),
 			@Example(expression = "Sequence{'a', 'b'}->excludesAll(Set{'a', 'f'})", result = "false")
@@ -1854,8 +1854,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection1", value = "The first collection"),
 			@Param(name = "collection2", value = "The second collection")
 		},
-		result = "<code>true</code> if all elements of the second collection are contained in the first one " +
-				 "<code>false</code> otherwise.",
+		result = "\"true\" if all elements of the second collection are contained in the first one " +
+				 "\"false\" otherwise.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->includesAll(Set{'a'})", result = "true"),
 			@Example(expression = "Sequence{'a', 'b', 'c'}->includesAll(Set{'a', 'f'})", result = "false"),
@@ -1874,8 +1874,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection", value = "The collection"),
 			@Param(name = "lambda", value = "The lambda")
 		},
-		result = "<code>true</code> if the evaluation of the lamba gives a different value for all elements of the " +
-				 "given collection, <code>false</code> otherwise.",
+		result = "\"true\" if the evaluation of the lamba gives a different value for all elements of the " +
+				 "given collection, \"false\" otherwise.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->isUnique(str | str.size())", result = "false"),
 			@Example(expression = "Sequence{'a', 'bb', 'ccc'}->isUnique(str | str.size())", result = "true")
@@ -1913,8 +1913,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "collection", value = "The collection"),
 			@Param(name = "lambda", value = "The lambda")
 		},
-		result = "<code>true</code> if one and only one element of the given collection validates the given lambda, " +
-				 "<code>false</code> otherwise.",
+		result = "\"true\" if one and only one element of the given collection validates the given lambda, " +
+				 "\"false\" otherwise.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->one(str | str.equals('a'))", result = "true"),
 			@Example(expression = "Sequence{'a', 'a', 'c'}->one(str | str.equals('a'))", result = "false")

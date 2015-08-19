@@ -97,14 +97,14 @@ public class AnyServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Indicates whether the object <code>o1</code> is the same as the object <code>o2</code>. For more " +
+		value = "Indicates whether the object \"o1\" i\"the same as the object \"o2\". For more " +
 	            "information refer to the Object#equals(Object) method.",
 	    params = {
 			@Param(name = "o1", value = "The object to compare for equality"),
 			@Param(name = "o2", value = "The reference object with which to compare")
 		},
-		result = "true</code> if the object <code>o1</code> is the same as the object <code>o2</code>, " +
-		         "<code>false</code> otherwise",
+		result = "true\" if the object \"o1\" is the same as the object \"o2\", " +
+		         "\"false\" otherwise",
 		examples = {
 			@Example(expression = "'Hello'.equals('World')", result = "false"),
 			@Example(expression = "'Hello'.equals('Hello')", result = "true")
@@ -125,13 +125,13 @@ public class AnyServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Indicates whether the object <code>o1</code> is a different object from the object <code>o2</code>.",
+		value = "Indicates whether the object \"o1\" is a different object from the object \"o2\".",
 		params = {
 			@Param(name = "o1", value = "The object to compare"),
 			@Param(name = "o2", value = "The reference object with which to compare")
 		},
-		result = "<code>true</code> if the object <code>o1</code> is not the same as the object <code>o2</code>, " +
-				 "<code>false</code> otherwise.",
+		result = "\"true\" if the object \"o1\" is not the same as the object \"o2\", " +
+				 "\"false\" otherwise.",
 		examples = {
 			@Example(expression = "'Hello'.differs('World')", result = "true"),
 			@Example(expression = "'Hello'.differs('Hello')", result = "false")
@@ -227,13 +227,13 @@ public class AnyServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Evaluates to <code>true</code> if the type of the object o1 conforms to the type \"classifier\". That is, " +
+		value = "Evaluates to \"true\" if the type of the object o1 conforms to the type \"classifier\". That is, " +
 				"o1 is of type \"classifier\" or a subtype of \"classifier\".",
 		params = {
 			@Param(name = "object", value = "The reference Object we seek to test."),
 			@Param(name = "type", value = "The expected supertype classifier.")
 		},
-		result = "<code>true</code> if the object o1 is a kind of the classifier, <code>false</code> otherwise.",
+		result = "\"true\" if the object o1 is a kind of the classifier, \"false\" otherwise.",
 		examples = {
 			@Example(expression = "anEPackage.oclIsKindOf(ecore::EPackage)", result = "true"),
 			@Example(expression = "anEPackage.oclIsKindOf(ecore::ENamedElement)", result = "true")
@@ -277,13 +277,13 @@ public class AnyServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Evaluates to <code>true</code> if the object o1 if of the type \"classifier\" but not a subtype of the " +
+		value = "Evaluates to \"true\" if the object o1 if of the type \"classifier\" but not a subtype of the " +
 				"\"classifier\".",
 		params = {
 			@Param(name = "object", value = "The reference Object we seek to test."),
 			@Param(name = "type", value = "The expected type classifier.")
 		},
-		result = "<code>true</code> if the object o1 is a type of the classifier, <code>false</code> otherwise.",
+		result = "\"true\" if the object o1 is a type of the classifier, \"false\" otherwise.",
 		examples = {
 			@Example(expression = "anEPackage.oclIsKindOf(ecore::EPackage)", result = "true"),
 			@Example(expression = "anEPackage.oclIsKindOf(ecore::ENamedElement)", result = "false")

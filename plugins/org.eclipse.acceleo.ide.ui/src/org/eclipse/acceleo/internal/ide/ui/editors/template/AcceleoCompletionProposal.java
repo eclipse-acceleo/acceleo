@@ -260,4 +260,13 @@ public class AcceleoCompletionProposal implements ICompletionProposal, ICompleti
 	public int getReplacementLength() {
 		return fReplacementLength;
 	}
+
+	/**
+	 * Returns the replacement offset.
+	 * 
+	 * @return The replacement offset
+	 */
+	public int getReplacementOffset() {
+		return fReplacementOffset;
+	}
 }

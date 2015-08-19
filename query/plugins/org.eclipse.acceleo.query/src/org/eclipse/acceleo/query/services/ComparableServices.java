@@ -54,12 +54,12 @@ public class ComparableServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is less than \"b\".",
+		value = "Compares \"a\" to \"b\" and return \"true\" if \"a\" is less than \"b\".",
 	    params = {
 			@Param(name = "a", value = "The first comparable (can be null)"),
 			@Param(name = "b", value = "The second comparable (can be null)")
 		},
-		result = "<code>true</code> \"a\" is less than \"b\", <code>false</code> otherwise.",
+		result = "\"true\" \"a\" is less than \"b\", \"false\" otherwise.",
 		examples = {
 				@Example(expression = "'Hello'.lessThan('Hello')", result = "false"),
 				@Example(expression = "'Hello'.lessThan('World')", result = "true")
@@ -72,12 +72,12 @@ public class ComparableServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is less than or equal to \"b\".",
+		value = "Compares \"a\" to \"b\" and return \"true\" if \"a\" is less than or equal to \"b\".",
 	    params = {
 			@Param(name = "a", value = "The first comparable (can be null)"),
 			@Param(name = "b", value = "The second comparable (can be null)")
 		},
-		result = "<code>true</code> \"a\" is less than or equal to \"b\", <code>false</code> otherwise.",
+		result = "\"true\" \"a\" is less than or equal to \"b\", \"false\" otherwise.",
 		examples = {
 			@Example(expression = "'Hello'.lessThanEqual('Hello')", result = "true"),
 			@Example(expression = "'Hello'.lessThanEqual('World')", result = "true")
@@ -90,12 +90,12 @@ public class ComparableServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is greater than \"b\".",
+		value = "Compares \"a\" to \"b\" and return \"true\" if \"a\" is greater than \"b\".",
 	    params = {
 			@Param(name = "a", value = "The first comparable (can be null)"),
 			@Param(name = "b", value = "The second comparable (can be null)")
 		},
-		result = "<code>true</code> \"a\" is greater than \"b\", <code>false</code> otherwise.",
+		result = "\"true\" \"a\" is greater than \"b\", \"false\" otherwise.",
 		examples = {
 			@Example(expression = "'Hello'.greaterThan('Abc')", result = "true"),
 			@Example(expression = "'Hello'.greaterThan('Hello')", result = "false")
@@ -108,12 +108,12 @@ public class ComparableServices {
 
 	// @formatter:off
 	@Documentation(
-		value = "Compares \"a\" to \"b\" and return <code>true</code> if \"a\" is greater than or equal to \"b\".",
+		value = "Compares \"a\" to \"b\" and return \"true\" if \"a\" is greater than or equal to \"b\".",
 	    params = {
 			@Param(name = "a", value = "The first comparable (can be null)"),
 			@Param(name = "b", value = "The second comparable (can be null)")
 		},
-		result = "<code>true</code> \"a\" is greater than or equal to \"b\", <code>false</code> otherwise.",
+		result = "\"true\" \"a\" is greater than or equal to \"b\", \"false\" otherwise.",
 		examples = {
 			@Example(expression = "'Hello'.greaterThanEqual('Abc')", result = "true"),
 			@Example(expression = "'Hello'.greaterThanEqual('Hello')", result = "true")

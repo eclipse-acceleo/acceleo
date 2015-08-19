@@ -835,7 +835,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	// @formatter:off
 	@Documentation(
 		value = "Handles calls to the operation \"eGet\". This will fetch the value of the feature named " +
-				"<em>featureName</em> on <em>source</em>",
+				"\"featureName\" on \"source\"",
 		params = {
 			@Param(name = "eObject", value = "The eObject we seek to retrieve a feature value of."),
 			@Param(name = "featureName", value = "The name of the feature which value we need to retrieve."),

@@ -146,12 +146,12 @@ public class ResourceServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> if the given URI is a platform resource URI. This service is equivalent " +
+		value = "Returns \"true\" if the given URI is a platform resource URI. This service is equivalent " +
 				"to a direct call to URI#isPlatformResource()",
 	    params = {
 			@Param(name = "uri", value = "The URI")
 		},
-		result = "<code>true</code> if the given URI is a platform resource URI, <code>false</code> otherwise."
+		result = "\"true\" if the given URI is a platform resource URI, \"false\" otherwise."
 	)
 	// @formatter:on
 	public Boolean isPlatformResource(URI uri) {
@@ -160,12 +160,12 @@ public class ResourceServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns <code>true</code> if the given URI is a platform plugin URI. This service is equivalent " +
+		value = "Returns \"true\" if the given URI is a platform plugin URI. This service is equivalent " +
 				"to a direct call to URI#isPlatformPlugin()",
 	    params = {
 			@Param(name = "uri", value = "The URI")
 		},
-		result = "<code>true</code> if the given URI is a platform plugin URI, <code>false</code> otherwise."
+		result = "\"true\" if the given URI is a platform plugin URI, \"false\" otherwise."
 	)
 	// @formatter:on
 	public Boolean isPlatformPlugin(URI uri) {
