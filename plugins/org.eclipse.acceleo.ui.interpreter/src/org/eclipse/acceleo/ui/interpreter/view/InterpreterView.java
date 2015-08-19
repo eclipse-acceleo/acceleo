@@ -177,7 +177,7 @@ public class InterpreterView extends ViewPart {
 	 * This will be used as the key for the "information" message that the interpreter will display for
 	 * compilation "OK" status. There will only be one.
 	 */
-	private static final String COMPILATION_INFO_MESSAGE_KEY = "interpreter.evaluation.info.message"; //$NON-NLS-1$
+	private static final String COMPILATION_INFO_MESSAGE_KEY = "interpreter.compilation.info.message"; //$NON-NLS-1$
 
 	/**
 	 * This will be used as the key for the "information" message that the interpreter will display for
@@ -2728,8 +2728,8 @@ public class InterpreterView extends ViewPart {
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
 	private class RealTimeThread extends Thread {
-		/** Time to wait before launching the evaluation (0.5 second by default). */
-		private static final int DELAY = 500;
+		/** Time to wait before launching the evaluation (0.1 second by default). */
+		private static final int DELAY = 100;
 
 		/** This will be set to <code>true</code> whenever we need to recompile the expression. */
 		private boolean dirty;
