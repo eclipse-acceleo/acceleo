@@ -820,11 +820,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> concat(List<Object> sequence1, List<Object> sequence2) {
+	public List<Object> concat(List<Object> sequence1, Collection<Object> sequence2) {
 		final List<Object> result;
 
 		if (sequence1.isEmpty()) {
-			result = sequence2;
+			result = Lists.newArrayList(sequence2);
 		} else if (sequence2.isEmpty()) {
 			result = sequence1;
 		} else {
@@ -837,12 +837,12 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the concatenation of the two specified sequences.",
+		value = "Returns the concatenation of the given collection into the given sequence.",
 		params = {
 			@Param(name = "sequence1", value = "The first operand"),
-			@Param(name = "sequence2", value = "The second operand")
+			@Param(name = "collection2", value = "The second operand")
 		},
-		result = "The concatenation of the two specified sequences.",
+		result = "The current sequence including the elements of the given collection.",
 		examples = {
 			@Example(
 				expression = "Sequence{'a', 'b', 'c'}.add(Sequence{'d', 'e'})", result = "Sequence{'a', 'b', 'c', 'd', 'e'}",
@@ -853,23 +853,33 @@ public class CollectionServices extends AbstractServiceProvider {
 						result = "Sequence{'a', 'b', 'c', 'd', 'e'}"
 					)
 				}
+			),
+			@Example(
+				expression = "Sequence{'a', 'b', 'c'}.add(OrderedSet{'c', 'e'})", result = "Sequence{'a', 'b', 'c', 'c', 'e'}",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3,
+						expression = "Sequence{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'e'})",
+						result = "Sequence{'a', 'b', 'c', 'c', 'e'}"
+					)
+				}
 			)
 		},
 		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sequences"
 	)
 	// @formatter:on
-	public List<Object> add(List<Object> sequence1, List<Object> sequence2) {
-		return concat(sequence1, sequence2);
+	public List<Object> add(List<Object> sequence1, Collection<Object> collection2) {
+		return concat(sequence1, collection2);
 	}
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the difference of the two specified sequences.",
+		value = "Returns the difference of the current sequence and the given collection.",
 		params = {
 			@Param(name = "sequence1", value = "The first operand"),
-			@Param(name = "sequence2", value = "The second operand")
+			@Param(name = "collection2", value = "The second operand")
 		},
-		result = "The sequence that contains elements from sequence1 that are not in sequence2.",
+		result = "The sequence that contains elements from sequence1 that are not in collection2.",
 		examples = {
 			@Example(
 				expression = "Sequence{'a', 'b', 'c'}.sub(Sequence{'c', 'b', 'f'})", result = "Sequence{'a'}",
@@ -880,17 +890,27 @@ public class CollectionServices extends AbstractServiceProvider {
 						result = "Sequence{'a'}"
 					)
 				}
+			),
+			@Example(
+				expression = "Sequence{'a', 'b', 'c'}.sub(OrderedSet{'c', 'b', 'f'})", result = "Sequence{'a'}",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3,
+						expression = "Sequence{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'})",
+						result = "Sequence{'a'}"
+					)
+				}
 			)
 		},
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sequences"
 	)
 	// @formatter:on
-	public List<Object> sub(List<Object> sequence1, List<Object> sequence2) {
-		if (sequence2.isEmpty()) {
+	public List<Object> sub(List<Object> sequence1, Collection<Object> collection2) {
+		if (collection2.isEmpty()) {
 			return sequence1;
 		} else {
 			List<Object> result = Lists.newArrayList(sequence1);
-			for (Object obj : sequence2) {
+			for (Object obj : collection2) {
 				result.remove(obj);
 			}
 			return result;
@@ -899,20 +919,20 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the difference of the two specified sets.",
+		value = "Returns the difference of the current set and the given collection.",
 		params = {
 			@Param(name = "set1", value = "The first operand"),
-			@Param(name = "set2", value = "The second operand")
+			@Param(name = "collection2", value = "The second operand")
 		},
-		result = "The set that contains elements from set1 that are not in set2.",
+		result = "The set that contains elements from set1 that are not in collection2.",
 		examples = {
 			@Example(
-				expression = "Set{'a', 'b', 'c'}.sub(Set{'c', 'b', 'f'})", result = "Set{'a'}",
+				expression = "OrderedSet{'a', 'b', 'c'}.sub(OrderedSet{'c', 'b', 'f'})", result = "OrderedSet{'a'}",
 				others = {
 					@Other(
 						language = Other.ACCELEO_3,
-						expression = "Set{'a', 'b', 'c'}.removeAll(Set{'c', 'b', 'f'})",
-						result = "Set{'a'}"
+						expression = "OrderedSet{'a', 'b', 'c'}.removeAll(OrderedSet{'c', 'b', 'f'})",
+						result = "OrderedSet{'a'}"
 					)
 				}
 			)
@@ -920,12 +940,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sets"
 	)
 	// @formatter:on
-	public Set<Object> sub(Set<Object> set1, Set<Object> set2) {
-		if (set2.isEmpty()) {
+	public Set<Object> sub(Set<Object> set1, Collection<Object> collection2) {
+		if (collection2.isEmpty()) {
 			return set1;
 		} else {
 			Set<Object> result = Sets.newLinkedHashSet(set1);
-			for (Object obj : set2) {
+			for (Object obj : collection2) {
 				result.remove(obj);
 			}
 			return result;
@@ -934,20 +954,20 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the concatenation of the two specified sets.",
+		value = "Returns the concatenation of the given collection into the current set.",
 		params = {
-			@Param(name = "set1", value = "The first operand"),
-			@Param(name = "set2", value = "The second operand")
+			@Param(name = "set", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
 		},
-		result = "The sequence that contains all the elements from set1 and set2.",
+		result = "The current set including the elements of the given collection.",
 		examples = {
 			@Example(
-				expression = "Set{'a', 'b', 'c'}.add(Set{'c', 'b', 'f'})", result = "Set{'a', 'b', 'c', 'c', 'b', 'f'}",
+				expression = "OrderedSet{'a', 'b', 'c'}.add(OrderedSet{'c', 'b', 'f'})", result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}",
 				others = {
 					@Other(
 						language = Other.ACCELEO_3,
-						expression = "Set{'a', 'b', 'c'}.addAll(Set{'c', 'b', 'f'})",
-						result = "Set{'a', 'b', 'c', 'c', 'b', 'f'}"
+						expression = "OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})",
+						result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}"
 					)
 				}
 			)
@@ -955,8 +975,19 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sets"
 	)
 	// @formatter:on
-	public Set<Object> add(Set<Object> set1, Set<Object> set2) {
-		return Sets.union(set1, set2);
+	public Set<Object> add(Set<Object> set, Collection<Object> collection) {
+		final Set<Object> result;
+
+		if (set.isEmpty()) {
+			result = Sets.newLinkedHashSet(collection);
+		} else if (collection.isEmpty()) {
+			result = set;
+		} else {
+			result = Sets.newLinkedHashSet(set);
+			result.addAll(collection);
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -1006,7 +1037,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A filtered version of the specified set",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->select(str | str.equals('a'))", result = "Set{'a'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->select(str | str.equals('a'))", result = "OrderedSet{'a'}")
 		}
 	)
 	// @formatter:on
@@ -1043,7 +1074,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A filtered version of the specified set",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->reject(str | str.equals('a'))", result = "Set{'b', 'c'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->reject(str | str.equals('a'))", result = "OrderedSet{'b', 'c'}")
 		}
 	)
 	// @formatter:on
@@ -1117,7 +1148,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A transformed version of the specified set using the given lamba",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->collect(str | str.toUpper())", result = "Set{'A', 'B', 'C'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->collect(str | str.toUpper())", result = "OrderedSet{'A', 'B', 'C'}")
 		}
 	)
 	// @formatter:on
@@ -1186,7 +1217,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		result = "The size of the specified collection",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->size()", result = "3"),
-			@Example(expression = "Set{'a', 'b', 'c', 'd'}->size()", result = "4")
+			@Example(expression = "OrderedSet{'a', 'b', 'c', 'd'}->size()", result = "4")
 		}
 	)
 	// @formatter:on
@@ -1203,7 +1234,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A set containing all elements of source set plus the given object",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->including('d')", result = "Set{'a', 'b', 'c', 'd'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->including('d')", result = "OrderedSet{'a', 'b', 'c', 'd'}")
 		}
 	)
 	// @formatter:on
@@ -1226,7 +1257,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A set containing all elements of source set minus the given object",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->excluding('c')", result = "Set{'a', 'b'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->excluding('c')", result = "OrderedSet{'a', 'b'}")
 		}
 	)
 	// @formatter:on
@@ -1295,7 +1326,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A sequence with all the elements of the input collection",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->asSequence()", result = "Sequence{'a', 'b', 'c'}"),
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->asSequence()", result = "Sequence{'a', 'b', 'c'}"),
 			@Example(expression = "Sequence{'a', 'b', 'c'}->asSequence()", result = "Sequence{'a', 'b', 'c'}")
 		}
 	)
@@ -1317,8 +1348,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A set with all the elements of the input collection",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->asSet()", result = "Set{'a', 'b', 'c'}"),
-			@Example(expression = "Sequence{'a', 'b', 'c', 'c', 'a'}->asSet()", result = "Set{'a', 'b', 'c'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->asSet()", result = "OrderedSet{'a', 'b', 'c'}"),
+			@Example(expression = "Sequence{'a', 'b', 'c', 'c', 'a'}->asSet()", result = "OrderedSet{'a', 'b', 'c'}")
 		}
 	)
 	// @formatter:on
@@ -1339,8 +1370,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A set with all the elements of the input collection",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->asOrderedSet()", result = "Set{'a', 'b', 'c'}"),
-			@Example(expression = "Sequence{'a', 'b', 'c'}->asOrderedSet()", result = "Set{'a', 'b', 'c'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->asOrderedSet()", result = "OrderedSet{'a', 'b', 'c'}"),
+			@Example(expression = "Sequence{'a', 'b', 'c'}->asOrderedSet()", result = "OrderedSet{'a', 'b', 'c'}")
 		}
 	)
 	// @formatter:on
@@ -1392,7 +1423,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "The set in reserved order",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->reverse()", result = "Set{'c', 'b', 'a'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->reverse()", result = "OrderedSet{'c', 'b', 'a'}")
 		}
 	)
 	// @formatter:on
@@ -1408,7 +1439,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "\"true\" when the input collection is empty.",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->isEmpty()", result = "false"),
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->isEmpty()", result = "false"),
 			@Example(expression = "Sequence{}->isEmpty()", result = "true"),
 		}
 	)
@@ -1425,7 +1456,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "\"true\" when the input collection is not empty.",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->notEmpty()", result = "true"),
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->notEmpty()", result = "true"),
 			@Example(expression = "Sequence{}->notEmpty()", result = "false"),
 		}
 	)
@@ -1461,8 +1492,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A new set containing instances of the given EClassifier or null if the given set is null",
 		examples = {
-			@Example(expression = "Set{anEClass, anEAttribute, anEReference}->filter(ecore::EClass)", result = "Set{anEClass}"),
-			@Example(expression = "Set{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "Set{anEAttribute}"),
+			@Example(expression = "OrderedSet{anEClass, anEAttribute, anEReference}->filter(ecore::EClass)", result = "OrderedSet{anEClass}"),
+			@Example(expression = "OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "OrderedSet{anEAttribute}"),
 		}
 	)
 	// @formatter:on
@@ -1528,7 +1559,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		result = "A new sequence, or null if the given collection is null",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->sep('-')", result = "Sequence{'a', '-', 'b', '-', 'c'}"),
-			@Example(expression = "Set{'a', 'b', 'c'}->sep('-')", result = "Sequence{'a', '-', 'b', '-', 'c'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->sep('-')", result = "Sequence{'a', '-', 'b', '-', 'c'}")
 		}
 	)
 	// @formatter:on
@@ -1646,7 +1677,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A set containing all the elements of the first and second sets",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->union(Set{'d', 'c'})", result = "Set{'a', 'b', 'c', 'd'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->union(OrderedSet{'d', 'c'})", result = "OrderedSet{'a', 'b', 'c', 'd'}")
 		}
 	)
 	// @formatter:on
@@ -1717,8 +1748,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "\"1\" if the current set contains the given object, \"0\" otherwise.",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->count('d')", result = "0"),
-			@Example(expression = "Set{'a', 'b', 'c'}->count('a')", result = "1")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->count('d')", result = "0"),
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->count('a')", result = "1")
 		}
 	)
 	// @formatter:on
@@ -1838,8 +1869,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		result = "\"true\" if no elements of the second collection are contained in the first one " +
 				 "\"false\" otherwise.",
 		examples = {
-			@Example(expression = "Sequence{'a', 'b'}->excludesAll(Set{'f'})", result = "true"),
-			@Example(expression = "Sequence{'a', 'b'}->excludesAll(Set{'a', 'f'})", result = "false")
+			@Example(expression = "Sequence{'a', 'b'}->excludesAll(OrderedSet{'f'})", result = "true"),
+			@Example(expression = "Sequence{'a', 'b'}->excludesAll(OrderedSet{'a', 'f'})", result = "false")
 		}
 	)
 	// @formatter:on
@@ -1857,8 +1888,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		result = "\"true\" if all elements of the second collection are contained in the first one " +
 				 "\"false\" otherwise.",
 		examples = {
-			@Example(expression = "Sequence{'a', 'b', 'c'}->includesAll(Set{'a'})", result = "true"),
-			@Example(expression = "Sequence{'a', 'b', 'c'}->includesAll(Set{'a', 'f'})", result = "false"),
+			@Example(expression = "Sequence{'a', 'b', 'c'}->includesAll(OrderedSet{'a'})", result = "true"),
+			@Example(expression = "Sequence{'a', 'b', 'c'}->includesAll(OrderedSet{'a', 'f'})", result = "false"),
 		}
 	)
 	// @formatter:on
@@ -2051,7 +2082,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "The created set with elements from the given set that are also present in the given collection",
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->intersection(Set{'a', 'f'})", result = "Set{'a'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})", result = "OrderedSet{'a'}")
 		}
 	)
 	// @formatter:on
@@ -2076,7 +2107,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "The intersection of both collections",
 		examples = {
-			@Example(expression = "Sequence{'a', 'b', 'c'}->intersection(Set{'a', 'f'})", result = "Sequence{'a'}")
+			@Example(expression = "Sequence{'a', 'b', 'c'}->intersection(OrderedSet{'a', 'f'})", result = "Sequence{'a'}")
 		}
 	)
 	// @formatter:on
@@ -2100,7 +2131,7 @@ public class CollectionServices extends AbstractServiceProvider {
 																   "endIndex > set.size() || startIndex > endIndex).")
 		},
 		examples = {
-			@Example(expression = "Set{'a', 'b', 'c'}->subOrderedSet(1, 2)", result = "Set{'a', 'b'}")
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->subOrderedSet(1, 2)", result = "OrderedSet{'a', 'b'}")
 		}
 	)
 	// @formatter:on

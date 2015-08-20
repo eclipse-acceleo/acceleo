@@ -189,6 +189,13 @@ public class CollectionServicesTest {
 		assertEquals(obj2, list3.get(1));
 		assertEquals(obj3, list3.get(2));
 
+		List<Object> list4 = Lists.newArrayList(obj1, obj2, obj3);
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(obj1);
+		set1.add(obj2);
+		List<Object> list5 = collectionServices.add(list4, set1);
+		assertEquals(5, list5.size());
+
 		try {
 			collectionServices.add(list1, null);
 			fail("The collectionServices must trow a NullPointerException");
@@ -196,7 +203,7 @@ public class CollectionServicesTest {
 			// Do noting we expect to get a NPE
 		}
 		try {
-			collectionServices.add(null, list2);
+			collectionServices.add((List<Object>)null, list2);
 			fail("The collectionServices must trow a NullPointerException");
 		} catch (Exception exception) {
 			// Do noting we expect to get a NPE
@@ -228,6 +235,13 @@ public class CollectionServicesTest {
 		assertEquals(1, list3.size());
 		assertEquals(obj1, list3.get(0));
 
+		List<Object> list4 = Lists.newArrayList(obj1, obj2, obj3);
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(obj1);
+		set1.add(obj2);
+		List<Object> list5 = collectionServices.sub(list4, set1);
+		assertEquals(1, list5.size());
+
 		try {
 			collectionServices.sub(list1, null);
 			fail("The collectionServices must trow a NullPointerException");
@@ -235,7 +249,7 @@ public class CollectionServicesTest {
 			// Do noting we expect to get a NPE
 		}
 		try {
-			collectionServices.sub(null, list2);
+			collectionServices.sub((List<Object>)null, list2);
 			fail("The collectionServices must trow a NullPointerException");
 		} catch (Exception exception) {
 			// Do noting we expect to get a NPE
@@ -260,6 +274,13 @@ public class CollectionServicesTest {
 		assertTrue(list3.contains(obj2));
 		assertTrue(list3.contains(obj3));
 
+		Set<Object> set3 = Sets.newLinkedHashSet();
+		set3.add(obj1);
+		set3.add(obj2);
+		List<Object> list1 = Lists.newArrayList(obj1, obj2, obj3);
+		Set<Object> set4 = collectionServices.add(set3, list1);
+		assertEquals(3, set4.size());
+
 		try {
 			collectionServices.add(set1, null);
 			fail("The collectionServices must trow a NullPointerException");
@@ -267,7 +288,7 @@ public class CollectionServicesTest {
 			// Do noting we expect to get a NPE
 		}
 		try {
-			collectionServices.add(null, set2);
+			collectionServices.add((Set<Object>)null, set2);
 			fail("The collectionServices must trow a NullPointerException");
 		} catch (Exception exception) {
 			// Do noting we expect to get a NPE
@@ -299,6 +320,14 @@ public class CollectionServicesTest {
 		assertEquals(1, list3.size());
 		assertTrue(list3.contains(obj1));
 
+		Set<Object> set3 = Sets.newLinkedHashSet();
+		set3.add(obj1);
+		set3.add(obj2);
+		set3.add(obj3);
+		List<Object> list1 = Lists.newArrayList(obj1, obj2);
+		Set<Object> set4 = collectionServices.sub(set3, list1);
+		assertEquals(1, set4.size());
+
 		try {
 			collectionServices.sub(set1, null);
 			fail("The collectionServices must trow a NullPointerException");
@@ -306,7 +335,7 @@ public class CollectionServicesTest {
 			// Do noting we expect to get a NPE
 		}
 		try {
-			collectionServices.sub(null, set2);
+			collectionServices.sub((Set<Object>)null, set2);
 			fail("The collectionServices must trow a NullPointerException");
 		} catch (Exception exception) {
 			// Do noting we expect to get a NPE
