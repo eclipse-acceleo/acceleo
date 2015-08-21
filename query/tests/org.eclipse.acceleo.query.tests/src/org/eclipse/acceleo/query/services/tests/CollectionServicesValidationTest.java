@@ -1031,4 +1031,52 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		assertValidation(expectedReturnTypes, "union", parameterTypes);
 	}
 
+	@Test
+	public void testFilterList() {
+		final IType[] parameterTypes = new IType[] {
+				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+				eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterSet() {
+		final IType[] parameterTypes = new IType[] {
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+				eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
+		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEClass())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterListEClassifierSet() {
+		final IType[] parameterTypes = new IType[] {
+				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
+						.getEDataType()) };
+		final IType[] expectedReturnTypes = new IType[] {
+				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEDataType())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterSetEClassifierSet() {
+		final IType[] parameterTypes = new IType[] {
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
+						.getEDataType()) };
+		final IType[] expectedReturnTypes = new IType[] {
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEDataType())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
 }

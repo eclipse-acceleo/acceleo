@@ -45,6 +45,7 @@ import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -548,12 +549,22 @@ public class CollectionServices extends AbstractServiceProvider {
 				java.util.List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final EClassifierType rawType = new EClassifierType(queryEnvironment,
-					((EClassifierLiteralType)argTypes.get(1)).getType());
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, rawType));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, rawType));
+			final Set<EClassifierType> rawTypes = Sets.newLinkedHashSet();
+
+			if (argTypes.get(1) instanceof EClassifierType) {
+				rawTypes.add(new EClassifierType(queryEnvironment, ((EClassifierType)argTypes.get(1))
+						.getType()));
+			} else if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+				for (EClassifier eCls : ((EClassifierSetLiteralType)argTypes.get(1)).getEClassifiers()) {
+					rawTypes.add(new EClassifierType(queryEnvironment, eCls));
+				}
+			}
+			for (EClassifierType rawType : rawTypes) {
+				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SequenceType(queryEnvironment, rawType));
+				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					result.add(new SetType(queryEnvironment, rawType));
+				}
 			}
 
 			return result;
@@ -1571,23 +1582,55 @@ public class CollectionServices extends AbstractServiceProvider {
 		},
 		result = "A new set containing instances of the given EClassifier or null if the given set is null",
 		examples = {
-			@Example(expression = "OrderedSet{anEClass, anEAttribute, anEReference}->filter(ecore::EClass)", result = "OrderedSet{anEClass}"),
-			@Example(expression = "OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "OrderedSet{anEAttribute}"),
+			@Example(expression = "OrderedSet{anEClass, anEAttribute, anEReference}->filter(ecore::EClass)", result = "OrederedSet{anEClass}"),
+			@Example(expression = "OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "OrederedSet{anEAttribute}"),
 		}
 	)
-	// @formatter:on
-	public Set<Object> filter(Set<Object> set, final EClass eClassifier) {
+	public Set<Object> filter(Set<Object> set, final EClassifier eClassifier) {
 		final Set<Object> result;
 
 		if (set == null) {
 			result = null;
-		} else if (eClassifier == null) {
+		} else if (eClassifier != null) {
+			final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
+			eClassifiers.add(eClassifier);
+			result = filter(set, eClassifiers);
+		} else {
+			result = Sets.newLinkedHashSet();
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Keeps only instances of the given set of EClassifier from the given set.",
+		params = {
+			@Param(name = "set", value = "The input set to filter"),
+			@Param(name = "eClassifiers", value = "The set of type used to filters element in the set")
+		},
+		result = "A new set containing instances of the given set of EClassifiers or null if the given set is null",
+		examples = {
+				@Example(expression = "OrderedSet{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})", result = "OrderedSet{anEClass, anEReference}"),
+				@Example(expression = "OrderedSet{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})", result = "OrderedSet{anEAttribute, anEPackage}"),
+		}
+	)
+	// @formatter:on
+	public Set<Object> filter(Set<Object> set, final Set<EClassifier> eClassifiers) {
+		final Set<Object> result;
+
+		if (set == null) {
+			result = null;
+		} else if (eClassifiers == null || eClassifiers.isEmpty()) {
 			result = Sets.newLinkedHashSet();
 		} else {
 			result = Sets.newLinkedHashSet();
 			for (Object object : set) {
-				if (eClassifier.isInstance(object)) {
-					result.add(object);
+				for (EClassifier eClassifier : eClassifiers) {
+					if (eClassifier.isInstance(object)) {
+						result.add(object);
+						break;
+					}
 				}
 			}
 		}
@@ -1614,13 +1657,46 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		if (sequence == null) {
 			result = null;
-		} else if (eClassifier == null) {
+		} else if (eClassifier != null) {
+			final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
+			eClassifiers.add(eClassifier);
+			result = filter(sequence, eClassifiers);
+		} else {
+			result = Lists.newArrayList();
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Keeps only instances of the given EClassifier in the given sequence.",
+		params = {
+			@Param(name = "sequence", value = "The input sequence to filter"),
+			@Param(name = "eClassifiers", value = "The set of types used to filters element in the sequence")
+		},
+		result = "A new sequence containing instances of the given EClassifiers or null if the given sequence is null",
+		examples = {
+			@Example(expression = "Sequence{anEClass, anEAttribute, anEReference}->filter({ecore::EClass | ecore::EReference})", result = "Sequence{anEClass, anEReference}"),
+			@Example(expression = "Sequence{anEClass, anEAttribute, anEPackage}->filter({ecore::EStructuralFeature | ecore::EPacakge})", result = "Sequence{anEAttribute, anEPackage}"),
+		}
+	)
+	// @formatter:on
+	public List<Object> filter(List<Object> sequence, final Set<EClassifier> eClassifiers) {
+		final List<Object> result;
+
+		if (sequence == null) {
+			result = null;
+		} else if (eClassifiers == null || eClassifiers.isEmpty()) {
 			result = Lists.newArrayList();
 		} else {
 			result = Lists.newArrayList();
 			for (Object object : sequence) {
-				if (eClassifier.isInstance(object)) {
-					result.add(object);
+				for (EClassifier eClassifier : eClassifiers) {
+					if (eClassifier.isInstance(object)) {
+						result.add(object);
+						break;
+					}
 				}
 			}
 		}

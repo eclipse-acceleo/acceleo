@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.services.tests;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.LambdaType;
@@ -106,6 +108,14 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 	protected EClassifierType eClassifierLiteralType(EClassifier eClassifier) {
 		return new EClassifierLiteralType(getQueryEnvironment(), eClassifier);
+	}
+
+	protected EClassifierSetLiteralType eClassifierSetLiteralType(EClassifier... eClassifiers) {
+		final Set<EClassifier> eClss = new LinkedHashSet<EClassifier>(eClassifiers.length);
+		for (EClassifier eCls : eClassifiers) {
+			eClss.add(eCls);
+		}
+		return new EClassifierSetLiteralType(getQueryEnvironment(), eClss);
 	}
 
 	protected SequenceType sequenceType(IType type) {

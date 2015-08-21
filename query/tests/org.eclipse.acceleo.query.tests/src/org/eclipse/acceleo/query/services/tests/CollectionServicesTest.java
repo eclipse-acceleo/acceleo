@@ -10,12 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -47,6 +41,7 @@ import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -56,6 +51,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CollectionServicesTest {
 	CollectionServices collectionServices;
@@ -1065,7 +1066,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterSetNullSetAndNullType() {
-		final Set<Object> result = collectionServices.filter((Set<Object>)null, null);
+		final Set<Object> result = collectionServices.filter((Set<Object>)null, (EClassifier)null);
 
 		assertEquals(null, result);
 	}
@@ -1086,7 +1087,7 @@ public class CollectionServicesTest {
 		set.add(EcorePackage.eINSTANCE);
 		set.add(EcorePackage.eINSTANCE.getEClass());
 
-		final Set<Object> result = collectionServices.filter(set, null);
+		final Set<Object> result = collectionServices.filter(set, (EClassifier)null);
 
 		assertEquals(0, result.size());
 	}
@@ -1107,7 +1108,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterListNullListAndNullType() {
-		final List<Object> result = collectionServices.filter((List<Object>)null, null);
+		final List<Object> result = collectionServices.filter((List<Object>)null, (EClassifier)null);
 
 		assertEquals(null, result);
 	}
@@ -1128,7 +1129,7 @@ public class CollectionServicesTest {
 		list.add(EcorePackage.eINSTANCE);
 		list.add(EcorePackage.eINSTANCE.getEClass());
 
-		final List<Object> result = collectionServices.filter(list, null);
+		final List<Object> result = collectionServices.filter(list, (EClassifier)null);
 
 		assertEquals(0, result.size());
 	}
@@ -1142,6 +1143,96 @@ public class CollectionServicesTest {
 		list.add(EcorePackage.eINSTANCE.getEClass());
 
 		final List<Object> result = collectionServices.filter(list, EcorePackage.eINSTANCE.getEPackage());
+
+		assertEquals(1, result.size());
+		assertTrue(result.contains(EcorePackage.eINSTANCE));
+	}
+
+	@Test
+	public void testFilterSetNullSetAndNullTypeEClassifierSet() {
+		final Set<Object> result = collectionServices.filter((Set<Object>)null, (Set<EClassifier>)null);
+
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void testFilterSetNullSetEClassifierSet() {
+		final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
+		eClassifiers.add(EcorePackage.eINSTANCE.getEClass());
+		final Set<Object> result = collectionServices.filter((Set<Object>)null, eClassifiers);
+
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void testFilterSetNullTypeEClassifierSet() {
+		final Set<Object> set = Sets.newLinkedHashSet();
+		set.add(this);
+		set.add("");
+		set.add(EcorePackage.eINSTANCE);
+		set.add(EcorePackage.eINSTANCE.getEClass());
+
+		final Set<Object> result = collectionServices.filter(set, (Set<EClassifier>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testFilterSetEClassifierSet() {
+		final Set<Object> set = Sets.newLinkedHashSet();
+		set.add(this);
+		set.add("");
+		set.add(EcorePackage.eINSTANCE);
+		set.add(EcorePackage.eINSTANCE.getEClass());
+
+		final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
+		eClassifiers.add(EcorePackage.eINSTANCE.getEPackage());
+		final Set<Object> result = collectionServices.filter(set, eClassifiers);
+
+		assertEquals(1, result.size());
+		assertTrue(result.contains(EcorePackage.eINSTANCE));
+	}
+
+	@Test
+	public void testFilterListNullListAndNullTypeEClassifierSet() {
+		final List<Object> result = collectionServices.filter((List<Object>)null, (Set<EClassifier>)null);
+
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void testFilterListNullListEClassifierSet() {
+		final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
+		eClassifiers.add(EcorePackage.eINSTANCE.getEClass());
+		final List<Object> result = collectionServices.filter((List<Object>)null, eClassifiers);
+
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void testFilterListNullTypeEClassifierSet() {
+		final List<Object> list = Lists.newArrayList();
+		list.add(this);
+		list.add("");
+		list.add(EcorePackage.eINSTANCE);
+		list.add(EcorePackage.eINSTANCE.getEClass());
+
+		final List<Object> result = collectionServices.filter(list, (Set<EClassifier>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testFilterListEClassifierSet() {
+		final List<Object> list = Lists.newArrayList();
+		list.add(this);
+		list.add("");
+		list.add(EcorePackage.eINSTANCE);
+		list.add(EcorePackage.eINSTANCE.getEClass());
+
+		final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
+		eClassifiers.add(EcorePackage.eINSTANCE.getEPackage());
+		final List<Object> result = collectionServices.filter(list, eClassifiers);
 
 		assertEquals(1, result.size());
 		assertTrue(result.contains(EcorePackage.eINSTANCE));

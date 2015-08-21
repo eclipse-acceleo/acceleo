@@ -220,7 +220,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(55, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -272,7 +272,7 @@ public class CompletionTest {
 				.getProposals(new BasicFilter(arrowCompletionResult));
 		assertEquals("", arrowCompletionResult.getPrefix());
 		assertEquals("", arrowCompletionResult.getRemaining());
-		assertEquals(53, arrowCompletionProposals.size());
+		assertEquals(55, arrowCompletionProposals.size());
 
 		List<String> arrowProposals = new ArrayList<String>();
 		for (ICompletionProposal arrowCompletionProposal : arrowCompletionProposals) {
@@ -472,7 +472,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self->)", 36, variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(55, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -503,7 +503,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(55, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -527,7 +527,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(55, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -887,7 +887,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}->", 17,
 				variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(55, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
