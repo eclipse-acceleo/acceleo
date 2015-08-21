@@ -35,6 +35,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
@@ -737,113 +738,6 @@ public class BuildTest {
 				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
 		assertExpression(build, BooleanLiteral.class, 35, 39, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-	}
-
-	@Test
-	public void setLitEmptyTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{}");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, SetInExtensionLiteral.class, 0, 2, ast);
-		assertEquals(0, ((SetInExtensionLiteral)ast).getValues().size());
-	}
-
-	@Test
-	public void setLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ self }");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, SetInExtensionLiteral.class, 0, 8, ast);
-		assertEquals(1, ((SetInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
-	}
-
-	@Test
-	public void setLitWithValuesTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ self, true }");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, SetInExtensionLiteral.class, 0, 14, ast);
-		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
-		assertExpression(build, BooleanLiteral.class, 8, 12, ((SetInExtensionLiteral)ast).getValues().get(1));
-	}
-
-	@Test
-	public void setLitWithValuesCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ self, true }.toString()");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, Call.class, 0, 25, ast);
-		assertEquals("toString", ((Call)ast).getServiceName());
-		assertEquals(1, ((Call)ast).getArguments().size());
-		assertExpression(build, SetInExtensionLiteral.class, 0, 14, ((Call)ast).getArguments().get(0));
-	}
-
-	@Test
-	public void seqLitEmptyTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[]");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 2, ast);
-		assertEquals(0, ((SequenceInExtensionLiteral)ast).getValues().size());
-	}
-
-	@Test
-	public void seqLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[ self ]");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 8, ast);
-		assertEquals(1, ((SequenceInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
-	}
-
-	@Test
-	public void seqLitWithValuesTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[ self, true ]");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 14, ast);
-		assertEquals(2, ((SequenceInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
-		assertExpression(build, BooleanLiteral.class, 8, 12, ((SequenceInExtensionLiteral)ast).getValues()
-				.get(1));
-	}
-
-	@Test
-	public void seqLitWithValuesCallTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[ self, true ].toString()");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
-		assertEquals(0, build.getDiagnostic().getChildren().size());
-		assertExpression(build, Call.class, 0, 25, ast);
-		assertEquals("toString", ((Call)ast).getServiceName());
-		assertEquals(1, ((Call)ast).getArguments().size());
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 14, ((Call)ast).getArguments().get(0));
 	}
 
 	@Test
@@ -1597,105 +1491,6 @@ public class BuildTest {
 	}
 
 	@Test
-	public void incompletSetLitTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertExpression(build, SetInExtensionLiteral.class, 0, 1, ast);
-		assertEquals(0, ((SetInExtensionLiteral)ast).getValues().size());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
-	}
-
-	@Test
-	public void incompletSetLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ self");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertExpression(build, SetInExtensionLiteral.class, 0, 6, ast);
-		assertEquals(1, ((SetInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
-	}
-
-	@Test
-	public void incompletSetLitWithValueAndCommaTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("{ self,");
-		Expression ast = build.getAst();
-
-		assertEquals(1, build.getErrors().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertExpression(build, SetInExtensionLiteral.class, 0, 7, ast);
-		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SetInExtensionLiteral)ast).getValues().get(0));
-		assertExpression(build, ErrorExpression.class, 7, 7, ((SetInExtensionLiteral)ast).getValues().get(1));
-		assertEquals(build.getErrors().get(0), ((SetInExtensionLiteral)ast).getValues().get(1));
-	}
-
-	@Test
-	public void incompletSeqLitTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ']' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 1, ast);
-		assertEquals(0, ((SequenceInExtensionLiteral)ast).getValues().size());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
-	}
-
-	@Test
-	public void incompletSeqLitWithValueTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[ self");
-		Expression ast = build.getAst();
-
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ']' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 6, ast);
-		assertEquals(1, ((SequenceInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
-	}
-
-	@Test
-	public void incompletSeqLitWithValueAndCommaTest() {
-		IQueryBuilderEngine.AstResult build = engine.build("[ self,");
-		Expression ast = build.getAst();
-
-		assertEquals(1, build.getErrors().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-		assertExpression(build, SequenceInExtensionLiteral.class, 0, 7, ast);
-		assertEquals(2, ((SequenceInExtensionLiteral)ast).getValues().size());
-		assertExpression(build, VarRef.class, 2, 6, ((SequenceInExtensionLiteral)ast).getValues().get(0));
-		assertExpression(build, ErrorExpression.class, 7, 7, ((SequenceInExtensionLiteral)ast).getValues()
-				.get(1));
-		assertEquals(build.getErrors().get(0), ((SequenceInExtensionLiteral)ast).getValues().get(1));
-	}
-
-	@Test
 	public void incompletExplicitSeqLitTest() {
 		IQueryBuilderEngine.AstResult build = engine.build("Sequence{");
 		Expression ast = build.getAst();
@@ -2291,6 +2086,91 @@ public class BuildTest {
 		assertEquals("not", not.getServiceName());
 		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
 		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void testClassifierSetType() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("{ecore::EClass | ecore::EPackage | ecore::EAttribute}");
+		Expression ast = build.getAst();
+
+		assertExpression(build, TypeSetLiteral.class, 0, 53, ast);
+		assertEquals(3, ((TypeSetLiteral)ast).getTypes().size());
+		assertExpression(build, TypeLiteral.class, 1, 14, (TypeLiteral)((TypeSetLiteral)ast).getTypes()
+				.get(0));
+		assertExpression(build, TypeLiteral.class, 17, 32, (TypeLiteral)((TypeSetLiteral)ast).getTypes().get(
+				1));
+		assertExpression(build, TypeLiteral.class, 35, 52, (TypeLiteral)((TypeSetLiteral)ast).getTypes().get(
+				2));
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void incompletClassifierSetType() {
+		IQueryBuilderEngine.AstResult build = engine.build("{");
+		Expression ast = build.getAst();
+
+		assertExpression(build, TypeSetLiteral.class, 0, 1, ast);
+		assertEquals(1, ((TypeSetLiteral)ast).getTypes().size());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals(((TypeSetLiteral)ast).getTypes().get(0), build.getDiagnostic().getChildren().get(0)
+				.getData().get(0));
+		assertEquals("missing classifier literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertExpression(build, TypeSetLiteral.class, 0, 1, ast);
+	}
+
+	@Test
+	public void incompletClassifierSetTypeEmpty() {
+		IQueryBuilderEngine.AstResult build = engine.build("{}");
+		Expression ast = build.getAst();
+
+		assertExpression(build, TypeSetLiteral.class, 0, 2, ast);
+		assertEquals(1, ((TypeSetLiteral)ast).getTypes().size());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals(((TypeSetLiteral)ast).getTypes().get(0), build.getDiagnostic().getChildren().get(0)
+				.getData().get(0));
+		assertEquals("missing classifier literal", build.getDiagnostic().getChildren().get(0).getMessage());
+	}
+
+	@Test
+	public void incompletClassifierSetTypeWithValue() {
+		IQueryBuilderEngine.AstResult build = engine.build("{ecore::EClass");
+		Expression ast = build.getAst();
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing '}' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertExpression(build, TypeSetLiteral.class, 0, 14, ast);
+		assertEquals(1, ((TypeSetLiteral)ast).getTypes().size());
+		assertExpression(build, TypeLiteral.class, 1, 14, ((TypeSetLiteral)ast).getTypes().get(0));
+	}
+
+	@Test
+	public void incompletClassifierSetTypeWithValueAndPipe() {
+		IQueryBuilderEngine.AstResult build = engine.build("{ecore::EClass |");
+		Expression ast = build.getAst();
+
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing classifier literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertExpression(build, TypeSetLiteral.class, 0, 16, ast);
+		assertEquals(2, ((TypeSetLiteral)ast).getTypes().size());
+		assertExpression(build, TypeLiteral.class, 1, 14, ((TypeSetLiteral)ast).getTypes().get(0));
+		assertExpression(build, ErrorTypeLiteral.class, 16, 16, ((TypeSetLiteral)ast).getTypes().get(1));
+		assertEquals(build.getErrors().get(0), ((TypeSetLiteral)ast).getTypes().get(1));
 	}
 
 }

@@ -13,44 +13,42 @@ package org.eclipse.acceleo.query.validation.type;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EcorePackage;
 
 /**
- * Set validation type.
+ * A Set of {@link EClassifier} literal.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class SetType extends AbstractCollectionType {
+public class EClassifierSetLiteralType extends SetType {
+
+	/**
+	 * The {@link Set} of {@link EClassifier}.
+	 */
+	private final Set<EClassifier> eClassifiers;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param type
-	 *            the {@link IType}
+	 * @param eClassifiers
+	 *            the {@link Set} of {@link EClassifier}
 	 */
-	public SetType(IReadOnlyQueryEnvironment queryEnvironment, IType type) {
-		super(queryEnvironment, type);
+	public EClassifierSetLiteralType(IReadOnlyQueryEnvironment queryEnvironment, Set<EClassifier> eClassifiers) {
+		super(queryEnvironment,
+				new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClassifier()));
+		this.eClassifiers = eClassifiers;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.validation.type.IType#getType()
+	 * Gets the {@link Set} of {@link EClassifier}.
+	 * 
+	 * @return the {@link Set} of {@link EClassifier}
 	 */
-	@Override
-	public Class<?> getType() {
-		return Set.class;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Set(" + getCollectionType().toString() + ")";
+	public Set<EClassifier> getEClassifiers() {
+		return eClassifiers;
 	}
 
 }

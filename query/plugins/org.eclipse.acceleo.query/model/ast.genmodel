@@ -50,6 +50,9 @@
     <genClasses ecoreClass="ast.ecore#//TypeLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//TypeLiteral/value"/>
     </genClasses>
+    <genClasses ecoreClass="ast.ecore#//TypeSetLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//TypeSetLiteral/types"/>
+    </genClasses>
     <genClasses ecoreClass="ast.ecore#//CollectionTypeLiteral">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//CollectionTypeLiteral/elementType"/>
     </genClasses>

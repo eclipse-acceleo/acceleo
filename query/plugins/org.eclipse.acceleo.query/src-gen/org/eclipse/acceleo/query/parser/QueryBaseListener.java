@@ -225,19 +225,6 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSetLit(@NotNull QueryParser.SetLitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSetLit(@NotNull QueryParser.SetLitContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterImplies(@NotNull QueryParser.ImpliesContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -342,6 +329,19 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNot(@NotNull QueryParser.NotContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -414,32 +414,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSeqLit(@NotNull QueryParser.SeqLitContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSeqLit(@NotNull QueryParser.SeqLitContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -576,6 +550,19 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterClsType(@NotNull QueryParser.ClsTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClsType(@NotNull QueryParser.ClsTypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStrType(@NotNull QueryParser.StrTypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -583,6 +570,19 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStrType(@NotNull QueryParser.StrTypeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

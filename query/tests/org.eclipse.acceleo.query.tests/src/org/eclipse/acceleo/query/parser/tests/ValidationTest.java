@@ -29,17 +29,20 @@ import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ValidationTest {
 
@@ -100,7 +103,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -126,7 +129,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -152,7 +155,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEIntegerObject(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -166,7 +169,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEDoubleObject(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -180,7 +183,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -194,7 +197,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -208,10 +211,10 @@ public class ValidationTest {
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
 		possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -225,7 +228,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -253,7 +256,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -267,7 +270,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEInt(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -296,7 +299,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEInt(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -311,7 +314,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
@@ -346,7 +349,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -360,7 +363,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierLiteralType);
+		assertTrue(possibleType instanceof EClassifierLiteralType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -386,7 +389,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(AnydslPackage.eINSTANCE.getPart(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -413,48 +416,48 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof ClassType);
+		assertTrue(possibleType instanceof ClassType);
 		assertEquals(null, ((ClassType)possibleType).getType());
 	}
 
 	@Test
 	public void testSetInExtensionLiteral() {
-		final IValidationResult validationResult = engine
-				.validate("{self, self, true, false}", variableTypes);
+		final IValidationResult validationResult = engine.validate("OrderedSet{self, self, true, false}",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof SetType);
-		assertEquals(true, ((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)((SetType)possibleType)
 				.getCollectionType()).getType());
 		possibleType = it.next();
-		assertEquals(true, possibleType instanceof SetType);
-		assertEquals(true, ((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), ((EClassifierType)((SetType)possibleType)
 				.getCollectionType()).getType());
 	}
 
 	@Test
 	public void testSequenceInExtensionLiteral() {
-		final IValidationResult validationResult = engine
-				.validate("[self, self, true, false]", variableTypes);
+		final IValidationResult validationResult = engine.validate("Sequence{self, self, true, false}",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof SequenceType);
-		assertEquals(true, ((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)((SequenceType)possibleType)
 				.getCollectionType()).getType());
 		possibleType = it.next();
-		assertEquals(true, possibleType instanceof SequenceType);
-		assertEquals(true, ((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(),
 				((EClassifierType)((SequenceType)possibleType).getCollectionType()).getType());
 	}
@@ -510,10 +513,10 @@ public class ValidationTest {
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
@@ -534,10 +537,10 @@ public class ValidationTest {
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
@@ -558,10 +561,10 @@ public class ValidationTest {
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
@@ -584,7 +587,7 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
@@ -602,9 +605,53 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertEquals(true, possibleType instanceof EClassifierType);
+		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void typeSetLiteral() {
+		final IValidationResult validationResult = engine.validate(
+				"{ecore::EClass | ecore::EPackage | ecore::EAttribute}", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierSetLiteralType);
+		final EClassifierSetLiteralType eClassifierSetLiteralType = (EClassifierSetLiteralType)possibleType;
+		assertEquals(3, eClassifierSetLiteralType.getEClassifiers().size());
+		final Iterator<EClassifier> itECls = eClassifierSetLiteralType.getEClassifiers().iterator();
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), itECls.next());
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), itECls.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), itECls.next());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void typeSetLiteralDuplicates() {
+		final IValidationResult validationResult = engine.validate(
+				"{ecore::EClass | ecore::EPackage | ecore::EAttribute | ecore::EPackage}", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierSetLiteralType);
+		final EClassifierSetLiteralType eClassifierSetLiteralType = (EClassifierSetLiteralType)possibleType;
+		assertEquals(3, eClassifierSetLiteralType.getEClassifiers().size());
+		final Iterator<EClassifier> itECls = eClassifierSetLiteralType.getEClassifiers().iterator();
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), itECls.next());
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), itECls.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), itECls.next());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
+				"EClassifierLiteral=EPackage is duplicated in the type set literal.", 0, 71);
 	}
 
 	/**

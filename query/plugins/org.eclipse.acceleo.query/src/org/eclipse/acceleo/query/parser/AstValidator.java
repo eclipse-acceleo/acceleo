@@ -44,6 +44,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
@@ -57,6 +58,7 @@ import org.eclipse.acceleo.query.runtime.impl.ValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -789,6 +791,30 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			possibleTypes = services.getIType((Class<?>)object.getValue());
 		} else {
 			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
+		}
+
+		return checkWarningsAndErrors(object, possibleTypes);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeSetLiteral(org.eclipse.acceleo.query.ast.TypeSetLiteral)
+	 */
+	@Override
+	public Set<IType> caseTypeSetLiteral(TypeSetLiteral object) {
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
+		final Set<EClassifier> types = new LinkedHashSet<EClassifier>();
+		final EClassifierSetLiteralType possibleType = new EClassifierSetLiteralType(services
+				.getQueryEnvironment(), types);
+		possibleTypes.add(possibleType);
+
+		for (TypeLiteral type : object.getTypes()) {
+			if (!types.add((EClassifier)type.getValue())) {
+				possibleTypes.add(services.nothing(
+						"EClassifierLiteral=%s is duplicated in the type set literal.", ((EClassifier)type
+								.getValue()).getName()));
+			}
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);

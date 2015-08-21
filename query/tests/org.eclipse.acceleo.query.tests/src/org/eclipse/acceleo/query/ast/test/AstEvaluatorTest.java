@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
@@ -43,10 +48,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class AstEvaluatorTest extends AstBuilder {
 
@@ -350,9 +351,27 @@ public class AstEvaluatorTest extends AstBuilder {
 		assertTrue(message2.contains("Couldn't find the concat"));
 	}
 
+	@Test
+	public void testTypeSetLiteral() {
+
+		final List<TypeLiteral> types = new ArrayList<TypeLiteral>();
+		types.add(typeLiteral(EcorePackage.eINSTANCE.getEClass()));
+		types.add(typeLiteral(EcorePackage.eINSTANCE.getEPackage()));
+		types.add(typeLiteral(EcorePackage.eINSTANCE.getEAttribute()));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		final EvaluationResult result = evaluator.eval(varDefinitions, typeSetLiteral(types));
+		assertTrue(result.getResult() instanceof Set);
+		assertEquals(3, ((Set<?>)result.getResult()).size());
+		final Iterator<?> it = ((Set<?>)result.getResult()).iterator();
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), it.next());
+	}
+
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {
 		assertEquals(expected, result.getResult());
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
 	}
+
 }

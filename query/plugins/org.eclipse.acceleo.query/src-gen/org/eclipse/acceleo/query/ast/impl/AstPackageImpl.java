@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
@@ -133,6 +134,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass typeLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass typeSetLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -551,6 +559,24 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 */
 	public EAttribute getTypeLiteral_Value() {
 		return (EAttribute)typeLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getTypeSetLiteral() {
+		return typeSetLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getTypeSetLiteral_Types() {
+		return (EReference)typeSetLiteralEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -993,6 +1019,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		typeLiteralEClass = createEClass(TYPE_LITERAL);
 		createEAttribute(typeLiteralEClass, TYPE_LITERAL__VALUE);
 
+		typeSetLiteralEClass = createEClass(TYPE_SET_LITERAL);
+		createEReference(typeSetLiteralEClass, TYPE_SET_LITERAL__TYPES);
+
 		collectionTypeLiteralEClass = createEClass(COLLECTION_TYPE_LITERAL);
 		createEReference(collectionTypeLiteralEClass, COLLECTION_TYPE_LITERAL__ELEMENT_TYPE);
 
@@ -1099,6 +1128,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		booleanLiteralEClass.getESuperTypes().add(this.getLiteral());
 		enumLiteralEClass.getESuperTypes().add(this.getLiteral());
 		typeLiteralEClass.getESuperTypes().add(this.getLiteral());
+		typeSetLiteralEClass.getESuperTypes().add(this.getLiteral());
 		collectionTypeLiteralEClass.getESuperTypes().add(this.getTypeLiteral());
 		lambdaEClass.getESuperTypes().add(this.getLiteral());
 		nullLiteralEClass.getESuperTypes().add(this.getLiteral());
@@ -1185,9 +1215,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		initEClass(typeLiteralEClass, TypeLiteral.class, "TypeLiteral", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getTypeLiteral_Value(), this.getObjectType(), "value", null, 0, 1, TypeLiteral.class,
+		initEAttribute(getTypeLiteral_Value(), this.getObjectType(), "value", null, 1, 1, TypeLiteral.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
+
+		initEClass(typeSetLiteralEClass, TypeSetLiteral.class, "TypeSetLiteral", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTypeSetLiteral_Types(), this.getTypeLiteral(), null, "types", null, 1, -1,
+				TypeSetLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(collectionTypeLiteralEClass, CollectionTypeLiteral.class, "CollectionTypeLiteral",
 				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

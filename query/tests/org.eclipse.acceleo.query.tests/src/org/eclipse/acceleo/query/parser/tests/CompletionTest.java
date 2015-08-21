@@ -826,7 +826,77 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
-	public static void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
+	public void testTypeLiteralInTypeSetLiteral() {
+		final ICompletionResult completionResult = engine.getCompletion("{ecore::", 8, variableTypes);
+
+		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testTypeSetLiteral() {
+		final ICompletionResult completionResult = engine.getCompletion("{", 1, variableTypes);
+
+		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testTypeLiteralInTypeSetLiteralInServiceCall() {
+		final ICompletionResult completionResult = engine.getCompletion("self->filter({ecore::", 21,
+				variableTypes);
+
+		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testTypeSetLiteralInServiceCall() {
+		final ICompletionResult completionResult = engine.getCompletion("self->filter({", 14, variableTypes);
+
+		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testTypeSetLiteralDot() {
+		final ICompletionResult completionResult = engine
+				.getCompletion("{ecore::EClass}.", 16, variableTypes);
+
+		assertEquals(36, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testTypeSetLiteralArrow() {
+		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}->", 17,
+				variableTypes);
+
+		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+	}
+
+	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);
 		}
@@ -884,7 +954,7 @@ public class CompletionTest {
 					} else {
 						cls = (Class<?>)type;
 					}
-					assertEquals(true, ((ServiceCompletionProposal)prop).getObject().getServiceMethod()
+					assertTrue(((ServiceCompletionProposal)prop).getObject().getServiceMethod()
 							.getParameterTypes()[0].isAssignableFrom(cls));
 				}
 			}

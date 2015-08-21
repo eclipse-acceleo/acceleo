@@ -323,7 +323,7 @@ public class EvaluationTest {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
 
-		final EvaluationResult result = engine.eval(builder.build("{self, self, true, false}"),
+		final EvaluationResult result = engine.eval(builder.build("OrderedSet{self, self, true, false}"),
 				varDefinitions);
 		assertTrue(result.getResult() instanceof Set);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
@@ -343,7 +343,7 @@ public class EvaluationTest {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
 
-		final EvaluationResult result = engine.eval(builder.build("[self, self, true, false]"),
+		final EvaluationResult result = engine.eval(builder.build("Sequence{self, self, true, false}"),
 				varDefinitions);
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
@@ -368,7 +368,7 @@ public class EvaluationTest {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("selector", "str");
 		EvaluationResult result = engine.eval(builder
-				.build("['str1','str2','out']->select(i | i.startsWith(selector))"), varDefinitions);
+				.build("Sequence{'str1','str2','out'}->select(i | i.startsWith(selector))"), varDefinitions);
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
@@ -470,6 +470,24 @@ public class EvaluationTest {
 		varDefinitions.put("x", "suffix");
 		assertOKResultEquals("prefixsuffix", engine.eval(builder.build("let x='prefix', y='suffix' in x+y"),
 				varDefinitions));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void typeSetLiteral() {
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		EvaluationResult result = engine.eval(builder
+				.build("{ecore::EClass | ecore::EPackage | ecore::EAttribute}"), varDefinitions);
+
+		assertTrue(result.getResult() instanceof Set);
+		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
+		assertTrue(result.getDiagnostic().getChildren().isEmpty());
+		Set<Object> listResult = (Set<Object>)result.getResult();
+		assertEquals(3, listResult.size());
+		Iterator<Object> it = listResult.iterator();
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), it.next());
 	}
 
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {

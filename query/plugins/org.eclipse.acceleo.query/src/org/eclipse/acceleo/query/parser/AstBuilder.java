@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.emf.ecore.EClassifier;
@@ -645,6 +646,22 @@ public class AstBuilder {
 			let.getBindings().add(binding);
 		}
 		return let;
+	}
+
+	/**
+	 * Creates a new {@link TypeSetLiteral}.
+	 * 
+	 * @param types
+	 *            the {@link TypeSetLiteral#getValues() types}
+	 * @return the created {@link TypeSetLiteral}
+	 */
+	public TypeSetLiteral typeSetLiteral(List<TypeLiteral> types) {
+		final TypeSetLiteral typeSetLiteral = (TypeSetLiteral)EcoreUtil
+				.create(AstPackage.Literals.TYPE_SET_LITERAL);
+
+		typeSetLiteral.getTypes().addAll(types);
+
+		return typeSetLiteral;
 	}
 
 }

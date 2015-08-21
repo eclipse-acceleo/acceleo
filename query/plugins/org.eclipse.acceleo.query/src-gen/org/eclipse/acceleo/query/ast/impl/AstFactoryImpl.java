@@ -37,6 +37,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
@@ -107,6 +108,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createEnumLiteral();
 			case AstPackage.TYPE_LITERAL:
 				return createTypeLiteral();
+			case AstPackage.TYPE_SET_LITERAL:
+				return createTypeSetLiteral();
 			case AstPackage.COLLECTION_TYPE_LITERAL:
 				return createCollectionTypeLiteral();
 			case AstPackage.LAMBDA:
@@ -287,6 +290,16 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public TypeLiteral createTypeLiteral() {
 		TypeLiteralImpl typeLiteral = new TypeLiteralImpl();
 		return typeLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public TypeSetLiteral createTypeSetLiteral() {
+		TypeSetLiteralImpl typeSetLiteral = new TypeSetLiteralImpl();
+		return typeSetLiteral;
 	}
 
 	/**

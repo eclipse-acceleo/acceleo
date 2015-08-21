@@ -213,19 +213,6 @@ public interface QueryListener extends ParseTreeListener {
 	void exitStringLit(@NotNull QueryParser.StringLitContext ctx);
 
 	/**
-	 * Enter a parse tree produced by the {@code SetLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterSetLit(@NotNull QueryParser.SetLitContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code SetLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitSetLit(@NotNull QueryParser.SetLitContext ctx);
-
-	/**
 	 * Enter a parse tree produced by the {@code Implies}
 	 * labeled alternative in {@link QueryParser#expression}.
 	 * @param ctx the parse tree
@@ -322,6 +309,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitEntry(@NotNull QueryParser.EntryContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code ClassifierSetType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ClassifierSetType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code Not}
 	 * labeled alternative in {@link QueryParser#expression}.
 	 * @param ctx the parse tree
@@ -398,32 +398,6 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code SeqLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterSeqLit(@NotNull QueryParser.SeqLitContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code SeqLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitSeqLit(@NotNull QueryParser.SeqLitContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code ClassifierType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ClassifierType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code SeqType}
@@ -552,6 +526,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitBooleanType(@NotNull QueryParser.BooleanTypeContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code ClsType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterClsType(@NotNull QueryParser.ClsTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ClsType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitClsType(@NotNull QueryParser.ClsTypeContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code StrType}
 	 * labeled alternative in {@link QueryParser#typeLiteral}.
 	 * @param ctx the parse tree
@@ -563,6 +550,17 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStrType(@NotNull QueryParser.StrTypeContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#classifierType}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#classifierType}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassifierType(@NotNull QueryParser.ClassifierTypeContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link QueryParser#compOp}.

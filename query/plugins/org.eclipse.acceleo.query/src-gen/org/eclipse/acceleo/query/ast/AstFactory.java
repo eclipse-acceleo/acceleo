@@ -108,6 +108,15 @@ public interface AstFactory extends EFactory {
 	TypeLiteral createTypeLiteral();
 
 	/**
+	 * Returns a new object of class '<em>Type Set Literal</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @return a new object of class '<em>Type Set Literal</em>'.
+	 * @generated
+	 */
+	TypeSetLiteral createTypeSetLiteral();
+
+	/**
 	 * Returns a new object of class '<em>Collection Type Literal</em>'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

@@ -56,6 +56,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.QueryParser.AddContext;
@@ -65,6 +66,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.BindingContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BooleanTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallServiceContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ClassifierSetTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CompContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext;
@@ -90,10 +92,8 @@ import org.eclipse.acceleo.query.parser.QueryParser.NullLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.OrContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealTypeContext;
-import org.eclipse.acceleo.query.parser.QueryParser.SeqLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.SeqTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ServiceCallContext;
-import org.eclipse.acceleo.query.parser.QueryParser.SetLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.SetTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.StrTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.StringLitContext;
@@ -531,6 +531,19 @@ public class AstBuilderListener extends QueryBaseListener {
 		private void defaultError(Object offendingSymbol, RecognitionException e) {
 			errorRule = e.getCtx().getRuleIndex();
 			switch (e.getCtx().getRuleIndex()) {
+				case QueryParser.RULE_classifierType:
+					final ErrorTypeLiteral errorType;
+					if (e.getCtx().getChildCount() > 0) {
+						final String ePackageName = e.getCtx().getChild(0).getText();
+						errorType = builder.errorTypeLiteral(ePackageName);
+					} else {
+						errorType = builder.errorTypeLiteral();
+					}
+					startPositions.put(errorType, Integer.valueOf(((ParserRuleContext)e.getCtx()).start
+							.getStartIndex()));
+					endPositions.put(errorType, Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+					pushError(errorType, "missing classifier literal");
+					break;
 				case QueryParser.RULE_expression:
 					final ErrorExpression errorExpression = builder.errorExpression();
 					final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
@@ -1281,21 +1294,6 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitSetLit(org.eclipse.acceleo.query.parser.QueryParser.SetLitContext)
-	 */
-	@Override
-	public void exitSetLit(SetLitContext ctx) {
-		final SetInExtensionLiteral setInExtension = builder.setInExtension(getExpressions(ctx));
-
-		startPositions.put(setInExtension, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(setInExtension, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		push(setInExtension);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitExplicitSetLit(org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext)
 	 */
 	@Override
@@ -1324,27 +1322,11 @@ public class AstBuilderListener extends QueryBaseListener {
 		final int nbExpressions = (ctx.getChild(1).getChildCount() + 1) / 2;
 		final Expression[] expressions = new Expression[nbExpressions];
 
-		for (int i = nbExpressions - 1; i >= 0; --i) {
+		for (int i = nbExpressions - 1; i >= 0; i--) {
 			expressions[i] = pop();
 		}
 
 		return Arrays.asList(expressions);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitSeqLit(org.eclipse.acceleo.query.parser.QueryParser.SeqLitContext)
-	 */
-	@Override
-	public void exitSeqLit(SeqLitContext ctx) {
-		final SequenceInExtensionLiteral sequenceInExtension = builder
-				.sequenceInExtension(getExpressions(ctx));
-
-		startPositions.put(sequenceInExtension, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(sequenceInExtension, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		push(sequenceInExtension);
 	}
 
 	/**
@@ -1436,5 +1418,27 @@ public class AstBuilderListener extends QueryBaseListener {
 		endPositions.put(let, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
 		push(let);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitClassifierSetType(org.eclipse.acceleo.query.parser.QueryParser.ClassifierSetTypeContext)
+	 */
+	@Override
+	public void exitClassifierSetType(ClassifierSetTypeContext ctx) {
+		final int nbTypes = (ctx.getChildCount() + 1) / 2 - 1;
+		final TypeLiteral[] types = new TypeLiteral[nbTypes];
+
+		for (int i = nbTypes - 1; i >= 0; i--) {
+			types[i] = popTypeLiteral();
+		}
+
+		final TypeSetLiteral classifierSetType = builder.typeSetLiteral(Arrays.asList(types));
+
+		startPositions.put(classifierSetType, Integer.valueOf(ctx.start.getStartIndex()));
+		endPositions.put(classifierSetType, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		push(classifierSetType);
 	}
 }

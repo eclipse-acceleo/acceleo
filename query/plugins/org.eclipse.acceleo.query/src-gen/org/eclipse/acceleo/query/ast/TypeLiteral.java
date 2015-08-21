@@ -36,7 +36,7 @@ public interface TypeLiteral extends Literal {
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(Object)
 	 * @see org.eclipse.acceleo.query.ast.AstPackage#getTypeLiteral_Value()
-	 * @model dataType="org.eclipse.acceleo.query.ast.ObjectType"
+	 * @model dataType="org.eclipse.acceleo.query.ast.ObjectType" required="true"
 	 * @generated
 	 */
 	Object getValue();

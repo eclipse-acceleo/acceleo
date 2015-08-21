@@ -36,6 +36,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.emf.common.notify.Adapter;
@@ -148,6 +149,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseTypeLiteral(TypeLiteral object) {
 			return createTypeLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseTypeSetLiteral(TypeSetLiteral object) {
+			return createTypeSetLiteralAdapter();
 		}
 
 		@Override
@@ -404,6 +410,20 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTypeLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.TypeSetLiteral
+	 * <em>Type Set Literal</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.TypeSetLiteral
+	 * @generated
+	 */
+	public Adapter createTypeSetLiteralAdapter() {
 		return null;
 	}
 

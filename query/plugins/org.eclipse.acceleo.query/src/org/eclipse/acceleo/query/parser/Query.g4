@@ -81,8 +81,6 @@ literal :    String         #StringLit
 		   |'true'        #TrueLit
 		   |'false'        #FalseLit
 		   |'null'        #NullLit
-		   |'{' expressionSequence '}'   #SetLit
-		   |'[' expressionSequence ']'   #SeqLit
 		   |'Sequence{' expressionSequence'}'  #ExplicitSeqLit
 		   |'OrderedSet{' expressionSequence '}'  #ExplicitSetLit
 		   | Ident '::' Ident '::' Ident     #EnumLit
@@ -94,7 +92,10 @@ typeLiteral :   'String'        #StrType
 		      | 'Boolean'        #BooleanType
 		      | 'Sequence(' typeLiteral')'   #SeqType
 		      | 'OrderedSet(' typeLiteral')' #SetType
-		      | Ident '::' Ident #ClassifierType
+		      | classifierType #ClsType
+		      | '{' classifierType ('|' classifierType)* '}' #ClassifierSetType
+;
+classifierType : Ident '::' Ident
 ;
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
 

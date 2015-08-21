@@ -36,6 +36,7 @@ import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.emf.ecore.EObject;
@@ -197,6 +198,17 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(typeLiteral);
 				if (result == null)
 					result = caseExpression(typeLiteral);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.TYPE_SET_LITERAL: {
+				TypeSetLiteral typeSetLiteral = (TypeSetLiteral)theEObject;
+				T result = caseTypeSetLiteral(typeSetLiteral);
+				if (result == null)
+					result = caseLiteral(typeSetLiteral);
+				if (result == null)
+					result = caseExpression(typeSetLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -553,6 +565,21 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTypeLiteral(TypeLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type Set Literal</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type Set Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTypeSetLiteral(TypeSetLiteral object) {
 		return null;
 	}
 
