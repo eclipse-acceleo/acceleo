@@ -95,14 +95,14 @@ public class AcceleoLogListener implements ILogListener {
 	 * @see org.eclipse.core.runtime.ILogListener#logging(org.eclipse.core.runtime.IStatus, java.lang.String)
 	 */
 	public void logging(final IStatus status, final String plugin) {
-		Display.getDefault().syncExec(new Runnable() {
-			public void run() {
-				if (AcceleoPreferences.areNotificationsEnabled()
-						&& !AcceleoPreferences.areNotificationsForcedDisabled()) {
-					delegateLog(status, plugin);
-				}
-			}
-		});
+        if (AcceleoPreferences.areNotificationsEnabled()
+                && !AcceleoPreferences.areNotificationsForcedDisabled()) {
+           Display.getDefault().syncExec(new Runnable() {
+                public void run() {
+                    delegateLog(status, plugin);
+                }
+            });
+        }
 	}
 
 	/**
