@@ -78,7 +78,8 @@ public class AcceleoParserWarnings implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserWarning> warningsIt = warnings.iterator(); warningsIt.hasNext();) {
+		Iterator<AcceleoParserWarning> warningsIt = warnings.iterator();
+		while (warningsIt.hasNext()) {
 			result.append(warningsIt.next().getMessage());
 			if (warningsIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$

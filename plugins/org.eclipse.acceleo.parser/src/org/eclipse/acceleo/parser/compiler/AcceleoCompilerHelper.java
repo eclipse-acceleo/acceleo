@@ -194,8 +194,9 @@ public final class AcceleoCompilerHelper {
 				}
 			} else if (path.length() > 0 && path.endsWith(JAR_EXTENSION)) {
 				// Let's compute the uris of the emtl files inside of the jar
+				JarFile jarFile = null;
 				try {
-					JarFile jarFile = new JarFile(path);
+					jarFile = new JarFile(path);
 					Enumeration<JarEntry> entries = jarFile.entries();
 					while (entries.hasMoreElements()) {
 						JarEntry nextElement = entries.nextElement();
@@ -211,6 +212,14 @@ public final class AcceleoCompilerHelper {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+				} finally {
+					if (jarFile != null) {
+						try {
+							jarFile.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 
 			}
@@ -268,7 +277,9 @@ public final class AcceleoCompilerHelper {
 
 		AcceleoParser parser = new AcceleoParser(binaryResource, trimPosition);
 		parser.parse(acceleoFiles, emtlAbsoluteURIs, dependenciesURIs, mapURIs, new BasicMonitor());
-		for (Iterator<AcceleoFile> iterator = acceleoFiles.iterator(); iterator.hasNext();) {
+
+		Iterator<AcceleoFile> iterator = acceleoFiles.iterator();
+		while (iterator.hasNext()) {
 			AcceleoFile acceleoFile = iterator.next();
 			AcceleoParserProblems problems = parser.getProblems(acceleoFile);
 			if (problems != null) {
@@ -276,7 +287,9 @@ public final class AcceleoCompilerHelper {
 				if (!list.isEmpty()) {
 					message.append(acceleoFile.getMtlFile().getName());
 					message.append('\n');
-					for (Iterator<AcceleoParserProblem> itProblems = list.iterator(); itProblems.hasNext();) {
+
+					Iterator<AcceleoParserProblem> itProblems = list.iterator();
+					while (itProblems.hasNext()) {
 						AcceleoParserProblem problem = itProblems.next();
 						message.append(problem.getLine());
 						message.append(':');
@@ -440,8 +453,9 @@ public final class AcceleoCompilerHelper {
 	 */
 	private void computeDependencies(List<URI> dependenciesURIs, Map<URI, URI> mapURIs) {
 		Iterator<String> identifiersIt = dependenciesIDs.iterator();
-		for (Iterator<File> dependenciesIt = dependencies.iterator(); dependenciesIt.hasNext()
-				&& identifiersIt.hasNext();) {
+		Iterator<File> dependenciesIt = dependencies.iterator();
+
+		while (dependenciesIt.hasNext() && identifiersIt.hasNext()) {
 			File requiredFolder = dependenciesIt.next();
 			String identifier = identifiersIt.next();
 			if (requiredFolder != null && requiredFolder.exists() && requiredFolder.isDirectory()) {

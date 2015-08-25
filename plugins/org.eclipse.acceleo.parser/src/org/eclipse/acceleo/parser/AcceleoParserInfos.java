@@ -79,7 +79,8 @@ public class AcceleoParserInfos implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserInfo> infosIt = infos.iterator(); infosIt.hasNext();) {
+		Iterator<AcceleoParserInfo> infosIt = infos.iterator();
+		while (infosIt.hasNext()) {
 			result.append(infosIt.next().getMessage());
 			if (infosIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$

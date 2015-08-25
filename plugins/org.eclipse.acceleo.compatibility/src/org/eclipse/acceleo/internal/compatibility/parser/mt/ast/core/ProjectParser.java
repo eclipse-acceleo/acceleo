@@ -70,8 +70,8 @@ public final class ProjectParser {
 		}
 		try {
 			Map<IFile, Template> files = createTemplates(projects, root);
-			for (Iterator<Map.Entry<IFile, Template>> filesIt = files.entrySet().iterator(); filesIt
-					.hasNext();) {
+			Iterator<Map.Entry<IFile, Template>> filesIt = files.entrySet().iterator();
+			while (filesIt.hasNext()) {
 				Map.Entry<IFile, Template> entry = filesIt.next();
 				IFile file = entry.getKey();
 				Template template = entry.getValue();

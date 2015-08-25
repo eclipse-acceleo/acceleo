@@ -80,7 +80,8 @@ public class AcceleoParserProblems implements AcceleoParserMessages {
 	 */
 	public String getMessage() {
 		StringBuffer result = new StringBuffer();
-		for (Iterator<AcceleoParserProblem> problemsIt = problems.iterator(); problemsIt.hasNext();) {
+		Iterator<AcceleoParserProblem> problemsIt = problems.iterator();
+		while (problemsIt.hasNext()) {
 			result.append(problemsIt.next().getMessage());
 			if (problemsIt.hasNext()) {
 				result.append("\n"); //$NON-NLS-1$

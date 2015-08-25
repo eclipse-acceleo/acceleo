@@ -855,7 +855,8 @@ public class CSTParser {
 	 */
 	private Collection<EPackage> getAllSubpackages(EPackage ePackage) {
 		Collection<EPackage> result = new ArrayList<EPackage>();
-		for (Iterator<EPackage> iterator = ePackage.getESubpackages().iterator(); iterator.hasNext();) {
+		Iterator<EPackage> iterator = ePackage.getESubpackages().iterator();
+		while (iterator.hasNext()) {
 			EPackage eSubpackage = iterator.next();
 			result.add(eSubpackage);
 			result.addAll(getAllSubpackages(eSubpackage));

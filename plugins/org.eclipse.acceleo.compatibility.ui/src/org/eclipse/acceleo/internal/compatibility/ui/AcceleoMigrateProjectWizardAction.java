@@ -70,7 +70,8 @@ public class AcceleoMigrateProjectWizardAction extends AbstractMigrateProjectWiz
 		root = ProjectParser.createModel(projects, problems);
 		if (problems.size() > 0) {
 			StringBuffer message = new StringBuffer();
-			for (Iterator<TemplateSyntaxException> problemsIt = problems.iterator(); problemsIt.hasNext();) {
+			Iterator<TemplateSyntaxException> problemsIt = problems.iterator();
+			while (problemsIt.hasNext()) {
 				TemplateSyntaxException templateSyntaxException = problemsIt.next();
 				message.append(templateSyntaxException.toString());
 				message.append("\n\n"); //$NON-NLS-1$

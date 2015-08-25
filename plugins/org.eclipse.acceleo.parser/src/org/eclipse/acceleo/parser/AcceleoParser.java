@@ -505,8 +505,10 @@ public class AcceleoParser {
 		 */
 		boolean firstIteration = true;
 		boolean buildDependantFiles = true;
-		for (Iterator<AcceleoFile> itAcceleoFiles = acceleoFiles.iterator(); !monitor.isCanceled()
-				&& itAcceleoFiles.hasNext() && itOutputURIs.hasNext() && buildDependantFiles;) {
+
+		Iterator<AcceleoFile> itAcceleoFiles = acceleoFiles.iterator();
+		while (!monitor.isCanceled() && itAcceleoFiles.hasNext() && itOutputURIs.hasNext()
+				&& buildDependantFiles) {
 			AcceleoFile acceleoFile = itAcceleoFiles.next();
 			monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileCST", //$NON-NLS-1$
 					new Object[] {acceleoFile.getMtlFile().getName() }));
@@ -591,14 +593,16 @@ public class AcceleoParser {
 				firstIteration = false;
 			}
 		}
-		for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); !monitor.isCanceled()
-				&& itDependenciesURIs.hasNext();) {
+
+		Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator();
+		while (!monitor.isCanceled() && itDependenciesURIs.hasNext()) {
 			URI oURI = itDependenciesURIs.next();
 			if (!outputURIs.contains(oURI) && allImportedFiles.contains(oURI.lastSegment())) {
 				try {
 					ModelUtils.load(oURI, oResourceSet);
 				} catch (IOException e) {
-					for (Iterator<AcceleoSourceBuffer> iterator = sources.iterator(); iterator.hasNext();) {
+					Iterator<AcceleoSourceBuffer> iterator = sources.iterator();
+					while (iterator.hasNext()) {
 						iterator.next().logProblem(
 								AcceleoParserMessages.getString("AcceleoParser" + ".Error.InvalidAST", oURI //$NON-NLS-1$ //$NON-NLS-2$
 										.lastSegment()), 0, -1);
@@ -625,8 +629,8 @@ public class AcceleoParser {
 	private void resolveAST(final ResourceSet oResourceSet, Map<URI, URI> mapURIs,
 			List<AcceleoSourceBuffer> sources, Monitor monitor) {
 		try {
-			for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
-					&& itSources.hasNext();) {
+			Iterator<AcceleoSourceBuffer> itSources = sources.iterator();
+			while (!monitor.isCanceled() && itSources.hasNext()) {
 				AcceleoSourceBuffer source = itSources.next();
 				if (source.getFile() != null) {
 					monitor.subTask(AcceleoParserMessages.getString("AcceleoParser.ParseFileAST", //$NON-NLS-1$
@@ -648,8 +652,9 @@ public class AcceleoParser {
 				}
 			}
 			trimEnvironment(oResourceSet);
-			for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); !monitor.isCanceled()
-					&& itSources.hasNext();) {
+
+			itSources = sources.iterator();
+			while (!monitor.isCanceled() && itSources.hasNext()) {
 				AcceleoSourceBuffer source = itSources.next();
 				if (source.getFile() != null) {
 					monitor.subTask(AcceleoParserMessages.getString(
@@ -931,15 +936,20 @@ public class AcceleoParser {
 	 *            The list of source buffers.
 	 */
 	private void manageParsingResult(List<AcceleoSourceBuffer> sources) {
-		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
+		Iterator<AcceleoSourceBuffer> itSources = sources.iterator();
+		while (itSources.hasNext()) {
 			AcceleoSourceBuffer source = itSources.next();
 			problems.put(source.getFile(), source.getProblems());
 		}
-		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
+
+		itSources = sources.iterator();
+		while (itSources.hasNext()) {
 			AcceleoSourceBuffer source = itSources.next();
 			warnings.put(source.getFile(), source.getWarnings());
 		}
-		for (Iterator<AcceleoSourceBuffer> itSources = sources.iterator(); itSources.hasNext();) {
+
+		itSources = sources.iterator();
+		while (itSources.hasNext()) {
 			AcceleoSourceBuffer source = itSources.next();
 			infos.put(source.getFile(), source.getInfos());
 		}
@@ -992,7 +1002,8 @@ public class AcceleoParser {
 		}
 		source.createAST(resource);
 		if (resource.getResourceSet() != null) {
-			for (Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator(); itDependenciesURIs.hasNext();) {
+			Iterator<URI> itDependenciesURIs = dependenciesURIs.iterator();
+			while (itDependenciesURIs.hasNext()) {
 				URI oURI = itDependenciesURIs.next();
 				if (!resourceSetURIs.contains(oURI) && allImportedFiles.contains(oURI.lastSegment())) {
 					try {
