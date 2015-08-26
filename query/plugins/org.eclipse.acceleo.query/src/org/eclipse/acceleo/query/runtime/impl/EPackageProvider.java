@@ -213,22 +213,24 @@ public class EPackageProvider implements IEPackageProvider {
 	 *            the package to be registered.
 	 */
 	public void registerPackage(EPackage ePackage) {
-		if (ePackage.getName() != null) {
-			ePackages.put(ePackage.getName(), ePackage);
-			for (EClassifier eCls : ePackage.getEClassifiers()) {
-				registerEClassifierClass(eCls);
-				if (eCls instanceof EClass) {
-					registerEOperations((EClass)eCls);
-					registerFeatures((EClass)eCls);
-					registerSubTypes((EClass)eCls);
+		if (!("ecore".equals(ePackage.getName()) && !EcorePackage.eNS_URI.equals(ePackage.getNsURI()))) {
+			if (ePackage.getName() != null) {
+				ePackages.put(ePackage.getName(), ePackage);
+				for (EClassifier eCls : ePackage.getEClassifiers()) {
+					registerEClassifierClass(eCls);
+					if (eCls instanceof EClass) {
+						registerEOperations((EClass)eCls);
+						registerFeatures((EClass)eCls);
+						registerSubTypes((EClass)eCls);
+					}
 				}
+				for (EPackage childPkg : ePackage.getESubpackages()) {
+					registerPackage(childPkg);
+				}
+			} else {
+				throw new IllegalStateException("Couldn't register package " + ePackage.getName()
+						+ " because it's name is null.");
 			}
-			for (EPackage childPkg : ePackage.getESubpackages()) {
-				registerPackage(childPkg);
-			}
-		} else {
-			throw new IllegalStateException("Couldn't register package " + ePackage.getName()
-					+ " because it's name is null.");
 		}
 	}
 
