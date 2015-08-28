@@ -481,7 +481,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 				if (!(newResult instanceof Nothing)) {
 					if (newResult instanceof Collection) {
 						result.addAll((Collection<?>)newResult);
-					} else {
+					} else if (newResult != null) {
 						result.add(newResult);
 					}
 				}
@@ -521,7 +521,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 				if (!(newResult instanceof Nothing)) {
 					if (newResult instanceof Collection) {
 						result.addAll((Collection<?>)newResult);
-					} else {
+					} else if (newResult != null) {
 						result.add(newResult);
 					}
 				}

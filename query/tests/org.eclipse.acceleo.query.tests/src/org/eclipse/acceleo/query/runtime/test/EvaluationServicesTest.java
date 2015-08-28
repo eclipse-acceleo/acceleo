@@ -626,10 +626,9 @@ public class EvaluationServicesTest {
 		Object result = services.callOrApply("special", args, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
-		assertEquals(3, listResult.size());
+		assertEquals(2, listResult.size());
 		assertEquals(1, listResult.get(0));
 		assertEquals(2, listResult.get(1));
-		assertNull(listResult.get(2));
 	}
 
 	/**
@@ -645,10 +644,9 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof List);
 		@SuppressWarnings("unchecked")
 		List<Object> listResult = (List<Object>)result;
-		assertEquals(3, listResult.size());
+		assertEquals(2, listResult.size());
 		assertEquals(1, listResult.get(0));
 		assertEquals(2, listResult.get(1));
-		assertNull(listResult.get(2));
 	}
 
 	/**
@@ -664,13 +662,10 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Set<Object> setResult = (Set<Object>)result;
-		assertEquals(3, setResult.size());
+		assertEquals(2, setResult.size());
 		Iterator<Object> iterator = setResult.iterator();
 		assertEquals(1, iterator.next());
 		assertEquals(2, iterator.next());
-		// TODO shouldn't hasNext here be "false" and a call to "next" a NoSuchElement exception? seems like
-		// "null" is inserted in the result
-		assertNull(iterator.next());
 	}
 
 	/**
@@ -742,11 +737,6 @@ public class EvaluationServicesTest {
 	public void testNullArgumentcollectionServiceCall() {
 		Diagnostic status = new BasicDiagnostic();
 		services.collectionServiceCall("toString", null, status);
-	}
-
-	@Test
-	public void testCollectionServiceCallOnSet() {
-		Set<Object> object = Sets.newLinkedHashSet();
 	}
 
 	@Test

@@ -40,6 +40,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
@@ -748,6 +749,106 @@ public class CollectionServicesTest {
 
 		newList = collectionServices.reject(set, new LambdaValue(lambda, evaluator));
 		assertEquals(0, newList.size());
+	}
+
+	/**
+	 * Test that the result of a call to collect on a list is flattened properly.
+	 */
+	@Test
+	public void testCollectImplicitFlattenList() {
+		LambdaValue lambdaValue = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return EcorePackage.eINSTANCE.getEClassifiers();
+			}
+		};
+
+		List<Object> list = new ArrayList<Object>();
+		list.add(EcorePackage.eINSTANCE);
+		list.add(EcorePackage.eINSTANCE);
+		List<Object> result = collectionServices.collect(list, lambdaValue);
+
+		assertEquals(EcorePackage.eINSTANCE.getEClassifiers().size() * 2, result.size());
+	}
+
+	/**
+	 * Test that the result of a call to collect on a set is flattened properly.
+	 */
+	@Test
+	public void testCollectImplicitFlattenSet() {
+		LambdaValue lambdaValue = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return EcorePackage.eINSTANCE.getEClassifiers();
+			}
+		};
+
+		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		set.add(EcorePackage.eINSTANCE);
+		Set<Object> result = collectionServices.collect(set, lambdaValue);
+
+		assertEquals(EcorePackage.eINSTANCE.getEClassifiers().size(), result.size());
+	}
+
+	/**
+	 * Test that we cannot accept nothing or null in the result of a collect for a list.
+	 */
+	@Test
+	public void testCollectNothingNullList() {
+		LambdaValue nullLambdaValue = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return null;
+			}
+		};
+
+		List<Object> list = new ArrayList<Object>();
+		list.add(EcorePackage.eINSTANCE);
+		List<Object> result = collectionServices.collect(list, nullLambdaValue);
+		assertEquals(0, result.size());
+
+		LambdaValue nothingLambdaValue = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return new Nothing("");
+			}
+		};
+
+		list = new ArrayList<Object>();
+		list.add(EcorePackage.eINSTANCE);
+		result = collectionServices.collect(list, nothingLambdaValue);
+		assertEquals(0, result.size());
+	}
+
+	/**
+	 * Test that we cannot accept nothing or null in the result of a collect for a set.
+	 */
+	@Test
+	public void testCollectNothingNullSet() {
+		LambdaValue nullLambdaValue = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return null;
+			}
+		};
+
+		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		Set<Object> result = collectionServices.collect(set, nullLambdaValue);
+		assertEquals(0, result.size());
+
+		LambdaValue nothingLambdaValue = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return new Nothing("");
+			}
+		};
+
+		set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		result = collectionServices.collect(set, nothingLambdaValue);
+		assertEquals(0, result.size());
 	}
 
 	@Test

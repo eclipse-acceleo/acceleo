@@ -37,6 +37,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
@@ -1161,7 +1162,14 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Sets.newLinkedHashSet();
 			for (Object elt : set) {
 				try {
-					result.add(lambda.eval(new Object[] {elt }));
+					Object lambdaResult = lambda.eval(new Object[] {elt });
+					if (!(lambdaResult instanceof Nothing)) {
+						if (lambdaResult instanceof Collection) {
+							result.addAll((Collection<?>)lambdaResult);
+						} else if (lambdaResult != null) {
+							result.add(lambdaResult);
+						}
+					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// TODO: log the exception.
@@ -1196,7 +1204,14 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Lists.newArrayList();
 			for (Object elt : sequence) {
 				try {
-					result.add(lambda.eval(new Object[] {elt }));
+					Object lambdaResult = lambda.eval(new Object[] {elt });
+					if (!(lambdaResult instanceof Nothing)) {
+						if (lambdaResult instanceof Collection) {
+							result.addAll((Collection<?>)lambdaResult);
+						} else if (lambdaResult != null) {
+							result.add(lambdaResult);
+						}
+					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// TODO: log the exception.
