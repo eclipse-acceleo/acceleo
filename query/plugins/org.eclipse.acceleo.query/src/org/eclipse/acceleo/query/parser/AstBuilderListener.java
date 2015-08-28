@@ -117,6 +117,7 @@ import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * The {@link AstBuilderListener} builds an AST when plugged into the parser.
@@ -1099,7 +1100,33 @@ public class AstBuilderListener extends QueryBaseListener {
 			}
 			result = builder.errorTypeLiteral(segments.toArray(new String[segments.size()]));
 			errors.add((ErrorTypeLiteral)result);
-			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, "Type not found.",
+
+			StringBuffer message = new StringBuffer("The type ");
+			if (eClassName != null) {
+				message.append('\"');
+				message.append(eClassName);
+				message.append("\" ");
+			}
+			message.append("has not been found");
+			if (ePackageName != null) {
+				EPackage ePackage = this.environment.getEPackageProvider().getEPackage(ePackageName);
+				if (ePackage != null) {
+					message.append(" in the EPackage named \"");
+					message.append(ePackageName);
+					message.append('\"');
+					message.append(" [nsUri=");
+					message.append(ePackage.getNsURI());
+					message.append(", nsPrefix=");
+					message.append(ePackage.getNsPrefix());
+					message.append("]");
+				} else {
+					message.append(" nor the EPackage named \"");
+					message.append(ePackageName);
+					message.append('\"');
+				}
+			}
+
+			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, message.toString(),
 					new Object[] {result }));
 		} else {
 			result = builder.typeLiteral(type);

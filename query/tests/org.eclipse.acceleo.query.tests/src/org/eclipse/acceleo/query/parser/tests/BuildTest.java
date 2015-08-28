@@ -1963,7 +1963,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("Type not found.", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("The type \"ecore\" has not been found", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
