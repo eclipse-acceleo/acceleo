@@ -25,6 +25,7 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionPro
 import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -41,6 +42,29 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class CompletionServices extends ValidationServices {
+
+	/**
+	 * This enumeration is used to determine the kind of call used before asking the completion. This
+	 * enumeration is thus used to detect whether we have collection.CALL or collection->CALL.
+	 * 
+	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
+	 */
+	public enum CallKind {
+		/**
+		 * The collection call uses the arrow operator.
+		 */
+		COLLECTION_CALL,
+
+		/**
+		 * The feature access call uses the dot operator.
+		 */
+		FEATURE_ACCESS_CALL,
+
+		/**
+		 * No operator has been typed.
+		 */
+		NONE
+	}
 
 	/**
 	 * Creates a new service instance given a {@link IQueryEnvironment} and logging flag.
@@ -74,20 +98,34 @@ public class CompletionServices extends ValidationServices {
 	 * 
 	 * @param receiverTypes
 	 *            the receiver types.
-	 * @param keepOperators
-	 *            tells if we should keep operator services
+	 * @param callKind
+	 *            Indicate the kind of call used
 	 * @return the {@link List} of {@link ServiceCompletionProposal} for {@link IService}
 	 */
-	public List<ServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, boolean keepOperators) {
+	public List<ServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallKind callKind) {
 		final List<ServiceCompletionProposal> result = new ArrayList<ServiceCompletionProposal>();
 
 		final Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
-		for (IType type : receiverTypes) {
-			classes.add(getClass(type));
+
+		if (CallKind.FEATURE_ACCESS_CALL.equals(callKind)) {
+			for (IType type : receiverTypes) {
+				if (type instanceof ICollectionType) {
+					// Implicit collect
+					ICollectionType collectionType = (ICollectionType)type;
+					IType cType = collectionType.getCollectionType();
+					classes.add(getClass(cType));
+				} else {
+					classes.add(getClass(type));
+				}
+			}
+		} else if (CallKind.COLLECTION_CALL.equals(callKind) || CallKind.NONE.equals(callKind)) {
+			for (IType type : receiverTypes) {
+				classes.add(getClass(type));
+			}
 		}
 
 		for (IService service : queryEnvironment.getLookupEngine().getServices(classes)) {
-			if (keepOperators
+			if (CallKind.NONE.equals(callKind)
 					|| !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getServiceMethod()
 							.getName())) {
 				result.add(new ServiceCompletionProposal(service));
@@ -134,6 +172,13 @@ public class CompletionServices extends ValidationServices {
 		for (IType iType : receiverTypes) {
 			if (iType.getType() instanceof EClass) {
 				eClasses.add((EClass)iType.getType());
+			} else if (iType instanceof ICollectionType) {
+				// Implicit collect
+				ICollectionType collectionType = (ICollectionType)iType;
+				IType type = collectionType.getCollectionType();
+				if (type.getType() instanceof EClass) {
+					eClasses.add((EClass)type.getType());
+				}
 			}
 		}
 

@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
+import org.eclipse.acceleo.query.runtime.impl.CompletionServices.CallKind;
 import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -125,7 +126,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(object.getTarget());
 		result.addAll(services.getEStructuralFeatureProposals(possibleTypes));
-		result.addAll(services.getServiceProposals(possibleTypes, false));
+		result.addAll(services.getServiceProposals(possibleTypes, CallKind.FEATURE_ACCESS_CALL));
 		result.addAll(services.getEOperationProposals(possibleTypes));
 
 		return result;
@@ -168,7 +169,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			collectionTypes.add(new SequenceType(services.getQueryEnvironment(), type));
 			collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
 		}
-		result.addAll(services.getServiceProposals(collectionTypes, false));
+		result.addAll(services.getServiceProposals(collectionTypes, CallKind.COLLECTION_CALL));
 
 		return result;
 	}
@@ -227,7 +228,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		final List<ServiceCompletionProposal> servicesProposal = services.getServiceProposals(possibleTypes,
-				true);
+				CallKind.NONE);
 		final Set<String> serviceNames = new HashSet<String>();
 		for (ServiceCompletionProposal proposal : servicesProposal) {
 			serviceNames.add(proposal.getObject().getServiceMethod().getName());

@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -35,10 +40,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class CompletionTest {
 
@@ -219,6 +220,65 @@ public class CompletionTest {
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testCollectionImplicitCollect() {
+		final ICompletionResult dotCompletionResult = engine.getCompletion("Sequence{self}.", 15,
+				variableTypes);
+		final ICompletionResult nothingCompletionResult = engine.getCompletion("Sequence{self}", 14,
+				variableTypes);
+		final ICompletionResult arrowCompletionResult = engine.getCompletion("Sequence{self}->", 16,
+				variableTypes);
+
+		List<ICompletionProposal> dotCompletionProposals = dotCompletionResult.getProposals(new BasicFilter(
+				dotCompletionResult));
+		assertEquals("", dotCompletionResult.getPrefix());
+		assertEquals("", dotCompletionResult.getRemaining());
+		assertEquals(51, dotCompletionProposals.size());
+
+		List<String> dotProposals = new ArrayList<String>();
+		for (ICompletionProposal dotCompletionProposal : dotCompletionProposals) {
+			dotProposals.add(dotCompletionProposal.getProposal());
+		}
+
+		assertTrue(dotProposals.contains("name"));
+		assertTrue(dotProposals.contains("eContainer()"));
+		assertTrue(dotProposals.contains("oclIsKindOf()"));
+		assertTrue(!dotProposals.contains("size()"));
+
+		List<ICompletionProposal> nothingCompletionProposals = nothingCompletionResult
+				.getProposals(new BasicFilter(nothingCompletionResult));
+		assertEquals("", nothingCompletionResult.getPrefix());
+		assertEquals("", nothingCompletionResult.getRemaining());
+		assertEquals(4, nothingCompletionProposals.size());
+
+		List<String> nothingProposals = new ArrayList<String>();
+		for (ICompletionProposal nothingCompletionProposal : nothingCompletionProposals) {
+			nothingProposals.add(nothingCompletionProposal.getProposal());
+		}
+
+		assertTrue(nothingProposals.contains("+ "));
+		assertTrue(nothingProposals.contains("- "));
+		assertTrue(nothingProposals.contains("= "));
+		assertTrue(nothingProposals.contains("<> "));
+
+		List<ICompletionProposal> arrowCompletionProposals = arrowCompletionResult
+				.getProposals(new BasicFilter(arrowCompletionResult));
+		assertEquals("", arrowCompletionResult.getPrefix());
+		assertEquals("", arrowCompletionResult.getRemaining());
+		assertEquals(52, arrowCompletionProposals.size());
+
+		List<String> arrowProposals = new ArrayList<String>();
+		for (ICompletionProposal arrowCompletionProposal : arrowCompletionProposals) {
+			arrowProposals.add(arrowCompletionProposal.getProposal());
+		}
+
+		assertTrue(arrowProposals.contains("size()"));
+		assertTrue(arrowProposals.contains("select()"));
+		assertTrue(arrowProposals.contains("collect()"));
+		assertTrue(!arrowProposals.contains("name"));
+
 	}
 
 	@Test
