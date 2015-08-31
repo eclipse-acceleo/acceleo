@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 //@formatter:off
 @ServiceProvider(
@@ -242,8 +243,11 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsKindOf(Object object, Object type) {
 		Boolean result;
+		Class<?> cls = null;
+		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
+			cls = checkRegistered((EClassifier)type);
+		}
 		if (type instanceof EClass) {
-			checkRegistered((EClass)type);
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
 				result = eClass.isSuperTypeOf(((EObject)object).eClass());
@@ -251,7 +255,6 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EEnum) {
-			checkRegistered((EEnum)type);
 			if (object instanceof EEnumLiteral) {
 				result = ((EEnumLiteral)object).getEEnum().equals(type);
 			} else if (object instanceof Enumerator) {
@@ -261,8 +264,7 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			final Class<?> cls = checkRegistered((EDataType)type);
-			if (object != null) {
+			if (object != null && cls != null) {
 				result = cls.isAssignableFrom(object.getClass());
 			} else {
 				result = false;
@@ -292,8 +294,11 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsTypeOf(Object object, Object type) {
 		Boolean result;
+		Class<?> cls = null;
+		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
+			cls = checkRegistered((EClassifier)type);
+		}
 		if (type instanceof EClass) {
-			checkRegistered((EClass)type);
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
 				result = eClass == ((EObject)object).eClass();
@@ -301,7 +306,6 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EEnum) {
-			checkRegistered((EEnum)type);
 			if (object instanceof EEnumLiteral) {
 				result = ((EEnumLiteral)object).getEEnum().equals(type);
 			} else if (object instanceof Enumerator) {
@@ -311,8 +315,7 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			final Class<?> cls = checkRegistered((EDataType)type);
-			if (object != null) {
+			if (object != null && cls != null) {
 				result = cls.isAssignableFrom(object.getClass());
 			} else {
 				result = false;
