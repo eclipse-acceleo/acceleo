@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1219,6 +1220,41 @@ public class CollectionServices extends AbstractServiceProvider {
 				// CHECKSTYLE:ON
 			}
 		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence containing the elements of the original collection ordered by the result of the given lamba",
+		params = {
+			@Param(name = "collection", value = "The original collection"),
+			@Param(name = "lambda", value = "The lambda expression")
+		},
+		result = "An ordered version of the given collection",
+		examples = {
+			@Example(expression = "Sequence{'aa', 'bbb', 'c'}->sortedBy(str | str.size())", result = "Sequence{'c', 'aa', 'bbb'}")
+		}
+	)
+	// @formatter:on
+	public List<Object> sortedBy(Collection<Object> collection, final LambdaValue lambda) {
+		final List<Object> result = new ArrayList<Object>();
+
+		result.addAll(collection);
+		Collections.sort(result, new Comparator<Object>() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				Object o1Result = lambda.eval(new Object[] {o1 });
+				Object o2Result = lambda.eval(new Object[] {o2 });
+
+				if (o1Result instanceof Comparable<?>) {
+					@SuppressWarnings("unchecked")
+					Comparable<Object> c1 = (Comparable<Object>)o1Result;
+					return c1.compareTo(o2Result);
+				}
+				return 0;
+			}
+		});
 
 		return result;
 	}

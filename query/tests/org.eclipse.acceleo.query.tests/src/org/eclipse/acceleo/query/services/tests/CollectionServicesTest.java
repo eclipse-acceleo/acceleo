@@ -46,6 +46,7 @@ import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -560,6 +561,79 @@ public class CollectionServicesTest {
 			isSequence = true;
 		}
 		assertTrue(isSequence);
+	}
+
+	@Test
+	public void testSortedBySet() {
+		LambdaValue zeroLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		Set<Object> set = new LinkedHashSet<Object>();
+		set.add("aa");
+		set.add("bbb");
+		set.add("c");
+		List<Object> sortedByList = collectionServices.sortedBy(set, zeroLambda);
+		assertEquals(3, sortedByList.size());
+		assertEquals("c", sortedByList.get(0));
+		assertEquals("aa", sortedByList.get(1));
+		assertEquals("bbb", sortedByList.get(2));
+	}
+
+	@Test
+	public void testSortedByList() {
+		LambdaValue zeroLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		List<Object> list = new ArrayList<Object>();
+		list.add("aa");
+		list.add("bbb");
+		list.add("c");
+		List<Object> sortedByList = collectionServices.sortedBy(list, zeroLambda);
+		assertEquals(3, sortedByList.size());
+		assertEquals("c", sortedByList.get(0));
+		assertEquals("aa", sortedByList.get(1));
+		assertEquals("bbb", sortedByList.get(2));
+	}
+
+	@Test
+	public void testSortedByEObjectName() {
+		LambdaValue nameLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof ENamedElement) {
+					return ((ENamedElement)args[0]).getName();
+				}
+				return 0;
+			}
+		};
+
+		List<Object> list = new ArrayList<Object>();
+		list.add(EcorePackage.eINSTANCE.getEStructuralFeature());
+		list.add(EcorePackage.eINSTANCE.getEAttribute());
+		list.add(EcorePackage.eINSTANCE.getEClassifier());
+		list.add(EcorePackage.eINSTANCE.getEAnnotation());
+		list.add(EcorePackage.eINSTANCE.getENamedElement());
+		List<Object> sortedByList = collectionServices.sortedBy(list, nameLambda);
+		assertEquals(5, sortedByList.size());
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), sortedByList.get(0));
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), sortedByList.get(1));
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), sortedByList.get(2));
+		assertEquals(EcorePackage.eINSTANCE.getENamedElement(), sortedByList.get(3));
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), sortedByList.get(4));
 	}
 
 	@Test

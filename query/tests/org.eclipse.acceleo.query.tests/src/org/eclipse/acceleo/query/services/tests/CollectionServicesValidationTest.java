@@ -192,6 +192,24 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
+	public void testSortedBySet() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
+				lambdaType(classType(String.class), classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(Object.class)) };
+
+		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
+	}
+
+	@Test
+	public void testSortedByList() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
+				lambdaType(classType(String.class), classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(Object.class)) };
+
+		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
+	}
+
+	@Test
 	public void testCollectSet() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
 				lambdaType(classType(String.class), classType(Integer.class)) };

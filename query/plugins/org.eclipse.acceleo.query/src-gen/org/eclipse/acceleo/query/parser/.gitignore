@@ -6,7 +6,3 @@
 /AcceleoQueryLanguageParser.java
 /Query.tokens
 /QueryLexer.tokens
-/QueryBaseListener.java
-/QueryLexer.java
-/QueryListener.java
-/QueryParser.java

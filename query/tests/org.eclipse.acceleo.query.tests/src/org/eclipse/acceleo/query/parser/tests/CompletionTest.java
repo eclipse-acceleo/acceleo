@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -39,6 +35,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CompletionTest {
 
@@ -214,7 +214,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(52, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -407,7 +407,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self->)", 36, variableTypes);
 
-		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(52, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -438,7 +438,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
 
-		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(52, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -462,7 +462,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
 
-		assertEquals(51, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(52, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);

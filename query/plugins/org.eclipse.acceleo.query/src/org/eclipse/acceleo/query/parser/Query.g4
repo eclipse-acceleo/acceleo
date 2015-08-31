@@ -80,7 +80,7 @@ callExp :     'filter(' typeLiteral ')'        #Filter
 ;
 lambdaExpression : expression
 ;
-collectionIterator : 'select' | 'reject' | 'collect' | 'any' | 'exists' | 'forAll' | 'isUnique' | 'one'
+collectionIterator : 'select' | 'reject' | 'collect' | 'any' | 'exists' | 'forAll' | 'isUnique' | 'one' | 'sortedBy'
 ;
 expressionSequence : (expression (',' expression)*)?
 ;
