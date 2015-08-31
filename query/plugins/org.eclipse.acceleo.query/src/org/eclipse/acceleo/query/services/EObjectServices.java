@@ -39,6 +39,7 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
@@ -744,6 +745,32 @@ public class EObjectServices extends AbstractServiceProvider {
 	// @formatter:on
 	public EClass eClass(EObject eObject) {
 		return eObject.eClass();
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the containing feature of the specified EObject",
+		params = {
+			@Param(name = "eObject", value = "The eObject which containing feature is requested.")
+		},
+		result = "The containing feature of the specified EObject"
+	)
+	// @formatter:on
+	public EStructuralFeature eContainingFeature(EObject eObject) {
+		return eObject.eContainingFeature();
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the containment feature of the specified EObject",
+		params = {
+			@Param(name = "eObject", value = "The eObject which containment feature is requested.")
+		},
+		result = "The containment feature of the specified EObject"
+	)
+	// @formatter:on
+	public EReference eContainmentFeature(EObject eObject) {
+		return eObject.eContainmentFeature();
 	}
 
 	public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
