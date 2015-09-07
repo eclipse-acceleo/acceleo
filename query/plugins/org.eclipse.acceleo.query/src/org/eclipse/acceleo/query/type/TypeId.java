@@ -12,7 +12,7 @@ package org.eclipse.acceleo.query.type;
 
 public enum TypeId {
 
-	ANY("Any"), PRIMITIVE("Primitive"), TYPE("Type"), JAVAOBJECT("JavaObejct"), INTEGER("Integer"), REAL(
+	ANY("Any"), PRIMITIVE("Primitive"), TYPE("Type"), JAVAOBJECT("JavaObject"), INTEGER("Integer"), REAL(
 			"Real"), BOOLEAN("Boolean"), STRING("String"), COLLECTION("Collection"), SEQUENCE("Sequence"), ORDEREDSET(
 			"OrderedSet"), MODELOBJECT("ModelObject"), LAMBDA("Lambda"), NOTHING("Nothing"), ENUM("Enum"), ECLASS(
 			"EClass"), COMPARABLE("Comparable");
