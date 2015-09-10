@@ -13,8 +13,9 @@ package org.eclipse.acceleo.query.runtime.impl.completion;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
+import org.eclipse.acceleo.query.validation.type.IJavaType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 
 /**
  * A variable declaration {@link ICompletionProposal}.
@@ -55,24 +56,17 @@ public class VariableDeclarationCompletionProposal implements ICompletionProposa
 			rawType = ((ICollectionType)rawType).getCollectionType();
 		}
 
-		final EClassifier eClassifier = ((EClassifierType)rawType).getType();
-		if (rawType != type) {
-			result = toLowerFirst(eClassifier.getName()) + "s : " + eClassifier.getEPackage().getNsPrefix()
-					+ "::" + eClassifier.getName() + " | ";
+		final String name;
+		if (rawType instanceof EClassifierType) {
+			name = ((EClassifierType)rawType).getType().getName();
+		} else if (rawType instanceof NothingType) {
+			name = "Nothing";
+		} else if (rawType instanceof IJavaType) {
+			name = ((IJavaType)rawType).getType().getSimpleName();
 		} else {
-			final String prefix;
-			// CHECKSTYLE:OFF
-			if (eClassifier.getName().startsWith("A") || eClassifier.getName().startsWith("O")
-					|| eClassifier.getName().startsWith("E") || eClassifier.getName().startsWith("I")
-					|| eClassifier.getName().startsWith("U")) {
-				// CHECKSTYLE:ON
-				prefix = "an";
-			} else {
-				prefix = "a";
-			}
-			result = prefix + eClassifier.getName() + " : " + eClassifier.getEPackage().getNsPrefix() + "::"
-					+ eClassifier.getName() + " | ";
+			throw new IllegalArgumentException("Cannot handle input type " + rawType);
 		}
+		result = "my" + name + " | ";
 
 		return result;
 	}

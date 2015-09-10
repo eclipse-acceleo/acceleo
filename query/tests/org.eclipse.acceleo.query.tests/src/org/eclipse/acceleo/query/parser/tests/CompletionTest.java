@@ -34,9 +34,13 @@ import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionPropos
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
@@ -315,8 +319,8 @@ public class CompletionTest {
 		final ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
 				.get(0);
 		assertEquals(true, proposal instanceof VariableDeclarationCompletionProposal);
-		assertEquals("anEClass : ecore::EClass | ", proposal.getProposal());
-		assertEquals("anEClass : ecore::EClass | ".length(), proposal.getCursorOffset());
+		assertEquals("myEClass | ", proposal.getProposal());
+		assertEquals("myEClass | ".length(), proposal.getCursorOffset());
 	}
 
 	@Test
@@ -527,6 +531,225 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationCollectCompletion_Classifier() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationCollectCompletion_Class() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new ClassType(queryEnvironment, EObject.class));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationCollectCompletion_Nothing() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new NothingType("whatever"));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
+
+		// FIXME 477534 : should be the same count as for the SequenceOfNothing
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationCollectCompletion_SequenceOfNothing() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationSelectCompletion_Classifier() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationSelectCompletion_Class() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new ClassType(queryEnvironment, EObject.class));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationSelectCompletion_Nothing() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new NothingType("whatever"));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
+
+		// FIXME 477534 : should be the same count as for the SequenceOfNothing
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationSelectCompletion_SequenceOfNothing() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationRejectCompletion_Classifier() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationRejectCompletion_Class() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new ClassType(queryEnvironment, EObject.class));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationRejectCompletion_Nothing() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new NothingType("whatever"));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
+
+		// FIXME 477534 : should be the same count as for the SequenceOfNothing
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test477213VariableDeclarationRejectCompletion_SequenceOfNothing() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
 	}
 
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
