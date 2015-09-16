@@ -238,7 +238,11 @@ public class AnyServices extends AbstractServiceProvider {
 		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
 			checkRegistered((EClassifier)type);
 		}
-		if (type instanceof EClass) {
+		if (object == null && type != null) {
+			// OCL considers "null" (OclVoid) to be compatible with everything.
+			// AQL considers it incompatible with anything.
+			result = false;
+		} else if (type instanceof EClass) {
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
 				result = eClass.isInstance(object);
@@ -284,7 +288,11 @@ public class AnyServices extends AbstractServiceProvider {
 		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
 			checkRegistered((EClassifier)type);
 		}
-		if (type instanceof EClass) {
+		if (object == null && type != null) {
+			// OCL considers "null" (OclVoid) to be compatible with everything.
+			// AQL considers it incompatible with anything.
+			result = false;
+		} else if (type instanceof EClass) {
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
 				result = eClass == ((EObject)object).eClass();

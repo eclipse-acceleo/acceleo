@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,7 +80,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate(null, variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getPossibleTypes(ast).size());
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
+		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"null or empty string.", -1, -1);
@@ -88,7 +93,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
-		assertEquals(0, validationResult.getPossibleTypes(ast).size());
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
+		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"null or empty string.", 0, 0);
@@ -112,8 +119,9 @@ public class ValidationTest {
 	public void variableNotExistingTest() {
 		final IValidationResult validationResult = engine.validate("notExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -138,8 +146,9 @@ public class ValidationTest {
 	public void featureNotExistingAccessTest() {
 		final IValidationResult validationResult = engine.validate("self.notExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -237,8 +246,9 @@ public class ValidationTest {
 	public void operatorWrongArgumentTypeTest() {
 		final IValidationResult validationResult = engine.validate("1 and '3'", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(2, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -279,8 +289,9 @@ public class ValidationTest {
 	public void serviceWrongArgumentTypeTest() {
 		final IValidationResult validationResult = engine.validate("self.someService(true)", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
@@ -309,8 +320,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("stuff.getEClassifier('EClass')",
 				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
@@ -328,8 +340,9 @@ public class ValidationTest {
 	public void eOperationWrongArgumentTypeTest() {
 		final IValidationResult validationResult = engine.validate("stuff.getEClassifier(1)", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
@@ -372,8 +385,9 @@ public class ValidationTest {
 	public void classifierTypeError() {
 		final IValidationResult validationResult = engine.validate("anydsl::EClass", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -384,8 +398,9 @@ public class ValidationTest {
 	public void classifierTypeErrorMissingOneColon() {
 		final IValidationResult validationResult = engine.validate("anydsl:", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -411,8 +426,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine
 				.validate("anydsl::Part::NotExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -423,8 +439,9 @@ public class ValidationTest {
 	public void enumLiteralErrorMissingOneColon() {
 		final IValidationResult validationResult = engine.validate("anydsl::Part:", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -524,8 +541,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
 				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -544,8 +562,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
 				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -610,8 +629,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("if selector then self else stuff endif",
 				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(2, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
@@ -636,8 +656,9 @@ public class ValidationTest {
 				.validate("let stuff = self in stuff", variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
@@ -653,8 +674,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("let a = 1, a = 2 in self", variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
@@ -708,8 +730,9 @@ public class ValidationTest {
 				"{ecore::EClass | ecore::EPackage | ecore::EAttribute | ecore::EPackage}", variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
@@ -793,8 +816,9 @@ public class ValidationTest {
 		final IValidationResult validationResult = engine.validate("null->first()", variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
@@ -830,8 +854,9 @@ public class ValidationTest {
 				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
@@ -864,4 +889,23 @@ public class ValidationTest {
 		assertEquals(expectedEndPosition, message.getEndPosition());
 	}
 
+	/**
+	 * Removes all "Nothing" types from the given collection and returns them.
+	 * 
+	 * @param types
+	 *            The list of types to trim.
+	 * @return The list of NothingTypes we found the input collection.
+	 */
+	public List<IType> stripNothingTypes(Collection<IType> types) {
+		List<IType> nothings = new ArrayList<IType>();
+		Iterator<IType> typeItr = types.iterator();
+		while (typeItr.hasNext()) {
+			IType type = typeItr.next();
+			if (type instanceof NothingType) {
+				nothings.add(type);
+				typeItr.remove();
+			}
+		}
+		return nothings;
+	}
 }

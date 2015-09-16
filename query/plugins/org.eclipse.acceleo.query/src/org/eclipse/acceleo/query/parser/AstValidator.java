@@ -131,6 +131,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	private Set<IType> checkWarningsAndErrors(Expression expression, Set<IType> types) {
 		final Set<IType> result = new LinkedHashSet<IType>();
+		final Set<IType> validationTypes = new LinkedHashSet<IType>();
 		final List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
 		for (IType type : types) {
 			if (type instanceof NothingType) {
@@ -150,6 +151,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			} else {
 				result.add(type);
 			}
+			// Even if it's a Nothing, make the type known for validation purposes
+			validationTypes.add(type);
 		}
 
 		if (result.size() == 0) {
@@ -159,7 +162,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		messages.addAll(msgs);
-		validationResult.addTypes(expression, result);
+		validationResult.addTypes(expression, validationTypes);
 
 		return result;
 	}

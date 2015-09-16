@@ -96,6 +96,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
+        <possibleTypes>Nothing(Couldn't find the customToString(EClassifier=Adress) service or EOperation)</possibleTypes>
         <validationMessages severity="ERROR" message="Couldn't find the customToString(EClassifier=Adress) service or EOperation" startPosition="4" endPosition="21"/>
       </expectedResult>
     </expectations>
@@ -122,6 +123,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
+        <possibleTypes>Nothing(Feature name not found in EClass World)</possibleTypes>
         <validationMessages severity="ERROR" message="Feature name not found in EClass World" startPosition="4" endPosition="9"/>
       </expectedResult>
     </expectations>
@@ -358,6 +360,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
+        <possibleTypes>Nothing(Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)</possibleTypes>
         <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress" startPosition="4" endPosition="29"/>
       </expectedResult>
     </expectations>

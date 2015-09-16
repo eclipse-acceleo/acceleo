@@ -60,7 +60,7 @@ public final class NothingType extends AbstractType implements IJavaType {
 	 */
 	@Override
 	public String toString() {
-		return Nothing.class.getName() + "(" + message + ")";
+		return "Nothing(" + message + ")";
 	}
 
 	/**

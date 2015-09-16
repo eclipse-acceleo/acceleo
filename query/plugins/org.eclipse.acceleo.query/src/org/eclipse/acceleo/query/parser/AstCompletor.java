@@ -39,8 +39,9 @@ import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 
 /**
@@ -235,13 +236,29 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 */
 	@Override
 	public List<ICompletionProposal> caseErrorCall(ErrorCall object) {
+		/*
+		 * NOTE that this will only be called for "collection" type calls. other kind of error calls will be
+		 * handled by caseErrorFeatureAccessOrCall.
+		 */
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		if (!object.isMissingEndParenthesis()) {
 			final Set<IType> collectionTypes = new LinkedHashSet<IType>();
-			for (IType type : validationResult.getPossibleTypes(object.getArguments().get(0))) {
-				collectionTypes.add(new SequenceType(services.getQueryEnvironment(), type));
-				collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
+
+			final Set<IType> possibleReceiverTypes = validationResult.getPossibleTypes(object.getArguments()
+					.get(0));
+			if (possibleReceiverTypes.isEmpty()) {
+				collectionTypes.add(new SetType(services.getQueryEnvironment(), new NothingType(
+						"Argument collection will be empty for call to " + object.getServiceName())));
+			} else {
+				for (IType type : possibleReceiverTypes) {
+					if (type instanceof ICollectionType) {
+						collectionTypes.add(type);
+					} else {
+						// the arrow is an implicit set conversion
+						collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
+					}
+				}
 			}
 			result.addAll(services.getServiceProposals(collectionTypes, object.getType()));
 		} else {

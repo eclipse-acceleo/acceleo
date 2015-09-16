@@ -36,6 +36,7 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -281,7 +282,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -328,7 +329,7 @@ public class CompletionTest {
 				.getProposals(new BasicFilter(arrowCompletionResult));
 		assertEquals("", arrowCompletionResult.getPrefix());
 		assertEquals("", arrowCompletionResult.getRemaining());
-		assertEquals(56, arrowCompletionProposals.size());
+		assertEquals(43, arrowCompletionProposals.size());
 
 		List<String> arrowProposals = new ArrayList<String>();
 		for (ICompletionProposal arrowCompletionProposal : arrowCompletionProposals) {
@@ -714,7 +715,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self->)", 36, variableTypes);
 
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -749,7 +750,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
 
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -806,7 +807,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
 
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -864,8 +865,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		// FIXME 477534 : should be the same count as for the SequenceOfNothing
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -945,8 +945,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		// FIXME 477534 : should be the same count as for the SequenceOfNothing
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1026,8 +1025,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		// FIXME 477534 : should be the same count as for the SequenceOfNothing
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1168,7 +1166,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}->", 14, types);
 
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1184,7 +1182,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("Sequence{}->", 12, types);
 
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1266,7 +1264,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}->", 17,
 				variableTypes);
 
-		assertEquals(56, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -1425,7 +1423,78 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
-	public static void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
+	public void testCompletionOnNothingDot() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new NothingType("whatever"));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.", 5, types);
+
+		assertEquals(5, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testCompletionOnNothingArrow() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new NothingType("whatever"));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
+
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testCompletionOnSetOfNothingArrow() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SetType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
+
+		assertEquals(38, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testCompletionOnSequenceOfNothingArrow() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
+
+		assertEquals(43, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);
 		}
@@ -1483,8 +1552,8 @@ public class CompletionTest {
 					} else {
 						iType = new ClassType(environment, (Class<?>)type);
 					}
-					assertTrue(((JavaMethodServiceCompletionProposal)prop).getObject().getParameterTypes(environment)
-							.get(0).isAssignableFrom(iType));
+					assertTrue(((JavaMethodServiceCompletionProposal)prop).getObject().getParameterTypes(
+							environment).get(0).isAssignableFrom(iType));
 				}
 			}
 		}

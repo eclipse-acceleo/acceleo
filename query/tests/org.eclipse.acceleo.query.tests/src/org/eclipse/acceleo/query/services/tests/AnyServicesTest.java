@@ -148,7 +148,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 
 	@Test(expected = ClassCastException.class)
 	public void oclAsTypeNullNull() {
-		assertEquals(null, any.oclAsType(null, null));
+		any.oclAsType(null, null);
 	}
 
 	@Test(expected = ClassCastException.class)
