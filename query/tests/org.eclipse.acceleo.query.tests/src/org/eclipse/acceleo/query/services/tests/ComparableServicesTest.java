@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class ComparableServicesTest {
 
@@ -228,7 +228,7 @@ public class ComparableServicesTest {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private final static class TestComparable implements Comparable<TestComparable> {
+	public final static class TestComparable implements Comparable<TestComparable> {
 
 		private final int value;
 

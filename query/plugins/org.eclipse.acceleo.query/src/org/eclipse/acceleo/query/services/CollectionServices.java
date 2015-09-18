@@ -729,6 +729,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("excluding".equals(publicMethod.getName()) || "sub".equals(publicMethod.getName())
 				|| "reverse".equals(publicMethod.getName())) {
 			result = new FirstCollectionTypeService(publicMethod, this);
+		} else if ("sortedBy".equals(publicMethod.getName())) {
+			result = new FirstCollectionTypeService(publicMethod, this);
 		} else if ("reject".equals(publicMethod.getName())) {
 			result = new RejectService(publicMethod, this);
 		} else if ("select".equals(publicMethod.getName())) {
@@ -1251,23 +1253,36 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<Object> sortedBy(Collection<Object> collection, final LambdaValue lambda) {
-		final List<Object> result = new ArrayList<Object>();
+		final List<Object> result;
 
-		result.addAll(collection);
-		Collections.sort(result, new Comparator<Object>() {
-			@Override
-			public int compare(Object o1, Object o2) {
-				Object o1Result = lambda.eval(new Object[] {o1 });
-				Object o2Result = lambda.eval(new Object[] {o2 });
+		if (collection == null) {
+			result = null;
+		} else {
+			result = new ArrayList<Object>();
+			result.addAll(collection);
+			Collections.sort(result, new Comparator<Object>() {
+				@Override
+				public int compare(Object o1, Object o2) {
+					final int result;
 
-				if (o1Result instanceof Comparable<?>) {
-					@SuppressWarnings("unchecked")
-					Comparable<Object> c1 = (Comparable<Object>)o1Result;
-					return c1.compareTo(o2Result);
+					Object o1Result = lambda.eval(new Object[] {o1 });
+					Object o2Result = lambda.eval(new Object[] {o2 });
+					if (o1Result instanceof Comparable<?>) {
+						@SuppressWarnings("unchecked")
+						Comparable<Object> c1 = (Comparable<Object>)o1Result;
+						result = c1.compareTo(o2Result);
+					} else if (o2Result instanceof Comparable<?>) {
+						@SuppressWarnings("unchecked")
+						Comparable<Object> c2 = (Comparable<Object>)o2Result;
+						result = -c2.compareTo(o1Result);
+					} else {
+						result = 0;
+					}
+
+					return result;
 				}
-				return 0;
-			}
-		});
+			});
+		}
 
 		return result;
 	}

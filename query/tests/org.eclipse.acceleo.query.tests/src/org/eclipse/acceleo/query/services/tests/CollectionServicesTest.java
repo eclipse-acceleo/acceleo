@@ -42,6 +42,7 @@ import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.CollectionServices;
+import org.eclipse.acceleo.query.services.tests.ComparableServicesTest.TestComparable;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
 import org.eclipse.emf.common.notify.Notifier;
@@ -561,6 +562,106 @@ public class CollectionServicesTest {
 			isSequence = true;
 		}
 		assertTrue(isSequence);
+	}
+
+	@Test
+	public void testSortedByNullSet() {
+		LambdaValue zeroLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		List<Object> sortedBySet = collectionServices.sortedBy((Set<Object>)null, zeroLambda);
+		assertEquals(null, sortedBySet);
+	}
+
+	@Test
+	public void testSortedByNullList() {
+		LambdaValue zeroLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		List<Object> sortedByList = collectionServices.sortedBy((List<Object>)null, zeroLambda);
+		assertEquals(null, sortedByList);
+	}
+
+	@Test
+	public void testSortedBySetWithNull() {
+		LambdaValue nameLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1) {
+					return args[0];
+				}
+				return null;
+			}
+		};
+
+		Set<Object> set = new LinkedHashSet<Object>();
+		final TestComparable comp1 = new TestComparable(1);
+		final TestComparable comp2 = new TestComparable(2);
+		final TestComparable comp3 = new TestComparable(3);
+		final TestComparable comp4 = new TestComparable(4);
+		final TestComparable comp5 = new TestComparable(5);
+		set.add(comp2);
+		set.add(comp4);
+		set.add(comp1);
+		set.add(null);
+		set.add(comp3);
+		set.add(comp5);
+		List<Object> sortedBySet = collectionServices.sortedBy(set, nameLambda);
+		assertEquals(6, sortedBySet.size());
+		assertEquals(null, sortedBySet.get(0));
+		assertEquals(comp1, sortedBySet.get(1));
+		assertEquals(comp2, sortedBySet.get(2));
+		assertEquals(comp3, sortedBySet.get(3));
+		assertEquals(comp4, sortedBySet.get(4));
+		assertEquals(comp5, sortedBySet.get(5));
+	}
+
+	@Test
+	public void testSortedByListWithNull() {
+		LambdaValue nameLambda = new LambdaValue(null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1) {
+					return args[0];
+				}
+				return null;
+			}
+		};
+
+		List<Object> list = new ArrayList<Object>();
+		final TestComparable comp1 = new TestComparable(1);
+		final TestComparable comp2 = new TestComparable(2);
+		final TestComparable comp3 = new TestComparable(3);
+		final TestComparable comp4 = new TestComparable(4);
+		final TestComparable comp5 = new TestComparable(5);
+		list.add(comp2);
+		list.add(comp4);
+		list.add(comp1);
+		list.add(null);
+		list.add(comp3);
+		list.add(comp5);
+		List<Object> sortedByList = collectionServices.sortedBy(list, nameLambda);
+		assertEquals(6, sortedByList.size());
+		assertEquals(null, sortedByList.get(0));
+		assertEquals(comp1, sortedByList.get(1));
+		assertEquals(comp2, sortedByList.get(2));
+		assertEquals(comp3, sortedByList.get(3));
+		assertEquals(comp4, sortedByList.get(4));
+		assertEquals(comp5, sortedByList.get(5));
 	}
 
 	@Test
