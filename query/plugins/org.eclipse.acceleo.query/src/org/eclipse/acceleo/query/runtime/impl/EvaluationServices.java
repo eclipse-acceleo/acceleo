@@ -305,31 +305,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 			IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 			if (service == null) {
 				if (arguments[0] instanceof EObject) {
-					final List<Set<EParameter>> eClassifiers = getEParameters(Arrays.copyOfRange(arguments,
-							1, arguments.length));
-					EOperation eOperation = null;
-					if (arguments.length > 1) {
-						final Iterator<List<EParameter>> it = new CombineIterator<EParameter>(eClassifiers);
-						while (eOperation == null && it.hasNext()) {
-							eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
-									((EObject)arguments[0]).eClass(), serviceName, it.next());
-						}
-					} else {
-						eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
-								((EObject)arguments[0]).eClass(), serviceName, new ArrayList<EParameter>());
-					}
-					if (eOperation != null) {
-						final EList<Object> eArguments = new BasicEList<Object>();
-						for (int i = 1; i < arguments.length; ++i) {
-							eArguments.add(arguments[i]);
-						}
-						result = ((EObject)arguments[0]).eInvoke(eOperation, eArguments);
-					} else {
-						Nothing placeHolder = nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(
-								serviceName, argumentTypes));
-						addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-						result = placeHolder;
-					}
+					result = callEOperation(serviceName, arguments, diagnostic);
 				} else {
 					Nothing placeHolder = nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName,
 							argumentTypes));
@@ -346,6 +322,127 @@ public class EvaluationServices extends AbstractLanguageServices {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Calls an {@link EOperation} with the given name and given arguments.
+	 * 
+	 * @param operationName
+	 *            the {@link EOperation#getName() name}
+	 * @param parameters
+	 *            the {@link EOperation#getEParameters() parameters}
+	 * @param diagnostic
+	 *            the {@link Diagnostic}
+	 * @return the {@link EOperation} result if any, {@link Nothing} otherwise
+	 * @throws InvocationTargetException
+	 *             if the {@link EOperation} invocation fails
+	 */
+	private Object callEOperation(String operationName, Object[] parameters, Diagnostic diagnostic)
+			throws InvocationTargetException {
+		final Object result;
+		final Object[] arguments = Arrays.copyOfRange(parameters, 1, parameters.length);
+		final List<Set<EParameter>> eClassifiers = getEParameters(arguments);
+		EOperation eOperation = null;
+		final Object receiver = parameters[0];
+		if (parameters.length > 1) {
+			final Iterator<List<EParameter>> it = new CombineIterator<EParameter>(eClassifiers);
+			while (eOperation == null && it.hasNext()) {
+				eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
+						((EObject)receiver).eClass(), operationName, it.next());
+			}
+		} else {
+			eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
+					((EObject)receiver).eClass(), operationName, new ArrayList<EParameter>());
+		}
+		if (eOperation != null) {
+			final EList<Object> eArguments = new BasicEList<Object>();
+			for (int i = 1; i < parameters.length; ++i) {
+				eArguments.add(parameters[i]);
+			}
+			if (hasEInvoke(receiver)) {
+				result = ((EObject)receiver).eInvoke(eOperation, eArguments);
+			} else {
+				result = eOperationJavaInvoke(operationName, receiver, arguments, diagnostic);
+			}
+		} else {
+			final Class<?>[] argumentTypes = getArgumentTypes(parameters);
+			Nothing placeHolder = nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(operationName,
+					argumentTypes));
+			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			result = placeHolder;
+		}
+		return result;
+	}
+
+	/**
+	 * Call the {@link EOperation} thru a Java invoke.
+	 * 
+	 * @param operationName
+	 *            the {@link EOperation#getName() name}
+	 * @param receiver
+	 *            the receiver
+	 * @param arguments
+	 *            arguments
+	 * @param diagnostic
+	 *            the {@link Diagnostic}
+	 * @return the {@link EOperation} result if any, {@link Nothing} otherwise
+	 * @throws InvocationTargetException
+	 *             if the invoked {@link EOperation} fail
+	 */
+	private Object eOperationJavaInvoke(String operationName, final Object receiver,
+			final Object[] arguments, Diagnostic diagnostic) throws InvocationTargetException {
+		final Object result;
+		final Class<?>[] argumentTypes = getArgumentTypes(arguments);
+		Object invokeResult = null;
+		try {
+			final Method method = receiver.getClass().getMethod(operationName, argumentTypes);
+			invokeResult = method.invoke(receiver, arguments);
+		} catch (NoSuchMethodException e) {
+			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
+					argumentTypes), e.getMessage());
+			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			invokeResult = placeHolder;
+		} catch (SecurityException e) {
+			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
+					argumentTypes), e.getMessage());
+			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			invokeResult = placeHolder;
+		} catch (IllegalAccessException e) {
+			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
+					argumentTypes), e.getMessage());
+			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			invokeResult = placeHolder;
+		} catch (IllegalArgumentException e) {
+			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
+					argumentTypes), e.getMessage());
+			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			invokeResult = placeHolder;
+		} finally {
+			result = invokeResult;
+		}
+		return result;
+	}
+
+	/**
+	 * Try to find out if the Operation reflection is enable for the given {@link Object}.
+	 * 
+	 * @param object
+	 *            the {@link Object} to test.
+	 * @return <code>true</code> if the Operation reflection is enable for the given {@link Object},
+	 *         <code>false</code> otherwise
+	 */
+	private boolean hasEInvoke(Object object) {
+		Method method = null;
+
+		try {
+			method = object.getClass().getDeclaredMethod("eInvoke", int.class, EList.class);
+		} catch (NoSuchMethodException e) {
+			// nothing to do here
+		} catch (SecurityException e) {
+			// nothing to do here
+		}
+
+		return method != null;
 	}
 
 	/**

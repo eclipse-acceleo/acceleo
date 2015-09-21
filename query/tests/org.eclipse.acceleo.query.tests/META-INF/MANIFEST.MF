@@ -11,6 +11,7 @@ Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)",
  org.eclipse.acceleo.query;bundle-version="3.6.0",
  org.eclipse.emf.common,
  org.eclipse.emf.ecore.xmi,
+ org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.acceleo.query.tests.qmodel;bundle-version="3.6.0",
  org.eclipse.acceleo.query.tests.anydsl;bundle-version="3.6.0",
@@ -18,15 +19,27 @@ Require-Bundle: org.junit;bundle-version="[4.11.0,5.0.0)",
  org.eclipse.acceleo.annotations;bundle-version="3.6.0",
  org.eclipse.acceleo.query.tests.nestedpackages;bundle-version="3.6.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.acceleo.query.ast.test;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.parser.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.runtime.servicelookup;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.runtime.test;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.services.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.services;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.unit;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.type.test;x-friends:="org.eclipse.acceleo.query.compat.tests"
+Export-Package: org.eclipse.acceleo.query.ast.test;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.parser.tests;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.runtime.servicelookup;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.runtime.test;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.services.tests;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.tests;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.tests.services;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.tests.unit;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.type.test;
+  x-friends:="org.eclipse.acceleo.query.compat.tests",
+ nooperationreflection,
+ nooperationreflection.impl,
+ nooperationreflection.util
 Import-Package: com.google.common.base,
  com.google.common.collect;version="13.0.0",
  org.antlr.v4.runtime

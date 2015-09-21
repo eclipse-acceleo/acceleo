@@ -10,12 +10,19 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.google.common.collect.Maps;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import nooperationreflection.NoOperationReflection;
+import nooperationreflection.NooperationreflectionPackage;
 
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
@@ -25,6 +32,7 @@ import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.acceleo.query.tests.anydsl.Food;
 import org.eclipse.acceleo.query.tests.nestedpackages.root.RootEClass;
 import org.eclipse.acceleo.query.tests.nestedpackages.root.RootFactory;
 import org.eclipse.acceleo.query.tests.nestedpackages.root.RootPackage;
@@ -40,10 +48,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class EvaluationTest {
 
 	QueryEvaluationEngine engine;
@@ -58,6 +62,7 @@ public class EvaluationTest {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(RootPackage.eINSTANCE);
+		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
 		queryEnvironment.registerServicePackage(EObjectServices.class);
 		engine = new QueryEvaluationEngine(queryEnvironment);
 		builder = new QueryBuilderEngine(queryEnvironment);
@@ -270,6 +275,24 @@ public class EvaluationTest {
 		Map<String, Object> variables = Maps.newHashMap();
 		variables.put("self", EcorePackage.eINSTANCE.getEClass());
 		assertOKResultEquals(Integer.valueOf(1), engine.eval(builder.build("self.someService('a')"),
+				variables));
+	}
+
+	@Test
+	public void eOperationTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		final Food self = AnydslPackage.eINSTANCE.getAnydslFactory().createFood();
+		variables.put("self", self);
+		assertOKResultEquals("text", engine.eval(builder.build("self.preferredLabel('text')"), variables));
+	}
+
+	@Test
+	public void eOperationNoReflectionTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
+				.getNooperationreflectionFactory().createNoOperationReflection();
+		variables.put("self", self);
+		assertOKResultEquals("text", engine.eval(builder.build("self.eOperationNoReflection('text')"),
 				variables));
 	}
 
