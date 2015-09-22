@@ -27,6 +27,11 @@ import static org.junit.Assert.assertTrue;
 
 public class AnyServicesTest extends AbstractServicesTest {
 
+	/**
+	 * Line separator constant.
+	 */
+	private static final String LINE_SEP = System.getProperty("line.separator");
+
 	public AnyServices any;
 
 	@Override
@@ -422,6 +427,20 @@ public class AnyServicesTest extends AbstractServicesTest {
 	@Test
 	public void toStringString() {
 		assertEquals("some string", any.toString("some string"));
+	}
+
+	@Test
+	public void trace() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final String result = any.trace(42);
+		assertTrue(result.contains("Metamodels:" + LINE_SEP + "\thttp://www.eclipse.org/emf/2002/Ecore"
+				+ LINE_SEP));
+		assertTrue(result.contains("Services:" + LINE_SEP));
+		assertTrue(result
+				.contains("\t\t"
+						+ "public java.lang.Boolean org.eclipse.acceleo.query.services.AnyServices.differs(java.lang.Object,java.lang.Object)"
+						+ LINE_SEP));
+		assertTrue(result.contains("receiver: 42" + LINE_SEP));
 	}
 
 }

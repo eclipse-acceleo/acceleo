@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 	/**
 	 * Map the name to their corresponding package.
 	 */
-	private Map<String, EPackage> ePackages = new HashMap<String, EPackage>();
+	private Map<String, EPackage> ePackages = new LinkedHashMap<String, EPackage>();
 
 	/**
 	 * {@link Class} to {@link EClassifier} mapping.
@@ -1059,6 +1060,16 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 		result.addAll(following);
 
 		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getRegisteredEPackages()
+	 */
+	@Override
+	public Set<EPackage> getRegisteredEPackages() {
+		return new LinkedHashSet<EPackage>(ePackages.values());
 	}
 
 }

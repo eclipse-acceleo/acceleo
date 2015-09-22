@@ -128,6 +128,14 @@ public interface IEPackageProvider {
 	Class<?> getClass(EClassifier eCls);
 
 	/**
+	 * Gets the {@link Set} of registered {@link EPackage}.
+	 * 
+	 * @return the {@link Set} of registered {@link EPackage}
+	 * @since 4.0.0
+	 */
+	Set<EPackage> getRegisteredEPackages();
+
+	/**
 	 * Gets the {@link EStructuralFeature} from the given {@link Set} of {@link EClass}.
 	 * 
 	 * @param receiverEClasses

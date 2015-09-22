@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
@@ -103,12 +104,18 @@ public class BasicLookupEngine implements ILookupEngine {
 	}
 
 	/**
-	 * Gets the mapping from a {@link Class} to its {@link IService}.
-	 * 
-	 * @return the mapping from a {@link Class} to its {@link IService}
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ILookupEngine#getRegisteredServices()
 	 */
-	protected Map<Class<?>, Set<IService>> getClassToServices() {
-		return classToServices;
+	public Map<Class<?>, Set<IService>> getRegisteredServices() {
+		final Map<Class<?>, Set<IService>> result = new LinkedHashMap<Class<?>, Set<IService>>();
+
+		for (Entry<Class<?>, Set<IService>> entry : classToServices.entrySet()) {
+			result.put(entry.getKey(), new LinkedHashSet<IService>(entry.getValue()));
+		}
+
+		return result;
 	}
 
 	/**

@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -40,6 +41,7 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 //@formatter:off
@@ -49,6 +51,11 @@ import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 //@formatter:on
 @SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class AnyServices extends AbstractServiceProvider {
+
+	/**
+	 * Line separator constant.
+	 */
+	private static final String LINE_SEP = System.getProperty("line.separator");
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
@@ -355,8 +362,7 @@ public class AnyServices extends AbstractServiceProvider {
 	@Documentation(
 		value = "Returns a string representation of the current object.",
 		params = {
-			@Param(name = "self", value = "The current object"),
-			@Param(name = "", value = "")
+			@Param(name = "self", value = "The current object")
 		},
 		result = "a String representation of the given Object. For Collections, this will be the concatenation of " +
 				 "all contained Objects' toString.",
@@ -381,4 +387,40 @@ public class AnyServices extends AbstractServiceProvider {
 		// else return empty String
 		return buffer.toString();
 	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a string representation of the current environment.",
+		params = {
+			@Param(name = "self", value = "The current object")
+		},
+		result = "a string representation of the current environment.",
+		examples = {
+			@Example(expression = "42.trace()", result = "'Metamodels:\n\thttp://www.eclipse.org/emf/2002/Ecore\n" +
+					"Services:\n\torg.eclipse.acceleo.query.services.AnyServices\n\t\tpublic java.lang.String org." +
+					"eclipse.acceleo.query.services.AnyServices.add(java.lang.Object,java.lang.String)\n\t\t...\nreceiver: 42\n'")
+		}
+	)
+	// @formatter:on
+	public String trace(Object object) {
+		final StringBuilder result = new StringBuilder();
+
+		result.append("Metamodels:" + LINE_SEP);
+		for (EPackage ePgk : queryEnvironment.getEPackageProvider().getRegisteredEPackages()) {
+			result.append("\t" + ePgk.getNsURI() + LINE_SEP);
+		}
+		result.append("Services:" + LINE_SEP);
+		for (Entry<Class<?>, Set<IService>> entry : queryEnvironment.getLookupEngine()
+				.getRegisteredServices().entrySet()) {
+			result.append("\t" + entry.getKey().getCanonicalName() + LINE_SEP);
+			for (IService service : entry.getValue()) {
+				result.append("\t\t" + service.getServiceMethod().toGenericString() + LINE_SEP);
+			}
+		}
+		result.append("receiver: ");
+		result.append(toString(object) + LINE_SEP);
+
+		return result.toString();
+	}
+
 }
