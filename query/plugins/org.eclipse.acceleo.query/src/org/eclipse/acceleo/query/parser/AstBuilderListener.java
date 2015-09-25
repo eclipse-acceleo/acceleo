@@ -40,6 +40,7 @@ import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
+import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -73,6 +74,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.EContainerOrSelfContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EContentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EInverseContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EnumOrClassifierLitContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ErrorStringLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSeqLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExplicitSetLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ExpressionContext;
@@ -887,6 +889,23 @@ public class AstBuilderListener extends QueryBaseListener {
 		endPositions.put(stringLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
 		push(stringLiteral);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.parser.QueryBaseListener#exitErrorStringLit(org.eclipse.acceleo.query.parser.QueryParser.ErrorStringLitContext)
+	 */
+	@Override
+	public void exitErrorStringLit(ErrorStringLitContext ctx) {
+		final String text = ctx.getText();
+		final ErrorStringLiteral errorStringLiteral = builder.errorStringLiteral(text.substring(1, text
+				.length()));
+
+		startPositions.put(errorStringLiteral, Integer.valueOf(ctx.start.getStartIndex()));
+		endPositions.put(errorStringLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		pushError(errorStringLiteral, "String literal is not properly closed by a simple-quote: " + text);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
+import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -119,6 +120,20 @@ public class AstBuilder {
 		StringLiteral literal = (StringLiteral)EcoreUtil.create(AstPackage.Literals.STRING_LITERAL);
 		literal.setValue(stripSlashes(str));
 		return literal;
+	}
+
+	/**
+	 * Creates a new {@link ErrorStringLiteral}.
+	 * 
+	 * @param str
+	 *            the value
+	 * @return the new {@link ErrorStringLiteral}
+	 */
+	public ErrorStringLiteral errorStringLiteral(String str) {
+		ErrorStringLiteral errorStringLiteral = (ErrorStringLiteral)EcoreUtil
+				.create(AstPackage.Literals.ERROR_STRING_LITERAL);
+		errorStringLiteral.setValue(stripSlashes(str));
+		return errorStringLiteral;
 	}
 
 	/**

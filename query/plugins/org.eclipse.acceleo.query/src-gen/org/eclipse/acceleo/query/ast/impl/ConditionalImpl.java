@@ -14,25 +14,21 @@ package org.eclipse.acceleo.query.ast.impl;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Conditional</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Conditional</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getPredicate <em>Predicate</em>}</li>
- *   <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getTrueBranch <em>True Branch</em>}</li>
- *   <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getFalseBranch <em>False Branch</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getPredicate <em>Predicate</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getTrueBranch <em>True Branch</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ConditionalImpl#getFalseBranch <em>False Branch</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,9 +36,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	/**
-	 * The cached value of the '{@link #getPredicate() <em>Predicate</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getPredicate() <em>Predicate</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getPredicate()
 	 * @generated
 	 * @ordered
@@ -50,9 +46,9 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	protected Expression predicate;
 
 	/**
-	 * The cached value of the '{@link #getTrueBranch() <em>True Branch</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTrueBranch() <em>True Branch</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTrueBranch()
 	 * @generated
 	 * @ordered
@@ -60,9 +56,9 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	protected Expression trueBranch;
 
 	/**
-	 * The cached value of the '{@link #getFalseBranch() <em>False Branch</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getFalseBranch() <em>False Branch</em>}' containment reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getFalseBranch()
 	 * @generated
 	 * @ordered
@@ -70,8 +66,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	protected Expression falseBranch;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ConditionalImpl() {
@@ -79,8 +75,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -89,8 +85,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Expression getPredicate() {
@@ -98,42 +94,49 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetPredicate(Expression newPredicate, NotificationChain msgs) {
 		Expression oldPredicate = predicate;
 		predicate = newPredicate;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__PREDICATE, oldPredicate, newPredicate);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AstPackage.CONDITIONAL__PREDICATE, oldPredicate, newPredicate);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setPredicate(Expression newPredicate) {
 		if (newPredicate != predicate) {
 			NotificationChain msgs = null;
 			if (predicate != null)
-				msgs = ((InternalEObject)predicate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AstPackage.CONDITIONAL__PREDICATE, null, msgs);
+				msgs = ((InternalEObject)predicate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AstPackage.CONDITIONAL__PREDICATE, null, msgs);
 			if (newPredicate != null)
-				msgs = ((InternalEObject)newPredicate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AstPackage.CONDITIONAL__PREDICATE, null, msgs);
+				msgs = ((InternalEObject)newPredicate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AstPackage.CONDITIONAL__PREDICATE, null, msgs);
 			msgs = basicSetPredicate(newPredicate, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__PREDICATE, newPredicate, newPredicate));
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__PREDICATE,
+					newPredicate, newPredicate));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Expression getTrueBranch() {
@@ -141,42 +144,49 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetTrueBranch(Expression newTrueBranch, NotificationChain msgs) {
 		Expression oldTrueBranch = trueBranch;
 		trueBranch = newTrueBranch;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__TRUE_BRANCH, oldTrueBranch, newTrueBranch);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AstPackage.CONDITIONAL__TRUE_BRANCH, oldTrueBranch, newTrueBranch);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setTrueBranch(Expression newTrueBranch) {
 		if (newTrueBranch != trueBranch) {
 			NotificationChain msgs = null;
 			if (trueBranch != null)
-				msgs = ((InternalEObject)trueBranch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AstPackage.CONDITIONAL__TRUE_BRANCH, null, msgs);
+				msgs = ((InternalEObject)trueBranch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AstPackage.CONDITIONAL__TRUE_BRANCH, null, msgs);
 			if (newTrueBranch != null)
-				msgs = ((InternalEObject)newTrueBranch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AstPackage.CONDITIONAL__TRUE_BRANCH, null, msgs);
+				msgs = ((InternalEObject)newTrueBranch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AstPackage.CONDITIONAL__TRUE_BRANCH, null, msgs);
 			msgs = basicSetTrueBranch(newTrueBranch, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__TRUE_BRANCH, newTrueBranch, newTrueBranch));
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__TRUE_BRANCH,
+					newTrueBranch, newTrueBranch));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Expression getFalseBranch() {
@@ -184,42 +194,49 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetFalseBranch(Expression newFalseBranch, NotificationChain msgs) {
 		Expression oldFalseBranch = falseBranch;
 		falseBranch = newFalseBranch;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__FALSE_BRANCH, oldFalseBranch, newFalseBranch);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AstPackage.CONDITIONAL__FALSE_BRANCH, oldFalseBranch, newFalseBranch);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFalseBranch(Expression newFalseBranch) {
 		if (newFalseBranch != falseBranch) {
 			NotificationChain msgs = null;
 			if (falseBranch != null)
-				msgs = ((InternalEObject)falseBranch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - AstPackage.CONDITIONAL__FALSE_BRANCH, null, msgs);
+				msgs = ((InternalEObject)falseBranch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AstPackage.CONDITIONAL__FALSE_BRANCH, null, msgs);
 			if (newFalseBranch != null)
-				msgs = ((InternalEObject)newFalseBranch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - AstPackage.CONDITIONAL__FALSE_BRANCH, null, msgs);
+				msgs = ((InternalEObject)newFalseBranch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AstPackage.CONDITIONAL__FALSE_BRANCH, null, msgs);
 			msgs = basicSetFalseBranch(newFalseBranch, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__FALSE_BRANCH, newFalseBranch, newFalseBranch));
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.CONDITIONAL__FALSE_BRANCH,
+					newFalseBranch, newFalseBranch));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -236,8 +253,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -254,8 +271,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -275,8 +292,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -296,8 +313,8 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -313,4 +330,4 @@ public class ConditionalImpl extends ExpressionImpl implements Conditional {
 		return super.eIsSet(featureID);
 	}
 
-} //ConditionalImpl
+} // ConditionalImpl

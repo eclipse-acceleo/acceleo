@@ -85,6 +85,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//ErrorCollectionCall/target"/>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//ErrorVariableDeclaration"/>
+    <genClasses ecoreClass="ast.ecore#//ErrorStringLiteral"/>
     <genClasses ecoreClass="ast.ecore#//Binding">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Binding/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Binding/value"/>

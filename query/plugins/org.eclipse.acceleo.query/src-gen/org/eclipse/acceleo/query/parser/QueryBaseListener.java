@@ -810,6 +810,19 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterErrorStringLit(@NotNull QueryParser.ErrorStringLitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitErrorStringLit(@NotNull QueryParser.ErrorStringLitContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParen(@NotNull QueryParser.ParenContext ctx) { }
 	/**
 	 * {@inheritDoc}

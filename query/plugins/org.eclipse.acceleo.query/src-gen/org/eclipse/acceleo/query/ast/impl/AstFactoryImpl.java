@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
+import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
@@ -47,12 +48,13 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ * 
  * @generated
  */
 public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static AstFactory init() {
@@ -61,16 +63,15 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 			if (theAstFactory != null) {
 				return theAstFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new AstFactoryImpl();
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AstFactoryImpl() {
@@ -79,42 +80,71 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case AstPackage.VAR_REF: return createVarRef();
-			case AstPackage.FEATURE_ACCESS: return createFeatureAccess();
-			case AstPackage.CALL: return createCall();
-			case AstPackage.LITERAL: return createLiteral();
-			case AstPackage.INTEGER_LITERAL: return createIntegerLiteral();
-			case AstPackage.REAL_LITERAL: return createRealLiteral();
-			case AstPackage.STRING_LITERAL: return createStringLiteral();
-			case AstPackage.BOOLEAN_LITERAL: return createBooleanLiteral();
-			case AstPackage.ENUM_LITERAL: return createEnumLiteral();
-			case AstPackage.TYPE_LITERAL: return createTypeLiteral();
-			case AstPackage.COLLECTION_TYPE_LITERAL: return createCollectionTypeLiteral();
-			case AstPackage.LAMBDA: return createLambda();
-			case AstPackage.NULL_LITERAL: return createNullLiteral();
-			case AstPackage.SET_IN_EXTENSION_LITERAL: return createSetInExtensionLiteral();
-			case AstPackage.SEQUENCE_IN_EXTENSION_LITERAL: return createSequenceInExtensionLiteral();
-			case AstPackage.VARIABLE_DECLARATION: return createVariableDeclaration();
-			case AstPackage.ERROR_EXPRESSION: return createErrorExpression();
-			case AstPackage.ERROR_TYPE_LITERAL: return createErrorTypeLiteral();
-			case AstPackage.ERROR_FEATURE_ACCESS_OR_CALL: return createErrorFeatureAccessOrCall();
-			case AstPackage.ERROR_COLLECTION_CALL: return createErrorCollectionCall();
-			case AstPackage.ERROR_VARIABLE_DECLARATION: return createErrorVariableDeclaration();
-			case AstPackage.BINDING: return createBinding();
-			case AstPackage.LET: return createLet();
-			case AstPackage.CONDITIONAL: return createConditional();
+			case AstPackage.VAR_REF:
+				return createVarRef();
+			case AstPackage.FEATURE_ACCESS:
+				return createFeatureAccess();
+			case AstPackage.CALL:
+				return createCall();
+			case AstPackage.LITERAL:
+				return createLiteral();
+			case AstPackage.INTEGER_LITERAL:
+				return createIntegerLiteral();
+			case AstPackage.REAL_LITERAL:
+				return createRealLiteral();
+			case AstPackage.STRING_LITERAL:
+				return createStringLiteral();
+			case AstPackage.BOOLEAN_LITERAL:
+				return createBooleanLiteral();
+			case AstPackage.ENUM_LITERAL:
+				return createEnumLiteral();
+			case AstPackage.TYPE_LITERAL:
+				return createTypeLiteral();
+			case AstPackage.COLLECTION_TYPE_LITERAL:
+				return createCollectionTypeLiteral();
+			case AstPackage.LAMBDA:
+				return createLambda();
+			case AstPackage.NULL_LITERAL:
+				return createNullLiteral();
+			case AstPackage.SET_IN_EXTENSION_LITERAL:
+				return createSetInExtensionLiteral();
+			case AstPackage.SEQUENCE_IN_EXTENSION_LITERAL:
+				return createSequenceInExtensionLiteral();
+			case AstPackage.VARIABLE_DECLARATION:
+				return createVariableDeclaration();
+			case AstPackage.ERROR_EXPRESSION:
+				return createErrorExpression();
+			case AstPackage.ERROR_TYPE_LITERAL:
+				return createErrorTypeLiteral();
+			case AstPackage.ERROR_FEATURE_ACCESS_OR_CALL:
+				return createErrorFeatureAccessOrCall();
+			case AstPackage.ERROR_COLLECTION_CALL:
+				return createErrorCollectionCall();
+			case AstPackage.ERROR_VARIABLE_DECLARATION:
+				return createErrorVariableDeclaration();
+			case AstPackage.ERROR_STRING_LITERAL:
+				return createErrorStringLiteral();
+			case AstPackage.BINDING:
+				return createBinding();
+			case AstPackage.LET:
+				return createLet();
+			case AstPackage.CONDITIONAL:
+				return createConditional();
 			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+				throw new IllegalArgumentException("The class '" + eClass.getName()
+						+ "' is not a valid classifier");
 		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,12 +159,14 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 			case AstPackage.OBJECT_ARRAY:
 				return createObjectArrayFromString(eDataType, initialValue);
 			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName()
+						+ "' is not a valid classifier");
 		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -149,12 +181,14 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 			case AstPackage.OBJECT_ARRAY:
 				return convertObjectArrayToString(eDataType, instanceValue);
 			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName()
+						+ "' is not a valid classifier");
 		}
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VarRef createVarRef() {
@@ -164,6 +198,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public FeatureAccess createFeatureAccess() {
@@ -173,6 +208,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Call createCall() {
@@ -182,6 +218,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Literal createLiteral() {
@@ -191,6 +228,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IntegerLiteral createIntegerLiteral() {
@@ -200,6 +238,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public RealLiteral createRealLiteral() {
@@ -209,6 +248,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public StringLiteral createStringLiteral() {
@@ -218,6 +258,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BooleanLiteral createBooleanLiteral() {
@@ -227,6 +268,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumLiteral createEnumLiteral() {
@@ -236,6 +278,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public TypeLiteral createTypeLiteral() {
@@ -245,6 +288,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public CollectionTypeLiteral createCollectionTypeLiteral() {
@@ -254,6 +298,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Lambda createLambda() {
@@ -263,6 +308,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NullLiteral createNullLiteral() {
@@ -272,6 +318,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SetInExtensionLiteral createSetInExtensionLiteral() {
@@ -281,6 +328,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SequenceInExtensionLiteral createSequenceInExtensionLiteral() {
@@ -290,6 +338,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariableDeclaration createVariableDeclaration() {
@@ -299,6 +348,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ErrorExpression createErrorExpression() {
@@ -308,6 +358,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ErrorTypeLiteral createErrorTypeLiteral() {
@@ -317,6 +368,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ErrorFeatureAccessOrCall createErrorFeatureAccessOrCall() {
@@ -326,6 +378,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ErrorCollectionCall createErrorCollectionCall() {
@@ -335,6 +388,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ErrorVariableDeclaration createErrorVariableDeclaration() {
@@ -343,8 +397,18 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ErrorStringLiteral createErrorStringLiteral() {
+		ErrorStringLiteralImpl errorStringLiteral = new ErrorStringLiteralImpl();
+		return errorStringLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Binding createBinding() {
@@ -353,8 +417,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Let createLet() {
@@ -364,6 +428,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Conditional createConditional() {
@@ -372,18 +437,21 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public CallType createCallTypeFromString(EDataType eDataType, String initialValue) {
 		CallType result = CallType.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		if (result == null)
+			throw new IllegalArgumentException("The value '" + initialValue
+					+ "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertCallTypeToString(EDataType eDataType, Object instanceValue) {
@@ -392,6 +460,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Object createObjectTypeFromString(EDataType eDataType, String initialValue) {
@@ -400,6 +469,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertObjectTypeToString(EDataType eDataType, Object instanceValue) {
@@ -408,6 +478,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AstEvaluator createAstEvaluatorFromString(EDataType eDataType, String initialValue) {
@@ -416,6 +487,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertAstEvaluatorToString(EDataType eDataType, Object instanceValue) {
@@ -424,6 +496,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Object[] createObjectArrayFromString(EDataType eDataType, String initialValue) {
@@ -432,6 +505,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertObjectArrayToString(EDataType eDataType, Object instanceValue) {
@@ -440,6 +514,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AstPackage getAstPackage() {
@@ -448,6 +523,7 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */

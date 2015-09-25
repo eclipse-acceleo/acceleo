@@ -87,6 +87,7 @@ expressionSequence : (expression (',' expression)*)?
 variableDefinition : Ident (':' typeLiteral)? '|'
 ;
 literal :    String         #StringLit
+		   | ErrorString         #ErrorStringLit
 		   | Integer         #IntegerLit
 		   | Real         #RealLit
 		   |'true'        #TrueLit
@@ -110,13 +111,15 @@ qualifiedName : Ident('::'Ident)?
      ; 
 WS : [ \t\r\n]+ -> skip ; // skip spaces, tabs, newlines
 
-MultOp : ['*''/']
+MultOp : [*/]
 ;
 Integer : [0-9]+
 ;
 Real : [0-9]+'.'[0-9]+
 ;
 String :  '\'' (Escape|.)*? '\''
+;
+ErrorString : '\'' (Escape|~'\'')*
 ;
 fragment Escape : '\\\\' | '\\\''
 ;

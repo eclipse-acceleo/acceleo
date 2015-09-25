@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
+import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
@@ -185,6 +186,18 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 
 		result.addAll(services.getVariableDeclarationProposals(validationResult.getPossibleTypes(object
 				.getExpression())));
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorStringLiteral(org.eclipse.acceleo.query.ast.ErrorStringLiteral)
+	 */
+	@Override
+	public List<ICompletionProposal> caseErrorStringLiteral(ErrorStringLiteral object) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		return result;
 	}

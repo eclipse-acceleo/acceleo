@@ -205,6 +205,15 @@ public interface AstFactory extends EFactory {
 	ErrorVariableDeclaration createErrorVariableDeclaration();
 
 	/**
+	 * Returns a new object of class '<em>Error String Literal</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Error String Literal</em>'.
+	 * @generated
+	 */
+	ErrorStringLiteral createErrorStringLiteral();
+
+	/**
 	 * Returns a new object of class '<em>Binding</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return a new object of class '<em>Binding</em>'.

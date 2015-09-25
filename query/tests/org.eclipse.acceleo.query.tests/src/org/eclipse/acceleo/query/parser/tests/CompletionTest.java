@@ -752,6 +752,34 @@ public class CompletionTest {
 		assertNoVariableCompletionProposal(completionResult);
 	}
 
+	@Test
+	public void test478176MiddleOfEmptyStringLiteralCompletion() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self = ''", 8, types);
+
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	@Test
+	public void test478176MiddleOfStringLiteralCompletion() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self = 'test'", 10, types);
+
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("te", completionResult.getPrefix());
+		assertEquals("st", completionResult.getRemaining());
+	}
+
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);

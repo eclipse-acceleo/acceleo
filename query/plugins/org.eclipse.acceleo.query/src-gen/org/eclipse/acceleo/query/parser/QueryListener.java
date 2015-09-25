@@ -782,6 +782,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitIterationCall(@NotNull QueryParser.IterationCallContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code ErrorStringLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterErrorStringLit(@NotNull QueryParser.ErrorStringLitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ErrorStringLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitErrorStringLit(@NotNull QueryParser.ErrorStringLitContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code Paren}
 	 * labeled alternative in {@link QueryParser#expression}.
 	 * @param ctx the parse tree

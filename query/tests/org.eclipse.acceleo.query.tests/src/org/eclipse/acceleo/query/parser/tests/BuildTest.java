@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
+import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
@@ -1560,12 +1561,33 @@ public class BuildTest {
 		IQueryBuilderEngine.AstResult build = engine.build("'str");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorExpression.class, 0, 1, ast);
+		assertExpression(build, ErrorStringLiteral.class, 0, 4, ast);
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("String literal is not properly closed by a simple-quote: 'str", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+	}
+
+	@Test
+	public void incompletStringLitTestInExpression() {
+		IQueryBuilderEngine.AstResult build = engine.build("self = 'str");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 11, ast);
+		assertEquals("equals", ((Call)ast).getServiceName());
+		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertExpression(build, ErrorStringLiteral.class, 7, 11, ((Call)ast).getArguments().get(1));
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("String literal is not properly closed by a simple-quote: 'str", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
