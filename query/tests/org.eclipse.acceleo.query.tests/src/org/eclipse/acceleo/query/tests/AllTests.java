@@ -14,6 +14,7 @@ import org.eclipse.acceleo.query.ast.test.AstBuilderTest;
 import org.eclipse.acceleo.query.ast.test.AstEvaluatorTest;
 import org.eclipse.acceleo.query.parser.tests.BuildTest;
 import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
+import org.eclipse.acceleo.query.parser.tests.CompletionCheck;
 import org.eclipse.acceleo.query.parser.tests.CompletionTest;
 import org.eclipse.acceleo.query.parser.tests.EvaluationTest;
 import org.eclipse.acceleo.query.parser.tests.LexerTest;
@@ -81,7 +82,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ResourceServicesTest.class, ResourceServicesValidationTest.class,
 		ServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
 		EOperationCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
-		QueryEnvironmentTests.class, EPackageProviderTests.class, })
+		QueryEnvironmentTests.class, EPackageProviderTests.class, CompletionCheck.class, })
 public class AllTests {
 
 }
