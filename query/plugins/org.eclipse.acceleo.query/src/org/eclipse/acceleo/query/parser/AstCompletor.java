@@ -184,8 +184,17 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorVariableDeclaration(ErrorVariableDeclaration object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.addAll(services.getVariableDeclarationProposals(validationResult.getPossibleTypes(object
-				.getExpression())));
+		if (object.getName() == null) {
+			result.addAll(services.getVariableDeclarationProposals(validationResult.getPossibleTypes(object
+					.getExpression())));
+		} else if (object.getType() == null) {
+			result.add(new TextCompletionProposal(" : ", 0));
+			result.add(new TextCompletionProposal(" | ", 0));
+		} else if (object.getType() instanceof ErrorTypeLiteral) {
+			result.addAll(doSwitch(object.getType()));
+		} else {
+			result.add(new TextCompletionProposal(" | ", 0));
+		}
 
 		return result;
 	}

@@ -451,23 +451,23 @@ public class AstBuilderListener extends QueryBaseListener {
 				final TypeLiteral type;
 				if (e.getCtx().getChildCount() > 2) {
 					type = popTypeLiteral();
+					// overwrite the end position to the current error position (the start position is
+					// fine)
+					endPositions.put(type, endPosition);
 				} else {
 					type = null;
 				}
-				// overwrite the end position to the current error position (the start position is
-				// fine)
-				endPositions.put(type, endPosition);
 				final Expression variableExpression = pop();
-				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
-						type, variableExpression);
-				startPositions.put(variableDeclaration, startPosition);
-				endPositions.put(variableDeclaration, endPosition);
-				push(variableDeclaration);
+				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
+						variableName, type, variableExpression);
+				startPositions.put(errorVariableDeclaration, startPosition);
+				endPositions.put(errorVariableDeclaration, endPosition);
+				pushError(errorVariableDeclaration, "incomplete variable definition");
 			} else {
 				final Expression variableExpression = pop();
 				errorRule = QueryParser.RULE_variableDefinition;
-				final ErrorVariableDeclaration errorVariableDeclaration = builder
-						.errorVariableDeclaration(variableExpression);
+				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
+						null, null, variableExpression);
 				startPositions.put(errorVariableDeclaration, startPosition);
 				endPositions.put(errorVariableDeclaration, endPosition);
 				pushError(errorVariableDeclaration, "missing variable declaration");

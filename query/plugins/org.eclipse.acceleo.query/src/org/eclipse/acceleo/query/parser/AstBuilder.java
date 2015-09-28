@@ -574,14 +574,21 @@ public class AstBuilder {
 	/**
 	 * Creates a new {@link ErrorVariableDeclaration}.
 	 * 
+	 * @param variableName
+	 *            the {@link ErrorVariableDeclaration#getName() variable name}
+	 * @param type
+	 *            the {@link ErrorVariableDeclaration#getType() variable type}
 	 * @param expression
-	 *            the {@link VariableDeclaration#getExpression() variable expression}
+	 *            the {@link ErrorVariableDeclaration#getExpression() variable expression}
 	 * @return a new {@link ErrorVariableDeclaration}
 	 */
-	public ErrorVariableDeclaration errorVariableDeclaration(Expression expression) {
+	public ErrorVariableDeclaration errorVariableDeclaration(String variableName, TypeLiteral type,
+			Expression expression) {
 		ErrorVariableDeclaration result = (ErrorVariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.ERROR_VARIABLE_DECLARATION);
 
+		result.setName(variableName);
+		result.setType(type);
 		result.setExpression(expression);
 
 		return result;

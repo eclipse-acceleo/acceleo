@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -44,6 +40,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CompletionTest {
 
@@ -778,6 +778,51 @@ public class CompletionTest {
 		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("te", completionResult.getPrefix());
 		assertEquals("st", completionResult.getRemaining());
+	}
+
+	public void test478384NoPipeDeclarationVariable() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(e ", 15, types);
+
+		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	public void test478384NoPipeWithColonDeclarationVariable() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(e :", 16, types);
+
+		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test478384NoPipeWithTypeDeclarationVariable() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(e : ecore::EClass ",
+				31, types);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
 	}
 
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {

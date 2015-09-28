@@ -1998,12 +1998,16 @@ public class BuildTest {
 				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
 		assertExpression(build, ErrorExpression.class, 31, 31, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(1, build.getErrors().size());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("incomplete variable definition", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
