@@ -32,10 +32,10 @@ public class BooleanServices {
 		},
 		result = "The logical or of the two operands",
 		examples = {
-			@Example(expression = "true.or(false)", result = "true"),
-			@Example(expression = "false.or(true)", result = "true"),
-			@Example(expression = "true.or(true)", result = "true"),
-			@Example(expression = "false.or(false)", result = "false")
+			@Example(expression = "true or false", result = "true"),
+			@Example(expression = "false or true", result = "true"),
+			@Example(expression = "true or true", result = "true"),
+			@Example(expression = "false or false", result = "false")
 		}
 	)
 	// @formatter:on
@@ -52,10 +52,10 @@ public class BooleanServices {
 		},
 		result = "The logical and of the two operands",
 		examples = {
-			@Example(expression = "true.and(false)", result = "false"),
-			@Example(expression = "false.and(true)", result = "false"),
-			@Example(expression = "true.and(true)", result = "true"),
-			@Example(expression = "false.and(false)", result = "false")
+			@Example(expression = "true and false", result = "false"),
+			@Example(expression = "false and true", result = "false"),
+			@Example(expression = "true and true", result = "true"),
+			@Example(expression = "false and false", result = "false")
 		}
 	)
 	// @formatter:on
@@ -71,8 +71,8 @@ public class BooleanServices {
 		},
 		result = "The logical negation of the operand",
 		examples = {
-			@Example(expression = "true.not()", result = "false"),
-			@Example(expression = "false.not()", result = "true")
+			@Example(expression = "not true", result = "false"),
+			@Example(expression = "not false", result = "true")
 		}
 	)
 	// @formatter:on
@@ -98,10 +98,10 @@ public class BooleanServices {
 		},
 		result = "The logical implies of the operands",
 		examples = {
-			@Example(expression = "true.implies(true)", result = "true"),
-			@Example(expression = "true.implies(false)", result = "false"),
-			@Example(expression = "false.implies(true)", result = "true"),
-			@Example(expression = "false.implies(false)", result = "true"),
+			@Example(expression = "true implies true", result = "true"),
+			@Example(expression = "true implies false", result = "false"),
+			@Example(expression = "false implies true", result = "true"),
+			@Example(expression = "false implies false", result = "true"),
 		}
 	)
 	// @formatter:on
@@ -126,10 +126,10 @@ public class BooleanServices {
 		},
 		result = "The logical xor of the operands",
 		examples = {
-			@Example(expression = "true.xor(true)", result = "false"),
-			@Example(expression = "true.xor(false)", result = "true"),
-			@Example(expression = "false.xor(true)", result = "true"),
-			@Example(expression = "false.xor(false)", result = "false"),
+			@Example(expression = "true xor true", result = "false"),
+			@Example(expression = "true xor false", result = "true"),
+			@Example(expression = "false xor true", result = "true"),
+			@Example(expression = "false xor false", result = "false"),
 		}
 	)
 	// @formatter:on
