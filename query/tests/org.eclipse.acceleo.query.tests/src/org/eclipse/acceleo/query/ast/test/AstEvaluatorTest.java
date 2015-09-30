@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
@@ -48,6 +44,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AstEvaluatorTest extends AstBuilder {
 
@@ -306,7 +306,7 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testLetBasic() {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
-				stringLiteral("prefix")), binding("y", stringLiteral("suffix")));
+				null, stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		assertOKResultEquals("prefixsuffix", evaluator.eval(varDefinitions, let));
 	}
@@ -314,8 +314,8 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testLetArenotRecursive() {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
-				stringLiteral("prefix")), binding("y", callService(CallType.CALLSERVICE, "concat",
-				varRef("x"), stringLiteral("end"))));
+				null, stringLiteral("prefix")), binding("y", null, callService(CallType.CALLSERVICE,
+				"concat", varRef("x"), stringLiteral("end"))));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("x", "firstx");
 		assertOKResultEquals("prefixfirstxend", evaluator.eval(varDefinitions, let));
@@ -324,7 +324,7 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testLetWithNothingBound() {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
-				varRef("prefix")), binding("y", stringLiteral("suffix")));
+				null, varRef("prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);
@@ -339,7 +339,7 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testLetWithNothingBody() {
 		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("novar"), varRef("y")), binding("x",
-				stringLiteral("prefix")), binding("y", stringLiteral("suffix")));
+				null, stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);
@@ -366,6 +366,23 @@ public class AstEvaluatorTest extends AstBuilder {
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), it.next());
+	}
+
+	@Test
+	public void testLetOverwriteVariable() {
+		Let let = let(varRef("self"), binding("self", null, stringLiteral("selfOverritten")));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("self", "self");
+		assertOKResultEquals("selfOverritten", evaluator.eval(varDefinitions, let));
+	}
+
+	@Test
+	public void testLetOverwriteBinding() {
+		Let let = let(varRef("a"), binding("a", null, stringLiteral("a")), binding("a", null,
+				stringLiteral("aOverritten")));
+		Map<String, Object> varDefinitions = Maps.newHashMap();
+		varDefinitions.put("self", "self");
+		assertOKResultEquals("aOverritten", evaluator.eval(varDefinitions, let));
 	}
 
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {

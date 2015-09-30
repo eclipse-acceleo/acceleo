@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.ast.impl;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.emf.common.notify.Notification;
@@ -23,19 +24,20 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Binding</b></em>'. <!-- end-user-doc
- * -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Binding</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.BindingImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.BindingImpl#getValue <em>Value</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class BindingImpl extends MinimalEObjectImpl.Container implements Binding {
+public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements ErrorBinding {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -81,7 +83,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 * 
 	 * @generated
 	 */
-	protected BindingImpl() {
+	protected ErrorBindingImpl() {
 		super();
 	}
 
@@ -92,7 +94,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return AstPackage.Literals.BINDING;
+		return AstPackage.Literals.ERROR_BINDING;
 	}
 
 	/**
@@ -113,7 +115,8 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_BINDING__NAME, oldName,
+					name));
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 		type = newType;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					AstPackage.BINDING__TYPE, oldType, newType);
+					AstPackage.ERROR_BINDING__TYPE, oldType, newType);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -154,15 +157,16 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 			NotificationChain msgs = null;
 			if (type != null)
 				msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-						- AstPackage.BINDING__TYPE, null, msgs);
+						- AstPackage.ERROR_BINDING__TYPE, null, msgs);
 			if (newType != null)
 				msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-						- AstPackage.BINDING__TYPE, null, msgs);
+						- AstPackage.ERROR_BINDING__TYPE, null, msgs);
 			msgs = basicSetType(newType, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__TYPE, newType, newType));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_BINDING__TYPE, newType,
+					newType));
 	}
 
 	/**
@@ -184,7 +188,7 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 		value = newValue;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
-					AstPackage.BINDING__VALUE, oldValue, newValue);
+					AstPackage.ERROR_BINDING__VALUE, oldValue, newValue);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -203,15 +207,15 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 			NotificationChain msgs = null;
 			if (value != null)
 				msgs = ((InternalEObject)value).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-						- AstPackage.BINDING__VALUE, null, msgs);
+						- AstPackage.ERROR_BINDING__VALUE, null, msgs);
 			if (newValue != null)
 				msgs = ((InternalEObject)newValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-						- AstPackage.BINDING__VALUE, null, msgs);
+						- AstPackage.ERROR_BINDING__VALUE, null, msgs);
 			msgs = basicSetValue(newValue, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__VALUE, newValue,
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_BINDING__VALUE, newValue,
 					newValue));
 	}
 
@@ -223,9 +227,9 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case AstPackage.BINDING__TYPE:
+			case AstPackage.ERROR_BINDING__TYPE:
 				return basicSetType(null, msgs);
-			case AstPackage.BINDING__VALUE:
+			case AstPackage.ERROR_BINDING__VALUE:
 				return basicSetValue(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -239,11 +243,11 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case AstPackage.BINDING__NAME:
+			case AstPackage.ERROR_BINDING__NAME:
 				return getName();
-			case AstPackage.BINDING__TYPE:
+			case AstPackage.ERROR_BINDING__TYPE:
 				return getType();
-			case AstPackage.BINDING__VALUE:
+			case AstPackage.ERROR_BINDING__VALUE:
 				return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -257,13 +261,13 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case AstPackage.BINDING__NAME:
+			case AstPackage.ERROR_BINDING__NAME:
 				setName((String)newValue);
 				return;
-			case AstPackage.BINDING__TYPE:
+			case AstPackage.ERROR_BINDING__TYPE:
 				setType((TypeLiteral)newValue);
 				return;
-			case AstPackage.BINDING__VALUE:
+			case AstPackage.ERROR_BINDING__VALUE:
 				setValue((Expression)newValue);
 				return;
 		}
@@ -278,13 +282,13 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case AstPackage.BINDING__NAME:
+			case AstPackage.ERROR_BINDING__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case AstPackage.BINDING__TYPE:
+			case AstPackage.ERROR_BINDING__TYPE:
 				setType((TypeLiteral)null);
 				return;
-			case AstPackage.BINDING__VALUE:
+			case AstPackage.ERROR_BINDING__VALUE:
 				setValue((Expression)null);
 				return;
 		}
@@ -299,14 +303,58 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case AstPackage.BINDING__NAME:
+			case AstPackage.ERROR_BINDING__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case AstPackage.BINDING__TYPE:
+			case AstPackage.ERROR_BINDING__TYPE:
 				return type != null;
-			case AstPackage.BINDING__VALUE:
+			case AstPackage.ERROR_BINDING__VALUE:
 				return value != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == Binding.class) {
+			switch (derivedFeatureID) {
+				case AstPackage.ERROR_BINDING__NAME:
+					return AstPackage.BINDING__NAME;
+				case AstPackage.ERROR_BINDING__TYPE:
+					return AstPackage.BINDING__TYPE;
+				case AstPackage.ERROR_BINDING__VALUE:
+					return AstPackage.BINDING__VALUE;
+				default:
+					return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == Binding.class) {
+			switch (baseFeatureID) {
+				case AstPackage.BINDING__NAME:
+					return AstPackage.ERROR_BINDING__NAME;
+				case AstPackage.BINDING__TYPE:
+					return AstPackage.ERROR_BINDING__TYPE;
+				case AstPackage.BINDING__VALUE:
+					return AstPackage.ERROR_BINDING__VALUE;
+				default:
+					return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -326,4 +374,4 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 		return result.toString();
 	}
 
-} // BindingImpl
+} // ErrorBindingImpl

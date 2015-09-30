@@ -357,6 +357,7 @@ public class CompletionTest {
 	@Test
 	public void testLetCompletionFromNothing() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
+
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		List<ICompletionProposal> proposals = completionResult
@@ -374,6 +375,7 @@ public class CompletionTest {
 	@Test
 	public void testLetCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("le", 2, variableTypes);
+
 		assertEquals("le", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
@@ -383,14 +385,55 @@ public class CompletionTest {
 	}
 
 	@Test
-	public void testBindingCompletion() {
-		final ICompletionResult completionResult = engine.getCompletion("let a=", 6, variableTypes);
+	public void testLetCompletionNoBinding() {
+		final ICompletionResult completionResult = engine.getCompletion("let ", 4, variableTypes);
+
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+	}
+
+	@Test
+	public void testBindingCompletionNoEquals() {
+		final ICompletionResult completionResult = engine.getCompletion("let a ", 6, variableTypes);
+
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
+	}
+
+	@Test
+	public void testBindingCompletionWithErrorType() {
+		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::", 15, variableTypes);
+
+		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertNoServiceCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void testBindingCompletionWithType() {
+		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::EClass ", 22,
+				variableTypes);
+
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
+				.get(0);
+		assertEquals(" = ", proposal.getProposal());
+	}
+
+	@Test
+	public void testBindingCompletionNoType() {
+		final ICompletionResult completionResult = engine.getCompletion("let a = ", 8, variableTypes);
 		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 
 	@Test
 	public void testLetBodyCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("let a=3 in ", 11, variableTypes);
+
 		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 	}
 

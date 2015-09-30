@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -138,6 +139,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createErrorStringLiteral();
 			case AstPackage.BINDING:
 				return createBinding();
+			case AstPackage.ERROR_BINDING:
+				return createErrorBinding();
 			case AstPackage.LET:
 				return createLet();
 			case AstPackage.CONDITIONAL:
@@ -440,6 +443,16 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public Binding createBinding() {
 		BindingImpl binding = new BindingImpl();
 		return binding;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ErrorBinding createErrorBinding() {
+		ErrorBindingImpl errorBinding = new ErrorBindingImpl();
+		return errorBinding;
 	}
 
 	/**

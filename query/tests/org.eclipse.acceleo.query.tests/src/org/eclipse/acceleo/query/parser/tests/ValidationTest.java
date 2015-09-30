@@ -577,7 +577,7 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void testLetMaskingBinding() {
+	public void testLetMaskingVariable() {
 		final IValidationResult validationResult = engine
 				.validate("let stuff = self in stuff", variableTypes);
 
@@ -592,6 +592,23 @@ public class ValidationTest {
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"Variable stuff overrides an existing value.", 0, 25);
+	}
+
+	@Test
+	public void testLetMaskingBinding() {
+		final IValidationResult validationResult = engine.validate("let a = 1, a = 2 in self", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(true, possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
+				"Variable a overrides an existing value.", 0, 24);
 	}
 
 	@Test
@@ -652,6 +669,36 @@ public class ValidationTest {
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"EClassifierLiteral=EPackage is duplicated in the type set literal.", 0, 71);
+	}
+
+	@Test
+	public void testLetExpressionError() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar = 'text' in newVar + notAVariable", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"Couldn't find the notAVariable variable", 32, 44);
+	}
+
+	@Test
+	public void testLetBindingExpressionError() {
+		final IValidationResult validationResult = engine.validate("let newVar = notAVariable in newVar",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(2, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"Couldn't find the notAVariable variable", 13, 25);
+		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.ERROR,
+				"The newVar variable has no types", 29, 35);
 	}
 
 	/**

@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.parser;
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -689,7 +691,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		for (VariableDeclaration variableDeclaration : object.getParameters()) {
 			final Set<IType> types;
 			if (variableDeclaration.getType() == null || variableDeclaration.getType() instanceof Error) {
-				final Set<IType> variableTypes = doSwitch(variableDeclaration.getExpression());
+				final Set<IType> variableTypes = doSwitch(variableDeclaration);
 				types = new LinkedHashSet<IType>();
 				for (IType type : variableTypes) {
 					if (type instanceof ICollectionType) {
@@ -929,8 +931,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseVariableDeclaration(VariableDeclaration object) {
-		doSwitch(object.getExpression());
-		return null;
+		return doSwitch(object.getExpression());
 	}
 
 	/**
@@ -1012,10 +1013,13 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
 				.peek());
 		for (Binding binding : object.getBindings()) {
-			if (newVariableTypes.containsKey(binding.getName())) {
-				result.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE, binding.getName()));
+			final Set<IType> bindingTypes = doSwitch(binding);
+			if (binding.getName() != null) {
+				if (newVariableTypes.containsKey(binding.getName())) {
+					result.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE, binding.getName()));
+				}
+				newVariableTypes.put(binding.getName(), bindingTypes);
 			}
-			newVariableTypes.put(binding.getName(), doSwitch(binding.getValue()));
 		}
 
 		variableTypesStack.push(newVariableTypes);
@@ -1027,6 +1031,34 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		return checkWarningsAndErrors(object, result);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseBinding(org.eclipse.acceleo.query.ast.Binding)
+	 */
+	@Override
+	public Set<IType> caseBinding(Binding object) {
+		return doSwitch(object.getValue());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorBinding(org.eclipse.acceleo.query.ast.ErrorBinding)
+	 */
+	@Override
+	public Set<IType> caseErrorBinding(ErrorBinding object) {
+		final Set<IType> result;
+
+		if (object.getValue() != null) {
+			result = doSwitch(object.getValue());
+		} else {
+			result = Collections.emptySet();
+		}
+
+		return result;
 	}
 
 }

@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -246,6 +247,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass bindingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass errorBindingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -854,8 +862,26 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
-	public EReference getBinding_Value() {
+	public EReference getBinding_Type() {
 		return (EReference)bindingEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getBinding_Value() {
+		return (EReference)bindingEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getErrorBinding() {
+		return errorBindingEClass;
 	}
 
 	/**
@@ -1066,7 +1092,10 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		bindingEClass = createEClass(BINDING);
 		createEAttribute(bindingEClass, BINDING__NAME);
+		createEReference(bindingEClass, BINDING__TYPE);
 		createEReference(bindingEClass, BINDING__VALUE);
+
+		errorBindingEClass = createEClass(ERROR_BINDING);
 
 		letEClass = createEClass(LET);
 		createEReference(letEClass, LET__BINDINGS);
@@ -1148,6 +1177,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getVariableDeclaration());
 		errorStringLiteralEClass.getESuperTypes().add(this.getError());
 		errorStringLiteralEClass.getESuperTypes().add(this.getStringLiteral());
+		errorBindingEClass.getESuperTypes().add(this.getError());
+		errorBindingEClass.getESuperTypes().add(this.getBinding());
 		letEClass.getESuperTypes().add(this.getExpression());
 		conditionalEClass.getESuperTypes().add(this.getExpression());
 
@@ -1315,9 +1346,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEAttribute(getBinding_Name(), theEcorePackage.getEString(), "name", null, 1, 1, Binding.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
+		initEReference(getBinding_Type(), this.getTypeLiteral(), null, "type", null, 0, 1, Binding.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBinding_Value(), this.getExpression(), null, "value", null, 1, 1, Binding.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(errorBindingEClass, ErrorBinding.class, "ErrorBinding", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(letEClass, Let.class, "Let", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getLet_Bindings(), this.getBinding(), null, "bindings", null, 1, -1, Let.class,

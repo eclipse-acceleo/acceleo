@@ -17,6 +17,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -376,6 +377,17 @@ public class AstSwitch<T> extends Switch<T> {
 			case AstPackage.BINDING: {
 				Binding binding = (Binding)theEObject;
 				T result = caseBinding(binding);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.ERROR_BINDING: {
+				ErrorBinding errorBinding = (ErrorBinding)theEObject;
+				T result = caseErrorBinding(errorBinding);
+				if (result == null)
+					result = caseError(errorBinding);
+				if (result == null)
+					result = caseBinding(errorBinding);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -809,6 +821,21 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBinding(Binding object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Binding</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Binding</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorBinding(ErrorBinding object) {
 		return null;
 	}
 

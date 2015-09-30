@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -1059,6 +1060,65 @@ public class BuildTest {
 	}
 
 	@Test
+	public void letOneBinding() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a = 'a' in a");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 16, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, StringLiteral.class, 8, 11, ((Let)ast).getBindings().get(0).getValue());
+		assertExpression(build, VarRef.class, 15, 16, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void letTwoBindings() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a = 'a', b = 'b' in a + b");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 29, ast);
+		assertEquals(2, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, StringLiteral.class, 8, 11, ((Let)ast).getBindings().get(0).getValue());
+		assertEquals("b", ((Let)ast).getBindings().get(1).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(1).getType());
+		assertExpression(build, StringLiteral.class, 17, 20, ((Let)ast).getBindings().get(1).getValue());
+		assertExpression(build, Call.class, 24, 29, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void letOneBindingWithType() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a : ecore::EString = 'a' in a");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 33, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertTrue(((Let)ast).getBindings().get(0).getType() instanceof TypeLiteral);
+		assertExpression(build, StringLiteral.class, 25, 28, ((Let)ast).getBindings().get(0).getValue());
+		assertExpression(build, VarRef.class, 32, 33, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void letTwoBindingsWithType() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("let a : ecore::EString = 'a', b : ecore::EString = 'b' in a + b");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 63, ast);
+		assertEquals(2, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertTrue(((Let)ast).getBindings().get(0).getType() instanceof TypeLiteral);
+		assertExpression(build, StringLiteral.class, 25, 28, ((Let)ast).getBindings().get(0).getValue());
+		assertEquals("b", ((Let)ast).getBindings().get(1).getName());
+		assertTrue(((Let)ast).getBindings().get(1).getType() instanceof TypeLiteral);
+		assertExpression(build, StringLiteral.class, 51, 54, ((Let)ast).getBindings().get(1).getValue());
+		assertExpression(build, Call.class, 58, 63, ((Let)ast).getBody());
+	}
+
+	@Test
 	public void nullTest() {
 		IQueryBuilderEngine.AstResult build = engine.build(null);
 		Expression ast = build.getAst();
@@ -2003,21 +2063,97 @@ public class BuildTest {
 	}
 
 	@Test
-	public void incompleteLetTest1() {
+	public void incompleteLetNoExpression() {
 		IQueryBuilderEngine.AstResult build = engine.build("let a=2 in");
-		assertExpression(build, Let.class, 0, 10, build.getAst());
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 10, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, IntegerLiteral.class, 6, 7, ((Let)ast).getBindings().get(0).getValue());
+		assertExpression(build, ErrorExpression.class, 10, 10, ((Let)ast).getBody());
 	}
 
 	@Test
-	public void incompleteLetTest2() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a=2 i");
-		assertExpression(build, Let.class, 0, 9, build.getAst());
+	public void incompleteLetNoBindingNoExpression() {
+		IQueryBuilderEngine.AstResult build = engine.build("let");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 3, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertExpression(build, ErrorExpression.class, 3, 3, ((Let)ast).getBody());
 	}
 
 	@Test
-	public void incompleteLetTest3() {
-		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b=");
-		assertExpression(build, Let.class, 0, 11, build.getAst());
+	public void incompleteLetNoBinding() {
+		IQueryBuilderEngine.AstResult build = engine.build("let in a");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 8, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertTrue(((Let)ast).getBindings().get(0) instanceof ErrorBinding);
+		assertEquals(null, ((ErrorBinding)((Let)ast).getBindings().get(0)).getName());
+		assertEquals(null, ((ErrorBinding)((Let)ast).getBindings().get(0)).getType());
+		assertExpression(build, ErrorExpression.class, 8, 8, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void incompleteLetIncompleteFirstBinding() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a= in a + b");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 15, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, ErrorExpression.class, 7, 7, ((Let)ast).getBindings().get(0).getValue());
+		assertExpression(build, Call.class, 10, 15, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void incompleteLetIncompleteFirstBindingErrorType() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a : ecore:: = in a");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 22, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertTrue(((Let)ast).getBindings().get(0).getType() instanceof ErrorTypeLiteral);
+		assertExpression(build, ErrorExpression.class, 18, 18, ((Let)ast).getBindings().get(0).getValue());
+		assertExpression(build, VarRef.class, 21, 22, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void incompleteLetIncompleteSecondBinding() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b= in a + b");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 20, ast);
+		assertEquals(2, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, IntegerLiteral.class, 6, 7, ((Let)ast).getBindings().get(0).getValue());
+		assertEquals("b", ((Let)ast).getBindings().get(1).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(1).getType());
+		assertExpression(build, ErrorExpression.class, 12, 12, ((Let)ast).getBindings().get(1).getValue());
+		assertExpression(build, Call.class, 15, 20, ((Let)ast).getBody());
+	}
+
+	@Test
+	public void incompleteLetIncompleteSecondBindingErrorType() {
+		IQueryBuilderEngine.AstResult build = engine.build("let a=2 ,b : ecore:: = in a + b");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 31, ast);
+		assertEquals(2, ((Let)ast).getBindings().size());
+		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
+		assertEquals(null, ((Let)ast).getBindings().get(0).getType());
+		assertExpression(build, IntegerLiteral.class, 6, 7, ((Let)ast).getBindings().get(0).getValue());
+		assertEquals("b", ((Let)ast).getBindings().get(1).getName());
+		assertTrue(((Let)ast).getBindings().get(1).getType() instanceof ErrorTypeLiteral);
+		assertExpression(build, ErrorExpression.class, 23, 23, ((Let)ast).getBindings().get(1).getValue());
+		assertExpression(build, Call.class, 26, 31, ((Let)ast).getBody());
 	}
 
 	/**

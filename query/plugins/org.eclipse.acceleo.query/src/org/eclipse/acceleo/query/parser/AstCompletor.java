@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -207,6 +208,34 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	@Override
 	public List<ICompletionProposal> caseErrorStringLiteral(ErrorStringLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorBinding(org.eclipse.acceleo.query.ast.ErrorBinding)
+	 */
+	@Override
+	public List<ICompletionProposal> caseErrorBinding(ErrorBinding object) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
+		if (object.getName() != null) {
+			if (object.getType() instanceof ErrorTypeLiteral) {
+				result.addAll(doSwitch(object.getType()));
+			} else {
+				if (object.getType() == null) {
+					result.add(new TextCompletionProposal(" : ", 0));
+				}
+				if (object.getValue() == null) {
+					result.add(new TextCompletionProposal(" = ", 0));
+				}
+				if (object.getValue() instanceof ErrorExpression) {
+					result.addAll(doSwitch(object.getValue()));
+				}
+			}
+		}
 
 		return result;
 	}

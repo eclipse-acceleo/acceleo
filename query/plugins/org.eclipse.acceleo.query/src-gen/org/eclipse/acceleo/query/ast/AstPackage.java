@@ -1099,13 +1099,22 @@ public interface AstPackage extends EPackage {
 	int BINDING__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int BINDING__TYPE = 1;
+
+	/**
 	 * The feature id for the '<em><b>Value</b></em>' containment reference. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING__VALUE = 1;
+	int BINDING__VALUE = 2;
 
 	/**
 	 * The number of structural features of the '<em>Binding</em>' class. <!-- begin-user-doc --> <!--
@@ -1114,7 +1123,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int BINDING_FEATURE_COUNT = 2;
+	int BINDING_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Binding</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1125,6 +1134,60 @@ public interface AstPackage extends EPackage {
 	int BINDING_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl
+	 * <em>Error Binding</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorBinding()
+	 * @generated
+	 */
+	int ERROR_BINDING = 27;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__NAME = ERROR_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__TYPE = ERROR_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__VALUE = ERROR_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Error Binding</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Error Binding</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.LetImpl <em>Let</em>}' class.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1132,7 +1195,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
 	 * @generated
 	 */
-	int LET = 27;
+	int LET = 28;
 
 	/**
 	 * The feature id for the '<em><b>Bindings</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -1177,7 +1240,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
 	 * @generated
 	 */
-	int CONDITIONAL = 28;
+	int CONDITIONAL = 29;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1232,7 +1295,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 29;
+	int CALL_TYPE = 30;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1242,7 +1305,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 30;
+	int OBJECT_TYPE = 31;
 
 	/**
 	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1252,7 +1315,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 	 * @generated
 	 */
-	int AST_EVALUATOR = 31;
+	int AST_EVALUATOR = 32;
 
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1261,7 +1324,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 32;
+	int OBJECT_ARRAY = 33;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -1859,6 +1922,18 @@ public interface AstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.query.ast.Binding#getType <em>Type</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference '<em>Type</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Binding#getType()
+	 * @see #getBinding()
+	 * @generated
+	 */
+	EReference getBinding_Type();
+
+	/**
+	 * Returns the meta object for the containment reference '
 	 * {@link org.eclipse.acceleo.query.ast.Binding#getValue <em>Value</em>}'. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -1868,6 +1943,16 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getBinding_Value();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorBinding
+	 * <em>Error Binding</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Error Binding</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorBinding
+	 * @generated
+	 */
+	EClass getErrorBinding();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Let <em>Let</em>}'. <!--
@@ -2514,12 +2599,30 @@ public interface AstPackage extends EPackage {
 		EAttribute BINDING__NAME = eINSTANCE.getBinding_Name();
 
 		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference BINDING__TYPE = eINSTANCE.getBinding_Type();
+
+		/**
 		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature. <!--
 		 * begin-user-doc --> <!-- end-user-doc -->
 		 * 
 		 * @generated
 		 */
 		EReference BINDING__VALUE = eINSTANCE.getBinding_Value();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl
+		 * <em>Error Binding</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.ErrorBindingImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorBinding()
+		 * @generated
+		 */
+		EClass ERROR_BINDING = eINSTANCE.getErrorBinding();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.LetImpl <em>Let</em>}'

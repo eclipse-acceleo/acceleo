@@ -57,6 +57,33 @@ public interface Binding extends EObject {
 	void setName(String value);
 
 	/**
+	 * Returns the value of the '<em><b>Type</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type</em>' containment reference isn't clear, there really should be more of
+	 * a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Type</em>' containment reference.
+	 * @see #setType(TypeLiteral)
+	 * @see org.eclipse.acceleo.query.ast.AstPackage#getBinding_Type()
+	 * @model containment="true"
+	 * @generated
+	 */
+	TypeLiteral getType();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Binding#getType <em>Type</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Type</em>' containment reference.
+	 * @see #getType()
+	 * @generated
+	 */
+	void setType(TypeLiteral value);
+
+	/**
 	 * Returns the value of the '<em><b>Value</b></em>' containment reference. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Value</em>' containment reference isn't clear, there really should be more

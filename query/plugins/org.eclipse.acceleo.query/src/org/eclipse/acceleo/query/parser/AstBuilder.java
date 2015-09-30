@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
@@ -604,7 +605,7 @@ public class AstBuilder {
 	 *            the true branch
 	 * @param falseBranch
 	 *            the false branch
-	 * @return a conditionnal operator with the specified predicate, true branche and false branch.
+	 * @return a conditional operator with the specified predicate, true branche and false branch.
 	 */
 	public Conditional conditional(Expression predicate, Expression trueBranch, Expression falseBranch) {
 		Conditional result = (Conditional)EcoreUtil.create(AstPackage.Literals.CONDITIONAL);
@@ -619,13 +620,16 @@ public class AstBuilder {
 	 * 
 	 * @param varName
 	 *            the variable name of the binding
+	 * @param type
+	 *            the binding type it can be <code>null</code>
 	 * @param expression
 	 *            the expression which value is bound to the variable.
 	 * @return the new {@link Binding} instance created.
 	 */
-	public Binding binding(String varName, Expression expression) {
+	public Binding binding(String varName, TypeLiteral type, Expression expression) {
 		Binding binding = (Binding)EcoreUtil.create(AstPackage.Literals.BINDING);
 		binding.setName(varName);
+		binding.setType(type);
 		binding.setValue(expression);
 		return binding;
 	}
@@ -662,6 +666,24 @@ public class AstBuilder {
 		typeSetLiteral.getTypes().addAll(types);
 
 		return typeSetLiteral;
+	}
+
+	/**
+	 * Creates a new {@link ErrorBinding}.
+	 * 
+	 * @param name
+	 *            the {@link ErrorBinding#getName() name} it can be <code>null</code>
+	 * @param type
+	 *            the binding type it can be <code>null</code>
+	 * @return the new {@link ErrorBinding} created.
+	 */
+	public ErrorBinding errorBinding(String name, TypeLiteral type) {
+		final ErrorBinding errorBinding = (ErrorBinding)EcoreUtil.create(AstPackage.Literals.ERROR_BINDING);
+
+		errorBinding.setName(name);
+		errorBinding.setType(type);
+
+		return errorBinding;
 	}
 
 }

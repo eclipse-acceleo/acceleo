@@ -240,6 +240,14 @@ public interface AstFactory extends EFactory {
 	Binding createBinding();
 
 	/**
+	 * Returns a new object of class '<em>Error Binding</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Error Binding</em>'.
+	 * @generated
+	 */
+	ErrorBinding createErrorBinding();
+
+	/**
 	 * Returns a new object of class '<em>Let</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return a new object of class '<em>Let</em>'.

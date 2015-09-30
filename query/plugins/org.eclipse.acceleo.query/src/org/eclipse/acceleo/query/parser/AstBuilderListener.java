@@ -39,6 +39,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -345,6 +346,8 @@ public class AstBuilderListener extends QueryBaseListener {
 					callExpContextError(offendingSymbol);
 				} else if (e.getCtx() instanceof NavigationSegmentContext) {
 					navigationSegmentContextError(offendingSymbol);
+				} else if (e.getCtx() instanceof BindingContext) {
+					bindingContextError(offendingSymbol, e);
 				} else {
 					defaultError(offendingSymbol, e);
 				}
@@ -409,7 +412,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				pushError(errorExpression, MISSING_EXPRESSION);
 				startPositions.put(errorExpression, startPosition);
 				endPositions.put(errorExpression, endPosition);
-			} else if (!(stack.peek() instanceof TypeLiteral)) {
+			} else if (stack.isEmpty() || !(stack.peek() instanceof TypeLiteral)) {
 				errorRule = QueryParser.RULE_typeLiteral;
 				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(new String[] {});
 				startPositions.put(errorTypeLiteral, startPosition);
@@ -521,6 +524,35 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 
 		/**
+		 * {@link BindingContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void bindingContextError(Object offendingSymbol, RecognitionException e) {
+			errorRule = QueryParser.RULE_binding;
+			final String name;
+			final TypeLiteral type;
+			if (e.getCtx().getChildCount() > 0 && !"in".equals(e.getCtx().getChild(0).getText())) {
+				name = e.getCtx().getChild(0).getText();
+				if (e.getCtx().getChildCount() == 3) {
+					type = popTypeLiteral();
+				} else {
+					type = null;
+				}
+			} else {
+				name = null;
+				type = null;
+			}
+			final ErrorBinding errorBinding = builder.errorBinding(name, type);
+			startPositions.put(errorBinding, Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+			endPositions.put(errorBinding, Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+			pushError(errorBinding, "invalid variable declaration in let");
+		}
+
+		/**
 		 * Default error case.
 		 * 
 		 * @param offendingSymbol
@@ -549,8 +581,7 @@ public class AstBuilderListener extends QueryBaseListener {
 					final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
 							.getStartIndex());
 					startPositions.put(errorExpression, position);
-					endPositions.put(errorExpression, Integer
-							.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+					endPositions.put(errorExpression, position);
 					pushError(errorExpression, MISSING_EXPRESSION);
 					break;
 
@@ -1243,7 +1274,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final String ePackageName = ctx.getChild(0).getText();
 			final String eClassName;
 			final EClassifier type;
-			if (ctx.getChild(2) instanceof ErrorNode) {
+			if (ctx.getChild(2) == null || ctx.getChild(2) instanceof ErrorNode) {
 				eClassName = null;
 				type = null;
 			} else {
@@ -1384,14 +1415,26 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitBinding(BindingContext ctx) {
-		String variable = ctx.getChild(0).getText();
-		Expression expression = pop();
-		final Binding binding = builder.binding(variable, expression);
+		// If the error flag is raised an error occurred and the binding is already
+		// there.
+		if (errorRule != QueryParser.RULE_binding) {
+			final String variable = ctx.getChild(0).getText();
+			final Expression expression = pop();
+			final TypeLiteral type;
+			if (ctx.getChildCount() == 5) {
+				type = popTypeLiteral();
+			} else {
+				type = null;
+			}
+			final Binding binding = builder.binding(variable, type, expression);
 
-		startPositions.put(binding, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(binding, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			startPositions.put(binding, Integer.valueOf(ctx.start.getStartIndex()));
+			endPositions.put(binding, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
-		push(binding);
+			push(binding);
+		} else {
+			errorRule = NO_ERROR;
+		}
 	}
 
 	/**
@@ -1404,12 +1447,14 @@ public class AstBuilderListener extends QueryBaseListener {
 		Expression body;
 		if (!(ctx.getChild(ctx.getChildCount() - 1) instanceof ExpressionContext)) {
 			body = builder.errorExpression();
+			startPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			endPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 		} else {
 			body = pop();
 		}
 		int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
 		Binding[] bindings = new Binding[bindingNumber];
-		for (int i = 0; i < bindingNumber; i++) {
+		for (int i = bindingNumber - 1; i >= 0; i--) {
 			bindings[i] = popBinding();
 		}
 		final Let let = builder.let(body, bindings);
