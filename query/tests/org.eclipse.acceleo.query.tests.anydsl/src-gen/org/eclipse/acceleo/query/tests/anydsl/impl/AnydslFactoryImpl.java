@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.anydsl.impl;
 
+import java.util.Map;
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.Animal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslFactory;
@@ -97,6 +98,8 @@ public class AnydslFactoryImpl extends EFactoryImpl implements AnydslFactory {
 				return createPlant();
 			case AnydslPackage.ANIMAL:
 				return createAnimal();
+			case AnydslPackage.ESTRING_TO_RECIPE_MAP:
+				return (EObject)createEStringToRecipeMap();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName()
 						+ "' is not a valid classifier");
@@ -261,6 +264,16 @@ public class AnydslFactoryImpl extends EFactoryImpl implements AnydslFactory {
 	public Animal createAnimal() {
 		AnimalImpl animal = new AnimalImpl();
 		return animal;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Map.Entry<String, Recipe> createEStringToRecipeMap() {
+		EStringToRecipeMapImpl eStringToRecipeMap = new EStringToRecipeMapImpl();
+		return eStringToRecipeMap;
 	}
 
 	/**

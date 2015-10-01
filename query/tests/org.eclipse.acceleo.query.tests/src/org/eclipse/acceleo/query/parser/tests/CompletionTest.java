@@ -48,7 +48,7 @@ import static org.junit.Assert.fail;
 
 public class CompletionTest {
 
-	private static final int TOTAL_NUMBER_OF_PROPOSAL = 130;
+	private static final int TOTAL_NUMBER_OF_PROPOSAL = 131;
 
 	QueryCompletionEngine engine;
 
@@ -236,7 +236,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(132, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -418,7 +418,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -1116,7 +1116,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(e :", 16, types);
 
-		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1150,7 +1150,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}-", 13, types);
 
-		assertEquals(128, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1209,7 +1209,7 @@ public class CompletionTest {
 	public void testTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{", 1, variableTypes);
 
-		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);
@@ -1236,7 +1236,7 @@ public class CompletionTest {
 	public void testTypeSetLiteralInServiceCall() {
 		final ICompletionResult completionResult = engine.getCompletion("self->filter({", 14, variableTypes);
 
-		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 		assertNoVariableCompletionProposal(completionResult);

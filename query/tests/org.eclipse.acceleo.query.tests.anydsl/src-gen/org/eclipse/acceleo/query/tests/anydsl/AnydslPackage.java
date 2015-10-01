@@ -465,13 +465,21 @@ public interface AnydslPackage extends EPackage {
 	int RESTAURANT__CHEFS = COMPANY_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Menu</b></em>' map. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int RESTAURANT__MENU = COMPANY_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Restaurant</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int RESTAURANT_FEATURE_COUNT = COMPANY_FEATURE_COUNT + 1;
+	int RESTAURANT_FEATURE_COUNT = COMPANY_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Restaurant</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -923,6 +931,50 @@ public interface AnydslPackage extends EPackage {
 	int ANIMAL_OPERATION_COUNT = SOURCE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.impl.EStringToRecipeMapImpl
+	 * <em>EString To Recipe Map</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.EStringToRecipeMapImpl
+	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getEStringToRecipeMap()
+	 * @generated
+	 */
+	int ESTRING_TO_RECIPE_MAP = 14;
+
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ESTRING_TO_RECIPE_MAP__KEY = 0;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ESTRING_TO_RECIPE_MAP__VALUE = 1;
+
+	/**
+	 * The number of structural features of the '<em>EString To Recipe Map</em>' class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ESTRING_TO_RECIPE_MAP_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>EString To Recipe Map</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ESTRING_TO_RECIPE_MAP_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Color <em>Color</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -930,7 +982,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getColor()
 	 * @generated
 	 */
-	int COLOR = 14;
+	int COLOR = 15;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Caliber <em>Caliber</em>}'
@@ -940,7 +992,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getCaliber()
 	 * @generated
 	 */
-	int CALIBER = 15;
+	int CALIBER = 16;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Group <em>Group</em>}' enum.
@@ -950,7 +1002,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getGroup()
 	 * @generated
 	 */
-	int GROUP = 16;
+	int GROUP = 17;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Continent <em>Continent</em>}
@@ -960,7 +1012,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getContinent()
 	 * @generated
 	 */
-	int CONTINENT = 17;
+	int CONTINENT = 18;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Kind <em>Kind</em>}' enum.
@@ -970,7 +1022,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getKind()
 	 * @generated
 	 */
-	int KIND = 18;
+	int KIND = 19;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Part <em>Part</em>}' enum.
@@ -980,7 +1032,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getPart()
 	 * @generated
 	 */
-	int PART = 19;
+	int PART = 20;
 
 	/**
 	 * The meta object id for the '<em>Country Data</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -990,7 +1042,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getCountryData()
 	 * @generated
 	 */
-	int COUNTRY_DATA = 20;
+	int COUNTRY_DATA = 21;
 
 	/**
 	 * The meta object id for the '<em>Single String</em>' data type. <!-- begin-user-doc --> <!--
@@ -1000,7 +1052,7 @@ public interface AnydslPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getSingleString()
 	 * @generated
 	 */
-	int SINGLE_STRING = 21;
+	int SINGLE_STRING = 22;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.anydsl.World <em>World</em>}
@@ -1261,6 +1313,17 @@ public interface AnydslPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getRestaurant_Chefs();
+
+	/**
+	 * Returns the meta object for the map '{@link org.eclipse.acceleo.query.tests.anydsl.Restaurant#getMenu
+	 * <em>Menu</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the map '<em>Menu</em>'.
+	 * @see org.eclipse.acceleo.query.tests.anydsl.Restaurant#getMenu()
+	 * @see #getRestaurant()
+	 * @generated
+	 */
+	EReference getRestaurant_Menu();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.anydsl.Chef <em>Chef</em>}'.
@@ -1576,6 +1639,40 @@ public interface AnydslPackage extends EPackage {
 	EAttribute getAnimal_Part();
 
 	/**
+	 * Returns the meta object for class '{@link java.util.Map.Entry <em>EString To Recipe Map</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>EString To Recipe Map</em>'.
+	 * @see java.util.Map.Entry
+	 * @model keyDataType="org.eclipse.emf.ecore.EString"
+	 *        valueType="org.eclipse.acceleo.query.tests.anydsl.Recipe"
+	 * @generated
+	 */
+	EClass getEStringToRecipeMap();
+
+	/**
+	 * Returns the meta object for the attribute '{@link java.util.Map.Entry <em>Key</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Key</em>'.
+	 * @see java.util.Map.Entry
+	 * @see #getEStringToRecipeMap()
+	 * @generated
+	 */
+	EAttribute getEStringToRecipeMap_Key();
+
+	/**
+	 * Returns the meta object for the reference '{@link java.util.Map.Entry <em>Value</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Value</em>'.
+	 * @see java.util.Map.Entry
+	 * @see #getEStringToRecipeMap()
+	 * @generated
+	 */
+	EReference getEStringToRecipeMap_Value();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.query.tests.anydsl.Color <em>Color</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1882,6 +1979,14 @@ public interface AnydslPackage extends EPackage {
 		EReference RESTAURANT__CHEFS = eINSTANCE.getRestaurant_Chefs();
 
 		/**
+		 * The meta object literal for the '<em><b>Menu</b></em>' map feature. <!-- begin-user-doc --> <!--
+		 * end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference RESTAURANT__MENU = eINSTANCE.getRestaurant_Menu();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.tests.anydsl.impl.ChefImpl
 		 * <em>Chef</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
@@ -2116,6 +2221,33 @@ public interface AnydslPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ANIMAL__PART = eINSTANCE.getAnimal_Part();
+
+		/**
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.query.tests.anydsl.impl.EStringToRecipeMapImpl
+		 * <em>EString To Recipe Map</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.tests.anydsl.impl.EStringToRecipeMapImpl
+		 * @see org.eclipse.acceleo.query.tests.anydsl.impl.AnydslPackageImpl#getEStringToRecipeMap()
+		 * @generated
+		 */
+		EClass ESTRING_TO_RECIPE_MAP = eINSTANCE.getEStringToRecipeMap();
+
+		/**
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature. <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ESTRING_TO_RECIPE_MAP__KEY = eINSTANCE.getEStringToRecipeMap_Key();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' reference feature. <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference ESTRING_TO_RECIPE_MAP__VALUE = eINSTANCE.getEStringToRecipeMap_Value();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.tests.anydsl.Color

@@ -43,6 +43,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Restaurant" eSuperTypes="#//Company">
     <eStructuralFeatures xsi:type="ecore:EReference" name="chefs" upperBound="-1"
         eType="#//Chef" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="menu" upperBound="-1" eType="#//EStringToRecipeMap"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Chef" eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="adress" eType="#//Adress"
@@ -158,4 +160,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="CountryData" instanceClassName="org.eclipse.acceleo.query.tests.anydsl.Country"/>
   <eClassifiers xsi:type="ecore:EDataType" name="SingleString" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EStringToRecipeMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Recipe"/>
+  </eClassifiers>
 </ecore:EPackage>

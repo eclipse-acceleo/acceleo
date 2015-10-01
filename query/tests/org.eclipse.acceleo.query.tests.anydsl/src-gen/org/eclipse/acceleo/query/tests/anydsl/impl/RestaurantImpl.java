@@ -11,20 +11,23 @@
 package org.eclipse.acceleo.query.tests.anydsl.impl;
 
 import java.util.Collection;
-
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.anydsl.Chef;
+import org.eclipse.acceleo.query.tests.anydsl.Recipe;
 import org.eclipse.acceleo.query.tests.anydsl.Restaurant;
 import org.eclipse.acceleo.query.tests.anydsl.World;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EcoreEMap;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
@@ -37,6 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.query.tests.anydsl.impl.RestaurantImpl#getAdress <em>Adress</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.tests.anydsl.impl.RestaurantImpl#getWorld <em>World</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.tests.anydsl.impl.RestaurantImpl#getChefs <em>Chefs</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.anydsl.impl.RestaurantImpl#getMenu <em>Menu</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,6 +96,16 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 	 * @ordered
 	 */
 	protected EList<Chef> chefs;
+
+	/**
+	 * The cached value of the '{@link #getMenu() <em>Menu</em>}' map. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #getMenu()
+	 * @generated
+	 * @ordered
+	 */
+	protected EMap<String, Recipe> menu;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -241,6 +255,20 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 	 * 
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
+	public EMap<String, Recipe> getMenu() {
+		if (menu == null) {
+			menu = new EcoreEMap<String, Recipe>(AnydslPackage.Literals.ESTRING_TO_RECIPE_MAP,
+					EStringToRecipeMapImpl.class, this, AnydslPackage.RESTAURANT__MENU);
+		}
+		return menu;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -248,6 +276,8 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 				return basicSetAdress(null, msgs);
 			case AnydslPackage.RESTAURANT__CHEFS:
 				return ((InternalEList<?>)getChefs()).basicRemove(otherEnd, msgs);
+			case AnydslPackage.RESTAURANT__MENU:
+				return ((InternalEList<?>)getMenu()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -270,6 +300,11 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 				return basicGetWorld();
 			case AnydslPackage.RESTAURANT__CHEFS:
 				return getChefs();
+			case AnydslPackage.RESTAURANT__MENU:
+				if (coreType)
+					return getMenu();
+				else
+					return getMenu().map();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -296,6 +331,9 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 				getChefs().clear();
 				getChefs().addAll((Collection<? extends Chef>)newValue);
 				return;
+			case AnydslPackage.RESTAURANT__MENU:
+				((EStructuralFeature.Setting)getMenu()).set(newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -320,6 +358,9 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 			case AnydslPackage.RESTAURANT__CHEFS:
 				getChefs().clear();
 				return;
+			case AnydslPackage.RESTAURANT__MENU:
+				getMenu().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -340,6 +381,8 @@ public class RestaurantImpl extends MinimalEObjectImpl.Container implements Rest
 				return world != null;
 			case AnydslPackage.RESTAURANT__CHEFS:
 				return chefs != null && !chefs.isEmpty();
+			case AnydslPackage.RESTAURANT__MENU:
+				return menu != null && !menu.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

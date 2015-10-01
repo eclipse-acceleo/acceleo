@@ -10,19 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import com.google.common.collect.Iterators;
-
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
@@ -30,8 +25,13 @@ import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
+import org.eclipse.acceleo.query.tests.anydsl.AnydslFactory;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.acceleo.query.tests.anydsl.Recipe;
+import org.eclipse.acceleo.query.tests.anydsl.Restaurant;
 import org.eclipse.acceleo.query.tests.qmodel.QmodelPackage;
+import org.eclipse.acceleo.query.tests.qmodel.Queries;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -46,6 +46,11 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * EObject services tests.
@@ -374,7 +379,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	 * "resources/ecore/reverse.ecore" model to test if the eContents list is calculated correctly.
 	 */
 	@Test
-	public void testEContentsNoEClassFilter() {
+	public void testFilteredEContentsNoEClassFilter() {
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 		fullSiriusCodePackage.eAllContents().next();
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
@@ -387,7 +392,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 		try {
 			eObjectServices.eContents(null);
-			fail("The 'eClass' operation service must throw a NPE.");
+			fail("The 'eContents' operation service must throw a NPE.");
 		} catch (NullPointerException exception) {
 			// Do nothing the exception is expected
 		}
@@ -398,7 +403,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	 * "resources/ecore/reverse.ecore" model to test if the eContents list is calculated correctly.
 	 */
 	@Test
-	public void testEContents() {
+	public void testFilteredEContents() {
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 		fullSiriusCodePackage.eAllContents().next();
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
@@ -414,10 +419,29 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals(1, contents.size());
 		try {
 			eObjectServices.eContents(null);
-			fail("The 'eClass' operation service must throw a NPE.");
+			fail("The 'eContents' operation service must throw a NPE.");
 		} catch (NullPointerException exception) {
 			// Do nothing the exception is expected
 		}
+	}
+
+	@Test
+	public void testEContents() {
+		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
+
+		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+
+		List<EObject> contents = eObjectServices.eContents(fullSiriusCodePackage);
+		assertEquals(fullSiriusCodePackage.eContents(), contents);
+
+		// make sure we return a view of the eObject's content
+		contents.clear();
+		assertFalse(eObjectServices.eContents(fullSiriusCodePackage).isEmpty());
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testEContentsNullReceiver() {
+		eObjectServices.eContents(null);
 	}
 
 	@Test
@@ -468,6 +492,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), contents.get(18));
 		assertEquals(EcorePackage.eINSTANCE.getETypeParameter(), contents.get(19));
 	}
+
 	public void testEAllContents_classHierarchy() {
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
@@ -757,15 +782,70 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals("[self/]", eObjectServices.eGet(query, "expression"));
 		// The eObjectListResult "Query" feature does not exist
 		assertEquals(null, eObjectServices.eGet(eObjectListResult, "query"));
+	}
 
-		assertEquals(null, eObjectServices.eGet(queries, null));
+	@Test
+	public void testEGetEList() {
+		Queries fullSiriusCodePackage = (Queries)reverseModel.getContents().get(0);
 
-		try {
-			eObjectServices.eGet(null, "query");
-			fail("The 'eGet' operation service must throw a NPE.");
-		} catch (NullPointerException exception) {
-			// Do nothing the exception is expected
+		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+
+		Object queries = eObjectServices.eGet(fullSiriusCodePackage, "queries");
+		assertTrue(queries instanceof List<?>);
+		assertEquals(fullSiriusCodePackage.getQueries(), queries);
+
+		// make sure we return a copy of the list and not the list itself
+		((List<?>)queries).clear();
+		assertFalse(fullSiriusCodePackage.getQueries().isEmpty());
+	}
+
+	@Test
+	public void testEGetEMap() {
+		getQueryEnvironment().registerEPackage(AnydslPackage.eINSTANCE);
+
+		Restaurant restaurant = AnydslFactory.eINSTANCE.createRestaurant();
+		EMap<String, Recipe> menu = restaurant.getMenu();
+		menu.put("omelette", AnydslFactory.eINSTANCE.createRecipe());
+		menu.put("kouign-amann", AnydslFactory.eINSTANCE.createRecipe());
+
+		Object menuFromEGet = eObjectServices.eGet(restaurant, "menu");
+		assertTrue(menuFromEGet instanceof EMap<?, ?>);
+		assertEqualEMaps(menu, (EMap<?, ?>)menuFromEGet);
+
+		// make sure the returned map has been copied before being returned
+		((EMap<?, ?>)menuFromEGet).clear();
+		assertFalse(menu.isEmpty());
+
+		menu.clear();
+		menuFromEGet = eObjectServices.eGet(restaurant, "menu");
+		assertTrue(menuFromEGet instanceof EMap<?, ?>);
+		assertTrue(((EMap<?, ?>)menuFromEGet).isEmpty());
+	}
+
+	// We can't compare EMaps directly (483452)
+	private void assertEqualEMaps(EMap<?, ?> map1, EMap<?, ?> map2) {
+		assertEquals(map1.size(), ((EMap<?, ?>)map2).size());
+		for (Map.Entry<?, ?> entry : ((EMap<?, ?>)map2).entrySet()) {
+			assertTrue(map1.containsKey(entry.getKey()));
+			assertEquals(map1.get(entry.getKey()), entry.getValue());
 		}
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testEGetNullFeature() {
+		EObject queries = reverseModel.getContents().get(0);
+
+		eObjectServices.eGet(queries, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testEGetNullEObject() {
+		eObjectServices.eGet(null, "query");
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testEGetNullEObjectNullFeature() {
+		eObjectServices.eGet(null, null);
 	}
 
 	@Test
@@ -809,7 +889,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 				AnydslPackage.eINSTANCE));
 		final List<EObject> result = eObjectServices.allInstances(EcorePackage.eINSTANCE.getEAttribute());
 
-		assertEquals(45, result.size());
+		assertEquals(46, result.size());
 	}
 
 	@Test
@@ -822,7 +902,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		types.add(EcorePackage.eINSTANCE.getEReference());
 		final List<EObject> result = eObjectServices.allInstances(types);
 
-		assertEquals(110, result.size());
+		assertEquals(113, result.size());
 	}
 
 	@Test

@@ -309,6 +309,29 @@ public class AnydslItemProviderAdapterFactory extends AnydslAdapterFactory imple
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link java.util.Map.Entry} instances. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected EStringToRecipeMapItemProvider eStringToRecipeMapItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link java.util.Map.Entry}. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Adapter createEStringToRecipeMapAdapter() {
+		if (eStringToRecipeMapItemProvider == null) {
+			eStringToRecipeMapItemProvider = new EStringToRecipeMapItemProvider(this);
+		}
+
+		return eStringToRecipeMapItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
@@ -425,6 +448,8 @@ public class AnydslItemProviderAdapterFactory extends AnydslAdapterFactory imple
 			plantItemProvider.dispose();
 		if (animalItemProvider != null)
 			animalItemProvider.dispose();
+		if (eStringToRecipeMapItemProvider != null)
+			eStringToRecipeMapItemProvider.dispose();
 	}
 
 }

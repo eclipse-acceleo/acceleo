@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.tests.anydsl;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Restaurant</b></em>'. <!--
@@ -19,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.tests.anydsl.Restaurant#getChefs <em>Chefs</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.tests.anydsl.Restaurant#getMenu <em>Menu</em>}</li>
  * </ul>
  * </p>
  *
@@ -42,5 +44,22 @@ public interface Restaurant extends Company {
 	 * @generated
 	 */
 	EList<Chef> getChefs();
+
+	/**
+	 * Returns the value of the '<em><b>Menu</b></em>' map. The key is of type {@link java.lang.String}, and
+	 * the value is of type {@link org.eclipse.acceleo.query.tests.anydsl.Recipe}, <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Menu</em>' reference isn't clear, there really should be more of a
+	 * description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Menu</em>' map.
+	 * @see org.eclipse.acceleo.query.tests.anydsl.AnydslPackage#getRestaurant_Menu()
+	 * @model mapType=
+	 *        "org.eclipse.acceleo.query.tests.anydsl.EStringToRecipeMap<org.eclipse.emf.ecore.EString, org.eclipse.acceleo.query.tests.anydsl.Recipe>"
+	 * @generated
+	 */
+	EMap<String, Recipe> getMenu();
 
 } // Restaurant

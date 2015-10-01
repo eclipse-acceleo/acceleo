@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.anydsl.impl;
 
+import java.util.Map;
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.Animal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslFactory;
@@ -145,6 +146,13 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 	 * @generated
 	 */
 	private EClass animalEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass eStringToRecipeMapEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -476,6 +484,15 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 	 * 
 	 * @generated
 	 */
+	public EReference getRestaurant_Menu() {
+		return (EReference)restaurantEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getChef() {
 		return chefEClass;
 	}
@@ -728,6 +745,33 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getEStringToRecipeMap() {
+		return eStringToRecipeMapEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getEStringToRecipeMap_Key() {
+		return (EAttribute)eStringToRecipeMapEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getEStringToRecipeMap_Value() {
+		return (EReference)eStringToRecipeMapEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EEnum getColor() {
 		return colorEEnum;
 	}
@@ -853,6 +897,7 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 
 		restaurantEClass = createEClass(RESTAURANT);
 		createEReference(restaurantEClass, RESTAURANT__CHEFS);
+		createEReference(restaurantEClass, RESTAURANT__MENU);
 
 		chefEClass = createEClass(CHEF);
 		createEReference(chefEClass, CHEF__ADRESS);
@@ -887,6 +932,10 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 
 		animalEClass = createEClass(ANIMAL);
 		createEAttribute(animalEClass, ANIMAL__PART);
+
+		eStringToRecipeMapEClass = createEClass(ESTRING_TO_RECIPE_MAP);
+		createEAttribute(eStringToRecipeMapEClass, ESTRING_TO_RECIPE_MAP__KEY);
+		createEReference(eStringToRecipeMapEClass, ESTRING_TO_RECIPE_MAP__VALUE);
 
 		// Create enums
 		colorEEnum = createEEnum(COLOR);
@@ -1009,6 +1058,9 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 		initEReference(getRestaurant_Chefs(), this.getChef(), null, "chefs", null, 0, -1, Restaurant.class,
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getRestaurant_Menu(), this.getEStringToRecipeMap(), null, "menu", null, 0, -1,
+				Restaurant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(chefEClass, Chef.class, "Chef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getChef_Adress(), this.getAdress(), null, "adress", null, 0, 1, Chef.class,
@@ -1092,6 +1144,15 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getAnimal_Part(), this.getPart(), "part", null, 0, -1, Animal.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(eStringToRecipeMapEClass, Map.Entry.class, "EStringToRecipeMap", !IS_ABSTRACT,
+				!IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEStringToRecipeMap_Key(), ecorePackage.getEString(), "key", null, 0, 1,
+				Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEStringToRecipeMap_Value(), this.getRecipe(), null, "value", null, 0, 1,
+				Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(colorEEnum, Color.class, "Color");

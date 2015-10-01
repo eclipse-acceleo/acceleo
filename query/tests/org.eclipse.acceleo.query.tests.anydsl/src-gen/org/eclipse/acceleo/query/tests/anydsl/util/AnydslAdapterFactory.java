@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.anydsl.util;
 
+import java.util.Map;
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.Animal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -150,6 +151,11 @@ public class AnydslAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseAnimal(Animal object) {
 			return createAnimalAdapter();
+		}
+
+		@Override
+		public Adapter caseEStringToRecipeMap(Map.Entry<String, Recipe> object) {
+			return createEStringToRecipeMapAdapter();
 		}
 
 		@Override
@@ -364,6 +370,20 @@ public class AnydslAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createAnimalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link java.util.Map.Entry
+	 * <em>EString To Recipe Map</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+	 * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see java.util.Map.Entry
+	 * @generated
+	 */
+	public Adapter createEStringToRecipeMapAdapter() {
 		return null;
 	}
 

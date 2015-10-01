@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -39,6 +42,8 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.common.util.BasicEMap;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -778,7 +783,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eContents(EObject eObject) {
-		return eObject.eContents();
+		return Lists.newArrayList(eObject.eContents());
 	}
 
 	// @formatter:off
@@ -1156,14 +1161,32 @@ public class EObjectServices extends AbstractServiceProvider {
 		result = "The value of the given feature on the given EObject"
 	)
 	// @formatter:on
-	public Object eGet(EObject eObject, String featureName) {
-		for (EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {
-			if (feature.getName().equals(featureName)) {
-				return eObject.eGet(feature);
-			}
+	public Object eGet(EObject eObject, final String featureName) {
+		if (eObject == null || featureName == null) {
+			throw new NullPointerException();
+		}
+		Optional<EStructuralFeature> feature = Iterables.tryFind(
+				eObject.eClass().getEAllStructuralFeatures(), new Predicate<EStructuralFeature>() {
+					@Override
+					public boolean apply(EStructuralFeature input) {
+						return input != null && featureName.equals(input.getName());
+					}
+				});
+
+		Object result = null;
+		if (feature.isPresent()) {
+			result = eObject.eGet(feature.get());
 		}
 
-		return null;
+		if (result instanceof Set<?>) {
+			result = Sets.newLinkedHashSet((Set<?>)result);
+		} else if (result instanceof EMap<?, ?>) {
+			result = new BasicEMap<Object, Object>(((EMap<?, ?>)result).map());
+		} else if (result instanceof Collection<?>) {
+			result = Lists.newArrayList((Collection<?>)result);
+		}
+
+		return result;
 	}
 
 	// @formatter:off

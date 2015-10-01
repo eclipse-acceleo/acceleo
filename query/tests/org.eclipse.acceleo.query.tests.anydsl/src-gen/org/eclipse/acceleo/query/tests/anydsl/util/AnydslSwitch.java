@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.anydsl.util;
 
+import java.util.Map;
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.Animal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -201,6 +202,14 @@ public class AnydslSwitch<T> extends Switch<T> {
 					result = caseSource(animal);
 				if (result == null)
 					result = caseMultiNamedElement(animal);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AnydslPackage.ESTRING_TO_RECIPE_MAP: {
+				@SuppressWarnings("unchecked")
+				Map.Entry<String, Recipe> eStringToRecipeMap = (Map.Entry<String, Recipe>)theEObject;
+				T result = caseEStringToRecipeMap(eStringToRecipeMap);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -417,6 +426,21 @@ public class AnydslSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseAnimal(Animal object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>EString To Recipe Map</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EString To Recipe Map</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEStringToRecipeMap(Map.Entry<String, Recipe> object) {
 		return null;
 	}
 
