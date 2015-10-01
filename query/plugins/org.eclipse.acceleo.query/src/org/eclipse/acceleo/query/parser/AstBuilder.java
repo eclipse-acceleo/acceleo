@@ -134,7 +134,7 @@ public class AstBuilder {
 	public ErrorStringLiteral errorStringLiteral(String str) {
 		ErrorStringLiteral errorStringLiteral = (ErrorStringLiteral)EcoreUtil
 				.create(AstPackage.Literals.ERROR_STRING_LITERAL);
-		errorStringLiteral.setValue(stripSlashes(str));
+		errorStringLiteral.setValue(str);
 		return errorStringLiteral;
 	}
 
