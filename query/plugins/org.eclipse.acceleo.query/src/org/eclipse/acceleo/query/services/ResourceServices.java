@@ -114,7 +114,7 @@ public class ResourceServices extends AbstractServiceProvider {
 		return Lists.newArrayList(Iterables.filter(resource.getContents(), new Predicate<EObject>() {
 			@Override
 			public boolean apply(EObject input) {
-				return type.isSuperTypeOf(input.eClass());
+				return type.isInstance(input);
 			}
 		}));
 	}

@@ -260,7 +260,7 @@ public class AnyServices extends AbstractServiceProvider {
 		if (type instanceof EClass) {
 			EClass eClass = (EClass)type;
 			if (object instanceof EObject) {
-				result = eClass.isSuperTypeOf(((EObject)object).eClass());
+				result = eClass.isInstance(object);
 			} else {
 				result = false;
 			}

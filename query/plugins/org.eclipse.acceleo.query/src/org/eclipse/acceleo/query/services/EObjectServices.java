@@ -1212,4 +1212,16 @@ public class EObjectServices extends AbstractServiceProvider {
 		return result;
 	}
 
+	// @formatter:off
+	@Documentation(
+		value = "Returns the list of all EObjects cross-referenced from the receiver.",
+		params = {
+			@Param(name = "eObject", value = "The eObject of which we need the cross-references."),
+		},
+		result = "The list of all EObjects cross-referenced from the receiver."
+	)
+	// @formatter:on
+	public Object eCrossReferences(EObject eObject) {
+		return Lists.newArrayList(eObject.eCrossReferences());
+	}
 }

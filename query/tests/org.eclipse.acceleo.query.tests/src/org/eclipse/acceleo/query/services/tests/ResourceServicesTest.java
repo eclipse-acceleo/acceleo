@@ -141,6 +141,13 @@ public class ResourceServicesTest extends AbstractEngineInitializationWithCrossR
 	}
 
 	@Test
+	public void testGetContentsFilteredAsEObject() {
+		List<EObject> reverseContentsAll = resourceServices.getContents(reverseModel, EcorePackage.eINSTANCE
+				.getEObject());
+		assertEquals(reverseModel.getContents(), reverseContentsAll);
+	}
+
+	@Test
 	public void testGetContentsFilteredFragment() {
 		List<EObject> umlContentsNone = resourceServices.getContents(umlWithFragment, UMLPackage.eINSTANCE
 				.getClass_());

@@ -359,7 +359,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 			for (int i = 1; i < parameters.length; ++i) {
 				eArguments.add(parameters[i]);
 			}
-			if (hasEInvoke(receiver)) {
+			if (!eOperation.getEContainingClass().isSuperTypeOf(((EObject)receiver).eClass())) {
+				// This will be the case for EObject contained eOperations : eContents, eContainer,
+				// eCrossReferences... are available to be called, but "EObject" is not a modeled super-type
+				// of the receiver; this "eInvoke" will fail. Fall back to plain reflection.
+				result = eOperationJavaInvoke(operationName, receiver, arguments, diagnostic);
+			} else if (hasEInvoke(receiver)) {
 				result = ((EObject)receiver).eInvoke(eOperation, eArguments);
 			} else {
 				result = eOperationJavaInvoke(operationName, receiver, arguments, diagnostic);

@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.google.common.collect.Maps;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +41,16 @@ import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Gra
 import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class EvaluationTest {
 
@@ -488,6 +492,33 @@ public class EvaluationTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
 		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), it.next());
+	}
+
+	@Test
+	public void callEObjectMethod() {
+		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
+		EClass class1 = EcoreFactory.eINSTANCE.createEClass();
+		EClass class2 = EcoreFactory.eINSTANCE.createEClass();
+		pack.getEClassifiers().add(class1);
+		pack.getEClassifiers().add(class2);
+
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", pack);
+		EvaluationResult result = engine.eval(builder
+				.build("self.oclAsType(ecore::EObject).eCrossReferences()"), variables);
+
+		assertEquals(pack.eCrossReferences(), result.getResult());
+	}
+
+	@Test
+	public void isKindOfEObject() {
+		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
+
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", pack);
+		EvaluationResult result = engine.eval(builder.build("self.oclIsKindOf(ecore::EObject)"), variables);
+
+		assertEquals(Boolean.TRUE, result.getResult());
 	}
 
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {

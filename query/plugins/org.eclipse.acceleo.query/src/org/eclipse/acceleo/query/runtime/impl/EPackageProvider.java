@@ -354,7 +354,8 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 			Iterator<EOperation> itOp = multiEOperations.iterator();
 			while (itOp.hasNext() && compatibleEOperation == null) {
 				EOperation eOperation = itOp.next();
-				if (eOperation.getEContainingClass().isSuperTypeOf(receiverEClass)) {
+				if (eOperation.getEContainingClass() == EcorePackage.eINSTANCE.getEObject()
+						|| eOperation.getEContainingClass().isSuperTypeOf(receiverEClass)) {
 
 					boolean parametersAreCompatibles = parameterTypes.size() == eOperation.getEParameters()
 							.size();
@@ -413,7 +414,8 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 
 		if (parameter.isMany() == passedParameter.isMany()) {
 			if (parameter.getEType() instanceof EClass && passedParameter.getEType() instanceof EClass) {
-				result = ((EClass)parameter.getEType()).isSuperTypeOf((EClass)passedParameter.getEType());
+				result = parameter.getEType() == EcorePackage.eINSTANCE.getEObject()
+						|| ((EClass)parameter.getEType()).isSuperTypeOf((EClass)passedParameter.getEType());
 			} else if (passedParameter.getEType() != null) {
 				result = parameter.getEType() == passedParameter.getEType();
 			} else {
