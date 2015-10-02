@@ -16,7 +16,6 @@ import com.google.common.collect.Sets;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -599,14 +598,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject) {
-		final List<EObject> result = Lists.newArrayList();
-
-		final Iterator<EObject> it = eObject.eAllContents();
-		while (it.hasNext()) {
-			result.add(it.next());
-		}
-
-		return result;
+		return Lists.newArrayList(eObject.eAllContents());
 	}
 
 	// @formatter:off
@@ -627,6 +619,9 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject, final EClass type) {
+		if (type == EcorePackage.eINSTANCE.getEObject()) {
+			return eAllContents(eObject);
+		}
 		final Set<EClass> types = Sets.newLinkedHashSet();
 		types.add(type);
 
@@ -725,6 +720,8 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (type.isSuperTypeOf(((EObject)child).eClass())) {
 					result.add((EObject)child);
 					break;
+				} else if (type.isInstance(child)){
+					result.add((EObject)child);
 				}
 			}
 			result.addAll(eAllContents((EObject)child, types, features));
@@ -754,7 +751,10 @@ public class EObjectServices extends AbstractServiceProvider {
 					if (type.isSuperTypeOf(((EObject)object).eClass())) {
 						result.add((EObject)object);
 						break;
+					} else if (type.isInstance(object)) {
+						result.add((EObject)object);
 					}
+
 				}
 				result.addAll(eAllContents((EObject)object, types, features));
 			}
@@ -799,6 +799,9 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eContents(EObject eObject, final EClass type) {
+		if (type == EcorePackage.eINSTANCE.getEObject()) {
+			return eContents(eObject);
+		}
 		final Set<EClass> eClasses = new LinkedHashSet<EClass>();
 		eClasses.add(type);
 
@@ -896,6 +899,8 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (type.isSuperTypeOf(((EObject)child).eClass())) {
 					result.add((EObject)child);
 					break;
+				} else if (type.isInstance(child)) {
+					result.add((EObject)child);
 				}
 			}
 		}
@@ -924,6 +929,8 @@ public class EObjectServices extends AbstractServiceProvider {
 					if (type.isSuperTypeOf(((EObject)object).eClass())) {
 						result.add((EObject)object);
 						break;
+					} else if (type.isInstance(child)) {
+						result.add((EObject)child);
 					}
 				}
 			}
@@ -971,10 +978,10 @@ public class EObjectServices extends AbstractServiceProvider {
 		final EObject result;
 
 		EObject current = eObject.eContainer();
-		while (current != null && !type.isSuperTypeOf(current.eClass())) {
+		while (current != null && !type.isSuperTypeOf(current.eClass()) && !type.isInstance(current)) {
 			current = current.eContainer();
 		}
-		if (current != null && type.isSuperTypeOf(current.eClass())) {
+		if (current != null && (type.isSuperTypeOf(current.eClass()) || type.isInstance(current))) {
 			result = current;
 		} else {
 			result = null;
@@ -1002,7 +1009,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	public EObject eContainerOrSelf(EObject eObject, EClass type) {
 		final EObject result;
 
-		if (type.isSuperTypeOf(eObject.eClass())) {
+		if (type.isSuperTypeOf(eObject.eClass()) || type.isInstance(eObject)) {
 			result = eObject;
 		} else {
 			result = eContainer(eObject, type);
