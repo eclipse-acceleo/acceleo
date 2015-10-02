@@ -107,8 +107,8 @@ public class AstBuilderTest {
 	 */
 	@Test
 	public void testCallService() {
-		Call call = new AstBuilder().callService(CallType.CALLORAPPLY, "myService", new AstBuilder()
-				.integerLiteral(0));
+		Call call = new AstBuilder().callService("myService", new AstBuilder().integerLiteral(0));
+		call.setType(CallType.CALLORAPPLY);
 		assertEquals("myService", call.getServiceName());
 		assertEquals(0, ((IntegerLiteral)call.getArguments().get(0)).getValue());
 		assertEquals(CallType.CALLORAPPLY, call.getType());

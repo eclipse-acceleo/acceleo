@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
-import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilder;
@@ -1548,8 +1547,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1569,8 +1568,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1727,8 +1726,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1748,8 +1747,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1849,8 +1848,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(0)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(0)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1870,8 +1869,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(0)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(0)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1891,8 +1890,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1912,8 +1911,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -2312,8 +2311,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -2331,8 +2330,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -2351,8 +2350,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -2370,8 +2369,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -2415,8 +2414,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -2434,8 +2433,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(3)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(3)), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -2454,8 +2453,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(2)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -2473,8 +2472,8 @@ public class CollectionServicesTest {
 		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
 				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.callService(CallType.CALLSERVICE, "greaterThan", builder
-				.varRef("self"), builder.integerLiteral(3)), selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(3)), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));

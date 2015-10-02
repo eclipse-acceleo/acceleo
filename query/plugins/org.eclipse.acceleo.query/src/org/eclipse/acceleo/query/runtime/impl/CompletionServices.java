@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -42,29 +43,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class CompletionServices extends ValidationServices {
-
-	/**
-	 * This enumeration is used to determine the kind of call used before asking the completion. This
-	 * enumeration is thus used to detect whether we have collection.CALL or collection->CALL.
-	 * 
-	 * @author <a href="mailto:stephane.begaudeau@obeo.fr">Stephane Begaudeau</a>
-	 */
-	public enum CallKind {
-		/**
-		 * The collection call uses the arrow operator.
-		 */
-		COLLECTION_CALL,
-
-		/**
-		 * The feature access call uses the dot operator.
-		 */
-		FEATURE_ACCESS_CALL,
-
-		/**
-		 * No operator has been typed.
-		 */
-		NONE
-	}
 
 	/**
 	 * Creates a new service instance given a {@link IQueryEnvironment} and logging flag.
@@ -98,16 +76,16 @@ public class CompletionServices extends ValidationServices {
 	 * 
 	 * @param receiverTypes
 	 *            the receiver types.
-	 * @param callKind
-	 *            Indicate the kind of call used
+	 * @param callType
+	 *            Indicate the type of call used, can be <code>null</code>
 	 * @return the {@link List} of {@link ServiceCompletionProposal} for {@link IService}
 	 */
-	public List<ServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallKind callKind) {
+	public List<ServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallType callType) {
 		final List<ServiceCompletionProposal> result = new ArrayList<ServiceCompletionProposal>();
 
 		final Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
 
-		if (CallKind.FEATURE_ACCESS_CALL.equals(callKind)) {
+		if (CallType.CALLORAPPLY.equals(callType)) {
 			for (IType type : receiverTypes) {
 				if (type instanceof ICollectionType) {
 					// Implicit collect
@@ -118,14 +96,14 @@ public class CompletionServices extends ValidationServices {
 					classes.add(getClass(type));
 				}
 			}
-		} else if (CallKind.COLLECTION_CALL.equals(callKind) || CallKind.NONE.equals(callKind)) {
+		} else if (CallType.COLLECTIONCALL.equals(callType) || callType == null) {
 			for (IType type : receiverTypes) {
 				classes.add(getClass(type));
 			}
 		}
 
 		for (IService service : queryEnvironment.getLookupEngine().getServices(classes)) {
-			if (CallKind.NONE.equals(callKind)
+			if (callType == null
 					|| !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getServiceMethod()
 							.getName())) {
 				result.add(new ServiceCompletionProposal(service));

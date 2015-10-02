@@ -720,7 +720,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (type.isSuperTypeOf(((EObject)child).eClass())) {
 					result.add((EObject)child);
 					break;
-				} else if (type.isInstance(child)){
+				} else if (type.isInstance(child)) {
 					result.add((EObject)child);
 				}
 			}

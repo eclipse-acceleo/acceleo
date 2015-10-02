@@ -790,18 +790,32 @@ public class QueryParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class ApplyContext extends NavigationSegmentContext {
+	public static class CallOrApplyContext extends NavigationSegmentContext {
 		public CallExpContext callExp() {
 			return getRuleContext(CallExpContext.class,0);
 		}
-		public ApplyContext(NavigationSegmentContext ctx) { copyFrom(ctx); }
+		public CallOrApplyContext(NavigationSegmentContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterApply(this);
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterCallOrApply(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitApply(this);
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitCallOrApply(this);
+		}
+	}
+	public static class CollectionCallContext extends NavigationSegmentContext {
+		public CallExpContext callExp() {
+			return getRuleContext(CallExpContext.class,0);
+		}
+		public CollectionCallContext(NavigationSegmentContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterCollectionCall(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitCollectionCall(this);
 		}
 	}
 	public static class FeatureContext extends NavigationSegmentContext {
@@ -814,20 +828,6 @@ public class QueryParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitFeature(this);
-		}
-	}
-	public static class CallServiceContext extends NavigationSegmentContext {
-		public CallExpContext callExp() {
-			return getRuleContext(CallExpContext.class,0);
-		}
-		public CallServiceContext(NavigationSegmentContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterCallService(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitCallService(this);
 		}
 	}
 
@@ -847,7 +847,7 @@ public class QueryParser extends Parser {
 				break;
 
 			case 2:
-				_localctx = new ApplyContext(_localctx);
+				_localctx = new CallOrApplyContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(112); match(T__15);
@@ -856,7 +856,7 @@ public class QueryParser extends Parser {
 				break;
 
 			case 3:
-				_localctx = new CallServiceContext(_localctx);
+				_localctx = new CollectionCallContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(114); match(T__13);

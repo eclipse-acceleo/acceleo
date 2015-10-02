@@ -1,13 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Obeo.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors:
+ *      Obeo - initial API and implementation
  * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.acceleo.query.ast.impl;
 
 import org.eclipse.acceleo.query.ast.AstFactory;
@@ -20,7 +21,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -225,7 +226,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
-	private EClass errorCollectionCallEClass = null;
+	private EClass errorCallEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -808,17 +809,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
-	public EClass getErrorCollectionCall() {
-		return errorCollectionCallEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getErrorCollectionCall_Target() {
-		return (EReference)errorCollectionCallEClass.getEStructuralFeatures().get(0);
+	public EClass getErrorCall() {
+		return errorCallEClass;
 	}
 
 	/**
@@ -1083,8 +1075,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorFeatureAccessOrCallEClass = createEClass(ERROR_FEATURE_ACCESS_OR_CALL);
 		createEReference(errorFeatureAccessOrCallEClass, ERROR_FEATURE_ACCESS_OR_CALL__TARGET);
 
-		errorCollectionCallEClass = createEClass(ERROR_COLLECTION_CALL);
-		createEReference(errorCollectionCallEClass, ERROR_COLLECTION_CALL__TARGET);
+		errorCallEClass = createEClass(ERROR_CALL);
 
 		errorVariableDeclarationEClass = createEClass(ERROR_VARIABLE_DECLARATION);
 
@@ -1171,8 +1162,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorEnumLiteralEClass.getESuperTypes().add(this.getEnumLiteral());
 		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getError());
 		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getExpression());
-		errorCollectionCallEClass.getESuperTypes().add(this.getError());
-		errorCollectionCallEClass.getESuperTypes().add(this.getExpression());
+		errorCallEClass.getESuperTypes().add(this.getError());
+		errorCallEClass.getESuperTypes().add(this.getCall());
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getError());
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getVariableDeclaration());
 		errorStringLiteralEClass.getESuperTypes().add(this.getError());
@@ -1329,11 +1320,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 				1, ErrorFeatureAccessOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(errorCollectionCallEClass, ErrorCollectionCall.class, "ErrorCollectionCall", !IS_ABSTRACT,
-				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getErrorCollectionCall_Target(), this.getExpression(), null, "target", null, 0, 1,
-				ErrorCollectionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(errorCallEClass, ErrorCall.class, "ErrorCall", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(errorVariableDeclarationEClass, ErrorVariableDeclaration.class,
 				"ErrorVariableDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

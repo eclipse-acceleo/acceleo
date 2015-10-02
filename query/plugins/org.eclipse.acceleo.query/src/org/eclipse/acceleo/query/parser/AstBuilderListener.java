@@ -40,7 +40,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -62,13 +62,13 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.QueryParser.AddContext;
 import org.eclipse.acceleo.query.parser.QueryParser.AndContext;
-import org.eclipse.acceleo.query.parser.QueryParser.ApplyContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BindingContext;
 import org.eclipse.acceleo.query.parser.QueryParser.BooleanTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
-import org.eclipse.acceleo.query.parser.QueryParser.CallServiceContext;
+import org.eclipse.acceleo.query.parser.QueryParser.CallOrApplyContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierSetTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext;
+import org.eclipse.acceleo.query.parser.QueryParser.CollectionCallContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CompContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext;
 import org.eclipse.acceleo.query.parser.QueryParser.EnumLitContext;
@@ -343,7 +343,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
 					variableDefinitionContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof CallExpContext) {
-					callExpContextError(offendingSymbol);
+					callExpContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof NavigationSegmentContext) {
 					navigationSegmentContextError(offendingSymbol);
 				} else if (e.getCtx() instanceof BindingContext) {
@@ -496,11 +496,34 @@ public class AstBuilderListener extends QueryBaseListener {
 		 * 
 		 * @param offendingSymbol
 		 *            the offending symbol
+		 * @param e
+		 *            the {@link RecognitionException}
 		 */
-		private void callExpContextError(Object offendingSymbol) {
+		private void callExpContextError(Object offendingSymbol, RecognitionException e) {
 			errorRule = QueryParser.RULE_navigationSegment;
-			final Expression receiver = pop();
-			final ErrorCollectionCall errorCollectionCall = builder.errorCollectionCall(receiver);
+			final String name;
+			if (e.getCtx().getChildCount() > 0) {
+				name = e.getCtx().getChild(0).getText();
+			} else {
+				name = null;
+			}
+			final Expression receiver;
+			final ErrorCall errorCollectionCall;
+			if (e.getCtx().getChildCount() == 3) {
+				final int childCount = e.getCtx().getChild(2).getChildCount();
+				// CHECKSTYLE:OFF
+				final int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
+				// CHECKSTYLE:ON
+				final Expression[] args = new Expression[argc];
+				for (int i = argc - 1; i >= 0; i--) {
+					args[i] = pop();
+				}
+				receiver = args[0];
+				errorCollectionCall = builder.errorCall(name, args);
+			} else {
+				receiver = pop();
+				errorCollectionCall = builder.errorCall(null, receiver);
+			}
 			startPositions.put(errorCollectionCall, startPositions.get(receiver));
 			endPositions.put(errorCollectionCall, Integer
 					.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
@@ -774,21 +797,6 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	/**
-	 * Pop the top of the stack and returns it as a string.
-	 * 
-	 * @return the value on top of the stack.
-	 */
-	private String popString() {
-		try {
-			return (String)stack.pop();
-		} catch (EmptyStackException e) {
-			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
-		} catch (ClassCastException e2) {
-			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e2);
-		}
-	}
-
-	/**
 	 * Pop the top of the stack and returns it as a type literal.
 	 * 
 	 * @return the value on top of the stack.
@@ -834,18 +842,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	/**
-	 * Pop the top of the stack and returns it as a string.
+	 * Peeks the current {@link Call} at the top of the stack.
 	 * 
-	 * @return the value on top of the stack.
+	 * @return the current {@link Call} at the top of the stack
 	 */
-	private Expression[] popArgs() {
-		try {
-			return (Expression[])stack.pop();
-		} catch (EmptyStackException e) {
-			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
-		} catch (ClassCastException e2) {
-			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e2);
-		}
+	private Call peekCall() {
+		return (Call)stack.peek();
 	}
 
 	/**
@@ -938,7 +940,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitNot(NotContext ctx) {
-		final Call callService = builder.callService(CallType.CALLSERVICE, NOT_SERVICE_NAME, pop());
+		final Call callService = builder.callService(NOT_SERVICE_NAME, pop());
 
 		startPositions.put(callService, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1066,7 +1068,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	private void pushBinary(String service, ParserRuleContext ctx) {
 		Expression op2 = pop();
 		Expression op1 = pop();
-		final Call callService = builder.callService(CallType.CALLSERVICE, service, op1, op2);
+		final Call callService = builder.callService(service, op1, op2);
 		startPositions.put(callService, startPositions.get(op1));
 		endPositions.put(callService, endPositions.get(op2));
 		push(callService);
@@ -1081,24 +1083,27 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitServiceCall(ServiceCallContext ctx) {
 		if (errorRule != QueryParser.RULE_navigationSegment) {
-			int childCount = ctx.getChild(2).getChildCount();
+			final int childCount = ctx.getChild(2).getChildCount();
 			// CHECKSTYLE:OFF
-			int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
+			final int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
 			// CHECKSTYLE:ON
-			Expression[] args = new Expression[argc];
-			for (int i = argc - 1; i >= 1; i--) {
+			final Expression[] args = new Expression[argc];
+			for (int i = argc - 1; i >= 0; i--) {
 				args[i] = pop();
 			}
-			String serviceName = ctx.getChild(0).getText().replace("::", ".");
-			args[0] = pop();
-			push(serviceName);
-			push(args);
+			final String serviceName = ctx.getChild(0).getText().replace("::", ".");
+			final Call call = builder.callService(serviceName, args);
+
+			startPositions.put(call, startPositions.get(args[0]));
+			endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+			push(call);
 		}
 	}
 
 	@Override
 	public void exitMin(MinContext ctx) {
-		final Call callService = builder.callService(CallType.CALLSERVICE, UNARY_MIN_SERVICE_NAME, pop());
+		final Call callService = builder.callService(UNARY_MIN_SERVICE_NAME, pop());
 
 		startPositions.put(callService, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1154,31 +1159,13 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	@Override
-	public void exitCallService(CallServiceContext ctx) {
-		if (errorRule != QueryParser.RULE_navigationSegment) {
-			final Expression[] args = popArgs();
-			final String serviceName = popString();
-			final Call callService = builder.callService(CallType.COLLECTIONCALL, serviceName, args);
-			startPositions.put(callService, startPositions.get(args[0]));
-			endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-			push(callService);
-		} else {
-			errorRule = NO_ERROR;
-		}
+	public void exitCollectionCall(CollectionCallContext ctx) {
+		peekCall().setType(CallType.COLLECTIONCALL);
 	}
 
 	@Override
-	public void exitApply(ApplyContext ctx) {
-		if (errorRule != QueryParser.RULE_navigationSegment) {
-			final Expression[] args = popArgs();
-			final String serviceName = popString();
-			final Call callService = builder.callService(CallType.CALLORAPPLY, serviceName, args);
-			startPositions.put(callService, startPositions.get(args[0]));
-			endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-			push(callService);
-		} else {
-			errorRule = NO_ERROR;
-		}
+	public void exitCallOrApply(CallOrApplyContext ctx) {
+		peekCall().setType(CallType.CALLORAPPLY);
 	}
 
 	/**
@@ -1228,8 +1215,13 @@ public class AstBuilderListener extends QueryBaseListener {
 		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));
 		endPositions.put(lambda, Integer.valueOf(endPositions.get(ast)));
-		push(serviceName);
-		push(new Expression[] {iterator.getExpression(), lambda });
+		final Expression[] args = new Expression[] {iterator.getExpression(), lambda };
+		final Call call = builder.callService(serviceName, args);
+
+		startPositions.put(call, startPositions.get(args[0]));
+		endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		push(call);
 	}
 
 	/**

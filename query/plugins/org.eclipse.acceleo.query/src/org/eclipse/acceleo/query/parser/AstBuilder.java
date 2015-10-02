@@ -20,12 +20,11 @@ import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
-import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -348,21 +347,20 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates a new call given it's type, the name of the service and the arguments.
+	 * Creates a new {@link Call} given it's type, the name of the service and the arguments.
 	 * 
-	 * @param type
-	 *            type of call
 	 * @param serviceName
 	 *            the name of the called service
 	 * @param args
 	 *            the arguments
-	 * @return an instance of Call.
+	 * @return an instance of {@link Call}.
 	 */
-	public Call callService(CallType type, String serviceName, Expression... args) {
-		Call call = (Call)EcoreUtil.create(AstPackage.Literals.CALL);
-		call.setType(type);
+	public Call callService(String serviceName, Expression... args) {
+		final Call call = (Call)EcoreUtil.create(AstPackage.Literals.CALL);
+
 		call.setServiceName(serviceName);
 		call.getArguments().addAll(Lists.newArrayList(args));
+
 		return call;
 	}
 
@@ -479,17 +477,19 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates a new {@link ErrorCollectionCall}.
+	 * Creates a new {@link ErrorCall}.
 	 * 
-	 * @param target
-	 *            the {@link ErrorCollectionCall#getTarget() target}
-	 * @return a new {@link ErrorCollectionCall}
+	 * @param serviceName
+	 *            the name of the called service can be <code>null</code>
+	 * @param args
+	 *            the arguments
+	 * @return a new {@link ErrorCall}
 	 */
-	public ErrorCollectionCall errorCollectionCall(Expression target) {
-		final ErrorCollectionCall result = (ErrorCollectionCall)EcoreUtil
-				.create(AstPackage.Literals.ERROR_COLLECTION_CALL);
+	public ErrorCall errorCall(String serviceName, Expression... args) {
+		final ErrorCall result = (ErrorCall)EcoreUtil.create(AstPackage.Literals.ERROR_CALL);
 
-		result.setTarget(target);
+		result.setServiceName(serviceName);
+		result.getArguments().addAll(Lists.newArrayList(args));
 
 		return result;
 	}

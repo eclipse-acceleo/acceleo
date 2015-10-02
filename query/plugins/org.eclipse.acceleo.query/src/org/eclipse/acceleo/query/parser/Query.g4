@@ -60,8 +60,8 @@ compOp :     '<='
 varRef : Ident
 ;
 navigationSegment :     '.'Ident #Feature
-				      | '.' callExp  #Apply
-				      | '->' callExp #CallService
+				      | '.' callExp  #CallOrApply
+				      | '->' callExp #CollectionCall
 ;      
 callExp :     collectionIterator '(' variableDefinition lambdaExpression ')'  #IterationCall
 			| Ident'(' expressionSequence ')'    #ServiceCall

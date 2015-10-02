@@ -15,11 +15,12 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -464,7 +465,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 4, ast);
 		assertEquals("lessThanEqual", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -482,7 +483,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("lessThan", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -500,7 +501,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 4, ast);
 		assertEquals("greaterThanEqual", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -518,7 +519,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("greaterThan", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -536,7 +537,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 9, ast);
 		assertEquals("add", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, StringLiteral.class, 0, 3, ((Call)ast).getArguments().get(0));
 		assertEquals("a", ((StringLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -554,7 +555,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 13, ast);
 		assertEquals("or", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -572,7 +573,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 14, ast);
 		assertEquals("xor", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -590,7 +591,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 18, ast);
 		assertEquals("implies", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -608,7 +609,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 14, ast);
 		assertEquals("and", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -626,7 +627,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 8, ast);
 		assertEquals("not", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, BooleanLiteral.class, 4, 8, ((Call)ast).getArguments().get(0));
 		assertEquals(true, ((BooleanLiteral)((Call)ast).getArguments().get(0)).isValue());
@@ -642,7 +643,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("mult", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, IntegerLiteral.class, 0, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, ((IntegerLiteral)((Call)ast).getArguments().get(0)).getValue());
@@ -660,7 +661,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 12, ast);
 		assertEquals("size", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
@@ -676,7 +677,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 22, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
@@ -701,7 +702,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 24, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
@@ -724,7 +725,7 @@ public class BuildTest {
 		assertEquals(0, build.getDiagnostic().getChildren().size());
 		assertExpression(build, Call.class, 0, 40, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.COLLECTIONCALL, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals("self", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
@@ -855,7 +856,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 29, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 28, ((Call)ast).getArguments().get(1));
@@ -877,7 +878,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 31, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 30, ((Call)ast).getArguments().get(1));
@@ -1151,7 +1152,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 3, ast);
 		assertEquals("not", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, ErrorExpression.class, 3, 3, ((Call)ast).getArguments().get(0));
 		assertEquals(1, build.getErrors().size());
@@ -1169,8 +1170,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 1, ast);
 		assertEquals("unaryMin", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call)
-		// build.getAst()).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)build.getAst()).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, ErrorExpression.class, 1, 1, ((Call)ast).getArguments().get(0));
 		assertEquals(1, build.getErrors().size());
@@ -1188,7 +1188,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("mult", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1207,7 +1207,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("divOp", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1226,7 +1226,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("add", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1245,7 +1245,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("sub", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1261,7 +1261,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 7, ast);
 		assertEquals("sub", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
@@ -1280,7 +1280,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("lessThan", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1299,7 +1299,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 7, ast);
 		assertEquals("lessThanEqual", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
@@ -1318,7 +1318,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("greaterThan", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1337,7 +1337,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 7, ast);
 		assertEquals("greaterThanEqual", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
@@ -1356,7 +1356,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 6, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 6, 6, ((Call)ast).getArguments().get(1));
@@ -1375,7 +1375,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 7, ast);
 		assertEquals("differs", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
@@ -1394,8 +1394,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 8, ast);
 		assertEquals("and", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call)
-		// build.getAst()).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)build.getAst()).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 8, 8, ((Call)ast).getArguments().get(1));
@@ -1414,7 +1413,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 7, ast);
 		assertEquals("or", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
@@ -1433,7 +1432,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 8, ast);
 		assertEquals("xor", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 8, 8, ((Call)ast).getArguments().get(1));
@@ -1452,7 +1451,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 12, ast);
 		assertEquals("implies", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorExpression.class, 12, 12, ((Call)ast).getArguments().get(1));
@@ -1486,9 +1485,9 @@ public class BuildTest {
 		IQueryBuilderEngine.AstResult build = engine.build("self->");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorCollectionCall.class, 0, 6, ast);
-		assertExpression(build, VarRef.class, 0, 4, ((ErrorCollectionCall)ast).getTarget());
-		assertEquals("self", ((VarRef)((ErrorCollectionCall)ast).getTarget()).getVariableName());
+		assertExpression(build, ErrorCall.class, 0, 6, ast);
+		assertExpression(build, VarRef.class, 0, 4, ((ErrorCall)ast).getArguments().get(0));
+		assertEquals("self", ((VarRef)((ErrorCall)ast).getArguments().get(0)).getVariableName());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
@@ -1520,7 +1519,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 11, ast);
 		assertEquals("equals", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, ErrorStringLiteral.class, 7, 11, ((Call)ast).getArguments().get(1));
@@ -1690,7 +1689,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 13, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 13, 13, ((Call)ast).getArguments().get(1));
@@ -1717,7 +1716,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 21, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 17, 21, ((Call)ast).getArguments().get(1));
@@ -1738,7 +1737,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 17, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 17, 17, ((Call)ast).getArguments().get(1));
@@ -1759,7 +1758,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 22, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 18, 22, ((Call)ast).getArguments().get(1));
@@ -1780,7 +1779,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 17, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 17, 17, ((Call)ast).getArguments().get(1));
@@ -1810,7 +1809,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 27, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 27, 27, ((Call)ast).getArguments().get(1));
@@ -1841,7 +1840,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 31, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 31, 31, ((Call)ast).getArguments().get(1));
@@ -1872,7 +1871,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 33, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 33, 33, ((Call)ast).getArguments().get(1));
@@ -1893,7 +1892,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 38, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, Lambda.class, 34, 38, ((Call)ast).getArguments().get(1));
@@ -1914,7 +1913,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 13, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertEquals(0, build.getErrors().size());
@@ -1931,7 +1930,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 18, ast);
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals("service", ((Call)ast).getServiceName());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
@@ -1951,7 +1950,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 19, ast);
 		assertEquals("service", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(3, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, BooleanLiteral.class, 14, 18, ((Call)ast).getArguments().get(1));
@@ -1971,7 +1970,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 21, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 21, ((Call)ast).getArguments().get(1));
@@ -1994,7 +1993,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 27, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 27, ((Call)ast).getArguments().get(1));
@@ -2021,7 +2020,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 23, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 23, ((Call)ast).getArguments().get(1));
@@ -2043,7 +2042,7 @@ public class BuildTest {
 
 		assertExpression(build, Call.class, 0, 29, ast);
 		assertEquals("filter", ((Call)ast).getServiceName());
-		// TODO assertEquals(CallType.CALLSERVICE, ((Call) ast).getType());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 29, ((Call)ast).getArguments().get(1));
@@ -2060,6 +2059,61 @@ public class BuildTest {
 				.getMessage());
 		assertEquals(((Call)ast).getArguments().get(1), build.getDiagnostic().getChildren().get(0).getData()
 				.get(0));
+	}
+
+	@Test
+	public void errorStringLiteralInSelectInCall() {
+		final IQueryBuilderEngine.AstResult build = engine.build("self->select(a | a.startsWith('");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 31, ast);
+		assertEquals("select", ((Call)ast).getServiceName());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 17, 31, ((Call)ast).getArguments().get(1));
+		assertVariableDeclaration(build, 13, 14, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0));
+		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getName());
+		assertEquals(null, ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getType());
+		assertExpression(build, ErrorCall.class, 17, 31, ((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression());
+		final Call call = (ErrorCall)((Lambda)((Call)ast).getArguments().get(1)).getExpression();
+		assertEquals("startsWith", call.getServiceName());
+		assertEquals(CallType.CALLORAPPLY, call.getType());
+		assertEquals(2, call.getArguments().size());
+		assertExpression(build, VarRef.class, 17, 18, call.getArguments().get(0));
+		assertExpression(build, ErrorStringLiteral.class, 30, 31, call.getArguments().get(1));
+	}
+
+	@Test
+	public void errorStringLiteralAndCommaInSelectInCall() {
+		final IQueryBuilderEngine.AstResult build = engine.build("self->select(a | a.startsWith(a, '");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 34, ast);
+		assertEquals("select", ((Call)ast).getServiceName());
+		assertEquals(CallType.COLLECTIONCALL, ((Call)ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 17, 34, ((Call)ast).getArguments().get(1));
+		assertVariableDeclaration(build, 13, 14, ((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0));
+		assertEquals("a", ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getName());
+		assertEquals(null, ((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1)).getParameters()
+				.get(0)).getType());
+		assertExpression(build, ErrorCall.class, 17, 34, ((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression());
+		final Call call = (ErrorCall)((Lambda)((Call)ast).getArguments().get(1)).getExpression();
+		assertEquals("startsWith", call.getServiceName());
+		assertEquals(CallType.CALLORAPPLY, call.getType());
+		assertEquals(3, call.getArguments().size());
+		assertExpression(build, VarRef.class, 17, 18, call.getArguments().get(0));
+		assertExpression(build, VarRef.class, 30, 31, call.getArguments().get(1));
+		assertExpression(build, ErrorStringLiteral.class, 33, 34, call.getArguments().get(2));
 	}
 
 	@Test

@@ -953,7 +953,22 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
-	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
+	@Test
+	public void errorStringLiteralInSelectInCall() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(a | a.startsWith('",
+				31, types);
+
+		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	public static void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);
 		}

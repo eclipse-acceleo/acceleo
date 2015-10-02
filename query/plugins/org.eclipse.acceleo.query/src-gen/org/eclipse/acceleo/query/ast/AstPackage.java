@@ -1,13 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Obeo.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors:
+ *      Obeo - initial API and implementation
  * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.acceleo.query.ast;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -954,41 +955,58 @@ public interface AstPackage extends EPackage {
 	int ERROR_FEATURE_ACCESS_OR_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
-	 * <em>Error Collection Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
+	 * <em>Error Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
-	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCollectionCall()
+	 * @see org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCall()
 	 * @generated
 	 */
-	int ERROR_COLLECTION_CALL = 23;
+	int ERROR_CALL = 23;
 
 	/**
-	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COLLECTION_CALL__TARGET = ERROR_FEATURE_COUNT + 0;
+	int ERROR_CALL__SERVICE_NAME = ERROR_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Error Collection Call</em>' class. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COLLECTION_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
+	int ERROR_CALL__TYPE = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of operations of the '<em>Error Collection Call</em>' class. <!-- begin-user-doc --> <!--
+	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CALL__ARGUMENTS = ERROR_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Error Call</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COLLECTION_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
+	int ERROR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Error Call</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl
@@ -1858,26 +1876,14 @@ public interface AstPackage extends EPackage {
 	EReference getErrorFeatureAccessOrCall_Target();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorCollectionCall
-	 * <em>Error Collection Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorCall <em>Error Call</em>}
+	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for class '<em>Error Collection Call</em>'.
-	 * @see org.eclipse.acceleo.query.ast.ErrorCollectionCall
+	 * @return the meta object for class '<em>Error Call</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorCall
 	 * @generated
 	 */
-	EClass getErrorCollectionCall();
-
-	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorCollectionCall#getTarget <em>Target</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the containment reference '<em>Target</em>'.
-	 * @see org.eclipse.acceleo.query.ast.ErrorCollectionCall#getTarget()
-	 * @see #getErrorCollectionCall()
-	 * @generated
-	 */
-	EReference getErrorCollectionCall_Target();
+	EClass getErrorCall();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
@@ -2542,22 +2548,14 @@ public interface AstPackage extends EPackage {
 		EReference ERROR_FEATURE_ACCESS_OR_CALL__TARGET = eINSTANCE.getErrorFeatureAccessOrCall_Target();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
-		 * <em>Error Collection Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
+		 * <em>Error Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
-		 * @see org.eclipse.acceleo.query.ast.impl.ErrorCollectionCallImpl
-		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCollectionCall()
+		 * @see org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCall()
 		 * @generated
 		 */
-		EClass ERROR_COLLECTION_CALL = eINSTANCE.getErrorCollectionCall();
-
-		/**
-		 * The meta object literal for the '<em><b>Target</b></em>' containment reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EReference ERROR_COLLECTION_CALL__TARGET = eINSTANCE.getErrorCollectionCall_Target();
+		EClass ERROR_CALL = eINSTANCE.getErrorCall();
 
 		/**
 		 * The meta object literal for the '

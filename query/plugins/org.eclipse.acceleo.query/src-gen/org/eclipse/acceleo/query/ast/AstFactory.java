@@ -205,13 +205,12 @@ public interface AstFactory extends EFactory {
 	ErrorFeatureAccessOrCall createErrorFeatureAccessOrCall();
 
 	/**
-	 * Returns a new object of class '<em>Error Collection Call</em>'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * Returns a new object of class '<em>Error Call</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @return a new object of class '<em>Error Collection Call</em>'.
+	 * @return a new object of class '<em>Error Call</em>'.
 	 * @generated
 	 */
-	ErrorCollectionCall createErrorCollectionCall();
+	ErrorCall createErrorCall();
 
 	/**
 	 * Returns a new object of class '<em>Error Variable Declaration</em>'. <!-- begin-user-doc --> <!--

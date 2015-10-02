@@ -87,6 +87,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitOr(@NotNull QueryParser.OrContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code CallOrApply}
+	 * labeled alternative in {@link QueryParser#navigationSegment}.
+	 * @param ctx the parse tree
+	 */
+	void enterCallOrApply(@NotNull QueryParser.CallOrApplyContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CallOrApply}
+	 * labeled alternative in {@link QueryParser#navigationSegment}.
+	 * @param ctx the parse tree
+	 */
+	void exitCallOrApply(@NotNull QueryParser.CallOrApplyContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code Var}
 	 * labeled alternative in {@link QueryParser#expression}.
 	 * @param ctx the parse tree
@@ -98,19 +111,6 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVar(@NotNull QueryParser.VarContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code Apply}
-	 * labeled alternative in {@link QueryParser#navigationSegment}.
-	 * @param ctx the parse tree
-	 */
-	void enterApply(@NotNull QueryParser.ApplyContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Apply}
-	 * labeled alternative in {@link QueryParser#navigationSegment}.
-	 * @param ctx the parse tree
-	 */
-	void exitApply(@NotNull QueryParser.ApplyContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link QueryParser#binding}.
@@ -476,19 +476,6 @@ public interface QueryListener extends ParseTreeListener {
 	void exitExplicitSetLit(@NotNull QueryParser.ExplicitSetLitContext ctx);
 
 	/**
-	 * Enter a parse tree produced by the {@code CallService}
-	 * labeled alternative in {@link QueryParser#navigationSegment}.
-	 * @param ctx the parse tree
-	 */
-	void enterCallService(@NotNull QueryParser.CallServiceContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code CallService}
-	 * labeled alternative in {@link QueryParser#navigationSegment}.
-	 * @param ctx the parse tree
-	 */
-	void exitCallService(@NotNull QueryParser.CallServiceContext ctx);
-
-	/**
 	 * Enter a parse tree produced by the {@code ServiceCall}
 	 * labeled alternative in {@link QueryParser#callExp}.
 	 * @param ctx the parse tree
@@ -598,6 +585,19 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLit(@NotNull QueryParser.LitContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code CollectionCall}
+	 * labeled alternative in {@link QueryParser#navigationSegment}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollectionCall(@NotNull QueryParser.CollectionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code CollectionCall}
+	 * labeled alternative in {@link QueryParser#navigationSegment}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollectionCall(@NotNull QueryParser.CollectionCallContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code IterationCall}

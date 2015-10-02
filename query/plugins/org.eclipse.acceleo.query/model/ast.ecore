@@ -91,10 +91,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ErrorCollectionCall" eSuperTypes="#//Error #//Expression">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Expression"
-        containment="true"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorCall" eSuperTypes="#//Error #//Call"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorVariableDeclaration" eSuperTypes="#//Error #//VariableDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorStringLiteral" eSuperTypes="#//Error #//StringLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="Binding">

@@ -1,13 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Obeo.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors:
+ *      Obeo - initial API and implementation
  * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.acceleo.query.ast.util;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
@@ -18,7 +19,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -337,13 +338,15 @@ public class AstSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
-			case AstPackage.ERROR_COLLECTION_CALL: {
-				ErrorCollectionCall errorCollectionCall = (ErrorCollectionCall)theEObject;
-				T result = caseErrorCollectionCall(errorCollectionCall);
+			case AstPackage.ERROR_CALL: {
+				ErrorCall errorCall = (ErrorCall)theEObject;
+				T result = caseErrorCall(errorCall);
 				if (result == null)
-					result = caseError(errorCollectionCall);
+					result = caseError(errorCall);
 				if (result == null)
-					result = caseExpression(errorCollectionCall);
+					result = caseCall(errorCall);
+				if (result == null)
+					result = caseExpression(errorCall);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -733,8 +736,6 @@ public class AstSwitch<T> extends Switch<T> {
 
 	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Error Enum Literal</em>'. <!--
-	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate Returns
-	 * the result of interpreting the object as an instance of '<em>Error Enum Literal</em>'. <!--
 	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
 	 * switch. <!-- end-user-doc -->
 	 * 
@@ -765,17 +766,17 @@ public class AstSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Collection Call</em>'. <!--
+	 * Returns the result of interpreting the object as an instance of '<em>Error Call</em>'. <!--
 	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
 	 * switch. <!-- end-user-doc -->
 	 * 
 	 * @param object
 	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Error Collection Call</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Error Call</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseErrorCollectionCall(ErrorCollectionCall object) {
+	public T caseErrorCall(ErrorCall object) {
 		return null;
 	}
 

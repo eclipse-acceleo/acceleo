@@ -1,13 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Obeo.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors:
+ *      Obeo - initial API and implementation
  * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.acceleo.query.ast.impl;
 
 import org.eclipse.acceleo.query.ast.AstFactory;
@@ -20,7 +21,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -131,8 +132,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createErrorEnumLiteral();
 			case AstPackage.ERROR_FEATURE_ACCESS_OR_CALL:
 				return createErrorFeatureAccessOrCall();
-			case AstPackage.ERROR_COLLECTION_CALL:
-				return createErrorCollectionCall();
+			case AstPackage.ERROR_CALL:
+				return createErrorCall();
 			case AstPackage.ERROR_VARIABLE_DECLARATION:
 				return createErrorVariableDeclaration();
 			case AstPackage.ERROR_STRING_LITERAL:
@@ -410,9 +411,9 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 * 
 	 * @generated
 	 */
-	public ErrorCollectionCall createErrorCollectionCall() {
-		ErrorCollectionCallImpl errorCollectionCall = new ErrorCollectionCallImpl();
-		return errorCollectionCall;
+	public ErrorCall createErrorCall() {
+		ErrorCallImpl errorCall = new ErrorCallImpl();
+		return errorCall;
 	}
 
 	/**

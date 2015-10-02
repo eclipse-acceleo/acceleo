@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
@@ -190,8 +191,9 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void testCall() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		EvaluationResult result = evaluator.eval(varDefinitions, callService(CallType.COLLECTIONCALL, "size",
-				featureAccess(varRef("self"), "eAllSuperTypes")));
+		final Call callService = callService("size", featureAccess(varRef("self"), "eAllSuperTypes"));
+		callService.setType(CallType.COLLECTIONCALL);
+		EvaluationResult result = evaluator.eval(varDefinitions, callService);
 		assertOKResultEquals(Integer.valueOf(3), result);
 	}
 
@@ -305,17 +307,17 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Test
 	public void testLetBasic() {
-		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
-				null, stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
+		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null,
+				stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		assertOKResultEquals("prefixsuffix", evaluator.eval(varDefinitions, let));
 	}
 
 	@Test
 	public void testLetArenotRecursive() {
-		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
-				null, stringLiteral("prefix")), binding("y", null, callService(CallType.CALLSERVICE,
-				"concat", varRef("x"), stringLiteral("end"))));
+		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null,
+				stringLiteral("prefix")), binding("y", null, callService("concat", varRef("x"),
+				stringLiteral("end"))));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("x", "firstx");
 		assertOKResultEquals("prefixfirstxend", evaluator.eval(varDefinitions, let));
@@ -323,8 +325,8 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Test
 	public void testLetWithNothingBound() {
-		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("x"), varRef("y")), binding("x",
-				null, varRef("prefix")), binding("y", null, stringLiteral("suffix")));
+		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null, varRef("prefix")),
+				binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);
@@ -338,8 +340,8 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Test
 	public void testLetWithNothingBody() {
-		Let let = let(callService(CallType.CALLSERVICE, "concat", varRef("novar"), varRef("y")), binding("x",
-				null, stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
+		Let let = let(callService("concat", varRef("novar"), varRef("y")), binding("x", null,
+				stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);

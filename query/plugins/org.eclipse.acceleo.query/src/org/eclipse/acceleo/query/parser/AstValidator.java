@@ -30,7 +30,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -800,7 +800,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 	/**
 	 * {@inheritDoc}
-	 *
+	 * 
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseTypeSetLiteral(org.eclipse.acceleo.query.ast.TypeSetLiteral)
 	 */
 	@Override
@@ -825,11 +825,13 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorCollectionCall(org.eclipse.acceleo.query.ast.ErrorCollectionCall)
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorCall(org.eclipse.acceleo.query.ast.ErrorCall)
 	 */
 	@Override
-	public Set<IType> caseErrorCollectionCall(ErrorCollectionCall object) {
-		doSwitch(object.getTarget());
+	public Set<IType> caseErrorCall(ErrorCall object) {
+		for (Expression arg : object.getArguments()) {
+			doSwitch(arg);
+		}
 		return checkWarningsAndErrors(object, services.getErrorTypes(object));
 	}
 

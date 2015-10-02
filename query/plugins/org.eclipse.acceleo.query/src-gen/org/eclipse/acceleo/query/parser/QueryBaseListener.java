@@ -95,6 +95,19 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCallOrApply(@NotNull QueryParser.CallOrApplyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCallOrApply(@NotNull QueryParser.CallOrApplyContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVar(@NotNull QueryParser.VarContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -102,19 +115,6 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVar(@NotNull QueryParser.VarContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterApply(@NotNull QueryParser.ApplyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitApply(@NotNull QueryParser.ApplyContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -498,19 +498,6 @@ public class QueryBaseListener implements QueryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCallService(@NotNull QueryParser.CallServiceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCallService(@NotNull QueryParser.CallServiceContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterServiceCall(@NotNull QueryParser.ServiceCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -622,6 +609,19 @@ public class QueryBaseListener implements QueryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLit(@NotNull QueryParser.LitContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCollectionCall(@NotNull QueryParser.CollectionCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCollectionCall(@NotNull QueryParser.CollectionCallContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

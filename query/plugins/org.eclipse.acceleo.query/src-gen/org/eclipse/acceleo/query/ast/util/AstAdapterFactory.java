@@ -1,13 +1,14 @@
-/*******************************************************************************
- * Copyright (c) 2015 Obeo.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/**
+ *  Copyright (c) 2015 Obeo.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors:
+ *      Obeo - initial API and implementation
  * 
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.acceleo.query.ast.util;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
@@ -18,7 +19,7 @@ import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -213,8 +214,8 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseErrorCollectionCall(ErrorCollectionCall object) {
-			return createErrorCollectionCallAdapter();
+		public Adapter caseErrorCall(ErrorCall object) {
+			return createErrorCallAdapter();
 		}
 
 		@Override
@@ -588,16 +589,16 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ErrorCollectionCall
-	 * <em>Error Collection Call</em>}'. <!-- begin-user-doc --> This default implementation returns null so
-	 * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
-	 * anyway. <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ErrorCall
+	 * <em>Error Call</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see org.eclipse.acceleo.query.ast.ErrorCollectionCall
+	 * @see org.eclipse.acceleo.query.ast.ErrorCall
 	 * @generated
 	 */
-	public Adapter createErrorCollectionCallAdapter() {
+	public Adapter createErrorCallAdapter() {
 		return null;
 	}
 
@@ -630,8 +631,6 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Binding
-	 * <em>Binding</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Binding
 	 * <em>Binding</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -673,8 +672,6 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Conditional
-	 * <em>Conditional</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Conditional
 	 * <em>Conditional</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
 	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.

@@ -17,9 +17,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
-import org.eclipse.acceleo.query.ast.ErrorCollectionCall;
+import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -29,7 +30,6 @@ import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
-import org.eclipse.acceleo.query.runtime.impl.CompletionServices.CallKind;
 import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -128,7 +128,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(object.getTarget());
 		result.addAll(services.getEStructuralFeatureProposals(possibleTypes));
-		result.addAll(services.getServiceProposals(possibleTypes, CallKind.FEATURE_ACCESS_CALL));
+		result.addAll(services.getServiceProposals(possibleTypes, CallType.CALLORAPPLY));
 		result.addAll(services.getEOperationProposals(possibleTypes));
 
 		return result;
@@ -160,18 +160,18 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorCollectionCall(org.eclipse.acceleo.query.ast.ErrorCollectionCall)
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorCollectionCall(org.eclipse.acceleo.query.ast.ErrorCall)
 	 */
 	@Override
-	public List<ICompletionProposal> caseErrorCollectionCall(ErrorCollectionCall object) {
+	public List<ICompletionProposal> caseErrorCall(ErrorCall object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		final Set<IType> collectionTypes = new LinkedHashSet<IType>();
-		for (IType type : validationResult.getPossibleTypes(object.getTarget())) {
+		for (IType type : validationResult.getPossibleTypes(object.getArguments().get(0))) {
 			collectionTypes.add(new SequenceType(services.getQueryEnvironment(), type));
 			collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
 		}
-		result.addAll(services.getServiceProposals(collectionTypes, CallKind.COLLECTION_CALL));
+		result.addAll(services.getServiceProposals(collectionTypes, object.getType()));
 
 		return result;
 	}
@@ -279,7 +279,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		final List<ServiceCompletionProposal> servicesProposal = services.getServiceProposals(possibleTypes,
-				CallKind.NONE);
+				null);
 		final Set<String> serviceNames = new HashSet<String>();
 		for (ServiceCompletionProposal proposal : servicesProposal) {
 			serviceNames.add(proposal.getObject().getServiceMethod().getName());
