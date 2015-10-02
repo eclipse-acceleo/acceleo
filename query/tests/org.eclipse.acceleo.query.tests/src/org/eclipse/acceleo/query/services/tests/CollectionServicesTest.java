@@ -17,10 +17,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
@@ -30,20 +32,34 @@ import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
+import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.services.tests.ComparableServicesTest.TestComparable;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
+import org.eclipse.acceleo.query.tests.anydsl.AnydslFactory;
+import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
+import org.eclipse.acceleo.query.tests.anydsl.Company;
+import org.eclipse.acceleo.query.tests.anydsl.Food;
+import org.eclipse.acceleo.query.tests.anydsl.World;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -1236,6 +1252,60 @@ public class CollectionServicesTest {
 
 		assertEquals(1, result.size());
 		assertTrue(result.contains(EcorePackage.eINSTANCE));
+	}
+	
+	public void testFilterOnEContents_ecore_477217() {
+		EPackage rootPackage = EcoreFactory.eINSTANCE.createEPackage();
+		EPackage subPackage = EcoreFactory.eINSTANCE.createEPackage();
+		EClass nestedClass = EcoreFactory.eINSTANCE.createEClass();
+
+		rootPackage.getEClassifiers().add(nestedClass);
+		rootPackage.getESubpackages().add(subPackage);
+
+		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+
+		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
+		AstResult query = queryBuilder.build("self.eContents()->filter(ecore::EClass)");
+
+		IQueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", rootPackage);
+		EvaluationResult result = evaluationEngine.eval(query, variables);
+
+		assertTrue(result.getResult() instanceof List<?>);
+		assertEquals(1, ((List<?>)result.getResult()).size());
+		assertTrue(((List<?>)result.getResult()).contains(nestedClass));
+	}
+
+	@Test
+	public void testFilterOnEContents_anydsl_477217() {
+		World world = AnydslFactory.eINSTANCE.createWorld();
+		Company comp1 = AnydslFactory.eINSTANCE.createRestaurant();
+		Company comp2 = AnydslFactory.eINSTANCE.createProductionCompany();
+		Food food = AnydslFactory.eINSTANCE.createFood();
+
+		world.getCompanies().add(comp1);
+		world.getCompanies().add(comp2);
+		world.getFoods().add(food);
+
+		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+
+		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
+		AstResult query = queryBuilder.build("self.eContents()->filter(anydsl::Company)");
+
+		IQueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", world);
+		EvaluationResult result = evaluationEngine.eval(query, variables);
+
+		assertTrue(result.getResult() instanceof List<?>);
+		assertEquals(2, ((List<?>)result.getResult()).size());
+		assertTrue(((List<?>)result.getResult()).contains(comp1));
+		assertTrue(((List<?>)result.getResult()).contains(comp2));
 	}
 
 	@Test
