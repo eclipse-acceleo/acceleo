@@ -69,6 +69,44 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	}
 
 	@Test
+	public void testEAllContentsFilteredSet() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testEAllContentsFilteredSetOnEObject() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
 	public void testEAllContents() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -700,6 +738,44 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
 					.getEPackage())) };
+
+			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testEContentsFilteredSet() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testEContentsFilteredSetOnEObject() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {

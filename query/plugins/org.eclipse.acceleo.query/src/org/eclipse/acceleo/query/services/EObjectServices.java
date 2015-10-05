@@ -35,6 +35,7 @@ import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
@@ -275,9 +276,15 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
 						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
+						for (EClassifier eClsFilter : ((EClassifierSetLiteralType)argTypes.get(1))
+								.getEClassifiers()) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, eClsFilter)));
+						}
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -309,31 +316,41 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<IType> containedTypes = new LinkedHashSet<IType>();
-			for (EClass contained : queryEnvironment.getEPackageProvider().getContainedEClasses(
-					receiverEClass)) {
-				containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-						contained)));
-			}
 			if (argTypes.size() == 1) {
+				final Set<IType> containedTypes = new LinkedHashSet<IType>();
+				for (EClass contained : queryEnvironment.getEPackageProvider().getContainedEClasses(
+						receiverEClass)) {
+					containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(
+							queryEnvironment, contained)));
+				}
 				result.addAll(containedTypes);
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
 							"%s doesn't contain any other EClass", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass containedEClass : queryEnvironment.getEPackageProvider().getContainedEClasses(
-						receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containedEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+							.getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				} else {
+					filterTypes.add(argTypes.get(1));
+				}
+				for (IType filterType : filterTypes) {
+					for (EClass containedEClass : queryEnvironment.getEPackageProvider()
+							.getContainedEClasses(receiverEClass)) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								containedEClass), filterType);
+						if (lowerType != null) {
+							result.add(new SequenceType(queryEnvironment, lowerType));
+						}
 					}
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't contain %s direclty", argTypes.get(0), filterType)));
+							"%s can't contain %s direclty", argTypes.get(0), argTypes.get(1))));
 				}
 			}
 
@@ -371,9 +388,15 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
 						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
+						for (EClassifier eClsFilter : ((EClassifierSetLiteralType)argTypes.get(1))
+								.getEClassifiers()) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, eClsFilter)));
+						}
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -405,31 +428,41 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<IType> containedTypes = new LinkedHashSet<IType>();
-			for (EClass contained : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
-					receiverEClass)) {
-				containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-						contained)));
-			}
 			if (argTypes.size() == 1) {
+				final Set<IType> containedTypes = new LinkedHashSet<IType>();
+				for (EClass contained : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
+						receiverEClass)) {
+					containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(
+							queryEnvironment, contained)));
+				}
 				result.addAll(containedTypes);
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
 							"%s doesn't contain any other EClass", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass containedEClass : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
-						receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containedEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+							.getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				} else {
+					filterTypes.add(argTypes.get(1));
+				}
+				for (IType filterType : filterTypes) {
+					for (EClass containedEClass : queryEnvironment.getEPackageProvider()
+							.getAllContainedEClasses(receiverEClass)) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								containedEClass), filterType);
+						if (lowerType != null) {
+							result.add(new SequenceType(queryEnvironment, lowerType));
+						}
 					}
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't contain %s direclty or indirectly", argTypes.get(0), filterType)));
+							"%s can't contain %s direclty or indirectly", argTypes.get(0), argTypes.get(1))));
 				}
 			}
 
@@ -620,10 +653,44 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject, final EClass type) {
-		final Set<EStructuralFeature> features = ((IEPackageProvider2)queryEnvironment.getEPackageProvider())
-				.getAllContainingEStructuralFeatures(type);
+		final Set<EClass> types = Sets.newLinkedHashSet();
+		types.add(type);
 
-		return eAllContents(eObject, type, features);
+		return eAllContents(eObject, types);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence of the EObjects recursively contained in the specified root eObject and that are " +
+				"instances of the specified EClass",
+		params = {
+			@Param(name = "eObject", value = "The root of the content tree"),
+			@Param(name = "types", value = "The set of types used to select elements")
+		},
+		result = "The recursive content of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "anEPackage.eAllContents({ecore::EPackage | ecore::EClass})",
+				result = "Sequence{ePackage, eClass, ...}"
+			)
+		}
+	)
+	// @formatter:on
+	public List<EObject> eAllContents(EObject eObject, final Set<EClass> types) {
+		final List<EObject> result;
+
+		if (types != null) {
+			final Set<EStructuralFeature> features = Sets.newLinkedHashSet();
+			for (EClass type : types) {
+				features.addAll(((IEPackageProvider2)queryEnvironment.getEPackageProvider())
+						.getAllContainingEStructuralFeatures(type));
+			}
+			result = eAllContents(eObject, types, features);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
 	}
 
 	/**
@@ -632,13 +699,13 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * 
 	 * @param eObject
 	 *            the root {@link EObject} to visit.
-	 * @param type
-	 *            the filtering {@link EClass}
+	 * @param types
+	 *            the filtering {@link Set} of {@link EClass}
 	 * @param features
 	 *            the set of {@link EStructuralFeature} to navigate
 	 * @return the recursive filtered content of the given {@link EObject}
 	 */
-	private List<EObject> eAllContents(EObject eObject, EClass type, Set<EStructuralFeature> features) {
+	private List<EObject> eAllContents(EObject eObject, Set<EClass> types, Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
 		if (!features.isEmpty()) {
@@ -646,7 +713,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (features.contains(feature)) {
 					final Object child = eObject.eGet(feature);
 					if (child != null) {
-						result.addAll(eAllContentsVisitChild(child, type, feature.isMany(), features));
+						result.addAll(eAllContentsVisitChild(child, types, feature.isMany(), features));
 					}
 				}
 			}
@@ -660,7 +727,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * 
 	 * @param child
 	 *            the child to visit
-	 * @param type
+	 * @param types
 	 *            the filtering {@link EClass}
 	 * @param isMany
 	 *            <code>true</code> if the containing {@link EStructuralFeature}
@@ -669,21 +736,24 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            the set of {@link EStructuralFeature} to navigate
 	 * @return the recursive filtered content of the given child and the child itself if it match the type
 	 */
-	private List<EObject> eAllContentsVisitChild(Object child, EClass type, boolean isMany,
+	private List<EObject> eAllContentsVisitChild(Object child, Set<EClass> types, boolean isMany,
 			Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
 		if (isMany) {
 			if (child instanceof Collection<?>) {
-				result.addAll(eAllContentsVisitCollectionChild((Collection<?>)child, type, features));
+				result.addAll(eAllContentsVisitCollectionChild((Collection<?>)child, types, features));
 			} else {
 				throw new IllegalStateException("don't know what to do with " + child.getClass());
 			}
 		} else if (child instanceof EObject) {
-			if (type.isSuperTypeOf(((EObject)child).eClass())) {
-				result.add((EObject)child);
+			for (EClass type : types) {
+				if (type.isSuperTypeOf(((EObject)child).eClass())) {
+					result.add((EObject)child);
+					break;
+				}
 			}
-			result.addAll(eAllContents((EObject)child, type, features));
+			result.addAll(eAllContents((EObject)child, types, features));
 		}
 
 		return result;
@@ -694,22 +764,25 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * 
 	 * @param child
 	 *            the child to visit
-	 * @param type
-	 *            the filtering {@link EClass}
+	 * @param types
+	 *            the filtering {@link Set} of {@link EClass}
 	 * @param features
 	 *            the set of {@link EStructuralFeature} to navigate
 	 * @return the recursive filtered content of the given child and the child itself if it match the type
 	 */
-	private List<EObject> eAllContentsVisitCollectionChild(Collection<?> child, final EClass type,
+	private List<EObject> eAllContentsVisitCollectionChild(Collection<?> child, final Set<EClass> types,
 			Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
 		for (Object object : (Collection<?>)child) {
 			if (object instanceof EObject) {
-				if (type.isSuperTypeOf(((EObject)object).eClass())) {
-					result.add((EObject)object);
+				for (EClass type : types) {
+					if (type.isSuperTypeOf(((EObject)object).eClass())) {
+						result.add((EObject)object);
+						break;
+					}
 				}
-				result.addAll(eAllContents((EObject)object, type, features));
+				result.addAll(eAllContents((EObject)object, types, features));
 			}
 		}
 
@@ -752,10 +825,43 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eContents(EObject eObject, final EClass type) {
-		final Set<EStructuralFeature> features = ((IEPackageProvider2)queryEnvironment.getEPackageProvider())
-				.getContainingEStructuralFeatures(type);
+		final Set<EClass> eClasses = new LinkedHashSet<EClass>();
+		eClasses.add(type);
 
-		return eContents(eObject, type, features);
+		return eContents(eObject, eClasses);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a sequence made of the instances of the specified types in the contents of the specified eObject.",
+		params = {
+			@Param(name = "eObject", value = "The eObject which content is requested."),
+			@Param(name = "types", value = "The Set of types filter.")
+		},
+		result = "The filtered content of the specified eObject.",
+		examples = {
+			@Example(
+				expression = "anEPackage.eContents({ecore::EPackage | ecore::EClass})",
+				result = "Sequence{SubEPackage, eClass, ... }"
+			)
+		}
+	)
+	// @formatter:on
+	public List<EObject> eContents(EObject eObject, final Set<EClass> types) {
+		final List<EObject> result;
+
+		if (types != null) {
+			final Set<EStructuralFeature> features = Sets.newLinkedHashSet();
+			for (EClass type : types) {
+				features.addAll(((IEPackageProvider2)queryEnvironment.getEPackageProvider())
+						.getContainingEStructuralFeatures(type));
+			}
+			result = eContents(eObject, types, features);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
 	}
 
 	/**
@@ -764,13 +870,13 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * 
 	 * @param eObject
 	 *            the root {@link EObject} to visit.
-	 * @param type
-	 *            the filtering {@link EClass}
+	 * @param types
+	 *            the filtering {@link Set} of {@link EClass}
 	 * @param features
 	 *            the set of {@link EStructuralFeature} to navigate
 	 * @return the recursive filtered content of the given {@link EObject}
 	 */
-	private List<EObject> eContents(EObject eObject, EClass type, Set<EStructuralFeature> features) {
+	private List<EObject> eContents(EObject eObject, Set<EClass> types, Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
 		if (!features.isEmpty()) {
@@ -778,7 +884,7 @@ public class EObjectServices extends AbstractServiceProvider {
 				if (features.contains(feature)) {
 					final Object child = eObject.eGet(feature);
 					if (child != null) {
-						result.addAll(eContentsVisitChild(child, type, feature.isMany(), features));
+						result.addAll(eContentsVisitChild(child, types, feature.isMany(), features));
 					}
 				}
 			}
@@ -788,12 +894,12 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Visits a given child for {@link EObjectServices#eContents(EObject, EClass, Set)}.
+	 * Visits a given child for {@link EObjectServices#eContents(EObject, Set, Set)}.
 	 * 
 	 * @param child
 	 *            the child to visit
-	 * @param type
-	 *            the filtering {@link EClass}
+	 * @param types
+	 *            the filtering {@link Set} of {@link EClass}
 	 * @param isMany
 	 *            <code>true</code> if the containing {@link EStructuralFeature}
 	 *            {@link EStructuralFeature#isMany() is many}, <code>false</code> otherwise
@@ -801,19 +907,22 @@ public class EObjectServices extends AbstractServiceProvider {
 	 *            the set of {@link EStructuralFeature} to navigate
 	 * @return the child itself if it match the type
 	 */
-	private Collection<? extends EObject> eContentsVisitChild(Object child, EClass type, boolean isMany,
-			Set<EStructuralFeature> features) {
+	private Collection<? extends EObject> eContentsVisitChild(Object child, Set<EClass> types,
+			boolean isMany, Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
 		if (isMany) {
 			if (child instanceof Collection<?>) {
-				result.addAll(eContentsVisitCollectionChild((Collection<?>)child, type, features));
+				result.addAll(eContentsVisitCollectionChild((Collection<?>)child, types, features));
 			} else {
 				throw new IllegalStateException("don't know what to do with " + child.getClass());
 			}
 		} else if (child instanceof EObject) {
-			if (type.isSuperTypeOf(((EObject)child).eClass())) {
-				result.add((EObject)child);
+			for (EClass type : types) {
+				if (type.isSuperTypeOf(((EObject)child).eClass())) {
+					result.add((EObject)child);
+					break;
+				}
 			}
 		}
 
@@ -821,24 +930,27 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Visits a given {@link Collection} child for {@link EObjectServices#eContents(EObject, EClass, Set)}.
+	 * Visits a given {@link Collection} child for {@link EObjectServices#eContents(EObject, Set, Set)}.
 	 * 
 	 * @param child
 	 *            the child to visit
-	 * @param type
-	 *            the filtering {@link EClass}
+	 * @param types
+	 *            the filtering {@link Set} of {@link EClass}
 	 * @param features
 	 *            the set of {@link EStructuralFeature} to navigate
 	 * @return the child itself if it match the type
 	 */
-	private List<EObject> eContentsVisitCollectionChild(Collection<?> child, final EClass type,
+	private List<EObject> eContentsVisitCollectionChild(Collection<?> child, final Set<EClass> types,
 			Set<EStructuralFeature> features) {
 		final List<EObject> result = Lists.newArrayList();
 
 		for (Object object : (Collection<?>)child) {
 			if (object instanceof EObject) {
-				if (type.isSuperTypeOf(((EObject)object).eClass())) {
-					result.add((EObject)object);
+				for (EClass type : types) {
+					if (type.isSuperTypeOf(((EObject)object).eClass())) {
+						result.add((EObject)object);
+						break;
+					}
 				}
 			}
 		}

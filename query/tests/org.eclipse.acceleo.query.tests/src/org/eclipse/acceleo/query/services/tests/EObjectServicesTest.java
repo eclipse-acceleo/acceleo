@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +51,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public Resource reverseModel;
 
 	@Before
-	public void setup() throws URISyntaxException, IOException {
+	public void before() throws Exception {
+		super.before();
 		this.eObjectServices = new EObjectServices(getQueryEnvironment());
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 	}
@@ -494,6 +494,55 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		}
 	}
 
+	@Test
+	public void testEContentsNullAndNullTypeEClassifierSet() {
+		List<EObject> contents = eObjectServices.eContents((EObject)null, (Set<EClass>)null);
+
+		assertEquals(0, contents.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testEContentsNullTypeEClassifierSet() {
+		final LinkedHashSet<EClass> types = new LinkedHashSet<EClass>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		eObjectServices.eContents(null, types);
+	}
+
+	@Test
+	public void testEContentsEObjectTypeEClassifierSet() {
+		final LinkedHashSet<EClass> types = new LinkedHashSet<EClass>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		List<EObject> contents = eObjectServices.eContents(EcorePackage.eINSTANCE, types);
+
+		assertEquals(20, contents.size());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), contents.get(0));
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), contents.get(1));
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), contents.get(2));
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), contents.get(3));
+		assertEquals(EcorePackage.eINSTANCE.getEDataType(), contents.get(4));
+		assertEquals(EcorePackage.eINSTANCE.getEEnum(), contents.get(5));
+		assertEquals(EcorePackage.eINSTANCE.getEEnumLiteral(), contents.get(6));
+		assertEquals(EcorePackage.eINSTANCE.getEFactory(), contents.get(7));
+		assertEquals(EcorePackage.eINSTANCE.getEModelElement(), contents.get(8));
+		assertEquals(EcorePackage.eINSTANCE.getENamedElement(), contents.get(9));
+		assertEquals(EcorePackage.eINSTANCE.getEObject(), contents.get(10));
+		assertEquals(EcorePackage.eINSTANCE.getEOperation(), contents.get(11));
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), contents.get(12));
+		assertEquals(EcorePackage.eINSTANCE.getEParameter(), contents.get(13));
+		assertEquals(EcorePackage.eINSTANCE.getEReference(), contents.get(14));
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), contents.get(15));
+		assertEquals(EcorePackage.eINSTANCE.getETypedElement(), contents.get(16));
+		assertEquals(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), contents.get(17));
+		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), contents.get(18));
+		assertEquals(EcorePackage.eINSTANCE.getETypeParameter(), contents.get(19));
+	}
+
 	private int eAllContentSize(EObject eObject) {
 		int result = 0;
 		TreeIterator<EObject> eAllContents = eObject.eAllContents();
@@ -527,6 +576,55 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		} catch (NullPointerException exception) {
 			// Do nothing the exception is expected
 		}
+	}
+
+	@Test
+	public void testEAllContentsNullAndNullTypeEClassifierSet() {
+		final List<EObject> contents = eObjectServices.eAllContents((EObject)null, (Set<EClass>)null);
+
+		assertEquals(0, contents.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testEAllContentsNullTypeEClassifierSet() {
+		final LinkedHashSet<EClass> types = new LinkedHashSet<EClass>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		eObjectServices.eAllContents((EObject)null, types);
+	}
+
+	@Test
+	public void testEAllContentsEObjectTypeEClassifierSet() {
+		final LinkedHashSet<EClass> types = new LinkedHashSet<EClass>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		List<EObject> contents = eObjectServices.eAllContents(EcorePackage.eINSTANCE, types);
+
+		assertEquals(20, contents.size());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), contents.get(0));
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), contents.get(1));
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), contents.get(2));
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), contents.get(3));
+		assertEquals(EcorePackage.eINSTANCE.getEDataType(), contents.get(4));
+		assertEquals(EcorePackage.eINSTANCE.getEEnum(), contents.get(5));
+		assertEquals(EcorePackage.eINSTANCE.getEEnumLiteral(), contents.get(6));
+		assertEquals(EcorePackage.eINSTANCE.getEFactory(), contents.get(7));
+		assertEquals(EcorePackage.eINSTANCE.getEModelElement(), contents.get(8));
+		assertEquals(EcorePackage.eINSTANCE.getENamedElement(), contents.get(9));
+		assertEquals(EcorePackage.eINSTANCE.getEObject(), contents.get(10));
+		assertEquals(EcorePackage.eINSTANCE.getEOperation(), contents.get(11));
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), contents.get(12));
+		assertEquals(EcorePackage.eINSTANCE.getEParameter(), contents.get(13));
+		assertEquals(EcorePackage.eINSTANCE.getEReference(), contents.get(14));
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), contents.get(15));
+		assertEquals(EcorePackage.eINSTANCE.getETypedElement(), contents.get(16));
+		assertEquals(EcorePackage.eINSTANCE.getEStringToStringMapEntry(), contents.get(17));
+		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), contents.get(18));
+		assertEquals(EcorePackage.eINSTANCE.getETypeParameter(), contents.get(19));
 	}
 
 	/**
