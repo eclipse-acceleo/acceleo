@@ -22,16 +22,24 @@ import java.util.Set;
 public interface ILookupEngine {
 
 	/**
-	 * Message used when a service cannot be instanciated.
+	 * Message used when a service cannot be instantiated.
 	 */
 	String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
 
 	/**
-	 * Returns the {@link CrossReferencer} that this engine uses.
+	 * Gets the {@link CrossReferencer} that this engine uses.
 	 * 
-	 * @return The {@link CrossReferencer} that this engine uses.
+	 * @return the {@link CrossReferencer} that this engine uses.
 	 */
 	CrossReferenceProvider getCrossReferencer();
+
+	/**
+	 * Gets the {@link IRootEObjectProvider} that this engine uses.
+	 * 
+	 * @return the {@link IRootEObjectProvider} that this engine uses.
+	 * @since 4.0.0
+	 */
+	IRootEObjectProvider getRootEObjectProvider();
 
 	/**
 	 * Returns the service that has the specified name and that best matches the specified argument types if
@@ -49,16 +57,29 @@ public interface ILookupEngine {
 	IService lookup(String name, Class<?>[] argumentTypes);
 
 	/**
-	 * Tells if the given method is the one that indicates we have to set the cross referencer to the service
-	 * instance.
+	 * Tells if the given method is the one that indicates we have to set the {@link CrossReferenceProvider}
+	 * to the service instance.
 	 * 
 	 * @param method
-	 *            The method we want to know if it the one that indicates we have to set the cross referencer
-	 *            to the service instance.
-	 * @return true if the given method is the one that indicates we have to set the cross referencer to the
-	 *         service instance. False otherwise.
+	 *            the method we want to know if it the one that indicates we have to set the
+	 *            {@link CrossReferenceProvider} to the service instance.
+	 * @return <code>true</code> if the given method is the one that indicates we have to set the
+	 *         {@link CrossReferenceProvider} to the service instance, <code>false</code> otherwise.
 	 */
 	boolean isCrossReferencerMethod(Method method);
+
+	/**
+	 * Tells if the given method is the one that indicates we have to set the {@link IRootEObjectProvider} to
+	 * the service instance.
+	 * 
+	 * @param method
+	 *            the method we want to know if it the one that indicates we have to set the
+	 *            {@link IRootEObjectProvider} to the service instance.
+	 * @return <code>true</code> if the given method is the one that indicates we have to set the
+	 *         {@link IRootEObjectProvider} to the service instance, <code>false</code> otherwise.
+	 * @since 4.0.0
+	 */
+	boolean isRootProviderMethod(Method method);
 
 	/**
 	 * Gets the {@link Set} of known {@link IService} with a compatible receiver type.

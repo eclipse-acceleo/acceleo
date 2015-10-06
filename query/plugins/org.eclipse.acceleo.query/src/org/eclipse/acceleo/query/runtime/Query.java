@@ -37,13 +37,30 @@ public final class Query {
 	 * Query.
 	 * 
 	 * @param xRefProvider
-	 *            : an instance to inspect cross references at evaluation time.
+	 *            an instance to inspect cross references at evaluation time
 	 * @return a new {@link IQueryEnvironment} configured with the services provided by default with Acceleo
-	 *         Query.
+	 *         Query
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(CrossReferenceProvider xRefProvider) {
+		return newEnvironmentWithDefaultServices(xRefProvider, null);
+	}
 
-		QueryEnvironment env = new QueryEnvironment(xRefProvider);
+	/**
+	 * Create a new {@link IQueryEnvironment} configured with the services provided by default with Acceleo
+	 * Query.
+	 * 
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @return a new {@link IQueryEnvironment} configured with the services provided by default with Acceleo
+	 *         Query
+	 * @since 4.0.0
+	 */
+	public static IQueryEnvironment newEnvironmentWithDefaultServices(CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider) {
+
+		QueryEnvironment env = new QueryEnvironment(xRefProvider, rootProvider);
 		try {
 			env.registerServicePackage(AnyServices.class);
 			env.registerServicePackage(EObjectServices.class);
@@ -66,11 +83,26 @@ public final class Query {
 	 * Create a new {@link IQueryEnvironment} with no services configured.
 	 * 
 	 * @param xRefProvider
-	 *            : an instance to inspect cross references at evaluation time.
-	 * @return a new {@link IQueryEnvironment} with no services configured.
+	 *            an instance to inspect cross references at evaluation time
+	 * @return a new {@link IQueryEnvironment} with no services configured
 	 */
 	public static IQueryEnvironment newEnvironment(CrossReferenceProvider xRefProvider) {
-		return new QueryEnvironment(xRefProvider);
+		return newEnvironment(xRefProvider, null);
+	}
+
+	/**
+	 * Create a new {@link IQueryEnvironment} with no services configured.
+	 * 
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @return a new {@link IQueryEnvironment} with no services configured.
+	 * @since 4.0.0
+	 */
+	public static IQueryEnvironment newEnvironment(CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider) {
+		return new QueryEnvironment(xRefProvider, rootProvider);
 	}
 
 }

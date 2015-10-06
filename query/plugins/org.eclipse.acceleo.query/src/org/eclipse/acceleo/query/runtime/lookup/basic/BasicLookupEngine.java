@@ -26,6 +26,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -48,6 +49,12 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * pass to the services.
 	 */
 	private static final String SET_CROSS_REFERENCER_METHOD_NAME = "setCrossReferencer";
+
+	/**
+	 * The method name a query service that needs to use a registered cross referencer must have so it can be
+	 * pass to the services.
+	 */
+	private static final String SET_ROOT_PROVIDER_METHOD_NAME = "setRootProvider";
 
 	/**
 	 * Message used when a service doesn't have a zero-argument constructor.
@@ -75,6 +82,11 @@ public class BasicLookupEngine implements ILookupEngine {
 	private CrossReferenceProvider crossReferencer;
 
 	/**
+	 * The {@link IRootEObjectProvider} that will be used to search all instances requests in EObject service.
+	 */
+	private IRootEObjectProvider rootProvider;
+
+	/**
 	 * Constructor. Initializes the lookup engine with a cross referencer.
 	 * 
 	 * @param queryEnvironment
@@ -85,13 +97,37 @@ public class BasicLookupEngine implements ILookupEngine {
 	 */
 	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
 			CrossReferenceProvider crossReferencer) {
+		this(queryEnvironment, crossReferencer, null);
+	}
+
+	/**
+	 * Constructor. Initializes the lookup engine with a cross referencer.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param crossReferencer
+	 *            the {@link CrossReferencer} that will be used to resolve eReference requests in EObject
+	 *            service
+	 * @param rootProvider
+	 *            the {@link IRootEObjectProvider} that will be used to search all instances in EObject
+	 *            service
+	 * @since 4.0.0
+	 */
+	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
+			CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
 		this.queryEnvironment = queryEnvironment;
 		this.crossReferencer = crossReferencer;
+		this.rootProvider = rootProvider;
 	}
 
 	@Override
 	public CrossReferenceProvider getCrossReferencer() {
 		return crossReferencer;
+	}
+
+	@Override
+	public IRootEObjectProvider getRootEObjectProvider() {
+		return rootProvider;
 	}
 
 	/**
@@ -320,10 +356,20 @@ public class BasicLookupEngine implements ILookupEngine {
 
 	@Override
 	public boolean isCrossReferencerMethod(Method method) {
-		boolean crossRefSet = SET_CROSS_REFERENCER_METHOD_NAME.equals(method.getName())
+		final boolean crossRefSet = SET_CROSS_REFERENCER_METHOD_NAME.equals(method.getName())
 				&& method.getParameterTypes().length > 0
 				&& CrossReferenceProvider.class.isAssignableFrom(method.getParameterTypes()[0]);
+
 		return crossRefSet;
+	}
+
+	@Override
+	public boolean isRootProviderMethod(Method method) {
+		final boolean result = SET_ROOT_PROVIDER_METHOD_NAME.equals(method.getName())
+				&& method.getParameterTypes().length > 0
+				&& IRootEObjectProvider.class.isAssignableFrom(method.getParameterTypes()[0]);
+
+		return result;
 	}
 
 	/**

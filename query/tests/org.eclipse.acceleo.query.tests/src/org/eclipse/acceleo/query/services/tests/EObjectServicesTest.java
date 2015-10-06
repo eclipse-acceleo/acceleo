@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import com.google.common.collect.Sets;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -17,9 +19,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
+import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.qmodel.QmodelPackage;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
@@ -774,4 +778,82 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 			// Do nothing the exception is expected
 		}
 	}
+
+	@Test
+	public void testAllInstancesNoRootProviderEClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = eObjectServices.allInstances(EcorePackage.eINSTANCE.getEAttribute());
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testAllInstancesNoRootProviderSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final Set<EClass> types = Sets.newLinkedHashSet();
+		types.add(EcorePackage.eINSTANCE.getEAttribute());
+		final List<EObject> result = eObjectServices.allInstances(types);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testAllInstancesNoRootProviderNullEClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = eObjectServices.allInstances((EClass)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testAllInstancesNoRootProviderNullSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = eObjectServices.allInstances((Set<EClass>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testAllInstancesEClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
+				AnydslPackage.eINSTANCE));
+		final List<EObject> result = eObjectServices.allInstances(EcorePackage.eINSTANCE.getEAttribute());
+
+		assertEquals(45, result.size());
+	}
+
+	@Test
+	public void testAllInstancesSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
+				AnydslPackage.eINSTANCE));
+		final Set<EClass> types = Sets.newLinkedHashSet();
+		types.add(EcorePackage.eINSTANCE.getEAttribute());
+		types.add(EcorePackage.eINSTANCE.getEReference());
+		final List<EObject> result = eObjectServices.allInstances(types);
+
+		assertEquals(110, result.size());
+	}
+
+	@Test
+	public void testAllInstancesNullEClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
+				AnydslPackage.eINSTANCE));
+		final List<EObject> result = eObjectServices.allInstances((EClass)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test
+	public void testAllInstancesNullSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
+				AnydslPackage.eINSTANCE));
+		final List<EObject> result = eObjectServices.allInstances((Set<EClass>)null);
+
+		assertEquals(0, result.size());
+	}
+
 }

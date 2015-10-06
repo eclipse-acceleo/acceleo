@@ -44,13 +44,17 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 			throws InvalidAcceleoPackageException {
 		try {
 			if (services == null) {
-				final Method getServicesMethod = getClass().getMethod("getServices", IReadOnlyQueryEnvironment.class);
+				final Method getServicesMethod = getClass().getMethod("getServices",
+						IReadOnlyQueryEnvironment.class);
 				services = new ArrayList<IService>();
 				final Method[] methods = this.getClass().getMethods();
 				for (Method method : methods) {
 					if (queryEnvironment.getLookupEngine().isCrossReferencerMethod(method)) {
 						method.invoke(this, queryEnvironment.getLookupEngine().getCrossReferencer());
-					} else if (queryEnvironment.getLookupEngine().isServiceMethod(this, method) && !getServicesMethod.equals(method)) {
+					} else if (queryEnvironment.getLookupEngine().isRootProviderMethod(method)) {
+						method.invoke(this, queryEnvironment.getLookupEngine().getRootEObjectProvider());
+					} else if (queryEnvironment.getLookupEngine().isServiceMethod(this, method)
+							&& !getServicesMethod.equals(method)) {
 						final IService service = getService(method);
 						if (service != null) {
 							services.add(service);

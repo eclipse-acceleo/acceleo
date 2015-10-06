@@ -48,6 +48,12 @@ public abstract class AbstractServicesTest {
 		return queryEnvironment;
 	}
 
+	public void setQueryEnvironment(IQueryEnvironment queryEnvironment) {
+		this.queryEnvironment = queryEnvironment;
+		this.lookupEngine = queryEnvironment.getLookupEngine();
+		validationServices = new ValidationServices(queryEnvironment);
+	}
+
 	public ValidationServices getValidationServices() {
 		return validationServices;
 	}

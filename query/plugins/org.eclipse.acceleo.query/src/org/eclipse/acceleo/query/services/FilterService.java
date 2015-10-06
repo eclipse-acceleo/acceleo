@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import com.google.common.collect.Sets;
+
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,6 +22,10 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
+import org.eclipse.acceleo.query.validation.type.AbstractCollectionType;
+import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
@@ -38,7 +44,7 @@ public class FilterService extends Service {
 	/**
 	 * The index of the filtering {@link IType}.
 	 */
-	final int filterIndex = 1;
+	final int filterIndex;
 
 	/**
 	 * Creates a new service instance given a method and an instance.
@@ -49,7 +55,23 @@ public class FilterService extends Service {
 	 *            the instance on which the service must be called
 	 */
 	public FilterService(Method serviceMethod, Object serviceInstance) {
+		this(serviceMethod, serviceInstance, 1);
+	}
+
+	/**
+	 * Creates a new service instance given a method and an instance.
+	 * 
+	 * @param serviceMethod
+	 *            the method that realizes the service
+	 * @param serviceInstance
+	 *            the instance on which the service must be called
+	 * @param filterIndex
+	 *            the index of the filtering {@link IType}
+	 * @since 4.0.0
+	 */
+	public FilterService(Method serviceMethod, Object serviceInstance, int filterIndex) {
 		super(serviceMethod, serviceInstance);
+		this.filterIndex = filterIndex;
 	}
 
 	@Override
@@ -59,22 +81,44 @@ public class FilterService extends Service {
 		final StringBuilder builder = new StringBuilder();
 
 		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
-			if (entry.getKey().size() > filterIndex && entry.getKey().get(1).getType() instanceof EClassifier) {
-				final IType filterType = entry.getKey().get(filterIndex);
-				for (IType possibleType : entry.getValue()) {
-					final IType rawType;
-					if (possibleType instanceof ICollectionType) {
-						rawType = ((ICollectionType)possibleType).getCollectionType();
-					} else {
-						rawType = possibleType;
+			final EClassifier eClassEClass = queryEnvironment.getEPackageProvider()
+					.getType("ecore", "EClass");
+			if (entry.getKey().size() > filterIndex) {
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (entry.getKey().get(filterIndex) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)entry.getKey()
+							.get(filterIndex)).getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
 					}
-					if (rawType instanceof NothingType) {
-						builder.append("\n");
-						builder.append(((NothingType)rawType).getMessage());
-					} else {
-						final IType loweredType = services.lower(filterType, rawType);
-						if (loweredType != null) {
-							result.add(unrawType(queryEnvironment, possibleType, loweredType));
+				} else if (entry.getKey().get(filterIndex) instanceof EClassifierLiteralType) {
+					filterTypes.add(entry.getKey().get(filterIndex));
+				} else if (entry.getKey().get(filterIndex).getType() == eClassEClass
+						|| ((entry.getKey().get(filterIndex) instanceof SetType && ((AbstractCollectionType)entry
+								.getKey().get(filterIndex)).getCollectionType().getType() == eClassEClass))) {
+					final EClassifier eObjectEClass = queryEnvironment.getEPackageProvider().getType("ecore",
+							"EObject");
+					if (eObjectEClass != null) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
+					}
+				} else {
+					filterTypes.add(entry.getKey().get(filterIndex));
+				}
+				for (IType filterType : filterTypes) {
+					for (IType possibleType : entry.getValue()) {
+						final IType rawType;
+						if (possibleType instanceof ICollectionType) {
+							rawType = ((ICollectionType)possibleType).getCollectionType();
+						} else {
+							rawType = possibleType;
+						}
+						if (rawType instanceof NothingType) {
+							builder.append("\n");
+							builder.append(((NothingType)rawType).getMessage());
+						} else {
+							final IType loweredType = services.lower(filterType, rawType);
+							if (loweredType != null) {
+								result.add(unrawType(queryEnvironment, possibleType, loweredType));
+							}
 						}
 					}
 				}

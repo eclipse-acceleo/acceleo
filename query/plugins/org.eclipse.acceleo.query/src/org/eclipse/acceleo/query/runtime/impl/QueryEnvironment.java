@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
@@ -42,8 +43,23 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 *            needed it.
 	 */
 	public QueryEnvironment(CrossReferenceProvider crossReferencer) {
+		this(crossReferencer, null);
+	}
+
+	/**
+	 * Creates a new {@link QueryEvaluationEngine} instance.
+	 * 
+	 * @param crossReferencer
+	 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in services
+	 *            needed it.
+	 * @param rootProvider
+	 *            a new {@link IRootEObjectProvider} that will be used to search all instances requests in
+	 *            services needed it.
+	 * @since 4.0.0
+	 */
+	public QueryEnvironment(CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
 		ePackageProvider = new EPackageProvider();
-		lookupEngine = new BasicLookupEngine(this, crossReferencer);
+		lookupEngine = new BasicLookupEngine(this, crossReferencer, rootProvider);
 	}
 
 	@Override

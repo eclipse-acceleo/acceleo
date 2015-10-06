@@ -29,6 +29,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IEPackageProvider2;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
@@ -285,6 +286,9 @@ public class EObjectServices extends AbstractServiceProvider {
 							result.add(new SequenceType(queryEnvironment, new EClassifierType(
 									queryEnvironment, eClsFilter)));
 						}
+					} else if (argTypes.size() == 2) {
+						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+								argTypes));
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -335,8 +339,14 @@ public class EObjectServices extends AbstractServiceProvider {
 							.getEClassifiers()) {
 						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
 					}
-				} else {
+				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 					filterTypes.add(argTypes.get(1));
+				} else {
+					final EClassifier eObjectEClass = queryEnvironment.getEPackageProvider().getType("ecore",
+							"EObject");
+					if (eObjectEClass != null) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
+					}
 				}
 				for (IType filterType : filterTypes) {
 					for (EClass containedEClass : queryEnvironment.getEPackageProvider()
@@ -360,11 +370,11 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * EAllContents {@link IService}.
+	 * AllInstances {@link IService}.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class EAllContentsService extends FilterService {
+	private final class AllInstancesService extends EAllContentsService {
 
 		/**
 		 * Creates a new service instance given a method and an instance.
@@ -374,96 +384,32 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
 		 */
-		private EAllContentsService(Method serviceMethod, Object serviceInstance) {
+		private AllInstancesService(Method serviceMethod, Object serviceInstance) {
 			super(serviceMethod, serviceInstance);
 		}
 
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.services.EAllContentsService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
 		@Override
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
-			final Set<IType> result = new LinkedHashSet<IType>();
+				IReadOnlyQueryEnvironment queryEnv, List<IType> argTypes) {
+			final Set<IType> result;
 
-			if (argTypes.get(0).getType() instanceof EClass) {
-				final EClass eCls = (EClass)argTypes.get(0).getType();
-				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
-					if (argTypes.size() == 1) {
-						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
-						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)argTypes.get(1)).getType())));
-					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
-						for (EClassifier eClsFilter : ((EClassifierSetLiteralType)argTypes.get(1))
-								.getEClassifiers()) {
-							result.add(new SequenceType(queryEnvironment, new EClassifierType(
-									queryEnvironment, eClsFilter)));
-						}
-					}
-				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
-				}
+			if (rootProvider == null) {
+				result = Sets.newLinkedHashSet();
+				result.add(new SequenceType(queryEnv, services.nothing("No IRootEObjectProvider registered")));
 			} else {
-				result.add(new SequenceType(queryEnvironment, services.nothing(
-						"Only EClass can contain other EClasses not %s", argTypes.get(0))));
-			}
+				List<IType> newArgTypes = Lists.newArrayList(argTypes);
+				newArgTypes.add(0, new EClassifierType(queryEnv, queryEnv.getEPackageProvider().getType(
+						"ecore", "EObject")));
 
-			return result;
-		}
-
-		/**
-		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
-		 * {@link EObject} {@link EClass}.
-		 * 
-		 * @param services
-		 *            the {@link ValidationServices}
-		 * @param queryEnvironment
-		 *            the {@link IReadOnlyQueryEnvironment}
-		 * @param argTypes
-		 *            arguments {@link IType}
-		 * @param receiverEClass
-		 *            the receiver type can't be {@link EObject} {@link EClass}
-		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
-		 *         {@link EObject} {@link EClass}
-		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services,
-				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
-			final Set<IType> result = new LinkedHashSet<IType>();
-
-			if (argTypes.size() == 1) {
-				final Set<IType> containedTypes = new LinkedHashSet<IType>();
-				for (EClass contained : queryEnvironment.getEPackageProvider().getAllContainedEClasses(
-						receiverEClass)) {
-					containedTypes.add(new SequenceType(queryEnvironment, new EClassifierType(
-							queryEnvironment, contained)));
-				}
-				result.addAll(containedTypes);
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s doesn't contain any other EClass", argTypes.get(0))));
-				}
-			} else if (argTypes.size() == 2) {
-				final Set<IType> filterTypes = Sets.newLinkedHashSet();
-				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
-					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
-							.getEClassifiers()) {
-						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
-					}
-				} else {
-					filterTypes.add(argTypes.get(1));
-				}
-				for (IType filterType : filterTypes) {
-					for (EClass containedEClass : queryEnvironment.getEPackageProvider()
-							.getAllContainedEClasses(receiverEClass)) {
-						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-								containedEClass), filterType);
-						if (lowerType != null) {
-							result.add(new SequenceType(queryEnvironment, lowerType));
-						}
-					}
-				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't contain %s direclty or indirectly", argTypes.get(0), argTypes.get(1))));
-				}
+				result = super.getType(call, services, validationResult, queryEnv, newArgTypes);
 			}
 
 			return result;
@@ -487,6 +433,21 @@ public class EObjectServices extends AbstractServiceProvider {
 		 */
 		private EInverseService(Method serviceMethod, Object serviceInstance) {
 			super(serviceMethod, serviceInstance);
+		}
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 * @param filterIndex
+		 *            the index of the filtering {@link IType}
+		 * @since 4.0.0
+		 */
+		private EInverseService(Method serviceMethod, Object serviceInstance, int filterIndex) {
+			super(serviceMethod, serviceInstance, filterIndex);
 		}
 
 		@Override
@@ -569,6 +530,11 @@ public class EObjectServices extends AbstractServiceProvider {
 	private CrossReferenceProvider crossReferencer;
 
 	/**
+	 * A root provider needed to realize the service allInstances().
+	 */
+	private IRootEObjectProvider rootProvider;
+
+	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
 	private final IReadOnlyQueryEnvironment queryEnvironment;
@@ -601,7 +567,15 @@ public class EObjectServices extends AbstractServiceProvider {
 		} else if ("eContainerOrSelf".equals(publicMethod.getName())) {
 			result = new EContainerOrSelfService(publicMethod, this);
 		} else if ("eInverse".equals(publicMethod.getName())) {
-			result = new EInverseService(publicMethod, this);
+			if (publicMethod.getParameterTypes().length == 2
+					&& publicMethod.getParameterTypes()[1] == String.class) {
+				// no filter for eInverse(EObject, String)
+				result = new EInverseService(publicMethod, this, 10);
+			} else {
+				result = new EInverseService(publicMethod, this);
+			}
+		} else if ("allInstances".equals(publicMethod.getName())) {
+			result = new AllInstancesService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}
@@ -1080,6 +1054,10 @@ public class EObjectServices extends AbstractServiceProvider {
 		this.crossReferencer = crossReferencer;
 	}
 
+	public void setRootProvider(IRootEObjectProvider rootProvider) {
+		this.rootProvider = rootProvider;
+	}
+
 	// @formatter:off
 	@Documentation(
 		value = "Returns the set containing the inverse references.",
@@ -1181,6 +1159,50 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		return null;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns all instances of the EClass",
+		params = {
+			@Param(name = "type", value = "The EClass"),
+		},
+		result = "all instances of the EClass"
+	)
+	// @formatter:on
+	public List<EObject> allInstances(EClass type) {
+		final List<EObject> result;
+
+		if (type != null) {
+			final Set<EClass> types = Sets.newLinkedHashSet();
+			types.add(type);
+			result = allInstances(types);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns all instances of any EClass from the OrderedSet",
+		params = {
+			@Param(name = "types", value = "The OrderedSet of EClass"),
+		},
+		result = "all instances of any EClass from the OrderedSet"
+	)
+	// @formatter:on
+	public List<EObject> allInstances(Set<EClass> types) {
+		final List<EObject> result = Lists.newArrayList();
+
+		if (rootProvider != null) {
+			for (EObject root : rootProvider.getRoots()) {
+				result.addAll(eAllContents(root, types));
+			}
+		}
+
+		return result;
 	}
 
 }

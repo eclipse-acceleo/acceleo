@@ -56,7 +56,7 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 			String serviceName, IType parameterTypes[]) {
 		final IService service = serviceLookUp(serviceName, parameterTypes);
 
-		assertNotNull("Service not found.", service != null);
+		assertNotNull("Service not found.", service);
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(), Arrays
 				.asList(parameterTypes));
