@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.services.XPathServices;
@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +37,15 @@ import static org.junit.Assert.assertTrue;
  * @author pguilet
  */
 public class XPathServicesTest extends AbstractEngineInitializationWithCrossReferencer {
-	public XPathServices eObjectServices;
+
+	public XPathServices xPathServices;
 
 	public Resource reverseModel;
 
 	@Before
-	public void setup() throws URISyntaxException, IOException {
-		this.eObjectServices = new XPathServices(getQueryEnvironment());
+	public void before() throws Exception {
+		super.before();
+		this.xPathServices = new XPathServices(getQueryEnvironment());
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 	}
 
@@ -66,18 +69,18 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
 
-		List<EObject> queryAncestors = eObjectServices.ancestors(query);
+		List<EObject> queryAncestors = xPathServices.ancestors(query);
 		assertEquals(1, queryAncestors.size());
 		assertEquals(queries, queryAncestors.get(0));
 
-		List<EObject> eObjectListResultAncestors = eObjectServices.ancestors(eObjectListResult);
+		List<EObject> eObjectListResultAncestors = xPathServices.ancestors(eObjectListResult);
 		assertEquals(3, eObjectListResultAncestors.size());
 		assertEquals(resultExpectation, eObjectListResultAncestors.get(0));
 		assertEquals(query, eObjectListResultAncestors.get(1));
 		assertEquals(queries, eObjectListResultAncestors.get(2));
 
 		EClassifier eDatatype = EcoreFactory.eINSTANCE.createEDataType();
-		assertEquals(0, eObjectServices.ancestors(eDatatype).size());
+		assertEquals(0, xPathServices.ancestors(eDatatype).size());
 	}
 
 	/**
@@ -108,28 +111,56 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
 
-		List<EObject> queryAncestors = eObjectServices.ancestors(query, query.eClass());
+		List<EObject> queryAncestors = xPathServices.ancestors(query, query.eClass());
 		assertTrue(queryAncestors.isEmpty());
 
-		queryAncestors = eObjectServices.ancestors(query, queries.eClass());
+		queryAncestors = xPathServices.ancestors(query, queries.eClass());
 		assertEquals(1, queryAncestors.size());
 		assertEquals(queries, queryAncestors.get(0));
 
-		queryAncestors = eObjectServices.ancestors(query, null);
+		queryAncestors = xPathServices.ancestors(query, (EClassifier)null);
 		assertEquals(1, queryAncestors.size());
 		assertEquals(queries, queryAncestors.get(0));
 
-		List<EObject> eObjectListResultAncestors = eObjectServices.ancestors(eObjectListResult, query
-				.eClass());
+		List<EObject> eObjectListResultAncestors = xPathServices.ancestors(eObjectListResult, query.eClass());
 		assertEquals(1, eObjectListResultAncestors.size());
 		assertEquals(query, eObjectListResultAncestors.get(0));
 
-		eObjectListResultAncestors = eObjectServices.ancestors(eObjectListResult, queries.eClass());
+		eObjectListResultAncestors = xPathServices.ancestors(eObjectListResult, queries.eClass());
 		assertEquals(1, eObjectListResultAncestors.size());
 		assertEquals(queries, eObjectListResultAncestors.get(0));
 
 		EClassifier eDatatype = EcoreFactory.eINSTANCE.createEDataType();
-		assertEquals(0, eObjectServices.ancestors(query, eDatatype).size());
+		assertEquals(0, xPathServices.ancestors(query, eDatatype).size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAncestorsNullAndNullTypeEClassifierSet() {
+		final List<EObject> result = xPathServices.ancestors((EObject)null, (Set<EClassifier>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAncestorsNullTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		xPathServices.ancestors((EObject)null, types);
+	}
+
+	@Test
+	public void testAncestorsEObjectTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = xPathServices.ancestors(EcorePackage.eINSTANCE.getEClass(), types);
+
+		assertEquals(1, result.size());
 	}
 
 	/**
@@ -145,19 +176,19 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
 
-		List<EObject> result = eObjectServices.siblings(queries);
+		List<EObject> result = xPathServices.siblings(queries);
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.siblings(query);
+		result = xPathServices.siblings(query);
 		assertNotNull(result);
 		assertEquals(37, result.size());
 
-		result = eObjectServices.siblings(resultExpectation);
+		result = xPathServices.siblings(resultExpectation);
 		assertNotNull(result);
 		assertEquals(1, result.size());
 
-		result = eObjectServices.siblings(eObjectListResult);
+		result = xPathServices.siblings(eObjectListResult);
 		assertNotNull(result);
 		assertEquals(0, result.size());
 	}
@@ -190,25 +221,54 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
 
-		List<EObject> result = eObjectServices.siblings(queries, queries.eClass());
+		List<EObject> result = xPathServices.siblings(queries, queries.eClass());
 		assertNotNull(result);
 		assertEquals(siblingsNumber(queries, queries.eClass()), result.size());
 
-		result = eObjectServices.siblings(query, query.eClass());
+		result = xPathServices.siblings(query, query.eClass());
 		assertNotNull(result);
 		assertEquals(siblingsNumber(query, query.eClass()), result.size());
 
-		result = eObjectServices.siblings(query, queries.eClass());
+		result = xPathServices.siblings(query, queries.eClass());
 		assertNotNull(result);
 		assertEquals(siblingsNumber(query, queries.eClass()), result.size());
 
-		result = eObjectServices.siblings(resultExpectation, resultExpectation.eClass());
+		result = xPathServices.siblings(resultExpectation, resultExpectation.eClass());
 		assertNotNull(result);
 		assertEquals(siblingsNumber(resultExpectation, resultExpectation.eClass()), result.size());
 
-		result = eObjectServices.siblings(eObjectListResult, eObjectListResult.eClass());
+		result = xPathServices.siblings(eObjectListResult, eObjectListResult.eClass());
 		assertNotNull(result);
 		assertEquals(siblingsNumber(eObjectListResult, eObjectListResult.eClass()), result.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSiblingsNullAndNullTypeEClassifierSet() {
+		final List<EObject> result = xPathServices.siblings((EObject)null, (Set<EClassifier>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSiblingsNullTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		xPathServices.siblings((EObject)null, types);
+	}
+
+	@Test
+	public void testSiblingsEObjectTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = xPathServices.siblings(EcorePackage.eINSTANCE.getEClass(), types);
+
+		assertEquals(52, result.size());
 	}
 
 	/**
@@ -223,19 +283,19 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		List<EObject> result = eObjectServices.precedingSiblings(queries);
+		List<EObject> result = xPathServices.precedingSiblings(queries);
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.precedingSiblings(query_1);
+		result = xPathServices.precedingSiblings(query_1);
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.precedingSiblings(query_2);
+		result = xPathServices.precedingSiblings(query_2);
 		assertNotNull(result);
 		assertEquals(5, result.size());
 
-		result = eObjectServices.precedingSiblings(resultExpectation);
+		result = xPathServices.precedingSiblings(resultExpectation);
 		assertNotNull(result);
 		assertEquals(0, result.size());
 	}
@@ -252,25 +312,55 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		List<EObject> result = eObjectServices.precedingSiblings(queries, queries.eClass());
+		List<EObject> result = xPathServices.precedingSiblings(queries, queries.eClass());
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.precedingSiblings(query_1, query_1.eClass());
+		result = xPathServices.precedingSiblings(query_1, query_1.eClass());
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.precedingSiblings(query_2, query_2.eClass());
+		result = xPathServices.precedingSiblings(query_2, query_2.eClass());
 		assertNotNull(result);
 		assertEquals(5, result.size());
 
-		result = eObjectServices.precedingSiblings(query_1, queries.eClass());
+		result = xPathServices.precedingSiblings(query_1, queries.eClass());
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.precedingSiblings(resultExpectation, resultExpectation.eClass());
+		result = xPathServices.precedingSiblings(resultExpectation, resultExpectation.eClass());
 		assertNotNull(result);
 		assertEquals(0, result.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testPrecedingSiblingsNullAndNullTypeEClassifierSet() {
+		final List<EObject> result = xPathServices.precedingSiblings((EObject)null, (Set<EClassifier>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testPrecedingSiblingsNullTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		xPathServices.precedingSiblings((EObject)null, types);
+	}
+
+	@Test
+	public void testPrecedingSiblingsEObjectTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = xPathServices.precedingSiblings(EcorePackage.eINSTANCE.getEClass(),
+				types);
+
+		assertEquals(2, result.size());
 	}
 
 	private int followingSiblingsNumber(EObject eObject) {
@@ -306,19 +396,19 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		List<EObject> result = eObjectServices.followingSiblings(queries);
+		List<EObject> result = xPathServices.followingSiblings(queries);
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(queries), result.size());
 
-		result = eObjectServices.followingSiblings(query_1);
+		result = xPathServices.followingSiblings(query_1);
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(query_1), result.size());
 
-		result = eObjectServices.followingSiblings(query_2);
+		result = xPathServices.followingSiblings(query_2);
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(query_2), result.size());
 
-		result = eObjectServices.followingSiblings(resultExpectation);
+		result = xPathServices.followingSiblings(resultExpectation);
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(resultExpectation), result.size());
 	}
@@ -335,24 +425,55 @@ public class XPathServicesTest extends AbstractEngineInitializationWithCrossRefe
 		EObject resultExpectation = query_1.eAllContents().next();
 		EObject query_2 = queries.eContents().get(5);
 
-		List<EObject> result = eObjectServices.followingSiblings(queries, queries.eClass());
+		List<EObject> result = xPathServices.followingSiblings(queries, queries.eClass());
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(queries, queries.eClass()), result.size());
 
-		result = eObjectServices.followingSiblings(query_1, query_1.eClass());
+		result = xPathServices.followingSiblings(query_1, query_1.eClass());
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(query_1, query_1.eClass()), result.size());
 
-		result = eObjectServices.followingSiblings(query_2, query_2.eClass());
+		result = xPathServices.followingSiblings(query_2, query_2.eClass());
 		assertNotNull(result);
 		assertEquals(followingSiblingsNumber(query_2, query_2.eClass()), result.size());
 
-		result = eObjectServices.followingSiblings(query_1, queries.eClass());
+		result = xPathServices.followingSiblings(query_1, queries.eClass());
 		assertNotNull(result);
 		assertEquals(0, result.size());
 
-		result = eObjectServices.followingSiblings(resultExpectation, resultExpectation.eClass());
+		result = xPathServices.followingSiblings(resultExpectation, resultExpectation.eClass());
 		assertNotNull(result);
 		assertEquals(0, result.size());
 	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testFollowingSiblingsNullAndNullTypeEClassifierSet() {
+		final List<EObject> result = xPathServices.followingSiblings((EObject)null, (Set<EClassifier>)null);
+
+		assertEquals(0, result.size());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testFollowingSiblingsNullTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		xPathServices.followingSiblings((EObject)null, types);
+	}
+
+	@Test
+	public void testFollowingSiblingsEObjectTypeEClassifierSet() {
+		final LinkedHashSet<EClassifier> types = new LinkedHashSet<EClassifier>();
+		types.add(EcorePackage.eINSTANCE.getEPackage());
+		types.add(EcorePackage.eINSTANCE.getEClass());
+
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final List<EObject> result = xPathServices.followingSiblings(EcorePackage.eINSTANCE.getEClass(),
+				types);
+
+		assertEquals(50, result.size());
+	}
+
 }

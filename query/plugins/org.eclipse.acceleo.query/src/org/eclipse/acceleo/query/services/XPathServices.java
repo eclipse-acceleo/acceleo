@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.services;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
@@ -86,9 +88,18 @@ public class XPathServices extends AbstractServiceProvider {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
 						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
+						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+								.getEClassifiers()) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, eClassifier)));
+						}
+					} else if (argTypes.size() == 2) {
+						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+								argTypes));
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -131,18 +142,33 @@ public class XPathServices extends AbstractServiceProvider {
 							argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
-						.getAllContainingEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containingEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+							.getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
+					filterTypes.add(argTypes.get(1));
+				} else {
+					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
+					if (eObjectEClass != null) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
+					}
+				}
+				for (IType filterType : filterTypes) {
+					for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+							.getAllContainingEClasses(receiverEClass)) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								containingEClass), filterType);
+						if (lowerType != null) {
+							result.add(new SequenceType(queryEnvironment, lowerType));
+						}
 					}
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, filterType, argTypes.get(0))));
+							S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S, argTypes.get(1), argTypes.get(0))));
 				}
 			}
 
@@ -180,9 +206,18 @@ public class XPathServices extends AbstractServiceProvider {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
 						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
+						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+								.getEClassifiers()) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, eClassifier)));
+						}
+					} else if (argTypes.size() == 2) {
+						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+								argTypes));
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -215,28 +250,43 @@ public class XPathServices extends AbstractServiceProvider {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+				for (EClass followingEClass : queryEnvironment.getEPackageProvider()
 						.getFollowingSiblingsEClasses(receiverEClass)) {
 					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-							containingEClass)));
+							followingEClass)));
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
 							"%s can't have following siblings", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
-						.getFollowingSiblingsEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containingEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+							.getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
+					filterTypes.add(argTypes.get(1));
+				} else {
+					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
+					if (eObjectEClass != null) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
+					}
+				}
+				for (IType filterType : filterTypes) {
+					for (EClass followingEClass : queryEnvironment.getEPackageProvider()
+							.getFollowingSiblingsEClasses(receiverEClass)) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								followingEClass), filterType);
+						if (lowerType != null) {
+							result.add(new SequenceType(queryEnvironment, lowerType));
+						}
 					}
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't be a following sibling of %s", filterType, argTypes.get(0))));
+							"%s can't be a following sibling of %s", argTypes.get(1), argTypes.get(0))));
 				}
 			}
 
@@ -274,9 +324,18 @@ public class XPathServices extends AbstractServiceProvider {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
 						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
+						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+								.getEClassifiers()) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, eClassifier)));
+						}
+					} else if (argTypes.size() == 2) {
+						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+								argTypes));
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -309,28 +368,43 @@ public class XPathServices extends AbstractServiceProvider {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
+				for (EClass precedingEClass : queryEnvironment.getEPackageProvider()
 						.getPrecedingSiblingsEClasses(receiverEClass)) {
 					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-							containingEClass)));
+							precedingEClass)));
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
 							"%s can't have preceding siblings", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider()
-						.getPrecedingSiblingsEClasses(receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containingEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+							.getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
+					filterTypes.add(argTypes.get(1));
+				} else {
+					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
+					if (eObjectEClass != null) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
+					}
+				}
+				for (IType filterType : filterTypes) {
+					for (EClass precedingEClass : queryEnvironment.getEPackageProvider()
+							.getPrecedingSiblingsEClasses(receiverEClass)) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								precedingEClass), filterType);
+						if (lowerType != null) {
+							result.add(new SequenceType(queryEnvironment, lowerType));
+						}
 					}
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't be a preceding sibling of %s", filterType, argTypes.get(0))));
+							"%s can't be a preceding sibling of %s", argTypes.get(1), argTypes.get(0))));
 				}
 			}
 
@@ -368,9 +442,18 @@ public class XPathServices extends AbstractServiceProvider {
 				if (eCls == EcorePackage.eINSTANCE.getEObject()) {
 					if (argTypes.size() == 1) {
 						result.add(new SequenceType(queryEnvironment, argTypes.get(0)));
-					} else if (argTypes.size() == 2) {
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierLiteralType) {
 						result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
+					} else if (argTypes.size() == 2 && argTypes.get(1) instanceof EClassifierSetLiteralType) {
+						for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+								.getEClassifiers()) {
+							result.add(new SequenceType(queryEnvironment, new EClassifierType(
+									queryEnvironment, eClassifier)));
+						}
+					} else if (argTypes.size() == 2) {
+						result.addAll(super.getType(call, services, validationResult, queryEnvironment,
+								argTypes));
 					}
 				} else {
 					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
@@ -403,28 +486,43 @@ public class XPathServices extends AbstractServiceProvider {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			if (argTypes.size() == 1) {
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
+				for (EClass siblingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
 						receiverEClass)) {
 					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-							containingEClass)));
+							siblingEClass)));
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing("%s can't have siblings",
 							argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass containingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
-						receiverEClass)) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							containingEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SequenceType(queryEnvironment, lowerType));
+				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
+					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
+							.getEClassifiers()) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));
+					}
+				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
+					filterTypes.add(argTypes.get(1));
+				} else {
+					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
+					if (eObjectEClass != null) {
+						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
+					}
+				}
+				for (IType filterType : filterTypes) {
+					for (EClass siblingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
+							receiverEClass)) {
+						final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
+								siblingEClass), filterType);
+						if (lowerType != null) {
+							result.add(new SequenceType(queryEnvironment, lowerType));
+						}
 					}
 				}
 				if (result.isEmpty()) {
 					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't be a sibling of %s", filterType, argTypes.get(0))));
+							"%s can't be a sibling of %s", argTypes.get(1), argTypes.get(0))));
 				}
 			}
 
@@ -479,7 +577,10 @@ public class XPathServices extends AbstractServiceProvider {
 	 */
 	public List<EObject> ancestors(EObject object) {
 		// TODO lazy collection
-		return ancestors(object, null);
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(null);
+
+		return ancestors(object, filters);
 	}
 
 	/**
@@ -492,13 +593,32 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @return Sequence containing the full set of the receiver's ancestors.
 	 */
 	public List<EObject> ancestors(EObject object, EClassifier filter) {
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(filter);
+
+		return ancestors(object, filters);
+	}
+
+	/**
+	 * Returns a Sequence containing the full set of <code>object</code>'s ancestors.
+	 * 
+	 * @param object
+	 *            The EObject we seek the ancestors of.
+	 * @param filters
+	 *            {@link Set} of types of the EObjects we seek to retrieve.
+	 * @return Sequence containing the full set of the receiver's ancestors.
+	 */
+	public List<EObject> ancestors(EObject object, Set<EClassifier> filters) {
 		// TODO lazy collection + predicate
 		final List<EObject> result = new ArrayList<EObject>();
 
 		EObject container = object.eContainer();
 		while (container != null) {
-			if (filter == null || filter.isInstance(container)) {
-				result.add(container);
+			for (EClassifier filter : filters) {
+				if (filter == null || filter.isInstance(container)) {
+					result.add(container);
+					break;
+				}
 			}
 			container = container.eContainer();
 		}
@@ -514,7 +634,10 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @return Sequence containing the sought set of the receiver's following siblings.
 	 */
 	public List<EObject> followingSiblings(EObject eObject) {
-		return siblings(eObject, null, false);
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(null);
+
+		return siblings(eObject, filters, false);
 	}
 
 	/**
@@ -527,7 +650,23 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @return Sequence containing the sought set of the receiver's following siblings.
 	 */
 	public List<EObject> followingSiblings(EObject eObject, EClassifier filter) {
-		return siblings(eObject, filter, false);
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(filter);
+
+		return siblings(eObject, filters, false);
+	}
+
+	/**
+	 * Returns a Sequence containing all following siblings of <code>source</code>.
+	 * 
+	 * @param eObject
+	 *            The EObject we seek the following siblings of.
+	 * @param filters
+	 *            {@link Set} of types of the EObjects we seek to retrieve.
+	 * @return Sequence containing the sought set of the receiver's following siblings.
+	 */
+	public List<EObject> followingSiblings(EObject eObject, Set<EClassifier> filters) {
+		return siblings(eObject, filters, false);
 	}
 
 	/**
@@ -538,7 +677,10 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @return Sequence containing the sought set of the receiver's preceding siblings.
 	 */
 	public List<EObject> precedingSiblings(EObject eObject) {
-		return siblings(eObject, null, true);
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(null);
+
+		return siblings(eObject, filters, true);
 	}
 
 	/**
@@ -551,7 +693,23 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @return Sequence containing the sought set of the receiver's preceding siblings.
 	 */
 	public List<EObject> precedingSiblings(EObject eObject, EClassifier filter) {
-		return siblings(eObject, filter, true);
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(filter);
+
+		return siblings(eObject, filters, true);
+	}
+
+	/**
+	 * Returns a Sequence containing all preceding siblings of <code>source</code>.
+	 * 
+	 * @param eObject
+	 *            The EObject we seek the preceding siblings of.
+	 * @param filters
+	 *            {@link Set} of types of the EObjects we seek to retrieve.
+	 * @return Sequence containing the sought set of the receiver's preceding siblings.
+	 */
+	public List<EObject> precedingSiblings(EObject eObject, Set<EClassifier> filters) {
+		return siblings(eObject, filters, true);
 	}
 
 	/**
@@ -562,7 +720,10 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
 	public List<EObject> siblings(EObject eObject) {
-		return siblings(eObject, null);
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(null);
+
+		return siblings(eObject, filters);
 	}
 
 	/**
@@ -571,10 +732,26 @@ public class XPathServices extends AbstractServiceProvider {
 	 * @param eObject
 	 *            The EObject we seek the siblings of.
 	 * @param filter
-	 *            Types of the EObjects we seek to retrieve.
+	 *            Type of the EObjects we seek to retrieve.
 	 * @return Sequence containing the full set of the receiver's siblings.
 	 */
 	public List<EObject> siblings(final EObject eObject, final EClassifier filter) {
+		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+		filters.add(filter);
+
+		return siblings(eObject, filters);
+	}
+
+	/**
+	 * Returns a Sequence containing the full set of <code>source</code>'s siblings.
+	 * 
+	 * @param eObject
+	 *            The EObject we seek the siblings of.
+	 * @param filters
+	 *            {@link Set} of types of the EObjects we seek to retrieve.
+	 * @return Sequence containing the full set of the receiver's siblings.
+	 */
+	public List<EObject> siblings(final EObject eObject, final Set<EClassifier> filters) {
 		// TODO lazy collection
 		final List<EObject> result;
 
@@ -582,10 +759,13 @@ public class XPathServices extends AbstractServiceProvider {
 		if (container != null) {
 			result = Lists.newArrayList();
 			for (EObject input : getContents(container)) {
-				if (input != eObject
-						&& (filter == null || filter.isInstance(input.eClass()) || filter.equals(input
-								.eClass()))) {
-					result.add(input);
+				for (EClassifier filter : filters) {
+					if (input != eObject
+							&& (filter == null || filter.isInstance(input.eClass()) || filter.equals(input
+									.eClass()))) {
+						result.add(input);
+						break;
+					}
 				}
 			}
 		} else {
@@ -601,14 +781,14 @@ public class XPathServices extends AbstractServiceProvider {
 	 * 
 	 * @param eObject
 	 *            The EObject we seek the siblings of.
-	 * @param filter
-	 *            Types of the EObjects we seek to retrieve.
+	 * @param filters
+	 *            {@link Set} of types of the EObjects we seek to retrieve.
 	 * @param preceding
 	 *            If <code>true</code>, we'll return the preceding siblings of <em>source</em>. Otherwise,
 	 *            this will return its followingSiblings.
 	 * @return Sequence containing the sought set of the receiver's siblings.
 	 */
-	private List<EObject> siblings(final EObject eObject, final EClassifier filter, Boolean preceding) {
+	private List<EObject> siblings(final EObject eObject, final Set<EClassifier> filters, Boolean preceding) {
 		// TODO lazy collection
 		final List<EObject> result;
 
@@ -626,8 +806,11 @@ public class XPathServices extends AbstractServiceProvider {
 
 			result = Lists.newArrayList();
 			for (EObject input : siblings.subList(startIndex, endIndex)) {
-				if (filter == null || filter.isInstance(input.eClass()) || filter.equals(input.eClass())) {
-					result.add(input);
+				for (EClassifier filter : filters) {
+					if (filter == null || filter.isInstance(input.eClass()) || filter.equals(input.eClass())) {
+						result.add(input);
+						break;
+					}
 				}
 			}
 		} else {
@@ -745,6 +928,18 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Gets the {@link EObject} {@link EClassifier} for the given {@link IReadOnlyQueryEnvironment}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @return the {@link EObject} {@link EClassifier} for the given {@link IReadOnlyQueryEnvironment} if any,
+	 *         <code>null</code> otherwise
+	 */
+	private static EClassifier getEObjectEClass(IReadOnlyQueryEnvironment queryEnvironment) {
+		return queryEnvironment.getEPackageProvider().getType("ecore", "EObject");
 	}
 
 }

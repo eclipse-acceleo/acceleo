@@ -65,6 +65,52 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 	}
 
 	@Test
+	public void testAncestorsFilterEClass() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEModelElement())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnum())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())) };
+
+			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testAncestorsFilterSet() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEModelElement())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnum())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())) };
+
+			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
 	public void testAncestors() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -78,6 +124,46 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
 					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
 					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())) };
+
+			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testAncestorsFilteredSet() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testAncestorsFilteredSetOnEObject() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "ancestors", parameterTypes);
 		} finally {
@@ -265,6 +351,82 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 	}
 
 	@Test
+	public void testFollowingSiblingsFilterEClass() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testFollowingSiblingsFilterSet() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testSiblingsFollowingFilteredSet() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testSiblingsFollowingFilteredSetOnEObject() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
 	public void testFollowingSiblingsOnEObject() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -437,6 +599,88 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
 					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
 					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testPrecedingSiblingsFilterEClass() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testPrecedingSiblingsFilterSet() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testPrecedingSiblingsFilteredSet() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testPrecedingSiblingsFilteredSetOnEObject() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
@@ -627,6 +871,48 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 	}
 
 	@Test
+	public void testSiblingsFilterEClass() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testSiblingsFilterSet() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())) };
+
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
 	public void testSiblingsOnEObject() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
@@ -677,6 +963,46 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEClassifier()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
 					.getEClassifier())) };
+
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testSiblingsFilteredSet() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
+
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testSiblingsFilteredSetOnEObject() {
+
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEObject()),
+					eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEPackage(), EcorePackage.eINSTANCE
+							.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())) };
 
 			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
