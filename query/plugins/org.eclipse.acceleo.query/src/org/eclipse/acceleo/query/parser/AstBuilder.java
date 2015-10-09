@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
-//CHECKSTYLE:OFF
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -49,7 +48,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-//CHECKSTYLE:ON
 /**
  * Builder API for AST instances.
  * 
@@ -86,11 +84,11 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates an integer literal given an int.
+	 * Creates an {@link IntegerLiteral} given an int.
 	 * 
 	 * @param i
 	 *            the value
-	 * @return an integerliteral
+	 * @return an {@link IntegerLiteral}
 	 */
 	public IntegerLiteral integerLiteral(int i) {
 		IntegerLiteral literal = (IntegerLiteral)EcoreUtil.create(AstPackage.Literals.INTEGER_LITERAL);
@@ -99,11 +97,11 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates an real literal given an double.
+	 * Creates a {@link RealLiteral} given a double.
 	 * 
 	 * @param i
 	 *            the value
-	 * @return an realliteral
+	 * @return a {@link RealLiteral}
 	 */
 	public RealLiteral realLiteral(double i) {
 		RealLiteral literal = (RealLiteral)EcoreUtil.create(AstPackage.Literals.REAL_LITERAL);
@@ -112,11 +110,11 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates an real literal given an double.
+	 * Creates an {@link StringLiteral} given {@link String}.
 	 * 
 	 * @param str
 	 *            the value
-	 * @return a string literal
+	 * @return a {@link StringLiteral}
 	 */
 	public StringLiteral stringLiteral(String str) {
 		StringLiteral literal = (StringLiteral)EcoreUtil.create(AstPackage.Literals.STRING_LITERAL);
@@ -297,11 +295,11 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates a boolean literal given an double.
+	 * Creates a {@link BooleanLiteral} given a boolean.
 	 * 
 	 * @param bool
 	 *            the value
-	 * @return an boolean literal
+	 * @return a {@link BooleanLiteral}
 	 */
 	public BooleanLiteral booleanLiteral(boolean bool) {
 		BooleanLiteral literal = (BooleanLiteral)EcoreUtil.create(AstPackage.Literals.BOOLEAN_LITERAL);
@@ -330,11 +328,12 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates a new type literal given the class or the EClass.
+	 * Creates a new {@link TypeLiteral} given the {@link Class} or the {@link org.eclipse.emf.ecore.EClass
+	 * EClass}.
 	 * 
 	 * @param type
-	 *            the class or the EClass
-	 * @return a new type literal given the class or the EClass.
+	 *            the {@link Class} or the {@link org.eclipse.emf.ecore.EClass EClass}
+	 * @return a new {@link TypeLiteral} given the class or the EClass.
 	 */
 	public TypeLiteral typeLiteral(Object type) {
 		if (!(type instanceof Class<?>) && !(type instanceof EClassifier)) {
@@ -365,11 +364,11 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates a new varRef.
+	 * Creates a new {@link VarRef}.
 	 * 
 	 * @param name
 	 *            the name of the variable
-	 * @return a new varref
+	 * @return a new {@link VarRef}
 	 */
 	public VarRef varRef(String name) {
 
@@ -638,9 +637,9 @@ public class AstBuilder {
 	 * Creates a new {@link Let} operator.
 	 * 
 	 * @param body
-	 *            the body of the let
+	 *            the {@link Let#getBody() body of the let}
 	 * @param bindings
-	 *            the bindings of the let
+	 *            the {@link Let#getBindings() bindings of the let}
 	 * @return the new {@link Let} created.
 	 */
 	public Let let(Expression body, Binding... bindings) {
@@ -674,7 +673,7 @@ public class AstBuilder {
 	 * @param name
 	 *            the {@link ErrorBinding#getName() name} it can be <code>null</code>
 	 * @param type
-	 *            the binding type it can be <code>null</code>
+	 *            the {@link Binding#getType() binding type} it can be <code>null</code>
 	 * @return the new {@link ErrorBinding} created.
 	 */
 	public ErrorBinding errorBinding(String name, TypeLiteral type) {

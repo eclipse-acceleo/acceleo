@@ -10,34 +10,28 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
-//CHECKSTYLE:OFF
-import java.util.List;
-
-import org.eclipse.acceleo.query.ast.Lambda;
-import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-//CHECKSTYLE:ON
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 
 /**
- * {@link Lambda} type.
+ * {@link org.eclipse.acceleo.query.ast.Lambda Lambda} type.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class LambdaType extends AbstractJavaType implements IJavaType {
 
 	/**
-	 * The {@link List} of parameter names.
+	 * The {@link java.util.List List} of parameter names.
 	 */
 	final String evaluatorName;
 
 	/**
-	 * The {@link IType} of this {@link Lambda#getEvaluator() evaluator} type.
+	 * The {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator() evaluator} type.
 	 */
 	final IType lambdaEvaluatorType;
 
 	/**
-	 * The {@link IType} of this {@link Lambda#getExpression() expression} type.
+	 * The {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getExpression() expression} type.
 	 */
 	final IType lambdaExpressionType;
 
@@ -47,11 +41,14 @@ public final class LambdaType extends AbstractJavaType implements IJavaType {
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @param evaluatorNames
-	 *            the {@link Lambda#getEvaluator() evaluator} {@link VariableDeclaration#getName() name}
+	 *            the {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator() evaluator}
+	 *            {@link org.eclipse.acceleo.query.ast.VariableDeclaration#getName() name}
 	 * @param lambdaEvaluatorType
-	 *            the {@link IType} of this {@link Lambda#getEvaluator() evaluator} type
+	 *            the {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator()
+	 *            evaluator} type
 	 * @param lambdaExpressionType
-	 *            the {@link IType} of this {@link Lambda#getExpression() expression} type
+	 *            the {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getExpression()
+	 *            expression} type
 	 */
 	public LambdaType(IReadOnlyQueryEnvironment queryEnvironment, String evaluatorNames,
 			IType lambdaEvaluatorType, IType lambdaExpressionType) {
@@ -72,18 +69,22 @@ public final class LambdaType extends AbstractJavaType implements IJavaType {
 	}
 
 	/**
-	 * Gets the {@link IType} of this {@link Lambda#getEvaluator() evaluator} type.
+	 * Gets the {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator() evaluator}
+	 * type.
 	 * 
-	 * @return the {@link IType} of this {@link Lambda#getEvaluator() evaluator} type
+	 * @return the {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator() evaluator}
+	 *         type
 	 */
 	public IType getLambdaEvaluatorType() {
 		return lambdaEvaluatorType;
 	}
 
 	/**
-	 * Gets the {@link IType} of this {@link Lambda#getExpression() expression} type.
+	 * Gets the {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getExpression() expression}
+	 * type.
 	 * 
-	 * @return the {@link IType} of this {@link Lambda#getExpression() expression} type
+	 * @return the {@link IType} of this {@link org.eclipse.acceleo.query.ast.Lambda#getExpression()
+	 *         expression} type
 	 */
 	public IType getLambdaExpressionType() {
 		return lambdaExpressionType;
@@ -123,9 +124,11 @@ public final class LambdaType extends AbstractJavaType implements IJavaType {
 	}
 
 	/**
-	 * The {@link Lambda#getEvaluator() evaluator} {@link VariableDeclaration#getName() name}.
+	 * The {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator() evaluator}
+	 * {@link org.eclipse.acceleo.query.ast.VariableDeclaration#getName() name}.
 	 * 
-	 * @return the {@link Lambda#getEvaluator() evaluator} {@link VariableDeclaration#getName() name}
+	 * @return the {@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator() evaluator}
+	 *         {@link org.eclipse.acceleo.query.ast.VariableDeclaration#getName() name}
 	 */
 	public String getLambdaEvaluatorName() {
 		return evaluatorName;

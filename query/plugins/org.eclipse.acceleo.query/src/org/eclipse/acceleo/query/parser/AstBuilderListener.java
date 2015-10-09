@@ -510,10 +510,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Expression receiver;
 			final ErrorCall errorCollectionCall;
 			if (e.getCtx().getChildCount() == 3) {
-				final int childCount = e.getCtx().getChild(2).getChildCount();
-				// CHECKSTYLE:OFF
-				final int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
-				// CHECKSTYLE:ON
+				final int argc = getNumberOfArgs(e.getCtx().getChild(2).getChildCount());
 				final Expression[] args = new Expression[argc];
 				for (int i = argc - 1; i >= 0; i--) {
 					args[i] = pop();
@@ -1083,10 +1080,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitServiceCall(ServiceCallContext ctx) {
 		if (errorRule != QueryParser.RULE_navigationSegment) {
-			final int childCount = ctx.getChild(2).getChildCount();
-			// CHECKSTYLE:OFF
-			final int argc = 1 + (childCount == 0 ? 0 : 1 + childCount / 2);
-			// CHECKSTYLE:ON
+			final int argc = getNumberOfArgs(ctx.getChild(2).getChildCount());
 			final Expression[] args = new Expression[argc];
 			for (int i = argc - 1; i >= 0; i--) {
 				args[i] = pop();
@@ -1099,6 +1093,25 @@ public class AstBuilderListener extends QueryBaseListener {
 
 			push(call);
 		}
+	}
+
+	/**
+	 * Gets the number of arguments separated by a token given a context child count.
+	 * 
+	 * @param childCount
+	 *            the context child count
+	 * @return the number of arguments separated by a token given a context child count
+	 */
+	private int getNumberOfArgs(int childCount) {
+		final int result;
+
+		if (childCount == 0) {
+			result = 1;
+		} else {
+			result = 1 + 1 + childCount / 2;
+		}
+
+		return result;
 	}
 
 	@Override
