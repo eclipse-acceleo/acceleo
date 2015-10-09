@@ -1374,13 +1374,9 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<Object> including(List<Object> sequence, Object object) {
-		if (sequence.contains(object)) {
-			return sequence;
-		} else {
-			List<Object> result = Lists.newArrayList(sequence);
-			result.add(object);
-			return result;
-		}
+		List<Object> result = Lists.newArrayList(sequence);
+		result.add(object);
+		return result;
 	}
 
 	// @formatter:off
@@ -1401,7 +1397,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			return sequence;
 		} else {
 			List<Object> result = Lists.newArrayList(sequence);
-			result.remove(object);
+			result.removeAll(Collections.singleton(object));
 			return result;
 		}
 	}

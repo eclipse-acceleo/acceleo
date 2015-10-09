@@ -486,17 +486,19 @@ public class CollectionServicesTest {
 	public void testIncluding() {
 		List<Object> list = Lists.newArrayList();
 		Object elt = new Object();
-		Object elt2 = new Object();
 		list.add(elt);
+
+		Object elt2 = new Object();
 		List<Object> result = collectionServices.including(list, elt2);
 		assertTrue(result.contains(elt2));
 		assertTrue(result.contains(elt));
 		assertEquals(2, result.size());
 
 		result = collectionServices.including(list, elt);
-		assertEquals(list, result);
+		assertEquals(2, result.size());
 		assertTrue(result.contains(elt));
-		assertEquals(1, result.size());
+		assertEquals(result.get(0), elt);
+		assertEquals(result.get(1), elt);
 	}
 
 	@Test
@@ -517,6 +519,30 @@ public class CollectionServicesTest {
 		assertEquals(list, result);
 		assertTrue(result.contains(elt));
 		assertEquals(1, result.size());
+	}
+
+	@Test
+	public void testExcludingWithDuplicates() {
+		List<Object> list = new ArrayList<Object>();
+		String a = "a";
+		String b = "b";
+		String c = "c";
+
+		list.add(a);
+		list.add(b);
+		list.add(c);
+		list.add(b);
+
+		List<Object> result = collectionServices.excluding(list, b);
+		assertTrue(result.contains(a));
+		assertTrue(result.contains(c));
+		assertFalse(result.contains(b));
+
+		assertEquals(2, result.size());
+
+		assertEquals(0, result.indexOf(a));
+		assertEquals(1, result.indexOf(c));
+
 	}
 
 	@Test
