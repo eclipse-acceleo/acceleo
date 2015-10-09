@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -604,13 +605,37 @@ public class AstBuilder {
 	 *            the true branch
 	 * @param falseBranch
 	 *            the false branch
-	 * @return a conditional operator with the specified predicate, true branche and false branch.
+	 * @return a conditional operator with the specified predicate, true branch and false branch.
 	 */
 	public Conditional conditional(Expression predicate, Expression trueBranch, Expression falseBranch) {
 		Conditional result = (Conditional)EcoreUtil.create(AstPackage.Literals.CONDITIONAL);
+
 		result.setPredicate(predicate);
 		result.setTrueBranch(trueBranch);
 		result.setFalseBranch(falseBranch);
+
+		return result;
+	}
+
+	/**
+	 * Creates a new {@link ErrorConditional} operator instance.
+	 * 
+	 * @param predicate
+	 *            the predicate can be <code>null</code>
+	 * @param trueBranch
+	 *            the true branch can be <code>null</code>
+	 * @param falseBranch
+	 *            the false branch can be <code>null</code>
+	 * @return a error conditional operator with the specified predicate, true branch and false branch.
+	 */
+	public ErrorConditional errorConditional(Expression predicate, Expression trueBranch,
+			Expression falseBranch) {
+		ErrorConditional result = (ErrorConditional)EcoreUtil.create(AstPackage.Literals.ERROR_CONDITIONAL);
+
+		result.setPredicate(predicate);
+		result.setTrueBranch(trueBranch);
+		result.setFalseBranch(falseBranch);
+
 		return result;
 	}
 

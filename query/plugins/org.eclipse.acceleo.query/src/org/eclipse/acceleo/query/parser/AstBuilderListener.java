@@ -41,6 +41,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -319,6 +320,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	private static final String INVALID_TYPE_LITERAL = "invalid type literal";
 
 	/**
+	 * Number of children in {@link ConditionalContext}.
+	 */
+	private static final int CONDITIONAL_CONTEXT_CHILD_COUNT = 7;
+
+	/**
 	 * Error listener.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -348,6 +354,8 @@ public class AstBuilderListener extends QueryBaseListener {
 					navigationSegmentContextError(offendingSymbol);
 				} else if (e.getCtx() instanceof BindingContext) {
 					bindingContextError(offendingSymbol, e);
+				} else if (e.getCtx() instanceof ConditionalContext) {
+					errorRule = QueryParser.RULE_expression;
 				} else {
 					defaultError(offendingSymbol, e);
 				}
@@ -1388,29 +1396,37 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitConditional(ConditionalContext ctx) {
-		int count = ctx.getChildCount();
-		Expression predicate;
-		Expression trueBranch;
-		Expression falseBranch;
+		final int count = ctx.getChildCount();
+		final Expression predicate;
+		final Expression trueBranch;
+		final Expression falseBranch;
 		if (count <= 3) {
 			predicate = pop();
-			trueBranch = builder.errorExpression();
-			falseBranch = builder.errorExpression();
+			trueBranch = null;
+			falseBranch = null;
 		} else if (count <= 5) {
 			trueBranch = pop();
 			predicate = pop();
-			falseBranch = builder.errorExpression();
+			falseBranch = null;
 		} else {
 			falseBranch = pop();
 			trueBranch = pop();
 			predicate = pop();
 		}
-		final Conditional conditional = builder.conditional(predicate, trueBranch, falseBranch);
+
+		final Conditional conditional;
+		if (errorRule == QueryParser.RULE_expression || count == CONDITIONAL_CONTEXT_CHILD_COUNT
+				&& ctx.getChild(6) instanceof ErrorNode) {
+			conditional = builder.errorConditional(predicate, trueBranch, falseBranch);
+			errorRule = NO_ERROR;
+			pushError((ErrorConditional)conditional, "incomplet conditional");
+		} else {
+			conditional = builder.conditional(predicate, trueBranch, falseBranch);
+			push(conditional);
+		}
 
 		startPositions.put(conditional, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(conditional, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		push(conditional);
 	}
 
 	/**

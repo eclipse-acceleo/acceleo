@@ -945,7 +945,12 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseConditional(Conditional object) {
 		Set<IType> result = Sets.newLinkedHashSet();
 
-		Set<IType> selectorTypes = doSwitch(object.getPredicate());
+		final Set<IType> selectorTypes;
+		if (object.getPredicate() != null) {
+			selectorTypes = doSwitch(object.getPredicate());
+		} else {
+			selectorTypes = Collections.emptySet();
+		}
 		final Map<String, Set<IType>> trueBranchInferredTypes = new HashMap<String, Set<IType>>(
 				variableTypesStack.peek());
 		trueBranchInferredTypes.putAll(validationResult.getInferredVariableTypes(object.getPredicate(),
@@ -953,7 +958,9 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		variableTypesStack.push(trueBranchInferredTypes);
 		final Set<IType> trueTypes = new LinkedHashSet<IType>();
 		try {
-			trueTypes.addAll(doSwitch(object.getTrueBranch()));
+			if (object.getTrueBranch() != null) {
+				trueTypes.addAll(doSwitch(object.getTrueBranch()));
+			}
 		} finally {
 			variableTypesStack.pop();
 		}
@@ -964,7 +971,9 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		variableTypesStack.push(falseBranchInferredTypes);
 		final Set<IType> falseTypes = new LinkedHashSet<IType>();
 		try {
-			falseTypes.addAll(doSwitch(object.getFalseBranch()));
+			if (object.getFalseBranch() != null) {
+				falseTypes.addAll(doSwitch(object.getFalseBranch()));
+			}
 		} finally {
 			variableTypesStack.pop();
 		}

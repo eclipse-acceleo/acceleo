@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -138,6 +139,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createErrorVariableDeclaration();
 			case AstPackage.ERROR_STRING_LITERAL:
 				return createErrorStringLiteral();
+			case AstPackage.ERROR_CONDITIONAL:
+				return createErrorConditional();
 			case AstPackage.BINDING:
 				return createBinding();
 			case AstPackage.ERROR_BINDING:
@@ -434,6 +437,16 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public ErrorStringLiteral createErrorStringLiteral() {
 		ErrorStringLiteralImpl errorStringLiteral = new ErrorStringLiteralImpl();
 		return errorStringLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ErrorConditional createErrorConditional() {
+		ErrorConditionalImpl errorConditional = new ErrorConditionalImpl();
+		return errorConditional;
 	}
 
 	/**

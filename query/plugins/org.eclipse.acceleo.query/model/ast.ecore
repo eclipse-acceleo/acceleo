@@ -94,6 +94,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ErrorCall" eSuperTypes="#//Error #//Call"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorVariableDeclaration" eSuperTypes="#//Error #//VariableDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorStringLiteral" eSuperTypes="#//Error #//StringLiteral"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorConditional" eSuperTypes="#//Error #//Conditional"/>
   <eClassifiers xsi:type="ecore:EClass" name="Binding">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//TypeLiteral"

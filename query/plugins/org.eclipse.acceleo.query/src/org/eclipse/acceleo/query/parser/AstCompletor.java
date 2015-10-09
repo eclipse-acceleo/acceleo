@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -235,6 +236,26 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 					result.addAll(doSwitch(object.getValue()));
 				}
 			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorConditional(org.eclipse.acceleo.query.ast.ErrorConditional)
+	 */
+	@Override
+	public List<ICompletionProposal> caseErrorConditional(ErrorConditional object) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
+		if (object.getFalseBranch() != null) {
+			result.add(new TextCompletionProposal("endif ", 0));
+		} else if (object.getTrueBranch() != null) {
+			result.add(new TextCompletionProposal("else ", 0));
+		} else if (object.getPredicate() != null) {
+			result.add(new TextCompletionProposal("then ", 0));
 		}
 
 		return result;

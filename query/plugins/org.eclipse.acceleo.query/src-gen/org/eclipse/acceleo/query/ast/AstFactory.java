@@ -231,6 +231,15 @@ public interface AstFactory extends EFactory {
 	ErrorStringLiteral createErrorStringLiteral();
 
 	/**
+	 * Returns a new object of class '<em>Error Conditional</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @return a new object of class '<em>Error Conditional</em>'.
+	 * @generated
+	 */
+	ErrorConditional createErrorConditional();
+
+	/**
 	 * Returns a new object of class '<em>Binding</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return a new object of class '<em>Binding</em>'.

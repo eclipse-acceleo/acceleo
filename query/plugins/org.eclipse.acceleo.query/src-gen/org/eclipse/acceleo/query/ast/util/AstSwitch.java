@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -373,6 +374,19 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(errorStringLiteral);
 				if (result == null)
 					result = caseExpression(errorStringLiteral);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.ERROR_CONDITIONAL: {
+				ErrorConditional errorConditional = (ErrorConditional)theEObject;
+				T result = caseErrorConditional(errorConditional);
+				if (result == null)
+					result = caseError(errorConditional);
+				if (result == null)
+					result = caseConditional(errorConditional);
+				if (result == null)
+					result = caseExpression(errorConditional);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -807,6 +821,21 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseErrorStringLiteral(ErrorStringLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Conditional</em>'. <!--
+	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
+	 * switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Conditional</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorConditional(ErrorConditional object) {
 		return null;
 	}
 

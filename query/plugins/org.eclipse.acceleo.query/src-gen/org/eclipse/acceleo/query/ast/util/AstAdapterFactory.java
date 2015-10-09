@@ -20,6 +20,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -226,6 +227,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseErrorStringLiteral(ErrorStringLiteral object) {
 			return createErrorStringLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorConditional(ErrorConditional object) {
+			return createErrorConditionalAdapter();
 		}
 
 		@Override
@@ -627,6 +633,20 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createErrorStringLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.ErrorConditional
+	 * <em>Error Conditional</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+	 * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+	 * anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.ErrorConditional
+	 * @generated
+	 */
+	public Adapter createErrorConditionalAdapter() {
 		return null;
 	}
 

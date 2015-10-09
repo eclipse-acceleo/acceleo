@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
@@ -53,6 +54,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BuildTest {
@@ -2215,13 +2217,103 @@ public class BuildTest {
 	 */
 	@Test
 	public void testConditional() {
-		IQueryBuilderEngine.AstResult build = engine.build("if true then 5 else 'string' endif");
+		final IQueryBuilderEngine.AstResult build = engine.build("if true then 5 else 'string' endif");
 		Expression ast = build.getAst();
-		assertTrue(ast instanceof Conditional);
-		Conditional cond = (Conditional)ast;
-		assertTrue(cond.getPredicate() instanceof BooleanLiteral);
-		assertTrue(cond.getTrueBranch() instanceof IntegerLiteral);
-		assertTrue(cond.getFalseBranch() instanceof StringLiteral);
+
+		assertFalse(ast instanceof ErrorConditional);
+		assertExpression(build, Conditional.class, 0, 34, ast);
+		assertExpression(build, BooleanLiteral.class, 3, 7, ((Conditional)ast).getPredicate());
+		assertExpression(build, IntegerLiteral.class, 13, 14, ((Conditional)ast).getTrueBranch());
+		assertExpression(build, StringLiteral.class, 20, 28, ((Conditional)ast).getFalseBranch());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void testIncompleteConditionIf() {
+		final IQueryBuilderEngine.AstResult build = engine.build("if");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorConditional.class, 0, 2, ast);
+		assertExpression(build, ErrorExpression.class, 2, 2, ((ErrorConditional)ast).getPredicate());
+		assertEquals(null, ((ErrorConditional)ast).getTrueBranch());
+		assertEquals(null, ((ErrorConditional)ast).getFalseBranch());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(((ErrorConditional)ast).getPredicate(), build.getDiagnostic().getChildren().get(0)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals("incomplet conditional", build.getDiagnostic().getChildren().get(1).getMessage());
+	}
+
+	@Test
+	public void testIncompleteConditionIfThen() {
+		final IQueryBuilderEngine.AstResult build = engine.build("if then");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorConditional.class, 0, 7, ast);
+		assertExpression(build, ErrorExpression.class, 3, 3, ((ErrorConditional)ast).getPredicate());
+		assertExpression(build, ErrorExpression.class, 7, 7, ((ErrorConditional)ast).getTrueBranch());
+		assertEquals(null, ((ErrorConditional)ast).getFalseBranch());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
+		assertEquals(((ErrorConditional)ast).getPredicate(), build.getDiagnostic().getChildren().get(0)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(((ErrorConditional)ast).getTrueBranch(), build.getDiagnostic().getChildren().get(1)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(2).getData().get(0));
+		assertEquals("incomplet conditional", build.getDiagnostic().getChildren().get(2).getMessage());
+	}
+
+	@Test
+	public void testIncompleteConditionIfThenElse() {
+		final IQueryBuilderEngine.AstResult build = engine.build("if then else");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorConditional.class, 0, 12, ast);
+		assertExpression(build, ErrorExpression.class, 3, 3, ((ErrorConditional)ast).getPredicate());
+		assertExpression(build, ErrorExpression.class, 8, 8, ((ErrorConditional)ast).getTrueBranch());
+		assertExpression(build, ErrorExpression.class, 12, 12, ((ErrorConditional)ast).getFalseBranch());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(4, build.getDiagnostic().getChildren().size());
+		assertEquals(((ErrorConditional)ast).getPredicate(), build.getDiagnostic().getChildren().get(0)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(((ErrorConditional)ast).getTrueBranch(), build.getDiagnostic().getChildren().get(1)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(((ErrorConditional)ast).getFalseBranch(), build.getDiagnostic().getChildren().get(2)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(3).getData().get(0));
+		assertEquals("incomplet conditional", build.getDiagnostic().getChildren().get(3).getMessage());
+	}
+
+	@Test
+	public void testIncompleteConditionNoExpressions() {
+		final IQueryBuilderEngine.AstResult build = engine.build("if then else endif");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorConditional.class, 0, 18, ast);
+		assertExpression(build, ErrorExpression.class, 3, 3, ((ErrorConditional)ast).getPredicate());
+		assertExpression(build, ErrorExpression.class, 8, 8, ((ErrorConditional)ast).getTrueBranch());
+		assertExpression(build, ErrorExpression.class, 13, 13, ((ErrorConditional)ast).getFalseBranch());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(4, build.getDiagnostic().getChildren().size());
+		assertEquals(((ErrorConditional)ast).getPredicate(), build.getDiagnostic().getChildren().get(0)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(((ErrorConditional)ast).getTrueBranch(), build.getDiagnostic().getChildren().get(1)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(((ErrorConditional)ast).getFalseBranch(), build.getDiagnostic().getChildren().get(2)
+				.getData().get(0));
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(ast, build.getDiagnostic().getChildren().get(3).getData().get(0));
+		assertEquals("incomplet conditional", build.getDiagnostic().getChildren().get(3).getMessage());
 	}
 
 	@Test

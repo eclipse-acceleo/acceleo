@@ -1099,6 +1099,61 @@ public interface AstPackage extends EPackage {
 	int ERROR_STRING_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl
+	 * <em>Error Conditional</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorConditional()
+	 * @generated
+	 */
+	int ERROR_CONDITIONAL = 26;
+
+	/**
+	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CONDITIONAL__PREDICATE = ERROR_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>True Branch</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CONDITIONAL__TRUE_BRANCH = ERROR_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>False Branch</b></em>' containment reference. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CONDITIONAL__FALSE_BRANCH = ERROR_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Error Conditional</em>' class. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CONDITIONAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Error Conditional</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CONDITIONAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.BindingImpl <em>Binding</em>}'
 	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1106,7 +1161,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 26;
+	int BINDING = 27;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1159,7 +1214,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorBinding()
 	 * @generated
 	 */
-	int ERROR_BINDING = 27;
+	int ERROR_BINDING = 28;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1213,7 +1268,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
 	 * @generated
 	 */
-	int LET = 28;
+	int LET = 29;
 
 	/**
 	 * The feature id for the '<em><b>Bindings</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -1258,7 +1313,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
 	 * @generated
 	 */
-	int CONDITIONAL = 29;
+	int CONDITIONAL = 30;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1313,7 +1368,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 30;
+	int CALL_TYPE = 31;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1323,7 +1378,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 31;
+	int OBJECT_TYPE = 32;
 
 	/**
 	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1333,7 +1388,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
 	 * @generated
 	 */
-	int AST_EVALUATOR = 32;
+	int AST_EVALUATOR = 33;
 
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1342,7 +1397,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 33;
+	int OBJECT_ARRAY = 34;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -1904,6 +1959,16 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getErrorStringLiteral();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorConditional
+	 * <em>Error Conditional</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Error Conditional</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorConditional
+	 * @generated
+	 */
+	EClass getErrorConditional();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Binding <em>Binding</em>}'.
@@ -2577,6 +2642,16 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ERROR_STRING_LITERAL = eINSTANCE.getErrorStringLiteral();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl
+		 * <em>Error Conditional</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorConditional()
+		 * @generated
+		 */
+		EClass ERROR_CONDITIONAL = eINSTANCE.getErrorConditional();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.BindingImpl
