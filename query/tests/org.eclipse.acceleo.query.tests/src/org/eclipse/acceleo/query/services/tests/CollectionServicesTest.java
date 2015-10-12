@@ -53,8 +53,8 @@ import org.eclipse.acceleo.query.tests.anydsl.Food;
 import org.eclipse.acceleo.query.tests.anydsl.World;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -187,6 +187,48 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testConcatWithDuplicates() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		list1.add("c");
+		list1.add("c");
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add("c");
+		list2.add("b");
+		list2.add("a");
+
+		List<Object> result = collectionServices.concat(list1, list2);
+		assertEquals(8, result.size());
+		assertEquals("a", result.get(0));
+		assertEquals("b", result.get(1));
+		assertEquals("c", result.get(2));
+		assertEquals("c", result.get(3));
+		assertEquals("c", result.get(4));
+		assertEquals("c", result.get(5));
+		assertEquals("b", result.get(6));
+		assertEquals("a", result.get(7));
+
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add("c");
+		set1.add("b");
+		set1.add("a");
+
+		List<Object> result2 = collectionServices.concat(list1, set1);
+		assertEquals(8, result2.size());
+		assertEquals("a", result2.get(0));
+		assertEquals("b", result2.get(1));
+		assertEquals("c", result2.get(2));
+		assertEquals("c", result2.get(3));
+		assertEquals("c", result2.get(4));
+		assertEquals("c", result2.get(5));
+		assertEquals("b", result2.get(6));
+		assertEquals("a", result2.get(7));
+	}
+
+	@Test
 	public void testAddList() {
 		List<Object> list1 = Lists.newArrayList();
 		List<Object> list2 = Lists.newArrayList();
@@ -227,6 +269,48 @@ public class CollectionServicesTest {
 		} catch (Exception exception) {
 			// Do noting we expect to get a NPE
 		}
+	}
+
+	@Test
+	public void testAddListWithDuplicates() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		list1.add("c");
+		list1.add("c");
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add("c");
+		list2.add("b");
+		list2.add("a");
+
+		List<Object> result = collectionServices.add(list1, list2);
+		assertEquals(8, result.size());
+		assertEquals("a", result.get(0));
+		assertEquals("b", result.get(1));
+		assertEquals("c", result.get(2));
+		assertEquals("c", result.get(3));
+		assertEquals("c", result.get(4));
+		assertEquals("c", result.get(5));
+		assertEquals("b", result.get(6));
+		assertEquals("a", result.get(7));
+
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add("c");
+		set1.add("b");
+		set1.add("a");
+
+		List<Object> result2 = collectionServices.add(list1, set1);
+		assertEquals(8, result2.size());
+		assertEquals("a", result2.get(0));
+		assertEquals("b", result2.get(1));
+		assertEquals("c", result2.get(2));
+		assertEquals("c", result2.get(3));
+		assertEquals("c", result2.get(4));
+		assertEquals("c", result2.get(5));
+		assertEquals("b", result2.get(6));
+		assertEquals("a", result2.get(7));
 	}
 
 	@Test
@@ -276,6 +360,24 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testSubListWithDuplicates() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add("a");
+		list1.add("b");
+		list1.add("c");
+		list1.add("c");
+		list1.add("c");
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add("c");
+
+		List<Object> result = collectionServices.sub(list1, list2);
+		assertEquals(2, result.size());
+		assertEquals("a", result.get(0));
+		assertEquals("b", result.get(1));
+	}
+
+	@Test
 	public void testAddSet() {
 		Set<Object> set1 = new HashSet<Object>();
 		Set<Object> set2 = new HashSet<Object>();
@@ -287,11 +389,11 @@ public class CollectionServicesTest {
 		set1.add(obj1);
 		set1.add(obj2);
 		set2.add(obj3);
-		Set<Object> list3 = collectionServices.add(set1, set2);
-		assertEquals(3, list3.size());
-		assertTrue(list3.contains(obj1));
-		assertTrue(list3.contains(obj2));
-		assertTrue(list3.contains(obj3));
+		Set<Object> result = collectionServices.add(set1, set2);
+		assertEquals(3, result.size());
+		assertTrue(result.contains(obj1));
+		assertTrue(result.contains(obj2));
+		assertTrue(result.contains(obj3));
 
 		Set<Object> set3 = Sets.newLinkedHashSet();
 		set3.add(obj1);
@@ -1278,7 +1380,7 @@ public class CollectionServicesTest {
 		assertEquals(1, result.size());
 		assertTrue(result.contains(EcorePackage.eINSTANCE));
 	}
-	
+
 	public void testFilterOnEContents_ecore_477217() {
 		EPackage rootPackage = EcoreFactory.eINSTANCE.createEPackage();
 		EPackage subPackage = EcoreFactory.eINSTANCE.createEPackage();

@@ -827,10 +827,10 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns the concatenation of the two specified sequences.",
+		value = "Returns the concatenation of the current sequence with the given collection.",
 		params = {
-			@Param(name = "sequence1", value = "The first operand"),
-			@Param(name = "sequence2", value = "The second operand")
+			@Param(name = "sequence", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
 		},
 		result = "The concatenation of the two specified sequences.",
 		examples = {
@@ -847,16 +847,16 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> concat(List<Object> sequence1, Collection<Object> sequence2) {
+	public List<Object> concat(List<Object> sequence, Collection<Object> collection) {
 		final List<Object> result;
 
-		if (sequence1.isEmpty()) {
-			result = Lists.newArrayList(sequence2);
-		} else if (sequence2.isEmpty()) {
-			result = sequence1;
+		if (sequence.isEmpty()) {
+			result = Lists.newArrayList(collection);
+		} else if (collection.isEmpty()) {
+			result = sequence;
 		} else {
-			result = Lists.newArrayList(sequence1);
-			result.addAll(sequence2);
+			result = Lists.newArrayList(sequence);
+			result.addAll(collection);
 		}
 
 		return result;
@@ -866,8 +866,8 @@ public class CollectionServices extends AbstractServiceProvider {
 	@Documentation(
 		value = "Returns the concatenation of the given collection into the given sequence.",
 		params = {
-			@Param(name = "sequence1", value = "The first operand"),
-			@Param(name = "collection2", value = "The second operand")
+			@Param(name = "sequence", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
 		},
 		result = "The current sequence including the elements of the given collection.",
 		examples = {
@@ -895,16 +895,16 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sequences"
 	)
 	// @formatter:on
-	public List<Object> add(List<Object> sequence1, Collection<Object> collection2) {
-		return concat(sequence1, collection2);
+	public List<Object> add(List<Object> sequence, Collection<Object> collection) {
+		return concat(sequence, collection);
 	}
 
 	// @formatter:off
 	@Documentation(
 		value = "Returns the difference of the current sequence and the given collection.",
 		params = {
-			@Param(name = "sequence1", value = "The first operand"),
-			@Param(name = "collection2", value = "The second operand")
+			@Param(name = "sequence", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
 		},
 		result = "The sequence that contains elements from sequence1 that are not in collection2.",
 		examples = {
@@ -932,14 +932,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sequences"
 	)
 	// @formatter:on
-	public List<Object> sub(List<Object> sequence1, Collection<Object> collection2) {
-		if (collection2.isEmpty()) {
-			return sequence1;
+	public List<Object> sub(List<Object> sequence, Collection<Object> collection) {
+		if (collection.isEmpty()) {
+			return sequence;
 		} else {
-			List<Object> result = Lists.newArrayList(sequence1);
-			for (Object obj : collection2) {
-				result.remove(obj);
-			}
+			List<Object> result = Lists.newArrayList(sequence);
+			result.removeAll(collection);
 			return result;
 		}
 	}
@@ -948,8 +946,8 @@ public class CollectionServices extends AbstractServiceProvider {
 	@Documentation(
 		value = "Returns the difference of the current set and the given collection.",
 		params = {
-			@Param(name = "set1", value = "The first operand"),
-			@Param(name = "collection2", value = "The second operand")
+			@Param(name = "set", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
 		},
 		result = "The set that contains elements from set1 that are not in collection2.",
 		examples = {
@@ -967,14 +965,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sets"
 	)
 	// @formatter:on
-	public Set<Object> sub(Set<Object> set1, Collection<Object> collection2) {
-		if (collection2.isEmpty()) {
-			return set1;
+	public Set<Object> sub(Set<Object> set, Collection<Object> collection) {
+		if (collection.isEmpty()) {
+			return set;
 		} else {
-			Set<Object> result = Sets.newLinkedHashSet(set1);
-			for (Object obj : collection2) {
-				result.remove(obj);
-			}
+			Set<Object> result = Sets.newLinkedHashSet(set);
+			result.removeAll(collection);
 			return result;
 		}
 	}
