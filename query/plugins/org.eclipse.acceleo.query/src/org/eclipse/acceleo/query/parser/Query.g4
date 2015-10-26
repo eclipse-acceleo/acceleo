@@ -38,7 +38,7 @@ expression : expression navigationSegment #Nav
 		     | expression 'or' expression  #Or
 		     | expression 'xor' expression  #Xor
 		     | expression 'implies' expression  #Implies
-		     | varRef       #Var
+		     | Ident       #VarRef
 		     | literal      #Lit
 		     | '(' expression ')'    #Paren
 		     | 'if' expression 'then' expression 'else' expression 'endif' #Conditional
@@ -56,8 +56,6 @@ compOp :     '<='
 	  		|'='
 	 		|'<'
 	  		|'>'
-;
-varRef : Ident
 ;
 navigationSegment :     '.'Ident #Feature
 				      | '.' callExp  #CallOrApply

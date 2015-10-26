@@ -22,6 +22,19 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface QueryListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by the {@code VarRef}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarRef(@NotNull QueryParser.VarRefContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code VarRef}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarRef(@NotNull QueryParser.VarRefContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code Add}
 	 * labeled alternative in {@link QueryParser#expression}.
 	 * @param ctx the parse tree
@@ -100,17 +113,17 @@ public interface QueryListener extends ParseTreeListener {
 	void exitCallOrApply(@NotNull QueryParser.CallOrApplyContext ctx);
 
 	/**
-	 * Enter a parse tree produced by the {@code Var}
-	 * labeled alternative in {@link QueryParser#expression}.
+	 * Enter a parse tree produced by the {@code SeqType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
 	 * @param ctx the parse tree
 	 */
-	void enterVar(@NotNull QueryParser.VarContext ctx);
+	void enterSeqType(@NotNull QueryParser.SeqTypeContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Var}
-	 * labeled alternative in {@link QueryParser#expression}.
+	 * Exit a parse tree produced by the {@code SeqType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
 	 * @param ctx the parse tree
 	 */
-	void exitVar(@NotNull QueryParser.VarContext ctx);
+	void exitSeqType(@NotNull QueryParser.SeqTypeContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link QueryParser#binding}.
@@ -148,17 +161,6 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConditional(@NotNull QueryParser.ConditionalContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link QueryParser#varRef}.
-	 * @param ctx the parse tree
-	 */
-	void enterVarRef(@NotNull QueryParser.VarRefContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link QueryParser#varRef}.
-	 * @param ctx the parse tree
-	 */
-	void exitVarRef(@NotNull QueryParser.VarRefContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code Feature}
@@ -200,6 +202,17 @@ public interface QueryListener extends ParseTreeListener {
 	void exitComp(@NotNull QueryParser.CompContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link QueryParser#expressionSequence}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressionSequence(@NotNull QueryParser.ExpressionSequenceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#expressionSequence}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressionSequence(@NotNull QueryParser.ExpressionSequenceContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code StringLit}
 	 * labeled alternative in {@link QueryParser#literal}.
 	 * @param ctx the parse tree
@@ -211,6 +224,32 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStringLit(@NotNull QueryParser.StringLitContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code IntType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntType(@NotNull QueryParser.IntTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IntType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntType(@NotNull QueryParser.IntTypeContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code EnumLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnumLit(@NotNull QueryParser.EnumLitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code EnumLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnumLit(@NotNull QueryParser.EnumLitContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code Implies}
@@ -250,206 +289,6 @@ public interface QueryListener extends ParseTreeListener {
 	void exitCollectionIterator(@NotNull QueryParser.CollectionIteratorContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link QueryParser#lambdaExpression}.
-	 * @param ctx the parse tree
-	 */
-	void enterLambdaExpression(@NotNull QueryParser.LambdaExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link QueryParser#lambdaExpression}.
-	 * @param ctx the parse tree
-	 */
-	void exitLambdaExpression(@NotNull QueryParser.LambdaExpressionContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code LetExpr}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterLetExpr(@NotNull QueryParser.LetExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code LetExpr}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitLetExpr(@NotNull QueryParser.LetExprContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code IntegerLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntegerLit(@NotNull QueryParser.IntegerLitContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code IntegerLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntegerLit(@NotNull QueryParser.IntegerLitContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link QueryParser#variableDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableDefinition(@NotNull QueryParser.VariableDefinitionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link QueryParser#variableDefinition}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableDefinition(@NotNull QueryParser.VariableDefinitionContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link QueryParser#entry}.
-	 * @param ctx the parse tree
-	 */
-	void enterEntry(@NotNull QueryParser.EntryContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link QueryParser#entry}.
-	 * @param ctx the parse tree
-	 */
-	void exitEntry(@NotNull QueryParser.EntryContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code ClassifierSetType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ClassifierSetType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterNot(@NotNull QueryParser.NotContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitNot(@NotNull QueryParser.NotContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code Min}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterMin(@NotNull QueryParser.MinContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Min}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitMin(@NotNull QueryParser.MinContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code And}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterAnd(@NotNull QueryParser.AndContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code And}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitAnd(@NotNull QueryParser.AndContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code Xor}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterXor(@NotNull QueryParser.XorContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Xor}
-	 * labeled alternative in {@link QueryParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitXor(@NotNull QueryParser.XorContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code TrueLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterTrueLit(@NotNull QueryParser.TrueLitContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code TrueLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitTrueLit(@NotNull QueryParser.TrueLitContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code ExplicitSeqLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ExplicitSeqLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code SeqType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void enterSeqType(@NotNull QueryParser.SeqTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code SeqType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void exitSeqType(@NotNull QueryParser.SeqTypeContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link QueryParser#expressionSequence}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressionSequence(@NotNull QueryParser.ExpressionSequenceContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link QueryParser#expressionSequence}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressionSequence(@NotNull QueryParser.ExpressionSequenceContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code IntType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void enterIntType(@NotNull QueryParser.IntTypeContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code IntType}
-	 * labeled alternative in {@link QueryParser#typeLiteral}.
-	 * @param ctx the parse tree
-	 */
-	void exitIntType(@NotNull QueryParser.IntTypeContext ctx);
-
-	/**
-	 * Enter a parse tree produced by the {@code EnumLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void enterEnumLit(@NotNull QueryParser.EnumLitContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code EnumLit}
-	 * labeled alternative in {@link QueryParser#literal}.
-	 * @param ctx the parse tree
-	 */
-	void exitEnumLit(@NotNull QueryParser.EnumLitContext ctx);
-
-	/**
 	 * Enter a parse tree produced by the {@code RealLit}
 	 * labeled alternative in {@link QueryParser#literal}.
 	 * @param ctx the parse tree
@@ -476,6 +315,17 @@ public interface QueryListener extends ParseTreeListener {
 	void exitExplicitSetLit(@NotNull QueryParser.ExplicitSetLitContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link QueryParser#lambdaExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLambdaExpression(@NotNull QueryParser.LambdaExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#lambdaExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLambdaExpression(@NotNull QueryParser.LambdaExpressionContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code ServiceCall}
 	 * labeled alternative in {@link QueryParser#callExp}.
 	 * @param ctx the parse tree
@@ -489,6 +339,19 @@ public interface QueryListener extends ParseTreeListener {
 	void exitServiceCall(@NotNull QueryParser.ServiceCallContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code LetExpr}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLetExpr(@NotNull QueryParser.LetExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LetExpr}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLetExpr(@NotNull QueryParser.LetExprContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link QueryParser#addOp}.
 	 * @param ctx the parse tree
 	 */
@@ -498,6 +361,30 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAddOp(@NotNull QueryParser.AddOpContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code IntegerLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntegerLit(@NotNull QueryParser.IntegerLitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code IntegerLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntegerLit(@NotNull QueryParser.IntegerLitContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link QueryParser#variableDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableDefinition(@NotNull QueryParser.VariableDefinitionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#variableDefinition}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableDefinition(@NotNull QueryParser.VariableDefinitionContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code BooleanType}
@@ -561,6 +448,56 @@ public interface QueryListener extends ParseTreeListener {
 	void exitCompOp(@NotNull QueryParser.CompOpContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link QueryParser#entry}.
+	 * @param ctx the parse tree
+	 */
+	void enterEntry(@NotNull QueryParser.EntryContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link QueryParser#entry}.
+	 * @param ctx the parse tree
+	 */
+	void exitEntry(@NotNull QueryParser.EntryContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code ClassifierSetType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ClassifierSetType}
+	 * labeled alternative in {@link QueryParser#typeLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassifierSetType(@NotNull QueryParser.ClassifierSetTypeContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNot(@NotNull QueryParser.NotContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNot(@NotNull QueryParser.NotContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code Min}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMin(@NotNull QueryParser.MinContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Min}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMin(@NotNull QueryParser.MinContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code Mult}
 	 * labeled alternative in {@link QueryParser#expression}.
 	 * @param ctx the parse tree
@@ -587,6 +524,45 @@ public interface QueryListener extends ParseTreeListener {
 	void exitLit(@NotNull QueryParser.LitContext ctx);
 
 	/**
+	 * Enter a parse tree produced by the {@code And}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnd(@NotNull QueryParser.AndContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnd(@NotNull QueryParser.AndContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code Xor}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterXor(@NotNull QueryParser.XorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Xor}
+	 * labeled alternative in {@link QueryParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitXor(@NotNull QueryParser.XorContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code TrueLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterTrueLit(@NotNull QueryParser.TrueLitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code TrueLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitTrueLit(@NotNull QueryParser.TrueLitContext ctx);
+
+	/**
 	 * Enter a parse tree produced by the {@code CollectionCall}
 	 * labeled alternative in {@link QueryParser#navigationSegment}.
 	 * @param ctx the parse tree
@@ -611,6 +587,19 @@ public interface QueryListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIterationCall(@NotNull QueryParser.IterationCallContext ctx);
+
+	/**
+	 * Enter a parse tree produced by the {@code ExplicitSeqLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void enterExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ExplicitSeqLit}
+	 * labeled alternative in {@link QueryParser#literal}.
+	 * @param ctx the parse tree
+	 */
+	void exitExplicitSeqLit(@NotNull QueryParser.ExplicitSeqLitContext ctx);
 
 	/**
 	 * Enter a parse tree produced by the {@code ErrorStringLit}
