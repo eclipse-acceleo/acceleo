@@ -76,6 +76,28 @@ public class CompletionTest {
 	}
 
 	@Test
+	public void typeLiteralOneColon() {
+		final ICompletionResult completionResult = engine.getCompletion("ecore:", 6, variableTypes);
+
+		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void enumLiteralOneColon() {
+		final ICompletionResult completionResult = engine.getCompletion("anydsl::Color:", 14, variableTypes);
+
+		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
 	public void nullTest() {
 		final ICompletionResult completionResult = engine.getCompletion(null, 0, variableTypes);
 		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
@@ -880,6 +902,7 @@ public class CompletionTest {
 		assertEquals("st", completionResult.getRemaining());
 	}
 
+	@Test
 	public void test478384NoPipeDeclarationVariable() {
 		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
 		final Set<IType> selfType = new LinkedHashSet<IType>();
@@ -893,6 +916,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
+	@Test
 	public void test478384NoPipeWithColonDeclarationVariable() {
 		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
 		final Set<IType> selfType = new LinkedHashSet<IType>();
@@ -925,6 +949,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
+	@Test
 	public void testTypeLiteralInTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::", 8, variableTypes);
 

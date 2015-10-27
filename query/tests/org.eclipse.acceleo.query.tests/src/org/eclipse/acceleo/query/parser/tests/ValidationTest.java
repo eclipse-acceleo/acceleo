@@ -381,6 +381,18 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void classifierTypeErrorMissingOneColon() {
+		final IValidationResult validationResult = engine.validate("anydsl:", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"ErrorTypeLiteral", 0, 7);
+	}
+
+	@Test
 	public void enumLiteral() {
 		final IValidationResult validationResult = engine.validate("anydsl::Part::Other", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
@@ -405,6 +417,18 @@ public class ValidationTest {
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"ErrorEnumLiteral", 0, 25);
+	}
+
+	@Test
+	public void enumLiteralErrorMissingOneColon() {
+		final IValidationResult validationResult = engine.validate("anydsl::Part:", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"ErrorEnumLiteral", 0, 13);
 	}
 
 	@Test

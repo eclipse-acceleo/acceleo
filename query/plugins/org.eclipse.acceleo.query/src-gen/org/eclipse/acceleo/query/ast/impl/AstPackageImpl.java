@@ -781,6 +781,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
+	public EAttribute getErrorTypeLiteral_MissingColon() {
+		return (EAttribute)errorTypeLiteralEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getErrorEnumLiteral() {
 		return errorEnumLiteralEClass;
 	}
@@ -792,6 +801,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 */
 	public EAttribute getErrorEnumLiteral_Segments() {
 		return (EAttribute)errorEnumLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getErrorEnumLiteral_MissingColon() {
+		return (EAttribute)errorEnumLiteralEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1085,9 +1103,11 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		errorTypeLiteralEClass = createEClass(ERROR_TYPE_LITERAL);
 		createEAttribute(errorTypeLiteralEClass, ERROR_TYPE_LITERAL__SEGMENTS);
+		createEAttribute(errorTypeLiteralEClass, ERROR_TYPE_LITERAL__MISSING_COLON);
 
 		errorEnumLiteralEClass = createEClass(ERROR_ENUM_LITERAL);
 		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__SEGMENTS);
+		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__MISSING_COLON);
 
 		errorFeatureAccessOrCallEClass = createEClass(ERROR_FEATURE_ACCESS_OR_CALL);
 		createEReference(errorFeatureAccessOrCallEClass, ERROR_FEATURE_ACCESS_OR_CALL__TARGET);
@@ -1328,12 +1348,18 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEAttribute(getErrorTypeLiteral_Segments(), ecorePackage.getEString(), "segments", null, 0, -1,
 				ErrorTypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getErrorTypeLiteral_MissingColon(), ecorePackage.getEBoolean(), "missingColon", null,
+				1, 1, ErrorTypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorEnumLiteralEClass, ErrorEnumLiteral.class, "ErrorEnumLiteral", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getErrorEnumLiteral_Segments(), ecorePackage.getEString(), "segments", null, 0, -1,
 				ErrorEnumLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
 				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getErrorEnumLiteral_MissingColon(), ecorePackage.getEBoolean(), "missingColon", null,
+				1, 1, ErrorEnumLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorFeatureAccessOrCallEClass, ErrorFeatureAccessOrCall.class,
 				"ErrorFeatureAccessOrCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -154,6 +155,21 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
 					.get(1)));
 		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEnumLiteral(org.eclipse.acceleo.query.ast.ErrorEnumLiteral)
+	 */
+	@Override
+	public List<ICompletionProposal> caseErrorEnumLiteral(ErrorEnumLiteral object) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
+		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
+				.get(1)));
 
 		return result;
 	}

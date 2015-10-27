@@ -854,13 +854,22 @@ public interface AstPackage extends EPackage {
 	int ERROR_TYPE_LITERAL__SEGMENTS = ERROR_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_TYPE_LITERAL__MISSING_COLON = ERROR_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Error Type Literal</em>' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TYPE_LITERAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
+	int ERROR_TYPE_LITERAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Error Type Literal</em>' class. <!-- begin-user-doc --> <!--
@@ -900,13 +909,22 @@ public interface AstPackage extends EPackage {
 	int ERROR_ENUM_LITERAL__SEGMENTS = ERROR_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ENUM_LITERAL__MISSING_COLON = ERROR_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Error Enum Literal</em>' class. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_ENUM_LITERAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
+	int ERROR_ENUM_LITERAL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Error Enum Literal</em>' class. <!-- begin-user-doc --> <!--
@@ -1887,6 +1905,18 @@ public interface AstPackage extends EPackage {
 	EAttribute getErrorTypeLiteral_Segments();
 
 	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.query.ast.ErrorTypeLiteral#isMissingColon <em>Missing Colon</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing Colon</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorTypeLiteral#isMissingColon()
+	 * @see #getErrorTypeLiteral()
+	 * @generated
+	 */
+	EAttribute getErrorTypeLiteral_MissingColon();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral
 	 * <em>Error Enum Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1907,6 +1937,18 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorEnumLiteral_Segments();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral#isMissingColon <em>Missing Colon</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing Colon</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorEnumLiteral#isMissingColon()
+	 * @see #getErrorEnumLiteral()
+	 * @generated
+	 */
+	EAttribute getErrorEnumLiteral_MissingColon();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
@@ -2576,6 +2618,14 @@ public interface AstPackage extends EPackage {
 		EAttribute ERROR_TYPE_LITERAL__SEGMENTS = eINSTANCE.getErrorTypeLiteral_Segments();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Colon</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_TYPE_LITERAL__MISSING_COLON = eINSTANCE.getErrorTypeLiteral_MissingColon();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl
 		 * <em>Error Enum Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
@@ -2592,6 +2642,14 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ERROR_ENUM_LITERAL__SEGMENTS = eINSTANCE.getErrorEnumLiteral_Segments();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Colon</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_ENUM_LITERAL__MISSING_COLON = eINSTANCE.getErrorEnumLiteral_MissingColon();
 
 		/**
 		 * The meta object literal for the '

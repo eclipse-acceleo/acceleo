@@ -52,11 +52,11 @@ public class QueryParser extends Parser {
 		RULE_entry = 0, RULE_expression = 1, RULE_binding = 2, RULE_addOp = 3, 
 		RULE_compOp = 4, RULE_navigationSegment = 5, RULE_callExp = 6, RULE_lambdaExpression = 7, 
 		RULE_collectionIterator = 8, RULE_expressionSequence = 9, RULE_variableDefinition = 10, 
-		RULE_literal = 11, RULE_typeLiteral = 12, RULE_classifierType = 13;
+		RULE_literal = 11, RULE_typeLiteral = 12, RULE_classifierTypeRule = 13;
 	public static final String[] ruleNames = {
 		"entry", "expression", "binding", "addOp", "compOp", "navigationSegment", 
 		"callExp", "lambdaExpression", "collectionIterator", "expressionSequence", 
-		"variableDefinition", "literal", "typeLiteral", "classifierType"
+		"variableDefinition", "literal", "typeLiteral", "classifierTypeRule"
 	};
 
 	@Override
@@ -1201,6 +1201,21 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitRealLit(this);
 		}
 	}
+	public static class ErrorEnumLitContext extends LiteralContext {
+		public List<TerminalNode> Ident() { return getTokens(QueryParser.Ident); }
+		public TerminalNode Ident(int i) {
+			return getToken(QueryParser.Ident, i);
+		}
+		public ErrorEnumLitContext(LiteralContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterErrorEnumLit(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitErrorEnumLit(this);
+		}
+	}
 	public static class FalseLitContext extends LiteralContext {
 		public FalseLitContext(LiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1280,7 +1295,7 @@ public class QueryParser extends Parser {
 		LiteralContext _localctx = new LiteralContext(_ctx, getState());
 		enterRule(_localctx, 22, RULE_literal);
 		try {
-			setState(169);
+			setState(173);
 			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				_localctx = new StringLitContext(_localctx);
@@ -1371,10 +1386,21 @@ public class QueryParser extends Parser {
 				break;
 
 			case 11:
-				_localctx = new TypeLitContext(_localctx);
+				_localctx = new ErrorEnumLitContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
-				setState(168); typeLiteral();
+				setState(168); match(Ident);
+				setState(169); match(T__46);
+				setState(170); match(Ident);
+				setState(171); match(T__11);
+				}
+				break;
+
+			case 12:
+				_localctx = new TypeLitContext(_localctx);
+				enterOuterAlt(_localctx, 12);
+				{
+				setState(172); typeLiteral();
 				}
 				break;
 			}
@@ -1402,11 +1428,11 @@ public class QueryParser extends Parser {
 		}
 	}
 	public static class ClassifierSetTypeContext extends TypeLiteralContext {
-		public List<ClassifierTypeContext> classifierType() {
-			return getRuleContexts(ClassifierTypeContext.class);
+		public List<ClassifierTypeRuleContext> classifierTypeRule() {
+			return getRuleContexts(ClassifierTypeRuleContext.class);
 		}
-		public ClassifierTypeContext classifierType(int i) {
-			return getRuleContext(ClassifierTypeContext.class,i);
+		public ClassifierTypeRuleContext classifierTypeRule(int i) {
+			return getRuleContext(ClassifierTypeRuleContext.class,i);
 		}
 		public ClassifierSetTypeContext(TypeLiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1469,8 +1495,8 @@ public class QueryParser extends Parser {
 		}
 	}
 	public static class ClsTypeContext extends TypeLiteralContext {
-		public ClassifierTypeContext classifierType() {
-			return getRuleContext(ClassifierTypeContext.class,0);
+		public ClassifierTypeRuleContext classifierTypeRule() {
+			return getRuleContext(ClassifierTypeRuleContext.class,0);
 		}
 		public ClsTypeContext(TypeLiteralContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1510,82 +1536,82 @@ public class QueryParser extends Parser {
 		enterRule(_localctx, 24, RULE_typeLiteral);
 		int _la;
 		try {
-			setState(195);
+			setState(199);
 			switch (_input.LA(1)) {
 			case T__33:
 				_localctx = new StrTypeContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(171); match(T__33);
+				setState(175); match(T__33);
 				}
 				break;
 			case T__24:
 				_localctx = new IntTypeContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(172); match(T__24);
+				setState(176); match(T__24);
 				}
 				break;
 			case T__36:
 				_localctx = new RealTypeContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(173); match(T__36);
+				setState(177); match(T__36);
 				}
 				break;
 			case T__14:
 				_localctx = new BooleanTypeContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(174); match(T__14);
+				setState(178); match(T__14);
 				}
 				break;
 			case T__37:
 				_localctx = new SeqTypeContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(175); match(T__37);
-				setState(176); typeLiteral();
-				setState(177); match(T__3);
+				setState(179); match(T__37);
+				setState(180); typeLiteral();
+				setState(181); match(T__3);
 				}
 				break;
 			case T__43:
 				_localctx = new SetTypeContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(179); match(T__43);
-				setState(180); typeLiteral();
-				setState(181); match(T__3);
+				setState(183); match(T__43);
+				setState(184); typeLiteral();
+				setState(185); match(T__3);
 				}
 				break;
 			case Ident:
 				_localctx = new ClsTypeContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(183); classifierType();
+				setState(187); classifierTypeRule();
 				}
 				break;
 			case T__47:
 				_localctx = new ClassifierSetTypeContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(184); match(T__47);
-				setState(185); classifierType();
-				setState(190);
+				setState(188); match(T__47);
+				setState(189); classifierTypeRule();
+				setState(194);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==T__10) {
 					{
 					{
-					setState(186); match(T__10);
-					setState(187); classifierType();
+					setState(190); match(T__10);
+					setState(191); classifierTypeRule();
 					}
 					}
-					setState(192);
+					setState(196);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(193); match(T__23);
+				setState(197); match(T__23);
 				}
 				break;
 			default:
@@ -1603,15 +1629,23 @@ public class QueryParser extends Parser {
 		return _localctx;
 	}
 
-	public static class ClassifierTypeContext extends ParserRuleContext {
+	public static class ClassifierTypeRuleContext extends ParserRuleContext {
+		public ClassifierTypeRuleContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_classifierTypeRule; }
+	 
+		public ClassifierTypeRuleContext() { }
+		public void copyFrom(ClassifierTypeRuleContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class ClassifierTypeContext extends ClassifierTypeRuleContext {
 		public List<TerminalNode> Ident() { return getTokens(QueryParser.Ident); }
 		public TerminalNode Ident(int i) {
 			return getToken(QueryParser.Ident, i);
 		}
-		public ClassifierTypeContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_classifierType; }
+		public ClassifierTypeContext(ClassifierTypeRuleContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterClassifierType(this);
@@ -1621,16 +1655,43 @@ public class QueryParser extends Parser {
 			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitClassifierType(this);
 		}
 	}
+	public static class ErrorClassifierTypeContext extends ClassifierTypeRuleContext {
+		public TerminalNode Ident() { return getToken(QueryParser.Ident, 0); }
+		public ErrorClassifierTypeContext(ClassifierTypeRuleContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).enterErrorClassifierType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof QueryListener ) ((QueryListener)listener).exitErrorClassifierType(this);
+		}
+	}
 
-	public final ClassifierTypeContext classifierType() throws RecognitionException {
-		ClassifierTypeContext _localctx = new ClassifierTypeContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_classifierType);
+	public final ClassifierTypeRuleContext classifierTypeRule() throws RecognitionException {
+		ClassifierTypeRuleContext _localctx = new ClassifierTypeRuleContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_classifierTypeRule);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(197); match(Ident);
-			setState(198); match(T__46);
-			setState(199); match(Ident);
+			setState(206);
+			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
+			case 1:
+				_localctx = new ClassifierTypeContext(_localctx);
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(201); match(Ident);
+				setState(202); match(T__46);
+				setState(203); match(Ident);
+				}
+				break;
+
+			case 2:
+				_localctx = new ErrorClassifierTypeContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(204); match(Ident);
+				setState(205); match(T__11);
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -1672,7 +1733,7 @@ public class QueryParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3:\u00cc\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3:\u00d3\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3"+
 		"\3\3\3\3\3\3\3\3\3\7\3+\n\3\f\3\16\3.\13\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
@@ -1683,60 +1744,63 @@ public class QueryParser extends Parser {
 		"\b\3\b\3\b\3\b\3\b\3\b\5\b\u0080\n\b\3\t\3\t\3\n\3\n\3\13\3\13\3\13\7"+
 		"\13\u0089\n\13\f\13\16\13\u008c\13\13\5\13\u008e\n\13\3\f\3\f\3\f\5\f"+
 		"\u0093\n\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r"+
-		"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00ac\n\r\3\16\3\16\3\16\3\16\3\16"+
-		"\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\7\16\u00bf"+
-		"\n\16\f\16\16\16\u00c2\13\16\3\16\3\16\5\16\u00c6\n\16\3\17\3\17\3\17"+
-		"\3\17\3\17\2\3\4\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\5\4\2\30\30"+
-		"\63\63\b\2\7\7\21\21\23\23\26\26\37\37++\b\2\6\6\20\20\24\24\35\35 #*"+
-		"*\u00e5\2\36\3\2\2\2\4@\3\2\2\2\6`\3\2\2\2\bh\3\2\2\2\nj\3\2\2\2\fr\3"+
-		"\2\2\2\16\177\3\2\2\2\20\u0081\3\2\2\2\22\u0083\3\2\2\2\24\u008d\3\2\2"+
-		"\2\26\u008f\3\2\2\2\30\u00ab\3\2\2\2\32\u00c5\3\2\2\2\34\u00c7\3\2\2\2"+
-		"\36\37\5\4\3\2\37 \7\2\2\3 \3\3\2\2\2!\"\b\3\1\2\"#\7\62\2\2#A\5\4\3\20"+
-		"$%\7\63\2\2%A\5\4\3\17&\'\7\27\2\2\',\5\6\4\2()\7\f\2\2)+\5\6\4\2*(\3"+
-		"\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-/\3\2\2\2.,\3\2\2\2/\60\7.\2\2\60"+
-		"\61\5\4\3\3\61A\3\2\2\2\62A\7:\2\2\63A\5\30\r\2\64\65\7\n\2\2\65\66\5"+
-		"\4\3\2\66\67\7\60\2\2\67A\3\2\2\289\7\36\2\29:\5\4\3\2:;\7\31\2\2;<\5"+
-		"\4\3\2<=\7/\2\2=>\5\4\3\2>?\7\3\2\2?A\3\2\2\2@!\3\2\2\2@$\3\2\2\2@&\3"+
-		"\2\2\2@\62\3\2\2\2@\63\3\2\2\2@\64\3\2\2\2@8\3\2\2\2A]\3\2\2\2BC\f\16"+
-		"\2\2CD\7\65\2\2D\\\5\4\3\17EF\f\r\2\2FG\5\b\5\2GH\5\4\3\16H\\\3\2\2\2"+
-		"IJ\f\f\2\2JK\5\n\6\2KL\5\4\3\rL\\\3\2\2\2MN\f\13\2\2NO\7\61\2\2O\\\5\4"+
-		"\3\fPQ\f\n\2\2QR\7-\2\2R\\\5\4\3\13ST\f\t\2\2TU\7,\2\2U\\\5\4\3\nVW\f"+
-		"\b\2\2WX\7\13\2\2X\\\5\4\3\tYZ\f\21\2\2Z\\\5\f\7\2[B\3\2\2\2[E\3\2\2\2"+
-		"[I\3\2\2\2[M\3\2\2\2[P\3\2\2\2[S\3\2\2\2[V\3\2\2\2[Y\3\2\2\2\\_\3\2\2"+
-		"\2][\3\2\2\2]^\3\2\2\2^\5\3\2\2\2_]\3\2\2\2`c\7:\2\2ab\7(\2\2bd\5\32\16"+
-		"\2ca\3\2\2\2cd\3\2\2\2de\3\2\2\2ef\7\7\2\2fg\5\4\3\2g\7\3\2\2\2hi\t\2"+
-		"\2\2i\t\3\2\2\2jk\t\3\2\2k\13\3\2\2\2lm\7$\2\2ms\7:\2\2no\7$\2\2os\5\16"+
-		"\b\2pq\7&\2\2qs\5\16\b\2rl\3\2\2\2rn\3\2\2\2rp\3\2\2\2s\r\3\2\2\2tu\5"+
-		"\22\n\2uv\7\n\2\2vw\5\26\f\2wx\5\20\t\2xy\7\60\2\2y\u0080\3\2\2\2z{\7"+
-		":\2\2{|\7\n\2\2|}\5\24\13\2}~\7\60\2\2~\u0080\3\2\2\2\177t\3\2\2\2\177"+
-		"z\3\2\2\2\u0080\17\3\2\2\2\u0081\u0082\5\4\3\2\u0082\21\3\2\2\2\u0083"+
-		"\u0084\t\4\2\2\u0084\23\3\2\2\2\u0085\u008a\5\4\3\2\u0086\u0087\7\f\2"+
-		"\2\u0087\u0089\5\4\3\2\u0088\u0086\3\2\2\2\u0089\u008c\3\2\2\2\u008a\u0088"+
-		"\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u008e\3\2\2\2\u008c\u008a\3\2\2\2\u008d"+
-		"\u0085\3\2\2\2\u008d\u008e\3\2\2\2\u008e\25\3\2\2\2\u008f\u0092\7:\2\2"+
-		"\u0090\u0091\7(\2\2\u0091\u0093\5\32\16\2\u0092\u0090\3\2\2\2\u0092\u0093"+
-		"\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095\7)\2\2\u0095\27\3\2\2\2\u0096"+
-		"\u00ac\78\2\2\u0097\u00ac\79\2\2\u0098\u00ac\7\66\2\2\u0099\u00ac\7\67"+
-		"\2\2\u009a\u00ac\7\32\2\2\u009b\u00ac\7\r\2\2\u009c\u00ac\7\t\2\2\u009d"+
-		"\u009e\7\25\2\2\u009e\u009f\5\24\13\2\u009f\u00a0\7\34\2\2\u00a0\u00ac"+
-		"\3\2\2\2\u00a1\u00a2\7\'\2\2\u00a2\u00a3\5\24\13\2\u00a3\u00a4\7\34\2"+
-		"\2\u00a4\u00ac\3\2\2\2\u00a5\u00a6\7:\2\2\u00a6\u00a7\7\5\2\2\u00a7\u00a8"+
-		"\7:\2\2\u00a8\u00a9\7\5\2\2\u00a9\u00ac\7:\2\2\u00aa\u00ac\5\32\16\2\u00ab"+
-		"\u0096\3\2\2\2\u00ab\u0097\3\2\2\2\u00ab\u0098\3\2\2\2\u00ab\u0099\3\2"+
-		"\2\2\u00ab\u009a\3\2\2\2\u00ab\u009b\3\2\2\2\u00ab\u009c\3\2\2\2\u00ab"+
-		"\u009d\3\2\2\2\u00ab\u00a1\3\2\2\2\u00ab\u00a5\3\2\2\2\u00ab\u00aa\3\2"+
-		"\2\2\u00ac\31\3\2\2\2\u00ad\u00c6\7\22\2\2\u00ae\u00c6\7\33\2\2\u00af"+
-		"\u00c6\7\17\2\2\u00b0\u00c6\7%\2\2\u00b1\u00b2\7\16\2\2\u00b2\u00b3\5"+
-		"\32\16\2\u00b3\u00b4\7\60\2\2\u00b4\u00c6\3\2\2\2\u00b5\u00b6\7\b\2\2"+
-		"\u00b6\u00b7\5\32\16\2\u00b7\u00b8\7\60\2\2\u00b8\u00c6\3\2\2\2\u00b9"+
-		"\u00c6\5\34\17\2\u00ba\u00bb\7\4\2\2\u00bb\u00c0\5\34\17\2\u00bc\u00bd"+
-		"\7)\2\2\u00bd\u00bf\5\34\17\2\u00be\u00bc\3\2\2\2\u00bf\u00c2\3\2\2\2"+
-		"\u00c0\u00be\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1\u00c3\3\2\2\2\u00c2\u00c0"+
-		"\3\2\2\2\u00c3\u00c4\7\34\2\2\u00c4\u00c6\3\2\2\2\u00c5\u00ad\3\2\2\2"+
-		"\u00c5\u00ae\3\2\2\2\u00c5\u00af\3\2\2\2\u00c5\u00b0\3\2\2\2\u00c5\u00b1"+
-		"\3\2\2\2\u00c5\u00b5\3\2\2\2\u00c5\u00b9\3\2\2\2\u00c5\u00ba\3\2\2\2\u00c6"+
-		"\33\3\2\2\2\u00c7\u00c8\7:\2\2\u00c8\u00c9\7\5\2\2\u00c9\u00ca\7:\2\2"+
-		"\u00ca\35\3\2\2\2\17,@[]cr\177\u008a\u008d\u0092\u00ab\u00c0\u00c5";
+		"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00b0\n\r\3\16\3"+
+		"\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3"+
+		"\16\3\16\7\16\u00c3\n\16\f\16\16\16\u00c6\13\16\3\16\3\16\5\16\u00ca\n"+
+		"\16\3\17\3\17\3\17\3\17\3\17\5\17\u00d1\n\17\3\17\2\3\4\20\2\4\6\b\n\f"+
+		"\16\20\22\24\26\30\32\34\2\5\4\2\30\30\63\63\b\2\7\7\21\21\23\23\26\26"+
+		"\37\37++\b\2\6\6\20\20\24\24\35\35 #**\u00ee\2\36\3\2\2\2\4@\3\2\2\2\6"+
+		"`\3\2\2\2\bh\3\2\2\2\nj\3\2\2\2\fr\3\2\2\2\16\177\3\2\2\2\20\u0081\3\2"+
+		"\2\2\22\u0083\3\2\2\2\24\u008d\3\2\2\2\26\u008f\3\2\2\2\30\u00af\3\2\2"+
+		"\2\32\u00c9\3\2\2\2\34\u00d0\3\2\2\2\36\37\5\4\3\2\37 \7\2\2\3 \3\3\2"+
+		"\2\2!\"\b\3\1\2\"#\7\62\2\2#A\5\4\3\20$%\7\63\2\2%A\5\4\3\17&\'\7\27\2"+
+		"\2\',\5\6\4\2()\7\f\2\2)+\5\6\4\2*(\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2"+
+		"\2\2-/\3\2\2\2.,\3\2\2\2/\60\7.\2\2\60\61\5\4\3\3\61A\3\2\2\2\62A\7:\2"+
+		"\2\63A\5\30\r\2\64\65\7\n\2\2\65\66\5\4\3\2\66\67\7\60\2\2\67A\3\2\2\2"+
+		"89\7\36\2\29:\5\4\3\2:;\7\31\2\2;<\5\4\3\2<=\7/\2\2=>\5\4\3\2>?\7\3\2"+
+		"\2?A\3\2\2\2@!\3\2\2\2@$\3\2\2\2@&\3\2\2\2@\62\3\2\2\2@\63\3\2\2\2@\64"+
+		"\3\2\2\2@8\3\2\2\2A]\3\2\2\2BC\f\16\2\2CD\7\65\2\2D\\\5\4\3\17EF\f\r\2"+
+		"\2FG\5\b\5\2GH\5\4\3\16H\\\3\2\2\2IJ\f\f\2\2JK\5\n\6\2KL\5\4\3\rL\\\3"+
+		"\2\2\2MN\f\13\2\2NO\7\61\2\2O\\\5\4\3\fPQ\f\n\2\2QR\7-\2\2R\\\5\4\3\13"+
+		"ST\f\t\2\2TU\7,\2\2U\\\5\4\3\nVW\f\b\2\2WX\7\13\2\2X\\\5\4\3\tYZ\f\21"+
+		"\2\2Z\\\5\f\7\2[B\3\2\2\2[E\3\2\2\2[I\3\2\2\2[M\3\2\2\2[P\3\2\2\2[S\3"+
+		"\2\2\2[V\3\2\2\2[Y\3\2\2\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^\5\3\2\2\2_"+
+		"]\3\2\2\2`c\7:\2\2ab\7(\2\2bd\5\32\16\2ca\3\2\2\2cd\3\2\2\2de\3\2\2\2"+
+		"ef\7\7\2\2fg\5\4\3\2g\7\3\2\2\2hi\t\2\2\2i\t\3\2\2\2jk\t\3\2\2k\13\3\2"+
+		"\2\2lm\7$\2\2ms\7:\2\2no\7$\2\2os\5\16\b\2pq\7&\2\2qs\5\16\b\2rl\3\2\2"+
+		"\2rn\3\2\2\2rp\3\2\2\2s\r\3\2\2\2tu\5\22\n\2uv\7\n\2\2vw\5\26\f\2wx\5"+
+		"\20\t\2xy\7\60\2\2y\u0080\3\2\2\2z{\7:\2\2{|\7\n\2\2|}\5\24\13\2}~\7\60"+
+		"\2\2~\u0080\3\2\2\2\177t\3\2\2\2\177z\3\2\2\2\u0080\17\3\2\2\2\u0081\u0082"+
+		"\5\4\3\2\u0082\21\3\2\2\2\u0083\u0084\t\4\2\2\u0084\23\3\2\2\2\u0085\u008a"+
+		"\5\4\3\2\u0086\u0087\7\f\2\2\u0087\u0089\5\4\3\2\u0088\u0086\3\2\2\2\u0089"+
+		"\u008c\3\2\2\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u008e\3\2"+
+		"\2\2\u008c\u008a\3\2\2\2\u008d\u0085\3\2\2\2\u008d\u008e\3\2\2\2\u008e"+
+		"\25\3\2\2\2\u008f\u0092\7:\2\2\u0090\u0091\7(\2\2\u0091\u0093\5\32\16"+
+		"\2\u0092\u0090\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095"+
+		"\7)\2\2\u0095\27\3\2\2\2\u0096\u00b0\78\2\2\u0097\u00b0\79\2\2\u0098\u00b0"+
+		"\7\66\2\2\u0099\u00b0\7\67\2\2\u009a\u00b0\7\32\2\2\u009b\u00b0\7\r\2"+
+		"\2\u009c\u00b0\7\t\2\2\u009d\u009e\7\25\2\2\u009e\u009f\5\24\13\2\u009f"+
+		"\u00a0\7\34\2\2\u00a0\u00b0\3\2\2\2\u00a1\u00a2\7\'\2\2\u00a2\u00a3\5"+
+		"\24\13\2\u00a3\u00a4\7\34\2\2\u00a4\u00b0\3\2\2\2\u00a5\u00a6\7:\2\2\u00a6"+
+		"\u00a7\7\5\2\2\u00a7\u00a8\7:\2\2\u00a8\u00a9\7\5\2\2\u00a9\u00b0\7:\2"+
+		"\2\u00aa\u00ab\7:\2\2\u00ab\u00ac\7\5\2\2\u00ac\u00ad\7:\2\2\u00ad\u00b0"+
+		"\7(\2\2\u00ae\u00b0\5\32\16\2\u00af\u0096\3\2\2\2\u00af\u0097\3\2\2\2"+
+		"\u00af\u0098\3\2\2\2\u00af\u0099\3\2\2\2\u00af\u009a\3\2\2\2\u00af\u009b"+
+		"\3\2\2\2\u00af\u009c\3\2\2\2\u00af\u009d\3\2\2\2\u00af\u00a1\3\2\2\2\u00af"+
+		"\u00a5\3\2\2\2\u00af\u00aa\3\2\2\2\u00af\u00ae\3\2\2\2\u00b0\31\3\2\2"+
+		"\2\u00b1\u00ca\7\22\2\2\u00b2\u00ca\7\33\2\2\u00b3\u00ca\7\17\2\2\u00b4"+
+		"\u00ca\7%\2\2\u00b5\u00b6\7\16\2\2\u00b6\u00b7\5\32\16\2\u00b7\u00b8\7"+
+		"\60\2\2\u00b8\u00ca\3\2\2\2\u00b9\u00ba\7\b\2\2\u00ba\u00bb\5\32\16\2"+
+		"\u00bb\u00bc\7\60\2\2\u00bc\u00ca\3\2\2\2\u00bd\u00ca\5\34\17\2\u00be"+
+		"\u00bf\7\4\2\2\u00bf\u00c4\5\34\17\2\u00c0\u00c1\7)\2\2\u00c1\u00c3\5"+
+		"\34\17\2\u00c2\u00c0\3\2\2\2\u00c3\u00c6\3\2\2\2\u00c4\u00c2\3\2\2\2\u00c4"+
+		"\u00c5\3\2\2\2\u00c5\u00c7\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c7\u00c8\7\34"+
+		"\2\2\u00c8\u00ca\3\2\2\2\u00c9\u00b1\3\2\2\2\u00c9\u00b2\3\2\2\2\u00c9"+
+		"\u00b3\3\2\2\2\u00c9\u00b4\3\2\2\2\u00c9\u00b5\3\2\2\2\u00c9\u00b9\3\2"+
+		"\2\2\u00c9\u00bd\3\2\2\2\u00c9\u00be\3\2\2\2\u00ca\33\3\2\2\2\u00cb\u00cc"+
+		"\7:\2\2\u00cc\u00cd\7\5\2\2\u00cd\u00d1\7:\2\2\u00ce\u00cf\7:\2\2\u00cf"+
+		"\u00d1\7(\2\2\u00d0\u00cb\3\2\2\2\u00d0\u00ce\3\2\2\2\u00d1\35\3\2\2\2"+
+		"\20,@[]cr\177\u008a\u008d\u0092\u00af\u00c4\u00c9\u00d0";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

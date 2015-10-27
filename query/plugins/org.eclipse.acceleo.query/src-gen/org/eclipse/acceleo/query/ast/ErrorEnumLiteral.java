@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral#getSegments <em>Segments</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral#isMissingColon <em>Missing Colon</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,5 +44,32 @@ public interface ErrorEnumLiteral extends org.eclipse.acceleo.query.ast.Error, E
 	 * @generated
 	 */
 	EList<String> getSegments();
+
+	/**
+	 * Returns the value of the '<em><b>Missing Colon</b></em>' attribute. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Colon</em>' attribute isn't clear, there really should be more of a
+	 * description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Missing Colon</em>' attribute.
+	 * @see #setMissingColon(boolean)
+	 * @see org.eclipse.acceleo.query.ast.AstPackage#getErrorEnumLiteral_MissingColon()
+	 * @model required="true"
+	 * @generated
+	 */
+	boolean isMissingColon();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral#isMissingColon
+	 * <em>Missing Colon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Missing Colon</em>' attribute.
+	 * @see #isMissingColon()
+	 * @generated
+	 */
+	void setMissingColon(boolean value);
 
 } // ErrorEnumLiteral

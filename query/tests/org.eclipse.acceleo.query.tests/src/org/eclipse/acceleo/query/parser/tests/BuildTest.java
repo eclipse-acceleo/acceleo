@@ -90,6 +90,9 @@ public class BuildTest {
 			Class<? extends Expression> expectedClass, int expectedStart, int expectedEnd,
 			Expression actualExpression) {
 		assertTrue(expectedClass.isAssignableFrom(actualExpression.getClass()));
+		if (!Error.class.isAssignableFrom(expectedClass)) {
+			assertFalse(Error.class.isAssignableFrom(actualExpression.getClass()));
+		}
 		assertEquals(expectedStart, astResult.getStartPosition(actualExpression));
 		assertEquals(expectedEnd, astResult.getEndPosition(actualExpression));
 	}
@@ -912,6 +915,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorTypeLiteral.class, 0, 14, ast);
+		assertFalse(((ErrorTypeLiteral)ast).isMissingColon());
 		assertEquals("anydsl", ((ErrorTypeLiteral)ast).getSegments().get(0));
 		assertEquals("EClass", ((ErrorTypeLiteral)ast).getSegments().get(1));
 		assertEquals(1, build.getErrors().size());
@@ -941,6 +945,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorEnumLiteral.class, 0, 25, ast);
+		assertFalse(((ErrorEnumLiteral)ast).isMissingColon());
 		assertEquals("anydsl", ((ErrorEnumLiteral)ast).getSegments().get(0));
 		assertEquals("Part", ((ErrorEnumLiteral)ast).getSegments().get(1));
 		assertEquals("NotExisting", ((ErrorEnumLiteral)ast).getSegments().get(2));
@@ -1657,6 +1662,7 @@ public class BuildTest {
 		Expression ast = build.getAst();
 
 		assertExpression(build, ErrorTypeLiteral.class, 0, 6, ast);
+		assertFalse(((ErrorTypeLiteral)ast).isMissingColon());
 		assertEquals(1, ((ErrorTypeLiteral)ast).getSegments().size());
 		assertEquals("toto", ((ErrorTypeLiteral)ast).getSegments().get(0));
 		assertEquals(1, build.getErrors().size());
@@ -1672,16 +1678,20 @@ public class BuildTest {
 		IQueryBuilderEngine.AstResult build = engine.build("toto::tata::");
 		Expression ast = build.getAst();
 
-		assertExpression(build, ErrorTypeLiteral.class, 0, 12, ast);
-		assertEquals(2, ((ErrorTypeLiteral)ast).getSegments().size());
-		assertEquals("toto", ((ErrorTypeLiteral)ast).getSegments().get(0));
-		assertEquals("tata", ((ErrorTypeLiteral)ast).getSegments().get(1));
+		assertExpression(build, ErrorEnumLiteral.class, 0, 12, ast);
+		assertFalse(((ErrorEnumLiteral)ast).isMissingColon());
+		assertEquals(2, ((ErrorEnumLiteral)ast).getSegments().size());
+		assertEquals("toto", ((ErrorEnumLiteral)ast).getSegments().get(0));
+		assertEquals("tata", ((ErrorEnumLiteral)ast).getSegments().get(1));
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1789,6 +1799,8 @@ public class BuildTest {
 				.get(0)).getName());
 		assertExpression(build, ErrorTypeLiteral.class, 17, 17, ((VariableDeclaration)((Lambda)((Call)ast)
 				.getArguments().get(1)).getParameters().get(0)).getType());
+		assertFalse(((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).getType()).isMissingColon());
 		assertEquals(0, ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
 				.getParameters().get(0)).getType()).getSegments().size());
 		assertExpression(build, ErrorExpression.class, 17, 17, ((Lambda)((Call)ast).getArguments().get(1))
@@ -1819,6 +1831,8 @@ public class BuildTest {
 				.get(0)).getName());
 		assertExpression(build, ErrorTypeLiteral.class, 18, 25, ((VariableDeclaration)((Lambda)((Call)ast)
 				.getArguments().get(1)).getParameters().get(0)).getType());
+		assertFalse(((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
+				.getParameters().get(0)).getType()).isMissingColon());
 		assertEquals(1, ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments().get(1))
 				.getParameters().get(0)).getType()).getSegments().size());
 		assertEquals("ecore", ((ErrorTypeLiteral)((VariableDeclaration)((Lambda)((Call)ast).getArguments()
@@ -1980,6 +1994,8 @@ public class BuildTest {
 				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == List.class);
 		assertExpression(build, ErrorTypeLiteral.class, 21, 21, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
+		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
+				.getElementType()).isMissingColon());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
@@ -2029,6 +2045,8 @@ public class BuildTest {
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == Set.class);
 		assertExpression(build, ErrorTypeLiteral.class, 23, 23, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
+		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
+				.getElementType()).isMissingColon());
 		assertEquals(1, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
@@ -2175,7 +2193,8 @@ public class BuildTest {
 		assertExpression(build, Let.class, 0, 22, ast);
 		assertEquals(1, ((Let)ast).getBindings().size());
 		assertEquals("a", ((Let)ast).getBindings().get(0).getName());
-		assertTrue(((Let)ast).getBindings().get(0).getType() instanceof ErrorTypeLiteral);
+		assertExpression(build, ErrorTypeLiteral.class, 8, 15, ((Let)ast).getBindings().get(0).getType());
+		assertFalse(((ErrorTypeLiteral)((Let)ast).getBindings().get(0).getType()).isMissingColon());
 		assertExpression(build, ErrorExpression.class, 18, 18, ((Let)ast).getBindings().get(0).getValue());
 		assertExpression(build, VarRef.class, 21, 22, ((Let)ast).getBody());
 	}
@@ -2452,7 +2471,70 @@ public class BuildTest {
 		assertEquals(2, ((TypeSetLiteral)ast).getTypes().size());
 		assertExpression(build, TypeLiteral.class, 1, 14, ((TypeSetLiteral)ast).getTypes().get(0));
 		assertExpression(build, ErrorTypeLiteral.class, 16, 16, ((TypeSetLiteral)ast).getTypes().get(1));
+		assertFalse(((ErrorTypeLiteral)((TypeSetLiteral)ast).getTypes().get(1)).isMissingColon());
 		assertEquals(build.getErrors().get(0), ((TypeSetLiteral)ast).getTypes().get(1));
+	}
+
+	@Test
+	public void incompletTypeSeparatorInSelect() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.packagedElement->select(e | e.oclIsTypeOf(uml:");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 51, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, FeatureAccess.class, 0, 20, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 33, 51, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorCall.class, 33, 51, lambda.getExpression());
+		final ErrorCall call = (ErrorCall)lambda.getExpression();
+		assertEquals(2, call.getArguments().size());
+		assertExpression(build, VarRef.class, 33, 34, call.getArguments().get(0));
+		assertExpression(build, ErrorTypeLiteral.class, 47, 51, call.getArguments().get(1));
+		assertTrue(((ErrorTypeLiteral)call.getArguments().get(1)).isMissingColon());
+
+		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
+				.getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+	}
+
+	@Test
+	public void incompletEnumLiteralSeparatorInSelect() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.packagedElement->select(e | e.oclIsTypeOf(anydsl::Color:");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 61, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, FeatureAccess.class, 0, 20, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 33, 61, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorCall.class, 33, 61, lambda.getExpression());
+		final ErrorCall call = (ErrorCall)lambda.getExpression();
+		assertEquals(2, call.getArguments().size());
+		assertExpression(build, VarRef.class, 33, 34, call.getArguments().get(0));
+		assertExpression(build, ErrorEnumLiteral.class, 47, 61, call.getArguments().get(1));
+		assertTrue(((ErrorEnumLiteral)call.getArguments().get(1)).isMissingColon());
+
+		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
+				.getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 }

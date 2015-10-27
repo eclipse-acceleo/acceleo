@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getLiteral <em>Literal</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#getSegments <em>Segments</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl#isMissingColon <em>Missing Colon</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,6 +61,26 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 	 * @ordered
 	 */
 	protected EList<String> segments;
+
+	/**
+	 * The default value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMissingColon()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_COLON_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMissingColon()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingColon = MISSING_COLON_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -138,6 +159,28 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 	 * 
 	 * @generated
 	 */
+	public boolean isMissingColon() {
+		return missingColon;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setMissingColon(boolean newMissingColon) {
+		boolean oldMissingColon = missingColon;
+		missingColon = newMissingColon;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON, oldMissingColon, missingColon));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -147,6 +190,8 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 				return basicGetLiteral();
 			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
 				return getSegments();
+			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
+				return isMissingColon();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -167,6 +212,9 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 				getSegments().clear();
 				getSegments().addAll((Collection<? extends String>)newValue);
 				return;
+			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
+				setMissingColon((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -185,6 +233,9 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
 				getSegments().clear();
 				return;
+			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
+				setMissingColon(MISSING_COLON_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -201,6 +252,8 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 				return literal != null;
 			case AstPackage.ERROR_ENUM_LITERAL__SEGMENTS:
 				return segments != null && !segments.isEmpty();
+			case AstPackage.ERROR_ENUM_LITERAL__MISSING_COLON:
+				return missingColon != MISSING_COLON_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -278,6 +331,8 @@ public class ErrorEnumLiteralImpl extends MinimalEObjectImpl.Container implement
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (segments: ");
 		result.append(segments);
+		result.append(", missingColon: ");
+		result.append(missingColon);
 		result.append(')');
 		return result.toString();
 	}

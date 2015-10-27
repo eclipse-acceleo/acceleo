@@ -423,14 +423,17 @@ public class AstBuilder {
 	/**
 	 * Creates a new {@link ErrorTypeLiteral}.
 	 * 
+	 * @param missingColon
+	 *            <code>true</code> if one colon ending is missing, <code>false</code> otherwise
 	 * @param segments
 	 *            known segments of the {@link TypeLiteral}
 	 * @return a new {@link ErrorTypeLiteral}.
 	 */
-	public ErrorTypeLiteral errorTypeLiteral(String... segments) {
+	public ErrorTypeLiteral errorTypeLiteral(boolean missingColon, String... segments) {
 		final ErrorTypeLiteral result = (ErrorTypeLiteral)EcoreUtil
 				.create(AstPackage.Literals.ERROR_TYPE_LITERAL);
 
+		result.setMissingColon(missingColon);
 		for (String segment : segments) {
 			if (segment != null && segment.length() != 0) {
 				result.getSegments().add(segment);
@@ -443,14 +446,17 @@ public class AstBuilder {
 	/**
 	 * Creates a new {@link ErrorEnumLiteral}.
 	 * 
+	 * @param missingColon
+	 *            <code>true</code> if one colon ending is missing, <code>false</code> otherwise
 	 * @param segments
 	 *            known segments of the {@link ErrorEnumLiteral}
 	 * @return a new {@link ErrorEnumLiteral}.
 	 */
-	public ErrorEnumLiteral errorEnumLiteral(String... segments) {
+	public ErrorEnumLiteral errorEnumLiteral(boolean missingColon, String... segments) {
 		final ErrorEnumLiteral result = (ErrorEnumLiteral)EcoreUtil
 				.create(AstPackage.Literals.ERROR_ENUM_LITERAL);
 
+		result.setMissingColon(missingColon);
 		for (String segment : segments) {
 			if (segment != null && segment.length() != 0) {
 				result.getSegments().add(segment);
