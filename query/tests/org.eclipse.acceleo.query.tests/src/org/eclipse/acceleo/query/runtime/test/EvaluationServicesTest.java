@@ -734,9 +734,29 @@ public class EvaluationServicesTest {
 	 * Checks that an empty argument list result in an AcceleoQueryEvaluationException being thrown.
 	 */
 	@Test(expected = AcceleoQueryEvaluationException.class)
-	public void testNullArgumentcollectionServiceCall() {
+	public void testNullArgumentCollectionServiceCall() {
 		Diagnostic status = new BasicDiagnostic();
 		services.collectionServiceCall("toString", null, status);
+	}
+
+	/**
+	 * "null" in the argument list will be reflected as an empty collection for the subsequent call.
+	 * null->methodOrServiceCall() is supposed to have the same behavior as Sequence{}->methodOrServiceCall().
+	 */
+	@Test
+	public void testNullLiteralAsArgumentListCollectionServiceCall() {
+		Diagnostic status = new BasicDiagnostic();
+		Object result = services.collectionServiceCall("toString", new Object[] {null, }, status);
+		assertEquals("[]", result);
+		assertEquals(Diagnostic.OK, status.getSeverity());
+
+		result = services.collectionServiceCall("size", new Object[] {null, }, status);
+		assertEquals(Integer.valueOf(0), result);
+		assertEquals(Diagnostic.OK, status.getSeverity());
+
+		result = services.collectionServiceCall("first", new Object[] {null, }, status);
+		assertNull(result);
+		assertEquals(Diagnostic.WARNING, status.getSeverity());
 	}
 
 	@Test

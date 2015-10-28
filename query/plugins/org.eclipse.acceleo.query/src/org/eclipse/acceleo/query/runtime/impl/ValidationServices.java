@@ -552,7 +552,14 @@ public class ValidationServices extends AbstractLanguageServices {
 			final Set<IType> receiverTypes = newArguments.remove(0);
 			final Set<IType> newReceiverTypes = new LinkedHashSet<IType>();
 			for (IType receiverType : receiverTypes) {
-				if (!(receiverType instanceof ICollectionType) && !(receiverType instanceof NothingType)) {
+				if (receiverType instanceof ClassType && receiverType.getType() == null) {
+					// Call on the NullLiteral
+					newReceiverTypes
+							.add(new SetType(
+									queryEnvironment,
+									nothing("The receiving Collection was empty due to a null value being wrapped as a Collection.")));
+				} else if (!(receiverType instanceof ICollectionType)
+						&& !(receiverType instanceof NothingType)) {
 					// implicit set conversion.
 					newReceiverTypes.add(new SetType(queryEnvironment, receiverType));
 				} else {

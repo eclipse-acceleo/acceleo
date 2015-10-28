@@ -701,6 +701,72 @@ public class ValidationTest {
 				"The newVar variable has no types", 29, 35);
 	}
 
+	@Test
+	public void testCollectionCallOnNull_toString() {
+		final IValidationResult validationResult = engine.validate("null->toString()", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void testCollectionCallOnNull_size() {
+		final IValidationResult validationResult = engine.validate("null->size()", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEIntegerObject(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void testCollectionCallOnNull_first() {
+		final IValidationResult validationResult = engine.validate("null->first()", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"The receiving Collection was empty due to a null value being wrapped as a Collection.", 4,
+				13);
+	}
+
+	@Test
+	public void testCollectionCallOnNullFromUnsetReference() {
+		final Set<IType> operationTypes = new LinkedHashSet<IType>();
+		operationTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEOperation()));
+		variableTypes.put("operation", operationTypes);
+
+		final IValidationResult validationResult = engine.validate("operation.eType->first()", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 
