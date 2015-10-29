@@ -69,6 +69,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.CallExpContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CallOrApplyContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierSetTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ClassifierTypeRuleContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CollectionCallContext;
 import org.eclipse.acceleo.query.parser.QueryParser.CompContext;
 import org.eclipse.acceleo.query.parser.QueryParser.ConditionalContext;
@@ -348,6 +349,8 @@ public class AstBuilderListener extends QueryBaseListener {
 					typeLiteralContextError(offendingSymbol, msg, e);
 				} else if (e.getCtx() instanceof LiteralContext) {
 					literalContextError(offendingSymbol, msg, e);
+				} else if (e.getCtx() instanceof ClassifierTypeRuleContext) {
+					classifierTypeRuleContextError(offendingSymbol, msg, e);
 				} else if (e.getCtx() instanceof VariableDefinitionContext) {
 					variableDefinitionContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof CallExpContext) {
@@ -370,6 +373,60 @@ public class AstBuilderListener extends QueryBaseListener {
 				final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
 						startPosition, endPosition, }));
+			}
+		}
+
+		/**
+		 * {@link ClassifierTypeRuleContext} error case.
+		 * 
+		 * @param offendingSymbol
+		 *            the offending symbol
+		 * @param msg
+		 *            the error message
+		 * @param e
+		 *            the {@link RecognitionException}
+		 */
+		private void classifierTypeRuleContextError(Object offendingSymbol, String msg, RecognitionException e) {
+			final ClassifierTypeRuleContext ctx = (ClassifierTypeRuleContext)e.getCtx();
+			final Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
+			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
+			if (e.getCtx().getParent().getParent() instanceof VariableDefinitionContext) {
+				errorRule = QueryParser.RULE_expression;
+				final String variableName = e.getCtx().getParent().getChild(0).getText();
+				final ErrorTypeLiteral errorTypeLiteral;
+				if (ctx.getChildCount() > 0) {
+					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {ctx.getChild(0)
+							.getText(), });
+				} else {
+					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+				}
+				startPositions.put(errorTypeLiteral, startPosition);
+				endPositions.put(errorTypeLiteral, endPosition);
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, INVALID_TYPE_LITERAL,
+						new Object[] {errorTypeLiteral }));
+				errors.add(errorTypeLiteral);
+				final Expression variableExpression = pop();
+				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
+						errorTypeLiteral, variableExpression);
+				startPositions.put(variableDeclaration, startPosition);
+				endPositions.put(variableDeclaration, endPosition);
+				push(variableDeclaration);
+				final ErrorExpression errorExpression = builder.errorExpression();
+				pushError(errorExpression, MISSING_EXPRESSION);
+				startPositions.put(errorExpression, endPosition);
+				endPositions.put(errorExpression, endPosition);
+			} else {
+				errorRule = QueryParser.RULE_classifierTypeRule;
+				final ErrorTypeLiteral errorTypeLiteral;
+				if (ctx.getChildCount() > 0) {
+					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {ctx.getChild(0)
+							.getText(), });
+				} else {
+					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+				}
+				startPositions.put(errorTypeLiteral, startPosition);
+				endPositions.put(errorTypeLiteral, endPosition);
+				pushError(errorTypeLiteral, "missing classifier literal");
 			}
 		}
 
@@ -435,7 +492,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 
 		/**
-		 * {@link TypeLiteralContext} error case.
+		 * {@link LiteralContext} error case.
 		 * 
 		 * @param offendingSymbol
 		 *            the offending symbol
@@ -592,22 +649,9 @@ public class AstBuilderListener extends QueryBaseListener {
 		 *            the {@link RecognitionException}
 		 */
 		private void defaultError(Object offendingSymbol, RecognitionException e) {
-			errorRule = e.getCtx().getRuleIndex();
 			switch (e.getCtx().getRuleIndex()) {
-				case QueryParser.RULE_classifierTypeRule:
-					final ErrorTypeLiteral errorType;
-					if (e.getCtx().getChildCount() > 0) {
-						final String ePackageName = e.getCtx().getChild(0).getText();
-						errorType = builder.errorTypeLiteral(false, ePackageName);
-					} else {
-						errorType = builder.errorTypeLiteral(false);
-					}
-					startPositions.put(errorType, Integer.valueOf(((ParserRuleContext)e.getCtx()).start
-							.getStartIndex()));
-					endPositions.put(errorType, Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
-					pushError(errorType, "missing classifier literal");
-					break;
 				case QueryParser.RULE_expression:
+					errorRule = QueryParser.RULE_expression;
 					final ErrorExpression errorExpression = builder.errorExpression();
 					final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
 							.getStartIndex());
@@ -1091,6 +1135,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
 			push(call);
+		} else {
+			errorRule = NO_ERROR;
 		}
 	}
 
@@ -1209,6 +1255,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			startPositions.put(variableDeclaration, Integer.valueOf(ctx.start.getStartIndex()));
 
 			stack.push(variableDeclaration);
+		} else {
+			errorRule = NO_ERROR;
 		}
 	}
 
@@ -1227,10 +1275,9 @@ public class AstBuilderListener extends QueryBaseListener {
 		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));
 		endPositions.put(lambda, Integer.valueOf(endPositions.get(ast)));
-		final Expression[] args = new Expression[] {iterator.getExpression(), lambda };
-		final Call call = builder.callService(serviceName, args);
+		final Call call = builder.callService(serviceName, iterator.getExpression(), lambda);
 
-		startPositions.put(call, startPositions.get(args[0]));
+		startPositions.put(call, startPositions.get(iterator.getExpression()));
 		endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
 		push(call);
@@ -1273,14 +1320,18 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitErrorEnumLit(ErrorEnumLitContext ctx) {
-		final String ePackageName = ctx.getChild(0).getText();
-		final String eEnumName = ctx.getChild(2).getText();
+		if (errorRule == NO_ERROR) {
+			final String ePackageName = ctx.getChild(0).getText();
+			final String eEnumName = ctx.getChild(2).getText();
 
-		final ErrorEnumLiteral errorEnumLiteral = builder.errorEnumLiteral(true, ePackageName, eEnumName);
+			final ErrorEnumLiteral errorEnumLiteral = builder.errorEnumLiteral(true, ePackageName, eEnumName);
 
-		pushError(errorEnumLiteral, "invalid enum literal");
-		startPositions.put(errorEnumLiteral, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(errorEnumLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			pushError(errorEnumLiteral, "invalid enum literal");
+			startPositions.put(errorEnumLiteral, Integer.valueOf(ctx.start.getStartIndex()));
+			endPositions.put(errorEnumLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+		} else {
+			errorRule = NO_ERROR;
+		}
 	}
 
 	/**
@@ -1290,31 +1341,33 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitClassifierType(ClassifierTypeContext ctx) {
-		final TypeLiteral toPush;
-		final String ePackageName = ctx.getChild(0).getText();
-		final String eClassName;
-		final EClassifier type;
-		if (ctx.getChild(2) == null || ctx.getChild(2) instanceof ErrorNode) {
-			eClassName = null;
-			type = null;
-		} else {
-			eClassName = ctx.getChild(2).getText();
-			type = environment.getEPackageProvider().getType(ePackageName, eClassName);
-		}
-		if (type == null) {
-			List<String> segments = new ArrayList<String>(2);
-			segments.add(ePackageName);
-			if (eClassName != null) {
-				segments.add(eClassName);
+		if (errorRule == NO_ERROR) {
+			final TypeLiteral toPush;
+			final String ePackageName = ctx.getChild(0).getText();
+			final String eClassName;
+			final EClassifier type;
+			if (ctx.getChild(2) == null || ctx.getChild(2) instanceof ErrorNode) {
+				eClassName = null;
+				type = null;
+			} else {
+				eClassName = ctx.getChild(2).getText();
+				type = environment.getEPackageProvider().getType(ePackageName, eClassName);
 			}
-			toPush = builder.errorTypeLiteral(false, segments.toArray(new String[segments.size()]));
-			pushError((Error)toPush, INVALID_TYPE_LITERAL);
-		} else {
-			toPush = builder.typeLiteral(type);
-			push(toPush);
+			if (type == null) {
+				List<String> segments = new ArrayList<String>(2);
+				segments.add(ePackageName);
+				if (eClassName != null) {
+					segments.add(eClassName);
+				}
+				toPush = builder.errorTypeLiteral(false, segments.toArray(new String[segments.size()]));
+				pushError((Error)toPush, INVALID_TYPE_LITERAL);
+			} else {
+				toPush = builder.typeLiteral(type);
+				push(toPush);
+			}
+			startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
+			endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 		}
-		startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 	}
 
 	/**

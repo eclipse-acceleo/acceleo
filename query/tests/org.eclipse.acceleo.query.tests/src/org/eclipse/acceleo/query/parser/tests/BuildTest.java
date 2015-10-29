@@ -2522,6 +2522,7 @@ public class BuildTest {
 		assertEquals(2, call.getArguments().size());
 		assertExpression(build, VarRef.class, 33, 34, call.getArguments().get(0));
 		assertExpression(build, ErrorEnumLiteral.class, 47, 61, call.getArguments().get(1));
+		assertEquals(2, ((ErrorEnumLiteral)call.getArguments().get(1)).getSegments().size());
 		assertTrue(((ErrorEnumLiteral)call.getArguments().get(1)).isMissingColon());
 
 		assertEquals(2, build.getErrors().size());
@@ -2534,6 +2535,32 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
 				.getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+	}
+
+	@Test
+	public void incompletTypeLiteralInSelect() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.eAllContents(ecore::EClass)->select(a: ecore::");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 51, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, Call.class, 0, 32, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 51, 51, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorExpression.class, 51, 51, lambda.getExpression());
+		assertExpression(build, ErrorTypeLiteral.class, 44, 51, lambda.getParameters().get(0).getType());
+
+		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
