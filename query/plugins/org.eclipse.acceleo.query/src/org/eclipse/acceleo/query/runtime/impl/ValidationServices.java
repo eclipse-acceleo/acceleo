@@ -226,7 +226,8 @@ public class ValidationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * Gets the {@link IType} for the given service name and {@link IType} of parameters.
+	 * Gets the {@link IType} for the given service or {@link EOperation} name and {@link IType} of
+	 * parameters.
 	 * 
 	 * @param call
 	 *            the {@link Call}
@@ -236,7 +237,8 @@ public class ValidationServices extends AbstractLanguageServices {
 	 *            the service name
 	 * @param argTypes
 	 *            the {@link IType} of parameters
-	 * @return the {@link IType} for the given service name and {@link IType} of parameters
+	 * @return the {@link IType} for the given service or {@link EOperation} name and {@link IType} of
+	 *         parameters
 	 */
 	public Set<IType> callType(Call call, IValidationResult validationResult, String serviceName,
 			List<Set<IType>> argTypes) {
@@ -254,20 +256,7 @@ public class ValidationServices extends AbstractLanguageServices {
 				Class<?>[] argumentTypes = getArgumentTypes(currentArgTypes);
 				IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 				if (service == null) {
-					if (currentArgTypes.get(0).getType() instanceof EClass) {
-						final List<EParameter> eParameters = getEParameters(currentArgTypes);
-						final EClass reveiverType = (EClass)eParameters.remove(0).getEType();
-						final EOperation eOperation = queryEnvironment.getEPackageProvider()
-								.lookupEOperation(reveiverType, serviceName, eParameters);
-						if (eOperation != null) {
-							result.add(getEOperationType(eOperation));
-						} else {
-							result.add(nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(serviceName,
-									currentArgTypes)));
-						}
-					} else {
-						result.add(nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName, currentArgTypes)));
-					}
+					result.addAll(callEOperationType(serviceName, currentArgTypes));
 				} else {
 					Map<List<IType>, Set<IType>> typeMapping = typesPerService.get(service);
 					if (typeMapping == null) {
@@ -293,6 +282,47 @@ public class ValidationServices extends AbstractLanguageServices {
 	}
 
 	/**
+	 * Gets the {@link IType} for the given {@link EOperation} name and {@link IType} of parameters.
+	 * 
+	 * @param eOperationName
+	 *            the {@link EOperation#getName() name}
+	 * @param currentArgTypes
+	 *            the {@link IType} of parameters
+	 * @return the {@link IType} for the given service or {@link EOperation} name and {@link IType} of
+	 *         parameters
+	 */
+	private Set<IType> callEOperationType(String eOperationName, List<IType> currentArgTypes) {
+		final Set<IType> result = Sets.newLinkedHashSet();
+
+		if (currentArgTypes.get(0).getType() instanceof EClass) {
+			final List<EParameter> eParameters = getEParameters(currentArgTypes);
+			final EOperation eOperation;
+			if (!eParameters.contains(null)) {
+				final EClass reveiverType = (EClass)eParameters.remove(0).getEType();
+				eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(reveiverType,
+						eOperationName, eParameters);
+				if (eOperation != null) {
+					result.add(getEOperationType(eOperation));
+				} else {
+					result.add(nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(eOperationName,
+							currentArgTypes)));
+				}
+			} else {
+				for (int i = 0; i < currentArgTypes.size(); i++) {
+					if (eParameters.get(i) == null) {
+						result.add(nothing("Couldn't create EClassifier type for %s parameter %s",
+								serviceSignature(eOperationName, currentArgTypes), currentArgTypes.get(i)));
+					}
+				}
+			}
+		} else {
+			result.add(nothing(SERVICE_NOT_FOUND, serviceSignature(eOperationName, currentArgTypes)));
+		}
+
+		return result;
+	}
+
+	/**
 	 * Gets the {@link List} of {@link EParameter} for given {@link List} of {@link IType}.
 	 * 
 	 * @param types
@@ -314,7 +344,8 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * 
 	 * @param type
 	 *            the {@link IType}
-	 * @return the {@link EParameter} for given {@link IType}
+	 * @return the {@link EParameter} for given {@link IType} if any can be created, <code>null</code>
+	 *         otherwise
 	 */
 	private EParameter getEParameter(IType type) {
 		final EParameter result;
@@ -326,9 +357,13 @@ public class ValidationServices extends AbstractLanguageServices {
 		} else if (type instanceof EClassifierType) {
 			result = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
 			result.setEType(((EClassifierType)type).getType());
-		} else if (type instanceof ClassType && type.getType() == null) {
-			result = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-			result.setEType(null);
+		} else if (type instanceof ClassType) {
+			if (type.getType() == null) {
+				result = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
+				result.setEType(null);
+			} else {
+				result = null;
+			}
 		} else {
 			throw new IllegalStateException("EParameter with no EClassifier type.");
 		}

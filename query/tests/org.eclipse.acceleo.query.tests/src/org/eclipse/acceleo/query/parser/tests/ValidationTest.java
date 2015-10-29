@@ -791,6 +791,26 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
+	@Test
+	public void eOperationLookupNoEClassifierForClassType() {
+		queryEnvironment.removeEPackage(EcorePackage.eINSTANCE.getName());
+		queryEnvironment.removeEPackage(AnydslPackage.eINSTANCE.getName());
+
+		final IValidationResult validationResult = engine.validate("self.triggerEOperationLookUp('')",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR,
+				"Couldn't create EClassifier type for triggerEOperationLookUp(EClassifier=EClass,java.lang.String) parameter java.lang.String",
+				4, 32);
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 
