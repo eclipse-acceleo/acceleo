@@ -43,25 +43,23 @@ public class BasicFilter implements IProposalFilter {
 	 */
 	@Override
 	public boolean keepProposal(ICompletionProposal proposal) {
-		final boolean result;
-
 		final String name = proposal.getProposal();
 		String prefix = completionResult.getPrefix();
 		if (prefix == null) {
-			prefix = "";
+			return true;
 		}
-		if (name.startsWith(prefix)) {
+	
+		boolean result = false;
+		if (name.substring(0, prefix.length()).equalsIgnoreCase(prefix)) {
 			String remaining = completionResult.getRemaining();
 			if (remaining == null) {
-				remaining = "";
+			remaining = "";
 			}
 			if (remaining != null && remaining.length() != 0) {
-				result = name.lastIndexOf(remaining) >= prefix.length();
+			result = name.lastIndexOf(remaining) >= prefix.length();
 			} else {
-				result = true;
+			result = true;
 			}
-		} else {
-			result = false;
 		}
 
 		return result;
