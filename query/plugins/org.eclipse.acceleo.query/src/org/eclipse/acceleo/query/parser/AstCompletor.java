@@ -294,7 +294,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		result.add(new TextCompletionProposal("false", 0));
 		result.add(new TextCompletionProposal("null", 0));
 		result.add(new TextCompletionProposal("{}", 1));
-		result.add(new TextCompletionProposal("[]", 1));
 		result.add(new TextCompletionProposal("Sequence{}", 1));
 		result.add(new TextCompletionProposal("OrderedSet{}", 1));
 		result.add(new TextCompletionProposal(AstBuilderListener.LET_OPERATOR + SPACE, 0));

@@ -48,7 +48,7 @@ import static org.junit.Assert.fail;
 
 public class CompletionTest {
 
-	private static final int TOTAL_NUMBER_OF_PROPOSAL = 131;
+	private static final int TOTAL_NUMBER_OF_PROPOSAL = 130;
 
 	QueryCompletionEngine engine;
 
@@ -207,7 +207,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(132, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -451,14 +451,16 @@ public class CompletionTest {
 	@Test
 	public void testBindingCompletionNoType() {
 		final ICompletionResult completionResult = engine.getCompletion("let a = ", 8, variableTypes);
-		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
 	}
 
 	@Test
 	public void testLetBodyCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("let a=3 in ", 11, variableTypes);
 
-		assertEquals(131, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
 	}
 
 	public void testConditionalIfCompletionFromNothing() {
