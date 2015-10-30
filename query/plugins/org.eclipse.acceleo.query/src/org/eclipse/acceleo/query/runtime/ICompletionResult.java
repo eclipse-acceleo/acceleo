@@ -66,4 +66,36 @@ public interface ICompletionResult {
 	 *            the remaining of identifier part after the cursor
 	 */
 	void setRemaining(String remaining);
+
+	/**
+	 * Returns the offset at which this completion proposal should start replacing existing text.
+	 * 
+	 * @return The offset at which this completion proposal should start replacing existing text.
+	 */
+	int getReplacementOffset();
+
+	/**
+	 * Sets the offset at which this completion proposal should start replacing existing text.
+	 * 
+	 * @param offset
+	 *            The offset at which this completion proposal should start replacing existing text.
+	 */
+	void setReplacementOffset(int offset);
+
+	/**
+	 * If this proposal is going to replace text when accepted, this will return the number of characters
+	 * to replace.
+	 * 
+	 * @return Number of characters to replace from the existing text starting at
+	 *         {@link #getReplacementOffset()}.
+	 */
+	int getReplacementLength();
+
+	/**
+	 * Sets the number of characters to replace with this proposal.
+	 * 
+	 * @param replacementLength
+	 *            The number of characters to replace with this proposal.
+	 */
+	void setReplacementLength(int replacementLength);
 }

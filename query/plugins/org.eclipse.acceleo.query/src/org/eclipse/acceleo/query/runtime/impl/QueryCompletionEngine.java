@@ -12,9 +12,14 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import com.google.common.collect.Sets;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
+import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryCompletionEngine;
@@ -73,6 +78,34 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 		result = new CompletionResult(completor.getProposals(variableTypes.keySet(), validationResult));
 		result.setPrefix(prefix);
 		result.setRemaining(remaining);
+
+		int replacementLength = 0;
+		int replacementOffset = 0;
+		if (toParse != null) {
+			replacementOffset = toParse.length();
+		}
+
+		// Errors on types or enum literals must be handled differently
+		List<Error> errors = validationResult.getAstResult().getErrors();
+		for (Error error : errors) {
+			if (error instanceof ErrorTypeLiteral || error instanceof ErrorEnumLiteral) {
+				int errorStart = validationResult.getAstResult().getStartPosition((Expression)error);
+				int errorEnd = validationResult.getAstResult().getEndPosition((Expression)error);
+				if (errorStart <= offset - prefix.length() && offset - prefix.length() <= errorEnd) {
+					replacementOffset = validationResult.getAstResult().getStartPosition((Expression)error);
+					replacementLength = validationResult.getAstResult().getEndPosition((Expression)error)
+							- replacementOffset;
+					break;
+				}
+			}
+		}
+
+		// The prefix part is to be replaced in all cases
+		if (prefix != null) {
+			replacementLength += prefix.length();
+		}
+		result.setReplacementOffset(replacementOffset);
+		result.setReplacementLength(replacementLength);
 
 		return result;
 	}

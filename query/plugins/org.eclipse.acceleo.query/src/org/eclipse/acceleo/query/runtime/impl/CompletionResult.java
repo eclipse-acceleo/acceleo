@@ -43,6 +43,12 @@ public class CompletionResult implements ICompletionResult {
 	 */
 	private String remaining;
 
+	/** The offset at which this completion proposal should start replacing existing text. */
+	private int replacementOffset;
+
+	/** Number of characters to replace from the existing text starting at{@link #replacementOffset}. */
+	private int replacementLength;
+
 	/**
 	 * Constructor.
 	 * 
@@ -121,4 +127,43 @@ public class CompletionResult implements ICompletionResult {
 		this.remaining = remaining;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getReplacementLength()
+	 */
+	@Override
+	public int getReplacementLength() {
+		return replacementLength;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#getReplacementOffset()
+	 */
+	@Override
+	public int getReplacementOffset() {
+		return replacementOffset;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#setReplacementLength(int)
+	 */
+	@Override
+	public void setReplacementLength(int replacementLength) {
+		this.replacementLength = replacementLength;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.ICompletionResult#setReplacementOffset(int)
+	 */
+	@Override
+	public void setReplacementOffset(int offset) {
+		this.replacementOffset = offset;
+	}
 }
