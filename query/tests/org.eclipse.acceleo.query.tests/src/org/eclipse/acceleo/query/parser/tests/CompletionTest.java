@@ -950,6 +950,33 @@ public class CompletionTest {
 	}
 
 	@Test
+	public void test480853EmptyOrderedSetLiteralInExtension() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+
+		final ICompletionResult completionResult = engine.getCompletion("OrderedSet()->", 13, types);
+
+		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
+	@Test
+	public void test480853EmptySequenceLiteralInExtension() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+
+		final ICompletionResult completionResult = engine.getCompletion("Sequence()->", 12, types);
+
+		assertEquals(117, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+	}
+
 	public void testTypeLiteralInTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::", 8, variableTypes);
 

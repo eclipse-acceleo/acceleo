@@ -466,6 +466,21 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void setInExtensionLiteralEmpty() {
+		final IValidationResult validationResult = engine.validate("OrderedSet{}", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof NothingType);
+		assertEquals("Empty OrderedSet defined in extension", ((NothingType)((SetType)possibleType)
+				.getCollectionType()).getMessage());
+	}
+
+	@Test
 	public void testSequenceInExtensionLiteral() {
 		final IValidationResult validationResult = engine.validate("Sequence{self, self, true, false}",
 				variableTypes);
@@ -484,6 +499,21 @@ public class ValidationTest {
 		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(),
 				((EClassifierType)((SequenceType)possibleType).getCollectionType()).getType());
+	}
+
+	@Test
+	public void sequenceInExtensionLiteralEmpty() {
+		final IValidationResult validationResult = engine.validate("Sequence{}", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof NothingType);
+		assertEquals("Empty Sequence defined in extension", ((NothingType)((SetType)possibleType)
+				.getCollectionType()).getMessage());
 	}
 
 	@Test

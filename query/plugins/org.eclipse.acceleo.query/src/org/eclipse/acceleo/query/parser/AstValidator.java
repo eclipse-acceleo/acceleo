@@ -899,10 +899,15 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseSetInExtensionLiteral(SetInExtensionLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
-		for (Expression expression : object.getValues()) {
-			for (IType type : doSwitch(expression)) {
-				possibleTypes.add(new SetType(services.getQueryEnvironment(), type));
+		if (!object.getValues().isEmpty()) {
+			for (Expression expression : object.getValues()) {
+				for (IType type : doSwitch(expression)) {
+					possibleTypes.add(new SetType(services.getQueryEnvironment(), type));
+				}
 			}
+		} else {
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
+					.nothing("Empty OrderedSet defined in extension")));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
@@ -917,10 +922,15 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	public Set<IType> caseSequenceInExtensionLiteral(SequenceInExtensionLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
-		for (Expression expression : object.getValues()) {
-			for (IType type : doSwitch(expression)) {
-				possibleTypes.add(new SequenceType(services.getQueryEnvironment(), type));
+		if (!object.getValues().isEmpty()) {
+			for (Expression expression : object.getValues()) {
+				for (IType type : doSwitch(expression)) {
+					possibleTypes.add(new SequenceType(services.getQueryEnvironment(), type));
+				}
 			}
+		} else {
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
+					.nothing("Empty Sequence defined in extension")));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
