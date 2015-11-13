@@ -13,7 +13,6 @@ package org.eclipse.acceleo.query.validation.type;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EDataType;
 
 /**
  * {@link EClassifier} validation type.
@@ -63,26 +62,26 @@ public class EClassifierType extends AbstractType {
 	public boolean isAssignableFrom(IType otherType) {
 		final boolean result;
 
-		if (otherType instanceof EClassifierType) {
-			if (otherType.getType() instanceof EDataType) {
-				result = getType() == otherType.getType();
-			} else if (otherType.getType() instanceof EClass) {
-				result = getType() == otherType.getType()
-						|| ((EClass)otherType.getType()).getEAllSuperTypes().contains(getType());
-			} else {
-				result = false;
-			}
-		} else if (otherType instanceof IJavaType) {
-			Class<?> ourClass = queryEnvironment.getEPackageProvider().getClass(getType());
-			if (ourClass != null) {
-				result = ourClass.isAssignableFrom(((IJavaType)otherType).getType());
-			} else {
-				result = false;
-			}
-		} else {
+		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {
+			// TODO Should this throw an exception?
 			result = false;
+		} else if (getType() instanceof EClass && otherType.getType() instanceof EClass) {
+			result = getType() == otherType.getType()
+					|| queryEnvironment.getEPackageProvider().getAllSubTypes((EClass)getType()).contains(
+							otherType.getType());
+		} else {
+			final Class<?> ourClass = queryEnvironment.getEPackageProvider().getClass(getType());
+			final Class<?> otherClass;
+			if (otherType instanceof EClassifierType) {
+				otherClass = queryEnvironment.getEPackageProvider().getClass(
+						((EClassifierType)otherType).getType());
+			} else if (otherType instanceof IJavaType) {
+				otherClass = ((IJavaType)otherType).getType();
+			} else {
+				otherClass = null;
+			}
+			result = isAssignableFrom(ourClass, otherClass);
 		}
-
 		return result;
 	}
 

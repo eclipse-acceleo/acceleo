@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * Provides {@link EPackage} in the {@link IReadOnlyQueryEnvironment}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @noimplements This interface is not designed to be implemented outside of AQL.
  */
 public interface IEPackageProvider {
 
@@ -126,6 +127,17 @@ public interface IEPackageProvider {
 	 *         otherwise
 	 */
 	Class<?> getClass(EClassifier eCls);
+
+	/**
+	 * Checks whether the given EClassifier has been registered in this package provider.
+	 * 
+	 * @param eCls
+	 *            The EClassifier to check.
+	 * @return <code>true</code> if this classifier has been registered in this package provider,
+	 *         <code>false</code> otherwise.
+	 * @since 4.1
+	 */
+	boolean isRegistered(EClassifier eCls);
 
 	/**
 	 * Gets the {@link Set} of registered {@link EPackage}.
@@ -246,5 +258,27 @@ public interface IEPackageProvider {
 	 * @return the {@link Set} of {@link EClassifier} that can be siblings of the given {@link EClass}
 	 */
 	Set<EClass> getSiblingsEClasses(EClass eCls);
+
+	/**
+	 * Gets the {@link Set} of containing {@link EStructuralFeature} for the given {@link EClass}.
+	 * 
+	 * @param eCls
+	 *            the {@link EClass}
+	 * @return the {@link Set} of containing {@link EStructuralFeature} for the given {@link EClass}
+	 * @since 4.1
+	 */
+	Set<EStructuralFeature> getContainingEStructuralFeatures(EClass eCls);
+
+	/**
+	 * Gets the {@link Set} of all containing {@link EStructuralFeature} transitively for the given
+	 * {@link EClass}.
+	 * 
+	 * @param eCls
+	 *            the {@link EClass}
+	 * @return the {@link Set} of all containing {@link EStructuralFeature} transitively for the given
+	 *         {@link EClass}
+	 * @since 4.1
+	 */
+	Set<EStructuralFeature> getAllContainingEStructuralFeatures(EClass eCls);
 
 }

@@ -26,7 +26,6 @@ import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
-import org.eclipse.acceleo.query.runtime.IEPackageProvider2;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -651,8 +650,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (types != null) {
 			final Set<EStructuralFeature> features = Sets.newLinkedHashSet();
 			for (EClass type : types) {
-				features.addAll(((IEPackageProvider2)queryEnvironment.getEPackageProvider())
-						.getAllContainingEStructuralFeatures(type));
+				features.addAll(queryEnvironment.getEPackageProvider().getAllContainingEStructuralFeatures(
+						type));
 			}
 			result = eAllContents(eObject, types, features);
 		} else {
@@ -830,8 +829,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (types != null) {
 			final Set<EStructuralFeature> features = Sets.newLinkedHashSet();
 			for (EClass type : types) {
-				features.addAll(((IEPackageProvider2)queryEnvironment.getEPackageProvider())
-						.getContainingEStructuralFeatures(type));
+				features.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(type));
 			}
 			result = eContents(eObject, types, features);
 		} else {

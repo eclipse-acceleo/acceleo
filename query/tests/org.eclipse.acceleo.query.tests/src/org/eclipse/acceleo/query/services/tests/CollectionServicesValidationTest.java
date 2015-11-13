@@ -1033,6 +1033,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterList() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
 				eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
@@ -1044,6 +1046,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterSet() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
 				eClassifierLiteralType(EcorePackage.eINSTANCE.getEClass()) };
@@ -1055,6 +1059,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterListEClassifierSet() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
 				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
@@ -1068,6 +1074,8 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterSetEClassifierSet() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
 				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
@@ -1079,4 +1087,40 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}
 
+	@Test
+	public void testFilterListEInt() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)),
+				eClassifierLiteralType(EcorePackage.eINSTANCE.getEInt()) };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+				.getEInt())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterSetEInt() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)),
+				eClassifierLiteralType(EcorePackage.eINSTANCE.getEInt()) };
+		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEInt())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterSetIncompatibleTypes() {
+		// FIXME test this without the registration as well to make sure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
+		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
+				.getEPackage())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
 }

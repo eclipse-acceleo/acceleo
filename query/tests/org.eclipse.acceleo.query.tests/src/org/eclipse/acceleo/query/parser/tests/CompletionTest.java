@@ -182,6 +182,8 @@ public class CompletionTest {
 
 	@Test
 	public void someIntTest() {
+		// FIXME also test without this registration and ensure it fails
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		final Set<IType> someIntTypes = new LinkedHashSet<IType>();
 		someIntTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEInt()));
 		variableTypes.put("someInt", someIntTypes);

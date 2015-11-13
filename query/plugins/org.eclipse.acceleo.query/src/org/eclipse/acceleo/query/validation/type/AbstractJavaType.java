@@ -17,7 +17,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public abstract class AbstractJavaType implements IJavaType {
+public abstract class AbstractJavaType extends AbstractType implements IJavaType {
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
@@ -44,12 +44,12 @@ public abstract class AbstractJavaType implements IJavaType {
 		final boolean result;
 
 		if (otherType instanceof ClassType) {
-			result = getType().isAssignableFrom(((ClassType)otherType).getType());
+			result = isAssignableFrom(getType(), ((ClassType)otherType).getType());
 		} else if (otherType instanceof EClassifierType) {
 			final Class<?> otherClass = queryEnvironment.getEPackageProvider().getClass(
 					((EClassifierType)otherType).getType());
 			if (otherClass != null) {
-				result = getType().isAssignableFrom(otherClass);
+				result = isAssignableFrom(getType(), otherClass);
 			} else {
 				result = false;
 			}

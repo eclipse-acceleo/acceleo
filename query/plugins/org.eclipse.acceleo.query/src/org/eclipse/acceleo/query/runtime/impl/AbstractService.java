@@ -36,6 +36,7 @@ public abstract class AbstractService implements IService {
 		final Set<IType> result = new LinkedHashSet<IType>();
 		Type returnType = getServiceMethod().getGenericReturnType();
 
+		// FIXME check if the returnType is registered in the environment
 		result.addAll(services.getIType(returnType));
 
 		return result;
@@ -47,6 +48,7 @@ public abstract class AbstractService implements IService {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+			// FIXME check for "empty" and put a message instead.
 			result.addAll(entry.getValue());
 		}
 

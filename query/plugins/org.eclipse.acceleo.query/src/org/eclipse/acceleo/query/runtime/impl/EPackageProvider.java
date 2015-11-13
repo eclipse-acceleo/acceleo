@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IEPackageProvider;
-import org.eclipse.acceleo.query.runtime.IEPackageProvider2;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -40,7 +39,7 @@ import org.eclipse.emf.ecore.EcorePackage;
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
-public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
+public class EPackageProvider implements IEPackageProvider {
 
 	/**
 	 * Map the name to their corresponding package.
@@ -231,7 +230,12 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 	public void registerPackage(EPackage ePackage) {
 		if (!("ecore".equals(ePackage.getName()) && !EcorePackage.eNS_URI.equals(ePackage.getNsURI()))) {
 			if (ePackage.getName() != null) {
-				ePackages.put(ePackage.getName(), ePackage);
+				EPackage existing = ePackages.put(ePackage.getName(), ePackage);
+				if (existing != null) {
+					// duplicate package
+					return;
+				}
+
 				for (EClassifier eCls : ePackage.getEClassifiers()) {
 					registerEClassifierClass(eCls);
 					if (eCls instanceof EClass) {
@@ -247,7 +251,7 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 				allContainingFeatures.clear();
 			} else {
 				throw new IllegalStateException("Couldn't register package " + ePackage.getName()
-						+ " because it's name is null.");
+						+ " because its name is null.");
 			}
 		}
 	}
@@ -544,6 +548,15 @@ public class EPackageProvider implements IEPackageProvider, IEPackageProvider2 {
 	@Override
 	public Class<?> getClass(EClassifier eCls) {
 		return classifier2class.get(eCls);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#isRegistered(org.eclipse.emf.ecore.EClassifier)
+	 */
+	public boolean isRegistered(EClassifier eCls) {
+		return classifier2class.containsKey(eCls);
 	}
 
 	/**

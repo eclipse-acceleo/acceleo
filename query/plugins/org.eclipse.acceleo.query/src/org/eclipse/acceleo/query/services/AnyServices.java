@@ -253,9 +253,8 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsKindOf(Object object, Object type) {
 		Boolean result;
-		Class<?> cls = null;
 		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
-			cls = checkRegistered((EClassifier)type);
+			checkRegistered((EClassifier)type);
 		}
 		if (type instanceof EClass) {
 			EClass eClass = (EClass)type;
@@ -274,11 +273,7 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			if (object != null && cls != null) {
-				result = cls.isAssignableFrom(object.getClass());
-			} else {
-				result = false;
-			}
+			result = ((EDataType)type).isInstance(object);
 		} else if (object != null && type instanceof Class<?>) {
 			result = ((Class<?>)type).isAssignableFrom(object.getClass());
 		} else {
@@ -304,9 +299,8 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsTypeOf(Object object, Object type) {
 		Boolean result;
-		Class<?> cls = null;
 		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
-			cls = checkRegistered((EClassifier)type);
+			checkRegistered((EClassifier)type);
 		}
 		if (type instanceof EClass) {
 			EClass eClass = (EClass)type;
@@ -325,11 +319,7 @@ public class AnyServices extends AbstractServiceProvider {
 				result = false;
 			}
 		} else if (type instanceof EDataType) {
-			if (object != null && cls != null) {
-				result = cls.isAssignableFrom(object.getClass());
-			} else {
-				result = false;
-			}
+			result = ((EDataType)type).isInstance(object);
 		} else if (object != null && type instanceof Class<?>) {
 			result = ((Class<?>)type).equals(object.getClass());
 		} else {
@@ -347,15 +337,11 @@ public class AnyServices extends AbstractServiceProvider {
 	 * @throws IllegalArgumentException
 	 *             if the type is not registered
 	 */
-	private Class<?> checkRegistered(EClassifier type) throws IllegalArgumentException {
-		final Class<?> result = queryEnvironment.getEPackageProvider().getClass(type);
-
-		if (result == null) {
+	private void checkRegistered(EClassifier type) throws IllegalArgumentException {
+		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {
 			throw new IllegalArgumentException(String.format(
 					"%s is not registered in the current environment", type));
 		}
-
-		return result;
 	}
 
 	// @formatter:off

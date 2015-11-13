@@ -114,6 +114,15 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	}
 
 	@Test
+	public void testOCLIsKindOfEDataType() {
+		final IType[] parameterTypes = new IType[] {classType(Boolean.class),
+				eClassifierType(EcorePackage.eINSTANCE.getEBoolean()) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
+
+		assertValidation(expectedReturnTypes, "oclIsKindOf", parameterTypes);
+	}
+
+	@Test
 	public void testOCLIsTypeOfClass() {
 		final IType[] parameterTypes = new IType[] {classType(Object.class), classType(Class.class) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
@@ -176,6 +185,8 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeEClassEClassifier() {
+		// FIXME also test without this registration and ensure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEClass() });
 		assertTrue(service != null);
@@ -196,6 +207,59 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertEquals(1, types.size());
 		it = types.iterator();
 		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()), it
+				.next());
+	}
+
+	@Test
+	public void testOCLAsTypeEInt() {
+		// FIXME also test without this registration and ensure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+				EcorePackage.eINSTANCE.getEInt() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()), it.next());
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()), it.next());
+	}
+
+	@Test
+	public void testOCLAsTypeIncompatibleTypes() {
+		// FIXME also test without this registration and ensure it fails
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEClass(),
+				EcorePackage.eINSTANCE.getEClass() });
+		assertTrue(service != null);
+
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()), it
+				.next());
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()), it
 				.next());
 	}
 
