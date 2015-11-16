@@ -59,8 +59,8 @@ public final class Query {
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
+		final IQueryEnvironment env = newEnvironment(xRefProvider, rootProvider);
 
-		QueryEnvironment env = new QueryEnvironment(xRefProvider, rootProvider);
 		try {
 			env.registerServicePackage(AnyServices.class);
 			env.registerServicePackage(EObjectServices.class);
