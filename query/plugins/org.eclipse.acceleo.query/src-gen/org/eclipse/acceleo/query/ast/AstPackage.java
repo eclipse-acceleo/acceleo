@@ -1009,13 +1009,22 @@ public interface AstPackage extends EPackage {
 	int ERROR_CALL__ARGUMENTS = ERROR_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Missing End Parenthesis</b></em>' attribute. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_CALL__MISSING_END_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Error Call</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Error Call</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1983,6 +1992,18 @@ public interface AstPackage extends EPackage {
 	EClass getErrorCall();
 
 	/**
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis
+	 * <em>Missing End Parenthesis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Missing End Parenthesis</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis()
+	 * @see #getErrorCall()
+	 * @generated
+	 */
+	EAttribute getErrorCall_MissingEndParenthesis();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorVariableDeclaration
 	 * <em>Error Variable Declaration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2679,6 +2700,14 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ERROR_CALL = eINSTANCE.getErrorCall();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing End Parenthesis</b></em>' attribute feature. <!--
+		 * begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute ERROR_CALL__MISSING_END_PARENTHESIS = eINSTANCE.getErrorCall_MissingEndParenthesis();
 
 		/**
 		 * The meta object literal for the '

@@ -487,14 +487,17 @@ public class AstBuilder {
 	 * 
 	 * @param serviceName
 	 *            the name of the called service can be <code>null</code>
+	 * @param isMissingEndParenthesis
+	 *            is the last parenthesis missing
 	 * @param args
 	 *            the arguments
 	 * @return a new {@link ErrorCall}
 	 */
-	public ErrorCall errorCall(String serviceName, Expression... args) {
+	public ErrorCall errorCall(String serviceName, boolean isMissingEndParenthesis, Expression... args) {
 		final ErrorCall result = (ErrorCall)EcoreUtil.create(AstPackage.Literals.ERROR_CALL);
 
 		result.setServiceName(serviceName);
+		result.setMissingEndParenthesis(isMissingEndParenthesis);
 		result.getArguments().addAll(Lists.newArrayList(args));
 
 		return result;

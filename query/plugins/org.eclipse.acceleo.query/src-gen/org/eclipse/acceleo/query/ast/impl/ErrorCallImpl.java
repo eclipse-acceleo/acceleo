@@ -36,6 +36,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getArguments <em>Arguments</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#isMissingEndParenthesis <em>Missing End
+ * Parenthesis</em>}</li>
  * </ul>
  * </p>
  *
@@ -91,6 +93,26 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 	 * @ordered
 	 */
 	protected EList<Expression> arguments;
+
+	/**
+	 * The default value of the '{@link #isMissingEndParenthesis() <em>Missing End Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMissingEndParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_END_PARENTHESIS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingEndParenthesis() <em>Missing End Parenthesis</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #isMissingEndParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingEndParenthesis = MISSING_END_PARENTHESIS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -172,6 +194,29 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 	 * 
 	 * @generated
 	 */
+	public boolean isMissingEndParenthesis() {
+		return missingEndParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void setMissingEndParenthesis(boolean newMissingEndParenthesis) {
+		boolean oldMissingEndParenthesis = missingEndParenthesis;
+		missingEndParenthesis = newMissingEndParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS, oldMissingEndParenthesis,
+					missingEndParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -195,6 +240,8 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 				return getType();
 			case AstPackage.ERROR_CALL__ARGUMENTS:
 				return getArguments();
+			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
+				return isMissingEndParenthesis();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -218,6 +265,9 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 				getArguments().clear();
 				getArguments().addAll((Collection<? extends Expression>)newValue);
 				return;
+			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
+				setMissingEndParenthesis((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -239,6 +289,9 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 			case AstPackage.ERROR_CALL__ARGUMENTS:
 				getArguments().clear();
 				return;
+			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
+				setMissingEndParenthesis(MISSING_END_PARENTHESIS_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -258,6 +311,8 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 				return type != TYPE_EDEFAULT;
 			case AstPackage.ERROR_CALL__ARGUMENTS:
 				return arguments != null && !arguments.isEmpty();
+			case AstPackage.ERROR_CALL__MISSING_END_PARENTHESIS:
+				return missingEndParenthesis != MISSING_END_PARENTHESIS_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -333,6 +388,8 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 		result.append(serviceName);
 		result.append(", type: ");
 		result.append(type);
+		result.append(", missingEndParenthesis: ");
+		result.append(missingEndParenthesis);
 		result.append(')');
 		return result.toString();
 	}

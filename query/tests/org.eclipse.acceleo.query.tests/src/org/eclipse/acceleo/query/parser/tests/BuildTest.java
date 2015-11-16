@@ -1710,15 +1710,18 @@ public class BuildTest {
 		assertEquals(1, lambda.getParameters().size());
 		assertEquals(1, lambda.getParameters().size());
 		assertVariableDeclaration(build, 13, 13, (VariableDeclaration)lambda.getParameters().get(0));
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("missing variable declaration", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -1734,12 +1737,12 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 17, 21, ((Call)ast).getArguments().get(1));
 		assertExpression(build, BooleanLiteral.class, 17, 21, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1755,12 +1758,15 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 17, 17, ((Call)ast).getArguments().get(1));
 		assertExpression(build, ErrorExpression.class, 17, 17, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(1, build.getErrors().size());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1776,12 +1782,12 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 18, 22, ((Call)ast).getArguments().get(1));
 		assertExpression(build, BooleanLiteral.class, 18, 22, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1805,15 +1811,18 @@ public class BuildTest {
 				.getParameters().get(0)).getType()).getSegments().size());
 		assertExpression(build, ErrorExpression.class, 17, 17, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -1839,14 +1848,17 @@ public class BuildTest {
 				.get(1)).getParameters().get(0)).getType()).getSegments().get(0));
 		assertExpression(build, ErrorExpression.class, 27, 27, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -1868,9 +1880,9 @@ public class BuildTest {
 				.getParameters().get(0)).getType()).getValue() == EcorePackage.Literals.ECLASS);
 		assertExpression(build, ErrorExpression.class, 31, 31, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("incomplete variable definition", build.getDiagnostic().getChildren().get(0)
 				.getMessage());
@@ -1878,6 +1890,9 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -1893,12 +1908,15 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 33, 33, ((Call)ast).getArguments().get(1));
 		assertExpression(build, ErrorExpression.class, 33, 33, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(1, build.getErrors().size());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1914,12 +1932,12 @@ public class BuildTest {
 		assertExpression(build, Lambda.class, 34, 38, ((Call)ast).getArguments().get(1));
 		assertExpression(build, BooleanLiteral.class, 34, 38, ((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1932,12 +1950,12 @@ public class BuildTest {
 		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
 		assertEquals(1, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1951,12 +1969,12 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, BooleanLiteral.class, 14, 18, ((Call)ast).getArguments().get(1));
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("missing ')' at ''", build.getDiagnostic().getChildren().get(0).getMessage());
-		assertEquals(ast, build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 	@Test
@@ -1971,12 +1989,15 @@ public class BuildTest {
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, BooleanLiteral.class, 14, 18, ((Call)ast).getArguments().get(1));
 		assertExpression(build, ErrorExpression.class, 19, 19, ((Call)ast).getArguments().get(2));
-		assertEquals(1, build.getErrors().size());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -1996,12 +2017,15 @@ public class BuildTest {
 				.getArguments().get(1)).getElementType());
 		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).isMissingColon());
-		assertEquals(1, build.getErrors().size());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -2021,14 +2045,17 @@ public class BuildTest {
 				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == List.class);
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
 				.getValue() == String.class);
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("mismatched input '' expecting ')'", build.getDiagnostic().getChildren().get(0)
 				.getMessage());
 		assertEquals(((Call)ast).getArguments().get(1), build.getDiagnostic().getChildren().get(0).getData()
 				.get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -2047,12 +2074,15 @@ public class BuildTest {
 				.getArguments().get(1)).getElementType());
 		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).isMissingColon());
-		assertEquals(1, build.getErrors().size());
+		assertEquals(2, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -2071,14 +2101,17 @@ public class BuildTest {
 				.get(1)).getElementType());
 		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
 				.getElementType()).getValue() == String.class);
-		assertEquals(0, build.getErrors().size());
-		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getSeverity());
-		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("mismatched input '' expecting ')'", build.getDiagnostic().getChildren().get(0)
 				.getMessage());
 		assertEquals(((Call)ast).getArguments().get(1), build.getDiagnostic().getChildren().get(0).getData()
 				.get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
 	@Test
@@ -2493,17 +2526,19 @@ public class BuildTest {
 		assertExpression(build, ErrorTypeLiteral.class, 47, 51, call.getArguments().get(1));
 		assertTrue(((ErrorTypeLiteral)call.getArguments().get(1)).isMissingColon());
 
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
 				.getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -2525,17 +2560,19 @@ public class BuildTest {
 		assertEquals(2, ((ErrorEnumLiteral)call.getArguments().get(1)).getSegments().size());
 		assertTrue(((ErrorEnumLiteral)call.getArguments().get(1)).isMissingColon());
 
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
 				.getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 	@Test
@@ -2552,16 +2589,18 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 51, 51, lambda.getExpression());
 		assertExpression(build, ErrorTypeLiteral.class, 44, 51, lambda.getParameters().get(0).getType());
 
-		assertEquals(2, build.getErrors().size());
+		assertEquals(3, build.getErrors().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
-		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
 		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
-
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
 }

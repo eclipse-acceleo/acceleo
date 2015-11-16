@@ -1080,6 +1080,49 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
+	@Test
+	public void missingClosingParenthesisCallNoArguments_465037() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents(", 18, types);
+
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+				new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	@Test
+	public void missingClosingParenthesisIterationCallNoArguments_465037() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(a | true ", 22, types);
+
+		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	@Test
+	public void missingClosingParenthesisCall_465037() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents(self ", 23, types);
+
+		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
 	public static void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);

@@ -90,7 +90,6 @@ import org.eclipse.acceleo.query.parser.QueryParser.LetExprContext;
 import org.eclipse.acceleo.query.parser.QueryParser.LiteralContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MinContext;
 import org.eclipse.acceleo.query.parser.QueryParser.MultContext;
-import org.eclipse.acceleo.query.parser.QueryParser.NavContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NavigationSegmentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NotContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NullLitContext;
@@ -584,10 +583,10 @@ public class AstBuilderListener extends QueryBaseListener {
 					args[i] = pop();
 				}
 				receiver = args[0];
-				errorCollectionCall = builder.errorCall(name, args);
+				errorCollectionCall = builder.errorCall(name, false, args);
 			} else {
 				receiver = pop();
-				errorCollectionCall = builder.errorCall(null, receiver);
+				errorCollectionCall = builder.errorCall(null, false, receiver);
 			}
 			startPositions.put(errorCollectionCall, startPositions.get(receiver));
 			endPositions.put(errorCollectionCall, Integer
@@ -680,24 +679,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Integer startPosition = Integer.valueOf(((ParserRuleContext)parser.getContext()).start
 					.getStartIndex());
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
-			if (parser.getContext() instanceof CallExpContext) {
-				ParserRuleContext parentNavContext = parser.getContext().getParent();
-				while (!(parentNavContext instanceof NavContext) && parentNavContext != null) {
-					parentNavContext = parentNavContext.getParent();
-				}
-				final Integer callStartPosition;
-				if (parentNavContext == null) {
-					callStartPosition = Integer.valueOf(0);
-				} else {
-					callStartPosition = Integer.valueOf(parentNavContext.start.getStartIndex());
-				}
-
-				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
-						callStartPosition, endPosition, }));
-			} else {
-				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
-						startPosition, endPosition, }));
-			}
+			diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
+					startPosition, endPosition, }));
 		}
 	}
 
@@ -1129,14 +1112,17 @@ public class AstBuilderListener extends QueryBaseListener {
 				args[i] = pop();
 			}
 			final String serviceName = ctx.getChild(0).getText().replace("::", ".");
-			final Call call = builder.callService(serviceName, args);
+			final Call call;
+			if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
+				call = builder.errorCall(serviceName, true, args);
+				pushError((Error)call, "missing ')'");
+			} else {
+				call = builder.callService(serviceName, args);
+				push(call);
+			}
 
 			startPositions.put(call, startPositions.get(args[0]));
 			endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-			push(call);
-		} else {
-			errorRule = NO_ERROR;
 		}
 	}
 
@@ -1275,12 +1261,17 @@ public class AstBuilderListener extends QueryBaseListener {
 		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));
 		endPositions.put(lambda, Integer.valueOf(endPositions.get(ast)));
-		final Call call = builder.callService(serviceName, iterator.getExpression(), lambda);
+		final Call call;
+		if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
+			call = builder.errorCall(serviceName, true, iterator.getExpression(), lambda);
+			pushError((Error)call, "missing ')'");
+		} else {
+			call = builder.callService(serviceName, iterator.getExpression(), lambda);
+			push(call);
+		}
 
 		startPositions.put(call, startPositions.get(iterator.getExpression()));
 		endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
-
-		push(call);
 	}
 
 	/**

@@ -844,6 +844,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
+	public EAttribute getErrorCall_MissingEndParenthesis() {
+		return (EAttribute)errorCallEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getErrorVariableDeclaration() {
 		return errorVariableDeclarationEClass;
 	}
@@ -1113,6 +1122,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		createEReference(errorFeatureAccessOrCallEClass, ERROR_FEATURE_ACCESS_OR_CALL__TARGET);
 
 		errorCallEClass = createEClass(ERROR_CALL);
+		createEAttribute(errorCallEClass, ERROR_CALL__MISSING_END_PARENTHESIS);
 
 		errorVariableDeclarationEClass = createEClass(ERROR_VARIABLE_DECLARATION);
 
@@ -1369,6 +1379,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		initEClass(errorCallEClass, ErrorCall.class, "ErrorCall", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getErrorCall_MissingEndParenthesis(), ecorePackage.getEBoolean(),
+				"missingEndParenthesis", "false", 1, 1, ErrorCall.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorVariableDeclarationEClass, ErrorVariableDeclaration.class,
 				"ErrorVariableDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

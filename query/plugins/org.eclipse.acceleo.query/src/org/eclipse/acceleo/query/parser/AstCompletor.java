@@ -28,6 +28,8 @@ import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -111,6 +113,19 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorExpression(ErrorExpression object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
+		result.addAll(getExpressionProposals());
+
+		return result;
+	}
+
+	/**
+	 * Gets {@link org.eclipse.acceleo.query.ast.Expression Expression} proposals.
+	 * 
+	 * @return result {@link org.eclipse.acceleo.query.ast.Expression Expression} proposals
+	 */
+	private List<ICompletionProposal> getExpressionProposals() {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
 		result.addAll(getExpressionTextPrefixes());
 		result.addAll(services.getVariableProposals(variableNames));
 		result.addAll(services.getEClassifierProposals());
@@ -183,12 +198,28 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorCall(ErrorCall object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		final Set<IType> collectionTypes = new LinkedHashSet<IType>();
-		for (IType type : validationResult.getPossibleTypes(object.getArguments().get(0))) {
-			collectionTypes.add(new SequenceType(services.getQueryEnvironment(), type));
-			collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
+		if (!object.isMissingEndParenthesis()) {
+			final Set<IType> collectionTypes = new LinkedHashSet<IType>();
+			for (IType type : validationResult.getPossibleTypes(object.getArguments().get(0))) {
+				collectionTypes.add(new SequenceType(services.getQueryEnvironment(), type));
+				collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
+			}
+			result.addAll(services.getServiceProposals(collectionTypes, object.getType()));
+		} else {
+			if (object.getArguments().size() == 1) {
+				result.addAll(getExpressionProposals());
+			} else {
+				final Expression firstArg = object.getArguments().get(1);
+				if (firstArg instanceof Lambda) {
+					final Lambda lambda = (Lambda)firstArg;
+					result.addAll(getExpressionTextFollows(validationResult.getPossibleTypes(lambda
+							.getExpression())));
+				} else {
+					result.add(new TextCompletionProposal(", ", 0));
+				}
+			}
+			result.add(new TextCompletionProposal(")", 0));
 		}
-		result.addAll(services.getServiceProposals(collectionTypes, object.getType()));
 
 		return result;
 	}

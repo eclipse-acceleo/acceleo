@@ -95,7 +95,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Expression"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ErrorCall" eSuperTypes="#//Error #//Call"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorCall" eSuperTypes="#//Error #//Call">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEndParenthesis"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorVariableDeclaration" eSuperTypes="#//Error #//VariableDeclaration"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorStringLiteral" eSuperTypes="#//Error #//StringLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorConditional" eSuperTypes="#//Error #//Conditional"/>
