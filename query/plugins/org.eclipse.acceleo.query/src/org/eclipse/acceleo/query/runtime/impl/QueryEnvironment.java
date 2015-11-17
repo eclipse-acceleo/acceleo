@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
@@ -34,6 +38,11 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 * The package provider that contains the referred packages.
 	 */
 	private EPackageProvider ePackageProvider;
+
+	/**
+	 * The {@link List} of {@link IQueryEnvironmentListener}.
+	 */
+	private List<IQueryEnvironmentListener> listeners = new ArrayList<IQueryEnvironmentListener>();
 
 	/**
 	 * Creates a new {@link QueryEvaluationEngine} instance.
@@ -65,7 +74,15 @@ public class QueryEnvironment implements IQueryEnvironment {
 	@Override
 	public ServiceRegistrationResult registerServicePackage(Class<?> services)
 			throws InvalidAcceleoPackageException {
-		return lookupEngine.registerServices(services);
+		final ServiceRegistrationResult result = lookupEngine.registerServices(services);
+
+		if (!result.getRegistered().isEmpty()) {
+			for (IQueryEnvironmentListener listener : getListeners()) {
+				listener.servicePackageRegistered(result, services);
+			}
+		}
+
+		return result;
 	}
 
 	@Override
@@ -80,17 +97,42 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void removeServicePackage(Class<?> services) {
-		lookupEngine.removeServices(services);
+		final Class<?> removedClass = lookupEngine.removeServices(services);
+		if (removedClass != null) {
+			for (IQueryEnvironmentListener listener : getListeners()) {
+				listener.servicePackageRemoved(removedClass);
+			}
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#registerEPackage(org.eclipse.emf.ecore.EPackage)
+	 */
 	@Override
 	public void registerEPackage(EPackage ePackage) {
-		ePackageProvider.registerPackage(ePackage);
+		final EPackage registeredEPackage = ePackageProvider.registerPackage(ePackage);
+		if (registeredEPackage != null) {
+			for (IQueryEnvironmentListener listener : getListeners()) {
+				listener.ePackageRegistered(ePackage);
+			}
+		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeEPackage(java.lang.String)
+	 */
 	@Override
 	public void removeEPackage(String name) {
-		ePackageProvider.removePackage(name);
+		final EPackage ePackage = ePackageProvider.removePackage(name);
+		if (ePackage != null) {
+			for (IQueryEnvironmentListener listener : getListeners()) {
+				listener.ePackageRemoved(ePackage);
+			}
+		}
 	}
 
 	/**
@@ -102,6 +144,9 @@ public class QueryEnvironment implements IQueryEnvironment {
 	@Override
 	public void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
 		ePackageProvider.registerCustomClassMapping(eClassifier, cls);
+		for (IQueryEnvironmentListener listener : getListeners()) {
+			listener.customClassMappingRegistered(eClassifier, cls);
+		}
 	}
 
 	@Override
@@ -113,4 +158,52 @@ public class QueryEnvironment implements IQueryEnvironment {
 	public EPackageProvider getEPackageProvider() {
 		return ePackageProvider;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#addQueryEnvironmentListener(org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener)
+	 */
+	@Override
+	public void addQueryEnvironmentListener(IQueryEnvironmentListener listener) {
+		if (listener != null) {
+			synchronized(listeners) {
+				listeners.add(listener);
+			}
+		} else {
+			throw new IllegalArgumentException("IQueryEnvironmentListener can't be null");
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeQueryEnvironmentListener(org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener)
+	 */
+	@Override
+	public void removeQueryEnvironmentListener(IQueryEnvironmentListener listener) {
+		if (listener != null) {
+			synchronized(listeners) {
+				listeners.remove(listener);
+			}
+		}
+	}
+
+	/**
+	 * Gets {@link IQueryEnvironment#addQueryEnvironmentListener(IQueryEnvironmentListener) added}
+	 * {@link IQueryEnvironmentListener}.
+	 * 
+	 * @return {@link IQueryEnvironment#addQueryEnvironmentListener(IQueryEnvironmentListener) added}
+	 *         {@link IQueryEnvironmentListener}
+	 */
+	protected List<IQueryEnvironmentListener> getListeners() {
+		final List<IQueryEnvironmentListener> result;
+
+		synchronized(listeners) {
+			result = new ArrayList<IQueryEnvironmentListener>(listeners);
+		}
+
+		return result;
+	}
+
 }

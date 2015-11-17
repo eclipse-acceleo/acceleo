@@ -47,7 +47,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class LookupEngineTest {
 
-	private static final class TestCrossReferenceProvider implements CrossReferenceProvider {
+	public static final class TestCrossReferenceProvider implements CrossReferenceProvider {
 
 		@Override
 		public Collection<Setting> getInverseReferences(EObject self) {
@@ -61,7 +61,7 @@ public class LookupEngineTest {
 		ServiceRegistrationResult registerServices(Class<?> newServices)
 				throws InvalidAcceleoPackageException;
 
-		void removeServices(Class<?> servicesClass);
+		Class<?> removeServices(Class<?> servicesClass);
 
 		Map<Integer, Map<String, List<IService>>> getServices();
 

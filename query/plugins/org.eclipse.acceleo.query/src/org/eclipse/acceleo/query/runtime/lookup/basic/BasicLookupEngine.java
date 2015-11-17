@@ -396,7 +396,7 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * Registers a new set of services.
 	 * 
 	 * @param newServices
-	 *            the {@link Class} containing the methods to register
+	 *            the {@link Class} containing the methods to register can't be <code>null</code>
 	 * @return the {@link ServiceRegistrationResult}
 	 * @throws InvalidAcceleoPackageException
 	 *             if the specified {@link Class} doesn't follow the acceleo package rules
@@ -405,7 +405,9 @@ public class BasicLookupEngine implements ILookupEngine {
 			throws InvalidAcceleoPackageException {
 		final ServiceRegistrationResult result = new ServiceRegistrationResult();
 
-		if (!isRegisteredService(newServices)) {
+		if (newServices == null) {
+			throw new NullPointerException("the service class can't be null");
+		} else if (!isRegisteredService(newServices)) {
 			try {
 				Constructor<?> cstr = null;
 				Object instance = null;
@@ -457,10 +459,14 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * 
 	 * @param servicesClass
 	 *            the {@link Class} to unregister.
+	 * @return the removed {@link Class} if any, <code>null</code> otherwise
 	 */
-	public void removeServices(Class<?> servicesClass) {
-		Set<IService> servicesSet = classToServices.remove(servicesClass);
+	public Class<?> removeServices(Class<?> servicesClass) {
+		final Class<?> result;
+
+		final Set<IService> servicesSet = classToServices.remove(servicesClass);
 		if (servicesSet != null) {
+			result = servicesClass;
 			for (IService service : servicesSet) {
 				final int argc = service.getServiceMethod().getParameterTypes().length;
 				final Map<String, List<IService>> argcServices = services.get(argc);
@@ -474,7 +480,11 @@ public class BasicLookupEngine implements ILookupEngine {
 					}
 				}
 			}
+		} else {
+			result = null;
 		}
+
+		return result;
 	}
 
 	/**

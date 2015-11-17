@@ -82,4 +82,22 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 */
 	void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls);
 
+	/**
+	 * Adds the given {@link IQueryEnvironmentListener}.
+	 * 
+	 * @param listener
+	 *            the {@link IQueryEnvironmentListener} to add, can't be <code>null</code>
+         * @since 4.1
+	 */
+	void addQueryEnvironmentListener(IQueryEnvironmentListener listener);
+
+	/**
+	 * Removes the given {@link IQueryEnvironmentListener}.
+	 * 
+	 * @param listener
+	 *            the {@link IQueryEnvironmentListener} to remove
+         * @since 4.1
+	 */
+	void removeQueryEnvironmentListener(IQueryEnvironmentListener listener);
+
 }

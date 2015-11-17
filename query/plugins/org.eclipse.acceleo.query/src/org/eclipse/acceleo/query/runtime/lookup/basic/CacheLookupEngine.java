@@ -158,9 +158,9 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	}
 
 	@Override
-	public void removeServices(Class<?> servicesClass) {
+	public Class<?> removeServices(Class<?> servicesClass) {
 		cache.clear();
-		super.removeServices(servicesClass);
+		return super.removeServices(servicesClass);
 	}
 
 }

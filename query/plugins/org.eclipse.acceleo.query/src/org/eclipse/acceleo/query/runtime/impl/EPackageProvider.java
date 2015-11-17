@@ -104,12 +104,16 @@ public class EPackageProvider implements IEPackageProvider {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#removePackage(java.lang.String)
+	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage} with the
+	 * given {@link EPackage#getName() name}.
+	 * 
+	 * @param name
+	 *            the {@link EPackage#getName() name}
+	 * @return the removed {@link EPackage} if any, <code>null</code> otherwise
 	 */
-	public void removePackage(String name) {
+	public EPackage removePackage(String name) {
 		final EPackage ePackage = ePackages.remove(name);
+
 		if (ePackage != null) {
 			for (EClassifier eCls : ePackage.getEClassifiers()) {
 				removeEClassifierClass(eCls);
@@ -125,6 +129,8 @@ public class EPackageProvider implements IEPackageProvider {
 			containingFeatures.clear();
 			allContainingFeatures.clear();
 		}
+
+		return ePackage;
 	}
 
 	/**
@@ -226,16 +232,21 @@ public class EPackageProvider implements IEPackageProvider {
 	 * 
 	 * @param ePackage
 	 *            the package to be registered.
+	 * @return the registered {@link EPackage} if any, <code>null</code> otherwise
 	 */
-	public void registerPackage(EPackage ePackage) {
+	public EPackage registerPackage(EPackage ePackage) {
+		final EPackage result;
+
 		if (!("ecore".equals(ePackage.getName()) && !EcorePackage.eNS_URI.equals(ePackage.getNsURI()))) {
 			if (ePackage.getName() != null) {
 				EPackage existing = ePackages.put(ePackage.getName(), ePackage);
 				if (existing != null) {
 					// duplicate package
-					return;
+					return null;
 				}
 
+				result = ePackage;
+				ePackages.put(ePackage.getName(), ePackage);
 				for (EClassifier eCls : ePackage.getEClassifiers()) {
 					registerEClassifierClass(eCls);
 					if (eCls instanceof EClass) {
@@ -253,7 +264,11 @@ public class EPackageProvider implements IEPackageProvider {
 				throw new IllegalStateException("Couldn't register package " + ePackage.getName()
 						+ " because its name is null.");
 			}
+		} else {
+			result = null;
 		}
+
+		return result;
 	}
 
 	/**
