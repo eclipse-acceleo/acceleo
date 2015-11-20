@@ -55,7 +55,6 @@ import org.eclipse.acceleo.query.tests.unit.EcoreValidationTests;
 import org.eclipse.acceleo.query.tests.unit.UMLEvaluationTests;
 import org.eclipse.acceleo.query.tests.unit.UMLValidationTests;
 import org.eclipse.acceleo.query.tests.validation.types.TypeTests;
-import org.eclipse.acceleo.query.type.test.PrimitiveTypeTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -77,8 +76,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		NumberServicesValidationTest.class, StringServicesTest.class, StringServicesValidationTest.class,
 		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
 		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
-		PrimitiveTypeTests.class, LookupEngineTest.class, ShortcutEvaluationTest.class,
-		ScopedEnvironmentTests.class, ResourceServicesTest.class, ResourceServicesValidationTest.class,
+		LookupEngineTest.class, ShortcutEvaluationTest.class, ScopedEnvironmentTests.class,
+		ResourceServicesTest.class, ResourceServicesValidationTest.class,
 		ServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
 		EOperationCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
 		QueryEnvironmentTests.class, })
