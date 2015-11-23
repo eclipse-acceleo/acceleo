@@ -258,6 +258,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EReference is not compatible with EClassifierLiteral=EClass" startPosition="164" endPosition="189"/>
       </expectedResult>
     </expectations>
   </queries>

@@ -18,6 +18,8 @@ import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.anydsl.Caliber;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 
@@ -144,15 +146,15 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertEquals("test ", any.add("test ", new Nothing("whatever the message")));
 	}
 
-	@Test
+	@Test(expected = ClassCastException.class)
 	public void oclAsTypeNullNull() {
 		assertEquals(null, any.oclAsType(null, null));
 	}
 
-	@Test
+	@Test(expected = ClassCastException.class)
 	public void oclAsTypeObjectNull() {
 		final Object self = new Object();
-		assertEquals(self, any.oclAsType(self, null));
+		any.oclAsType(self, null);
 	}
 
 	@Test
@@ -162,9 +164,99 @@ public class AnyServicesTest extends AbstractServicesTest {
 	}
 
 	@Test
-	public void oclAsTypeObjectEClass() {
+	public void oclAsTypeClass() {
 		final Object self = new Object();
+		assertEquals(self, any.oclAsType(self, Object.class));
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void oclAsTypeObjectToEClassClass() {
+		final Object self = new Object();
+		any.oclAsType(self, EClass.class);
+	}
+
+	@Test
+	public void oclAsTypeEClassToEClassClass() {
+		final Object self = EcoreFactory.eINSTANCE.createEClass();
+		assertEquals(self, any.oclAsType(self, EClass.class));
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void oclAsTypeObjectToEClassEClassifier() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final Object self = new Object();
+		any.oclAsType(self, EcorePackage.eINSTANCE.getEClass());
+	}
+
+	@Test
+	public void oclAsTypeEclassToEClassEClassifier() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final Object self = EcoreFactory.eINSTANCE.createEClass();
 		assertEquals(self, any.oclAsType(self, EcorePackage.eINSTANCE.getEClass()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void oclAsTypeEClassEClassifierUnregistered() {
+		final Object self = new Object();
+		any.oclAsType(self, EcorePackage.eINSTANCE.getEClass());
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void oclAsTypeObjectToEInt() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final Object self = new Object();
+		any.oclAsType(self, EcorePackage.eINSTANCE.getEInt());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void oclAsTypeObjectToEIntUnregistered() {
+		final Object self = new Object();
+		any.oclAsType(self, EcorePackage.eINSTANCE.getEInt());
+	}
+
+	@Test
+	public void oclAsTypeIntToObject() {
+		final Integer i = Integer.valueOf(1);
+		assertEquals(Integer.valueOf(1), any.oclAsType(i, Object.class));
+	}
+
+	@Test
+	public void oclAsTypeIntToEInt() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final Integer i = Integer.valueOf(1);
+		assertEquals(Integer.valueOf(1), any.oclAsType(i, EcorePackage.eINSTANCE.getEInt()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void oclAsTypeIntToEIntUnregistered() {
+		final Integer i = Integer.valueOf(1);
+		any.oclAsType(i, EcorePackage.eINSTANCE.getEInt());
+	}
+
+	@Test
+	public void oclAsTypeCompatibleClassifiers() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+		assertEquals(eClass, any.oclAsType(eClass, EcorePackage.eINSTANCE.getEClass()));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void oclAsTypeCompatibleClassifiersUnregistered() {
+		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+		any.oclAsType(eClass, EcorePackage.eINSTANCE.getEClass());
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void oclAsTypeIncompatibleTypes() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+		any.oclAsType(eClass, EcorePackage.eINSTANCE.getEPackage());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void oclAsTypeIncompatibleTypesUnregistered() {
+		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
+		any.oclAsType(eClass, EcorePackage.eINSTANCE.getEPackage());
 	}
 
 	@Test

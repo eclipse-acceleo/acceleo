@@ -77,28 +77,7 @@ public class AnyServices extends AbstractServiceProvider {
 		final IService result;
 
 		if ("oclAsType".equals(publicMethod.getName())) {
-			result = new FilterService(publicMethod, this) {
-
-				@Override
-				public Set<IType> getType(Call call, ValidationServices services,
-						IValidationResult validationResult, IReadOnlyQueryEnvironment environment,
-						List<IType> argTypes) {
-					final Set<IType> result = new LinkedHashSet<IType>();
-
-					final Object type = argTypes.get(1).getType();
-					if (type instanceof EClassifier) {
-						result.add(new EClassifierType(environment, (EClassifier)type));
-					} else if (type instanceof Class) {
-						result.add(new ClassType(environment, (Class<?>)type));
-					} else if (type != null) {
-						result.add(services.nothing("Don't know what kind of type is %s", type));
-					} else {
-						result.add(services.nothing("Don't know what kind of type is %s", "null"));
-					}
-
-					return result;
-				}
-			};
+			result = new OCLAsTypeService(publicMethod, this);
 		} else {
 			result = new Service(publicMethod, this);
 		}
@@ -233,7 +212,10 @@ public class AnyServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public Object oclAsType(Object object, Object type) {
-		return object;
+		if (oclIsKindOf(object, type)) {
+			return object;
+		}
+		throw new ClassCastException(object + " cannot be cast to " + type);
 	}
 
 	// @formatter:off
@@ -275,7 +257,7 @@ public class AnyServices extends AbstractServiceProvider {
 		} else if (type instanceof EDataType) {
 			result = ((EDataType)type).isInstance(object);
 		} else if (object != null && type instanceof Class<?>) {
-			result = ((Class<?>)type).isAssignableFrom(object.getClass());
+			result = ((Class<?>)type).isInstance(object);
 		} else {
 			result = false;
 		}
@@ -409,4 +391,46 @@ public class AnyServices extends AbstractServiceProvider {
 		return result.toString();
 	}
 
+	private static class OCLAsTypeService extends FilterService {
+		public OCLAsTypeService(Method publicMethod, Object serviceInstance) {
+			super(publicMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment environment, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final IType receiverType = argTypes.get(0);
+			final IType filterType = argTypes.get(1);
+			if (services.lower(receiverType, filterType) != null) {
+				Object resultType = filterType.getType();
+				if (resultType instanceof EClassifier) {
+					result.add(new EClassifierType(environment, (EClassifier)resultType));
+				} else if (resultType instanceof Class) {
+					result.add(new ClassType(environment, (Class<?>)resultType));
+				} else if (resultType != null) {
+					result.add(services.nothing("Unknown type %s", resultType));
+				} else {
+					result.add(services.nothing("Unknown type %s", "null"));
+				}
+			} else {
+				if (receiverType instanceof EClassifierType
+						&& !environment.getEPackageProvider().isRegistered(
+								((EClassifierType)receiverType).getType())) {
+					result.add(services.nothing("%s is not registered within the current environment.",
+							receiverType));
+				} else if (filterType instanceof EClassifierType
+						&& !environment.getEPackageProvider().isRegistered(
+								((EClassifierType)filterType).getType())) {
+					result.add(services.nothing("%s is not registered within the current environment.",
+							filterType));
+				} else {
+					result.add(services.nothing("%s is not compatible with %s", receiverType, filterType));
+				}
+			}
+
+			return result;
+		}
+	}
 }

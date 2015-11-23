@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
@@ -185,7 +186,6 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 
 	@Test
 	public void testOCLAsTypeEClassEClassifier() {
-		// FIXME also test without this registration and ensure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEClass() });
@@ -211,8 +211,39 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	}
 
 	@Test
-	public void testOCLAsTypeEInt() {
-		// FIXME also test without this registration and ensure it fails
+	public void testOCLAsTypeEClassEClassifierUnregistered() {
+		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+				EcorePackage.eINSTANCE.getEClass() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		IType next = it.next();
+		assertTrue(next instanceof NothingType);
+		String message = ((NothingType)next).getMessage();
+		assertTrue(message.contains("EClass"));
+		assertTrue(message.endsWith("is not registered within the current environment."));
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		next = it.next();
+		assertTrue(next instanceof NothingType);
+		String allTypesMesg = ((NothingType)next).getMessage();
+		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
+		assertTrue(allTypesMesg.contains("EClass"));
+		assertTrue(allTypesMesg.endsWith("is not registered within the current environment."));
+	}
+
+	@Test
+	public void testOCLAsTypeObjectToEInt() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
 				EcorePackage.eINSTANCE.getEInt() });
@@ -236,11 +267,98 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	}
 
 	@Test
+	public void testOCLAsTypeObjectToEIntUnregistered() {
+		final IService service = serviceLookUp("oclAsType", new Object[] {new Object(),
+				EcorePackage.eINSTANCE.getEInt() });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		IType next = it.next();
+		assertTrue(next instanceof NothingType);
+		String message = ((NothingType)next).getMessage();
+		assertTrue(message.contains("EInt"));
+		assertTrue(message.endsWith("is not registered within the current environment."));
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		next = it.next();
+		assertTrue(next instanceof NothingType);
+		String allTypesMesg = ((NothingType)next).getMessage();
+		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
+		assertTrue(allTypesMesg.contains("EInt"));
+		assertTrue(allTypesMesg.endsWith("is not registered within the current environment."));
+	}
+
+	@Test
+	public void testOCLAsTypeEIntToObject() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEInt(),
+				new Object(), });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
+		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		assertEquals(new ClassType(getQueryEnvironment(), Object.class), it.next());
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		assertEquals(new ClassType(getQueryEnvironment(), Object.class), it.next());
+	}
+
+	@Test
+	public void testOCLAsTypeEIntToObjectUnregistered() {
+		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEInt(),
+				new Object(), });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEInt()));
+		argTypes.add(new ClassType(getQueryEnvironment(), Object.class));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		IType next = it.next();
+		assertTrue(next instanceof NothingType);
+		String message = ((NothingType)next).getMessage();
+		assertTrue(message.contains("EInt"));
+		assertTrue(message.endsWith("is not registered within the current environment."));
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		next = it.next();
+		assertTrue(next instanceof NothingType);
+		String allTypesMesg = ((NothingType)next).getMessage();
+		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
+		assertTrue(allTypesMesg.contains("EInt"));
+		assertTrue(allTypesMesg.endsWith("is not registered within the current environment."));
+	}
+
+	@Test
 	public void testOCLAsTypeIncompatibleTypes() {
-		// FIXME also test without this registration and ensure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEClass(),
-				EcorePackage.eINSTANCE.getEClass() });
+				EcorePackage.eINSTANCE.getEPackage() });
 		assertTrue(service != null);
 
 		final List<IType> argTypes = new ArrayList<IType>();
@@ -251,16 +369,54 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 				argTypes);
 		assertEquals(1, types.size());
 		Iterator<IType> it = types.iterator();
-		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()), it
-				.next());
+		IType next = it.next();
+		assertTrue(next instanceof NothingType);
+		String message = ((NothingType)next).getMessage();
+		assertEquals(argTypes.get(0) + " is not compatible with " + argTypes.get(1), message);
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
 		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
 		assertEquals(1, types.size());
 		it = types.iterator();
-		assertEquals(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()), it
-				.next());
+		next = it.next();
+		assertTrue(next instanceof NothingType);
+		String allTypesMesg = ((NothingType)next).getMessage();
+		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
+		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with " + argTypes.get(1)));
+	}
+
+	@Test
+	public void testOCLAsTypeIncompatibleTypesUnregistered() {
+		final IService service = serviceLookUp("oclAsType", new Object[] {EcorePackage.eINSTANCE.getEClass(),
+				EcorePackage.eINSTANCE.getEPackage() });
+		assertTrue(service != null);
+
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE.getEPackage()));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(1, types.size());
+		Iterator<IType> it = types.iterator();
+		IType next = it.next();
+		assertTrue(next instanceof NothingType);
+		String message = ((NothingType)next).getMessage();
+		assertTrue(message.contains("EClass"));
+		assertTrue(message.endsWith("is not registered within the current environment."));
+
+		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
+		allTypes.put(argTypes, types);
+		types = service.validateAllType(getValidationServices(), getQueryEnvironment(), allTypes);
+		assertEquals(1, types.size());
+		it = types.iterator();
+		next = it.next();
+		assertTrue(next instanceof NothingType);
+		String allTypesMesg = ((NothingType)next).getMessage();
+		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
+		assertTrue(allTypesMesg.contains("EClass"));
+		assertTrue(allTypesMesg.endsWith("is not registered within the current environment."));
 	}
 
 	@Test

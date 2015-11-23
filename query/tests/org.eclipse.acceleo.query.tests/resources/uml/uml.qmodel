@@ -156,6 +156,15 @@
         <possibleTypes>EClassifier=EString</possibleTypes>
         <possibleTypes>EClassifier=SingleString</possibleTypes>
         <possibleTypes>EClassifier=String</possibleTypes>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=MultiplicityElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Slot is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameter is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameterSubstitution is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateSignature is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateableElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateBinding is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=LinkEndData is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EAnnotation is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -168,6 +177,15 @@
         <possibleTypes>EClassifier=EString</possibleTypes>
         <possibleTypes>EClassifier=SingleString</possibleTypes>
         <possibleTypes>EClassifier=String</possibleTypes>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=MultiplicityElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Slot is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameter is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameterSubstitution is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateSignature is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateableElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateBinding is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=LinkEndData is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EAnnotation is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1581,11 +1599,11 @@
   </queries>
   <queries expression="[self.oclAsType(uml::Component).packagedElement->filter(uml::Package)->asSequence()->first()/]" startingPoint="//@modelElements.5">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:EmptyResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=Package</possibleTypes>
+         <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Package is not compatible with EClassifierLiteral=Component" startPosition="4" endPosition="30"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1716,8 +1734,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1727,8 +1745,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1900,7 +1918,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1910,7 +1928,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
