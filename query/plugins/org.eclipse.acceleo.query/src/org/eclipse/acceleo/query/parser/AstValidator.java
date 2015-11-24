@@ -832,7 +832,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		for (Expression arg : object.getArguments()) {
 			doSwitch(arg);
 		}
-		return checkWarningsAndErrors(object, services.getErrorTypes(object));
+		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
 	/**
@@ -842,7 +842,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorExpression(ErrorExpression object) {
-		return checkWarningsAndErrors(object, services.getErrorTypes(object));
+		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
 	/**
@@ -853,7 +853,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	@Override
 	public Set<IType> caseErrorFeatureAccessOrCall(ErrorFeatureAccessOrCall object) {
 		doSwitch(object.getTarget());
-		return checkWarningsAndErrors(object, services.getErrorTypes(object));
+		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
 	/**
@@ -863,7 +863,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorTypeLiteral(ErrorTypeLiteral object) {
-		return checkWarningsAndErrors(object, services.getErrorTypes(object));
+		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
 	/**
@@ -873,7 +873,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorEnumLiteral(ErrorEnumLiteral object) {
-		return checkWarningsAndErrors(object, services.getErrorTypes(object));
+		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
 	/**

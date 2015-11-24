@@ -56,7 +56,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	/**
 	 * Message used to report bad predicate typing runtime detection.
 	 */
-	private static final String BAD_PREDICATE_TYPE_MSG = "Conditional's predicate must evaluate to a boolean value.";
+	private static final String BAD_PREDICATE_TYPE_MSG = "Conditional's predicate must evaluate to a boolean value but was %s instead.";
 
 	/**
 	 * Variable definitions used during evaluation.
@@ -343,9 +343,9 @@ public class AstEvaluator extends AstSwitch<Object> {
 				result = this.doSwitch(object.getFalseBranch());
 			}
 		} else {
-			Nothing nothing = new Nothing(BAD_PREDICATE_TYPE_MSG);
+			Nothing nothing = new Nothing(String.format(BAD_PREDICATE_TYPE_MSG, selector));
 			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0,
-					nothing.getMessage(), new Object[] {});
+					nothing.getMessage(), new Object[] {object.getPredicate() });
 			((BasicDiagnostic)diagnostic).add(diag);
 			result = nothing;
 		}

@@ -596,7 +596,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
-			throw new AcceleoQueryEvaluationException("empty argument array passed to callOrApply", e);
+			throw new AcceleoQueryEvaluationException("empty argument array passed to callOrApply "
+					+ serviceName, e);
 		}
 	}
 

@@ -319,7 +319,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	/**
 	 * Invalid type literal.
 	 */
-	private static final String INVALID_TYPE_LITERAL = "invalid type literal";
+	private static final String INVALID_TYPE_LITERAL = "invalid type literal %s";
 
 	/**
 	 * Number of children in {@link ConditionalContext}.
@@ -401,8 +401,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				}
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
-				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, INVALID_TYPE_LITERAL,
-						new Object[] {errorTypeLiteral }));
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
+						INVALID_TYPE_LITERAL, ctx.getText()), new Object[] {errorTypeLiteral }));
 				errors.add(errorTypeLiteral);
 				final Expression variableExpression = pop();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
@@ -465,8 +465,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral type = builder.errorTypeLiteral(false, new String[] {});
 				startPositions.put(type, startPosition);
 				endPositions.put(type, endPosition);
-				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, INVALID_TYPE_LITERAL,
-						new Object[] {type }));
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
+						INVALID_TYPE_LITERAL, msg), new Object[] {type }));
 				errors.add(type);
 				final Expression variableExpression = pop();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
@@ -483,7 +483,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
-				pushError(errorTypeLiteral, INVALID_TYPE_LITERAL);
+				pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
 			} else {
 				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, msg, new Object[] {
 						startPosition, endPosition, }));
@@ -510,7 +510,7 @@ public class AstBuilderListener extends QueryBaseListener {
 					new String[] {ePackage });
 			startPositions.put(errorTypeLiteral, startPosition);
 			endPositions.put(errorTypeLiteral, endPosition);
-			pushError(errorTypeLiteral, INVALID_TYPE_LITERAL);
+			pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
 		}
 
 		/**
@@ -1351,7 +1351,7 @@ public class AstBuilderListener extends QueryBaseListener {
 					segments.add(eClassName);
 				}
 				toPush = builder.errorTypeLiteral(false, segments.toArray(new String[segments.size()]));
-				pushError((Error)toPush, INVALID_TYPE_LITERAL);
+				pushError((Error)toPush, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 			} else {
 				toPush = builder.typeLiteral(type);
 				push(toPush);
@@ -1372,7 +1372,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 		final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(true, ePackageName);
 
-		pushError((Error)errorTypeLiteral, INVALID_TYPE_LITERAL);
+		pushError((Error)errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 		startPositions.put(errorTypeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(errorTypeLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 	}

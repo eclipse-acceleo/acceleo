@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
@@ -513,7 +514,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
-			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply", e);
+			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply "
+					+ serviceName, e);
 		}
 	}
 
@@ -563,7 +565,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
-			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply", e);
+			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply "
+					+ serviceName, e);
 		}
 	}
 
@@ -698,18 +701,20 @@ public class ValidationServices extends AbstractLanguageServices {
 	/**
 	 * Gets the {@link Error} types.
 	 * 
+	 * @param validationResult
+	 *            the {@link IValidationResult}
 	 * @param error
 	 *            the {@link Error}
 	 * @return the {@link Error} types
 	 */
-	public Set<IType> getErrorTypes(Error error) {
+	public Set<IType> getErrorTypes(IValidationResult validationResult, Error error) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		/*
-		 * TODO when there are parsing errors, provide a better message than just the error EClass
-		 */
-		final String message = error.eClass().getName();
-		result.add(nothing(message));
+		for (Diagnostic diagnostic : validationResult.getAstResult().getDiagnostic().getChildren()) {
+			if (diagnostic.getData().contains(error)) {
+				result.add(nothing(diagnostic.getMessage()));
+			}
+		}
 
 		return result;
 	}

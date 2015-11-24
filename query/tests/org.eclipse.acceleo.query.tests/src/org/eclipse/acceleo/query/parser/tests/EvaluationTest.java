@@ -418,6 +418,7 @@ public class EvaluationTest {
 		String message = result.getDiagnostic().getChildren().get(0).getMessage();
 		assertTrue(message.contains("Conditional"));
 		assertTrue(message.contains("boolean"));
+		assertTrue(message.contains("notboolean"));
 	}
 
 	@Test

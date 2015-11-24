@@ -80,7 +80,7 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getPossibleTypes(ast).size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorExpression", -1, -1);
+				"null or empty string.", -1, -1);
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getPossibleTypes(ast).size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorExpression", 0, 0);
+				"null or empty string.", 0, 0);
 	}
 
 	@Test
@@ -377,7 +377,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorTypeLiteral", 0, 14);
+				"invalid type literal anydsl::EClass", 0, 14);
 	}
 
 	@Test
@@ -389,7 +389,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorTypeLiteral", 0, 7);
+				"invalid type literal anydsl:", 0, 7);
 	}
 
 	@Test
@@ -416,7 +416,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorEnumLiteral", 0, 25);
+				"invalid enum literal", 0, 25);
 	}
 
 	@Test
@@ -428,7 +428,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"ErrorEnumLiteral", 0, 13);
+				"invalid enum literal", 0, 13);
 	}
 
 	@Test

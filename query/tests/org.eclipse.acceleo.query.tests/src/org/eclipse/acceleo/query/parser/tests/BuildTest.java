@@ -922,7 +922,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal anydsl::EClass", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
@@ -1669,7 +1670,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal no viable alternative at input 'toto::'", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
@@ -1815,7 +1817,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal no viable alternative at input '<EOF>'", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
@@ -1852,7 +1855,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal ecore::<missing Ident>", build.getDiagnostic().getChildren()
+				.get(0).getMessage());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
@@ -2021,7 +2025,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal no viable alternative at input '<EOF>'", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
@@ -2078,7 +2083,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal no viable alternative at input '<EOF>'", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
@@ -2530,7 +2536,7 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal uml:", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
@@ -2593,7 +2599,7 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid type literal ecore::", build.getDiagnostic().getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());

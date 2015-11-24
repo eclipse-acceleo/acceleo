@@ -546,6 +546,7 @@ public class CompletionTest {
 		assertEquals(0, completionResult.getReplacementLength());
 	}
 
+	@Test
 	public void testConditionalIfCompletionFromNothing() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
 
@@ -555,7 +556,7 @@ public class CompletionTest {
 				.getProposals(new BasicFilter(completionResult));
 		boolean found = false;
 		for (ICompletionProposal proposal : proposals) {
-			if ("if".equals(proposal.getProposal())) {
+			if ("if ".equals(proposal.getProposal())) {
 				found = true;
 				break;
 			}
@@ -1191,6 +1192,7 @@ public class CompletionTest {
 		assertEquals(0, completionResult.getReplacementLength());
 	}
 
+	@Test
 	public void testTypeLiteralInTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::", 8, variableTypes);
 
