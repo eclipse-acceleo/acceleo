@@ -43,6 +43,7 @@ import org.eclipse.acceleo.query.services.tests.StringServicesTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesValidationTest;
+import org.eclipse.acceleo.query.tests.runtime.impl.EPackageProviderTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.QueryEnvironmentTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.completion.EFeatureCompletionProposalTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.completion.EOperationCompletionProposalTests;
@@ -80,7 +81,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ResourceServicesTest.class, ResourceServicesValidationTest.class,
 		ServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
 		EOperationCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
-		QueryEnvironmentTests.class, })
+		QueryEnvironmentTests.class, EPackageProviderTests.class, })
 public class AllTests {
 
 }

@@ -20,7 +20,8 @@ import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 
 /**
- * Lookup engine are used to retrieve services from a name and a set of arguments.
+ * Lookup engine are used to retrieve services from a name and a set of arguments. This implementation cache
+ * service lookup result.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */

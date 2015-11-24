@@ -42,6 +42,12 @@ import org.eclipse.emf.ecore.EcorePackage;
 public class EPackageProvider implements IEPackageProvider {
 
 	/**
+	 * Maps of multi-EOperations : maps the arity to maps that maps {@link EOperation#getName() EOperation's
+	 * name} to their {@link EOperation} {@link List}.
+	 */
+	protected final Map<Integer, Map<String, List<EOperation>>> eOperations = new HashMap<Integer, Map<String, List<EOperation>>>();
+
+	/**
 	 * Map the name to their corresponding package.
 	 */
 	private Map<String, EPackage> ePackages = new LinkedHashMap<String, EPackage>();
@@ -55,12 +61,6 @@ public class EPackageProvider implements IEPackageProvider {
 	 * {@link EClassifier} to {@link Class} mapping.
 	 */
 	private final Map<EClassifier, Class<?>> classifier2class = new HashMap<EClassifier, Class<?>>();
-
-	/**
-	 * Maps of multi-EOperations : maps the arity to maps that maps {@link EOperation#getName() EOperation's
-	 * name} to their {@link EOperation} {@link List}.
-	 */
-	private final Map<Integer, Map<String, List<EOperation>>> eOperations = new HashMap<Integer, Map<String, List<EOperation>>>();
 
 	/**
 	 * {@link List} of known {@link EOperation} and their addition order.
@@ -582,7 +582,7 @@ public class EPackageProvider implements IEPackageProvider {
 	 * @param cls
 	 *            the {@link Class}
 	 */
-	void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
+	public void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
 		// remove old mappings
 		final Class<?> oldClass = classifier2class.remove(eClassifier);
 		if (oldClass != null) {
@@ -611,7 +611,9 @@ public class EPackageProvider implements IEPackageProvider {
 		Set<EStructuralFeature> result = new LinkedHashSet<EStructuralFeature>();
 
 		for (EClass eCls : receiverEClasses) {
-			result.addAll(eCls.getEAllStructuralFeatures());
+			if (isRegistered(eCls)) {
+				result.addAll(eCls.getEAllStructuralFeatures());
+			}
 		}
 
 		return result;
@@ -843,14 +845,16 @@ public class EPackageProvider implements IEPackageProvider {
 	public Set<EClass> getContainedEClasses(EClass eCls) {
 		final Set<EClass> result = new LinkedHashSet<EClass>();
 
-		final Set<EStructuralFeature> features = new LinkedHashSet<EStructuralFeature>(eCls
-				.getEAllStructuralFeatures());
-		for (EClass subECls : getAllSubTypes(eCls)) {
-			features.addAll(subECls.getEStructuralFeatures());
-		}
-		for (EStructuralFeature feature : features) {
-			if (isContainingEStructuralFeature(feature) && feature.getEType() instanceof EClass) {
-				result.add((EClass)feature.getEType());
+		if (isRegistered(eCls)) {
+			final Set<EStructuralFeature> features = new LinkedHashSet<EStructuralFeature>(eCls
+					.getEAllStructuralFeatures());
+			for (EClass subECls : getAllSubTypes(eCls)) {
+				features.addAll(subECls.getEStructuralFeatures());
+			}
+			for (EStructuralFeature feature : features) {
+				if (isContainingEStructuralFeature(feature) && feature.getEType() instanceof EClass) {
+					result.add((EClass)feature.getEType());
+				}
 			}
 		}
 
