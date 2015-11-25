@@ -2609,4 +2609,32 @@ public class BuildTest {
 		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
 	}
 
+	@Test
+	public void incompletParentExpressionInSelect() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.value->select(value | not (value.owner.oclAsType(uml::Slot)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 64, ast);
+		assertEquals("select", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, FeatureAccess.class, 0, 10, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 27, 64, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, Call.class, 27, 64, lambda.getExpression());
+		assertEquals("not", ((Call)lambda.getExpression()).getServiceName());
+		assertEquals(1, ((Call)lambda.getExpression()).getArguments().size());
+
+		assertEquals(2, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(2, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal uml::Slot", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+	}
+
 }

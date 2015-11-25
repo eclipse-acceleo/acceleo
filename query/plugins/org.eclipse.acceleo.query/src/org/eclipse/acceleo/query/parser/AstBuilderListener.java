@@ -94,6 +94,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.NavigationSegmentContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NotContext;
 import org.eclipse.acceleo.query.parser.QueryParser.NullLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.OrContext;
+import org.eclipse.acceleo.query.parser.QueryParser.ParenContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealLitContext;
 import org.eclipse.acceleo.query.parser.QueryParser.RealTypeContext;
 import org.eclipse.acceleo.query.parser.QueryParser.SeqTypeContext;
@@ -360,6 +361,8 @@ public class AstBuilderListener extends QueryBaseListener {
 					bindingContextError(offendingSymbol, e);
 				} else if (e.getCtx() instanceof ConditionalContext) {
 					errorRule = QueryParser.RULE_expression;
+				} else if (e.getCtx() instanceof ParenContext) {
+					// nothing to do here
 				} else {
 					defaultError(offendingSymbol, e);
 				}
