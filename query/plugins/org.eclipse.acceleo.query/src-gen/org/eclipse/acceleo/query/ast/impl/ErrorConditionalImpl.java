@@ -20,7 +20,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Conditional</b></em>'. <!--
@@ -36,7 +35,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ErrorConditionalImpl extends MinimalEObjectImpl.Container implements ErrorConditional {
+public class ErrorConditionalImpl extends ExpressionImpl implements ErrorConditional {
 	/**
 	 * The cached value of the '{@link #getPredicate() <em>Predicate</em>}' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -339,12 +338,6 @@ public class ErrorConditionalImpl extends MinimalEObjectImpl.Container implement
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Expression.class) {
-			switch (derivedFeatureID) {
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Conditional.class) {
 			switch (derivedFeatureID) {
 				case AstPackage.ERROR_CONDITIONAL__PREDICATE:
@@ -367,12 +360,6 @@ public class ErrorConditionalImpl extends MinimalEObjectImpl.Container implement
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Expression.class) {
-			switch (baseFeatureID) {
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Conditional.class) {
 			switch (baseFeatureID) {
 				case AstPackage.CONDITIONAL__PREDICATE:

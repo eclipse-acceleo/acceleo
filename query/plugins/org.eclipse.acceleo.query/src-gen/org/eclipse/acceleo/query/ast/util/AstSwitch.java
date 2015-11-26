@@ -284,6 +284,8 @@ public class AstSwitch<T> extends Switch<T> {
 				org.eclipse.acceleo.query.ast.Error error = (org.eclipse.acceleo.query.ast.Error)theEObject;
 				T result = caseError(error);
 				if (result == null)
+					result = caseExpression(error);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -360,6 +362,8 @@ public class AstSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseVariableDeclaration(errorVariableDeclaration);
 				if (result == null)
+					result = caseExpression(errorVariableDeclaration);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -405,6 +409,8 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseError(errorBinding);
 				if (result == null)
 					result = caseBinding(errorBinding);
+				if (result == null)
+					result = caseExpression(errorBinding);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;

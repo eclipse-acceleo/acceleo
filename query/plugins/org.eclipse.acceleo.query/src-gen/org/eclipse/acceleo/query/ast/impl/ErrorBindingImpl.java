@@ -21,7 +21,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Binding</b></em>'. <!--
@@ -37,7 +36,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements ErrorBinding {
+public class ErrorBindingImpl extends ExpressionImpl implements ErrorBinding {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->

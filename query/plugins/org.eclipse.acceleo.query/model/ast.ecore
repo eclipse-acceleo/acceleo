@@ -71,8 +71,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error #//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"
+      eSuperTypes="#//Expression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorTypeLiteral" eSuperTypes="#//Error #//TypeLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="segments" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -85,7 +86,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingColon" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ErrorFeatureAccessOrCall" eSuperTypes="#//Error #//Expression">
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorFeatureAccessOrCall" eSuperTypes="#//Error">
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Expression"
         containment="true"/>
   </eClassifiers>

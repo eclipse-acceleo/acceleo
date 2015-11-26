@@ -1147,14 +1147,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		nullLiteralEClass.getESuperTypes().add(this.getLiteral());
 		setInExtensionLiteralEClass.getESuperTypes().add(this.getLiteral());
 		sequenceInExtensionLiteralEClass.getESuperTypes().add(this.getLiteral());
+		errorEClass.getESuperTypes().add(this.getExpression());
 		errorExpressionEClass.getESuperTypes().add(this.getError());
-		errorExpressionEClass.getESuperTypes().add(this.getExpression());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getError());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getTypeLiteral());
 		errorEnumLiteralEClass.getESuperTypes().add(this.getError());
 		errorEnumLiteralEClass.getESuperTypes().add(this.getEnumLiteral());
 		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getError());
-		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getExpression());
 		errorCallEClass.getESuperTypes().add(this.getError());
 		errorCallEClass.getESuperTypes().add(this.getCall());
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getError());

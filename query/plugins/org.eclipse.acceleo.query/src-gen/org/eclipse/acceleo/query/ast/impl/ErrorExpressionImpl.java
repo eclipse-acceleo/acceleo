@@ -13,7 +13,6 @@ package org.eclipse.acceleo.query.ast.impl;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Expression</b></em>'. <!--
@@ -23,7 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ErrorExpressionImpl extends MinimalEObjectImpl.Container implements ErrorExpression {
+public class ErrorExpressionImpl extends ExpressionImpl implements ErrorExpression {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 

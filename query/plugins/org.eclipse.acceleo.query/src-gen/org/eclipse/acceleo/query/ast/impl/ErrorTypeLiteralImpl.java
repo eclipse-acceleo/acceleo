@@ -14,14 +14,12 @@ import java.util.Collection;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
-import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -38,7 +36,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *
  * @generated
  */
-public class ErrorTypeLiteralImpl extends MinimalEObjectImpl.Container implements ErrorTypeLiteral {
+public class ErrorTypeLiteralImpl extends ExpressionImpl implements ErrorTypeLiteral {
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -252,12 +250,6 @@ public class ErrorTypeLiteralImpl extends MinimalEObjectImpl.Container implement
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Expression.class) {
-			switch (derivedFeatureID) {
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Literal.class) {
 			switch (derivedFeatureID) {
 				default:
@@ -282,12 +274,6 @@ public class ErrorTypeLiteralImpl extends MinimalEObjectImpl.Container implement
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Expression.class) {
-			switch (baseFeatureID) {
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Literal.class) {
 			switch (baseFeatureID) {
 				default:

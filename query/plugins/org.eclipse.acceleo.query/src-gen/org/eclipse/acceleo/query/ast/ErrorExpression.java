@@ -18,5 +18,5 @@ package org.eclipse.acceleo.query.ast;
  * @model
  * @generated
  */
-public interface ErrorExpression extends org.eclipse.acceleo.query.ast.Error, Expression {
+public interface ErrorExpression extends org.eclipse.acceleo.query.ast.Error {
 } // ErrorExpression

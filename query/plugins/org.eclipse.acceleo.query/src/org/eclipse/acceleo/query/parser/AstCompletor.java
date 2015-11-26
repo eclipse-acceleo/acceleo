@@ -17,6 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
@@ -30,6 +31,8 @@ import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -91,17 +94,53 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 
 		this.validationResult = validationRes;
 		this.variableNames = new ArrayList<String>(varNames);
-		Collections.sort(variableNames);
+
 		final List<Error> errors = validationRes.getAstResult().getErrors();
 		if (errors.size() > 0) {
+			completeVariablesNames(errors.get(0));
 			result = doSwitch(errors.get(0));
 		} else {
+			// TODO completVariablesNames(???);
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
 					.getAstResult().getAst());
 			result = getExpressionTextFollows(possibleTypes);
 		}
 
 		return result;
+	}
+
+	/**
+	 * Completes variable names according to the given {@link Expression}. It adds {@link Let} and
+	 * {@link Lambda} declarations if needed.
+	 * 
+	 * @param exp
+	 *            the {@link Expression} to use as starting point
+	 */
+	private void completeVariablesNames(Expression exp) {
+		Expression current = exp;
+		while (current != null) {
+			if (current instanceof Let) {
+				final Let let = (Let)current;
+				for (Binding binding : let.getBindings()) {
+					if (binding.getName() != null) {
+						variableNames.add(binding.getName());
+					}
+				}
+			} else if (current instanceof Lambda) {
+				final Lambda lambda = (Lambda)current;
+				for (VariableDeclaration declaration : lambda.getParameters()) {
+					if (declaration.getName() != null) {
+						variableNames.add(declaration.getName());
+					}
+				}
+			}
+			if (current.eContainer() instanceof Expression) {
+				current = (Expression)current.eContainer();
+			} else {
+				current = null;
+			}
+		}
+		Collections.sort(variableNames);
 	}
 
 	/**

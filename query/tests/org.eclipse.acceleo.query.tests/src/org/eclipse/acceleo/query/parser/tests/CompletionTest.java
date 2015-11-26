@@ -43,6 +43,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -540,7 +541,7 @@ public class CompletionTest {
 	public void testLetBodyCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("let a=3 in ", 11, variableTypes);
 
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL + 1, completionResult.getProposals(
 				new BasicFilter(completionResult)).size());
 		assertEquals(11, completionResult.getReplacementOffset());
 		assertEquals(0, completionResult.getReplacementLength());
@@ -1347,6 +1348,78 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents(self ", 23, types);
 
 		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	@Test
+	public void inSelectVariable() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self->select(a | ", 17, types);
+
+		final List<ICompletionProposal> proposals = completionResult.getProposals(new BasicFilter(
+				completionResult));
+		boolean variableAFound = false;
+		for (ICompletionProposal proposal : proposals) {
+			if ("a".equals(proposal.getProposal())) {
+				variableAFound = true;
+				break;
+			}
+		}
+		assertTrue(variableAFound);
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, proposals.size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	@Test
+	public void inLetVariable() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("let a = self in ", 16, types);
+
+		final List<ICompletionProposal> proposals = completionResult.getProposals(new BasicFilter(
+				completionResult));
+		boolean variableAFound = false;
+		for (ICompletionProposal proposal : proposals) {
+			if ("a".equals(proposal.getProposal())) {
+				variableAFound = true;
+				break;
+			}
+		}
+		assertTrue(variableAFound);
+		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, proposals.size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+	}
+
+	@Test
+	public void inLetVariableInSecondBinding() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("let a = self, b = ", 18, types);
+
+		final List<ICompletionProposal> proposals = completionResult.getProposals(new BasicFilter(
+				completionResult));
+		boolean variableAFound = false;
+		for (ICompletionProposal proposal : proposals) {
+			if ("a".equals(proposal.getProposal())) {
+				variableAFound = true;
+				break;
+			}
+		}
+		assertFalse(variableAFound);
+		assertEquals(130, proposals.size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 	}

@@ -24,7 +24,7 @@ package org.eclipse.acceleo.query.ast;
  * @model
  * @generated
  */
-public interface ErrorFeatureAccessOrCall extends org.eclipse.acceleo.query.ast.Error, Expression {
+public interface ErrorFeatureAccessOrCall extends org.eclipse.acceleo.query.ast.Error {
 	/**
 	 * Returns the value of the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc -->
 	 * <p>

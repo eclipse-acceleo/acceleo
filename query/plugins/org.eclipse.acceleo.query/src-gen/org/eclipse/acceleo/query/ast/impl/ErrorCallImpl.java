@@ -23,7 +23,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -43,7 +42,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class ErrorCallImpl extends MinimalEObjectImpl.Container implements ErrorCall {
+public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	/**
 	 * The default value of the '{@link #getServiceName() <em>Service Name</em>}' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -324,12 +323,6 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == Expression.class) {
-			switch (derivedFeatureID) {
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Call.class) {
 			switch (derivedFeatureID) {
 				case AstPackage.ERROR_CALL__SERVICE_NAME:
@@ -352,12 +345,6 @@ public class ErrorCallImpl extends MinimalEObjectImpl.Container implements Error
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == Expression.class) {
-			switch (baseFeatureID) {
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Call.class) {
 			switch (baseFeatureID) {
 				case AstPackage.CALL__SERVICE_NAME:

@@ -18,7 +18,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Error Feature Access Or Call</b></em>
@@ -32,7 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ErrorFeatureAccessOrCallImpl extends MinimalEObjectImpl.Container implements ErrorFeatureAccessOrCall {
+public class ErrorFeatureAccessOrCallImpl extends ExpressionImpl implements ErrorFeatureAccessOrCall {
 	/**
 	 * The cached value of the '{@link #getTarget() <em>Target</em>}' containment reference. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->

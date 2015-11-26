@@ -770,7 +770,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FEATURE_COUNT = 0;
+	int ERROR_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Error</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -778,7 +778,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_OPERATION_COUNT = 0;
+	int ERROR_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorExpressionImpl
