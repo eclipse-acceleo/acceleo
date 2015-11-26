@@ -28,8 +28,12 @@ Export-Package: nooperationreflection,
  org.eclipse.acceleo.query.runtime.test;x-friends:="org.eclipse.acceleo.query.compat.tests",
  org.eclipse.acceleo.query.services.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
  org.eclipse.acceleo.query.tests;x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.tests.runtime.impl,
+ org.eclipse.acceleo.query.tests.runtime.impl.completion,
+ org.eclipse.acceleo.query.tests.runtime.lookup.basic,
  org.eclipse.acceleo.query.tests.services;x-friends:="org.eclipse.acceleo.query.compat.tests",
- org.eclipse.acceleo.query.tests.unit;x-friends:="org.eclipse.acceleo.query.compat.tests"
+ org.eclipse.acceleo.query.tests.unit;x-friends:="org.eclipse.acceleo.query.compat.tests",
+ org.eclipse.acceleo.query.tests.validation.types
 Import-Package: com.google.common.base,
  com.google.common.collect;version="13.0.0",
  org.antlr.v4.runtime

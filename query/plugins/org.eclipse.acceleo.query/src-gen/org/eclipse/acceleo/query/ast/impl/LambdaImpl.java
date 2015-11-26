@@ -10,17 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.impl;
 
-import com.google.common.collect.Maps;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.Map;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
-import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -64,26 +59,6 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 	 * @ordered
 	 */
 	protected Expression expression;
-
-	/**
-	 * The default value of the '{@link #getEvaluator() <em>Evaluator</em>}' attribute. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @see #getEvaluator()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final AstEvaluator EVALUATOR_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getEvaluator() <em>Evaluator</em>}' attribute. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @see #getEvaluator()
-	 * @generated
-	 * @ordered
-	 */
-	protected AstEvaluator evaluator = EVALUATOR_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -172,45 +147,6 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 	 * 
 	 * @generated
 	 */
-	public AstEvaluator getEvaluator() {
-		return evaluator;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public void setEvaluator(AstEvaluator newEvaluator) {
-		AstEvaluator oldEvaluator = evaluator;
-		evaluator = newEvaluator;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.LAMBDA__EVALUATOR, oldEvaluator,
-					evaluator));
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-	public Object eval(Object[] args) {
-		// XXX : maybe we should use a gap generator pattern here but right now it doesn't seem worth it.
-		// XXX : could we have
-		Map<String, Object> variables = Maps.newHashMap();
-		int argc = args.length;
-		for (int i = 0; i < argc; i++) {
-			variables.put(getParameters().get(i).getName(), args[i]);
-		}
-		// TODO should we return the EvaluationResult object from here?
-		return this.getEvaluator().eval(variables, this.getExpression()).getResult();
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -234,8 +170,6 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 				return getParameters();
 			case AstPackage.LAMBDA__EXPRESSION:
 				return getExpression();
-			case AstPackage.LAMBDA__EVALUATOR:
-				return getEvaluator();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -256,9 +190,6 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 			case AstPackage.LAMBDA__EXPRESSION:
 				setExpression((Expression)newValue);
 				return;
-			case AstPackage.LAMBDA__EVALUATOR:
-				setEvaluator((AstEvaluator)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -277,9 +208,6 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 			case AstPackage.LAMBDA__EXPRESSION:
 				setExpression((Expression)null);
 				return;
-			case AstPackage.LAMBDA__EVALUATOR:
-				setEvaluator(EVALUATOR_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -296,41 +224,8 @@ public class LambdaImpl extends LiteralImpl implements Lambda {
 				return parameters != null && !parameters.isEmpty();
 			case AstPackage.LAMBDA__EXPRESSION:
 				return expression != null;
-			case AstPackage.LAMBDA__EVALUATOR:
-				return EVALUATOR_EDEFAULT == null ? evaluator != null : !EVALUATOR_EDEFAULT.equals(evaluator);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case AstPackage.LAMBDA___EVAL__OBJECT:
-				return eval((Object[])arguments.get(0));
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy())
-			return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (evaluator: ");
-		result.append(evaluator);
-		result.append(')');
-		return result.toString();
 	}
 
 } // LambdaImpl

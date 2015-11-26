@@ -51,7 +51,7 @@ import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -101,7 +101,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Local variable types usable during validation.
 	 */
-	private final Stack<Map<String, Set<IType>>> variableTypesStack = new Stack<Map<String, Set<IType>>>();
+	private final Stack<Map<String, Set<IType>>> variableTypesStack;
 
 	/**
 	 * Set of {@link IValidationMessage}.
@@ -112,13 +112,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * Constructor.
 	 * 
 	 * @param environment
-	 *            the {@link IQueryEnvironment} used to validate
-	 * @param variableTypes
-	 *            the set of defined variables.
+	 *            the {@link IReadOnlyQueryEnvironment} used to validate
 	 */
-	public AstValidator(IQueryEnvironment environment, Map<String, Set<IType>> variableTypes) {
-		this.variableTypesStack.push(variableTypes);
+	public AstValidator(IReadOnlyQueryEnvironment environment) {
 		this.services = new ValidationServices(environment);
+		this.variableTypesStack = new Stack<Map<String, Set<IType>>>();
 	}
 
 	/**
@@ -762,14 +760,18 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Validates the given {@link AstResult}.
 	 * 
+	 * @param variableTypes
+	 *            the set of defined variables.
 	 * @param astResult
 	 *            the {@link AstResult}
 	 * @return the {@link IValidationResult}
 	 */
-	public IValidationResult validate(AstResult astResult) {
+	public IValidationResult validate(Map<String, Set<IType>> variableTypes, AstResult astResult) {
 		validationResult = new ValidationResult(astResult);
 
+		this.variableTypesStack.push(variableTypes);
 		doSwitch(astResult.getAst());
+		this.variableTypesStack.pop();
 		validationResult.getMessages().addAll(messages);
 		messages = new LinkedHashSet<IValidationMessage>();
 

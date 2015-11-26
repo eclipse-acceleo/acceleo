@@ -14,7 +14,6 @@ import org.eclipse.acceleo.query.ast.test.AstBuilderTest;
 import org.eclipse.acceleo.query.ast.test.AstEvaluatorTest;
 import org.eclipse.acceleo.query.parser.tests.BuildTest;
 import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
-import org.eclipse.acceleo.query.parser.tests.CompletionCheck;
 import org.eclipse.acceleo.query.parser.tests.CompletionTest;
 import org.eclipse.acceleo.query.parser.tests.EvaluationTest;
 import org.eclipse.acceleo.query.parser.tests.LexerTest;
@@ -24,7 +23,6 @@ import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupCrossReference
 import org.eclipse.acceleo.query.runtime.servicelookup.BasicLookupTest;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServiceStatusTests;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServicesTest;
-import org.eclipse.acceleo.query.runtime.test.ScopedEnvironmentTests;
 import org.eclipse.acceleo.query.runtime.test.ShortcutEvaluationTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesValidationTest;
@@ -44,7 +42,6 @@ import org.eclipse.acceleo.query.services.tests.StringServicesTest;
 import org.eclipse.acceleo.query.services.tests.StringServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesValidationTest;
-import org.eclipse.acceleo.query.tests.runtime.impl.EPackageProviderTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.QueryEnvironmentTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.completion.EFeatureCompletionProposalTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.completion.EOperationCompletionProposalTests;
@@ -78,11 +75,10 @@ import org.junit.runners.Suite.SuiteClasses;
 		NumberServicesValidationTest.class, StringServicesTest.class, StringServicesValidationTest.class,
 		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
 		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
-		LookupEngineTest.class, ShortcutEvaluationTest.class, ScopedEnvironmentTests.class,
-		ResourceServicesTest.class, ResourceServicesValidationTest.class,
-		ServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
-		EOperationCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
-		QueryEnvironmentTests.class, EPackageProviderTests.class, CompletionCheck.class, })
+		LookupEngineTest.class, ShortcutEvaluationTest.class, ResourceServicesTest.class,
+		ResourceServicesValidationTest.class, ServiceCompletionProposalTests.class,
+		EFeatureCompletionProposalTests.class, EOperationCompletionProposalTests.class,
+		ValidationInferrenceTest.class, TypeTests.class, QueryEnvironmentTests.class, })
 public class AllTests {
 
 }

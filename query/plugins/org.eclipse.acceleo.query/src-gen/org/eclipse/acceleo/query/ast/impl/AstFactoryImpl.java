@@ -43,7 +43,6 @@ import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
-import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -167,10 +166,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createCallTypeFromString(eDataType, initialValue);
 			case AstPackage.OBJECT_TYPE:
 				return createObjectTypeFromString(eDataType, initialValue);
-			case AstPackage.AST_EVALUATOR:
-				return createAstEvaluatorFromString(eDataType, initialValue);
-			case AstPackage.OBJECT_ARRAY:
-				return createObjectArrayFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName()
 						+ "' is not a valid classifier");
@@ -189,10 +184,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return convertCallTypeToString(eDataType, instanceValue);
 			case AstPackage.OBJECT_TYPE:
 				return convertObjectTypeToString(eDataType, instanceValue);
-			case AstPackage.AST_EVALUATOR:
-				return convertAstEvaluatorToString(eDataType, instanceValue);
-			case AstPackage.OBJECT_ARRAY:
-				return convertObjectArrayToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName()
 						+ "' is not a valid classifier");
@@ -527,42 +518,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	 */
 	public String convertObjectTypeToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public AstEvaluator createAstEvaluatorFromString(EDataType eDataType, String initialValue) {
-		return (AstEvaluator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public String convertAstEvaluatorToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public Object[] createObjectArrayFromString(EDataType eDataType, String initialValue) {
-		return (Object[])super.createFromString(initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public String convertObjectArrayToString(EDataType eDataType, Object instanceValue) {
-		return super.convertToString(instanceValue);
 	}
 
 	/**

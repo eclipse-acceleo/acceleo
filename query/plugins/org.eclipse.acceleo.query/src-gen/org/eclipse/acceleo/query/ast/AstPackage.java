@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -582,30 +581,13 @@ public interface AstPackage extends EPackage {
 	int LAMBDA__EXPRESSION = LITERAL_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Evaluator</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int LAMBDA__EVALUATOR = LITERAL_FEATURE_COUNT + 2;
-
-	/**
 	 * The number of structural features of the '<em>Lambda</em>' class. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int LAMBDA_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 3;
-
-	/**
-	 * The operation id for the '<em>Eval</em>' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int LAMBDA___EVAL__OBJECT = LITERAL_OPERATION_COUNT + 0;
+	int LAMBDA_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Lambda</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -613,7 +595,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int LAMBDA_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 1;
+	int LAMBDA_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.NullLiteralImpl
@@ -1408,25 +1390,6 @@ public interface AstPackage extends EPackage {
 	int OBJECT_TYPE = 32;
 
 	/**
-	 * The meta object id for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
-	 * @see org.eclipse.acceleo.query.parser.AstEvaluator
-	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
-	 * @generated
-	 */
-	int AST_EVALUATOR = 33;
-
-	/**
-	 * The meta object id for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 * 
-	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
-	 * @generated
-	 */
-	int OBJECT_ARRAY = 34;
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
 	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1749,27 +1712,6 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getLambda_Expression();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator
-	 * <em>Evaluator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Evaluator</em>'.
-	 * @see org.eclipse.acceleo.query.ast.Lambda#getEvaluator()
-	 * @see #getLambda()
-	 * @generated
-	 */
-	EAttribute getLambda_Evaluator();
-
-	/**
-	 * Returns the meta object for the '{@link org.eclipse.acceleo.query.ast.Lambda#eval(java.lang.Object[])
-	 * <em>Eval</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the '<em>Eval</em>' operation.
-	 * @see org.eclipse.acceleo.query.ast.Lambda#eval(java.lang.Object[])
-	 * @generated
-	 */
-	EOperation getLambda__Eval__Object();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.NullLiteral
@@ -2190,27 +2132,6 @@ public interface AstPackage extends EPackage {
 	EDataType getObjectType();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.acceleo.query.parser.AstEvaluator
-	 * <em>Evaluator</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for data type '<em>Evaluator</em>'.
-	 * @see org.eclipse.acceleo.query.parser.AstEvaluator
-	 * @model instanceClass="org.eclipse.acceleo.query.parser.AstEvaluator"
-	 * @generated
-	 */
-	EDataType getAstEvaluator();
-
-	/**
-	 * Returns the meta object for data type '<em>Object Array</em>'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @return the meta object for data type '<em>Object Array</em>'.
-	 * @model instanceClass="java.lang.Object[]"
-	 * @generated
-	 */
-	EDataType getObjectArray();
-
-	/**
 	 * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -2501,22 +2422,6 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LAMBDA__EXPRESSION = eINSTANCE.getLambda_Expression();
-
-		/**
-		 * The meta object literal for the '<em><b>Evaluator</b></em>' attribute feature. <!-- begin-user-doc
-		 * --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute LAMBDA__EVALUATOR = eINSTANCE.getLambda_Evaluator();
-
-		/**
-		 * The meta object literal for the '<em><b>Eval</b></em>' operation. <!-- begin-user-doc --> <!--
-		 * end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EOperation LAMBDA___EVAL__OBJECT = eINSTANCE.getLambda__Eval__Object();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.NullLiteralImpl
@@ -2863,25 +2768,6 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType OBJECT_TYPE = eINSTANCE.getObjectType();
-
-		/**
-		 * The meta object literal for the '<em>Evaluator</em>' data type. <!-- begin-user-doc --> <!--
-		 * end-user-doc -->
-		 * 
-		 * @see org.eclipse.acceleo.query.parser.AstEvaluator
-		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAstEvaluator()
-		 * @generated
-		 */
-		EDataType AST_EVALUATOR = eINSTANCE.getAstEvaluator();
-
-		/**
-		 * The meta object literal for the '<em>Object Array</em>' data type. <!-- begin-user-doc --> <!--
-		 * end-user-doc -->
-		 * 
-		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectArray()
-		 * @generated
-		 */
-		EDataType OBJECT_ARRAY = eINSTANCE.getObjectArray();
 
 	}
 

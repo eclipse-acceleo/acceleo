@@ -710,7 +710,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedByNullSet() {
-		LambdaValue zeroLambda = new LambdaValue(null, null) {
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1 && args[0] instanceof String) {
@@ -726,7 +726,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedByNullList() {
-		LambdaValue zeroLambda = new LambdaValue(null, null) {
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1 && args[0] instanceof String) {
@@ -742,7 +742,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedBySetWithNull() {
-		LambdaValue nameLambda = new LambdaValue(null, null) {
+		LambdaValue nameLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1) {
@@ -776,7 +776,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedByListWithNull() {
-		LambdaValue nameLambda = new LambdaValue(null, null) {
+		LambdaValue nameLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1) {
@@ -810,7 +810,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedBySet() {
-		LambdaValue zeroLambda = new LambdaValue(null, null) {
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1 && args[0] instanceof String) {
@@ -833,7 +833,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedByList() {
-		LambdaValue zeroLambda = new LambdaValue(null, null) {
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1 && args[0] instanceof String) {
@@ -856,7 +856,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedByEObjectName() {
-		LambdaValue nameLambda = new LambdaValue(null, null) {
+		LambdaValue nameLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length == 1 && args[0] instanceof ENamedElement) {
@@ -894,7 +894,9 @@ public class CollectionServicesTest {
 
 		List<Object> nullList = null;
 		try {
-			collectionServices.select(nullList, new LambdaValue(lambda, evaluator));
+
+			collectionServices.select(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -914,7 +916,8 @@ public class CollectionServicesTest {
 		List<Object> newList = collectionServices.select(list, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.select(list, new LambdaValue(lambda, evaluator));
+		newList = collectionServices.select(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -935,7 +938,9 @@ public class CollectionServicesTest {
 
 		List<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -955,7 +960,8 @@ public class CollectionServicesTest {
 		List<Object> newList = collectionServices.reject(list, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(list, new LambdaValue(lambda, evaluator));
+		newList = collectionServices.reject(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -972,7 +978,9 @@ public class CollectionServicesTest {
 
 		Set<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -992,7 +1000,8 @@ public class CollectionServicesTest {
 		Set<Object> newList = collectionServices.reject(set, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(set, new LambdaValue(lambda, evaluator));
+		newList = collectionServices.reject(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -1009,7 +1018,9 @@ public class CollectionServicesTest {
 
 		List<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -1029,7 +1040,8 @@ public class CollectionServicesTest {
 		List<Object> newList = collectionServices.reject(list, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(list, new LambdaValue(lambda, evaluator));
+		newList = collectionServices.reject(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -1046,7 +1058,9 @@ public class CollectionServicesTest {
 
 		Set<Object> nullList = null;
 		try {
-			collectionServices.reject(nullList, new LambdaValue(lambda, evaluator));
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -1066,7 +1080,8 @@ public class CollectionServicesTest {
 		Set<Object> newList = collectionServices.reject(set, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.reject(set, new LambdaValue(lambda, evaluator));
+		newList = collectionServices.reject(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -1075,7 +1090,7 @@ public class CollectionServicesTest {
 	 */
 	@Test
 	public void testCollectImplicitFlattenList() {
-		LambdaValue lambdaValue = new LambdaValue(null, null) {
+		LambdaValue lambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return EcorePackage.eINSTANCE.getEClassifiers();
@@ -1095,7 +1110,7 @@ public class CollectionServicesTest {
 	 */
 	@Test
 	public void testCollectImplicitFlattenSet() {
-		LambdaValue lambdaValue = new LambdaValue(null, null) {
+		LambdaValue lambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return EcorePackage.eINSTANCE.getEClassifiers();
@@ -1115,7 +1130,7 @@ public class CollectionServicesTest {
 	 */
 	@Test
 	public void testCollectNothingNullList() {
-		LambdaValue nullLambdaValue = new LambdaValue(null, null) {
+		LambdaValue nullLambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return null;
@@ -1127,7 +1142,7 @@ public class CollectionServicesTest {
 		List<Object> result = collectionServices.collect(list, nullLambdaValue);
 		assertEquals(0, result.size());
 
-		LambdaValue nothingLambdaValue = new LambdaValue(null, null) {
+		LambdaValue nothingLambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return new Nothing("");
@@ -1145,7 +1160,7 @@ public class CollectionServicesTest {
 	 */
 	@Test
 	public void testCollectNothingNullSet() {
-		LambdaValue nullLambdaValue = new LambdaValue(null, null) {
+		LambdaValue nullLambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return null;
@@ -1157,7 +1172,7 @@ public class CollectionServicesTest {
 		Set<Object> result = collectionServices.collect(set, nullLambdaValue);
 		assertEquals(0, result.size());
 
-		LambdaValue nothingLambdaValue = new LambdaValue(null, null) {
+		LambdaValue nothingLambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return new Nothing("");
@@ -1183,7 +1198,9 @@ public class CollectionServicesTest {
 
 		Set<Object> nullList = null;
 		try {
-			collectionServices.select(nullList, new LambdaValue(lambda, evaluator));
+
+			collectionServices.select(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
 			fail("The collectionServices must throw a NPE");
 		} catch (Exception exception) {
 			// Do nothing we expect the NPE
@@ -1203,7 +1220,8 @@ public class CollectionServicesTest {
 		Set<Object> newList = collectionServices.select(set, null);
 		assertEquals(0, newList.size());
 
-		newList = collectionServices.select(set, new LambdaValue(lambda, evaluator));
+		newList = collectionServices.select(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(0, newList.size());
 	}
 
@@ -1598,7 +1616,7 @@ public class CollectionServicesTest {
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
 				selfDeclaration);
 
-		collectionServices.any(null, new LambdaValue(lambda, evaluator));
+		collectionServices.any(null, new LambdaValue(lambda, new HashMap<String, Object>(), evaluator));
 	}
 
 	@Test
@@ -1642,7 +1660,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(set, new LambdaValue(lambda, evaluator));
+		Object result = collectionServices.any(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(null, result);
 	}
 
@@ -1663,7 +1682,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(list, new LambdaValue(lambda, evaluator));
+		Object result = collectionServices.any(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(null, result);
 	}
 
@@ -1684,7 +1704,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(set, new LambdaValue(lambda, evaluator));
+		Object result = collectionServices.any(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Integer.valueOf(3), result);
 	}
 
@@ -1705,7 +1726,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(list, new LambdaValue(lambda, evaluator));
+		Object result = collectionServices.any(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Integer.valueOf(3), result);
 	}
 
@@ -1777,7 +1799,8 @@ public class CollectionServicesTest {
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
 				selfDeclaration);
 
-		assertEquals(Boolean.FALSE, collectionServices.exists(null, new LambdaValue(lambda, evaluator)));
+		assertEquals(Boolean.FALSE, collectionServices.exists(null, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator)));
 	}
 
 	@Test
@@ -1821,7 +1844,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1842,7 +1866,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.exists(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1863,7 +1888,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1884,7 +1910,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.exists(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -1899,7 +1926,8 @@ public class CollectionServicesTest {
 		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
 				selfDeclaration);
 
-		assertEquals(Boolean.FALSE, collectionServices.forAll(null, new LambdaValue(lambda, evaluator)));
+		assertEquals(Boolean.FALSE, collectionServices.forAll(null, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator)));
 	}
 
 	@Test
@@ -1943,7 +1971,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1964,7 +1993,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1985,7 +2015,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2006,7 +2037,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2027,7 +2059,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2048,7 +2081,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2446,7 +2480,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2466,7 +2501,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2485,7 +2521,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2505,7 +2542,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2549,7 +2587,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.one(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2569,7 +2608,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(set, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.one(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2588,7 +2628,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.one(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2608,7 +2649,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(list, new LambdaValue(lambda, evaluator));
+		Boolean result = collectionServices.one(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 

@@ -164,9 +164,9 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		for (Variable var : q.getVariables()) {
 			variableTypes.put(var.getName(), varTypeSwitch.doSwitch(var));
 		}
-		final AstValidator validator = new AstValidator(queryEnvironment, variableTypes);
+		final AstValidator validator = new AstValidator(queryEnvironment);
 
-		return transformResult(q, validator.validate(astResult));
+		return transformResult(q, validator.validate(variableTypes, astResult));
 	}
 
 	private QueryValidationResult transformResult(Query query, IValidationResult validationResult) {

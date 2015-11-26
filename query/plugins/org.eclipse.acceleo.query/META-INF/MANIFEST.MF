@@ -13,6 +13,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.acceleo.query.ast;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
  org.eclipse.acceleo.query.ast.impl;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
  org.eclipse.acceleo.query.ast.util;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
+ org.eclipse.acceleo.query.ast.validation,
  org.eclipse.acceleo.query.parser;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
  org.eclipse.acceleo.query.runtime;version="3.6.0",
  org.eclipse.acceleo.query.runtime.impl;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",

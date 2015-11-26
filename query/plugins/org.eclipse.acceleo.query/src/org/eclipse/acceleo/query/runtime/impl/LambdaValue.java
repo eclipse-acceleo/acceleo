@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import com.google.common.collect.Maps;
-
 import java.util.Map;
 
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
 
 /**
  * Values of type Lambda must be represented by a Java Object other than the Ast.
@@ -28,41 +27,48 @@ public class LambdaValue {
 	 * The evaluator used to get a value out of the lambda. The evaluator captures the environment in which
 	 * the lambda has been created.
 	 */
-	private AstEvaluator evaluator;
+	private final AstEvaluator evaluator;
 
 	/**
 	 * The ast used to represent the lambda.
 	 */
-	private Lambda lambdaLiteral;
+	private final Lambda lambdaLiteral;
+
+	/**
+	 * Environment variables value.
+	 */
+	private final Map<String, Object> variables;
 
 	/**
 	 * Creates a new {@link LambdaValue} instance.
 	 * 
 	 * @param literal
-	 *            the lambda literal this is a value of.
+	 *            the lambda literal this is a value of
+	 * @param variables
+	 *            environment variable
 	 * @param envEvaluator
-	 *            the evaluator capturing the environment.
+	 *            the evaluator capturing the environment
 	 */
-	public LambdaValue(Lambda literal, AstEvaluator envEvaluator) {
+	public LambdaValue(Lambda literal, Map<String, Object> variables, AstEvaluator envEvaluator) {
 		this.evaluator = envEvaluator;
 		this.lambdaLiteral = literal;
+		this.variables = variables;
 	}
 
 	/**
 	 * Returns the value obtained by evaluating the lambda on the specified arguments.
 	 * 
 	 * @param args
-	 *            the call arguments.
-	 * @return the result of calling the lambda on the specified argument.
+	 *            the call arguments
+	 * @return the result of calling the lambda on the specified argument
 	 */
 	public Object eval(Object[] args) {
-		Map<String, Object> variables = Maps.newHashMap();
-		int argc = args.length;
+		int argc = lambdaLiteral.getParameters().size();
 		for (int i = 0; i < argc; i++) {
 			variables.put(lambdaLiteral.getParameters().get(i).getName(), args[i]);
 		}
-		// TODO isn't this redundant with LambdaImpl.eval? Should we return the EvaluationResult from here?
-		return evaluator.eval(variables, lambdaLiteral.getExpression()).getResult();
+		final EvaluationResult evalResult = evaluator.eval(variables, lambdaLiteral.getExpression());
+		return evalResult.getResult();
 	}
 
 }

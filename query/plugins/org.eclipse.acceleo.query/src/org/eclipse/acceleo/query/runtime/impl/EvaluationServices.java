@@ -18,12 +18,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.BasicEList;
@@ -59,9 +60,9 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * Creates a new {@link EvaluationServices} instance given a lookupEngine and logging flag.
 	 * 
 	 * @param queryEnv
-	 *            the {@link IQueryEnvironment} to use during evaluation
+	 *            the {@link IReadOnlyQueryEnvironment} to use during evaluation
 	 */
-	public EvaluationServices(IQueryEnvironment queryEnv) {
+	public EvaluationServices(IReadOnlyQueryEnvironment queryEnv) {
 		super(queryEnv);
 	}
 
@@ -77,10 +78,10 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return Returns the value of the specified variable in the specified map or nothing.
 	 */
-	public Object getVariableValue(ScopedEnvironment variableDefinitions, String variableName,
+	public Object getVariableValue(Map<String, Object> variableDefinitions, String variableName,
 			Diagnostic diagnostic) {
 		try {
-			Object result = variableDefinitions.getVariableValue(variableName);
+			Object result = variableDefinitions.get(variableName);
 			if (result == null) {
 				Nothing placeHolder = nothing(VARIABLE_NOT_FOUND, variableName);
 				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);

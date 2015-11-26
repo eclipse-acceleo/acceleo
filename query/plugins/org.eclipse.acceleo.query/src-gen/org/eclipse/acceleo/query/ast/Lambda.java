@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast;
 
-import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -72,41 +71,5 @@ public interface Lambda extends Literal {
 	 * @generated
 	 */
 	void setExpression(Expression value);
-
-	/**
-	 * Returns the value of the '<em><b>Evaluator</b></em>' attribute. <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Evaluator</em>' attribute isn't clear, there really should be more of a
-	 * description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the value of the '<em>Evaluator</em>' attribute.
-	 * @see #setEvaluator(AstEvaluator)
-	 * @see org.eclipse.acceleo.query.ast.AstPackage#getLambda_Evaluator()
-	 * @model dataType="org.eclipse.acceleo.query.ast.AstEvaluator"
-	 * @generated
-	 */
-	AstEvaluator getEvaluator();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.query.ast.Lambda#getEvaluator <em>Evaluator</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value
-	 *            the new value of the '<em>Evaluator</em>' attribute.
-	 * @see #getEvaluator()
-	 * @generated
-	 */
-	void setEvaluator(AstEvaluator value);
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @model dataType="org.eclipse.acceleo.query.ast.ObjectType"
-	 *        argsDataType="org.eclipse.acceleo.query.ast.ObjectArray" argsRequired="true"
-	 * @generated
-	 */
-	Object eval(Object[] args);
 
 } // Lambda

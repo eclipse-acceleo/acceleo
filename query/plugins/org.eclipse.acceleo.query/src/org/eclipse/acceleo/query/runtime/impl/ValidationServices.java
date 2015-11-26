@@ -27,7 +27,7 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -67,9 +67,9 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * Constructor.
 	 * 
 	 * @param queryEnv
-	 *            the {@link IQueryEnvironment} to use during evaluation
+	 *            the {@link IReadOnlyQueryEnvironment} to use during evaluation
 	 */
-	public ValidationServices(IQueryEnvironment queryEnv) {
+	public ValidationServices(IReadOnlyQueryEnvironment queryEnv) {
 		super(queryEnv);
 	}
 

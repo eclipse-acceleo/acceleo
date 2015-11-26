@@ -11,12 +11,12 @@
 package org.eclipse.acceleo.query.runtime.test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -44,7 +44,7 @@ public class EvaluationServiceStatusTests {
 
 	private static final String SERVICE_RETURNS_NULL = "Service serviceReturnsNull(java.lang.Integer) returned a null value";
 
-	ScopedEnvironment variables;
+	Map<String, Object> variables;
 
 	BasicLookupEngine engine;
 
@@ -62,10 +62,9 @@ public class EvaluationServiceStatusTests {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		variables = new ScopedEnvironment();
-		variables.pushScope(new HashMap<String, Object>());
-		variables.defineVariable("x", 1);
-		variables.defineVariable("y", 2);
+		variables = new HashMap<String, Object>();
+		variables.put("x", 1);
+		variables.put("y", 2);
 		services = new EvaluationServices(queryEnvironment);
 	}
 

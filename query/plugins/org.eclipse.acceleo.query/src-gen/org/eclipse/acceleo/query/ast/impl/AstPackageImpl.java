@@ -44,12 +44,10 @@ import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
-import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -291,20 +289,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EDataType objectTypeEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EDataType astEvaluatorEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EDataType objectArrayEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -639,24 +623,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 */
 	public EReference getLambda_Expression() {
 		return (EReference)lambdaEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EAttribute getLambda_Evaluator() {
-		return (EAttribute)lambdaEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EOperation getLambda__Eval__Object() {
-		return lambdaEClass.getEOperations().get(0);
 	}
 
 	/**
@@ -1006,24 +972,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
-	public EDataType getAstEvaluator() {
-		return astEvaluatorEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EDataType getObjectArray() {
-		return objectArrayEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public AstFactory getAstFactory() {
 		return (AstFactory)getEFactoryInstance();
 	}
@@ -1090,8 +1038,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		lambdaEClass = createEClass(LAMBDA);
 		createEReference(lambdaEClass, LAMBDA__PARAMETERS);
 		createEReference(lambdaEClass, LAMBDA__EXPRESSION);
-		createEAttribute(lambdaEClass, LAMBDA__EVALUATOR);
-		createEOperation(lambdaEClass, LAMBDA___EVAL__OBJECT);
 
 		nullLiteralEClass = createEClass(NULL_LITERAL);
 
@@ -1151,8 +1097,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		// Create data types
 		objectTypeEDataType = createEDataType(OBJECT_TYPE);
-		astEvaluatorEDataType = createEDataType(AST_EVALUATOR);
-		objectArrayEDataType = createEDataType(OBJECT_ARRAY);
 	}
 
 	/**
@@ -1312,13 +1256,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEReference(getLambda_Expression(), this.getExpression(), null, "expression", null, 1, 1,
 				Lambda.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getLambda_Evaluator(), this.getAstEvaluator(), "evaluator", null, 0, 1, Lambda.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-
-		EOperation op = initEOperation(getLambda__Eval__Object(), this.getObjectType(), "eval", 0, 1,
-				IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getObjectArray(), "args", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(nullLiteralEClass, NullLiteral.class, "NullLiteral", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -1435,10 +1372,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		// Initialize data types
 		initEDataType(objectTypeEDataType, Object.class, "ObjectType", IS_SERIALIZABLE,
-				!IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(astEvaluatorEDataType, AstEvaluator.class, "AstEvaluator", IS_SERIALIZABLE,
-				!IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(objectArrayEDataType, Object[].class, "ObjectArray", IS_SERIALIZABLE,
 				!IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource

@@ -50,14 +50,10 @@
         eType="#//TypeLiteral" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Lambda" eSuperTypes="#//Literal">
-    <eOperations name="eval" eType="#//ObjectType">
-      <eParameters name="args" lowerBound="1" eType="#//ObjectArray"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
         eType="#//VariableDeclaration" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="evaluator" eType="#//AstEvaluator"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NullLiteral" eSuperTypes="#//Literal"/>
   <eClassifiers xsi:type="ecore:EClass" name="SetInExtensionLiteral" eSuperTypes="#//Literal">
@@ -75,8 +71,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="expression" lowerBound="1"
         eType="#//Expression"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="AstEvaluator" instanceClassName="org.eclipse.acceleo.query.parser.AstEvaluator"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="ObjectArray" instanceClassName="java.lang.Object[]"/>
   <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error #//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorTypeLiteral" eSuperTypes="#//Error #//TypeLiteral">

@@ -14,10 +14,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -39,11 +41,10 @@ import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
-import org.eclipse.acceleo.query.runtime.impl.ScopedEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 
@@ -53,6 +54,7 @@ import org.eclipse.emf.common.util.Diagnostic;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class AstEvaluator extends AstSwitch<Object> {
+
 	/**
 	 * Message used to report bad predicate typing runtime detection.
 	 */
@@ -61,7 +63,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	/**
 	 * Variable definitions used during evaluation.
 	 */
-	private final ScopedEnvironment environment;
+	private final Stack<Map<String, Object>> variablesStack;
 
 	/**
 	 * The evaluation services.
@@ -77,23 +79,9 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 * @param queryEnv
 	 *            the environment used to evaluate.
 	 */
-	public AstEvaluator(IQueryEnvironment queryEnv) {
+	public AstEvaluator(IReadOnlyQueryEnvironment queryEnv) {
 		this.services = new EvaluationServices(queryEnv);
-		this.environment = new ScopedEnvironment();
-	}
-
-	/**
-	 * Creates a new {@link AstEvaluator} given an {@link EvaluationServices} instance and an existing
-	 * {@link ScopedEnvironment}.
-	 * 
-	 * @param evalServices
-	 *            the evaluation services
-	 * @param existingEnvironment
-	 *            the scoped environment
-	 */
-	public AstEvaluator(EvaluationServices evalServices, ScopedEnvironment existingEnvironment) {
-		this.environment = existingEnvironment;
-		this.services = evalServices;
+		variablesStack = new Stack<Map<String, Object>>();
 	}
 
 	/**
@@ -106,10 +94,10 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 * @return the evaluation of the specified ast.
 	 */
 	public EvaluationResult eval(Map<String, Object> varDefinitions, Expression ast) {
-		this.environment.pushScope(varDefinitions);
+		variablesStack.push(varDefinitions);
 		diagnostic = new BasicDiagnostic();
-		Object result = doSwitch(ast);
-		this.environment.popScope();
+		final Object result = doSwitch(ast);
+		variablesStack.pop();
 
 		return new EvaluationResult(result, diagnostic);
 	}
@@ -262,7 +250,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseVarRef(VarRef object) {
-		return services.getVariableValue(environment, object.getVariableName(), diagnostic);
+		return services.getVariableValue(variablesStack.peek(), object.getVariableName(), diagnostic);
 	}
 
 	/**
@@ -272,7 +260,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLambda(Lambda object) {
-		return new LambdaValue(object, new AstEvaluator(services, environment.copy()));
+		return new LambdaValue(object, new HashMap<String, Object>(variablesStack.peek()), this);
 	}
 
 	/**
@@ -359,13 +347,13 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLet(Let object) {
-		Map<String, Object> letEnv = Maps.newHashMap();
+		Map<String, Object> letEnv = Maps.newHashMap(variablesStack.peek());
 		for (Binding binding : object.getBindings()) {
 			letEnv.put(binding.getName(), doSwitch(binding.getValue()));
 		}
-		environment.pushScope(letEnv);
+		variablesStack.push(letEnv);
 		Object result = doSwitch(object.getBody());
-		environment.popScope();
+		variablesStack.pop();
 		return result;
 	}
 

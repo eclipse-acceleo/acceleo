@@ -16,8 +16,6 @@
       <genEnumLiterals ecoreEnumLiteral="ast.ecore#//CallType/COLLECTIONCALL"/>
     </genEnums>
     <genDataTypes ecoreDataType="ast.ecore#//ObjectType"/>
-    <genDataTypes ecoreDataType="ast.ecore#//AstEvaluator"/>
-    <genDataTypes ecoreDataType="ast.ecore#//ObjectArray"/>
     <genClasses image="false" ecoreClass="ast.ecore#//Expression"/>
     <genClasses ecoreClass="ast.ecore#//VarRef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//VarRef/variableName"/>
@@ -59,10 +57,6 @@
     <genClasses ecoreClass="ast.ecore#//Lambda">
       <genFeatures createChild="false" ecoreFeature="ecore:EReference ast.ecore#//Lambda/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Lambda/expression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Lambda/evaluator"/>
-      <genOperations ecoreOperation="ast.ecore#//Lambda/eval">
-        <genParameters ecoreParameter="ast.ecore#//Lambda/eval/args"/>
-      </genOperations>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//NullLiteral"/>
     <genClasses ecoreClass="ast.ecore#//SetInExtensionLiteral">
