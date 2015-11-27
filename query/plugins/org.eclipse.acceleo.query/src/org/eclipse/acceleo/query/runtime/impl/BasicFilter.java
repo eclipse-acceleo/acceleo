@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
+import java.util.regex.Pattern;
+
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IProposalFilter;
@@ -21,6 +23,9 @@ import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionPr
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class BasicFilter implements IProposalFilter {
+	/** Pre-compiled pattern that'll allow us to match proposals with camel case. */
+	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile("([a-z]+|[A-Z][a-z]*)");
+
 	/**
 	 * The {@link ICompletionResult}.
 	 */
@@ -53,7 +58,48 @@ public class BasicFilter implements IProposalFilter {
 			candidateName = ((EClassifierCompletionProposal)proposal).getObject().getName();
 		}
 
-		return startsWithIgnoreCase(candidateName, prefix);
+		return startsWithOrMatchCamelCase(candidateName, prefix);
+	}
+
+	/* visible for testing */
+	/**
+	 * Checks whether the given candidate starts with the given query, or if it matches said query as
+	 * camelCase.
+	 * <p>
+	 * The String "thisIsAPotentialResult" must match the given queries :
+	 * <ul>
+	 * <li>th</li>
+	 * <li>thIAPR</li>
+	 * <li>tIA</li>
+	 * <li>tIAPoR</li>
+	 * <li>thisisa</li>
+	 * <li>thisisA</li>
+	 * </ul>
+	 * However, it will not match :
+	 * <ul>
+	 * <li>tho</li>
+	 * <li>tIaP</li>
+	 * <li>tIApotential</li>
+	 * <li>TIApotential</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param candidate
+	 *            The candidate string.
+	 * @param query
+	 *            The query {@code candidate} must match.
+	 * @return <code>true</code> if {@code candidate} matches {@code query}, <code>false</code> otherwise.
+	 */
+	public static boolean startsWithOrMatchCamelCase(String candidate, String query) {
+		boolean result = false;
+		if (startsWithIgnoreCase(candidate, query)) {
+			result = true;
+		} else if (candidate != null) {
+			// transform the query into a camelCase regex
+			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*";
+			result = candidate.matches(regex);
+		}
+		return result;
 	}
 
 	/**
