@@ -34,8 +34,8 @@ import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -183,7 +183,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		/**
 		 * {@inheritDoc}
 		 *
-		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#getType(org.eclipse.acceleo.query.ast.Call,
+		 * @see org.eclipse.acceleo.query.runtime.impl.JavaMethodService#getType(org.eclipse.acceleo.query.ast.Call,
 		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
 		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
 		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
@@ -580,7 +580,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		} else if ("allInstances".equals(publicMethod.getName())) {
 			result = new AllInstancesService(publicMethod, this);
 		} else {
-			result = new Service(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this);
 		}
 
 		return result;

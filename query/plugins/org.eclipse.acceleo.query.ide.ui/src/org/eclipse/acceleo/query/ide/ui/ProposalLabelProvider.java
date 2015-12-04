@@ -11,13 +11,11 @@
 package org.eclipse.acceleo.query.ide.ui;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -36,7 +34,7 @@ import org.eclipse.swt.widgets.Display;
 public class ProposalLabelProvider extends LabelProvider {
 
 	/**
-	 * Icon for {@link ServiceCompletionProposal}.
+	 * Icon for {@link JavaMethodServiceCompletionProposal}.
 	 */
 	protected Image service;
 
@@ -97,9 +95,8 @@ public class ProposalLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		final String result;
 
-		if (element instanceof ServiceCompletionProposal) {
-			final Method method = ((ServiceCompletionProposal)element).getObject().getServiceMethod();
-			result = serviceSignature(method.getName(), method.getParameterTypes());
+		if (element instanceof JavaMethodServiceCompletionProposal) {
+			result = ((JavaMethodServiceCompletionProposal)element).getObject().getShortSignature();
 		} else if (element instanceof ICompletionProposal) {
 			result = ((ICompletionProposal)element).getProposal();
 		} else {
@@ -112,7 +109,7 @@ public class ProposalLabelProvider extends LabelProvider {
 	@Override
 	public Image getImage(Object element) {
 		final Image result;
-		if (element instanceof ServiceCompletionProposal) {
+		if (element instanceof JavaMethodServiceCompletionProposal) {
 			result = service;
 		} else if (element instanceof TextCompletionProposal) {
 			result = text;
@@ -125,37 +122,6 @@ public class ProposalLabelProvider extends LabelProvider {
 			result = super.getImage(element);
 		}
 		return result;
-	}
-
-	/**
-	 * build up the specified service's signature for reporting.
-	 * 
-	 * @param serviceName
-	 *            the name of the service.
-	 * @param argumentTypes
-	 *            the service's call argument types.
-	 * @return the specified service's signature.
-	 */
-	protected String serviceSignature(String serviceName, Object[] argumentTypes) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(serviceName).append('(');
-		boolean first = true;
-		for (Object argType : argumentTypes) {
-			if (!first) {
-				builder.append(", ");
-			} else {
-				first = false;
-			}
-			if (argType instanceof Class<?>) {
-				builder.append(((Class<?>)argType).getCanonicalName());
-			} else if (argType instanceof EClass) {
-				builder.append("EClass=" + ((EClass)argType).getName());
-			} else {
-				// should not happen
-				builder.append("Object=" + argType.toString());
-			}
-		}
-		return builder.append(')').toString();
 	}
 
 }

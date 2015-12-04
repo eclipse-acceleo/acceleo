@@ -19,11 +19,12 @@ import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -72,16 +73,16 @@ public class CompletionServices extends ValidationServices {
 	}
 
 	/**
-	 * Gets the {@link List} of {@link ServiceCompletionProposal} for {@link IService}.
+	 * Gets the {@link List} of {@link IServiceCompletionProposal} for {@link IService}.
 	 * 
 	 * @param receiverTypes
 	 *            the receiver types.
 	 * @param callType
 	 *            Indicate the type of call used, can be <code>null</code>
-	 * @return the {@link List} of {@link ServiceCompletionProposal} for {@link IService}
+	 * @return the {@link List} of {@link IServiceCompletionProposal} for {@link IService}
 	 */
-	public List<ServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallType callType) {
-		final List<ServiceCompletionProposal> result = new ArrayList<ServiceCompletionProposal>();
+	public List<IServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallType callType) {
+		final List<IServiceCompletionProposal> result = new ArrayList<IServiceCompletionProposal>();
 
 		final Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
 
@@ -103,11 +104,31 @@ public class CompletionServices extends ValidationServices {
 		}
 
 		for (IService service : queryEnvironment.getLookupEngine().getServices(classes)) {
-			if (callType == null
-					|| !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getServiceMethod()
-							.getName())) {
-				result.add(new ServiceCompletionProposal(service));
+			if (callType == null || !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getName())) {
+				final IServiceCompletionProposal serviceCompletionProposal = getServiceCompletionProposal(service);
+				if (serviceCompletionProposal != null) {
+					result.add(serviceCompletionProposal);
+				}
 			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link IServiceCompletionProposal} for the given {@link IService}.
+	 * 
+	 * @param service
+	 *            the {@link IService}
+	 * @return the {@link IServiceCompletionProposal} for the given {@link IService}
+	 */
+	protected IServiceCompletionProposal getServiceCompletionProposal(IService service) {
+		final IServiceCompletionProposal result;
+
+		if (service instanceof JavaMethodService) {
+			result = new JavaMethodServiceCompletionProposal((JavaMethodService)service);
+		} else {
+			result = null;
 		}
 
 		return result;

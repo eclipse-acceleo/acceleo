@@ -28,9 +28,9 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -79,7 +79,7 @@ public class AnyServices extends AbstractServiceProvider {
 		if ("oclAsType".equals(publicMethod.getName())) {
 			result = new OCLAsTypeService(publicMethod, this);
 		} else {
-			result = new Service(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this);
 		}
 
 		return result;
@@ -382,7 +382,7 @@ public class AnyServices extends AbstractServiceProvider {
 				.getRegisteredServices().entrySet()) {
 			result.append("\t" + entry.getKey().getCanonicalName() + LINE_SEP);
 			for (IService service : entry.getValue()) {
-				result.append("\t\t" + service.getServiceMethod().toGenericString() + LINE_SEP);
+				result.append("\t\t" + service.getLongSignature() + LINE_SEP);
 			}
 		}
 		result.append("receiver: ");

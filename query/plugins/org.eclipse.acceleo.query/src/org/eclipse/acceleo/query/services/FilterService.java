@@ -20,8 +20,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.AbstractCollectionType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -39,7 +39,7 @@ import org.eclipse.emf.ecore.EClassifier;
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class FilterService extends Service {
+public class FilterService extends JavaMethodService {
 
 	/**
 	 * The index of the filtering {@link IType}.
@@ -136,10 +136,10 @@ public class FilterService extends Service {
 
 		if (result.isEmpty()) {
 			final NothingType nothing = services.nothing("Nothing will be left after calling %s:"
-					+ builder.toString(), getServiceMethod().getName());
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					+ builder.toString(), getName());
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, nothing));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, nothing));
 			} else {
 				result.add(nothing);

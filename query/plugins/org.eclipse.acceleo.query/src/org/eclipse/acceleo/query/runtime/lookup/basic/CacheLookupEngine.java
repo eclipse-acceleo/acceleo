@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 
 /**
  * Lookup engine are used to retrieve services from a name and a set of arguments. This implementation cache
@@ -30,7 +31,7 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	/**
 	 * No service marker.
 	 */
-	private static final IService NO_SERVICE = new Service(null, null);
+	private static final IService NO_SERVICE = new JavaMethodService(null, null);
 
 	/**
 	 * A node of the cache forest.

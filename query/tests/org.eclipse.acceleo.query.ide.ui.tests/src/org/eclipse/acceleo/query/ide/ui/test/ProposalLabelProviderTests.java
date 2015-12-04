@@ -21,13 +21,13 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ide.ui.ProposalLabelProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -49,20 +49,34 @@ import static org.junit.Assert.assertEquals;
 public class ProposalLabelProviderTests {
 
 	/**
-	 * A test {@link IService}.
+	 * A test {@link JavaMethodService}.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private final class TestService implements IService {
+	private final class TestService extends JavaMethodService {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @throws NoSuchMethodException
+		 *             if the method <code>testService</> can't be found
+		 * @throws SecurityException
+		 *             if the method <code>testService</> can't be accessed
+		 */
+		public TestService() throws NoSuchMethodException, SecurityException {
+			super(ProposalLabelProviderTests.this.getClass().getMethod("testService", String.class,
+					String.class), ProposalLabelProviderTests.this);
+		}
 
 		/**
 		 * {@inheritDoc}
 		 *
 		 * @see org.eclipse.acceleo.query.runtime.IService#getType(Call,
-		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices, IValidationResult, org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices, IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
 		 */
-		public Set<IType> getType(Call call, ValidationServices services,
-				IValidationResult validationResult, IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			result.add(new ClassType(queryEnvironment, String.class));
@@ -125,9 +139,9 @@ public class ProposalLabelProviderTests {
 	private static final class TestProposalLabelProvider extends ProposalLabelProvider {
 
 		/**
-		 * Gets the {@link ServiceCompletionProposal} {@link Image}.
+		 * Gets the {@link JavaMethodServiceCompletionProposal} {@link Image}.
 		 * 
-		 * @return the {@link ServiceCompletionProposal} {@link Image}
+		 * @return the {@link JavaMethodServiceCompletionProposal} {@link Image}
 		 */
 		public Image getServiceImage() {
 			return service;
@@ -252,13 +266,18 @@ public class ProposalLabelProviderTests {
 	}
 
 	/**
-	 * Tests an {@link ServiceCompletionProposal}.
+	 * Tests an {@link JavaMethodServiceCompletionProposal}.
+	 * 
+	 * @throws NoSuchMethodException
+	 *             if the method <code>testService</> can't be found
+	 * @throws SecurityException
+	 *             if the method <code>testService</> can't be accessed
 	 */
 	@Test
-	public void serviceCompletionProposal() {
-		ICompletionProposal completionProposal = new ServiceCompletionProposal(new TestService());
+	public void serviceCompletionProposal() throws NoSuchMethodException, SecurityException {
+		ICompletionProposal completionProposal = new JavaMethodServiceCompletionProposal(new TestService());
 
-		assertEquals("testService(java.lang.String, java.lang.String)", labelProvider
+		assertEquals("testService(java.lang.String,java.lang.String)", labelProvider
 				.getText(completionProposal));
 		assertImagesEquals(labelProvider.getServiceImage(), labelProvider.getImage(completionProposal));
 	}
@@ -304,7 +323,7 @@ public class ProposalLabelProviderTests {
 	}
 
 	/**
-	 * A test {@link IService} {@link Method}.
+	 * A test {@link JavaMethodService} {@link Method}.
 	 * 
 	 * @param a
 	 *            a {@link String}

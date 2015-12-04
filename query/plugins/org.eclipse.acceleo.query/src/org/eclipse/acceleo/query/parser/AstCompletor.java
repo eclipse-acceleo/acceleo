@@ -35,9 +35,9 @@ import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.TextCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
@@ -384,11 +384,11 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	private List<ICompletionProposal> getExpressionTextFollows(Set<IType> possibleTypes) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		final List<ServiceCompletionProposal> servicesProposal = services.getServiceProposals(possibleTypes,
+		final List<IServiceCompletionProposal> servicesProposal = services.getServiceProposals(possibleTypes,
 				null);
 		final Set<String> serviceNames = new HashSet<String>();
-		for (ServiceCompletionProposal proposal : servicesProposal) {
-			serviceNames.add(proposal.getObject().getServiceMethod().getName());
+		for (IServiceCompletionProposal proposal : servicesProposal) {
+			serviceNames.add(proposal.getObject().getName());
 		}
 
 		if (serviceNames.contains(AstBuilderListener.ADD_SERVICE_NAME)) {

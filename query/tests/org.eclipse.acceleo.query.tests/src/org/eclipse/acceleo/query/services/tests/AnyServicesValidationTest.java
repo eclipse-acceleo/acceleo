@@ -41,8 +41,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testEqualsPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("equals", parameterTypes);
+		assertValidation(expectedReturnTypes, "equals", parameterTypes);
 	}
 
 	@Test
@@ -56,8 +57,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testDiffersPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("differs", parameterTypes);
+		assertValidation(expectedReturnTypes, "differs", parameterTypes);
 	}
 
 	@Test
@@ -72,7 +74,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	public void testAddAnyObjectStringPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(String.class) };
 
-		assertNoService("add", parameterTypes);
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
+
+		assertValidation(expectedReturnTypes, "add", parameterTypes);
 	}
 
 	@Test
@@ -86,8 +90,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testAddAnyStringObjectPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(String.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
-		assertNoService("add", parameterTypes);
+		assertValidation(expectedReturnTypes, "add", parameterTypes);
 	}
 
 	@Test
@@ -422,8 +427,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Test
 	public void testToStringPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(String.class) };
 
-		assertNoService("toString", parameterTypes);
+		assertValidation(expectedReturnTypes, "toString", parameterTypes);
 	}
 
 	@Test

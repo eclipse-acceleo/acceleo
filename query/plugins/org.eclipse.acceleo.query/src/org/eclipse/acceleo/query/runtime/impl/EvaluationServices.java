@@ -214,19 +214,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @param parameterTypes
 	 *            the parameter type of the service arguments.
 	 * @param e
-	 *            the exception thrown during the service execution.
+	 *            the {@link AcceleoQueryEvaluationException} thrown during the service execution.
 	 * @return an instance of nothing initialized with the formatted error message and given exception as
 	 *         cause.
 	 */
-	private Nothing nothing(String serviceName, Class<?>[] parameterTypes, Exception e) {
-		Throwable cause;
-		if (e instanceof InvocationTargetException && e.getCause() != null) {
-			cause = e.getCause();
-		} else {
-			cause = e;
-		}
-		String message = "Exception while calling " + serviceSignature(serviceName, parameterTypes);
-		return new Nothing(message, cause);
+	private Nothing nothing(String serviceName, Class<?>[] parameterTypes, AcceleoQueryEvaluationException e) {
+		return new Nothing(e.getMessage(), e);
 	}
 
 	/**
@@ -260,23 +253,20 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return the value produced by the service execution.
 	 */
 	private Object callService(IService service, Object[] arguments, Diagnostic diagnostic) {
-		Method method = service.getServiceMethod();
 		Object result;
 		try {
-			result = method.invoke(service.getServiceInstance(), arguments);
+			result = service.invoke(arguments);
 			if (result == null) {
 				Class<?>[] argumentTypes = getArgumentTypes(arguments);
-				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, serviceSignature(method.getName(),
+				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, serviceSignature(service.getName(),
 						argumentTypes));
 				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
 				// TODO why are we not returning that one?
 			}
 			return result;
-			// CHECKSTYLE:OFF
-		} catch (Exception e) {
-			// CHECKSTYLE:ON
+		} catch (AcceleoQueryEvaluationException e) {
 			Class<?>[] argumentTypes = getArgumentTypes(arguments);
-			Nothing placeHolder = nothing(service.getServiceMethod().getName(), argumentTypes, e);
+			Nothing placeHolder = nothing(service.getName(), argumentTypes, e);
 			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
 			return placeHolder;
 		}
@@ -651,7 +641,9 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @param argumentTypes
 	 *            the service's call argument types.
 	 * @return the specified service's signature.
+	 * @deprecated use {@link IService#getShortSignature()}
 	 */
+	@Deprecated
 	protected String serviceSignature(String serviceName, Object[] argumentTypes) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(serviceName).append('(');

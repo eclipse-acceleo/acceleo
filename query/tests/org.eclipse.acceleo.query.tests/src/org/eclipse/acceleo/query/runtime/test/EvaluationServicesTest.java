@@ -696,7 +696,10 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
-		assertTrue(status.getChildren().get(0).getException() instanceof NullPointerException);
+		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
+		assertTrue(status.getChildren().get(0).getException().getCause() instanceof InvocationTargetException);
+		assertTrue(((InvocationTargetException)status.getChildren().get(0).getException().getCause())
+				.getTargetException() instanceof NullPointerException);
 	}
 
 	/**
@@ -709,7 +712,10 @@ public class EvaluationServicesTest {
 		assertTrue(result instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
-		assertTrue(status.getChildren().get(0).getException() instanceof NullPointerException);
+		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
+		assertTrue(status.getChildren().get(0).getException().getCause() instanceof InvocationTargetException);
+		assertTrue(((InvocationTargetException)status.getChildren().get(0).getException().getCause())
+				.getTargetException() instanceof NullPointerException);
 	}
 
 	/**

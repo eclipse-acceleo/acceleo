@@ -10,72 +10,71 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Result of a {@link IQueryEnvironment#registerServicePackage(Class) service package registration}.
+ * Result of a service package registration.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public final class ServiceRegistrationResult {
 
 	/**
-	 * The {@link List} of registered {@link Method}.
+	 * The {@link List} of registered {@link IService}.
 	 */
-	private final List<Method> registered = new ArrayList<Method>();
+	private final List<IService> registered = new ArrayList<IService>();
 
 	/**
-	 * Mapping from newly registered methods and {@link Method} it duplicates.
+	 * Mapping from newly registered services and {@link IService} it duplicates.
 	 */
-	private final Map<Method, List<Method>> duplicated = new LinkedHashMap<Method, List<Method>>();
+	private final Map<IService, List<IService>> duplicated = new LinkedHashMap<IService, List<IService>>();
 
 	/**
-	 * Mapping from newly registered methods and {@link Method} it masks.
+	 * Mapping from newly registered services and {@link IService} it masks.
 	 */
-	private final Map<Method, List<Method>> masked = new LinkedHashMap<Method, List<Method>>();
+	private final Map<IService, List<IService>> masked = new LinkedHashMap<IService, List<IService>>();
 
 	/**
-	 * Mapping from newly registered methods and {@link Method} it is masked by.
+	 * Mapping from newly registered services and {@link IService} it is masked by.
 	 */
-	private final Map<Method, List<Method>> isMaskedBy = new LinkedHashMap<Method, List<Method>>();
+	private final Map<IService, List<IService>> isMaskedBy = new LinkedHashMap<IService, List<IService>>();
 
 	/**
-	 * Gets the {@link List} of registered {@link Method}.
+	 * Gets the {@link List} of registered {@link IService}.
 	 * 
-	 * @return the {@link List} of registered {@link Method}
+	 * @return the {@link List} of registered {@link IService}
 	 */
-	public List<Method> getRegistered() {
+	public List<IService> getRegistered() {
 		return registered;
 	}
 
 	/**
-	 * Gets the mapping from newly registered methods and {@link Method} it duplicates.
+	 * Gets the mapping from newly registered services and {@link IService} it duplicates.
 	 * 
-	 * @return the mapping from newly registered methods and {@link Method} it duplicates
+	 * @return the mapping from newly registered services and {@link IService} it duplicates
 	 */
-	public Map<Method, List<Method>> getDuplicated() {
+	public Map<IService, List<IService>> getDuplicated() {
 		return duplicated;
 	}
 
 	/**
-	 * Gets the mapping from newly registered methods and {@link Method} it masks.
+	 * Gets the mapping from newly registered services and {@link IService} it masks.
 	 * 
-	 * @return the mapping from newly registered methods and {@link Method} it masks
+	 * @return the mapping from newly registered services and {@link IService} it masks
 	 */
-	public Map<Method, List<Method>> getMasked() {
+	public Map<IService, List<IService>> getMasked() {
 		return masked;
 	}
 
 	/**
-	 * Gets the mapping from newly registered methods and {@link Method} it is masked by.
+	 * Gets the mapping from newly registered services and {@link IService} it is masked by.
 	 * 
-	 * @return the mapping from newly registered methods and {@link Method} it is masked by
+	 * @return the mapping from newly registered services and {@link IService} it is masked by
 	 */
-	public Map<Method, List<Method>> getIsMaskedBy() {
+	public Map<IService, List<IService>> getIsMaskedBy() {
 		return isMaskedBy;
 	}
 
@@ -93,54 +92,54 @@ public final class ServiceRegistrationResult {
 	}
 
 	/**
-	 * Adds the the given duplicated {@link Method} as a duplicates of the new {@link Method}.
+	 * Adds the the given duplicated {@link IService} as a duplicates of the new {@link IService}.
 	 * 
-	 * @param newMethod
-	 *            the new {@link Method}
-	 * @param duplicatedMethod
-	 *            the duplicated {@link Method}
+	 * @param newService
+	 *            the new {@link IService}
+	 * @param duplicatedService
+	 *            the duplicated {@link IService}
 	 */
-	public void addDuplicated(Method newMethod, Method duplicatedMethod) {
-		List<Method> methods = duplicated.get(newMethod);
-		if (methods == null) {
-			methods = new ArrayList<Method>();
-			duplicated.put(newMethod, methods);
+	public void addDuplicated(IService newService, IService duplicatedService) {
+		List<IService> services = duplicated.get(newService);
+		if (services == null) {
+			services = new ArrayList<IService>();
+			duplicated.put(newService, services);
 		}
-		methods.add(duplicatedMethod);
+		services.add(duplicatedService);
 	}
 
 	/**
-	 * Adds the the given masked {@link Method} as a masks of the new {@link Method}.
+	 * Adds the the given masked {@link IService} as a masks of the new {@link IService}.
 	 * 
-	 * @param newMethod
-	 *            the new {@link Method}
-	 * @param maskedMethod
-	 *            the masked {@link Method}
+	 * @param newService
+	 *            the new {@link IService}
+	 * @param maskedService
+	 *            the masked {@link IService}
 	 */
-	public void addMasked(Method newMethod, Method maskedMethod) {
-		List<Method> methods = masked.get(newMethod);
-		if (methods == null) {
-			methods = new ArrayList<Method>();
-			masked.put(newMethod, methods);
+	public void addMasked(IService newService, IService maskedService) {
+		List<IService> services = masked.get(newService);
+		if (services == null) {
+			services = new ArrayList<IService>();
+			masked.put(newService, services);
 		}
-		methods.add(maskedMethod);
+		services.add(maskedService);
 	}
 
 	/**
-	 * Adds the the given is masked by {@link Method} as a is masked by of the new {@link Method}.
+	 * Adds the the given is masked by {@link IService} as a is masked by of the new {@link IService}.
 	 * 
-	 * @param newMethod
-	 *            the new {@link Method}
-	 * @param isMaskedByMethod
-	 *            the is masked by {@link Method}
+	 * @param newService
+	 *            the new {@link IService}
+	 * @param isMaskedByService
+	 *            the is masked by {@link IService}
 	 */
-	public void addIsMaskedBy(Method newMethod, Method isMaskedByMethod) {
-		List<Method> methods = isMaskedBy.get(newMethod);
-		if (methods == null) {
-			methods = new ArrayList<Method>();
-			isMaskedBy.put(newMethod, methods);
+	public void addIsMaskedBy(IService newService, IService isMaskedByService) {
+		List<IService> services = isMaskedBy.get(newService);
+		if (services == null) {
+			services = new ArrayList<IService>();
+			isMaskedBy.put(newService, services);
 		}
-		methods.add(isMaskedByMethod);
+		services.add(isMaskedByService);
 	}
 
 }

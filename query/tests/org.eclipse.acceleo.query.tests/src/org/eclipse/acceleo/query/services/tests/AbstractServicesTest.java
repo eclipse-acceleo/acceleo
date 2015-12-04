@@ -62,8 +62,7 @@ public abstract class AbstractServicesTest {
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		IService service = serviceLookUp(serviceName, arguments);
 		assertTrue(service != null);
-		assertEquals(expectedResult, service.getServiceMethod().invoke(service.getServiceInstance(),
-				arguments));
+		assertEquals(expectedResult, service.invoke(arguments));
 	}
 
 	/**

@@ -40,10 +40,10 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -73,7 +73,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class BooleanLambdaService extends Service {
+	private static final class BooleanLambdaService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -96,8 +96,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			if (isBooleanType(queryEnvironment, lambdaExpressionType)) {
 				result.addAll(super.getType(call, services, validationResult, queryEnvironment, argTypes));
 			} else {
-				result.add(services.nothing("expression in %s must return a boolean", getServiceMethod()
-						.getName()));
+				result.add(services.nothing("expression in %s must return a boolean", getName()));
 			}
 			return result;
 		}
@@ -108,7 +107,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class AnyService extends Service {
+	private static final class AnyService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -164,7 +163,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class IncludingService extends Service {
+	private static final class IncludingService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -182,11 +181,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 				result.add(new SequenceType(queryEnvironment, argTypes.get(1)));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 				result.add(new SetType(queryEnvironment, argTypes.get(1)));
@@ -213,8 +212,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getServiceMethod()
-						.getName()));
+				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getName()));
 			}
 
 			return result;
@@ -226,7 +224,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class CollectService extends Service {
+	private static final class CollectService extends JavaMethodService {
 		/**
 		 * Constructor.
 		 * 
@@ -244,9 +242,9 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, lambdaType.getLambdaExpressionType()));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, lambdaType.getLambdaExpressionType()));
 			}
 			return result;
@@ -258,7 +256,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class SelectService extends Service {
+	private static final class SelectService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -298,16 +296,16 @@ public class CollectionServices extends AbstractServiceProvider {
 						lambdaEvaluatorType = new EClassifierType(queryEnvironment,
 								((EClassifierLiteralType)lambdaEvaluatorType).getType());
 					}
-					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 						result.add(new SequenceType(queryEnvironment, lambdaEvaluatorType));
-					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 						result.add(new SetType(queryEnvironment, lambdaEvaluatorType));
 					}
 				} else {
 					for (IType inferredType : inferredTypes) {
-						if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 							result.add(new SequenceType(queryEnvironment, inferredType));
-						} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 							result.add(new SetType(queryEnvironment, inferredType));
 						}
 					}
@@ -324,7 +322,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class RejectService extends Service {
+	private static final class RejectService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -360,18 +358,18 @@ public class CollectionServices extends AbstractServiceProvider {
 					inferredTypes = null;
 				}
 				if (inferredTypes == null) {
-					if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 						result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 								.getCollectionType()));
-					} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+					} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 						result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 								.getCollectionType()));
 					}
 				} else {
 					for (IType inferredType : inferredTypes) {
-						if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 							result.add(new SequenceType(queryEnvironment, inferredType));
-						} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+						} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 							result.add(new SetType(queryEnvironment, inferredType));
 						}
 					}
@@ -389,7 +387,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class FirstArgumentRawCollectionType extends Service {
+	private static final class FirstArgumentRawCollectionType extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -420,7 +418,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class ReturnCollectionTypeWithFirstArgumentRawCollectionType extends Service {
+	private static final class ReturnCollectionTypeWithFirstArgumentRawCollectionType extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -440,10 +438,10 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 			}
@@ -458,7 +456,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType extends Service {
+	private static final class ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -478,12 +476,12 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(1))
 						.getCollectionType()));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(1))
@@ -512,8 +510,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getServiceMethod()
-						.getName()));
+				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getName()));
 			}
 
 			return result;
@@ -559,9 +556,9 @@ public class CollectionServices extends AbstractServiceProvider {
 				}
 			}
 			for (EClassifierType rawType : rawTypes) {
-				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 					result.add(new SequenceType(queryEnvironment, rawType));
-				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 					result.add(new SetType(queryEnvironment, rawType));
 				}
 			}
@@ -576,7 +573,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class FirstCollectionTypeService extends Service {
+	private static final class FirstCollectionTypeService extends JavaMethodService {
 
 		/**
 		 * Creates a new service instance given a method and an instance.
@@ -594,10 +591,10 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 			}
@@ -611,7 +608,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class InsertAtService extends Service {
+	private static final class InsertAtService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -629,11 +626,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 				result.add(new SequenceType(queryEnvironment, argTypes.get(2)));
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
 						.getCollectionType()));
 				result.add(new SetType(queryEnvironment, argTypes.get(2)));
@@ -647,7 +644,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class IntersectionService extends Service {
+	private static final class IntersectionService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -673,11 +670,11 @@ public class CollectionServices extends AbstractServiceProvider {
 				resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s", argTypes
 						.get(0), argTypes.get(1)));
 			}
-			if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				for (IType resultRawType : resultRawTypes) {
 					result.add(new SequenceType(queryEnvironment, resultRawType));
 				}
-			} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				for (IType resultRawType : resultRawTypes) {
 					result.add(new SetType(queryEnvironment, resultRawType));
 				}
@@ -705,10 +702,10 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				if (List.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 					result.add(new SequenceType(queryEnvironment, services
 							.nothing("Nothing left after intersection:" + builder.toString())));
-				} else if (Set.class.isAssignableFrom(getServiceMethod().getReturnType())) {
+				} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 					result.add(new SetType(queryEnvironment, services
 							.nothing("Nothing left after intersection:" + builder.toString())));
 				}
@@ -751,7 +748,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
-				result = new Service(publicMethod, this) {
+				result = new JavaMethodService(publicMethod, this) {
 
 					@Override
 					public Set<IType> getType(Call call, ValidationServices services,
@@ -767,7 +764,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				};
 			} else if (publicMethod.getParameterTypes().length == 4) {
-				result = new Service(publicMethod, this) {
+				result = new JavaMethodService(publicMethod, this) {
 
 					@Override
 					public Set<IType> getType(Call call, ValidationServices services,
@@ -785,7 +782,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				};
 			} else {
-				result = new Service(publicMethod, this);
+				result = new JavaMethodService(publicMethod, this);
 			}
 		} else if ("any".equals(publicMethod.getName())) {
 			result = new AnyService(publicMethod, this);
@@ -797,7 +794,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("intersection".equals(publicMethod.getName())) {
 			result = new IntersectionService(publicMethod, this);
 		} else {
-			result = new Service(publicMethod, this);
+			result = new JavaMethodService(publicMethod, this);
 		}
 		return result;
 	}

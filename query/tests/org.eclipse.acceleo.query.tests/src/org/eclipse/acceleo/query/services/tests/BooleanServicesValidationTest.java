@@ -25,8 +25,9 @@ public class BooleanServicesValidationTest extends AbstractServicesValidationTes
 	@Test
 	public void testOrPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("or", parameterTypes);
+		assertValidation(expectedReturnTypes, "or", parameterTypes);
 	}
 
 	@Test
@@ -40,8 +41,9 @@ public class BooleanServicesValidationTest extends AbstractServicesValidationTes
 	@Test
 	public void testAndPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("and", parameterTypes);
+		assertValidation(expectedReturnTypes, "and", parameterTypes);
 	}
 
 	@Test
@@ -55,8 +57,9 @@ public class BooleanServicesValidationTest extends AbstractServicesValidationTes
 	@Test
 	public void testNotPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("not", parameterTypes);
+		assertValidation(expectedReturnTypes, "not", parameterTypes);
 	}
 
 	@Test
@@ -70,8 +73,9 @@ public class BooleanServicesValidationTest extends AbstractServicesValidationTes
 	@Test
 	public void testImpliesPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("implies", parameterTypes);
+		assertValidation(expectedReturnTypes, "implies", parameterTypes);
 	}
 
 	@Test
@@ -85,8 +89,9 @@ public class BooleanServicesValidationTest extends AbstractServicesValidationTes
 	@Test
 	public void testXorPrimitive() {
 		final IType[] parameterTypes = new IType[] {classType(boolean.class), classType(boolean.class) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
-		assertNoService("xor", parameterTypes);
+		assertValidation(expectedReturnTypes, "xor", parameterTypes);
 	}
 
 	@Test

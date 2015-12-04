@@ -17,16 +17,17 @@ import java.util.List;
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.Throw;
-import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.emf.ecore.EClass;
 
 /**
- * An {@link IService} proposal.
+ * An {@link JavaMethodService} proposal.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
-public class ServiceCompletionProposal implements ICompletionProposal {
+public class JavaMethodServiceCompletionProposal implements IServiceCompletionProposal {
 
 	/**
 	 * The current line separator which will be used by the tooling in order to compute the description.
@@ -39,17 +40,17 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	private static final String GAP = "        ";
 
 	/**
-	 * The proposed {@link IService}.
+	 * The proposed {@link JavaMethodService}.
 	 */
-	private final IService service;
+	private final JavaMethodService service;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param service
-	 *            the proposed {@link IService}
+	 *            the proposed {@link JavaMethodService}
 	 */
-	public ServiceCompletionProposal(IService service) {
+	public JavaMethodServiceCompletionProposal(JavaMethodService service) {
 		this.service = service;
 	}
 
@@ -60,7 +61,7 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public String getProposal() {
-		return service.getServiceMethod().getName() + "()";
+		return service.getName() + "()";
 	}
 
 	/**
@@ -70,9 +71,8 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	 */
 	@Override
 	public int getCursorOffset() {
-		Method serviceMethod = service.getServiceMethod();
-		int namelength = serviceMethod.getName().length();
-		if (serviceMethod.getParameterTypes().length == 1) {
+		int namelength = service.getName().length();
+		if (service.getNumberOfParameters() == 1) {
 			/*
 			 * if we have only one parameter we return the offset: self.serviceCall()^
 			 */
@@ -114,7 +114,7 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	public String getDescription() {
 		StringBuffer buffer = new StringBuffer();
 
-		Method method = this.service.getServiceMethod();
+		Method method = this.service.getMethod();
 		if (method.isAnnotationPresent(Documentation.class)) {
 			Documentation documentation = method.getAnnotation(Documentation.class);
 
@@ -225,10 +225,10 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 	 */
 	private StringBuffer getServiceSignature(List<String> parameterNames) {
 		StringBuffer result = new StringBuffer();
-		result.append(service.getServiceMethod().getName()).append('(');
+		result.append(service.getName()).append('(');
 		boolean first = true;
 
-		Class<?>[] parameterTypes = service.getServiceMethod().getParameterTypes();
+		Class<?>[] parameterTypes = service.getMethod().getParameterTypes();
 		for (int i = 0; i < parameterTypes.length; i = i + 1) {
 			Object argType = parameterTypes[i];
 			if (!first) {
@@ -256,7 +256,7 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 		}
 		result.append(')');
 
-		Class<?> returnType = service.getServiceMethod().getReturnType();
+		Class<?> returnType = service.getMethod().getReturnType();
 		if (Void.class.equals(returnType)) {
 			result.append(" = void");
 		} else {
@@ -265,5 +265,4 @@ public class ServiceCompletionProposal implements ICompletionProposal {
 		}
 		return result;
 	}
-
 }

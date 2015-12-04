@@ -13,7 +13,7 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.Comparator;
 
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 
 /**
@@ -38,8 +38,8 @@ public class ProposalComparator implements Comparator<ICompletionProposal> {
 			} else {
 				result = 1;
 			}
-		} else if (proposal1 instanceof ServiceCompletionProposal) {
-			if (proposal2 instanceof ServiceCompletionProposal) {
+		} else if (proposal1 instanceof JavaMethodServiceCompletionProposal) {
+			if (proposal2 instanceof JavaMethodServiceCompletionProposal) {
 				result = proposal1.getProposal().compareTo(proposal2.getProposal());
 			} else {
 				result = -1;

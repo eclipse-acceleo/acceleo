@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl.completion;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.lang.reflect.Method;
 
-import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
-import org.eclipse.acceleo.query.runtime.lookup.basic.Service;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests of the service completion proposal.
@@ -41,8 +40,9 @@ public class ServiceCompletionProposalTests {
 
 		if (serviceMethod != null) {
 			try {
-				IService service = new Service(serviceMethod, clazz.newInstance());
-				ServiceCompletionProposal proposal = new ServiceCompletionProposal(service);
+				JavaMethodService service = new JavaMethodService(serviceMethod, clazz.newInstance());
+				JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(
+						service);
 				String description = proposal.getDescription();
 				assertEquals(expectedJavadoc, description);
 			} catch (InstantiationException e) {

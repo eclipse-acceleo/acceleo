@@ -27,7 +27,7 @@ import org.eclipse.acceleo.query.runtime.impl.BasicFilter;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.ServiceCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -37,6 +37,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
@@ -1450,7 +1451,7 @@ public class CompletionTest {
 
 	public static void assertNoServiceCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
-			assertEquals(false, prop instanceof ServiceCompletionProposal);
+			assertEquals(false, prop instanceof JavaMethodServiceCompletionProposal);
 		}
 	}
 
@@ -1475,15 +1476,15 @@ public class CompletionTest {
 					} else {
 						fail("the receiver type must be an EClass for FeatureCompletionProposal");
 					}
-				} else if (prop instanceof ServiceCompletionProposal) {
-					final Class<?> cls;
-					if (type instanceof EClass) {
-						cls = environment.getEPackageProvider().getClass((EClass)type);
+				} else if (prop instanceof JavaMethodServiceCompletionProposal) {
+					final IType iType;
+					if (type instanceof EClassifier) {
+						iType = new EClassifierType(environment, (EClassifier)type);
 					} else {
-						cls = (Class<?>)type;
+						iType = new ClassType(environment, (Class<?>)type);
 					}
-					assertTrue(((ServiceCompletionProposal)prop).getObject().getServiceMethod()
-							.getParameterTypes()[0].isAssignableFrom(cls));
+					assertTrue(((JavaMethodServiceCompletionProposal)prop).getObject().getParameterTypes(environment)
+							.get(0).isAssignableFrom(iType));
 				}
 			}
 		}

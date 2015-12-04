@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
@@ -37,8 +39,6 @@ public class EvaluationServiceStatusTests {
 	private static final String SERVICE_NOT_FOUND = "Couldn't find the noservice(java.lang.Integer) service";
 
 	private static final String VARIABLE_NOT_FOUND = "Couldn't find the novariable variable";
-
-	private static final String SERVICE_THROWS_EXCEPTION = "Exception while calling serviceThrowsException(java.lang.Integer)";
 
 	private static final String UNKNOWN_FEATURE = "Feature noname not found in EClass EAttribute";
 
@@ -149,8 +149,10 @@ public class EvaluationServiceStatusTests {
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals(SERVICE_THROWS_EXCEPTION, child.getMessage());
-		assertTrue(child.getException() instanceof NullPointerException);
+		assertEquals("serviceThrowsException(java.lang.Object) with arguments [1] failed.", child
+				.getMessage());
+		assertTrue(child.getException() instanceof AcceleoQueryEvaluationException);
+		assertTrue(child.getException().getCause() instanceof InvocationTargetException);
+		assertTrue(((InvocationTargetException)child.getException().getCause()).getTargetException() instanceof NullPointerException);
 	}
-
 }

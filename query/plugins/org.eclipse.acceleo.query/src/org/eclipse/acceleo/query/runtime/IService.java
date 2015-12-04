@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,19 +24,68 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public interface IService {
-	/**
-	 * returns the instance on which the service will be called.
-	 * 
-	 * @return the instance on which to call the service.
-	 */
-	Object getServiceInstance();
 
 	/**
-	 * Returns the actual method that realizes the service.
+	 * Gets the name of the service. This name is used to identify the service.
 	 * 
-	 * @return the method that realizes the service.
+	 * @return the name of the service
+	 * @since 4.1.0
 	 */
-	Method getServiceMethod();
+	String getName();
+
+	/**
+	 * Gets a human readable signature of the service.
+	 * 
+	 * @return a human readable signature of the service
+	 */
+	String getShortSignature();
+
+	/**
+	 * Gets the identifying signature of the service in the underlying technology.
+	 * 
+	 * @return the identifying signature of the service in the underlying technology
+	 */
+	String getLongSignature();
+
+	/**
+	 * Gets the {@link List} of parameter {@link IType}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @return the {@link List} of parameter {@link IType}
+	 * @since 4.1.0
+	 */
+	List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment);
+
+	/**
+	 * Gets the number of parameters including the receiver.
+	 * 
+	 * @return the number of parameters including the receiver
+	 * @since 4.1.0
+	 */
+	int getNumberOfParameters();
+
+	/**
+	 * Invokes the service with given arguments.
+	 * 
+	 * @param arguments
+	 *            arguments
+	 * @return the result of the invocation
+	 * @throws AcceleoQueryEvaluationException
+	 *             when the invocation goes wrong
+	 * @since 4.1.0
+	 */
+	Object invoke(Object... arguments) throws AcceleoQueryEvaluationException;
+
+	/**
+	 * Gets the priority of this service. The highest priority is used when {@link IService#getName() name}
+	 * and {@link IService#getParameterTypes() parameter types} are matching for more than one
+	 * {@link IService} . In the case of same priority the last added {@link IService} will be used.
+	 * 
+	 * @return the priority
+	 * @since 4.1.0
+	 */
+	int getPriority();
 
 	/**
 	 * Gets the {@link IType} of elements returned by the service.

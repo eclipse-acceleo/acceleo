@@ -659,10 +659,11 @@ public class ValidationServices extends AbstractLanguageServices {
 					result.add(new SetType(queryEnvironment, t));
 				}
 			} else {
-				result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, cls)));
+				result.add(new ClassType(queryEnvironment, cls));
 			}
 		} else if (type instanceof Class<?>) {
 			final Class<?> cls = (Class<?>)type;
+			// TODO double check this it seems wrong
 			result.addAll(getIType(cls));
 		} else {
 			result.add(new ClassType(queryEnvironment, Object.class));
@@ -679,7 +680,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @return {@link IType} from a {@link Class}
 	 * @see ValidationServices#getIType(Type)
 	 */
-	public Set<IType> getIType(final Class<?> cls) {
+	private Set<IType> getIType(final Class<?> cls) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		final Set<EClassifier> classifiers = queryEnvironment.getEPackageProvider().getEClass(cls);

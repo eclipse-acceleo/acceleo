@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.runtime.servicelookup;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -47,11 +48,11 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 	 */
 	@Test
 	public void detectionCrossReferencerTest() {
-		assertEquals("service0", engine.lookup("service0", NO_ARG).getServiceMethod().getName());
+		assertEquals("service0", engine.lookup("service0", NO_ARG).getName());
 		assertNull(engine.lookup("setCrossReferencer", NO_ARG));
 
-		CrossReferencerClass crossReferencer = (CrossReferencerClass)engine.lookup("service0", NO_ARG)
-				.getServiceInstance();
+		CrossReferencerClass crossReferencer = (CrossReferencerClass)((JavaMethodService)engine.lookup(
+				"service0", NO_ARG)).getInstance();
 		assertNotNull(crossReferencer.getCrossReferencer());
 	}
 
