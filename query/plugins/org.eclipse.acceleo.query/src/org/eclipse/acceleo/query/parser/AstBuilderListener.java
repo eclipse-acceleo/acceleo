@@ -364,7 +364,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				} else if (e.getCtx() instanceof ParenContext) {
 					// nothing to do here
 				} else {
-					defaultError(offendingSymbol, e);
+					defaultError(offendingSymbol, msg, e);
 				}
 			} else if (recognizer instanceof QueryParser) {
 				noRecognitionException(recognizer, offendingSymbol, msg);
@@ -650,23 +650,29 @@ public class AstBuilderListener extends QueryBaseListener {
 		 * 
 		 * @param offendingSymbol
 		 *            the offending symbol
+		 * @param msg
+		 *            the error message
 		 * @param e
 		 *            the {@link RecognitionException}
 		 */
-		private void defaultError(Object offendingSymbol, RecognitionException e) {
-			switch (e.getCtx().getRuleIndex()) {
-				case QueryParser.RULE_expression:
-					errorRule = QueryParser.RULE_expression;
-					final ErrorExpression errorExpression = builder.errorExpression();
-					final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
-							.getStartIndex());
-					startPositions.put(errorExpression, position);
-					endPositions.put(errorExpression, position);
-					pushError(errorExpression, MISSING_EXPRESSION);
-					break;
+		private void defaultError(Object offendingSymbol, String msg, RecognitionException e) {
+			if (offendingSymbol == null && e.getCtx() == null) {
+				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, msg, new Object[] {}));
+			} else {
+				switch (e.getCtx().getRuleIndex()) {
+					case QueryParser.RULE_expression:
+						errorRule = QueryParser.RULE_expression;
+						final ErrorExpression errorExpression = builder.errorExpression();
+						final Integer position = Integer.valueOf(((ParserRuleContext)e.getCtx()).start
+								.getStartIndex());
+						startPositions.put(errorExpression, position);
+						endPositions.put(errorExpression, position);
+						pushError(errorExpression, MISSING_EXPRESSION);
+						break;
 
-				default:
-					break;
+					default:
+						break;
+				}
 			}
 		}
 

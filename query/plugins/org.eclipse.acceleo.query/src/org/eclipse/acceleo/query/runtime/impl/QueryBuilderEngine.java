@@ -62,12 +62,14 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 		final IQueryBuilderEngine.AstResult result;
 
 		if (expression != null && expression.length() > 0) {
+			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
 			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
 			QueryLexer lexer = new QueryLexer(input);
 			lexer.setTokenFactory(new CommonTokenFactory(true));
+			lexer.removeErrorListeners();
+			lexer.addErrorListener(astBuilder.getErrorListener());
 			TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
 			QueryParser parser = new QueryParser(tokens);
-			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
 			parser.addParseListener(astBuilder);
 			parser.removeErrorListeners();
 			parser.addErrorListener(astBuilder.getErrorListener());

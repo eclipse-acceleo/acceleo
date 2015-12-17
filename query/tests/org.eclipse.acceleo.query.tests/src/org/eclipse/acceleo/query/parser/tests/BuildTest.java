@@ -2662,4 +2662,20 @@ public class BuildTest {
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
+	@Test
+	public void invalidToken() {
+		IQueryBuilderEngine.AstResult build = engine.build("self µ= null");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 12, ast);
+
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals("token recognition error at: 'µ'", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertTrue("token recognition error at: 'µ'", build.getDiagnostic().getChildren().get(0).getData()
+				.isEmpty());
+	}
+
 }
