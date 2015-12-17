@@ -168,6 +168,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	public static final String DIFFERS_OPERATOR = "<>";
 
 	/**
+	 * <code>!=<code> operator.
+	 */
+	public static final String DIFFERS_JAVA_OPERATOR = "!=";
+
+	/**
 	 * <code>=<code> service name.
 	 */
 	public static final String EQUALS_SERVICE_NAME = "equals";
@@ -1207,7 +1212,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			pushBinary(GREATER_THAN_EQUAL_SERVICE_NAME, ctx);
 		} else if (EQUALS_OPERATOR.equals(op)) {
 			pushBinary(EQUALS_SERVICE_NAME, ctx);
-		} else if (DIFFERS_OPERATOR.equals(op)) {
+		} else if (DIFFERS_OPERATOR.equals(op) || DIFFERS_JAVA_OPERATOR.equals(op)) {
 			pushBinary(DIFFERS_SERVICE_NAME, ctx);
 		} else {
 			throw new AcceleoQueryEvaluationException(THIS_SHOULDN_T_HAPPEN);
