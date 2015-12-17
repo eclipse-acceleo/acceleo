@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
+import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
@@ -2635,6 +2636,30 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+	}
+
+	@Test
+	public void invalidLambda_484323() {
+		IQueryBuilderEngine.AstResult build = engine.build("OrderedSet{'hello'}->any(1)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 27, ast);
+		assertEquals("any", ((Call)ast).getServiceName());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, SetInExtensionLiteral.class, 0, 19, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 25, 26, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, IntegerLiteral.class, 25, 26, lambda.getExpression());
+		assertEquals(1, ((IntegerLiteral)lambda.getExpression()).getValue());
+		assertEquals(1, lambda.getParameters().size());
+		assertTrue(lambda.getParameters().get(0) instanceof ErrorVariableDeclaration);
+
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing variable declaration", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
 }

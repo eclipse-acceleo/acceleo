@@ -555,10 +555,13 @@ public class AstBuilderListener extends QueryBaseListener {
 				endPositions.put(errorVariableDeclaration, endPosition);
 				pushError(errorVariableDeclaration, "missing variable declaration");
 			}
-			final ErrorExpression errorExpression = builder.errorExpression();
-			startPositions.put(errorExpression, endPosition);
-			endPositions.put(errorExpression, endPosition);
-			pushError(errorExpression, MISSING_EXPRESSION);
+			if (((Token)offendingSymbol).getText().isEmpty()
+					|| ")".equals(((Token)offendingSymbol).getText())) {
+				final ErrorExpression errorExpression = builder.errorExpression();
+				startPositions.put(errorExpression, endPosition);
+				endPositions.put(errorExpression, endPosition);
+				pushError(errorExpression, MISSING_EXPRESSION);
+			}
 		}
 
 		/**
