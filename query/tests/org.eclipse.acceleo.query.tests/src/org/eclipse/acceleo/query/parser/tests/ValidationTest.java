@@ -19,8 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -776,6 +778,34 @@ public class ValidationTest {
 				"Couldn't find the notAVariable variable", 13, 25);
 		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.ERROR,
 				"The newVar variable has no types", 29, 35);
+	}
+
+	@Test
+	public void booleanLambdaCheck_484375() {
+		final IValidationResult validationResult = engine.validate("Sequence{'hello'}->any(i | i = 'hello')",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), ((EClassifierType)possibleType).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((EClassifierType)possibleType).getType());
+
+		possibleTypes = validationResult.getPossibleTypes(((Lambda)((Call)ast).getArguments().get(1))
+				.getExpression());
+		assertEquals(1, possibleTypes.size());
+		it = possibleTypes.iterator();
+		possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), ((EClassifierType)possibleType).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
