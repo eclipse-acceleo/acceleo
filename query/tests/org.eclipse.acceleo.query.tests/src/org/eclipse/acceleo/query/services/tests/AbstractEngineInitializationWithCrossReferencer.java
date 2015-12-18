@@ -30,12 +30,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
  */
 public class AbstractEngineInitializationWithCrossReferencer extends AbstractServicesTest {
 
+	protected CrossReferenceProvider crossReferencer;
+
+	protected IQueryEnvironment queryEnvironment;
+
 	public AbstractEngineInitializationWithCrossReferencer() {
 	}
 
-	public IQueryEnvironment getQueryEnvironnementWithCrossReferencer(EObject eObject) {
-		CrossReferenceProvider crossReferencer = createEInverseCrossreferencer(eObject);
-		return Query.newEnvironmentWithDefaultServices(crossReferencer);
+	public void setQueryEnvironnementWithCrossReferencer(EObject eObject) {
+		crossReferencer = createEInverseCrossreferencer(eObject);
+		queryEnvironment = Query.newEnvironmentWithDefaultServices(crossReferencer);
 	}
 
 	/**

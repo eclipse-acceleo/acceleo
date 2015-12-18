@@ -39,7 +39,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(AnyServices.class);
+		getQueryEnvironment().registerServiceInstance(new AnyServices(getQueryEnvironment()));
 		any = new AnyServices(getQueryEnvironment());
 	}
 

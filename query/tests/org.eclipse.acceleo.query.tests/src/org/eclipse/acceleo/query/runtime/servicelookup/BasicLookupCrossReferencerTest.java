@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
@@ -33,10 +32,10 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 	public void setup() {
 		EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 
-		IQueryEnvironment queryEnvironment = getQueryEnvironnementWithCrossReferencer(eClass);
+		setQueryEnvironnementWithCrossReferencer(eClass);
 		engine = queryEnvironment.getLookupEngine();
 		try {
-			queryEnvironment.registerServicePackage(CrossReferencerClass.class);
+			queryEnvironment.registerServiceInstance(new CrossReferencerClass(crossReferencer));
 		} catch (InvalidAcceleoPackageException e) {
 			throw new UnsupportedOperationException("shouldn't happen.", e);
 		}

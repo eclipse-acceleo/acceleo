@@ -531,14 +531,14 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * A cross referencer needed to realize the service eInverse().
+	 * The cross referencer needed to realize the service eInverse().
 	 */
-	private CrossReferenceProvider crossReferencer;
+	private final CrossReferenceProvider crossReferencer;
 
 	/**
-	 * A root provider needed to realize the service allInstances().
+	 * The root provider needed to realize the service allInstances().
 	 */
-	private IRootEObjectProvider rootProvider;
+	private final IRootEObjectProvider rootProvider;
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
@@ -550,9 +550,16 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param crossReferencer
+	 *            the cross referencer needed to realize the service eInverse()
+	 * @param rootProvider
+	 *            the root provider needed to realize the service allInstances()
 	 */
-	public EObjectServices(IReadOnlyQueryEnvironment queryEnvironment) {
+	public EObjectServices(IReadOnlyQueryEnvironment queryEnvironment,
+			CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
 		this.queryEnvironment = queryEnvironment;
+		this.crossReferencer = crossReferencer;
+		this.rootProvider = rootProvider;
 	}
 
 	/**
@@ -1061,14 +1068,6 @@ public class EObjectServices extends AbstractServiceProvider {
 	// @formatter:on
 	public EReference eContainmentFeature(EObject eObject) {
 		return eObject.eContainmentFeature();
-	}
-
-	public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-		this.crossReferencer = crossReferencer;
-	}
-
-	public void setRootProvider(IRootEObjectProvider rootProvider) {
-		this.rootProvider = rootProvider;
 	}
 
 	// @formatter:off

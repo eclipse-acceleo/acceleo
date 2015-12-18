@@ -63,6 +63,9 @@ public class LookupEngineTest {
 		ServiceRegistrationResult registerServices(Class<?> newServices)
 				throws InvalidAcceleoPackageException;
 
+		public ServiceRegistrationResult registerServiceInstance(Object instance)
+				throws InvalidAcceleoPackageException;
+
 		Class<?> removeServices(Class<?> servicesClass);
 
 		Map<Integer, Map<String, List<IService>>> getServices();
@@ -72,7 +75,7 @@ public class LookupEngineTest {
 	private static class TestBasicLookupEngine extends BasicLookupEngine implements ITestLookupEngine {
 
 		public TestBasicLookupEngine(CrossReferenceProvider crossReferencer) {
-			super(Query.newEnvironmentWithDefaultServices(crossReferencer), crossReferencer);
+			super(Query.newEnvironmentWithDefaultServices(crossReferencer));
 		}
 
 		@Override
@@ -85,7 +88,7 @@ public class LookupEngineTest {
 	private static class TestCacheLookupEngine extends CacheLookupEngine implements ITestLookupEngine {
 
 		public TestCacheLookupEngine(CrossReferenceProvider crossReferencer) {
-			super(Query.newEnvironmentWithDefaultServices(crossReferencer), crossReferencer);
+			super(Query.newEnvironmentWithDefaultServices(crossReferencer));
 		}
 
 		@Override
@@ -102,7 +105,11 @@ public class LookupEngineTest {
 	 */
 	public static class TestServices1 {
 
-		public CrossReferenceProvider crossReferencer;
+		public final CrossReferenceProvider crossReferencer;
+
+		public TestServices1(CrossReferenceProvider crossReferencer) {
+			this.crossReferencer = crossReferencer;
+		}
 
 		public Boolean service1(EClassifier eObj) {
 			return Boolean.FALSE;
@@ -111,10 +118,6 @@ public class LookupEngineTest {
 		@SuppressWarnings("unused")
 		private Boolean notAService(EClassifier eObj) {
 			return Boolean.FALSE;
-		}
-
-		public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-			this.crossReferencer = crossReferencer;
 		}
 
 	}
@@ -169,6 +172,10 @@ public class LookupEngineTest {
 	 */
 	public static class ExtendedTestServices1 extends TestServices1 {
 
+		public ExtendedTestServices1(CrossReferenceProvider crossReferencer) {
+			super(crossReferencer);
+		}
+
 		public Boolean service2(EClassifier eObj) {
 			return Boolean.FALSE;
 		}
@@ -184,7 +191,11 @@ public class LookupEngineTest {
 
 		private IService service1;
 
-		public CrossReferenceProvider crossReferencer;
+		public final CrossReferenceProvider crossReferencer;
+
+		public TestServicesProvider1(CrossReferenceProvider crossReferencer) {
+			this.crossReferencer = crossReferencer;
+		}
 
 		public Boolean service1(EClassifier eObj) {
 			return Boolean.FALSE;
@@ -193,10 +204,6 @@ public class LookupEngineTest {
 		@SuppressWarnings("unused")
 		private Boolean notAService(EClassifier eObj) {
 			return Boolean.FALSE;
-		}
-
-		public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-			this.crossReferencer = crossReferencer;
 		}
 
 		@Override
@@ -265,6 +272,10 @@ public class LookupEngineTest {
 	 */
 	public static class ExtendedTestServicesProvider1 extends TestServicesProvider1 {
 
+		public ExtendedTestServicesProvider1(CrossReferenceProvider crossReferencer) {
+			super(crossReferencer);
+		}
+
 		private IService service2;
 
 		public Boolean service2(EClassifier eObj) {
@@ -327,7 +338,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		final ServiceRegistrationResult result = engine.registerServiceInstance(new TestServices1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -373,7 +384,8 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(ExtendedTestServices1.class);
+		final ServiceRegistrationResult result = engine.registerServiceInstance(new ExtendedTestServices1(
+				provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -402,12 +414,12 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		ServiceRegistrationResult result = engine.registerServiceInstance(new TestServices1(provider));
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServices1.class);
+		result = engine.registerServiceInstance(new TestServices1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -428,7 +440,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		ServiceRegistrationResult result = engine.registerServiceInstance(new TestServices1(provider));
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
@@ -468,7 +480,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		ServiceRegistrationResult result = engine.registerServiceInstance(new TestServices1(provider));
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
@@ -515,7 +527,7 @@ public class LookupEngineTest {
 		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServices1.class);
+		result = engine.registerServiceInstance(new TestServices1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(1, result.getIsMaskedBy().size());
@@ -550,7 +562,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		final ServiceRegistrationResult result = engine.registerServiceInstance(new TestServices1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -578,7 +590,8 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		final ServiceRegistrationResult result = engine.registerServiceInstance(new TestServicesProvider1(
+				provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -601,7 +614,8 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(ExtendedTestServicesProvider1.class);
+		final ServiceRegistrationResult result = engine
+				.registerServiceInstance(new ExtendedTestServicesProvider1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -632,13 +646,14 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		ServiceRegistrationResult result = engine
+				.registerServiceInstance(new TestServicesProvider1(provider));
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class),
 				((JavaMethodService)result.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServicesProvider1.class);
+		result = engine.registerServiceInstance(new TestServicesProvider1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -661,7 +676,8 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		ServiceRegistrationResult result = engine
+				.registerServiceInstance(new TestServicesProvider1(provider));
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class),
@@ -703,7 +719,8 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		ServiceRegistrationResult result = engine
+				.registerServiceInstance(new TestServicesProvider1(provider));
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class),
@@ -755,7 +772,7 @@ public class LookupEngineTest {
 		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class),
 				((JavaMethodService)result.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServicesProvider1.class);
+		result = engine.registerServiceInstance(new TestServicesProvider1(provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(1, result.getIsMaskedBy().size());
@@ -795,7 +812,8 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		final ServiceRegistrationResult result = engine.registerServiceInstance(new TestServicesProvider1(
+				provider));
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
@@ -880,25 +898,12 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void isCrossReferencerMethod() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
-		final Method isCrossReferencerMethod = LookupEngineTest.class.getMethod("isCrossReferencerMethod");
-		assertFalse(engine.isCrossReferencerMethod(isCrossReferencerMethod));
-
-		final Method setCrossReferencer = TestServices1.class.getMethod("setCrossReferencer",
-				CrossReferenceProvider.class);
-		assertTrue(engine.isCrossReferencerMethod(setCrossReferencer));
-	}
-
-	@Test
 	public void isRegisteredService() throws InvalidAcceleoPackageException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
 		assertFalse(engine.isRegisteredService(TestServices1.class));
-		engine.registerServices(TestServices1.class);
+		engine.registerServiceInstance(new TestServices1(provider));
 		assertTrue(engine.isRegisteredService(TestServices1.class));
 	}
 
@@ -918,7 +923,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		engine.registerServices(ExtendedTestServices1.class);
+		engine.registerServiceInstance(new ExtendedTestServices1(provider));
 
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(1, engine.getServices().size());
@@ -947,7 +952,7 @@ public class LookupEngineTest {
 		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
 		types.add(EClassifier.class);
 
-		engine.registerServices(ExtendedTestServices1.class);
+		engine.registerServiceInstance(new ExtendedTestServices1(provider));
 		final Set<IService> services = engine.getServices(types);
 		assertEquals(2, services.size());
 		final Iterator<IService> it = services.iterator();

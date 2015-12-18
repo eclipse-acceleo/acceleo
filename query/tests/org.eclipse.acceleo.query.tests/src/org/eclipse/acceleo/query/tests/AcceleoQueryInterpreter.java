@@ -22,7 +22,6 @@ import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -47,8 +46,6 @@ import org.eclipse.uml2.types.TypesPackage;
 import org.eclipse.uml2.uml.UMLPackage;
 
 public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCrossReferencer implements InterpreterUnderTest {
-
-	private IQueryEnvironment queryEnvironment;
 
 	private Logger logger = Logger.getLogger("AcceleoQueryInterpreter");
 
@@ -91,7 +88,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public AcceleoQueryInterpreter(Query q) {
 		expressionToEvaluate = stripQuery(q.getExpression());
 		startingPoint = q.getStartingPoint().getTarget();
-		queryEnvironment = getQueryEnvironnementWithCrossReferencer(startingPoint);
+		setQueryEnvironnementWithCrossReferencer(startingPoint);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(UMLPackage.eINSTANCE);

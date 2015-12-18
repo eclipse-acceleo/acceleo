@@ -95,7 +95,7 @@ public abstract class AbtractServiceLookupTest {
 	@Test
 	public void oneArgMultiMethodSameClassTest() {
 		final ILookupEngine engine = getEngine();
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment(null);
+		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
 		IService service = engine.lookup("service4", new Class<?>[] {Integer.class });
 
@@ -125,7 +125,7 @@ public abstract class AbtractServiceLookupTest {
 	@Test
 	public void oneArgMultiMethodSubClassTest() {
 		final ILookupEngine engine = getEngine();
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment(null);
+		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
 		IService service = engine.lookup("service4", new Class<?>[] {Integer.class });
 
@@ -169,7 +169,7 @@ public abstract class AbtractServiceLookupTest {
 	@Test
 	public void threeArgsTest2() {
 		final Class<?>[] args = {String.class, Double.class, Double.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment(null);
+		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
 		final IService service = getEngine().lookup("service5", args);
 
@@ -189,7 +189,7 @@ public abstract class AbtractServiceLookupTest {
 	@Test
 	public void threeArgsTest3() {
 		Class<?>[] args = {Integer.class, Integer.class, Double.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment(null);
+		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
 		final IService method = getEngine().lookup("service5", args);
 
@@ -209,7 +209,7 @@ public abstract class AbtractServiceLookupTest {
 	@Test
 	public void threeArgsTest4() {
 		final Class<?>[] args = {Integer.class, Integer.class, Integer.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment(null);
+		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
 		final IService method = getEngine().lookup("service5", args);
 
@@ -229,7 +229,7 @@ public abstract class AbtractServiceLookupTest {
 	@Test
 	public void threeArgsTest5() {
 		final Class<?>[] args = {String.class, Integer.class, String.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment(null);
+		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
 
 		final IService method = getEngine().lookup("service5", args);
 

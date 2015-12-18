@@ -12,14 +12,10 @@ package org.eclipse.acceleo.query.tests.runtime.impl;
 
 import java.util.List;
 
-import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
-import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
-import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
-import org.eclipse.acceleo.query.tests.runtime.lookup.basic.LookupEngineTest.TestCrossReferenceProvider;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -107,16 +103,9 @@ public class QueryEnvironmentTests {
 
 		/**
 		 * Constructor.
-		 * 
-		 * @param crossReferencer
-		 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in
-		 *            services needed it.
-		 * @param rootProvider
-		 *            a new {@link IRootEObjectProvider} that will be used to search all instances requests in
-		 *            services needed it.
 		 */
-		public TestQueryEnvironment(CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
-			super(crossReferencer, rootProvider);
+		public TestQueryEnvironment() {
+			super();
 		}
 
 		/**
@@ -137,9 +126,7 @@ public class QueryEnvironmentTests {
 
 	@Before
 	public void before() {
-		final CrossReferenceProvider crossReferencer = new TestCrossReferenceProvider();
-		final IRootEObjectProvider rootProvider = new RootEObjectProvider();
-		queryEnvironment = new TestQueryEnvironment(crossReferencer, rootProvider);
+		queryEnvironment = new TestQueryEnvironment();
 		listener = new TestQueryEnvironmentListener();
 		queryEnvironment.addQueryEnvironmentListener(listener);
 	}

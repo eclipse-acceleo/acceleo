@@ -14,10 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
-import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
@@ -48,28 +46,11 @@ public class QueryEnvironment implements IQueryEnvironment {
 	/**
 	 * Creates a new {@link QueryEvaluationEngine} instance.
 	 * 
-	 * @param crossReferencer
-	 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in services
-	 *            needed it.
-	 */
-	public QueryEnvironment(CrossReferenceProvider crossReferencer) {
-		this(crossReferencer, null);
-	}
-
-	/**
-	 * Creates a new {@link QueryEvaluationEngine} instance.
-	 * 
-	 * @param crossReferencer
-	 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in services
-	 *            needed it.
-	 * @param rootProvider
-	 *            a new {@link IRootEObjectProvider} that will be used to search all instances requests in
-	 *            services needed it.
 	 * @since 4.0.0
 	 */
-	public QueryEnvironment(CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
+	public QueryEnvironment() {
 		ePackageProvider = new EPackageProvider();
-		lookupEngine = new BasicLookupEngine(this, crossReferencer, rootProvider);
+		lookupEngine = new BasicLookupEngine(this);
 	}
 
 	@Override
@@ -80,6 +61,25 @@ public class QueryEnvironment implements IQueryEnvironment {
 		if (!result.getRegistered().isEmpty()) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.servicePackageRegistered(result, services);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#registerServiceInstance(java.lang.Object)
+	 */
+	@Override
+	public ServiceRegistrationResult registerServiceInstance(Object instance)
+			throws InvalidAcceleoPackageException {
+		final ServiceRegistrationResult result = lookupEngine.registerServiceInstance(instance);
+
+		if (!result.getRegistered().isEmpty()) {
+			for (IQueryEnvironmentListener listener : getListeners()) {
+				listener.servicePackageRegistered(result, instance.getClass());
 			}
 		}
 

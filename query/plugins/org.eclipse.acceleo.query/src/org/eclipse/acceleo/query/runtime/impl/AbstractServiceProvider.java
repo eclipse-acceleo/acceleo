@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +48,7 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 				services = new ArrayList<IService>();
 				final Method[] methods = this.getClass().getMethods();
 				for (Method method : methods) {
-					if (queryEnvironment.getLookupEngine().isCrossReferencerMethod(method)) {
-						method.invoke(this, queryEnvironment.getLookupEngine().getCrossReferencer());
-					} else if (queryEnvironment.getLookupEngine().isRootProviderMethod(method)) {
-						method.invoke(this, queryEnvironment.getLookupEngine().getRootEObjectProvider());
-					} else if (queryEnvironment.getLookupEngine().isServiceMethod(this, method)
+					if (queryEnvironment.getLookupEngine().isServiceMethod(this, method)
 							&& !getServicesMethod.equals(method)) {
 						final IService service = getService(method);
 						if (service != null) {
@@ -62,13 +57,7 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 					}
 				}
 			}
-		} catch (IllegalAccessException e) {
-			throw new InvalidAcceleoPackageException(ILookupEngine.INSTANTIATION_PROBLEM_MSG
-					+ getClass().getCanonicalName(), e);
 		} catch (IllegalArgumentException e) {
-			throw new InvalidAcceleoPackageException(ILookupEngine.INSTANTIATION_PROBLEM_MSG
-					+ getClass().getCanonicalName(), e);
-		} catch (InvocationTargetException e) {
 			throw new InvalidAcceleoPackageException(ILookupEngine.INSTANTIATION_PROBLEM_MSG
 					+ getClass().getCanonicalName(), e);
 		} catch (NoSuchMethodException e) {

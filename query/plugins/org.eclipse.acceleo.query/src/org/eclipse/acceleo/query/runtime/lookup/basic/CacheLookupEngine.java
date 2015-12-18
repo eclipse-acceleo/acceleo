@@ -13,7 +13,6 @@ package org.eclipse.acceleo.query.runtime.lookup.basic;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -57,17 +56,13 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	private final Map<String, Node> cache = new HashMap<String, Node>();
 
 	/**
-	 * Constructor. Initializes the lookup engine with a cross referencer.
+	 * Constructor.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param crossReferencer
-	 *            The {@link CrossReferencer} that will be used to resolve eReference requests in EObject
-	 *            service.
 	 */
-	public CacheLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
-			CrossReferenceProvider crossReferencer) {
-		super(queryEnvironment, crossReferencer);
+	public CacheLookupEngine(IReadOnlyQueryEnvironment queryEnvironment) {
+		super(queryEnvironment);
 	}
 
 	@Override

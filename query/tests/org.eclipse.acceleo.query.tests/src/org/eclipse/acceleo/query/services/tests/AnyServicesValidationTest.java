@@ -35,7 +35,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(AnyServices.class);
+		getQueryEnvironment().registerServiceInstance(new AnyServices(getQueryEnvironment()));
 	}
 
 	@Test

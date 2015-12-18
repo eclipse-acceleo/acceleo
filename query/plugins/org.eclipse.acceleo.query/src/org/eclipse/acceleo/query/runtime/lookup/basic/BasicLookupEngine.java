@@ -24,10 +24,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
@@ -47,18 +45,6 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * Message used when a service cannot be instantiated.
 	 */
 	private static final String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
-
-	/**
-	 * The method name a query service that needs to use a registered cross referencer must have so it can be
-	 * pass to the services.
-	 */
-	private static final String SET_CROSS_REFERENCER_METHOD_NAME = "setCrossReferencer";
-
-	/**
-	 * The method name a query service that needs to use a registered cross referencer must have so it can be
-	 * pass to the services.
-	 */
-	private static final String SET_ROOT_PROVIDER_METHOD_NAME = "setRootProvider";
 
 	/**
 	 * Message used when a service doesn't have a zero-argument constructor.
@@ -81,57 +67,14 @@ public class BasicLookupEngine implements ILookupEngine {
 	private IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
-	 * The {@link CrossReferencer} that will be used to resolve eReference requests in EObject service.
-	 */
-	private CrossReferenceProvider crossReferencer;
-
-	/**
-	 * The {@link IRootEObjectProvider} that will be used to search all instances requests in EObject service.
-	 */
-	private IRootEObjectProvider rootProvider;
-
-	/**
-	 * Constructor. Initializes the lookup engine with a cross referencer.
+	 * Constructor.
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param crossReferencer
-	 *            The {@link CrossReferencer} that will be used to resolve eReference requests in EObject
-	 *            service.
-	 */
-	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
-			CrossReferenceProvider crossReferencer) {
-		this(queryEnvironment, crossReferencer, null);
-	}
-
-	/**
-	 * Constructor. Initializes the lookup engine with a cross referencer.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param crossReferencer
-	 *            the {@link CrossReferencer} that will be used to resolve eReference requests in EObject
-	 *            service
-	 * @param rootProvider
-	 *            the {@link IRootEObjectProvider} that will be used to search all instances in EObject
-	 *            service
 	 * @since 4.0.0
 	 */
-	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment,
-			CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
+	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
-		this.crossReferencer = crossReferencer;
-		this.rootProvider = rootProvider;
-	}
-
-	@Override
-	public CrossReferenceProvider getCrossReferencer() {
-		return crossReferencer;
-	}
-
-	@Override
-	public IRootEObjectProvider getRootEObjectProvider() {
-		return rootProvider;
 	}
 
 	/**
@@ -358,24 +301,6 @@ public class BasicLookupEngine implements ILookupEngine {
 				&& method.getParameterTypes().length > 0;
 	}
 
-	@Override
-	public boolean isCrossReferencerMethod(Method method) {
-		final boolean crossRefSet = SET_CROSS_REFERENCER_METHOD_NAME.equals(method.getName())
-				&& method.getParameterTypes().length > 0
-				&& CrossReferenceProvider.class.isAssignableFrom(method.getParameterTypes()[0]);
-
-		return crossRefSet;
-	}
-
-	@Override
-	public boolean isRootProviderMethod(Method method) {
-		final boolean result = SET_ROOT_PROVIDER_METHOD_NAME.equals(method.getName())
-				&& method.getParameterTypes().length > 0
-				&& IRootEObjectProvider.class.isAssignableFrom(method.getParameterTypes()[0]);
-
-		return result;
-	}
-
 	/**
 	 * Registers a new set of services provided by the given {@link IServiceProvider}.
 	 * 
@@ -419,19 +344,9 @@ public class BasicLookupEngine implements ILookupEngine {
 					cstr = newServices.getConstructor(new Class[] {});
 					instance = cstr.newInstance(new Object[] {});
 				} catch (NoSuchMethodException e) {
-					try {
-						cstr = newServices.getConstructor(new Class[] {IReadOnlyQueryEnvironment.class });
-						instance = cstr.newInstance(new Object[] {queryEnvironment });
-					} catch (NoSuchMethodException e1) {
-						// we will go without instance and register only static methods
-					}
+					// we will go without instance and register only static methods
 				}
-				if (instance instanceof IServiceProvider) {
-					result.merge(registerServices((IServiceProvider)instance));
-				} else {
-					Method[] methods = newServices.getMethods();
-					result.merge(getServicesFromInstance(newServices, instance, methods));
-				}
+				result.merge(registerServiceInstance(newServices, instance));
 			} catch (SecurityException e) {
 				throw new InvalidAcceleoPackageException(
 						PACKAGE_PROBLEM_MSG + newServices.getCanonicalName(), e);
@@ -447,6 +362,51 @@ public class BasicLookupEngine implements ILookupEngine {
 			} catch (InvocationTargetException e) {
 				throw new InvalidAcceleoPackageException(INSTANTIATION_PROBLEM_MSG
 						+ newServices.getCanonicalName(), e);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Registers a new set of services from a given instance.
+	 * 
+	 * @param instance
+	 *            the instance
+	 * @return the {@link ServiceRegistrationResult}
+	 * @throws InvalidAcceleoPackageException
+	 *             if the specified class doesn't follow the acceleo package rules.
+	 * @throws IllegalAccessException
+	 *             if invocation to set the cross referencer fails
+	 * @throws InvocationTargetException
+	 *             if invocation to set the cross referencer fails
+	 */
+	public ServiceRegistrationResult registerServiceInstance(Object instance)
+			throws InvalidAcceleoPackageException {
+		return registerServiceInstance(instance.getClass(), instance);
+	}
+
+	/**
+	 * Registers a new set of services from a given instance.
+	 * 
+	 * @param newServices
+	 *            the service {@link Class}
+	 * @param instance
+	 *            the service instance
+	 * @return the {@link ServiceRegistrationResult}
+	 * @throws InvalidAcceleoPackageException
+	 *             if the specified class doesn't follow the acceleo package rules.
+	 */
+	private ServiceRegistrationResult registerServiceInstance(Class<?> newServices, Object instance)
+			throws InvalidAcceleoPackageException {
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+
+		if (!isRegisteredService(newServices)) {
+			if (instance instanceof IServiceProvider) {
+				result.merge(registerServices((IServiceProvider)instance));
+			} else {
+				Method[] methods = newServices.getMethods();
+				result.merge(getServicesFromInstance(newServices, instance, methods));
 			}
 		}
 
@@ -501,19 +461,13 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * @param methods
 	 *            the array of {@link Method}
 	 * @return the {@link ServiceRegistrationResult}
-	 * @throws IllegalAccessException
-	 *             if invocation to set the cross referencer fails
-	 * @throws InvocationTargetException
-	 *             if invocation to set the cross referencer fails
 	 */
 	private ServiceRegistrationResult getServicesFromInstance(Class<?> newServices, Object instance,
-			Method[] methods) throws IllegalAccessException, InvocationTargetException {
+			Method[] methods) {
 		final ServiceRegistrationResult result = new ServiceRegistrationResult();
 
 		for (Method method : methods) {
-			if (isCrossReferencerMethod(method)) {
-				method.invoke(instance, crossReferencer);
-			} else if (isServiceMethod(instance, method)) {
+			if (isServiceMethod(instance, method)) {
 				final IService service = new JavaMethodService(method, instance);
 				result.merge(registerService(newServices, service));
 			}

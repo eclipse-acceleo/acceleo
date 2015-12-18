@@ -44,7 +44,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(XPathServices.class);
+		getQueryEnvironment().registerServiceInstance(new XPathServices(getQueryEnvironment()));
 	}
 
 	@Test

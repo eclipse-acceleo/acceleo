@@ -59,12 +59,12 @@ public final class Query {
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
-		final IQueryEnvironment env = newEnvironment(xRefProvider, rootProvider);
+		final IQueryEnvironment env = newEnvironment();
 
 		try {
-			env.registerServicePackage(AnyServices.class);
-			env.registerServicePackage(EObjectServices.class);
-			env.registerServicePackage(XPathServices.class);
+			env.registerServiceInstance(new AnyServices(env));
+			env.registerServiceInstance(new EObjectServices(env, xRefProvider, rootProvider));
+			env.registerServiceInstance(new XPathServices(env));
 			env.registerServicePackage(ComparableServices.class);
 			env.registerServicePackage(NumberServices.class);
 			env.registerServicePackage(StringServices.class);
@@ -82,27 +82,11 @@ public final class Query {
 	/**
 	 * Create a new {@link IQueryEnvironment} with no services configured.
 	 * 
-	 * @param xRefProvider
-	 *            an instance to inspect cross references at evaluation time
-	 * @return a new {@link IQueryEnvironment} with no services configured
-	 */
-	public static IQueryEnvironment newEnvironment(CrossReferenceProvider xRefProvider) {
-		return newEnvironment(xRefProvider, null);
-	}
-
-	/**
-	 * Create a new {@link IQueryEnvironment} with no services configured.
-	 * 
-	 * @param xRefProvider
-	 *            an instance to inspect cross references at evaluation time
-	 * @param rootProvider
-	 *            an instance to search all instances at evaluation time
 	 * @return a new {@link IQueryEnvironment} with no services configured.
-	 * @since 4.0.0
+	 * @since 4.0
 	 */
-	public static IQueryEnvironment newEnvironment(CrossReferenceProvider xRefProvider,
-			IRootEObjectProvider rootProvider) {
-		return new QueryEnvironment(xRefProvider, rootProvider);
+	public static IQueryEnvironment newEnvironment() {
+		return new QueryEnvironment();
 	}
 
 }

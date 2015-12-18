@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -58,7 +57,6 @@ import static org.junit.Assert.fail;
  * @author pguilet
  */
 public class EObjectServicesTest extends AbstractEngineInitializationWithCrossReferencer {
-	public EObjectServices eObjectServices;
 
 	public Resource reverseModel;
 
@@ -69,7 +67,6 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Before
 	public void before() throws Exception {
 		super.before();
-		this.eObjectServices = new EObjectServices(getQueryEnvironment());
 		this.reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 	}
 
@@ -77,9 +74,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverse() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2);
 		assertEquals("Unexpected count of inverse references returned", 2, inversedSequence.size());
@@ -95,9 +91,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseNullReceiver() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(null);
 		assertEquals("Unexpected count of inverse references returned", 0, inversedSequence.size());
@@ -107,9 +102,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFilter() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2,
 				EcorePackage.eINSTANCE.getEGenericType());
@@ -123,9 +117,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testEInverseWithFilterImplicitRoot() {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2,
 				EcorePackage.eINSTANCE.getEObject());
@@ -143,9 +136,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFilterNullReceiver() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(null, EcorePackage.eINSTANCE
 				.getEGenericType());
@@ -157,9 +149,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFilterNullFilter() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2, (EClassifier)null);
 
@@ -170,9 +161,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFeature() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2, "eRawType");
 
@@ -187,9 +177,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFeatureNullReceiver() throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(null, "eRawType");
 
@@ -200,9 +189,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFeatureNullFeatureName() throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2, (String)null);
 
@@ -213,9 +201,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	public void testEInverseWithFeatureNotAFeature() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
 		createModelForInverseTests();
-		ILookupEngine queryEnvironnementWithCrossReferencer = getQueryEnvironnementWithCrossReferencer(
-				inverseTestModelClass2).getLookupEngine();
-		eObjectServices.setCrossReferencer(queryEnvironnementWithCrossReferencer.getCrossReferencer());
+		setQueryEnvironnementWithCrossReferencer(inverseTestModelClass2);
+		final EObjectServices eObjectServices = new EObjectServices(queryEnvironment, crossReferencer, null);
 
 		Set<EObject> inversedSequence = eObjectServices.eInverse(inverseTestModelClass2, "notAFeaure");
 
@@ -251,6 +238,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject query = queries.eAllContents().next();
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		assertEquals(queries.eClass(), eObjectServices.eClass(queries));
 		assertEquals(query.eClass(), eObjectServices.eClass(query));
@@ -281,6 +269,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 		fullSiriusCodePackage.eAllContents().next();
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		assertEquals(fullSiriusCodePackage, eObjectServices
 				.eContainer(unused, fullSiriusCodePackage.eClass()));
 
@@ -322,6 +312,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 		fullSiriusCodePackage.eAllContents().next();
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		assertEquals(fullSiriusCodePackage, eObjectServices.eContainerOrSelf(unused, fullSiriusCodePackage
 				.eClass()));
 
@@ -362,6 +354,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		assertEquals(fullSiriusCodePackage, eObjectServices.eContainer(unused));
 		assertEquals(unused, eObjectServices.eContainer(newEReference1));
@@ -385,6 +378,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		assertEquals(unused.eContents(), eObjectServices.eContents(unused));
 		assertEquals(fullSiriusCodePackage.eContents(), eObjectServices.eContents(fullSiriusCodePackage));
@@ -409,6 +403,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
 		List<EObject> contents = eObjectServices.eContents(fullSiriusCodePackage, unused.eClass());
@@ -430,6 +425,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		List<EObject> contents = eObjectServices.eContents(fullSiriusCodePackage);
 		assertEquals(fullSiriusCodePackage.eContents(), contents);
@@ -441,12 +437,15 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 	@Test(expected = NullPointerException.class)
 	public void testEContentsNullReceiver() {
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		eObjectServices.eContents(null);
 	}
 
 	@Test
 	public void testEContentsNullAndNullTypeEClassifierSet() {
-		List<EObject> contents = eObjectServices.eContents((EObject)null, (Set<EClass>)null);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+		final List<EObject> contents = eObjectServices.eContents((EObject)null, (Set<EClass>)null);
 
 		assertEquals(0, contents.size());
 	}
@@ -458,6 +457,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		types.add(EcorePackage.eINSTANCE.getEClass());
 
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		eObjectServices.eContents(null, types);
 	}
 
@@ -468,7 +469,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		types.add(EcorePackage.eINSTANCE.getEClass());
 
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		List<EObject> contents = eObjectServices.eContents(EcorePackage.eINSTANCE, types);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		final List<EObject> contents = eObjectServices.eContents(EcorePackage.eINSTANCE, types);
 
 		assertEquals(20, contents.size());
 		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), contents.get(0));
@@ -498,10 +501,12 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		List<EObject> contents = eObjectServices.eAllContents(fullSiriusCodePackage, QmodelPackage.eINSTANCE
 				.getQueryEvaluationResult());
 		assertEquals(52, contents.size());
+
 		contents = eObjectServices
 				.eAllContents(fullSiriusCodePackage, QmodelPackage.eINSTANCE.getSetResult());
 		assertEquals(1, contents.size());
@@ -512,6 +517,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		List<EObject> contents = eObjectServices.eAllContents(fullSiriusCodePackage, EcorePackage.eINSTANCE
 				.getEObject());
@@ -523,6 +529,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		// find a SetResult
 		List<EObject> allContents = eObjectServices.eAllContents(fullSiriusCodePackage,
@@ -545,6 +552,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		List<EObject> contents = eObjectServices.eContents(fullSiriusCodePackage, EcorePackage.eINSTANCE
 				.getEObject());
@@ -556,6 +564,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		EObject container = eObjectServices.eContainer(fullSiriusCodePackage.eContents().get(0),
 				EcorePackage.eINSTANCE.getEObject());
@@ -583,6 +592,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject unused = fullSiriusCodePackage.eAllContents().next();
 		unused.eAllContents().next();
 		EObject newEReference1 = unused.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		assertEquals(eAllContentSize(fullSiriusCodePackage), eObjectServices.eAllContents(
 				fullSiriusCodePackage).size());
@@ -599,6 +609,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 	@Test
 	public void testEAllContentsNullAndNullTypeEClassifierSet() {
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 		final List<EObject> contents = eObjectServices.eAllContents((EObject)null, (Set<EClass>)null);
 
 		assertEquals(0, contents.size());
@@ -611,6 +622,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		types.add(EcorePackage.eINSTANCE.getEClass());
 
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		eObjectServices.eAllContents((EObject)null, types);
 	}
 
@@ -621,6 +634,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		types.add(EcorePackage.eINSTANCE.getEClass());
 
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		List<EObject> contents = eObjectServices.eAllContents(EcorePackage.eINSTANCE, types);
 
 		assertEquals(20, contents.size());
@@ -659,6 +674,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject newEReference1 = unused.eAllContents().next();
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		List<EObject> contents = eObjectServices.eAllContents(fullSiriusCodePackage, unused.eClass());
 		assertEquals(31, contents.size());
 		contents = eObjectServices.eAllContents(fullSiriusCodePackage, newEReference1.eClass());
@@ -697,6 +714,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		eObj2.eSet(reference, eObj3);
 
 		getQueryEnvironment().registerEPackage(ePkg);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		try {
 			final List<EObject> result = eObjectServices.eAllContents(eObj1, eCls);
 
@@ -735,6 +754,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		((List<EObject>)eObj2.eGet(reference)).add(eObj4);
 
 		getQueryEnvironment().registerEPackage(ePkg);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		try {
 			final List<EObject> result = eObjectServices.eAllContents(eObj1, eCls);
 
@@ -772,6 +793,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EObject query = queries.eAllContents().next();
 		EObject resultExpectation = query.eAllContents().next();
 		EObject eObjectListResult = resultExpectation.eAllContents().next();
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		// The queries "name" feature exists but in the current model it is not
 		// specified
@@ -790,6 +812,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		Queries fullSiriusCodePackage = (Queries)reverseModel.getContents().get(0);
 
 		getQueryEnvironment().registerEPackage(QmodelPackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		Object queries = eObjectServices.eGet(fullSiriusCodePackage, "queries");
 		assertTrue(queries instanceof List<?>);
@@ -808,6 +831,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		EMap<String, Recipe> menu = restaurant.getMenu();
 		menu.put("omelette", AnydslFactory.eINSTANCE.createRecipe());
 		menu.put("kouign-amann", AnydslFactory.eINSTANCE.createRecipe());
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		Object menuFromEGet = eObjectServices.eGet(restaurant, "menu");
 		assertTrue(menuFromEGet instanceof EMap<?, ?>);
@@ -835,23 +859,30 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test(expected = NullPointerException.class)
 	public void testEGetNullFeature() {
 		EObject queries = reverseModel.getContents().get(0);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
 		eObjectServices.eGet(queries, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testEGetNullEObject() {
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		eObjectServices.eGet(null, "query");
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testEGetNullEObjectNullFeature() {
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		eObjectServices.eGet(null, null);
 	}
 
 	@Test
 	public void testAllInstancesNoRootProviderEClass() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		final List<EObject> result = eObjectServices.allInstances(EcorePackage.eINSTANCE.getEAttribute());
 
 		assertEquals(0, result.size());
@@ -862,6 +893,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final Set<EClass> types = Sets.newLinkedHashSet();
 		types.add(EcorePackage.eINSTANCE.getEAttribute());
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		final List<EObject> result = eObjectServices.allInstances(types);
 
 		assertEquals(0, result.size());
@@ -870,6 +903,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesNoRootProviderNullEClass() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		final List<EObject> result = eObjectServices.allInstances((EClass)null);
 
 		assertEquals(0, result.size());
@@ -878,6 +913,8 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesNoRootProviderNullSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
 		final List<EObject> result = eObjectServices.allInstances((Set<EClass>)null);
 
 		assertEquals(0, result.size());
@@ -886,8 +923,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesEClass() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
-				AnydslPackage.eINSTANCE));
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
+				new RootEObjectProvider(EcorePackage.eINSTANCE, AnydslPackage.eINSTANCE));
+
 		final List<EObject> result = eObjectServices.allInstances(EcorePackage.eINSTANCE.getEAttribute());
 
 		assertEquals(46, result.size());
@@ -896,8 +934,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
-				AnydslPackage.eINSTANCE));
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
+				new RootEObjectProvider(EcorePackage.eINSTANCE, AnydslPackage.eINSTANCE));
+
 		final Set<EClass> types = Sets.newLinkedHashSet();
 		types.add(EcorePackage.eINSTANCE.getEAttribute());
 		types.add(EcorePackage.eINSTANCE.getEReference());
@@ -909,8 +948,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesNullEClass() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
-				AnydslPackage.eINSTANCE));
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
+				new RootEObjectProvider(EcorePackage.eINSTANCE, AnydslPackage.eINSTANCE));
+
 		final List<EObject> result = eObjectServices.allInstances((EClass)null);
 
 		assertEquals(0, result.size());
@@ -919,8 +959,9 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	@Test
 	public void testAllInstancesNullSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		eObjectServices.setRootProvider(new RootEObjectProvider(EcorePackage.eINSTANCE,
-				AnydslPackage.eINSTANCE));
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
+				new RootEObjectProvider(EcorePackage.eINSTANCE, AnydslPackage.eINSTANCE));
+
 		final List<EObject> result = eObjectServices.allInstances((Set<EClass>)null);
 
 		assertEquals(0, result.size());

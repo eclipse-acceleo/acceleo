@@ -27,21 +27,6 @@ public interface ILookupEngine {
 	String INSTANTIATION_PROBLEM_MSG = "Couldn't instantiate class ";
 
 	/**
-	 * Gets the {@link CrossReferencer} that this engine uses.
-	 * 
-	 * @return the {@link CrossReferencer} that this engine uses.
-	 */
-	CrossReferenceProvider getCrossReferencer();
-
-	/**
-	 * Gets the {@link IRootEObjectProvider} that this engine uses.
-	 * 
-	 * @return the {@link IRootEObjectProvider} that this engine uses.
-	 * @since 4.0.0
-	 */
-	IRootEObjectProvider getRootEObjectProvider();
-
-	/**
 	 * Returns the service that has the specified name and that best matches the specified argument types if
 	 * any is found. Services are ordered according to their parameter types. A type <em>T1</em> is lower than
 	 * a type <em>T2</em> if <em>T1</em>is a sub-class of <em>T2</em>. A method <em>M1</em> is lower than a
@@ -55,31 +40,6 @@ public interface ILookupEngine {
 	 * @return the best service's match of the registered services if any.
 	 */
 	IService lookup(String name, Class<?>[] argumentTypes);
-
-	/**
-	 * Tells if the given method is the one that indicates we have to set the {@link CrossReferenceProvider}
-	 * to the service instance.
-	 * 
-	 * @param method
-	 *            the method we want to know if it the one that indicates we have to set the
-	 *            {@link CrossReferenceProvider} to the service instance.
-	 * @return <code>true</code> if the given method is the one that indicates we have to set the
-	 *         {@link CrossReferenceProvider} to the service instance, <code>false</code> otherwise.
-	 */
-	boolean isCrossReferencerMethod(Method method);
-
-	/**
-	 * Tells if the given method is the one that indicates we have to set the {@link IRootEObjectProvider} to
-	 * the service instance.
-	 * 
-	 * @param method
-	 *            the method we want to know if it the one that indicates we have to set the
-	 *            {@link IRootEObjectProvider} to the service instance.
-	 * @return <code>true</code> if the given method is the one that indicates we have to set the
-	 *         {@link IRootEObjectProvider} to the service instance, <code>false</code> otherwise.
-	 * @since 4.0.0
-	 */
-	boolean isRootProviderMethod(Method method);
 
 	/**
 	 * Gets the {@link Set} of known {@link IService} with a compatible receiver type.
