@@ -525,6 +525,26 @@ public class EvaluationTest {
 		assertEquals(Boolean.TRUE, result.getResult());
 	}
 
+	@Test
+	public void sequenceToString_480753() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+
+		final EvaluationResult result = engine.eval(builder.build("Sequence{'hello','world'}->toString()"),
+				variables);
+
+		assertEquals("helloworld", result.getResult());
+	}
+
+	@Test
+	public void setToString_480753() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+
+		final EvaluationResult result = engine.eval(builder.build("OrderedSet{'hello','world'}->toString()"),
+				variables);
+
+		assertEquals("helloworld", result.getResult());
+	}
+
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {
 		assertEquals(expected, result.getResult());
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
