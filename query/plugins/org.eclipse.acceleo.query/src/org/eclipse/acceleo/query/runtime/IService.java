@@ -82,7 +82,8 @@ public interface IService {
 	/**
 	 * Gets the priority of this service. The highest priority is used when {@link IService#getName() name}
 	 * and {@link IService#getParameterTypes() parameter types} are matching for more than one
-	 * {@link IService} . In the case of same priority the last added {@link IService} will be used.
+	 * {@link IService} . In the case of same priority the last
+	 * {@link IQueryEnvironment#registerServicePackage(Class) added} {@link IService} will be used.
 	 * 
 	 * @return the priority
 	 * @since 4.1
@@ -123,5 +124,31 @@ public interface IService {
 	 */
 	Set<IType> validateAllType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
 			Map<List<IType>, Set<IType>> allTypes);
+
+	/**
+	 * Predicates that is <code>true</code> if and only if all this service's parameter types are assignable
+	 * to the given service's parameter types at the same index.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param service
+	 *            ISe {@link IService} to compare
+	 * @return <code>true</code> if this <= service in terms of parameter types, <code>false</code> otherwise
+	 * @since 4.1
+	 */
+	boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
+
+	/**
+	 * Predicates that is <code>true</code> if and only if all given service's parameter types are the same as
+	 * the this service's parameter types at the same index.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param service
+	 *            the {@link IService} to compare
+	 * @return <code>true</code> if this == service in terms of parameter types, <code>false</code> otherwise
+	 * @since 4.1
+	 */
+	boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
 
 }

@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -32,6 +31,7 @@ import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
+import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -68,7 +68,7 @@ public class LookupEngineTest {
 
 		Class<?> removeServices(Class<?> servicesClass);
 
-		Map<Integer, Map<String, List<IService>>> getServices();
+		ServiceStore getServices();
 
 	}
 
@@ -79,7 +79,7 @@ public class LookupEngineTest {
 		}
 
 		@Override
-		public Map<Integer, Map<String, List<IService>>> getServices() {
+		public ServiceStore getServices() {
 			return super.getServices();
 		}
 
@@ -92,7 +92,7 @@ public class LookupEngineTest {
 		}
 
 		@Override
-		public Map<Integer, Map<String, List<IService>>> getServices() {
+		public ServiceStore getServices() {
 			return super.getServices();
 		}
 
@@ -926,7 +926,7 @@ public class LookupEngineTest {
 		engine.registerServiceInstance(new ExtendedTestServices1(provider));
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getServices().size());
+		assertEquals(2, engine.getServices().size());
 
 		engine.removeServices(ExtendedTestServices1.class);
 
@@ -968,6 +968,246 @@ public class LookupEngineTest {
 		final ITestLookupEngine engine = instanciate(provider);
 
 		assertEquals(null, engine.lookup("service", new Class<?>[] {}));
+	}
+
+	@Test
+	public void lookupLowerPriorityLowerType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(0, EClass.class, 1, EClassifier.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupLowerPriorityEqualType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(0, EClassifier.class, 1, EClassifier.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupLowerPriorityGreaterType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(0, EClassifier.class, 1, EClass.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupEqualPriorityLowerType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(0, EClass.class, 0, EClassifier.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupEqualPriorityEqualType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(0, EClassifier.class, 0, EClassifier.class));
+
+		assertEquals(1, registrationResult.getDuplicated().size());
+		Entry<IService, List<IService>> entry = registrationResult.getDuplicated().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupEqualPriorityGreaterType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(0, EClassifier.class, 0, EClass.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupGreaterPriorityLowerType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(1, EClass.class, 0, EClassifier.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupGreaterPriorityEqualType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(1, EClassifier.class, 0, EClassifier.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupGreaterPriorityGreaterType() throws InvalidAcceleoPackageException {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = engine
+				.registerServiceInstance(new TestServiceProvider(1, EClassifier.class, 0, EClass.class));
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 	}
 
 }

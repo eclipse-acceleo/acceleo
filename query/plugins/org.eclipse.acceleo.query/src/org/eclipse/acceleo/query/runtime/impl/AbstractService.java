@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,55 @@ import org.eclipse.emf.ecore.EClass;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractService implements IService {
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IService#isEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
+	 *      org.eclipse.acceleo.query.runtime.IService)
+	 */
+	@Override
+	public boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service) {
+		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
+		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
+		boolean result = paramTypes1.size() == paramTypes2.size();
+
+		final Iterator<IType> it1 = paramTypes1.iterator();
+		final Iterator<IType> it2 = paramTypes2.iterator();
+		while (result && it1.hasNext()) {
+			IType paramType1 = it1.next();
+			IType paramType2 = it2.next();
+			if (!paramType2.equals(paramType1)) {
+				result = false;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IService#isLowerOrEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
+	 *      org.eclipse.acceleo.query.runtime.IService)
+	 */
+	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service) {
+		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
+		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
+		boolean result = paramTypes1.size() == paramTypes2.size();
+
+		final Iterator<IType> it1 = paramTypes1.iterator();
+		final Iterator<IType> it2 = paramTypes2.iterator();
+		while (result && it1.hasNext()) {
+			IType paramType1 = it1.next();
+			IType paramType2 = it2.next();
+			if (!paramType2.isAssignableFrom(paramType1)) {
+				result = false;
+			}
+		}
+
+		return result;
+	}
 
 	/**
 	 * {@inheritDoc}

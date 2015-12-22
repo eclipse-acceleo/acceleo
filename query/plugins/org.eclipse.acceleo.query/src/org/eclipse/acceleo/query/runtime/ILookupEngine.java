@@ -32,6 +32,34 @@ public interface ILookupEngine {
 	 * a type <em>T2</em> if <em>T1</em>is a sub-class of <em>T2</em>. A method <em>M1</em> is lower than a
 	 * method <em>M2</em> if all the types of the former are lower than the type of the later at the same
 	 * index.
+	 * <table border="1">
+	 * <caption> Global service lookup priority </caption>
+	 * <tr>
+	 * <th>{@link IService#getPriority() priority}\
+	 * {@link IService#isEqualParameterTypes(IReadOnlyQueryEnvironment, IService) parameter types}</th>
+	 * <th>&lt;</th>
+	 * <th>=</th>
+	 * <th>&gt;</th>
+	 * </tr>
+	 * <tr>
+	 * <th>&lt;</th>
+	 * <td>&lt;</td>
+	 * <td>&lt;</td>
+	 * <td>&lt;</td>
+	 * </tr>
+	 * <tr>
+	 * <th>=</th>
+	 * <td>&lt;</td>
+	 * <td>=</td>
+	 * <td>&gt;</td>
+	 * </tr>
+	 * <tr>
+	 * <th>&gt;</th>
+	 * <td>&gt;</td>
+	 * <td>&gt;</td>
+	 * <td>&gt;</td>
+	 * </tr>
+	 * </table>
 	 * 
 	 * @param name
 	 *            the name of the service to retrieve.

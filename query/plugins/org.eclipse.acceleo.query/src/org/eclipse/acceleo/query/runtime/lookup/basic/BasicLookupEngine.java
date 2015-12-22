@@ -14,9 +14,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -54,7 +51,7 @@ public class BasicLookupEngine implements ILookupEngine {
 	/**
 	 * Maps of multimethods : maps the arity to maps that maps service names to their IService list.
 	 */
-	private final Map<Integer, Map<String, List<IService>>> services = new HashMap<Integer, Map<String, List<IService>>>();
+	private final ServiceStore services;
 
 	/**
 	 * Mapping from a {@link Class} to its {@link IService}.
@@ -75,14 +72,15 @@ public class BasicLookupEngine implements ILookupEngine {
 	 */
 	public BasicLookupEngine(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
+		this.services = new ServiceStore(queryEnvironment);
 	}
 
 	/**
-	 * Gets Maps of multimethods : maps the arity to maps that maps service names to their IService list.
+	 * Gets the {@link ServiceStore}.
 	 * 
-	 * @return Maps of multimethods : maps the arity to maps that maps service names to their IService list
+	 * @return the {@link ServiceStore}
 	 */
-	protected Map<Integer, Map<String, List<IService>>> getServices() {
+	protected ServiceStore getServices() {
 		return services;
 	}
 
@@ -102,48 +100,6 @@ public class BasicLookupEngine implements ILookupEngine {
 	}
 
 	/**
-	 * retrieve or create a multimethod from argcount and the service name.
-	 * 
-	 * @param service
-	 *            the {@link IService}
-	 * @return the list of {@link IService} instances that make up the retrieve multimethod.
-	 */
-	private List<IService> getOrCreateMultiService(IService service) {
-		final int argc = service.getNumberOfParameters();
-		final String serviceName = service.getName();
-		Map<String, List<IService>> argcServices = services.get(argc);
-		if (argcServices == null) {
-			argcServices = new HashMap<String, List<IService>>();
-			services.put(argc, argcServices);
-		}
-		List<IService> result = argcServices.get(serviceName);
-		if (result == null) {
-			result = new ArrayList<IService>();
-			argcServices.put(serviceName, result);
-		}
-		return result;
-	}
-
-	/**
-	 * retrieve a multimethod from argcount and the service name.
-	 * 
-	 * @param methodName
-	 *            the name of the multimethod to retrieve.
-	 * @param argc
-	 *            the arg count of the multimethod to retrieve.
-	 * @return the list of {@link IService} instances that make up the retrieve multimethod.
-	 */
-
-	private List<IService> getMultimethod(String methodName, int argc) {
-		Map<String, List<IService>> argcServices = services.get(argc);
-		if (argcServices == null) {
-			return null;
-		} else {
-			return argcServices.get(methodName);
-		}
-	}
-
-	/**
 	 * Predicates that is <code>true</code> when the specified argument types match the specified service's
 	 * parameter types. An argument's type matches a parameter's type if the latter is assignable from the
 	 * former.
@@ -151,8 +107,8 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * @param service
 	 *            the {@link IService} to match
 	 * @param argumentTypes
-	 *            the argument to match against the method's parameters' type
-	 * @return <code>true</code> when the specified method matches the specified set of types
+	 *            the argument to match against the service parameters type
+	 * @return <code>true</code> when the specified service matches the specified set of types
 	 */
 	private boolean matches(IService service, Class<?>[] argumentTypes) {
 		assert service.getNumberOfParameters() == argumentTypes.length;
@@ -170,121 +126,21 @@ public class BasicLookupEngine implements ILookupEngine {
 		return result;
 	}
 
-	/**
-	 * Predicates that is <code>true</code> if and only if all first service's parameter types are assignable
-	 * to second service's parameter types at the same index.
-	 * 
-	 * @param service1
-	 *            first {@link IService} to compare
-	 * @param service2
-	 *            second {@link IService} to compare
-	 * @return <code>true</code> if service1 <= service2 in terms of parameter types, <code>false</code>
-	 *         otherwise
-	 */
-	private boolean isLowerOrEqualParameterTypes(IService service1, IService service2) {
-		final List<IType> paramTypes1 = service1.getParameterTypes(queryEnvironment);
-		final List<IType> paramTypes2 = service2.getParameterTypes(queryEnvironment);
-		boolean result = paramTypes1.size() == paramTypes2.size();
-
-		final Iterator<IType> it1 = paramTypes1.iterator();
-		final Iterator<IType> it2 = paramTypes2.iterator();
-		while (result && it1.hasNext()) {
-			IType paramType1 = it1.next();
-			IType paramType2 = it2.next();
-			if (!paramType2.isAssignableFrom(paramType1)) {
-				result = false;
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Predicates that is <code>true</code> if and only if all first service's parameter types are assignable
-	 * to second service's parameter types at the same index and not all parameter types are the same at the
-	 * same index.
-	 * 
-	 * @param service1
-	 *            first {@link IService} to compare
-	 * @param service2
-	 *            second {@link IService} to compare
-	 * @return <code>true</code> if service1 < service2 in terms of parameter types, <code>false</code>
-	 *         otherwise
-	 */
-	private boolean isLowerParameterTypes(IService service1, IService service2) {
-		return isLowerOrEqualParameterTypes(service1, service2) && !isEqualParameterTypes(service1, service2);
-	}
-
-	/**
-	 * Predicates that is <code>true</code> if and only if all first service's parameter types are the same as
-	 * second service's parameter types at the same index.
-	 * 
-	 * @param service1
-	 *            first {@link IService} to compare
-	 * @param service2
-	 *            second {@link IService} to compare
-	 * @return <code>true</code> if service1 == service2 in terms of parameter types, <code>false</code>
-	 *         otherwise
-	 */
-	private boolean isEqualParameterTypes(IService service1, IService service2) {
-		final List<IType> paramTypes1 = service1.getParameterTypes(queryEnvironment);
-		final List<IType> paramTypes2 = service2.getParameterTypes(queryEnvironment);
-		boolean result = paramTypes1.size() == paramTypes2.size();
-
-		final Iterator<IType> it1 = paramTypes1.iterator();
-		final Iterator<IType> it2 = paramTypes2.iterator();
-		while (result && it1.hasNext()) {
-			IType paramType1 = it1.next();
-			IType paramType2 = it2.next();
-			if (!paramType2.equals(paramType1)) {
-				result = false;
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Tells if given services are equals (same name and same argument types).
-	 * 
-	 * @param service1
-	 *            first {@link IService} to compare
-	 * @param service2
-	 *            second {@link IService} to compare
-	 * @return <code>true</code> if given services are equals (same name and same argument types),
-	 *         <code>false</code> otherwise
-	 */
-	private boolean isEqual(IService service1, IService service2) {
-		return service1.getName().equals(service2.getName()) && isEqualParameterTypes(service1, service2);
-	}
-
-	/**
-	 * Tells if given services have the same name and
-	 * {@link BasicLookupEngine#isLowerParameterTypes(IService, IService) lower parameter types}.
-	 * 
-	 * @param service1
-	 *            first {@link IService} to compare
-	 * @param service2
-	 *            second {@link IService} to compare
-	 * @return <code>true</code> if given services have the same name and
-	 *         {@link BasicLookupEngine#isLowerParameterTypes(IService, IService) lower parameter types},
-	 *         <code>false</code> otherwise
-	 */
-	private boolean isLower(IService service1, IService service2) {
-		return service1.getName().equals(service2.getName()) && isLowerParameterTypes(service1, service2);
-	}
-
 	@Override
 	public IService lookup(String name, Class<?>[] argumentTypes) {
-		List<IService> multiMethod = getMultimethod(name, argumentTypes.length);
+		List<IService> multiMethod = services.getMultiService(name, argumentTypes.length);
 		if (multiMethod == null) {
 			return null;
 		} else {
 			IService result = null;
 			for (IService service : multiMethod) {
-				if (matches(service, argumentTypes)
-						&& (result == null || isLowerOrEqualParameterTypes(service, result))) {
-					result = service;
+				if (matches(service, argumentTypes)) {
+					if (result == null
+							|| service.getPriority() > result.getPriority()
+							|| (service.getPriority() == result.getPriority() && service
+									.isLowerOrEqualParameterTypes(queryEnvironment, result))) {
+						result = service;
+					}
 				}
 			}
 			return result;
@@ -432,17 +288,7 @@ public class BasicLookupEngine implements ILookupEngine {
 		if (servicesSet != null) {
 			result = servicesClass;
 			for (IService service : servicesSet) {
-				final int argc = service.getNumberOfParameters();
-				final Map<String, List<IService>> argcServices = services.get(argc);
-				final String serviceName = service.getName();
-				final List<IService> servicesList = argcServices.get(serviceName);
-				servicesList.remove(service);
-				if (servicesList.isEmpty()) {
-					argcServices.remove(serviceName);
-					if (argcServices.isEmpty()) {
-						services.remove(argc);
-					}
-				}
+				services.remove(service);
 			}
 		} else {
 			result = null;
@@ -486,20 +332,8 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * @return the {@link ServiceRegistrationResult}
 	 */
 	private ServiceRegistrationResult registerService(Class<?> newServices, IService service) {
-		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		final ServiceRegistrationResult result = services.add(service);
 
-		final List<IService> multiService = getOrCreateMultiService(service);
-		for (IService existingService : multiService) {
-			if (isEqual(service, existingService)) {
-				result.addDuplicated(service, existingService);
-			} else if (isLower(service, existingService)) {
-				result.addMasked(service, existingService);
-			} else if (isLower(existingService, service)) {
-				result.addIsMaskedBy(service, existingService);
-			}
-		}
-		result.getRegistered().add(service);
-		multiService.add(service);
 		Set<IService> servicesSet = classToServices.get(newServices);
 		if (servicesSet == null) {
 			servicesSet = new LinkedHashSet<IService>();
