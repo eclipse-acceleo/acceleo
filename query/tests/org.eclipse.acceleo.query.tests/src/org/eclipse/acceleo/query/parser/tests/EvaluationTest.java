@@ -448,8 +448,9 @@ public class EvaluationTest {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		EvaluationResult result = engine.eval(
 				builder.build("let x='prefix', y=x, z='suffix' in x.concat(z)"), varDefinitions);
-		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
 		assertEquals(1, result.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		String message = result.getDiagnostic().getChildren().get(0).getMessage();
 		assertTrue(message.contains("Couldn't find the x variable"));
 		assertEquals("prefixsuffix", result.getResult());
@@ -460,10 +461,12 @@ public class EvaluationTest {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		EvaluationResult result = engine.eval(builder
 				.build("let x='prefix', y=x, z='suffix' in x.concat(z).concat(y)"), varDefinitions);
-		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		assertTrue(message1.contains("Couldn't find the x variable"));
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
 		assertTrue(message2.contains("Couldn't find the concat"));
 		assertEquals(null, result.getResult());

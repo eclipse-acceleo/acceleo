@@ -69,17 +69,18 @@ public class EvaluationServiceStatusTests {
 	}
 
 	/**
-	 * Tests that, when an unknown variable is accessed, a warning is emitted with the following message :
+	 * Tests that, when an unknown variable is accessed, an error is emitted with the following message :
 	 */
 	@Test
 	public void variableNotFoundStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
 		services.getVariableValue(variables, "novariable", status);
 
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.ERROR, child.getSeverity());
 		assertEquals(VARIABLE_NOT_FOUND, child.getMessage());
 		assertNull(child.getException());
 	}

@@ -105,11 +105,11 @@ public class EvaluationServicesTest {
 	public void getNonExistingVariableTest() {
 		Diagnostic status = new BasicDiagnostic();
 		assertTrue(services.getVariableValue(variables, "xx", status) instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertEquals(Diagnostic.ERROR, child.getSeverity());
 		assertNull(child.getException());
 		assertTrue(child.getMessage().contains("xx variable"));
 	}

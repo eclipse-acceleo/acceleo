@@ -330,10 +330,12 @@ public class AstEvaluatorTest extends AstBuilder {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		assertTrue(message1.contains("Couldn't find the prefix variable"));
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
 		assertTrue(message2.contains("Couldn't find the concat"));
 	}
@@ -345,10 +347,12 @@ public class AstEvaluatorTest extends AstBuilder {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
 		assertEquals(2, result.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
 		assertTrue(message1.contains("Couldn't find the novar variable"));
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
 		assertTrue(message2.contains("Couldn't find the concat"));
 	}
