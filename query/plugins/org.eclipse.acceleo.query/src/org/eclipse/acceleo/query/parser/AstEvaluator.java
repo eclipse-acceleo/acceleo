@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
@@ -28,10 +29,12 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -170,76 +173,95 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseCall(Call object) {
+		final Object result;
+
 		List<Expression> exprArgs = object.getArguments();
-		Object result = null;
 		final int argc = exprArgs.size();
 		final Object[] args = new Object[argc];
-		if (argc > 0) {
-			int i = 0;
-			args[i] = doSwitch(exprArgs.get(i));
-			if (args[i] != null && args[i].getClass() == Boolean.class) {
-				result = booleanShortcut(object.getServiceName(), (Boolean)args[i]);
-			}
-			if (result == null) {
-				i++; // go to the second argument
-				// eval remaining arguments.
-				while (i < argc) {
-					args[i] = doSwitch(exprArgs.get(i));
-					i++;
-				}
-			}
+
+		int i = 0;
+		for (Expression arg : exprArgs) {
+			args[i++] = doSwitch(arg);
 		}
-		if (result == null) {
-			// call the service.
-			switch (object.getType()) {
-				case CALLSERVICE:
-					result = services.call(object.getServiceName(), args, diagnostic);
-					break;
-				case CALLORAPPLY:
-					result = services.callOrApply(object.getServiceName(), args, diagnostic);
-					break;
-				case COLLECTIONCALL:
-					result = services.collectionServiceCall(object.getServiceName(), args, diagnostic);
-					break;
-				default:
-					throw new UnsupportedOperationException("should never happen");
-			}
+
+		// call the service.
+		switch (object.getType()) {
+			case CALLSERVICE:
+				result = services.call(object.getServiceName(), args, diagnostic);
+				break;
+			case CALLORAPPLY:
+				result = services.callOrApply(object.getServiceName(), args, diagnostic);
+				break;
+			case COLLECTIONCALL:
+				result = services.collectionServiceCall(object.getServiceName(), args, diagnostic);
+				break;
+			default:
+				throw new UnsupportedOperationException("should never happen");
 		}
+
 		return result;
 	}
 
 	/**
-	 * Tries to apply a shortcut for boolean operator (or, and, implies).
-	 * 
-	 * @param serviceName
-	 *            the service name
-	 * @param firstArg
-	 *            the first argument value
-	 * @return the {@link Boolean} result of the shortcut is any found, <code>null</code> otherwise
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseAnd(org.eclipse.acceleo.query.ast.And)
 	 */
-	private Boolean booleanShortcut(String serviceName, Boolean firstArg) {
-		final Boolean result;
-		if (AstBuilderListener.AND_SERVICE_NAME.equals(serviceName)) {
-			if (Boolean.FALSE.equals(firstArg)) {
-				result = Boolean.FALSE;
-			} else {
-				result = null;
-			}
-		} else if (AstBuilderListener.OR_SERVICE_NAME.equals(serviceName)) {
-			if (Boolean.TRUE.equals(firstArg)) {
-				result = Boolean.TRUE;
-			} else {
-				result = null;
-			}
-		} else if (AstBuilderListener.IMPLIES_SERVICE_NAME.equals(serviceName)) {
-			if (Boolean.FALSE.equals(firstArg)) {
-				result = Boolean.TRUE;
-			} else {
-				result = null;
-			}
+	@Override
+	public Object caseAnd(And object) {
+		final Object result;
+		final Object[] args = new Object[2];
+
+		args[0] = doSwitch(object.getArguments().get(0));
+		if (args[0] != null && args[0].getClass() == Boolean.class && Boolean.FALSE.equals(args[0])) {
+			result = Boolean.FALSE;
 		} else {
-			result = null;
+			args[1] = doSwitch(object.getArguments().get(1));
+			result = services.call(object.getServiceName(), args, diagnostic);
 		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseOr(org.eclipse.acceleo.query.ast.Or)
+	 */
+	@Override
+	public Object caseOr(Or object) {
+		final Object result;
+		final Object[] args = new Object[2];
+
+		args[0] = doSwitch(object.getArguments().get(0));
+		if (args[0] != null && args[0].getClass() == Boolean.class && Boolean.TRUE.equals(args[0])) {
+			result = Boolean.TRUE;
+		} else {
+			args[1] = doSwitch(object.getArguments().get(1));
+			result = services.call(object.getServiceName(), args, diagnostic);
+		}
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseImplies(org.eclipse.acceleo.query.ast.Implies)
+	 */
+	@Override
+	public Object caseImplies(Implies object) {
+		final Object result;
+		final Object[] args = new Object[2];
+
+		args[0] = doSwitch(object.getArguments().get(0));
+		if (args[0] != null && args[0].getClass() == Boolean.class && Boolean.FALSE.equals(args[0])) {
+			result = Boolean.TRUE;
+		} else {
+			args[1] = doSwitch(object.getArguments().get(1));
+			result = services.call(object.getServiceName(), args, diagnostic);
+		}
+
 		return result;
 	}
 

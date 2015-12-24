@@ -1370,6 +1370,165 @@ public interface AstPackage extends EPackage {
 	int CONDITIONAL_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.OrImpl <em>Or</em>}' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.OrImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getOr()
+	 * @generated
+	 */
+	int OR = 31;
+
+	/**
+	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int OR__SERVICE_NAME = CALL__SERVICE_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int OR__TYPE = CALL__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int OR__ARGUMENTS = CALL__ARGUMENTS;
+
+	/**
+	 * The number of structural features of the '<em>Or</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int OR_FEATURE_COUNT = CALL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Or</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int OR_OPERATION_COUNT = CALL_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.AndImpl <em>And</em>}' class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.AndImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAnd()
+	 * @generated
+	 */
+	int AND = 32;
+
+	/**
+	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int AND__SERVICE_NAME = CALL__SERVICE_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int AND__TYPE = CALL__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int AND__ARGUMENTS = CALL__ARGUMENTS;
+
+	/**
+	 * The number of structural features of the '<em>And</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int AND_FEATURE_COUNT = CALL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>And</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int AND_OPERATION_COUNT = CALL_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ImpliesImpl <em>Implies</em>}'
+	 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.ImpliesImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getImplies()
+	 * @generated
+	 */
+	int IMPLIES = 33;
+
+	/**
+	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES__SERVICE_NAME = CALL__SERVICE_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES__TYPE = CALL__TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES__ARGUMENTS = CALL__ARGUMENTS;
+
+	/**
+	 * The number of structural features of the '<em>Implies</em>' class. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES_FEATURE_COUNT = CALL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Implies</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int IMPLIES_OPERATION_COUNT = CALL_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}' enum.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -1377,7 +1536,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 31;
+	int CALL_TYPE = 34;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1387,7 +1546,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 32;
+	int OBJECT_TYPE = 35;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -2111,6 +2270,36 @@ public interface AstPackage extends EPackage {
 	EReference getConditional_FalseBranch();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Or <em>Or</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Or</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Or
+	 * @generated
+	 */
+	EClass getOr();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.And <em>And</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>And</em>'.
+	 * @see org.eclipse.acceleo.query.ast.And
+	 * @generated
+	 */
+	EClass getAnd();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Implies <em>Implies</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Implies</em>'.
+	 * @see org.eclipse.acceleo.query.ast.Implies
+	 * @generated
+	 */
+	EClass getImplies();
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2748,6 +2937,36 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CONDITIONAL__FALSE_BRANCH = eINSTANCE.getConditional_FalseBranch();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.OrImpl <em>Or</em>}'
+		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.OrImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getOr()
+		 * @generated
+		 */
+		EClass OR = eINSTANCE.getOr();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.AndImpl <em>And</em>}'
+		 * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.AndImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAnd()
+		 * @generated
+		 */
+		EClass AND = eINSTANCE.getAnd();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ImpliesImpl
+		 * <em>Implies</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.ImpliesImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getImplies()
+		 * @generated
+		 */
+		EClass IMPLIES = eINSTANCE.getImplies();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.CallType <em>Call Type</em>}'

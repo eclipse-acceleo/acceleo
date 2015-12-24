@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.impl;
 
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -30,11 +31,13 @@ import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -148,6 +151,12 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createLet();
 			case AstPackage.CONDITIONAL:
 				return createConditional();
+			case AstPackage.OR:
+				return createOr();
+			case AstPackage.AND:
+				return createAnd();
+			case AstPackage.IMPLIES:
+				return createImplies();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName()
 						+ "' is not a valid classifier");
@@ -478,6 +487,36 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public Conditional createConditional() {
 		ConditionalImpl conditional = new ConditionalImpl();
 		return conditional;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Or createOr() {
+		OrImpl or = new OrImpl();
+		return or;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public And createAnd() {
+		AndImpl and = new AndImpl();
+		return and;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Implies createImplies() {
+		ImpliesImpl implies = new ImpliesImpl();
+		return implies;
 	}
 
 	/**

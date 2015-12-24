@@ -104,5 +104,8 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Conditional/trueBranch"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//Conditional/falseBranch"/>
     </genClasses>
+    <genClasses ecoreClass="ast.ecore#//Or"/>
+    <genClasses ecoreClass="ast.ecore#//And"/>
+    <genClasses ecoreClass="ast.ecore#//Implies"/>
   </genPackages>
 </genmodel:GenModel>

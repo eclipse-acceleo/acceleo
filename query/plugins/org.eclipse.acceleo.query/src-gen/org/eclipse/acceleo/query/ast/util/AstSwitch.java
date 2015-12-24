@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.util;
 
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -29,11 +30,13 @@ import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -429,6 +432,39 @@ public class AstSwitch<T> extends Switch<T> {
 				T result = caseConditional(conditional);
 				if (result == null)
 					result = caseExpression(conditional);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.OR: {
+				Or or = (Or)theEObject;
+				T result = caseOr(or);
+				if (result == null)
+					result = caseCall(or);
+				if (result == null)
+					result = caseExpression(or);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.AND: {
+				And and = (And)theEObject;
+				T result = caseAnd(and);
+				if (result == null)
+					result = caseCall(and);
+				if (result == null)
+					result = caseExpression(and);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.IMPLIES: {
+				Implies implies = (Implies)theEObject;
+				T result = caseImplies(implies);
+				if (result == null)
+					result = caseCall(implies);
+				if (result == null)
+					result = caseExpression(implies);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -902,6 +938,51 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseConditional(Conditional object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Or</em>'. <!-- begin-user-doc -->
+	 * This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Or</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOr(Or object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>And</em>'. <!-- begin-user-doc -->
+	 * This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>And</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAnd(And object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Implies</em>'. <!-- begin-user-doc
+	 * --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+	 * end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Implies</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseImplies(Implies object) {
 		return null;
 	}
 

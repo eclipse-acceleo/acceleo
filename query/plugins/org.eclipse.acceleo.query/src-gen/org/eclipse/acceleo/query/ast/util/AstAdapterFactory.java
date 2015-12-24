@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.util;
 
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -29,11 +30,13 @@ import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -252,6 +255,21 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseConditional(Conditional object) {
 			return createConditionalAdapter();
+		}
+
+		@Override
+		public Adapter caseOr(Or object) {
+			return createOrAdapter();
+		}
+
+		@Override
+		public Adapter caseAnd(And object) {
+			return createAndAdapter();
+		}
+
+		@Override
+		public Adapter caseImplies(Implies object) {
+			return createImpliesAdapter();
 		}
 
 		@Override
@@ -702,6 +720,46 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createConditionalAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Or <em>Or</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.Or
+	 * @generated
+	 */
+	public Adapter createOrAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.And <em>And</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.And
+	 * @generated
+	 */
+	public Adapter createAndAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Implies
+	 * <em>Implies</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.Implies
+	 * @generated
+	 */
+	public Adapter createImpliesAdapter() {
 		return null;
 	}
 

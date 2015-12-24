@@ -11,6 +11,7 @@
  */
 package org.eclipse.acceleo.query.ast.impl;
 
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstFactory;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
@@ -31,11 +32,13 @@ import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -275,6 +278,27 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass conditionalEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass orEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass andEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass impliesEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -954,6 +978,33 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getOr() {
+		return orEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getAnd() {
+		return andEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EClass getImplies() {
+		return impliesEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EEnum getCallType() {
 		return callTypeEEnum;
 	}
@@ -1092,6 +1143,12 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		createEReference(conditionalEClass, CONDITIONAL__TRUE_BRANCH);
 		createEReference(conditionalEClass, CONDITIONAL__FALSE_BRANCH);
 
+		orEClass = createEClass(OR);
+
+		andEClass = createEClass(AND);
+
+		impliesEClass = createEClass(IMPLIES);
+
 		// Create enums
 		callTypeEEnum = createEEnum(CALL_TYPE);
 
@@ -1166,6 +1223,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorBindingEClass.getESuperTypes().add(this.getBinding());
 		letEClass.getESuperTypes().add(this.getExpression());
 		conditionalEClass.getESuperTypes().add(this.getExpression());
+		orEClass.getESuperTypes().add(this.getCall());
+		andEClass.getESuperTypes().add(this.getCall());
+		impliesEClass.getESuperTypes().add(this.getCall());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(expressionEClass, Expression.class, "Expression", IS_ABSTRACT, !IS_INTERFACE,
@@ -1362,6 +1422,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEReference(getConditional_FalseBranch(), this.getExpression(), null, "falseBranch", null, 1, 1,
 				Conditional.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(orEClass, Or.class, "Or", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(andEClass, And.class, "And", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(impliesEClass, Implies.class, "Implies", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize enums and add enum literals
 		initEEnum(callTypeEEnum, CallType.class, "CallType");

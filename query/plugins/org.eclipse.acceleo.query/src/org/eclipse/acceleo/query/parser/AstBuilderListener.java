@@ -30,6 +30,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
@@ -49,10 +50,12 @@ import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -1038,7 +1041,12 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitOr(OrContext ctx) {
-		pushBinary(OR_SERVICE_NAME, ctx);
+		Expression op2 = pop();
+		Expression op1 = pop();
+		final Or callService = builder.callOrService(op1, op2);
+		startPositions.put(callService, startPositions.get(op1));
+		endPositions.put(callService, endPositions.get(op2));
+		push(callService);
 	}
 
 	@Override
@@ -1048,7 +1056,12 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitImplies(ImpliesContext ctx) {
-		pushBinary(IMPLIES_SERVICE_NAME, ctx);
+		Expression op2 = pop();
+		Expression op1 = pop();
+		final Implies callService = builder.callImpliesService(op1, op2);
+		startPositions.put(callService, startPositions.get(op1));
+		endPositions.put(callService, endPositions.get(op2));
+		push(callService);
 	}
 
 	@Override
@@ -1073,7 +1086,12 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitAnd(AndContext ctx) {
-		pushBinary(AND_SERVICE_NAME, ctx);
+		Expression op2 = pop();
+		Expression op1 = pop();
+		final And callService = builder.callAndService(op1, op2);
+		startPositions.put(callService, startPositions.get(op1));
+		endPositions.put(callService, endPositions.get(op2));
+		push(callService);
 	}
 
 	@Override

@@ -120,4 +120,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="falseBranch" lowerBound="1"
         eType="#//Expression" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Or" eSuperTypes="#//Call"/>
+  <eClassifiers xsi:type="ecore:EClass" name="And" eSuperTypes="#//Call"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Implies" eSuperTypes="#//Call"/>
 </ecore:EPackage>

@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.And;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Binding;
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
@@ -33,10 +34,12 @@ import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.FeatureAccess;
+import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
 import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
@@ -362,6 +365,54 @@ public class AstBuilder {
 		call.getArguments().addAll(Lists.newArrayList(args));
 
 		return call;
+	}
+
+	/**
+	 * Creates a new {@link And} given the arguments.
+	 * 
+	 * @param args
+	 *            the arguments
+	 * @return an instance of {@link And}.
+	 */
+	public And callAndService(Expression... args) {
+		final And and = (And)EcoreUtil.create(AstPackage.Literals.AND);
+
+		and.setServiceName(AstBuilderListener.AND_SERVICE_NAME);
+		and.getArguments().addAll(Lists.newArrayList(args));
+
+		return and;
+	}
+
+	/**
+	 * Creates a new {@link Or} given the arguments.
+	 * 
+	 * @param args
+	 *            the arguments
+	 * @return an instance of {@link Or}.
+	 */
+	public Or callOrService(Expression... args) {
+		final Or or = (Or)EcoreUtil.create(AstPackage.Literals.OR);
+
+		or.setServiceName(AstBuilderListener.OR_SERVICE_NAME);
+		or.getArguments().addAll(Lists.newArrayList(args));
+
+		return or;
+	}
+
+	/**
+	 * Creates a new {@link Implies} given the arguments.
+	 * 
+	 * @param args
+	 *            the arguments
+	 * @return an instance of {@link Implies}.
+	 */
+	public Implies callImpliesService(Expression... args) {
+		final Implies implies = (Implies)EcoreUtil.create(AstPackage.Literals.IMPLIES);
+
+		implies.setServiceName(AstBuilderListener.IMPLIES_SERVICE_NAME);
+		implies.getArguments().addAll(Lists.newArrayList(args));
+
+		return implies;
 	}
 
 	/**
