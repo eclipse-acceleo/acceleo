@@ -1185,6 +1185,135 @@ public class CollectionServicesTest {
 		assertEquals(0, result.size());
 	}
 
+	private static class TestClosure {
+
+		final List<Object> refs = new ArrayList<Object>();
+
+		public List<Object> getRefs() {
+			return refs;
+		}
+
+	}
+
+	@Test
+	public void testClosure() {
+		final LambdaValue lambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				final Object result;
+
+				if (args[0] instanceof TestClosure) {
+					result = ((TestClosure)args[0]).getRefs();
+				} else {
+					result = null;
+				}
+
+				return result;
+			}
+		};
+
+		TestClosure a = new TestClosure();
+		TestClosure b = new TestClosure();
+		TestClosure c = new TestClosure();
+		TestClosure d = new TestClosure();
+		TestClosure e = new TestClosure();
+		TestClosure f = new TestClosure();
+
+		a.getRefs().add(b);
+
+		b.getRefs().add(d);
+		b.getRefs().add(c);
+
+		c.getRefs().add(e);
+		c.getRefs().add(f);
+
+		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
+		set.add(a);
+		Set<Object> result = collectionServices.closure(set, lambdaValue);
+
+		assertEquals(5, result.size());
+		Iterator<Object> it = result.iterator();
+		assertEquals(b, it.next());
+		assertEquals(d, it.next());
+		assertEquals(c, it.next());
+		assertEquals(e, it.next());
+		assertEquals(f, it.next());
+	}
+
+	@Test
+	public void testClosureRecursive() {
+		final LambdaValue lambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				final Object result;
+
+				if (args[0] instanceof TestClosure) {
+					result = ((TestClosure)args[0]).getRefs();
+				} else {
+					result = null;
+				}
+
+				return result;
+			}
+		};
+
+		TestClosure a = new TestClosure();
+		TestClosure b = new TestClosure();
+		TestClosure c = new TestClosure();
+		TestClosure d = new TestClosure();
+		TestClosure e = new TestClosure();
+		TestClosure f = new TestClosure();
+
+		a.getRefs().add(b);
+
+		b.getRefs().add(d);
+		b.getRefs().add(c);
+
+		c.getRefs().add(e);
+		c.getRefs().add(f);
+
+		f.getRefs().add(b);
+
+		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
+		set.add(a);
+		Set<Object> result = collectionServices.closure(set, lambdaValue);
+
+		assertEquals(5, result.size());
+		Iterator<Object> it = result.iterator();
+		assertEquals(b, it.next());
+		assertEquals(d, it.next());
+		assertEquals(c, it.next());
+		assertEquals(e, it.next());
+		assertEquals(f, it.next());
+	}
+
+	@Test
+	public void testClosureNothingNull() {
+		final LambdaValue nullLambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return null;
+			}
+		};
+
+		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		Set<Object> result = collectionServices.closure(set, nullLambdaValue);
+		assertEquals(0, result.size());
+
+		final LambdaValue nothingLambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return new Nothing("");
+			}
+		};
+
+		set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		result = collectionServices.closure(set, nothingLambdaValue);
+		assertEquals(0, result.size());
+	}
+
 	@Test
 	public void testSelectSet() throws URISyntaxException, IOException {
 		AstBuilder builder = new AstBuilder();

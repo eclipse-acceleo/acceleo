@@ -67,7 +67,7 @@ callExp :     collectionIterator '(' variableDefinition lambdaExpression ')'  #I
 ;
 lambdaExpression : expression
 ;
-collectionIterator : 'select' | 'reject' | 'collect' | 'any' | 'exists' | 'forAll' | 'isUnique' | 'one' | 'sortedBy'
+collectionIterator : 'select' | 'reject' | 'collect' | 'any' | 'exists' | 'forAll' | 'isUnique' | 'one' | 'sortedBy' | 'closure'
 ;
 expressionSequence : (expression (',' expression)*)?
 ;

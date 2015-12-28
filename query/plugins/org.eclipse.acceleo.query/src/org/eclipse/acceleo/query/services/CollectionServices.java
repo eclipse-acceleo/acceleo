@@ -241,12 +241,60 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
+
 			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
 			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SequenceType(queryEnvironment, lambdaType.getLambdaExpressionType()));
 			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
 				result.add(new SetType(queryEnvironment, lambdaType.getLambdaExpressionType()));
 			}
+
+			return result;
+		}
+	}
+
+	/**
+	 * Closure {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class ClosureService extends JavaMethodService {
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private ClosureService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.JavaMethodService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final IType lambdaExpressionType = ((LambdaType)argTypes.get(1)).getLambdaExpressionType();
+
+			// FIXME need to make the closure on type as well... it's not possible for the moment because we
+			// need variable types...
+			if (lambdaExpressionType instanceof ICollectionType) {
+				result.add(new SetType(queryEnvironment, ((ICollectionType)lambdaExpressionType)
+						.getCollectionType()));
+			} else {
+				result.add(new SetType(queryEnvironment, lambdaExpressionType));
+			}
+
 			return result;
 		}
 	}
@@ -744,6 +792,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new SelectService(publicMethod, this);
 		} else if ("collect".equals(publicMethod.getName())) {
 			result = new CollectService(publicMethod, this);
+		} else if ("closure".equals(publicMethod.getName())) {
+			result = new ClosureService(publicMethod, this);
 		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())) {
 			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
@@ -1237,6 +1287,38 @@ public class CollectionServices extends AbstractServiceProvider {
 				}
 				// CHECKSTYLE:ON
 			}
+		}
+
+		return result;
+	}
+
+	public Set<Object> closure(Collection<Object> collection, LambdaValue lambda) {
+		final Set<Object> result;
+
+		if (lambda == null) {
+			result = Collections.emptySet();
+		} else {
+			result = Sets.newLinkedHashSet();
+			Set<Object> currentSet = Sets.newLinkedHashSet(collection);
+			Set<Object> added;
+			do {
+				added = Sets.newLinkedHashSet();
+				for (Object current : currentSet) {
+					final Object lambdaResult = lambda.eval(new Object[] {current });
+					if (lambdaResult instanceof Collection) {
+						for (Object child : (Collection<?>)lambdaResult) {
+							if (result.add(child)) {
+								added.add(child);
+							}
+						}
+					} else if (lambdaResult != null && !(lambdaResult instanceof Nothing)) {
+						if (result.add(lambdaResult)) {
+							added.add(lambdaResult);
+						}
+					}
+				}
+				currentSet = added;
+			} while (!added.isEmpty());
 		}
 
 		return result;
