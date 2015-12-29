@@ -896,6 +896,50 @@ public class ValidationTest {
 				4, 32);
 	}
 
+	@Test
+	public void collectionTypeLiteralSequence() {
+		final IValidationResult validationResult = engine.validate("Sequence(String)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), ((SequenceType)possibleType).getCollectionType()
+				.getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((SequenceType)possibleType)
+				.getCollectionType().getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void collectionTypeLiteralOrderedSet() {
+		final IValidationResult validationResult = engine.validate("OrderedSet(String)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 
