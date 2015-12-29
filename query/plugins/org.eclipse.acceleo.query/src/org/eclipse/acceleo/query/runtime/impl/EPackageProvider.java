@@ -465,32 +465,6 @@ public class EPackageProvider implements IEPackageProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String)
-	 */
-	@Override
-	public EClassifier getType(String classifierName) {
-		EClassifier result = null;
-		for (EPackage ePackage : ePackages.values()) {
-			EClassifier foundClassifier = ePackage.getEClassifier(classifierName);
-			if (foundClassifier != null) {
-				if (result == null) {
-					result = foundClassifier;
-				} else {
-					String firstFullyQualifiedName = result.getEPackage().getName() + "." + result.getName();
-					String secondFullyQualifiedName = foundClassifier.getEPackage().getName() + "."
-							+ foundClassifier.getName();
-					String message = "Ambiguous classifier request. At least two classifiers matches %s : %s and %s";
-					throw new IllegalStateException(String.format(message, classifierName,
-							firstFullyQualifiedName, secondFullyQualifiedName));
-				}
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String,
 	 *      java.lang.String, java.lang.String)
 	 */
@@ -507,23 +481,6 @@ public class EPackageProvider implements IEPackageProvider {
 		}
 
 		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String,
-	 *      java.lang.String)
-	 */
-	@Override
-	public EEnumLiteral getEnumLiteral(String enumName, String literalName) {
-		EClassifier eClassifier = getType(enumName);
-		if (eClassifier == null) {
-			return null;
-		} else {
-			return getEnumLiteral(eClassifier, literalName);
-		}
-
 	}
 
 	/**
