@@ -360,7 +360,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Nothing(Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)</possibleTypes>
+        <possibleTypes>Nothing(Nothing will be left after calling eContainer:
+EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)</possibleTypes>
         <validationMessages severity="ERROR" message="Nothing will be left after calling eContainer:&#xA;EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress" startPosition="4" endPosition="29"/>
       </expectedResult>
     </expectations>
@@ -666,6 +667,20 @@
         <possibleTypes>Sequence(EClassifier=EString)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=SingleString)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=String)</possibleTypes>
+      </expectedResult>
+    </expectations>
+  </queries>
+  <queries expression="[self.companies->first().oclAsType(anydsl::ProductionCompany).producers->first().foods->first().color->asOrderedSet().toString()/]" startingPoint="//@modelElements.0">
+    <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
+      <expectedResult xsi:type="qmodel:SetResult" interpreter="mtl">
+        <values xsi:type="qmodel:StringResult" value="red"/>
+      </expectedResult>
+    </expectations>
+    <expectations xsi:type="qmodel:QueryValidationResultExpectation">
+      <expectedResult interpreter="manual">
+        <possibleTypes>Set(EClassifier=EString)</possibleTypes>
+        <possibleTypes>Set(EClassifier=SingleString)</possibleTypes>
+        <possibleTypes>Set(EClassifier=String)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
