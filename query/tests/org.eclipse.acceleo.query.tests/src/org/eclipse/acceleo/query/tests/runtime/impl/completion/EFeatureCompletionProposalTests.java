@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl.completion;
 
-import static org.junit.Assert.assertEquals;
-
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests of the EFeature completion proposal.
@@ -40,4 +40,24 @@ public class EFeatureCompletionProposalTests {
 
 		assertEquals("eClassifiers: ecore::EClassifier [0..*]", eFeatureCompletionProposal.toString());
 	}
+
+	@Test
+	public void getCursorOffset() {
+		EReference eClassifiersEReference = EcorePackage.eINSTANCE.getEPackage_EClassifiers();
+		EFeatureCompletionProposal eFeatureCompletionProposal = new EFeatureCompletionProposal(
+				eClassifiersEReference);
+
+		assertEquals(12, eFeatureCompletionProposal.getCursorOffset());
+	}
+
+	@Test
+	public void getDescription() {
+		EReference eClassifiersEReference = EcorePackage.eINSTANCE.getEPackage_EClassifiers();
+		EFeatureCompletionProposal eFeatureCompletionProposal = new EFeatureCompletionProposal(
+				eClassifiersEReference);
+
+		assertEquals("EReference named eClassifiers in EPackage(http://www.eclipse.org/emf/2002/Ecore)",
+				eFeatureCompletionProposal.getDescription());
+	}
+
 }

@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
+import org.eclipse.acceleo.query.services.AnyServices;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -24,7 +25,7 @@ import static org.junit.Assert.fail;
  * 
  * @author <a href="mailto:stephane.begaudeau@obeo.fr">St&eacute;phane B&eacute;gaudeau</a>
  */
-public class ServiceCompletionProposalTests {
+public class JavaMethodServiceCompletionProposalTests {
 
 	private static final String LS = System.getProperty("line.separator");
 
@@ -142,5 +143,35 @@ public class ServiceCompletionProposalTests {
 						 "" + LS;
 		// @formatter:on
 		this.assertJavadocEquals(StringServicesClone.class, "contains", javadoc);
+	}
+
+	@Test
+	public void getCursorOffsetOneParameter() throws NoSuchMethodException, SecurityException {
+		final Method serviceMethod = AnyServices.class.getMethod("toString", Object.class);
+		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null));
+
+		JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(service);
+
+		assertEquals(10, proposal.getCursorOffset());
+	}
+
+	@Test
+	public void getCursorOffsetMoreThanOneParameter() throws NoSuchMethodException, SecurityException {
+		final Method serviceMethod = AnyServices.class.getMethod("equals", Object.class, Object.class);
+		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null));
+
+		JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(service);
+
+		assertEquals(7, proposal.getCursorOffset());
+	}
+
+	@Test
+	public void testToString() throws NoSuchMethodException, SecurityException {
+		final Method serviceMethod = AnyServices.class.getMethod("equals", Object.class, Object.class);
+		JavaMethodService service = new JavaMethodService(serviceMethod, new AnyServices(null));
+
+		JavaMethodServiceCompletionProposal proposal = new JavaMethodServiceCompletionProposal(service);
+
+		assertEquals("equals()", proposal.toString());
 	}
 }

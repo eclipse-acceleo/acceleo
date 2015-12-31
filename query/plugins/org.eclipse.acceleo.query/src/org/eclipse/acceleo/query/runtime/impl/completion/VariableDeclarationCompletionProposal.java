@@ -102,28 +102,6 @@ public class VariableDeclarationCompletionProposal implements ICompletionProposa
 	}
 
 	/**
-	 * Returns the self string with the first characters transformed to lower case one.
-	 * 
-	 * @param self
-	 *            The self string from which we want to convert the first characters into lower case one.
-	 * @return the self string with the first character transformed to lower case one. Throws
-	 *         NullPointerException if "self" is null.
-	 */
-	public String toLowerFirst(String self) {
-		final String resultString;
-
-		if (self.length() == 0) {
-			resultString = self;
-		} else if (self.length() == 1) {
-			resultString = self.toLowerCase();
-		} else {
-			resultString = Character.toLowerCase(self.charAt(0)) + self.substring(1);
-		}
-
-		return resultString;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.ICompletionProposal#getDescription()

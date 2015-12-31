@@ -46,9 +46,14 @@ import org.eclipse.acceleo.query.services.tests.XPathServicesTest;
 import org.eclipse.acceleo.query.services.tests.XPathServicesValidationTest;
 import org.eclipse.acceleo.query.tests.runtime.impl.EPackageProviderTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.QueryEnvironmentTests;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.EClassifierCompletionProposalTests;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.EEnumLiteralCompletionProposalTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.completion.EFeatureCompletionProposalTests;
 import org.eclipse.acceleo.query.tests.runtime.impl.completion.EOperationCompletionProposalTests;
-import org.eclipse.acceleo.query.tests.runtime.impl.completion.ServiceCompletionProposalTests;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.JavaMethodServiceCompletionProposalTests;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.TextCompletionProposalTests;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.VariableCompletionProposalTests;
+import org.eclipse.acceleo.query.tests.runtime.impl.completion.VariableDeclarationCompletionProposalTests;
 import org.eclipse.acceleo.query.tests.runtime.lookup.basic.LookupEngineTest;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLEvaluationTests;
 import org.eclipse.acceleo.query.tests.unit.AnyDSLValidationTests;
@@ -79,10 +84,13 @@ import org.junit.runners.Suite.SuiteClasses;
 		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
 		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
 		LookupEngineTest.class, ShortcutEvaluationTest.class, ResourceServicesTest.class,
-		ResourceServicesValidationTest.class, ServiceCompletionProposalTests.class,
+		ResourceServicesValidationTest.class, JavaMethodServiceCompletionProposalTests.class,
 		EFeatureCompletionProposalTests.class, EOperationCompletionProposalTests.class,
-		ValidationInferrenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
-		EPackageProviderTests.class, CompletionCheck.class, FilterCamelCaseTest.class })
+		TextCompletionProposalTests.class, VariableDeclarationCompletionProposalTests.class,
+		EEnumLiteralCompletionProposalTests.class, VariableCompletionProposalTests.class,
+		EClassifierCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
+		QueryEnvironmentTests.class, EPackageProviderTests.class, CompletionCheck.class,
+		FilterCamelCaseTest.class })
 public class AllTests {
 
 }
