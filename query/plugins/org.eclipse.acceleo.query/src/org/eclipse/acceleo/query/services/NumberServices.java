@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
+
 /**
  * Services on {@link Number}.
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class NumberServices {
 
 	/**
@@ -22,15 +27,22 @@ public class NumberServices {
 	 */
 	private static final String CAN_T_DIVIDE_BY_ZERO = "Can't divide by zero.";
 
-	/**
-	 * Performs the negation of the specified argument.
-	 * 
-	 * @param value
-	 *            the argument to be negated.
-	 * @return the negation of the argument.
-	 */
-	public Integer unaryMin(Integer value) {
-		return Integer.valueOf(-value.intValue());
+	// @formatter:off
+	@Documentation(
+		value = "Performs the negation of the specified argument.",
+		params = {
+			@Param(name = "self", value = "The argument to be negated.")
+		},
+		result = "The negation of the argument.",
+		examples = {
+			@Example(expression = "1.unaryMin()", result = "-1"),
+			@Example(expression = "-1.unaryMin()", result = "1")
+		},
+		comment = "You can use \"-expression\" for the same result."
+	)
+	// @formatter:on
+	public Integer unaryMin(Integer self) {
+		return Integer.valueOf(-self.intValue());
 	}
 
 	/**
@@ -138,149 +150,213 @@ public class NumberServices {
 	 *            the second operand
 	 * @return the division of the arguments.
 	 */
-
 	public Double divOp(Double a, Double b) {
 		return Double.valueOf(a.doubleValue() / b.doubleValue());
 	}
 
-	/**
-	 * negates a double value.
-	 * 
-	 * @param value
-	 *            the operand.
-	 * @return the negation of the value.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Performs the negation of the specified argument.",
+		params = {
+			@Param(name = "self", value = "The argument to be negated.")
+		},
+		result = "The negation of the argument.",
+		examples = {
+			@Example(expression = "3.14.unaryMin()", result = "-3.14"),
+			@Example(expression = "-3.14.unaryMin()", result = "3.14")
+		},
+		comment = "You can use \"-expression\" for the same result."
+	)
+	// @formatter:on
 	public Double unaryMin(Double value) {
 		return Double.valueOf(-value.doubleValue());
 	}
 
-	/**
-	 * Returns the absolute value of self, self if it is already a positive number.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @return the absolute value of self, self if it is already a positive number
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the absolute value of self, self if it is already a positive number.",
+		params = {
+			@Param(name = "self", value = "The current value.")
+		},
+		result = "The absolute value of self, self if it is already a positive number",
+		examples = {
+			@Example(expression = "-3.14.abs()", result = "3.14"),
+			@Example(expression = "3.14.abs()", result = "3.14")
+		}
+	)
+	// @formatter:on
 	public Double abs(Double self) {
 		return Double.valueOf(Math.abs(self.doubleValue()));
 	}
 
-	/**
-	 * Returns the absolute value of self, self if it is already a positive number.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @return the absolute value of self, self if it is already a positive number
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the absolute value of self, self if it is already a positive number.",
+		params = {
+			@Param(name = "self", value = "The current value.")
+		},
+		result = "The absolute value of self, self if it is already a positive number",
+		examples = {
+			@Example(expression = "-3.abs()", result = "3"),
+			@Example(expression = "3.abs()", result = "3")
+		}
+	)
+	// @formatter:on
 	public Integer abs(Integer self) {
 		return Integer.valueOf(Math.abs(self.intValue()));
 	}
 
-	/**
-	 * Returns the integer part of self.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @return the integer part of self
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the integer part of self.",
+		params = {
+			@Param(name = "self", value = "The current value.")
+		},
+		result = "The integer part of self.",
+		examples = {
+			@Example(expression = "3.14.floor()", result = "3"),
+			@Example(expression = "3.66.floor()", result = "3")
+		}
+	)
+	// @formatter:on
 	public Integer floor(Double self) {
 		return Integer.valueOf((int)Math.floor(self.doubleValue()));
 	}
 
-	/**
-	 * Returns self.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @return self
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns self.",
+		params = {
+			@Param(name = "self", value = "The current value.")
+		},
+		result = "Self.",
+		examples = {
+			@Example(expression = "3.floor()", result = "3")
+		}
+	)
+	// @formatter:on
 	public Integer floor(Integer self) {
 		return self;
 	}
 
-	/**
-	 * Returns the greatest number between self and r.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param r
-	 *            the other value
-	 * @return the greatest number between self and r.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the greatest number between self and r.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "r", value = "The other value.")
+		},
+		result = "The greatest number between self and r.",
+		examples = {
+			@Example(expression = "3.max(6)", result = "6"),
+			@Example(expression = "6.max(3)", result = "6")
+		}
+	)
+	// @formatter:on
 	public Integer max(Integer self, Integer r) {
 		return Integer.valueOf(Math.max(self.intValue(), r.intValue()));
 	}
 
-	/**
-	 * Returns the greatest number between self and r.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param r
-	 *            the other value
-	 * @return the greatest number between self and r.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the greatest number between self and r.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "r", value = "The other value.")
+		},
+		result = "The greatest number between self and r.",
+		examples = {
+			@Example(expression = "3.14.max(6.7)", result = "6.7"),
+			@Example(expression = "6.7.max(3.14)", result = "6.7")
+		}
+	)
+	// @formatter:on
 	public Double max(Double self, Double r) {
 		return Double.valueOf(Math.max(self.doubleValue(), r.doubleValue()));
 	}
 
-	/**
-	 * Returns the lowest number between self and r.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param r
-	 *            the other value
-	 * @return the greatest number between self and r.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the lowest number between self and r.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "r", value = "The other value.")
+		},
+		result = "The lowest number between self and r.",
+		examples = {
+			@Example(expression = "3.min(6)", result = "3"),
+			@Example(expression = "6.min(3)", result = "3")
+		}
+	)
+	// @formatter:on
 	public Integer min(Integer self, Integer r) {
 		return Integer.valueOf(Math.min(self.intValue(), r.intValue()));
 	}
 
-	/**
-	 * Returns the lowest number between self and r.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param r
-	 *            the other value
-	 * @return the greatest number between self and r.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the lowest number between self and r.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "r", value = "The other value.")
+		},
+		result = "The lowest number between self and r.",
+		examples = {
+			@Example(expression = "3.14.min(6.7)", result = "3.14"),
+			@Example(expression = "6.7.min(3.14)", result = "3.14")
+		}
+	)
+	// @formatter:on
 	public Double min(Double self, Double r) {
 		return Double.valueOf(Math.min(self.doubleValue(), r.doubleValue()));
 	}
 
-	/**
-	 * Returns the nearest integer to self.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @return the nearest integer to self
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the nearest integer to self.",
+		params = {
+			@Param(name = "self", value = "The current value.")
+		},
+		result = "The nearest integer to self.",
+		examples = {
+			@Example(expression = "3.14.round()", result = "3"),
+			@Example(expression = "3.66.round()", result = "4")
+		}
+	)
+	// @formatter:on
 	public Integer round(Double self) {
 		return Integer.valueOf((int)Math.round(self.doubleValue()));
 	}
 
-	/**
-	 * Returns self.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @return self
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns self.",
+		params = {
+			@Param(name = "self", value = "The current value.")
+		},
+		result = "Self.",
+		examples = {
+			@Example(expression = "3.round()", result = "3")
+		}
+	)
+	// @formatter:on
 	public Integer round(Integer self) {
 		return self;
 	}
 
-	/**
-	 * Returns the integer quotient of the division of self by i.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param i
-	 *            the divider
-	 * @return the integer quotient of the division of self by i
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the integer quotient of the division of self by i.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "i", value = "The divider.")
+		},
+		result = "The integer quotient of the division of self by i.",
+		examples = {
+			@Example(expression = "6.9.div(3.1)", result = "2")
+		}
+	)
+	// @formatter:on
 	public Integer div(Double self, Double i) {
 		/*
 		 * 0d/0d doesn't fail in ArithmeticsException but rather returns Double#POSITIVE_INFINITY. We want the
@@ -292,15 +368,19 @@ public class NumberServices {
 		return Integer.valueOf((int)(self.doubleValue() / i.doubleValue()));
 	}
 
-	/**
-	 * Returns the integer quotient of the division of self by i.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param i
-	 *            the divider
-	 * @return the integer quotient of the division of self by i
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the integer quotient of the division of self by i.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "i", value = "The divider.")
+		},
+		result = "The integer quotient of the division of self by i.",
+		examples = {
+			@Example(expression = "7.div(3)", result = "2")
+		}
+	)
+	// @formatter:on
 	public Integer div(Integer self, Integer i) {
 		// see comment in #div(Double, Double) for this test
 		if (i.equals(Integer.valueOf(0))) {
@@ -309,15 +389,19 @@ public class NumberServices {
 		return Integer.valueOf((int)(self.intValue() / i.intValue()));
 	}
 
-	/**
-	 * Returns the integer remainder of the division of self by i.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param i
-	 *            the divider
-	 * @return the integer remainder of the division of self by i
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the integer remainder of the division of self by i.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "i", value = "The divider.")
+		},
+		result = "The integer remainder of the division of self by i.",
+		examples = {
+			@Example(expression = "7.5.div(3.1)", result = "1")
+		}
+	)
+	// @formatter:on
 	public Integer mod(Double self, Double i) {
 		/*
 		 * As with division, mod operation will not fail in exception when using zero as divisor, but rather
@@ -330,15 +414,19 @@ public class NumberServices {
 		return Integer.valueOf((int)Math.ceil(self.doubleValue() % i.doubleValue()));
 	}
 
-	/**
-	 * Returns the integer remainder of the division of self by i.
-	 * 
-	 * @param self
-	 *            the current value
-	 * @param i
-	 *            the divider
-	 * @return the integer remainder of the division of self by i
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns the integer remainder of the division of self by i.",
+		params = {
+				@Param(name = "self", value = "The current value."),
+				@Param(name = "i", value = "The divider.")
+		},
+		result = "The integer remainder of the division of self by i.",
+		examples = {
+			@Example(expression = "7.div(3)", result = "1")
+		}
+	)
+	// @formatter:on
 	public Integer mod(Integer self, Integer i) {
 		// see comment in #mod(Double, Double) for this test
 		if (i.equals(Integer.valueOf(0))) {

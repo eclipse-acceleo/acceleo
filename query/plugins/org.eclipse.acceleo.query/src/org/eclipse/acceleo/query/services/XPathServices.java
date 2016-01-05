@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import org.eclipse.acceleo.annotations.api.documentation.Documentation;
+import org.eclipse.acceleo.annotations.api.documentation.Example;
+import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -47,6 +50,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  * 
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
+@SuppressWarnings({"checkstyle:javadocmethod", "checkstyle:javadoctype" })
 public class XPathServices extends AbstractServiceProvider {
 
 	/**
@@ -568,51 +572,64 @@ public class XPathServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns a Sequence containing the full set of <code>object</code>'s ancestors.
-	 * 
-	 * @param object
-	 *            The EObject we seek the ancestors of.
-	 * @return Sequence containing the full set of the receiver's ancestors.
-	 */
-	public List<EObject> ancestors(EObject object) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the full set of object's ancestors.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the ancestors of")
+		},
+		result = "Sequence containing the full set of the receiver's ancestors",
+		examples = {
+			@Example(expression = "eClass.ancestors()", result = "Sequence{parentEPackage, grandParentEPackage}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> ancestors(EObject self) {
 		// TODO lazy collection
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(null);
 
-		return ancestors(object, filters);
+		return ancestors(self, filters);
 	}
 
-	/**
-	 * Returns a Sequence containing the full set of <code>object</code>'s ancestors.
-	 * 
-	 * @param object
-	 *            The EObject we seek the ancestors of.
-	 * @param filter
-	 *            Types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the full set of the receiver's ancestors.
-	 */
-	public List<EObject> ancestors(EObject object, EClassifier filter) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's ancestors of the given type.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the ancestors of"),
+			@Param(name = "filter", value = "The filtering EClass")
+		},
+		result = "Sequence containing the set of the receiver's ancestors of the given type",
+		examples = {
+			@Example(expression = "eClass.ancestors(ecore::EPackage)", result = "Sequence{parentEPackage, grandParentEPackage}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> ancestors(EObject self, EClassifier filter) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
-		return ancestors(object, filters);
+		return ancestors(self, filters);
 	}
 
-	/**
-	 * Returns a Sequence containing the full set of <code>object</code>'s ancestors.
-	 * 
-	 * @param object
-	 *            The EObject we seek the ancestors of.
-	 * @param filters
-	 *            {@link Set} of types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the full set of the receiver's ancestors.
-	 */
-	public List<EObject> ancestors(EObject object, Set<EClassifier> filters) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's ancestors of any given types.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the ancestors of"),
+			@Param(name = "filters", value = "The set of filtering EClasses")
+		},
+		result = "Sequence containing the set of the receiver's ancestors of any given types",
+		examples = {
+			@Example(expression = "eClass.ancestors({ecore::EPackage | ecore::EClass})", result = "Sequence{parentEPackage, grandParentEPackage}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> ancestors(EObject self, Set<EClassifier> filters) {
 		// TODO lazy collection + predicate
 		final List<EObject> result = new ArrayList<EObject>();
 
-		EObject container = object.eContainer();
+		EObject container = self.eContainer();
 		while (container != null) {
 			for (EClassifier filter : filters) {
 				if (filter == null || filter.isInstance(container)) {
@@ -626,131 +643,170 @@ public class XPathServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	/**
-	 * Returns a Sequence containing all following siblings of <code>source</code>.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the following siblings of.
-	 * @return Sequence containing the sought set of the receiver's following siblings.
-	 */
-	public List<EObject> followingSiblings(EObject eObject) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the full set of object's following siblings.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the following siblings of")
+		},
+		result = "Sequence containing the full set of the receiver's following siblings",
+		examples = {
+			@Example(expression = "eClass3.followingSiblings()", result = "Sequence{eClass4, eClass5}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> followingSiblings(EObject self) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(null);
 
-		return siblings(eObject, filters, false);
+		return siblings(self, filters, false);
 	}
 
-	/**
-	 * Returns a Sequence containing all following siblings of <code>source</code>.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the following siblings of.
-	 * @param filter
-	 *            Types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the sought set of the receiver's following siblings.
-	 */
-	public List<EObject> followingSiblings(EObject eObject, EClassifier filter) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's following siblings of the given type.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the following siblings of"),
+			@Param(name = "filter", value = "The filtering EClass")
+		},
+		result = "Sequence containing the set of the receiver's following siblings of the given type",
+		examples = {
+			@Example(expression = "eClass3.followingSiblings(ecore::EClass)", result = "Sequence{eClass4, eClass5}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> followingSiblings(EObject self, EClassifier filter) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
-		return siblings(eObject, filters, false);
+		return siblings(self, filters, false);
 	}
 
-	/**
-	 * Returns a Sequence containing all following siblings of <code>source</code>.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the following siblings of.
-	 * @param filters
-	 *            {@link Set} of types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the sought set of the receiver's following siblings.
-	 */
-	public List<EObject> followingSiblings(EObject eObject, Set<EClassifier> filters) {
-		return siblings(eObject, filters, false);
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's following siblings of any given types.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the following siblings of"),
+			@Param(name = "filters", value = "The set of filtering EClasses")
+		},
+		result = "Sequence containing the set of the receiver's following siblings of any given types",
+		examples = {
+			@Example(expression = "eClass3.followingSiblings({ecore::EPackage | ecore::EClass})", result = "Sequence{eClass4, eClass5}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> followingSiblings(EObject self, Set<EClassifier> filters) {
+		return siblings(self, filters, false);
 	}
 
-	/**
-	 * Returns a Sequence containing all preceding siblings of <code>source</code>.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the preceding siblings of.
-	 * @return Sequence containing the sought set of the receiver's preceding siblings.
-	 */
-	public List<EObject> precedingSiblings(EObject eObject) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the full set of object's preceding siblings.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the preceding siblings of")
+		},
+		result = "Sequence containing the full set of the receiver's preceding siblings",
+		examples = {
+			@Example(expression = "eClass3.precedingSiblings()", result = "Sequence{eClass1, eClass2}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> precedingSiblings(EObject self) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(null);
 
-		return siblings(eObject, filters, true);
+		return siblings(self, filters, true);
 	}
 
-	/**
-	 * Returns a Sequence containing all preceding siblings of <code>source</code>.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the preceding siblings of.
-	 * @param filter
-	 *            Types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the sought set of the receiver's preceding siblings.
-	 */
-	public List<EObject> precedingSiblings(EObject eObject, EClassifier filter) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's preceding siblings of the given type.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the preceding siblings of"),
+			@Param(name = "filter", value = "The filtering EClass")
+		},
+		result = "Sequence containing the set of the receiver's preceding siblings of the given type",
+		examples = {
+			@Example(expression = "eClass3.precedingSiblings(ecore::EClass)", result = "Sequence{eClass1, eClass2}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> precedingSiblings(EObject self, EClassifier filter) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
-		return siblings(eObject, filters, true);
+		return siblings(self, filters, true);
 	}
 
-	/**
-	 * Returns a Sequence containing all preceding siblings of <code>source</code>.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the preceding siblings of.
-	 * @param filters
-	 *            {@link Set} of types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the sought set of the receiver's preceding siblings.
-	 */
-	public List<EObject> precedingSiblings(EObject eObject, Set<EClassifier> filters) {
-		return siblings(eObject, filters, true);
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's preceding siblings of any given types.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the preceding siblings of"),
+			@Param(name = "filters", value = "The set of filtering EClasses")
+		},
+		result = "Sequence containing the set of the receiver's preceding siblings of any given types",
+		examples = {
+			@Example(expression = "eClass3.precedingSiblings({ecore::EPackage | ecore::EClass})", result = "Sequence{eClass1, eClass2}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> precedingSiblings(EObject self, Set<EClassifier> filters) {
+		return siblings(self, filters, true);
 	}
 
-	/**
-	 * Returns a Sequence containing the full set of <code>source</code>'s siblings.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the siblings of.
-	 * @return Sequence containing the full set of the receiver's siblings.
-	 */
-	public List<EObject> siblings(EObject eObject) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the full set of object's siblings.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the siblings of")
+		},
+		result = "Sequence containing the full set of the receiver's siblings",
+		examples = {
+			@Example(expression = "eClass3.siblings()", result = "Sequence{eClass1, eClass2, eClass4, eClass5}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> siblings(EObject self) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(null);
 
-		return siblings(eObject, filters);
+		return siblings(self, filters);
 	}
 
-	/**
-	 * Returns a Sequence containing the full set of <code>source</code>'s siblings.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the siblings of.
-	 * @param filter
-	 *            Type of the EObjects we seek to retrieve.
-	 * @return Sequence containing the full set of the receiver's siblings.
-	 */
-	public List<EObject> siblings(final EObject eObject, final EClassifier filter) {
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's siblings of the given type.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the siblings of"),
+			@Param(name = "filter", value = "The filtering EClass")
+		},
+		result = "Sequence containing the set of the receiver's siblings of the given type",
+		examples = {
+			@Example(expression = "eClass3.siblings(ecore::EClass)", result = "Sequence{eClass1, eClass2, eClass4, eClass5}")
+		}
+	)
+	// @formatter:on
+	public List<EObject> siblings(final EObject self, final EClassifier filter) {
 		final Set<EClassifier> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
-		return siblings(eObject, filters);
+		return siblings(self, filters);
 	}
 
-	/**
-	 * Returns a Sequence containing the full set of <code>source</code>'s siblings.
-	 * 
-	 * @param eObject
-	 *            The EObject we seek the siblings of.
-	 * @param filters
-	 *            {@link Set} of types of the EObjects we seek to retrieve.
-	 * @return Sequence containing the full set of the receiver's siblings.
-	 */
+	// @formatter:off
+	@Documentation(
+		value = "Returns a Sequence containing the set of object's siblings of any given types.",
+		params = {
+			@Param(name = "self", value = "The EObject we seek the siblings of"),
+			@Param(name = "filters", value = "The set of filtering EClasses")
+		},
+		result = "Sequence containing the set of the receiver's siblings of any given types",
+		examples = {
+			@Example(expression = "eClass3.siblings({ecore::EPackage | ecore::EClass})", result = "Sequence{eClass1, eClass2, eClass1, eClass2}")
+		}
+	)
+	// @formatter:on
 	public List<EObject> siblings(final EObject eObject, final Set<EClassifier> filters) {
 		// TODO lazy collection
 		final List<EObject> result;
