@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +78,7 @@ public class CompletionServices extends ValidationServices {
 	 * Gets the {@link List} of {@link IServiceCompletionProposal} for {@link IService}.
 	 * 
 	 * @param receiverTypes
-	 *            the receiver types.
+	 *            the receiver {@link IType types}.
 	 * @param callType
 	 *            Indicate the type of call used, can be <code>null</code>
 	 * @return the {@link List} of {@link IServiceCompletionProposal} for {@link IService}
@@ -85,26 +86,27 @@ public class CompletionServices extends ValidationServices {
 	public List<IServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallType callType) {
 		final List<IServiceCompletionProposal> result = new ArrayList<IServiceCompletionProposal>();
 
-		final Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
+		final Set<IType> types;
 
 		if (CallType.CALLORAPPLY.equals(callType)) {
+			types = new LinkedHashSet<IType>();
 			for (IType type : receiverTypes) {
 				if (type instanceof ICollectionType) {
 					// Implicit collect
-					ICollectionType collectionType = (ICollectionType)type;
-					IType cType = collectionType.getCollectionType();
-					classes.add(getClass(cType));
+					final ICollectionType collectionType = (ICollectionType)type;
+					final IType cType = collectionType.getCollectionType();
+					types.add(cType);
 				} else {
-					classes.add(getClass(type));
+					types.add(type);
 				}
 			}
 		} else if (CallType.COLLECTIONCALL.equals(callType) || callType == null) {
-			for (IType type : receiverTypes) {
-				classes.add(getClass(type));
-			}
+			types = receiverTypes;
+		} else {
+			types = Collections.emptySet();
 		}
 
-		for (IService service : queryEnvironment.getLookupEngine().getServices(classes)) {
+		for (IService service : queryEnvironment.getLookupEngine().getServices(types)) {
 			if (callType == null || !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getName())) {
 				final IServiceCompletionProposal serviceCompletionProposal = getServiceCompletionProposal(service);
 				if (serviceCompletionProposal != null) {

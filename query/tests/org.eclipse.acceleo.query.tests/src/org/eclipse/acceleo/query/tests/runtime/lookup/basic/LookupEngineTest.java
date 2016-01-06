@@ -957,8 +957,8 @@ public class LookupEngineTest {
 	public void getServicesEmpty() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
-		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
-		types.add(EClassifier.class);
+		final Set<IType> types = new LinkedHashSet<IType>();
+		types.add(new ClassType(engine.getQueryEnvironment(), EClassifier.class));
 
 		assertEquals(0, engine.getServices(types).size());
 	}
@@ -967,8 +967,8 @@ public class LookupEngineTest {
 	public void getServices() throws InvalidAcceleoPackageException, NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
-		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
-		types.add(EClassifier.class);
+		final Set<IType> types = new LinkedHashSet<IType>();
+		types.add(new ClassType(engine.getQueryEnvironment(), EClassifier.class));
 
 		engine.registerServiceInstance(new ExtendedTestServices1(provider));
 		final Set<IService> services = engine.getServices(types);

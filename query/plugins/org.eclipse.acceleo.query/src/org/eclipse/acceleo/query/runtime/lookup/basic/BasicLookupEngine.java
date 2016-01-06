@@ -28,7 +28,6 @@ import org.eclipse.acceleo.query.runtime.IServiceProvider;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
-import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -318,15 +317,14 @@ public class BasicLookupEngine implements ILookupEngine {
 	}
 
 	@Override
-	public Set<IService> getServices(Set<Class<?>> receiverTypes) {
+	public Set<IService> getServices(Set<IType> receiverTypes) {
 		final Set<IService> result = new LinkedHashSet<IService>();
 
-		for (Class<?> cls : receiverTypes) {
-			if (cls != null) {
+		for (IType type : receiverTypes) {
+			if (type != null) {
 				for (Set<IService> servicesSet : classToServices.values()) {
 					for (IService service : servicesSet) {
-						if (service.getParameterTypes(queryEnvironment).get(0).isAssignableFrom(
-								new ClassType(queryEnvironment, cls))) {
+						if (service.getParameterTypes(queryEnvironment).get(0).isAssignableFrom(type)) {
 							result.add(service);
 						}
 					}

@@ -73,13 +73,13 @@ public interface ILookupEngine {
 	IService lookup(String name, IType[] argumentTypes);
 
 	/**
-	 * Gets the {@link Set} of known {@link IService} with a compatible receiver type.
+	 * Gets the {@link Set} of known {@link IService} with a compatible receiver {@link IType types}.
 	 * 
 	 * @param receiverTypes
-	 *            the receiver types
-	 * @return the {@link Set} of known {@link IService} with a compatible receiver type
+	 *            the receiver {@link IType types}
+	 * @return the {@link Set} of known {@link IService} with a compatible receiver {@link IType types}
 	 */
-	Set<IService> getServices(Set<Class<?>> receiverTypes);
+	Set<IService> getServices(Set<IType> receiverTypes);
 
 	/**
 	 * Tells if a given {@link Method} is considered as a service to provide when querying.
