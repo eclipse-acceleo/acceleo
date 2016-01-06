@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.query.runtime;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -104,11 +103,11 @@ public interface ILookupEngine {
 	boolean isRegisteredService(Class<?> cls);
 
 	/**
-	 * Gets the mapping from registered {@link Class} to its {@link IService}.
+	 * Returns the set of registered {@link IService}s.
 	 * 
-	 * @return the mapping from registered {@link Class} to its {@link IService}
+	 * @return The set of registered {@link IService}s.
 	 * @since 4.0.0
 	 */
-	Map<Class<?>, Set<IService>> getRegisteredServices();
+	Set<IService> getRegisteredServices();
 
 }

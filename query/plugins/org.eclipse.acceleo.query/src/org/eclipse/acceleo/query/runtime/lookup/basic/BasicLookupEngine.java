@@ -88,11 +88,11 @@ public class BasicLookupEngine implements ILookupEngine {
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.ILookupEngine#getRegisteredServices()
 	 */
-	public Map<Class<?>, Set<IService>> getRegisteredServices() {
-		final Map<Class<?>, Set<IService>> result = new LinkedHashMap<Class<?>, Set<IService>>();
+	public Set<IService> getRegisteredServices() {
+		Set<IService> result = new LinkedHashSet<IService>();
 
 		for (Entry<Class<?>, Set<IService>> entry : classToServices.entrySet()) {
-			result.put(entry.getKey(), new LinkedHashSet<IService>(entry.getValue()));
+			result.addAll(new LinkedHashSet<IService>(entry.getValue()));
 		}
 
 		return result;
