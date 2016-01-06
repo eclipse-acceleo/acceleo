@@ -14,6 +14,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.validation.type.IType;
+
 /**
  * Provides {@link IService} in the {@link IReadOnlyQueryEnvironment}.
  * 
@@ -64,10 +66,11 @@ public interface ILookupEngine {
 	 * @param name
 	 *            the name of the service to retrieve.
 	 * @param argumentTypes
-	 *            the types of the arguments to best match.
+	 *            {@link IType} of the arguments to best match.
 	 * @return the best service's match of the registered services if any.
+	 * @since 4.1
 	 */
-	IService lookup(String name, Class<?>[] argumentTypes);
+	IService lookup(String name, IType[] argumentTypes);
 
 	/**
 	 * Gets the {@link Set} of known {@link IService} with a compatible receiver type.

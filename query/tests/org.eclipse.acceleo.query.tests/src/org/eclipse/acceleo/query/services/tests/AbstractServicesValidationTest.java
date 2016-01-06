@@ -91,9 +91,9 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 	}
 
 	protected IService serviceLookUp(String serviceName, IType[] parameterTypes) {
-		final Class<?>[] argumentClasses = new Class<?>[parameterTypes.length];
+		final IType[] argumentClasses = new IType[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; ++i) {
-			argumentClasses[i] = getClass(parameterTypes[i]);
+			argumentClasses[i] = new ClassType(getQueryEnvironment(), getClass(parameterTypes[i]));
 		}
 		return getLookupEngine().lookup(serviceName, argumentClasses);
 	}

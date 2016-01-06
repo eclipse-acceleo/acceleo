@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -32,6 +33,8 @@ import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -70,6 +73,8 @@ public class LookupEngineTest {
 
 		ServiceStore getServices();
 
+		IReadOnlyQueryEnvironment getQueryEnvironment();
+
 	}
 
 	private static class TestBasicLookupEngine extends BasicLookupEngine implements ITestLookupEngine {
@@ -83,6 +88,11 @@ public class LookupEngineTest {
 			return super.getServices();
 		}
 
+		@Override
+		public IReadOnlyQueryEnvironment getQueryEnvironment() {
+			return queryEnvironment;
+		}
+
 	}
 
 	private static class TestCacheLookupEngine extends CacheLookupEngine implements ITestLookupEngine {
@@ -94,6 +104,11 @@ public class LookupEngineTest {
 		@Override
 		public ServiceStore getServices() {
 			return super.getServices();
+		}
+
+		@Override
+		public IReadOnlyQueryEnvironment getQueryEnvironment() {
+			return queryEnvironment;
 		}
 
 	}
@@ -306,14 +321,14 @@ public class LookupEngineTest {
 
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> classes() {
-		return Arrays.asList(new Object[][] {{TestBasicLookupEngine.class, }, {
-				TestCacheLookupEngine.class, }, });
+		return Arrays.asList(new Object[][] { {TestBasicLookupEngine.class, },
+				{TestCacheLookupEngine.class, }, });
 	}
 
 	ITestLookupEngine instanciate(CrossReferenceProvider provider) {
 		try {
-			final Constructor<ITestLookupEngine> constructor = cls.getConstructor(
-					CrossReferenceProvider.class);
+			final Constructor<ITestLookupEngine> constructor = cls
+					.getConstructor(CrossReferenceProvider.class);
 			return constructor.newInstance(provider);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -346,8 +361,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -369,8 +384,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(1, engine.getRegisteredServices().get(TestStaticServices.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestStaticServices.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -393,11 +408,12 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(2, engine.getRegisteredServices().get(ExtendedTestServices1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServices1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
-		service = (JavaMethodService)engine.lookup("service2", new Class<?>[] {EClassifier.class });
+		service = (JavaMethodService)engine.lookup("service2", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServices1.class.getMethod("service2", EClassifier.class), service
 				.getMethod());
 
@@ -427,8 +443,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(0, result.getRegistered().size());
@@ -464,8 +480,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 		assertEquals(1, engine.getRegisteredServices().get(TestDuplicateServices1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestDuplicateServices1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 
@@ -504,10 +520,11 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 		assertEquals(1, engine.getRegisteredServices().get(TestMaskServices1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -545,10 +562,11 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 		assertEquals(1, engine.getRegisteredServices().get(TestMaskServices1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -575,8 +593,8 @@ public class LookupEngineTest {
 				TestServices1.class).iterator().next()).getInstance();
 		assertEquals(provider, instance.crossReferencer);
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -599,8 +617,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
 
 		assertEquals(1, result.getRegistered().size());
@@ -623,12 +641,13 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(2, engine.getRegisteredServices().get(ExtendedTestServicesProvider1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
-		service = (JavaMethodService)engine.lookup("service2", new Class<?>[] {EClassifier.class });
+		service = (JavaMethodService)engine.lookup("service2", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServicesProvider1.class.getMethod("service2", EClassifier.class), service
 				.getMethod());
 		assertEquals(((ExtendedTestServicesProvider1)service.getInstance()).service2, service);
@@ -661,8 +680,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().size());
 		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
@@ -702,8 +721,8 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 		assertEquals(1, engine.getRegisteredServices().get(TestDuplicateServicesProvider1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestDuplicateServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestDuplicateServicesProvider1)service.getInstance()).service1, service);
@@ -729,8 +748,8 @@ public class LookupEngineTest {
 		result = engine.registerServices(TestMaskServicesProvider1.class);
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(1, result.getMasked().size());
-		final Method expectedMaskMethod = TestServicesProvider1.class.getMethod("service1",
-				EClassifier.class);
+		final Method expectedMaskMethod = TestServicesProvider1.class
+				.getMethod("service1", EClassifier.class);
 
 		final Entry<IService, List<IService>> entry = result.getMasked().entrySet().iterator().next();
 		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class),
@@ -745,14 +764,14 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 		assertEquals(1, engine.getRegisteredServices().get(TestMaskServicesProvider1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
-		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service
-				.getMethod());
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service.getMethod());
 		assertEquals(((TestMaskServicesProvider1)service.getInstance()).service1, service);
 
 		assertEquals(1, result.getRegistered().size());
@@ -791,14 +810,14 @@ public class LookupEngineTest {
 		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 		assertEquals(1, engine.getRegisteredServices().get(TestMaskServicesProvider1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
-		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service
-				.getMethod());
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service.getMethod());
 		assertEquals(((TestMaskServicesProvider1)service.getInstance()).service1, service);
 
 		assertEquals(1, result.getRegistered().size());
@@ -826,8 +845,8 @@ public class LookupEngineTest {
 				.getRegisteredServices().get(TestServicesProvider1.class).iterator().next()).getInstance();
 		assertEquals(provider, instance.crossReferencer);
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
@@ -945,8 +964,7 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void getServices() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void getServices() throws InvalidAcceleoPackageException, NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
@@ -967,7 +985,7 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		assertEquals(null, engine.lookup("service", new Class<?>[] {}));
+		assertEquals(null, engine.lookup("service", new IType[] {}));
 	}
 
 	@Test
@@ -987,11 +1005,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 	}
@@ -1013,11 +1033,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 	}
@@ -1039,11 +1061,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 	}
@@ -1066,11 +1090,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 	}
@@ -1093,11 +1119,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 	}
@@ -1120,11 +1148,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 	}
@@ -1147,11 +1177,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service2.class, service.getClass());
 	}
@@ -1174,11 +1206,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 	}
@@ -1201,11 +1235,13 @@ public class LookupEngineTest {
 		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
 		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
 
-		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClass.class });
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 
-		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new Class<?>[] {EClassifier.class });
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
 	}

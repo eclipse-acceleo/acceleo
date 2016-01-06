@@ -49,6 +49,11 @@ public class BasicLookupEngine implements ILookupEngine {
 	private static final String PACKAGE_PROBLEM_MSG = "No zero argument constructor found in class ";
 
 	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	protected IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
 	 * Maps of multimethods : maps the arity to maps that maps service names to their IService list.
 	 */
 	private final ServiceStore services;
@@ -57,11 +62,6 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * Mapping from a {@link Class} to its {@link IService}.
 	 */
 	private final Map<Class<?>, Set<IService>> classToServices = new LinkedHashMap<Class<?>, Set<IService>>();
-
-	/**
-	 * The {@link IReadOnlyQueryEnvironment}.
-	 */
-	private IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
 	 * Constructor.
@@ -99,42 +99,15 @@ public class BasicLookupEngine implements ILookupEngine {
 		return result;
 	}
 
-	/**
-	 * Predicates that is <code>true</code> when the specified argument types match the specified service's
-	 * parameter types. An argument's type matches a parameter's type if the latter is assignable from the
-	 * former.
-	 * 
-	 * @param service
-	 *            the {@link IService} to match
-	 * @param argumentTypes
-	 *            the argument to match against the service parameters type
-	 * @return <code>true</code> when the specified service matches the specified set of types
-	 */
-	private boolean matches(IService service, Class<?>[] argumentTypes) {
-		assert service.getNumberOfParameters() == argumentTypes.length;
-
-		boolean result = true;
-
-		final List<IType> parameterTypes = service.getParameterTypes(queryEnvironment);
-		for (int i = 0; i < parameterTypes.size() && result; i++) {
-			if (argumentTypes[i] != null
-					&& !parameterTypes.get(i).isAssignableFrom(
-							new ClassType(queryEnvironment, argumentTypes[i]))) {
-				result = false;
-			}
-		}
-		return result;
-	}
-
 	@Override
-	public IService lookup(String name, Class<?>[] argumentTypes) {
+	public IService lookup(String name, IType[] argumentTypes) {
 		List<IService> multiMethod = services.getMultiService(name, argumentTypes.length);
 		if (multiMethod == null) {
 			return null;
 		} else {
 			IService result = null;
 			for (IService service : multiMethod) {
-				if (matches(service, argumentTypes)) {
+				if (service.matches(queryEnvironment, argumentTypes)) {
 					if (result == null
 							|| service.getPriority() > result.getPriority()
 							|| (service.getPriority() == result.getPriority() && service

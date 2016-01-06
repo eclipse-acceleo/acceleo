@@ -18,6 +18,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
  * Lookup engine are used to retrieve services from a name and a set of arguments. This implementation cache
@@ -40,9 +41,9 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	private static final class Node {
 
 		/**
-		 * Children (parameter {@link Class} to next {@link Node}).
+		 * Children (parameter {@link IType} to next {@link Node}).
 		 */
-		private final Map<Class<?>, Node> children = new HashMap<Class<?>, Node>();
+		private final Map<IType, Node> children = new HashMap<IType, Node>();
 
 		/**
 		 * The {@link IService} if any, <code>null</code> otherwise.
@@ -73,7 +74,7 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	}
 
 	@Override
-	public IService lookup(String name, Class<?>[] argumentTypes) {
+	public IService lookup(String name, IType[] argumentTypes) {
 		final IService result;
 
 		final Node cachedNode = getNodeFromCache(name, argumentTypes);
@@ -104,13 +105,13 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	 * @param service
 	 *            the {@link IService} to cache
 	 */
-	private void cacheService(String name, Class<?>[] argumentTypes, IService service) {
+	private void cacheService(String name, IType[] argumentTypes, IService service) {
 		Node currentNode = cache.get(name);
 		if (currentNode == null) {
 			currentNode = new Node();
 			cache.put(name, currentNode);
 		}
-		for (Class<?> type : argumentTypes) {
+		for (IType type : argumentTypes) {
 			Node nextNode = currentNode.children.get(type);
 			if (nextNode == null) {
 				nextNode = new Node();
@@ -135,12 +136,12 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	 * @return the {@link Node} from the cache corresponding to the given name and parameter types if any,
 	 *         <code>null</code> otherwise
 	 */
-	private Node getNodeFromCache(String name, Class<?>[] argumentTypes) {
+	private Node getNodeFromCache(String name, IType[] argumentTypes) {
 		final Node result;
 
 		Node currentNode = cache.get(name);
 		if (currentNode != null) {
-			for (Class<?> type : argumentTypes) {
+			for (IType type : argumentTypes) {
 				currentNode = currentNode.children.get(type);
 				if (currentNode == null) {
 					break;

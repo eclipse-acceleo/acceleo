@@ -83,6 +83,27 @@ public abstract class AbstractService implements IService {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @see org.eclipse.acceleo.query.runtime.IService#matches(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
+	 *      org.eclipse.acceleo.query.validation.type.IType[])
+	 */
+	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
+		assert getNumberOfParameters() != argumentTypes.length;
+
+		boolean result = true;
+
+		final List<IType> parameterTypes = getParameterTypes(queryEnvironment);
+		for (int i = 0; i < parameterTypes.size() && result; i++) {
+			if (argumentTypes[i].getType() != null
+					&& !parameterTypes.get(i).isAssignableFrom(argumentTypes[i])) {
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.acceleo.query.runtime.IService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
 	 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
 	 */

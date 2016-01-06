@@ -26,6 +26,8 @@ import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -206,36 +208,19 @@ public class EvaluationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * returns the nothing value and logs a message reporting that an exception has been thrown during the
-	 * service evaluation.
-	 * 
-	 * @param serviceName
-	 *            the name of the service.
-	 * @param parameterTypes
-	 *            the parameter type of the service arguments.
-	 * @param e
-	 *            the {@link AcceleoQueryEvaluationException} thrown during the service execution.
-	 * @return an instance of nothing initialized with the formatted error message and given exception as
-	 *         cause.
-	 */
-	private Nothing nothing(String serviceName, Class<?>[] parameterTypes, AcceleoQueryEvaluationException e) {
-		return new Nothing(e.getMessage(), e);
-	}
-
-	/**
-	 * Build the argument type array that corresponds to the specified arguments array.
+	 * Build the argument {@link IType} array that corresponds to the specified arguments array.
 	 * 
 	 * @param arguments
-	 *            the argument from which types are required.
-	 * @return an array of the classes of the arguments.
+	 *            the argument from which types are required
+	 * @return the argument {@link IType} array that corresponds to the specified arguments array
 	 */
-	private Class<?>[] getArgumentTypes(Object[] arguments) {
-		Class<?>[] argumentTypes = new Class<?>[arguments.length];
+	private ClassType[] getArgumentTypes(Object[] arguments) {
+		ClassType[] argumentTypes = new ClassType[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
 			if (arguments[i] == null) {
-				argumentTypes[i] = null;
+				argumentTypes[i] = new ClassType(queryEnvironment, null);
 			} else {
-				argumentTypes[i] = arguments[i].getClass();
+				argumentTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
 			}
 		}
 		return argumentTypes;
@@ -257,7 +242,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 		try {
 			result = service.invoke(arguments);
 			if (result == null) {
-				Class<?>[] argumentTypes = getArgumentTypes(arguments);
+				IType[] argumentTypes = getArgumentTypes(arguments);
 				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, serviceSignature(service.getName(),
 						argumentTypes));
 				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
@@ -265,8 +250,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 			}
 			return result;
 		} catch (AcceleoQueryEvaluationException e) {
-			Class<?>[] argumentTypes = getArgumentTypes(arguments);
-			Nothing placeHolder = nothing(service.getName(), argumentTypes, e);
+			Nothing placeHolder = new Nothing(e.getMessage(), e);
 			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
 			return placeHolder;
 		}
@@ -292,7 +276,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 							+ serviceName + ".");
 		}
 		try {
-			Class<?>[] argumentTypes = getArgumentTypes(arguments);
+			IType[] argumentTypes = getArgumentTypes(arguments);
 			IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 			if (service == null) {
 				if (arguments[0] instanceof EObject) {
@@ -361,7 +345,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 				result = eOperationJavaInvoke(operationName, receiver, arguments, diagnostic);
 			}
 		} else {
-			final Class<?>[] argumentTypes = getArgumentTypes(parameters);
+			final IType[] argumentTypes = getArgumentTypes(parameters);
 			Nothing placeHolder = nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(operationName,
 					argumentTypes));
 			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
@@ -388,10 +372,11 @@ public class EvaluationServices extends AbstractLanguageServices {
 	private Object eOperationJavaInvoke(String operationName, final Object receiver,
 			final Object[] arguments, Diagnostic diagnostic) throws InvocationTargetException {
 		final Object result;
-		final Class<?>[] argumentTypes = getArgumentTypes(arguments);
+		final ClassType[] argumentTypes = getArgumentTypes(arguments);
+		final Class<?>[] argumentClasses = getArgumentClasses(argumentTypes);
 		Object invokeResult = null;
 		try {
-			final Method method = receiver.getClass().getMethod(operationName, argumentTypes);
+			final Method method = receiver.getClass().getMethod(operationName, argumentClasses);
 			invokeResult = method.invoke(receiver, arguments);
 		} catch (NoSuchMethodException e) {
 			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
@@ -416,6 +401,25 @@ public class EvaluationServices extends AbstractLanguageServices {
 		} finally {
 			result = invokeResult;
 		}
+		return result;
+	}
+
+	/**
+	 * Converts the given array of {@link ClassType} to {@link Class}.
+	 * 
+	 * @param argumentTypes
+	 *            the given array of {@link ClassType}
+	 * @return the given array of {@link ClassType} to {@link Class}
+	 * @deprecated we should convert {@link EOperation} call to {@link IService}...
+	 */
+	private Class<?>[] getArgumentClasses(ClassType[] argumentTypes) {
+		final Class<?>[] result = new Class<?>[argumentTypes.length];
+
+		int i = 0;
+		for (ClassType argumentType : argumentTypes) {
+			result[i++] = argumentType.getType();
+		}
+
 		return result;
 	}
 
@@ -644,25 +648,20 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @deprecated use {@link IService#getShortSignature()}
 	 */
 	@Deprecated
-	protected String serviceSignature(String serviceName, Object[] argumentTypes) {
+	protected String serviceSignature(String serviceName, IType[] argumentTypes) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(serviceName).append('(');
 		boolean first = true;
-		for (Object argType : argumentTypes) {
+		for (IType argType : argumentTypes) {
 			if (!first) {
 				builder.append(',');
 			} else {
 				first = false;
 			}
-			if (argType instanceof Class<?>) {
-				builder.append(((Class<?>)argType).getCanonicalName());
-			} else if (argType instanceof EClass) {
-				builder.append("EClass=" + ((EClass)argType).getName());
-			} else if (argType == null) {
+			if (argType == null) {
 				builder.append("Object=null");
 			} else {
-				// should not happen
-				builder.append("Object=" + argType.toString());
+				builder.append(argType.toString());
 			}
 		}
 		return builder.append(')').toString();

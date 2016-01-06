@@ -151,4 +151,19 @@ public interface IService {
 	 */
 	boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
 
+	/**
+	 * Predicates that is <code>true</code> when the specified argument types match the specified service's
+	 * parameter types. An argument's type matches a parameter's type if the latter is assignable from the
+	 * former.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param argumentTypes
+	 *            the argument {@link IType} to match against the
+	 *            {@link IService#getParameterTypes(IReadOnlyQueryEnvironment) service parameters type}
+	 * @return <code>true</code> when the specified service matches the specified set of types
+	 * @since 4.1
+	 */
+	boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes);
+
 }

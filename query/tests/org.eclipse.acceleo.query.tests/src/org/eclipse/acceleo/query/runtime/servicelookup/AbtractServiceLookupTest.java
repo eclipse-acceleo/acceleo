@@ -11,10 +11,11 @@
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,19 +24,21 @@ import static org.junit.Assert.assertNull;
 
 public abstract class AbtractServiceLookupTest {
 
-	private static final Class<?>[] NO_ARG = {};
+	private static final IType[] NO_ARG = {};
 
-	abstract ILookupEngine getEngine();
+	abstract IQueryEnvironment getQueryEnvironment();
 
 	/**
 	 * Tests that the empty engine behaves as expected (returns null to any lookup).
 	 */
 	@Test
 	public void emptyEngineTest() {
-		final ILookupEngine engine = getEngine();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
 		assertNull(engine.lookup("method", NO_ARG));
-		assertNull(engine.lookup("method", new Class<?>[] {Object.class, Integer.class }));
+		assertNull(engine.lookup("method", new IType[] {new ClassType(queryEnvironment, Object.class),
+				new ClassType(queryEnvironment, Integer.class) }));
 	}
 
 	/**
@@ -44,11 +47,15 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void leafTest() {
-		final ILookupEngine engine = getEngine();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		assertEquals("service0", engine.lookup("service0", new Class<?>[] {String.class }).getName());
-		assertEquals("service1", engine.lookup("service1", new Class<?>[] {String.class }).getName());
-		assertEquals("service2", engine.lookup("service2", new Class<?>[] {String.class }).getName());
+		assertEquals("service0", engine.lookup("service0",
+				new IType[] {new ClassType(queryEnvironment, String.class), }).getName());
+		assertEquals("service1", engine.lookup("service1",
+				new IType[] {new ClassType(queryEnvironment, String.class), }).getName());
+		assertEquals("service2", engine.lookup("service2",
+				new IType[] {new ClassType(queryEnvironment, String.class), }).getName());
 		assertNull(engine.lookup("noService", NO_ARG));
 	}
 
@@ -58,9 +65,11 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgSingleMethodSameClassTest() {
-		final ILookupEngine engine = getEngine();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		assertEquals("service3", engine.lookup("service3", new Class<?>[] {Object.class }).getName());
+		assertEquals("service3", engine.lookup("service3",
+				new IType[] {new ClassType(queryEnvironment, Object.class) }).getName());
 	}
 
 	/**
@@ -69,13 +78,15 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void nullValueSingleMethodSameClassTest() {
-		final ILookupEngine engine = getEngine();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
 		/*
 		 * We should not fail if there is no ambiguity regarding which method we have to call, even if we
 		 * don't have type information regarding arguments.
 		 */
-		assertEquals("service3", engine.lookup("service3", new Class<?>[] {null }).getName());
+		assertEquals("service3", engine.lookup("service3",
+				new IType[] {new ClassType(queryEnvironment, null) }).getName());
 	}
 
 	/**
@@ -84,9 +95,11 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgSingleMethodSubClassTest() {
-		final ILookupEngine engine = getEngine();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		assertEquals("service3", engine.lookup("service3", new Class<?>[] {Integer.class }).getName());
+		assertEquals("service3", engine.lookup("service3",
+				new IType[] {new ClassType(queryEnvironment, Integer.class) }).getName());
 	}
 
 	/**
@@ -94,24 +107,25 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgMultiMethodSameClassTest() {
-		final ILookupEngine engine = getEngine();
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		IService service = engine.lookup("service4", new Class<?>[] {Integer.class });
+		IService service = engine.lookup("service4", new IType[] {new ClassType(queryEnvironment,
+				Integer.class) });
 
 		assertEquals("service4", service.getName());
 		assertEquals(1, service.getNumberOfParameters());
 		assertEquals(new ClassType(queryEnvironment, Integer.class), service.getParameterTypes(
 				queryEnvironment).get(0));
 
-		service = engine.lookup("service4", new Class<?>[] {Object.class });
+		service = engine.lookup("service4", new IType[] {new ClassType(queryEnvironment, Object.class) });
 
 		assertEquals("service4", service.getName());
 		assertEquals(1, service.getNumberOfParameters());
 		assertEquals(new ClassType(queryEnvironment, Object.class), service.getParameterTypes(
 				queryEnvironment).get(0));
 
-		service = engine.lookup("service4", new Class<?>[] {String.class });
+		service = engine.lookup("service4", new IType[] {new ClassType(queryEnvironment, String.class) });
 
 		assertEquals("service4", service.getName());
 		assertEquals(1, service.getNumberOfParameters());
@@ -124,24 +138,26 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void oneArgMultiMethodSubClassTest() {
-		final ILookupEngine engine = getEngine();
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		IService service = engine.lookup("service4", new Class<?>[] {Integer.class });
+		IService service = engine.lookup("service4", new IType[] {new ClassType(queryEnvironment,
+				Integer.class) });
 
 		assertEquals("service4", service.getName());
 		assertEquals(1, service.getNumberOfParameters());
 		assertEquals(new ClassType(queryEnvironment, Integer.class), service.getParameterTypes(
 				queryEnvironment).get(0));
 
-		service = engine.lookup("service4", new Class<?>[] {Double.class });
+		service = engine.lookup("service4", new IType[] {new ClassType(queryEnvironment, Double.class) });
 
 		assertEquals("service4", service.getName());
 		assertEquals(1, service.getNumberOfParameters());
 		assertEquals(new ClassType(queryEnvironment, Number.class), service.getParameterTypes(
 				queryEnvironment).get(0));
 
-		service = engine.lookup("service4", new Class<?>[] {java.util.List.class });
+		service = engine.lookup("service4",
+				new IType[] {new ClassType(queryEnvironment, java.util.List.class) });
 
 		assertEquals("service4", service.getName());
 		assertEquals(1, service.getNumberOfParameters());
@@ -155,9 +171,13 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void threeArgsTest1() {
-		final Class<?>[] args = {String.class, String.class, String.class };
+		final IQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		final IService service = getEngine().lookup("service5", args);
+		final IType[] args = {new ClassType(queryEnvironment, String.class),
+				new ClassType(queryEnvironment, String.class), new ClassType(queryEnvironment, String.class) };
+
+		final IService service = engine.lookup("service5", args);
 
 		assertNull(service);
 	}
@@ -168,10 +188,13 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void threeArgsTest2() {
-		final Class<?>[] args = {String.class, Double.class, Double.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+		final IReadOnlyQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		final IService service = getEngine().lookup("service5", args);
+		final IType[] args = {new ClassType(queryEnvironment, String.class),
+				new ClassType(queryEnvironment, Double.class), new ClassType(queryEnvironment, Double.class) };
+
+		final IService service = engine.lookup("service5", args);
 
 		assertNotNull(service);
 		assertEquals(new ClassType(queryEnvironment, Object.class), service.getParameterTypes(
@@ -188,10 +211,13 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void threeArgsTest3() {
-		Class<?>[] args = {Integer.class, Integer.class, Double.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+		final IReadOnlyQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		final IService method = getEngine().lookup("service5", args);
+		IType[] args = {new ClassType(queryEnvironment, Integer.class),
+				new ClassType(queryEnvironment, Integer.class), new ClassType(queryEnvironment, Double.class) };
+
+		final IService method = engine.lookup("service5", args);
 
 		assertNotNull(method);
 		assertEquals(new ClassType(queryEnvironment, Integer.class), method.getParameterTypes(
@@ -208,10 +234,14 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void threeArgsTest4() {
-		final Class<?>[] args = {Integer.class, Integer.class, Integer.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+		final IReadOnlyQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		final IService method = getEngine().lookup("service5", args);
+		final IType[] args = {new ClassType(queryEnvironment, Integer.class),
+				new ClassType(queryEnvironment, Integer.class),
+				new ClassType(queryEnvironment, Integer.class) };
+
+		final IService method = engine.lookup("service5", args);
 
 		assertNotNull(method);
 		assertEquals(new ClassType(queryEnvironment, Integer.class), method.getParameterTypes(
@@ -228,10 +258,13 @@ public abstract class AbtractServiceLookupTest {
 	 */
 	@Test
 	public void threeArgsTest5() {
-		final Class<?>[] args = {String.class, Integer.class, String.class };
-		final IReadOnlyQueryEnvironment queryEnvironment = Query.newEnvironment();
+		final IReadOnlyQueryEnvironment queryEnvironment = getQueryEnvironment();
+		final ILookupEngine engine = queryEnvironment.getLookupEngine();
 
-		final IService method = getEngine().lookup("service5", args);
+		final IType[] args = {new ClassType(queryEnvironment, String.class),
+				new ClassType(queryEnvironment, Integer.class), new ClassType(queryEnvironment, String.class) };
+
+		final IService method = engine.lookup("service5", args);
 
 		assertNotNull(method);
 		assertEquals(new ClassType(queryEnvironment, String.class), method

@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IJavaType;
@@ -91,10 +92,10 @@ public abstract class AbstractLanguageServices {
 	 *            the {@link IType} argument types
 	 * @return the {@link Class} argument types from the given {@link IType} argument types
 	 */
-	protected Class<?>[] getArgumentTypes(Collection<IType> list) {
-		Class<?>[] result = new Class<?>[list.size()];
+	protected ClassType[] getArgumentTypes(Collection<IType> list) {
+		ClassType[] result = new ClassType[list.size()];
 
-		final List<Class<?>> types = getClasses(list);
+		final List<ClassType> types = getClasses(list);
 		for (int i = 0; i < types.size(); ++i) {
 			result[i] = types.get(i);
 		}
@@ -109,10 +110,10 @@ public abstract class AbstractLanguageServices {
 	 *            a {@link List} of {@link Class}
 	 * @return a {@link List} of {@link Class}
 	 */
-	protected List<Class<?>> getClasses(Collection<IType> iTypes) {
-		final List<Class<?>> result = new ArrayList<Class<?>>(iTypes.size());
+	protected List<ClassType> getClasses(Collection<IType> iTypes) {
+		final List<ClassType> result = new ArrayList<ClassType>(iTypes.size());
 		for (IType iType : iTypes) {
-			result.add(getClass(iType));
+			result.add(new ClassType(queryEnvironment, getClass(iType)));
 		}
 		return result;
 	}

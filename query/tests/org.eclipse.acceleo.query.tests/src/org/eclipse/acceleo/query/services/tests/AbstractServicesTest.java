@@ -19,6 +19,7 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Before;
 
@@ -92,9 +93,9 @@ public abstract class AbstractServicesTest {
 	 * @return the matching service if any, <code>null</code> otherwise
 	 */
 	protected IService serviceLookUp(String serviceName, Object[] arguments) {
-		Class<?> argTypes[] = new Class<?>[arguments.length];
+		IType argTypes[] = new IType[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
-			argTypes[i] = arguments[i].getClass();
+			argTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
 		}
 		IService service = lookupEngine.lookup(serviceName, argTypes);
 		return service;
