@@ -212,7 +212,7 @@ public class BasicLookupEngine implements ILookupEngine {
 	 * @return <code>true</code> when the specified method matches the specified set of types
 	 */
 	private boolean matches(IService service, Class<?>[] argumentTypes) {
-		assert service.getNumberOfParameters() != argumentTypes.length;
+		assert service.getNumberOfParameters() == argumentTypes.length;
 
 		boolean result = true;
 
