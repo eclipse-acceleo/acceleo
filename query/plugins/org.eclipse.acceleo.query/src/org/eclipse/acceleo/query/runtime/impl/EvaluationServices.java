@@ -82,7 +82,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 			Diagnostic diagnostic) {
 		try {
 			Object result = variableDefinitions.get(variableName);
-			if (result == null) {
+			if (result == null && !variableDefinitions.containsKey(variableName)) {
 				Nothing placeHolder = nothing(VARIABLE_NOT_FOUND, variableName);
 				addDiagnosticFor(diagnostic, Diagnostic.ERROR, placeHolder);
 				result = placeHolder;

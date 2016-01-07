@@ -83,6 +83,7 @@ public class EvaluationServicesTest {
 		variables = new HashMap<String, Object>();
 		variables.put("x", 1);
 		variables.put("y", 2);
+		variables.put("z", null);
 		services = new EvaluationServices(queryEnvironment);
 	}
 
@@ -90,9 +91,21 @@ public class EvaluationServicesTest {
 	 * query the value of an existing variable. Expected result : the value set for the variable.
 	 */
 	@Test
-	public void getExistingVariableTest() {
+	public void getVariableValueNotNull() {
 		Diagnostic status = new BasicDiagnostic();
+
 		assertEquals(1, services.getVariableValue(variables, "x", status));
+
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertTrue(status.getChildren().isEmpty());
+	}
+
+	@Test
+	public void getVariableValueNull() {
+		Diagnostic status = new BasicDiagnostic();
+
+		assertEquals(null, services.getVariableValue(variables, "z", status));
+
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertTrue(status.getChildren().isEmpty());
 	}
@@ -102,9 +115,11 @@ public class EvaluationServicesTest {
 	 * message.
 	 */
 	@Test
-	public void getNonExistingVariableTest() {
+	public void getVariableValueNonExisting() {
 		Diagnostic status = new BasicDiagnostic();
+
 		assertTrue(services.getVariableValue(variables, "xx", status) instanceof Nothing);
+
 		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
