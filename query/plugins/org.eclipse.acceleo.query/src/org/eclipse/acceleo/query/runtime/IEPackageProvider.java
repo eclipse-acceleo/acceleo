@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -34,9 +35,9 @@ public interface IEPackageProvider {
 	 * 
 	 * @param name
 	 *            the name of the requested package.
-	 * @return the package registered with the specified name.
+	 * @return the list of packages registered with the specified name.
 	 */
-	EPackage getEPackage(String name);
+	Collection<EPackage> getEPackage(String name);
 
 	/**
 	 * Lookups the {@link EOperation} with the given receiving {@link EClass}, given
@@ -69,8 +70,22 @@ public interface IEPackageProvider {
 	 *            the name of the searched classifier's package
 	 * @param classifierName
 	 *            the name of the searched classifier
-	 * @return the classifier with the specified name in the package registered with the specified name.
+	 * @return the list of classifiers matching the given {@link EClassifier} and {@link EPackage} names.
 	 */
+	Collection<EClassifier> getTypes(String name, String classifierName);
+
+	/**
+	 * the classifier with the specified name in the package registered with the specified name.
+	 * 
+	 * @param name
+	 *            the name of the searched classifier's package
+	 * @param classifierName
+	 *            the name of the searched classifier
+	 * @return the classifier with the specified name in the package registered with the specified name.
+	 * @deprecated you should use the getTypes(...) method which consider that there might be several EClasses
+	 *             sharing the same name.
+	 */
+	@Deprecated
 	EClassifier getType(String name, String classifierName);
 
 	/**
@@ -82,8 +97,25 @@ public interface IEPackageProvider {
 	 *            the name of the {@link org.eclipse.emf.ecore.EEnum EEnum} containing the literal.
 	 * @param literalName
 	 *            the name of the searched {@link EEnumLiteral}.
-	 * @return the specified {@link EEnumLiteral}
+	 * @return the list of {@link EEnumLiteral} instances matching the given {@link EPackage},
+	 *         {@link org.eclipse.emf.ecore.EEnum EEnum} and {@link EEnumLiteral} names.
 	 */
+	Collection<EEnumLiteral> getEnumLiterals(String packageName, String enumName, String literalName);
+
+	/**
+	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum.
+	 * 
+	 * @param packageName
+	 *            the name of the package where to search the {@link EEnumLiteral}
+	 * @param enumName
+	 *            the name of the {@link org.eclipse.emf.ecore.EEnum EEnum} containing the literal.
+	 * @param literalName
+	 *            the name of the searched {@link EEnumLiteral}.
+	 * @return the specified {@link EEnumLiteral}
+	 * @deprecated you should use the getEnumLiterals(...) method which consider that there might be several
+	 *             EnumLiterals sharing the same name.
+	 */
+	@Deprecated
 	EEnumLiteral getEnumLiteral(String packageName, String enumName, String literalName);
 
 	/**

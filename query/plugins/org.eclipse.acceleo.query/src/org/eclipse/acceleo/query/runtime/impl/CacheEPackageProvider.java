@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -253,7 +254,7 @@ public class CacheEPackageProvider extends EPackageProvider {
 	 * @see org.eclipse.acceleo.query.runtime.impl.EPackageProvider#removePackage(java.lang.String)
 	 */
 	@Override
-	public EPackage removePackage(String name) {
+	public Collection<EPackage> removePackage(String name) {
 		cache.clear();
 		return super.removePackage(name);
 	}

@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -54,6 +56,7 @@ import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
+import org.eclipse.acceleo.query.ast.Literal;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.Or;
 import org.eclipse.acceleo.query.ast.RealLiteral;
@@ -331,6 +334,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	private static final String INVALID_TYPE_LITERAL = "invalid type literal %s";
 
 	/**
+	 * Ambiguous {@link EEnumLiteral} message.
+	 */
+	private static final String AMBIGUOUS_ENUM_LITERAL = "several enumliterals are matching the literal name: %s, eenum : %s and package name : %s";
+
+	/**
+	 * Ambiguous {@link EClassifier} message.
+	 */
+	private static final String AMBIGUOUS_TYPE_LITERAL = "several types are matching the EClassifier name: %s , package name : %s";
+
+	/**
 	 * Number of children in {@link ConditionalContext}.
 	 */
 	private static final int CONDITIONAL_CONTEXT_CHILD_COUNT = 7;
@@ -396,7 +409,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		 * @param e
 		 *            the {@link RecognitionException}
 		 */
-		private void classifierTypeRuleContextError(Object offendingSymbol, String msg, RecognitionException e) {
+		private void classifierTypeRuleContextError(Object offendingSymbol, String msg,
+				RecognitionException e) {
 			final ClassifierTypeRuleContext ctx = (ClassifierTypeRuleContext)e.getCtx();
 			final Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
@@ -450,8 +464,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			errorRule = QueryParser.RULE_expression;
 			final ErrorExpression errorExpression = builder.errorExpression();
 			pushError(errorExpression, MISSING_EXPRESSION);
-			final Integer position = Integer
-					.valueOf(((IterationCallContext)e.getCtx()).start.getStartIndex());
+			final Integer position = Integer.valueOf(((IterationCallContext)e.getCtx()).start
+					.getStartIndex());
 			startPositions.put(errorExpression, position);
 			endPositions.put(errorExpression, position);
 		}
@@ -517,8 +531,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 			final String ePackage = ctx.getParent().getStart().getText();
 			errorRule = QueryParser.RULE_typeLiteral;
-			final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false,
-					new String[] {ePackage });
+			final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {
+					ePackage, });
 			startPositions.put(errorTypeLiteral, startPosition);
 			endPositions.put(errorTypeLiteral, endPosition);
 			pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
@@ -563,8 +577,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				endPositions.put(errorVariableDeclaration, endPosition);
 				pushError(errorVariableDeclaration, "missing variable declaration");
 			}
-			if (((Token)offendingSymbol).getText().isEmpty()
-					|| ")".equals(((Token)offendingSymbol).getText())) {
+			if (((Token)offendingSymbol).getText().isEmpty() || ")".equals(((Token)offendingSymbol)
+					.getText())) {
 				final ErrorExpression errorExpression = builder.errorExpression();
 				startPositions.put(errorExpression, endPosition);
 				endPositions.put(errorExpression, endPosition);
@@ -603,8 +617,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				errorCollectionCall = builder.errorCall(null, false, receiver);
 			}
 			startPositions.put(errorCollectionCall, startPositions.get(receiver));
-			endPositions.put(errorCollectionCall, Integer
-					.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+			endPositions.put(errorCollectionCall, Integer.valueOf(((Token)offendingSymbol).getStopIndex()
+					+ 1));
 			pushError(errorCollectionCall, "missing collection service call");
 		}
 
@@ -616,11 +630,11 @@ public class AstBuilderListener extends QueryBaseListener {
 		 */
 		private void navigationSegmentContextError(Object offendingSymbol) {
 			final Expression receiver = pop();
-			final ErrorFeatureAccessOrCall errorFeatureAccessOrCall = builder
-					.errorFeatureAccessOrCall(receiver);
+			final ErrorFeatureAccessOrCall errorFeatureAccessOrCall = builder.errorFeatureAccessOrCall(
+					receiver);
 			startPositions.put(errorFeatureAccessOrCall, startPositions.get(receiver));
-			endPositions.put(errorFeatureAccessOrCall, Integer.valueOf(((Token)offendingSymbol)
-					.getStopIndex() + 1));
+			endPositions.put(errorFeatureAccessOrCall, Integer.valueOf(((Token)offendingSymbol).getStopIndex()
+					+ 1));
 			pushError(errorFeatureAccessOrCall, "missing feature access or service call");
 		}
 
@@ -822,12 +836,11 @@ public class AstBuilderListener extends QueryBaseListener {
 
 			if (!diagnosticStack.isEmpty()) {
 				final List<?> data = diagnosticStack.peek().getData();
-				if (data.get(0).equals(startPositions.get(expression))
-						&& data.get(1).equals(endPositions.get(expression))) {
+				if (data.get(0).equals(startPositions.get(expression)) && data.get(1).equals(endPositions.get(
+						expression))) {
 					final Diagnostic tmpDiagnostic = diagnosticStack.pop();
-					diagnostic.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(),
-							tmpDiagnostic.getSource(), tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(),
-							new Object[] {expression }));
+					diagnostic.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(), tmpDiagnostic.getSource(),
+							tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(), new Object[] {expression }));
 				}
 			}
 
@@ -919,7 +932,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitIntType(IntTypeContext ctx) {
-		final TypeLiteral typeLiteral = builder.typeLiteral(java.lang.Integer.class);
+		final Literal typeLiteral = builder.typeLiteral(java.lang.Integer.class);
 
 		startPositions.put(typeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(typeLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -939,7 +952,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitRealType(RealTypeContext ctx) {
-		final TypeLiteral realLiteral = builder.typeLiteral(java.lang.Double.class);
+		final Literal realLiteral = builder.typeLiteral(java.lang.Double.class);
 
 		startPositions.put(realLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(realLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1031,7 +1044,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitStrType(StrTypeContext ctx) {
-		final TypeLiteral typeLiteral = builder.typeLiteral(java.lang.String.class);
+		final Literal typeLiteral = builder.typeLiteral(java.lang.String.class);
 
 		startPositions.put(typeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(typeLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1066,7 +1079,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitBooleanType(BooleanTypeContext ctx) {
-		final TypeLiteral typeLiteral = builder.typeLiteral(java.lang.Boolean.class);
+		final Literal typeLiteral = builder.typeLiteral(java.lang.Boolean.class);
 
 		startPositions.put(typeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(typeLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1264,8 +1277,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				final Expression variableExpression = pop();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(), typeLiteral,
 						variableExpression);
-				endPositions.put(variableDeclaration, Integer
-						.valueOf(((ParserRuleContext)ctx.getChild(2)).stop.getStopIndex() + 1));
+				endPositions.put(variableDeclaration, Integer.valueOf(((ParserRuleContext)ctx.getChild(
+						2)).stop.getStopIndex() + 1));
 			} else {
 				final Expression variableExpression = pop();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
@@ -1320,9 +1333,11 @@ public class AstBuilderListener extends QueryBaseListener {
 		final String ePackageName = ctx.getChild(0).getText();
 		final String eEnumName = ctx.getChild(2).getText();
 		final String eEnumLiteralName = ctx.getChild(4).getText();
-		final EEnumLiteral eEnumLiteral = environment.getEPackageProvider().getEnumLiteral(ePackageName,
-				eEnumName, eEnumLiteralName);
-		if (eEnumLiteral == null) {
+		final Collection<EEnumLiteral> eEnumLiterals = environment.getEPackageProvider().getEnumLiterals(
+				ePackageName, eEnumName, eEnumLiteralName);
+		Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
+		Integer stopPosition = Integer.valueOf(ctx.stop.getStopIndex() + 1);
+		if (eEnumLiterals.size() == 0) {
 			List<String> segments = new ArrayList<String>(3);
 			segments.add(ePackageName);
 			segments.add(eEnumName);
@@ -1332,11 +1347,16 @@ public class AstBuilderListener extends QueryBaseListener {
 			toPush = builder.errorEnumLiteral(false, segments.toArray(new String[segments.size()]));
 			pushError((Error)toPush, "invalid enum literal");
 		} else {
-			toPush = builder.enumLiteral(eEnumLiteral);
+			toPush = builder.enumLiteral(eEnumLiterals.iterator().next());
 			push(toPush);
+			if (eEnumLiterals.size() > 1) {
+				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
+						AMBIGUOUS_ENUM_LITERAL, eEnumLiteralName, eEnumName, ePackageName), new Object[] {
+								startPosition, stopPosition, }));
+			}
 		}
-		startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
-		endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+		startPositions.put(toPush, startPosition);
+		endPositions.put(toPush, stopPosition);
 	}
 
 	/**
@@ -1368,18 +1388,20 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitClassifierType(ClassifierTypeContext ctx) {
 		if (errorRule == NO_ERROR) {
-			final TypeLiteral toPush;
+			final Literal toPush;
 			final String ePackageName = ctx.getChild(0).getText();
 			final String eClassName;
-			final EClassifier type;
+			Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
+			Integer stopPosition = Integer.valueOf(ctx.stop.getStopIndex() + 1);
+			Collection<EClassifier> type = Collections.emptySet();
 			if (ctx.getChild(2) == null || ctx.getChild(2) instanceof ErrorNode) {
 				eClassName = null;
-				type = null;
+				type = Collections.emptySet();
 			} else {
 				eClassName = ctx.getChild(2).getText();
-				type = environment.getEPackageProvider().getType(ePackageName, eClassName);
+				type = environment.getEPackageProvider().getTypes(ePackageName, eClassName);
 			}
-			if (type == null) {
+			if (type.size() == 0) {
 				List<String> segments = new ArrayList<String>(2);
 				segments.add(ePackageName);
 				if (eClassName != null) {
@@ -1390,9 +1412,14 @@ public class AstBuilderListener extends QueryBaseListener {
 			} else {
 				toPush = builder.typeLiteral(type);
 				push(toPush);
+				if (type.size() > 1) {
+					diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
+							AMBIGUOUS_TYPE_LITERAL, eClassName, ePackageName), new Object[] {startPosition,
+									stopPosition, }));
+				}
 			}
-			startPositions.put(toPush, Integer.valueOf(ctx.start.getStartIndex()));
-			endPositions.put(toPush, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			startPositions.put(toPush, startPosition);
+			endPositions.put(toPush, stopPosition);
 		}
 	}
 
@@ -1481,8 +1508,8 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitExplicitSeqLit(ExplicitSeqLitContext ctx) {
-		final SequenceInExtensionLiteral sequenceInExtension = builder
-				.sequenceInExtension(getExpressions(ctx));
+		final SequenceInExtensionLiteral sequenceInExtension = builder.sequenceInExtension(getExpressions(
+				ctx));
 
 		startPositions.put(sequenceInExtension, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(sequenceInExtension, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1516,8 +1543,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 
 		final Conditional conditional;
-		if (errorRule == QueryParser.RULE_expression || count == CONDITIONAL_CONTEXT_CHILD_COUNT
-				&& ctx.getChild(6) instanceof ErrorNode) {
+		if (errorRule == QueryParser.RULE_expression || count == CONDITIONAL_CONTEXT_CHILD_COUNT && ctx
+				.getChild(6) instanceof ErrorNode) {
 			conditional = builder.errorConditional(predicate, trueBranch, falseBranch);
 			errorRule = NO_ERROR;
 			pushError((ErrorConditional)conditional, "incomplet conditional");

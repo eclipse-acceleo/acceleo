@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +54,7 @@ public class EPackageProvider implements IEPackageProvider {
 	/**
 	 * Map the name to their corresponding package.
 	 */
-	private Map<String, EPackage> ePackages = new LinkedHashMap<String, EPackage>();
+	private Multimap<String, EPackage> ePackages = HashMultimap.create();
 
 	/**
 	 * {@link Class} to {@link EClassifier} mapping.
@@ -99,22 +103,21 @@ public class EPackageProvider implements IEPackageProvider {
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEPackage(java.lang.String)
 	 */
 	@Override
-	public EPackage getEPackage(String name) {
+	public Collection<EPackage> getEPackage(String name) {
 		return ePackages.get(name);
 	}
 
 	/**
-	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage} with the
+	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage}s having the
 	 * given {@link EPackage#getName() name}.
 	 * 
 	 * @param name
 	 *            the {@link EPackage#getName() name}
-	 * @return the removed {@link EPackage} if any, <code>null</code> otherwise
+	 * @return the list of removed {@link EPackage}.
 	 */
-	public EPackage removePackage(String name) {
-		final EPackage ePackage = ePackages.remove(name);
-
-		if (ePackage != null) {
+	public Collection<EPackage> removePackage(String name) {
+		final Collection<EPackage> removed = ePackages.removeAll(name);
+		for (EPackage ePackage : removed) {
 			for (EClassifier eCls : ePackage.getEClassifiers()) {
 				removeEClassifierClass(eCls);
 				if (eCls instanceof EClass) {
@@ -128,9 +131,10 @@ public class EPackageProvider implements IEPackageProvider {
 			}
 			containingFeatures.clear();
 			allContainingFeatures.clear();
+
 		}
 
-		return ePackage;
+		return removed;
 	}
 
 	/**
@@ -239,12 +243,11 @@ public class EPackageProvider implements IEPackageProvider {
 
 		if (!("ecore".equals(ePackage.getName()) && !EcorePackage.eNS_URI.equals(ePackage.getNsURI()))) {
 			if (ePackage.getName() != null) {
-				EPackage existing = ePackages.put(ePackage.getName(), ePackage);
-				if (existing != null) {
+				boolean increasedSize = ePackages.put(ePackage.getName(), ePackage);
+				if (!increasedSize) {
 					// duplicate package
 					return null;
 				}
-
 				result = ePackage;
 				ePackages.put(ePackage.getName(), ePackage);
 				for (EClassifier eCls : ePackage.getEClassifiers()) {
@@ -450,16 +453,56 @@ public class EPackageProvider implements IEPackageProvider {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getTypes(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Collection<EClassifier> getTypes(String name, String classifierName) {
+		Set<EClassifier> classifiers = Sets.newLinkedHashSet();
+		for (EPackage ePackage : ePackages.get(name)) {
+			EClassifier clazz = ePackage.getEClassifier(classifierName);
+			if (clazz != null) {
+				classifiers.add(clazz);
+			}
+		}
+		return classifiers;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getType(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public EClassifier getType(String name, String classifierName) {
-		EPackage ePackage = ePackages.get(name);
-		if (ePackage != null) {
-			return ePackage.getEClassifier(classifierName);
-		} else {
+		Collection<EClassifier> result = getTypes(name, classifierName);
+		if (result.size() == 0) {
 			return null;
+		} else {
+			return result.iterator().next();
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiterals(java.lang.String,
+	 *      java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Collection<EEnumLiteral> getEnumLiterals(String name, String enumName, String literalName) {
+		Collection<EEnumLiteral> result = Sets.newLinkedHashSet();
+
+		for (EPackage ePackage : ePackages.get(name)) {
+			EClassifier eClassifier = ePackage.getEClassifier(enumName);
+			if (eClassifier != null) {
+				EEnumLiteral literal = getEnumLiteral(eClassifier, literalName);
+				if (literal != null) {
+					result.add(literal);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -469,18 +512,13 @@ public class EPackageProvider implements IEPackageProvider {
 	 *      java.lang.String, java.lang.String)
 	 */
 	@Override
-	public EEnumLiteral getEnumLiteral(String name, String enumName, String literalName) {
-		final EEnumLiteral result;
-
-		final EPackage ePackage = ePackages.get(name);
-		if (ePackage != null) {
-			final EClassifier eClassifier = ePackage.getEClassifier(enumName);
-			result = getEnumLiteral(eClassifier, literalName);
+	public EEnumLiteral getEnumLiteral(String packageName, String enumName, String literalName) {
+		Collection<EEnumLiteral> result = getEnumLiterals(packageName, enumName, literalName);
+		if (result.size() == 0) {
+			return null;
 		} else {
-			result = null;
+			return result.iterator().next();
 		}
-
-		return result;
 	}
 
 	/**

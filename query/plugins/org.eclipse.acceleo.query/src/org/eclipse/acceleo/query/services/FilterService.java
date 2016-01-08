@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -81,8 +83,8 @@ public class FilterService extends JavaMethodService {
 		final StringBuilder builder = new StringBuilder();
 
 		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
-			final EClassifier eClassEClass = queryEnvironment.getEPackageProvider()
-					.getType("ecore", "EClass");
+			final Set<EClassifier> eClassEClasses = ImmutableSet.copyOf(queryEnvironment
+					.getEPackageProvider().getTypes("ecore", "EClass"));
 			if (entry.getKey().size() > filterIndex) {
 				final Set<IType> filterTypes = Sets.newLinkedHashSet();
 				if (entry.getKey().get(filterIndex) instanceof EClassifierSetLiteralType) {
@@ -92,12 +94,13 @@ public class FilterService extends JavaMethodService {
 					}
 				} else if (entry.getKey().get(filterIndex) instanceof EClassifierLiteralType) {
 					filterTypes.add(entry.getKey().get(filterIndex));
-				} else if (entry.getKey().get(filterIndex).getType() == eClassEClass
-						|| ((entry.getKey().get(filterIndex) instanceof SetType && ((AbstractCollectionType)entry
-								.getKey().get(filterIndex)).getCollectionType().getType() == eClassEClass))) {
-					final EClassifier eObjectEClass = queryEnvironment.getEPackageProvider().getType("ecore",
-							"EObject");
-					if (eObjectEClass != null) {
+				} else if (eClassEClasses.contains(entry.getKey().get(filterIndex).getType())
+						|| ((entry.getKey().get(filterIndex) instanceof SetType && eClassEClasses
+								.contains(((AbstractCollectionType)entry.getKey().get(filterIndex))
+										.getCollectionType().getType())))) {
+					final Collection<EClassifier> eObjectEClasses = queryEnvironment.getEPackageProvider()
+							.getTypes("ecore", "EObject");
+					for (EClassifier eObjectEClass : eObjectEClasses) {
 						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
 					}
 				} else {

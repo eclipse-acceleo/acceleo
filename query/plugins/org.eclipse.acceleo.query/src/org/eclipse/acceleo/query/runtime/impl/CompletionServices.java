@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -214,8 +215,8 @@ public class CompletionServices extends ValidationServices {
 	public List<EClassifierCompletionProposal> getEClassifierProposals(String name) {
 		final List<EClassifierCompletionProposal> result = new ArrayList<EClassifierCompletionProposal>();
 
-		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(name);
-		if (ePkg != null) {
+		final Collection<EPackage> ePkgs = queryEnvironment.getEPackageProvider().getEPackage(name);
+		for (EPackage ePkg : ePkgs) {
 			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 				result.add(new EClassifierCompletionProposal(eClassifier));
 			}
@@ -249,8 +250,8 @@ public class CompletionServices extends ValidationServices {
 	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String name) {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(name);
-		if (ePkg != null) {
+		final Collection<EPackage> ePkgs = queryEnvironment.getEPackageProvider().getEPackage(name);
+		for (EPackage ePkg : ePkgs) {
 			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
 				if (eClassifier instanceof EEnum) {
 					for (EEnumLiteral literal : ((EEnum)eClassifier).getELiterals()) {
@@ -275,8 +276,8 @@ public class CompletionServices extends ValidationServices {
 	public List<EEnumLiteralCompletionProposal> getEEnumLiteralProposals(String name, String eEnumName) {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
-		final EPackage ePkg = queryEnvironment.getEPackageProvider().getEPackage(name);
-		if (ePkg != null) {
+		final Collection<EPackage> ePkgs = queryEnvironment.getEPackageProvider().getEPackage(name);
+		for (EPackage ePkg : ePkgs) {
 			EClassifier eClassifier = ePkg.getEClassifier(eEnumName);
 			if (eClassifier instanceof EEnum) {
 				for (EEnumLiteral literal : ((EEnum)eClassifier).getELiterals()) {

@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.services;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -122,9 +123,9 @@ class EAllContentsService extends FilterService {
 			} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 				filterTypes.add(argTypes.get(1));
 			} else {
-				final EClassifier eObjectEClass = queryEnvironment.getEPackageProvider().getType("ecore",
-						"EObject");
-				if (eObjectEClass != null) {
+				final Collection<EClassifier> eObjectEClasses = queryEnvironment.getEPackageProvider()
+						.getTypes("ecore", "EObject");
+				for (EClassifier eObjectEClass : eObjectEClasses) {
 					filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
 				}
 			}

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
@@ -127,8 +128,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void removeEPackage(String name) {
-		final EPackage ePackage = ePackageProvider.removePackage(name);
-		if (ePackage != null) {
+		final Collection<EPackage> ePackages = ePackageProvider.removePackage(name);
+		for (EPackage ePackage : ePackages) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRemoved(ePackage);
 			}

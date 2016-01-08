@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.test;
 
+import com.google.common.collect.Sets;
+
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
@@ -21,6 +24,8 @@ import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
 import org.eclipse.acceleo.query.ast.StringLiteral;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstBuilder;
 import org.junit.Test;
@@ -86,7 +91,7 @@ public class AstBuilderTest {
 	@Test
 	public void testCollectionTypeLiteral() {
 		AstBuilder builder = new AstBuilder();
-		CollectionTypeLiteral literal = builder.collectionTypeLiteral(List.class, builder
+		CollectionTypeLiteral literal = builder.collectionTypeLiteral(List.class, (TypeLiteral)builder
 				.typeLiteral(Integer.class));
 		assertEquals(Integer.class, literal.getElementType().getValue());
 		assertEquals(List.class, literal.getValue());
@@ -97,7 +102,20 @@ public class AstBuilderTest {
 	 */
 	@Test
 	public void testTypeLiteral() {
-		assertEquals(Integer.class, new AstBuilder().typeLiteral(Integer.class).getValue());
+		assertEquals(Integer.class, ((TypeLiteral)new AstBuilder().typeLiteral(Integer.class)).getValue());
+	}
+
+	@Test
+	public void testTypeLiteralSet() {
+		Set<Class<?>> classeInSet = Sets.newLinkedHashSet();
+		classeInSet.add(Integer.class);
+		assertEquals(Integer.class, ((TypeLiteral)new AstBuilder().typeLiteral(classeInSet)).getValue());
+
+		classeInSet.add(String.class);
+		assertEquals(Integer.class, ((TypeSetLiteral)new AstBuilder().typeLiteral(classeInSet)).getTypes()
+				.get(0).getValue());
+		assertEquals(String.class, ((TypeSetLiteral)new AstBuilder().typeLiteral(classeInSet)).getTypes().get(
+				1).getValue());
 	}
 
 	/**

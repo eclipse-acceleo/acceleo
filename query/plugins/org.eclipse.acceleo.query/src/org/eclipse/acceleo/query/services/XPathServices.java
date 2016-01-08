@@ -155,10 +155,7 @@ public class XPathServices extends AbstractServiceProvider {
 				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 					filterTypes.add(argTypes.get(1));
 				} else {
-					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
-					if (eObjectEClass != null) {
-						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
-					}
+					addEObjectEClass(filterTypes, queryEnvironment);
 				}
 				for (IType filterType : filterTypes) {
 					for (EClass containingEClass : queryEnvironment.getEPackageProvider()
@@ -273,10 +270,7 @@ public class XPathServices extends AbstractServiceProvider {
 				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 					filterTypes.add(argTypes.get(1));
 				} else {
-					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
-					if (eObjectEClass != null) {
-						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
-					}
+					addEObjectEClass(filterTypes, queryEnvironment);
 				}
 				for (IType filterType : filterTypes) {
 					for (EClass followingEClass : queryEnvironment.getEPackageProvider()
@@ -391,10 +385,7 @@ public class XPathServices extends AbstractServiceProvider {
 				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 					filterTypes.add(argTypes.get(1));
 				} else {
-					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
-					if (eObjectEClass != null) {
-						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
-					}
+					addEObjectEClass(filterTypes, queryEnvironment);
 				}
 				for (IType filterType : filterTypes) {
 					for (EClass precedingEClass : queryEnvironment.getEPackageProvider()
@@ -509,10 +500,7 @@ public class XPathServices extends AbstractServiceProvider {
 				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 					filterTypes.add(argTypes.get(1));
 				} else {
-					final EClassifier eObjectEClass = getEObjectEClass(queryEnvironment);
-					if (eObjectEClass != null) {
-						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
-					}
+					addEObjectEClass(filterTypes, queryEnvironment);
 				}
 				for (IType filterType : filterTypes) {
 					for (EClass siblingEClass : queryEnvironment.getEPackageProvider().getSiblingsEClasses(
@@ -987,15 +975,20 @@ public class XPathServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Gets the {@link EObject} {@link EClassifier} for the given {@link IReadOnlyQueryEnvironment}.
+	 * Add the IType instance corresponding to ecore::EObject to the set using the given
+	 * {@link IReadOnlyQueryEnvironment} to resolve it.
 	 * 
+	 * @param queryEnvironment
+	 *            types the Set to update.
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @return the {@link EObject} {@link EClassifier} for the given {@link IReadOnlyQueryEnvironment} if any,
 	 *         <code>null</code> otherwise
 	 */
-	private static EClassifier getEObjectEClass(IReadOnlyQueryEnvironment queryEnvironment) {
-		return queryEnvironment.getEPackageProvider().getType("ecore", "EObject");
+	private static void addEObjectEClass(Set<IType> types, IReadOnlyQueryEnvironment queryEnvironment) {
+		for (EClassifier classifier : queryEnvironment.getEPackageProvider().getTypes("ecore", "EObject")) {
+			types.add(new EClassifierType(queryEnvironment, classifier));
+		}
 	}
 
 }

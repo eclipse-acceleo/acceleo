@@ -345,9 +345,9 @@ public class EObjectServices extends AbstractServiceProvider {
 				} else if (argTypes.get(1) instanceof EClassifierLiteralType) {
 					filterTypes.add(argTypes.get(1));
 				} else {
-					final EClassifier eObjectEClass = queryEnvironment.getEPackageProvider().getType("ecore",
-							"EObject");
-					if (eObjectEClass != null) {
+					final Collection<EClassifier> eObjectEClasses = queryEnvironment.getEPackageProvider()
+							.getTypes("ecore", "EObject");
+					for (EClassifier eObjectEClass : eObjectEClasses) {
 						filterTypes.add(new EClassifierType(queryEnvironment, eObjectEClass));
 					}
 				}
@@ -409,8 +409,11 @@ public class EObjectServices extends AbstractServiceProvider {
 				result.add(new SequenceType(queryEnv, services.nothing("No IRootEObjectProvider registered")));
 			} else {
 				List<IType> newArgTypes = Lists.newArrayList(argTypes);
-				newArgTypes.add(0, new EClassifierType(queryEnv, queryEnv.getEPackageProvider().getType(
-						"ecore", "EObject")));
+				final Collection<EClassifier> eObjectEClasses = queryEnv.getEPackageProvider().getTypes(
+						"ecore", "EObject");
+				for (EClassifier eObjectEClass : eObjectEClasses) {
+					newArgTypes.add(0, new EClassifierType(queryEnv, eObjectEClass));
+				}
 
 				result = super.getType(call, services, validationResult, queryEnv, newArgTypes);
 			}

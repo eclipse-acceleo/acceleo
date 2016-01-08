@@ -58,7 +58,7 @@ public class EPackageProviderTests {
 
 		EPackage registerPackage(EPackage ePackage);
 
-		EPackage removePackage(String name);
+		Collection<EPackage> removePackage(String name);
 
 	}
 
@@ -111,23 +111,21 @@ public class EPackageProviderTests {
 
 	@Test
 	public void getEPackageNull() {
-		final EPackage ePkg = provider.getEPackage(null);
 
-		assertEquals(null, ePkg);
+		assertEquals(0, provider.getEPackage(null).size());
 	}
 
 	@Test
 	public void getEPackageNotRegistered() {
-		final EPackage ePkg = provider.getEPackage("ecore");
 
-		assertEquals(null, ePkg);
+		assertEquals(0, provider.getEPackage("ecore").size());
 	}
 
 	@Test
 	public void getEPackageRegistered() {
 		provider.registerPackage(EcorePackage.eINSTANCE);
 
-		final EPackage ePkg = provider.getEPackage("ecore");
+		final EPackage ePkg = provider.getEPackage("ecore").iterator().next();
 
 		assertEquals(EcorePackage.eINSTANCE, ePkg);
 	}
@@ -210,46 +208,41 @@ public class EPackageProviderTests {
 
 	@Test
 	public void getTypeNull() {
-		final EClassifier eClassifier = provider.getType(null, null);
+		final Collection<EClassifier> eClassifier = provider.getTypes(null, null);
 
-		assertEquals(null, eClassifier);
+		assertEquals(0, eClassifier.size());
 	}
 
 	@Test
 	public void getTypeNotRegistered() {
-		final EClassifier eClassifier = provider.getType("ecore", "EOperation");
-
-		assertEquals(null, eClassifier);
+		assertEquals(0, provider.getTypes("ecore", "EOperation").size());
 	}
 
 	@Test
 	public void getTypeRegistered() {
 		provider.registerPackage(EcorePackage.eINSTANCE);
 
-		final EClassifier eClassifier = provider.getType("ecore", "EOperation");
+		final EClassifier eClassifier = provider.getTypes("ecore", "EOperation").iterator().next();
 
 		assertEquals(EcorePackage.eINSTANCE.getEOperation(), eClassifier);
 	}
 
 	@Test
 	public void getEnumLiteralNull() {
-		final EEnumLiteral eNum = provider.getEnumLiteral(null, null, null);
-
-		assertEquals(null, eNum);
+		assertEquals(0, provider.getEnumLiterals(null, null, null).size());
 	}
 
 	@Test
 	public void getEnumLiteralNotRegistered() {
-		final EEnumLiteral eNum = provider.getEnumLiteral("anydsl", "Color", "red");
 
-		assertEquals(null, eNum);
+		assertEquals(0, provider.getEnumLiterals("anydsl", "Color", "red").size());
 	}
 
 	@Test
 	public void getEnumLiteralRegistered() {
 		provider.registerPackage(AnydslPackage.eINSTANCE);
 
-		final EEnumLiteral eNum = provider.getEnumLiteral("anydsl", "Color", "red");
+		final EEnumLiteral eNum = provider.getEnumLiterals("anydsl", "Color", "red").iterator().next();
 
 		assertEquals(AnydslPackage.eINSTANCE.getColor().getEEnumLiteral("red"), eNum);
 	}

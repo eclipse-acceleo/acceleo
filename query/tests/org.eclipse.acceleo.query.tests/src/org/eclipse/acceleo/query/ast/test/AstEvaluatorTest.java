@@ -361,9 +361,9 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void testTypeSetLiteral() {
 
 		final List<TypeLiteral> types = new ArrayList<TypeLiteral>();
-		types.add(typeLiteral(EcorePackage.eINSTANCE.getEClass()));
-		types.add(typeLiteral(EcorePackage.eINSTANCE.getEPackage()));
-		types.add(typeLiteral(EcorePackage.eINSTANCE.getEAttribute()));
+		types.add((TypeLiteral)typeLiteral(EcorePackage.eINSTANCE.getEClass()));
+		types.add((TypeLiteral)typeLiteral(EcorePackage.eINSTANCE.getEPackage()));
+		types.add((TypeLiteral)typeLiteral(EcorePackage.eINSTANCE.getEAttribute()));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, typeSetLiteral(types));
 		assertTrue(result.getResult() instanceof Set);
