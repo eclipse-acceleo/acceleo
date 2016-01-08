@@ -204,6 +204,18 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 			return diagnostic;
 		}
 
+		/**
+		 * Creates an {@link AstResult} for the given {@link Expression sub AST}.
+		 * 
+		 * @param subAst
+		 *            the sub part of {@link Expression AST}
+		 * @return a new {@link AstResult} for the given {@link Expression sub AST}
+		 */
+		public AstResult subResult(Expression subAst) {
+			assert startPositions.containsKey(subAst) && endPositions.containsKey(subAst);
+
+			return new AstResult(subAst, startPositions, endPositions, errors, diagnostic);
+		}
 	}
 
 	/**

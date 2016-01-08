@@ -763,7 +763,6 @@
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when container (EClassifier=Class) is not kind of EClassifierLiteral=StructuredClassifier" startPosition="40" endPosition="88"/>
-        <validationMessages message="Always true:&#xA;Nothing inferred when container (EClassifier=Class) is not kind of EClassifierLiteral=StructuredClassifier" startPosition="40" endPosition="88"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when container (EClassifier=Class) is kind of EClassifierLiteral=Property" endPosition="36"/>
       </expectedResult>
     </expectations>
@@ -1657,8 +1656,6 @@
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" startPosition="67" endPosition="112"/>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" startPosition="67" endPosition="112"/>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=PackageableElement" startPosition="116" endPosition="157"/>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=PackageableElement" startPosition="116" endPosition="157"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=Interface" endPosition="32"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=Port" startPosition="36" endPosition="63"/>
@@ -1672,7 +1669,6 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="31" endPosition="61"/>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="31" endPosition="61"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is kind of EClassifierLiteral=Node" endPosition="27"/>
       </expectedResult>

@@ -248,46 +248,55 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			} else if (AstBuilderListener.AND_SERVICE_NAME.equals(call.getServiceName())) {
 				final Expression leftOperand = call.getArguments().get(0);
+				final Expression rightOperand = call.getArguments().get(1);
 				final Set<IType> leftOperandTypes = doSwitch(leftOperand);
+
+				// compute and inferred types before propagating the right operand inferred types
 				final Map<String, Set<IType>> rightOperandInferredTypes = new HashMap<String, Set<IType>>(
 						variableTypesStack.peek());
 				rightOperandInferredTypes.putAll(validationResult.getInferredVariableTypes(leftOperand,
 						Boolean.TRUE));
-				// compute and inferred types before propagating the right operand inferred types
-				doSwitch(call.getArguments().get(1));
-				inferAndTypes(call);
+				final AstValidator rightValidator = new AstValidator(services.getQueryEnvironment());
+				final IValidationResult rightValidatorResult = rightValidator.validate(variableTypesStack
+						.peek(), validationResult.getAstResult().subResult(rightOperand));
+
 				// propagate the right operand inferred types
 				variableTypesStack.push(rightOperandInferredTypes);
 				final Set<IType> rightOperandTypes = new LinkedHashSet<IType>();
 				try {
-					// compute right operand types with right operand inferred types
-					rightOperandTypes.addAll(doSwitch(call.getArguments().get(1)));
+					// compute right operand types with left operand inferred types
+					rightOperandTypes.addAll(doSwitch(rightOperand));
 					result.add(leftOperandTypes);
 					result.add(rightOperandTypes);
 				} finally {
 					variableTypesStack.pop();
+					inferAndTypes(call, validationResult, rightValidatorResult);
 				}
-			} else if (AstBuilderListener.OR_SERVICE_NAME.equals(call.getServiceName())
-					|| AstBuilderListener.XOR_SERVICE_NAME.equals(call.getServiceName())) {
+			} else if (AstBuilderListener.OR_SERVICE_NAME.equals(call.getServiceName())) {
 				final Expression leftOperand = call.getArguments().get(0);
+				final Expression rightOperand = call.getArguments().get(1);
 				final Set<IType> leftOperandTypes = doSwitch(leftOperand);
+
+				// compute or inferred types before propagating the right operand inferred types
 				final Map<String, Set<IType>> rightOperandInferredTypes = new HashMap<String, Set<IType>>(
 						variableTypesStack.peek());
 				rightOperandInferredTypes.putAll(validationResult.getInferredVariableTypes(leftOperand,
 						Boolean.FALSE));
-				// compute or inferred types before propagating the right operand inferred types
-				doSwitch(call.getArguments().get(1));
-				inferOrTypes(call);
+				final AstValidator rightValidator = new AstValidator(services.getQueryEnvironment());
+				final IValidationResult rightValidatorResult = rightValidator.validate(variableTypesStack
+						.peek(), validationResult.getAstResult().subResult(rightOperand));
+
 				// propagate the right operand inferred types
 				variableTypesStack.push(rightOperandInferredTypes);
 				final Set<IType> rightOperandTypes = new LinkedHashSet<IType>();
 				try {
-					// compute right operand types with right operand inferred types
-					rightOperandTypes.addAll(doSwitch(call.getArguments().get(1)));
+					// compute right operand types with left operand inferred types
+					rightOperandTypes.addAll(doSwitch(rightOperand));
 					result.add(leftOperandTypes);
 					result.add(rightOperandTypes);
 				} finally {
 					variableTypesStack.pop();
+					inferOrTypes(call, validationResult, rightValidatorResult);
 				}
 			} else {
 				result.add(doSwitch(call.getArguments().get(0)));
@@ -303,7 +312,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	}
 
 	/**
-	 * Computes inferred {@link IType} for {@link AstBuilderListener#NOT_SERVICE_NAME} {@link Call}.
+	 * Computes inferred {@link IType} for {@link AstBuilderListener#NOT_SERVICE_NAME} {@link Call}. It swaps
+	 * <code>true</code> and <code>false</code> inferred {@link IType}.
 	 * 
 	 * @param call
 	 *            the {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
@@ -499,25 +509,28 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Computes inferred {@link IType} for {@link AstBuilderListener#OR_SERVICE_NAME} {@link Call}.
 	 * <ul>
-	 * <li>then true {@link AstValidator#unionInferredTypes(Map, Map) union}(true, true)
-	 * <li>
-	 * <li>then false {@link AstValidator#intersectionInferredTypes(Map, Map) intersection}(false, false)
-	 * <li>
+	 * <li>then true {@link AstValidator#unionInferredTypes(Map, Map) union}(true, true)</li>
+	 * <li>then false {@link AstValidator#intersectionInferredTypes(Map, Map) intersection}(false, false)</li>
 	 * </ul>
 	 * 
 	 * @param call
 	 *            the {@link AstBuilderListener#OR_SERVICE_NAME} {@link Call}
+	 * @param leftValidationResult
+	 *            the left {@link IValidationResult}
+	 * @param rightValidationResult
+	 *            the right {@link IValidationResult} without inference from the left operand
 	 */
-	private void inferOrTypes(Call call) {
+	private void inferOrTypes(Call call, IValidationResult leftValidationResult,
+			IValidationResult rightValidationResult) {
 		final Expression leftOperand = call.getArguments().get(0);
 		final Expression rightOperand = call.getArguments().get(1);
-		final Map<String, Set<IType>> inferredLeftVariableTypesWhenTrue = validationResult
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenTrue = leftValidationResult
 				.getInferredVariableTypes(leftOperand, Boolean.TRUE);
-		final Map<String, Set<IType>> inferredRightVariableTypesWhenTrue = validationResult
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenTrue = rightValidationResult
 				.getInferredVariableTypes(rightOperand, Boolean.TRUE);
-		final Map<String, Set<IType>> inferredLeftVariableTypesWhenFalse = validationResult
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenFalse = leftValidationResult
 				.getInferredVariableTypes(leftOperand, Boolean.FALSE);
-		final Map<String, Set<IType>> inferredRightVariableTypesWhenFalse = validationResult
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenFalse = rightValidationResult
 				.getInferredVariableTypes(rightOperand, Boolean.FALSE);
 		final Map<String, Set<IType>> orInferredTypesWhenTrue = unionInferredTypes(
 				inferredLeftVariableTypesWhenTrue, inferredRightVariableTypesWhenTrue);
@@ -557,25 +570,29 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Computes inferred {@link IType} for {@link AstBuilderListener#AND_SERVICE_NAME} {@link Call}.
 	 * <ul>
-	 * <li>then true {@link AstValidator#intersectionInferredTypes(Map, Map) intersection}(true, true)
-	 * <li>
-	 * <li>then and {@link AstValidator#unionInferredTypes(Map, Map) union}(false, false)
-	 * <li>
+	 * <li>then true {@link AstValidator#intersectionInferredTypes(Map, Map) intersection}(true, true)</li>
+	 * <li>then false {@link AstValidator#unionInferredTypes(Map, Map) union}(false, false)</li>
 	 * </ul>
 	 * 
 	 * @param call
 	 *            the {@link AstBuilderListener#AND_SERVICE_NAME} {@link Call}
+	 * @param leftValidationResult
+	 *            the left {@link IValidationResult}
+	 * @param rightValidationResult
+	 *            the right {@link IValidationResult} without inference from the left operand
 	 */
-	private void inferAndTypes(Call call) {
+	private void inferAndTypes(Call call, IValidationResult leftValidationResult,
+			IValidationResult rightValidationResult) {
 		final Expression leftOperand = call.getArguments().get(0);
 		final Expression rightOperand = call.getArguments().get(1);
-		final Map<String, Set<IType>> inferredLeftVariableTypesWhenTrue = validationResult
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenTrue = leftValidationResult
 				.getInferredVariableTypes(leftOperand, Boolean.TRUE);
-		final Map<String, Set<IType>> inferredRightVariableTypesWhenTrue = validationResult
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenTrue = rightValidationResult
 				.getInferredVariableTypes(rightOperand, Boolean.TRUE);
-		final Map<String, Set<IType>> inferredLeftVariableTypesWhenFalse = validationResult
+		final Map<String, Set<IType>> inferredLeftVariableTypesWhenFalse = leftValidationResult
 				.getInferredVariableTypes(leftOperand, Boolean.FALSE);
-		final Map<String, Set<IType>> inferredRightVariableTypesWhenFalse = validationResult
+		// we use the right
+		final Map<String, Set<IType>> inferredRightVariableTypesWhenFalse = rightValidationResult
 				.getInferredVariableTypes(rightOperand, Boolean.FALSE);
 		final Map<String, Set<IType>> andInferredTypesWhenTrue = intersectionInferredTypes(
 				inferredLeftVariableTypesWhenTrue, inferredRightVariableTypesWhenTrue);

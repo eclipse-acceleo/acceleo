@@ -261,7 +261,6 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when i (EClassifier=World) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=Producer) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=EAnnotation) is kind of EClassifierLiteral=Food" startPosition="131" endPosition="158"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when i (EClassifier=Producer) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=EAnnotation) is kind of EClassifierLiteral=Food" startPosition="131" endPosition="158"/>
       </expectedResult>
     </expectations>

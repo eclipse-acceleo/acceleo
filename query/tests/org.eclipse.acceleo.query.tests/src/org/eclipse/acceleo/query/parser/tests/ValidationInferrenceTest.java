@@ -28,6 +28,7 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
@@ -90,29 +91,57 @@ public class ValidationInferrenceTest {
 		bool.setInstanceClass(Boolean.class);
 		o = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		o.setName("O");
+		EAttribute oAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		oAttr.setName("oAttr");
+		oAttr.setEType(o);
+		o.getEStructuralFeatures().add(oAttr);
 		ePackage.getEClassifiers().add(o);
 		a = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		a.setName("A");
+		EAttribute aAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		aAttr.setName("aAttr");
+		aAttr.setEType(a);
+		a.getEStructuralFeatures().add(aAttr);
 		ePackage.getEClassifiers().add(a);
 		b = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		b.setName("B");
+		EAttribute bAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		bAttr.setName("bAttr");
+		bAttr.setEType(b);
+		b.getEStructuralFeatures().add(bAttr);
 		b.getESuperTypes().add(a);
 		ePackage.getEClassifiers().add(b);
 		c = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		c.setName("C");
+		EAttribute cAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		cAttr.setName("cAttr");
+		cAttr.setEType(c);
+		c.getEStructuralFeatures().add(cAttr);
 		c.getESuperTypes().add(b);
 		ePackage.getEClassifiers().add(c);
 
 		x = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		x.setName("X");
+		EAttribute xAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		xAttr.setName("xAttr");
+		xAttr.setEType(x);
+		x.getEStructuralFeatures().add(xAttr);
 		ePackage.getEClassifiers().add(x);
 		b.getESuperTypes().add(x);
 		y = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		y.setName("Y");
+		EAttribute yAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		yAttr.setName("yAttr");
+		yAttr.setEType(y);
+		y.getEStructuralFeatures().add(yAttr);
 		y.getESuperTypes().add(b);
 		ePackage.getEClassifiers().add(y);
 		z = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 		z.setName("Z");
+		EAttribute zAttr = EcorePackage.eINSTANCE.getEcoreFactory().createEAttribute();
+		zAttr.setName("zAttr");
+		zAttr.setEType(z);
+		z.getEStructuralFeatures().add(zAttr);
 		z.getESuperTypes().add(c);
 		z.getESuperTypes().add(y);
 		ePackage.getEClassifiers().add(z);
@@ -688,23 +717,8 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
-		assertNotNull(inferredWhenTrue);
-		assertNotNull(inferredWhenFalse);
-		assertDisjointTypes(inferredWhenTrue, inferredWhenFalse);
-		assertEquals(2, inferredWhenTrue.size());
-		Iterator<IType> it = inferredWhenTrue.iterator();
-		IType type = it.next();
-		assertTrue(type instanceof EClassifierType);
-		assertEquals(c, ((EClassifierType)type).getType());
-		type = it.next();
-		assertTrue(type instanceof EClassifierType);
-		assertEquals(y, ((EClassifierType)type).getType());
-
-		assertEquals(1, inferredWhenFalse.size());
-		it = inferredWhenFalse.iterator();
-		type = it.next();
-		assertTrue(type instanceof EClassifierType);
-		assertEquals(b, ((EClassifierType)type).getType());
+		assertNull(inferredWhenTrue);
+		assertNull(inferredWhenFalse);
 	}
 
 	@Test
@@ -812,6 +826,22 @@ public class ValidationInferrenceTest {
 		final IType rawType = ((SetType)type).getCollectionType();
 		assertTrue(rawType instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)rawType).getType());
+	}
+
+	@Test
+	public void andWithSubTypeAttribute() {
+		final IValidationResult validationResult = engine.validate(
+				"varB.oclIsKindOf(test::C) and varB.cAttr = null", variableTypes);
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void orWithSubTypeAttribute() {
+		final IValidationResult validationResult = engine.validate(
+				"not varB.oclIsKindOf(test::C) or varB.cAttr = null", variableTypes);
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	private void assertDisjointTypes(Set<IType> inferredWhenTrue, Set<IType> inferredWhenFalse) {
