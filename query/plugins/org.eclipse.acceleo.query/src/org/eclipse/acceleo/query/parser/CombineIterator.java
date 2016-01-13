@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+// FIXME delete this. reuse Sets.cartesianProduct for readability, lazyness and memory consumption
+
 /**
  * Combines objects. for instance: [[0,1],[0,1,2]]
  * <ul>
