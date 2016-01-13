@@ -8,23 +8,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.query.runtime.servicelookup;
+package org.eclipse.acceleo.query.tests.runtime.lookup.basic;
 
-import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import java.lang.reflect.Method;
 
-public class CrossReferencerClass {
-	private CrossReferenceProvider crossReferencer;
+/**
+ * Holder for test {@link Method}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
+public class MethodHolder {
 
-	public String service0(String arg) {
-		return "service0";
+	public void testNotServiceMethodNoParameter() {
+
 	}
 
-	public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-		this.crossReferencer = crossReferencer;
+	public void testServiceMethod(Object arg) {
+
 	}
 
-	public CrossReferenceProvider getCrossReferencer() {
-		return crossReferencer;
+	public static void testStaticServiceMethod(Object arg) {
+
 	}
 
 }

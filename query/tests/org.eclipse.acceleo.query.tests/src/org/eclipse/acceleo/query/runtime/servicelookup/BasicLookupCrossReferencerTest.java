@@ -48,11 +48,11 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 	 */
 	@Test
 	public void detectionCrossReferencerTest() {
-		assertEquals("service0", engine.lookup("service0", NO_ARG).getName());
+		assertEquals("service0", engine.lookup("service0", new Class<?>[] {String.class }).getName());
 		assertNull(engine.lookup("setCrossReferencer", NO_ARG));
 
 		CrossReferencerClass crossReferencer = (CrossReferencerClass)((JavaMethodService)engine.lookup(
-				"service0", NO_ARG)).getInstance();
+				"service0", new Class<?>[] {String.class })).getInstance();
 		assertNotNull(crossReferencer.getCrossReferencer());
 	}
 

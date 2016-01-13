@@ -46,9 +46,9 @@ public abstract class AbtractServiceLookupTest {
 	public void leafTest() {
 		final ILookupEngine engine = getEngine();
 
-		assertEquals("service0", engine.lookup("service0", NO_ARG).getName());
-		assertEquals("service1", engine.lookup("service1", NO_ARG).getName());
-		assertEquals("service2", engine.lookup("service2", NO_ARG).getName());
+		assertEquals("service0", engine.lookup("service0", new Class<?>[] {String.class }).getName());
+		assertEquals("service1", engine.lookup("service1", new Class<?>[] {String.class }).getName());
+		assertEquals("service2", engine.lookup("service2", new Class<?>[] {String.class }).getName());
 		assertNull(engine.lookup("noService", NO_ARG));
 	}
 

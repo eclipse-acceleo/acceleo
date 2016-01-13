@@ -354,7 +354,8 @@ public class BasicLookupEngine implements ILookupEngine {
 		// having an expression calling the 'wait' or the notify service
 		// could yield problems that are difficult to track down.
 		return method.getDeclaringClass() != Object.class
-				&& (instance != null || Modifier.isStatic(method.getModifiers()));
+				&& (instance != null || Modifier.isStatic(method.getModifiers()))
+				&& method.getParameterTypes().length > 0;
 	}
 
 	@Override

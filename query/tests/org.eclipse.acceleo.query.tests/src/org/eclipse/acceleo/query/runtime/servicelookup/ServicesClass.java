@@ -12,15 +12,15 @@ package org.eclipse.acceleo.query.runtime.servicelookup;
 
 public class ServicesClass {
 
-	public String service0() {
+	public String service0(String arg) {
 		return "service0";
 	}
 
-	public String service1() {
+	public String service1(String arg) {
 		return "service1";
 	}
 
-	public String service2() {
+	public String service2(String arg) {
 		return "service1";
 	}
 

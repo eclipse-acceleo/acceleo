@@ -22,4 +22,8 @@ public class EObjectServices {
 		return 1;
 	}
 
+	public static EObjectServices serviceWithNoParameter() {
+		return new EObjectServices();
+	}
+
 }
