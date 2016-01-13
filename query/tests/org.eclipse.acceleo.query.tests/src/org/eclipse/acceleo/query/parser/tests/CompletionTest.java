@@ -1423,6 +1423,7 @@ public class CompletionTest {
 		assertEquals("", completionResult.getRemaining());
 	}
 
+	@Test
 	public void testCompletionOnNothingDot() {
 		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
 		final Set<IType> selfType = new LinkedHashSet<IType>();

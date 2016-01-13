@@ -493,6 +493,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals(EcorePackage.eINSTANCE.getETypeParameter(), contents.get(19));
 	}
 
+	@Test
 	public void testEAllContents_classHierarchy() {
 		EObject fullSiriusCodePackage = reverseModel.getContents().get(0);
 
