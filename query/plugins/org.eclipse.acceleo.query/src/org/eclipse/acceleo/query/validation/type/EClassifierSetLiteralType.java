@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
+import com.google.common.base.Joiner;
+
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -49,6 +51,16 @@ public class EClassifierSetLiteralType extends SetType {
 	 */
 	public Set<EClassifier> getEClassifiers() {
 		return eClassifiers;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.validation.type.SetType#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Set(" + Joiner.on(',').join(eClassifiers) + ")";
 	}
 
 }

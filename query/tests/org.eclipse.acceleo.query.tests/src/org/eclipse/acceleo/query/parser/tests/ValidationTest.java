@@ -120,6 +120,24 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void variableNotRegisteredEClassifierTest() {
+		queryEnvironment.removeEPackage(EcorePackage.eINSTANCE.getName());
+
+		final IValidationResult validationResult = engine.validate("self", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), possibleType.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"EClassifier=EClass is not registered in the current environment", 0, 4);
+	}
+
+	@Test
 	public void variableNotExistingTest() {
 		final IValidationResult validationResult = engine.validate("notExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
@@ -298,9 +316,7 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service or EOperation",
 				4, 22);
 	}
@@ -333,9 +349,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=SingleString) service or EOperation",
 				5, 30);
 	}
@@ -349,9 +363,7 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
 				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=EIntegerObject) service or EOperation",
 				5, 23);
 	}
@@ -427,8 +439,8 @@ public class ValidationTest {
 
 	@Test
 	public void enumLiteralError() {
-		final IValidationResult validationResult = engine
-				.validate("anydsl::Part::NotExisting", variableTypes);
+		final IValidationResult validationResult = engine.validate("anydsl::Part::NotExisting",
+				variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -645,9 +657,7 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.WARNING,
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
 				"The predicate may evaluate to a value that is not a boolean type ([java.lang.Boolean, java.lang.Object]).",
 				0, 38);
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
@@ -656,8 +666,8 @@ public class ValidationTest {
 
 	@Test
 	public void testLetMaskingVariable() {
-		final IValidationResult validationResult = engine
-				.validate("let stuff = self in stuff", variableTypes);
+		final IValidationResult validationResult = engine.validate("let stuff = self in stuff",
+				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 
@@ -879,10 +889,11 @@ public class ValidationTest {
 
 	@Test
 	public void eOperationLookupNoEClassifierForClassType() {
-		queryEnvironment.removeEPackage(EcorePackage.eINSTANCE.getName());
-		queryEnvironment.removeEPackage(AnydslPackage.eINSTANCE.getName());
+		final Set<IType> nonEMFTypes = new LinkedHashSet<IType>();
+		nonEMFTypes.add(new ClassType(queryEnvironment, Query.class));
+		variableTypes.put("nonEMF", nonEMFTypes);
 
-		final IValidationResult validationResult = engine.validate("self.triggerEOperationLookUp('')",
+		final IValidationResult validationResult = engine.validate("self.triggerEOperationLookUp(nonEMF)",
 				variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
@@ -891,11 +902,9 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
-				"Couldn't create EClassifier type for triggerEOperationLookUp(EClassifier=EClass,java.lang.String) parameter java.lang.String",
-				4, 32);
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"Couldn't create EClassifier type for triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query) parameter org.eclipse.acceleo.query.runtime.Query",
+				4, 36);
 	}
 
 	@Test

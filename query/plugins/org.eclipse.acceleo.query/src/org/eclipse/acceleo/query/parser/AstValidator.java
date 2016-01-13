@@ -84,6 +84,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private static final String VARIABLE_OVERRIDES_AN_EXISTING_VALUE = "Variable %s overrides an existing value.";
 
 	/**
+	 * Message used when an {@link EClassifierType} is not registered.
+	 */
+	private static final String ECLASSIFIER_NOT_REGISTERED = "%s is not registered in the current environment";
+
+	/**
 	 * Should never happen message.
 	 */
 	private static final String SHOULD_NEVER_HAPPEN = "should never happen";
@@ -134,20 +139,28 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final Set<IType> validationTypes = new LinkedHashSet<IType>();
 		final List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
 		for (IType type : types) {
-			if (type instanceof NothingType) {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion;
-				if (expression instanceof Call) {
-					startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
-				} else if (expression instanceof FeatureAccess) {
-					startPostion = astResult.getEndPosition(((FeatureAccess)expression).getTarget());
-				} else {
-					startPostion = astResult.getStartPosition(expression);
-				}
-				final int endPosition = astResult.getEndPosition(expression);
+			final AstResult astResult = validationResult.getAstResult();
+			final int startPostion;
+			if (expression instanceof Call) {
+				startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+			} else if (expression instanceof FeatureAccess) {
+				startPostion = astResult.getEndPosition(((FeatureAccess)expression).getTarget());
+			} else {
+				startPostion = astResult.getStartPosition(expression);
+			}
+			final int endPosition = astResult.getEndPosition(expression);
 
+			if (type instanceof NothingType) {
 				msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, ((NothingType)type)
 						.getMessage(), startPostion, endPosition));
+			} else if (type instanceof EClassifierType) {
+				if (services.getQueryEnvironment().getEPackageProvider().isRegistered(((EClassifierType)type)
+						.getType())) {
+					result.add(type);
+				} else {
+					msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, String.format(
+							ECLASSIFIER_NOT_REGISTERED, type), startPostion, endPosition));
+				}
 			} else {
 				result.add(type);
 			}
@@ -165,6 +178,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		validationResult.addTypes(expression, validationTypes);
 
 		return result;
+
 	}
 
 	/**
@@ -472,8 +486,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 											.getVariableName(), originalType, argType));
 						} else {
 							messageWhenTrue.append(String.format(
-									"\nNothing inferred when %s (%s) is type of %s",
-									varRef.getVariableName(), originalType, argType));
+									"\nNothing inferred when %s (%s) is type of %s", varRef.getVariableName(),
+									originalType, argType));
 							inferredFalseTypes.add(originalType);
 						}
 					}
@@ -552,7 +566,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private Map<String, Set<IType>> unionInferredTypes(Map<String, Set<IType>> inferredLeftVariableTypes,
 			Map<String, Set<IType>> inferredRightVariableTypes) {
 		final Map<String, Set<IType>> result = new HashMap<String, Set<IType>>();
-		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(inferredRightVariableTypes);
+		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(
+				inferredRightVariableTypes);
 
 		for (Entry<String, Set<IType>> entry : inferredLeftVariableTypes.entrySet()) {
 			final Set<IType> inferredTypes = new LinkedHashSet<IType>(entry.getValue());
@@ -616,7 +631,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final Map<String, Set<IType>> inferredRightVariableTypes) {
 		final Map<String, Set<IType>> result = new HashMap<String, Set<IType>>();
 
-		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(inferredRightVariableTypes);
+		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(
+				inferredRightVariableTypes);
 		for (Entry<String, Set<IType>> entry : inferredLeftVariableTypes.entrySet()) {
 			final Set<IType> inferredTypes = new LinkedHashSet<IType>();
 			final Set<IType> inferredRightTypes = rightLocal.remove(entry.getKey());
@@ -666,8 +682,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	@Override
 	public Set<IType> caseEnumLiteral(EnumLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
-		possibleTypes
-				.add(new EClassifierType(services.getQueryEnvironment(), object.getLiteral().getEEnum()));
+		possibleTypes.add(new EClassifierType(services.getQueryEnvironment(), object.getLiteral()
+				.getEEnum()));
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -928,8 +944,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
-					.nothing("Empty OrderedSet defined in extension")));
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), services.nothing(
+					"Empty OrderedSet defined in extension")));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
@@ -951,8 +967,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
-					.nothing("Empty Sequence defined in extension")));
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), services.nothing(
+					"Empty Sequence defined in extension")));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
@@ -1015,8 +1031,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final IType booleanObjectType = new ClassType(services.getQueryEnvironment(), Boolean.class);
 			final IType booleanType = new ClassType(services.getQueryEnvironment(), boolean.class);
 			for (IType type : selectorTypes) {
-				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type)
-						|| booleanType.isAssignableFrom(type);
+				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type) || booleanType
+						.isAssignableFrom(type);
 				onlyBoolean = onlyBoolean && assignableFrom;
 				onlyNotBoolean = onlyNotBoolean && !assignableFrom;
 				if (!onlyBoolean && !onlyNotBoolean) {

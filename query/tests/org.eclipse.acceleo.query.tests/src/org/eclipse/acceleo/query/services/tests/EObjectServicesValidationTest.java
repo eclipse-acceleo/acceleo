@@ -66,8 +66,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 doesn't contain any other EClass")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eAllContents:\nEClassifier=eCls1 doesn't contain any other EClass")) };
 
-			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
+			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "eAllContents", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -669,8 +670,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 doesn't contain any other EClass")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling eContents:\nEClassifier=eCls1 doesn't contain any other EClass")) };
 
-			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
+			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "eContents", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -1094,8 +1096,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierLiteralType(EcorePackage.eINSTANCE
 					.getEAttribute()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
-			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
+			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
@@ -1108,8 +1111,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
-			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
+			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
@@ -1123,8 +1127,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {eClassifierSetLiteralType(EcorePackage.eINSTANCE
 					.getEAttribute(), EcorePackage.eINSTANCE.getEReference()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
-			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
+			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
@@ -1138,8 +1143,9 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 					.getEClass())) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("No IRootEObjectProvider registered")) };
+			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling allInstances:\nNo IRootEObjectProvider registered")) };
 
-			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
+			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}

@@ -44,7 +44,6 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 //@formatter:off
 @ServiceProvider(
@@ -237,9 +236,6 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsKindOf(Object object, Object type) {
 		Boolean result;
-		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
-			checkRegistered((EClassifier)type);
-		}
 		if (object == null && type != null) {
 			// OCL considers "null" (OclVoid) to be compatible with everything.
 			// AQL considers it incompatible with anything.
@@ -287,9 +283,6 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsTypeOf(Object object, Object type) {
 		Boolean result;
-		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
-			checkRegistered((EClassifier)type);
-		}
 		if (object == null && type != null) {
 			// OCL considers "null" (OclVoid) to be compatible with everything.
 			// AQL considers it incompatible with anything.
@@ -318,21 +311,6 @@ public class AnyServices extends AbstractServiceProvider {
 			result = false;
 		}
 		return result;
-	}
-
-	/**
-	 * Checks if the given {@link EClassifier} is registered.
-	 * 
-	 * @param type
-	 *            the {@link EClassifier} to check
-	 * @throws IllegalArgumentException
-	 *             if the {@link EClassifier} is not registered
-	 */
-	private void checkRegistered(EClassifier type) throws IllegalArgumentException {
-		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {
-			throw new IllegalArgumentException(String.format(
-					"%s is not registered in the current environment", type));
-		}
 	}
 
 	// @formatter:off
