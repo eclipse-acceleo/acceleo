@@ -919,7 +919,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitIntType(IntTypeContext ctx) {
-		final TypeLiteral typeLiteral = builder.typeLiteral(java.lang.Boolean.class);
+		final TypeLiteral typeLiteral = builder.typeLiteral(java.lang.Integer.class);
 
 		startPositions.put(typeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(typeLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -939,7 +939,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitRealType(RealTypeContext ctx) {
-		final RealLiteral realLiteral = builder.realLiteral(Double.parseDouble(ctx.getText()));
+		final TypeLiteral realLiteral = builder.typeLiteral(java.lang.Double.class);
 
 		startPositions.put(realLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(realLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));

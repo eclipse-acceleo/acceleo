@@ -914,6 +914,30 @@ public class BuildTest {
 	}
 
 	@Test
+	public void integerTypeLiteral() {
+		IQueryBuilderEngine.AstResult build = engine.build("Integer");
+		Expression ast = build.getAst();
+
+		assertExpression(build, TypeLiteral.class, 0, 7, ast);
+		assertEquals(java.lang.Integer.class, ((TypeLiteral)ast).getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
+	public void realTypeLiteral() {
+		IQueryBuilderEngine.AstResult build = engine.build("Real");
+		Expression ast = build.getAst();
+
+		assertExpression(build, TypeLiteral.class, 0, 4, ast);
+		assertEquals(java.lang.Double.class, ((TypeLiteral)ast).getValue());
+		assertEquals(0, build.getErrors().size());
+		assertEquals(Diagnostic.OK, build.getDiagnostic().getSeverity());
+		assertEquals(0, build.getDiagnostic().getChildren().size());
+	}
+
+	@Test
 	public void classifierError() {
 		IQueryBuilderEngine.AstResult build = engine.build("anydsl::EClass");
 		Expression ast = build.getAst();
