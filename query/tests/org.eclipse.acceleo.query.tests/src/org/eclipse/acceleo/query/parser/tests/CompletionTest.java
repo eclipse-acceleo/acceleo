@@ -202,7 +202,7 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(3, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1332,7 +1332,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(a | true ", 22, types);
 
-		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals(11, completionResult.getProposals(new BasicFilter(completionResult)).size());
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
 	}
