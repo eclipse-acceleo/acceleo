@@ -22,23 +22,23 @@ import org.eclipse.emf.ecore.EPackage;
 public interface IQueryEnvironmentListener {
 
 	/**
-	 * Notifies a call to {@link IQueryEnvironment#registerServicePackage(Class)}.
+	 * Notifies a call to {@link IQueryEnvironment#registerService(IService)}.
 	 * 
 	 * @param result
 	 *            the {@link ServiceRegistrationResult} to be returned by
-	 *            {@link IQueryEnvironment#registerServicePackage(Class)}
-	 * @param services
-	 *            the registered {@link Class} services
+	 *            {@link IQueryEnvironment#registerService(IService)}
+	 * @param service
+	 *            the registered {@link IService}
 	 */
-	void servicePackageRegistered(ServiceRegistrationResult result, Class<?> services);
+	void serviceRegistered(ServiceRegistrationResult result, IService service);
 
 	/**
-	 * Notifies a call to {@link IQueryEnvironment#removeServicePackage(Class)}.
+	 * Notifies a call to {@link IQueryEnvironment#removeService(IService)}.
 	 * 
-	 * @param services
-	 *            the removed {@link Class} services
+	 * @param service
+	 *            the removed {@link IService}
 	 */
-	void servicePackageRemoved(Class<?> services);
+	void serviceRemoved(IService service);
 
 	/**
 	 * Notifies a call to {@link IQueryEnvironment#registerEPackage(EPackage)}.

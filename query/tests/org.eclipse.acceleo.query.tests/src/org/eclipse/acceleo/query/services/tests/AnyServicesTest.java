@@ -13,7 +13,10 @@ package org.eclipse.acceleo.query.services.tests;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -39,7 +42,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServiceInstance(new AnyServices(getQueryEnvironment()));
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
+				getQueryEnvironment()));
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 		any = new AnyServices(getQueryEnvironment());
 	}
 

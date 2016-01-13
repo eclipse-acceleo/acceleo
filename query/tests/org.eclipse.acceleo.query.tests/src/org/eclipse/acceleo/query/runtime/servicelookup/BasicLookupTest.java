@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 
 public class BasicLookupTest extends AbtractServiceLookupTest {
 
@@ -25,11 +28,8 @@ public class BasicLookupTest extends AbtractServiceLookupTest {
 	IQueryEnvironment getQueryEnvironment() {
 		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 
-		try {
-			queryEnvironment.registerServicePackage(ServicesClass.class);
-		} catch (InvalidAcceleoPackageException e) {
-			throw new UnsupportedOperationException("shouldn't happen.", e);
-		}
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, ServicesClass.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
 
 		return queryEnvironment;
 	}

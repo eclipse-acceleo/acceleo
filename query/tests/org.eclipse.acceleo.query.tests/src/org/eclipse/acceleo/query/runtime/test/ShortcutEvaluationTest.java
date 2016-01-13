@@ -13,14 +13,16 @@ package org.eclipse.acceleo.query.runtime.test;
 import com.google.common.collect.Maps;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.query.runtime.QueryParsing;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.servicelookup.ServicesCountCalls;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
@@ -37,11 +39,12 @@ public class ShortcutEvaluationTest {
 	private HashMap<String, Object> variables;
 
 	@Before
-	public void setUp() throws InvalidAcceleoPackageException {
-		IQueryEnvironment env = Query.newEnvironmentWithDefaultServices(null);
-		env.registerServicePackage(ServicesCountCalls.class);
-		parser = QueryParsing.newBuilder(env);
-		evaluator = QueryEvaluation.newEngine(env);
+	public void setUp() {
+		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, ServicesCountCalls.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		parser = QueryParsing.newBuilder(queryEnvironment);
+		evaluator = QueryEvaluation.newEngine(queryEnvironment);
 		variables = Maps.newHashMap();
 		variables.put("self", EcorePackage.eINSTANCE);
 		evaluator.eval(parser.build("self.reset()"), variables);

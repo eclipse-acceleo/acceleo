@@ -12,9 +12,11 @@ package org.eclipse.acceleo.query.services.tests;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.services.EObjectServices;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.services.XPathServices;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -37,7 +39,8 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(EObjectServices.class);
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), XPathServices.class);
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test

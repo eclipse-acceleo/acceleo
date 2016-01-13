@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.emf.ecore.EClassifier;
@@ -54,54 +54,29 @@ public class QueryEnvironment implements IQueryEnvironment {
 	}
 
 	@Override
-	public ServiceRegistrationResult registerServicePackage(Class<?> services)
-			throws InvalidAcceleoPackageException {
-		final ServiceRegistrationResult result = lookupEngine.registerServices(services);
+	public ServiceRegistrationResult registerService(IService service) {
+		final ServiceRegistrationResult result = lookupEngine.registerService(service);
 
 		if (!result.getRegistered().isEmpty()) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.servicePackageRegistered(result, services);
+				listener.serviceRegistered(result, service);
 			}
 		}
 
 		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#registerServiceInstance(java.lang.Object)
-	 */
-	@Override
-	public ServiceRegistrationResult registerServiceInstance(Object instance)
-			throws InvalidAcceleoPackageException {
-		final ServiceRegistrationResult result = lookupEngine.registerServiceInstance(instance);
-
-		if (!result.getRegistered().isEmpty()) {
-			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.servicePackageRegistered(result, instance.getClass());
-			}
-		}
-
-		return result;
-	}
-
-	@Override
-	public boolean isRegisteredServicePackage(Class<?> cls) {
-		return lookupEngine.isRegisteredService(cls);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeServicePackage(java.lang.Class)
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public void removeServicePackage(Class<?> services) {
-		final Class<?> removedClass = lookupEngine.removeServices(services);
-		if (removedClass != null) {
+	public void removeService(IService service) {
+		final IService removedService = lookupEngine.removeService(service);
+		if (removedService != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.servicePackageRemoved(removedClass);
+				listener.serviceRemoved(removedService);
 			}
 		}
 	}
@@ -205,6 +180,16 @@ public class QueryEnvironment implements IQueryEnvironment {
 		}
 
 		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#isRegisteredService(org.eclipse.acceleo.query.runtime.IService)
+	 */
+	@Override
+	public boolean isRegisteredService(IService service) {
+		return lookupEngine.isRegisteredService(service);
 	}
 
 }

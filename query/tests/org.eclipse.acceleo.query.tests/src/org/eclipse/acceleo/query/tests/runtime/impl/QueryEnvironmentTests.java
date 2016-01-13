@@ -11,11 +11,14 @@
 package org.eclipse.acceleo.query.tests.runtime.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
+import org.eclipse.acceleo.query.tests.runtime.lookup.basic.MethodHolder;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -45,24 +48,13 @@ public class QueryEnvironmentTests {
 
 		public int customClassMappingRegistered;
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener#servicePackageRegistered(org.eclipse.acceleo.query.runtime.ServiceRegistrationResult,
-		 *      java.lang.Class)
-		 */
 		@Override
-		public void servicePackageRegistered(ServiceRegistrationResult result, Class<?> services) {
+		public void serviceRegistered(ServiceRegistrationResult result, IService service) {
 			servicePackageRegistered++;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener#servicePackageRemoved(java.lang.Class)
-		 */
 		@Override
-		public void servicePackageRemoved(Class<?> services) {
+		public void serviceRemoved(IService services) {
 			servicePackageRemoved++;
 		}
 
@@ -132,76 +124,102 @@ public class QueryEnvironmentTests {
 	}
 
 	@Test
-	public void isRegisteredServicePackageNull() {
-		assertFalse(queryEnvironment.isRegisteredServicePackage(null));
+	public void isRegisteredServiceNull() {
+		assertFalse(queryEnvironment.isRegisteredService(null));
 	}
 
 	@Test
-	public void isRegisteredServicePackage() throws InvalidAcceleoPackageException {
-		assertFalse(queryEnvironment.isRegisteredServicePackage(this.getClass()));
+	public void isRegisteredService() {
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		for (IService service : services) {
+			assertFalse(queryEnvironment.isRegisteredService(service));
+		}
 
-		queryEnvironment.registerServicePackage(this.getClass());
+		ServiceUtils.registerServices(queryEnvironment, services);
 
-		assertTrue(queryEnvironment.isRegisteredServicePackage(this.getClass()));
-		assertListener(listener, 1, 0, 0, 0, 0);
+		for (IService service : services) {
+			assertTrue(queryEnvironment.isRegisteredService(service));
+		}
+		assertListener(listener, 2, 0, 0, 0, 0);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void registerServicePackageNull() throws InvalidAcceleoPackageException {
-		queryEnvironment.registerServicePackage(null);
+	public void registerServiceNull() {
+		queryEnvironment.registerService(null);
 	}
 
 	@Test
-	public void registerServicePackageNotRegistered() throws InvalidAcceleoPackageException {
-		ServiceRegistrationResult result = queryEnvironment.registerServicePackage(this.getClass());
+	public void registerServiceNotRegistered() {
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		final ServiceRegistrationResult result = ServiceUtils.registerServices(queryEnvironment, services);
 
-		assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
+		for (IService service : services) {
+			assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(service));
+		}
 		assertFalse(result.getRegistered().isEmpty());
-		assertListener(listener, 1, 0, 0, 0, 0);
+		assertListener(listener, 2, 0, 0, 0, 0);
 	}
 
 	@Test
-	public void registerServicePackageRegistered() throws InvalidAcceleoPackageException {
-		ServiceRegistrationResult result = queryEnvironment.registerServicePackage(this.getClass());
+	public void registerServiceRegistered() {
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		ServiceRegistrationResult result = ServiceUtils.registerServices(queryEnvironment, services);
 
 		assertFalse(result.getRegistered().isEmpty());
 
-		result = queryEnvironment.registerServicePackage(this.getClass());
+		result = ServiceUtils.registerServices(queryEnvironment, services);
 
-		assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
+		for (IService service : services) {
+			assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(service));
+		}
 		assertTrue(result.getRegistered().isEmpty());
-		assertListener(listener, 1, 0, 0, 0, 0);
+		assertListener(listener, 2, 0, 0, 0, 0);
 	}
 
 	@Test
-	public void removeServicePackageNull() {
-		queryEnvironment.removeServicePackage(null);
+	public void removeServiceNull() {
+		queryEnvironment.removeService(null);
 		assertListener(listener, 0, 0, 0, 0, 0);
 	}
 
 	@Test
-	public void removeServicePackageNotRegistered() throws InvalidAcceleoPackageException {
-		assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
+	public void removeServiceNotRegistered() {
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		for (IService service : services) {
+			assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(service));
+		}
 
-		queryEnvironment.removeServicePackage(this.getClass());
+		for (IService service : services) {
+			queryEnvironment.getLookupEngine().removeService(service);
+		}
 
-		assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
+		for (IService service : services) {
+			assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(service));
+		}
 		assertListener(listener, 0, 0, 0, 0, 0);
 	}
 
 	@Test
-	public void removeServicePackageRegistered() throws InvalidAcceleoPackageException {
-		assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
+	public void removeServiceRegistered() {
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, MethodHolder.class);
+		for (IService service : services) {
+			assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(service));
+		}
 
-		queryEnvironment.registerServicePackage(this.getClass());
+		ServiceRegistrationResult result = ServiceUtils.registerServices(queryEnvironment, services);
 
-		assertTrue(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
-		assertListener(listener, 1, 0, 0, 0, 0);
+		assertEquals(2, result.getRegistered().size());
+		for (IService service : services) {
+			assertTrue(queryEnvironment.isRegisteredService(service));
+		}
+		assertListener(listener, 2, 0, 0, 0, 0);
 
-		queryEnvironment.removeServicePackage(this.getClass());
+		ServiceUtils.removeServices(queryEnvironment, services);
 
-		assertFalse(queryEnvironment.getLookupEngine().isRegisteredService(this.getClass()));
-		assertListener(listener, 1, 1, 0, 0, 0);
+		for (IService service : services) {
+			assertFalse(queryEnvironment.isRegisteredService(service));
+		}
+		assertListener(listener, 2, 2, 0, 0, 0);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)

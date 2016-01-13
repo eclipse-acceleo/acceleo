@@ -14,11 +14,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 
 /**
  * {@link IServiceProvider} scanning its own public methods to create {@link IService}.
@@ -39,8 +38,7 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 	private List<IService> services;
 
 	@Override
-	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment)
-			throws InvalidAcceleoPackageException {
+	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		try {
 			if (services == null) {
 				final Method getServicesMethod = getClass().getMethod("getServices",
@@ -48,8 +46,7 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 				services = new ArrayList<IService>();
 				final Method[] methods = this.getClass().getMethods();
 				for (Method method : methods) {
-					if (queryEnvironment.getLookupEngine().isServiceMethod(this, method)
-							&& !getServicesMethod.equals(method)) {
+					if (ServiceUtils.isServiceMethod(this, method) && !getServicesMethod.equals(method)) {
 						final IService service = getService(method);
 						if (service != null) {
 							services.add(service);
@@ -57,20 +54,17 @@ public abstract class AbstractServiceProvider implements IServiceProvider {
 					}
 				}
 			}
-		} catch (IllegalArgumentException e) {
-			throw new InvalidAcceleoPackageException(ILookupEngine.INSTANTIATION_PROBLEM_MSG
-					+ getClass().getCanonicalName(), e);
 		} catch (NoSuchMethodException e) {
-			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENTATION, e);
+			throw new IllegalStateException(WRONG_IMPLEMENTATION, e);
 		} catch (SecurityException e) {
-			throw new InvalidAcceleoPackageException(WRONG_IMPLEMENTATION, e);
+			throw new IllegalStateException(WRONG_IMPLEMENTATION, e);
 		}
 
 		return services;
 	}
 
 	/**
-	 * Gets an {@link IService} from the given {@link Method}.
+	 * Gets an {@link IService} for the given {@link Method}.
 	 * 
 	 * @param method
 	 *            the {@link Method}

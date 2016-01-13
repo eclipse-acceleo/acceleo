@@ -87,7 +87,7 @@ public abstract class AbstractService implements IService {
 	 *      org.eclipse.acceleo.query.validation.type.IType[])
 	 */
 	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
-		assert getNumberOfParameters() != argumentTypes.length;
+		assert getNumberOfParameters() == argumentTypes.length;
 
 		boolean result = true;
 
@@ -181,6 +181,16 @@ public abstract class AbstractService implements IService {
 			}
 		}
 		return builder.append(')').toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getLongSignature();
 	}
 
 }

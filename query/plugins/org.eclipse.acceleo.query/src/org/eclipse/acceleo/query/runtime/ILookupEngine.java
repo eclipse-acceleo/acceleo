@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -81,33 +80,21 @@ public interface ILookupEngine {
 	Set<IService> getServices(Set<IType> receiverTypes);
 
 	/**
-	 * Tells if a given {@link Method} is considered as a service to provide when querying.
+	 * Gets the {@link Set} of registered {@link IService}.
 	 * 
-	 * @param instance
-	 *            the instance {@link Object} if any, <code>null</code> otherwise
-	 * @param method
-	 *            the {@link Method} to check
-	 * @return <code>true</code> if a given {@link Method} is considered as a service to provide when
-	 *         querying, <code>false</code> otherwise
-	 */
-	boolean isServiceMethod(Object instance, Method method);
-
-	/**
-	 * Tells if the given {@link Class} is already registered.
-	 * 
-	 * @param cls
-	 *            the {@link Class} to check.
-	 * @return <code>true</code> if the given {@link Class} is already registered, <code>false</code>
-	 *         otherwise
-	 */
-	boolean isRegisteredService(Class<?> cls);
-
-	/**
-	 * Returns the set of registered {@link IService}s.
-	 * 
-	 * @return The set of registered {@link IService}s.
-	 * @since 4.0.0
+	 * @return the {@link Set} of registered {@link IService}
+	 * @since 4.1
 	 */
 	Set<IService> getRegisteredServices();
+
+	/**
+	 * Tells if the given {@link IService} is registered.
+	 * 
+	 * @param service
+	 *            the {@link IService} to check
+	 * @return <code>true</code> if the given {@link IService} is registered, <code>false</code> otherwise
+	 * @since 4.1
+	 */
+	boolean isRegisteredService(IService service);
 
 }

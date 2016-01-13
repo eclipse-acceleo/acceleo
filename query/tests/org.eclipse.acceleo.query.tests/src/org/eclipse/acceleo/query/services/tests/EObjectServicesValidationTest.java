@@ -18,7 +18,8 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
-import org.eclipse.acceleo.query.services.XPathServices;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -44,7 +45,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServiceInstance(new XPathServices(getQueryEnvironment()));
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), EObjectServices.class);
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test

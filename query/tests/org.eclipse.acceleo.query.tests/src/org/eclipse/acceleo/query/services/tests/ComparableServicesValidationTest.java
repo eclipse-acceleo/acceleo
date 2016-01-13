@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import java.util.Set;
+
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.ComparableServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Test;
@@ -19,7 +23,9 @@ public class ComparableServicesValidationTest extends AbstractServicesValidation
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(ComparableServices.class);
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(),
+				ComparableServices.class);
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test

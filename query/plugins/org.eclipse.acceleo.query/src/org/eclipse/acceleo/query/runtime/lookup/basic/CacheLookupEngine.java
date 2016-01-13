@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -67,10 +66,9 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	}
 
 	@Override
-	public ServiceRegistrationResult registerServices(Class<?> newServices)
-			throws InvalidAcceleoPackageException {
+	public ServiceRegistrationResult registerService(IService service) {
 		cache.clear();
-		return super.registerServices(newServices);
+		return super.registerService(service);
 	}
 
 	@Override
@@ -156,9 +154,9 @@ public class CacheLookupEngine extends BasicLookupEngine {
 	}
 
 	@Override
-	public Class<?> removeServices(Class<?> servicesClass) {
+	public IService removeService(IService service) {
 		cache.clear();
-		return super.removeServices(servicesClass);
+		return super.removeService(service);
 	}
 
 }

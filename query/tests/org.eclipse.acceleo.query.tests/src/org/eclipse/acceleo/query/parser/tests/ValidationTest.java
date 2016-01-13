@@ -24,10 +24,11 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -61,11 +62,12 @@ public class ValidationTest {
 	Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
 
 	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
-		queryEnvironment.registerServicePackage(EObjectServices.class);
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
 		engine = new QueryValidationEngine(queryEnvironment);
 
 		variableTypes.clear();

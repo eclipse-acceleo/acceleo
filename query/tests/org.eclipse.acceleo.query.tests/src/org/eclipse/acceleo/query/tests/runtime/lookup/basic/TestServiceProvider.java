@@ -19,7 +19,6 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceProvider;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.impl.AbstractService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -233,14 +232,8 @@ public class TestServiceProvider implements IServiceProvider {
 		this.type2 = type2;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IServiceProvider#getServices(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment)
-	 */
 	@Override
-	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment)
-			throws InvalidAcceleoPackageException {
+	public List<IService> getServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		final List<IService> result = new ArrayList<IService>();
 
 		result.add(new Service1());

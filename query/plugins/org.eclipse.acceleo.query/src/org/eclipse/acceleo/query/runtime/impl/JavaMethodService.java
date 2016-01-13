@@ -204,4 +204,24 @@ public class JavaMethodService extends AbstractService {
 		return method.toString();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof JavaMethodService && ((JavaMethodService)obj).getMethod().equals(getMethod());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return getMethod().hashCode();
+	}
+
 }

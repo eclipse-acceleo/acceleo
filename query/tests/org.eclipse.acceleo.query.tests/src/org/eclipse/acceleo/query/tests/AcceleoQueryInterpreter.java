@@ -22,9 +22,10 @@ import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -96,10 +97,10 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				queryEnvironment.registerServicePackage(Class.forName(classToImport));
+				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+						.forName(classToImport));
+				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
-				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
-			} catch (InvalidAcceleoPackageException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
 			}
 		}
@@ -147,10 +148,10 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public QueryValidationResult validateQuery(Query q) {
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				queryEnvironment.registerServicePackage(Class.forName(classToImport));
+				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+						.forName(classToImport));
+				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
-				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
-			} catch (InvalidAcceleoPackageException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
 			}
 		}

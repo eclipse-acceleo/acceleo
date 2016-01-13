@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.services.BooleanServices;
@@ -61,20 +63,24 @@ public final class Query {
 			IRootEObjectProvider rootProvider) {
 		final IQueryEnvironment env = newEnvironment();
 
-		try {
-			env.registerServiceInstance(new AnyServices(env));
-			env.registerServiceInstance(new EObjectServices(env, xRefProvider, rootProvider));
-			env.registerServiceInstance(new XPathServices(env));
-			env.registerServicePackage(ComparableServices.class);
-			env.registerServicePackage(NumberServices.class);
-			env.registerServicePackage(StringServices.class);
-			env.registerServicePackage(BooleanServices.class);
-			env.registerServicePackage(CollectionServices.class);
-			env.registerServicePackage(ResourceServices.class);
-		} catch (InvalidAcceleoPackageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Set<IService> services = ServiceUtils.getServices(env, new AnyServices(env));
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, new EObjectServices(env, xRefProvider, rootProvider));
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, new XPathServices(env));
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, ComparableServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, NumberServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, StringServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, BooleanServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, CollectionServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, ResourceServices.class);
+		ServiceUtils.registerServices(env, services);
 
 		return env;
 	}

@@ -21,52 +21,35 @@ import org.eclipse.emf.ecore.EPackage;
 public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 
 	/**
-	 * Register a set of services. The specified {@link Class} must have a default constructor with no
-	 * parameters. Any public, non void, instance method in the specified class will be registered as a
-	 * service. Services can be called directly from Acceleo Query Language expressions. if several services
-	 * with the same name and signature are registered, the latest registered service among all the identical
-	 * services is used. This allows to override services in the language. Overriding services can be done
-	 * either by introducing a new class with a service that exists in another registered class or by
-	 * registering a subclass of an registered service class. In that later case, the sub-class will replace
-	 * the existing service class.
+	 * Registers the given {@link IService}.
 	 * 
-	 * @param services
-	 *            the service package to be registered.
+	 * @param service
+	 *            the {@link IService} to register.
 	 * @return the {@link ServiceRegistrationResult}
-	 * @throws InvalidAcceleoPackageException
-	 *             if the specified class has no default constructor
-	 */
-	ServiceRegistrationResult registerServicePackage(Class<?> services) throws InvalidAcceleoPackageException;
-
-	/**
-	 * registers a set of services from the given instance.
-	 * 
-	 * @param instance
-	 *            the instance to register
-	 * @return the {@link ServiceRegistrationResult}
-	 * @throws InvalidAcceleoPackageException
-	 *             if the specified class has no default constructor
 	 * @since 4.1
 	 */
-	ServiceRegistrationResult registerServiceInstance(Object instance) throws InvalidAcceleoPackageException;
+	ServiceRegistrationResult registerService(IService service);
 
 	/**
-	 * Tells if the given {@link Class} is already registered.
+	 * Removes the given {@link IService} from {@link IQueryEnvironment#registerService(IService) registered}
+	 * {@link IService}.
 	 * 
-	 * @param services
-	 *            the service package to check
-	 * @return <code>true</code> if the given {@link Class} is already registered, <code>false</code>
-	 *         otherwise
+	 * @param service
+	 *            the {@link IService} to remove
+	 * @since 4.1
 	 */
-	boolean isRegisteredServicePackage(Class<?> services);
+	void removeService(IService service);
 
 	/**
-	 * Removes the given {@link Class} from registered the service package.
+	 * Tells if the given {@link IService} is {@link IQueryEnvironment#registerService(IService) registered}.
 	 * 
-	 * @param services
-	 *            the service package to be removed
+	 * @param service
+	 *            the {@link IService} to check
+	 * @return <code>true</code> if the given {@link IService} is
+	 *         {@link IQueryEnvironment#registerService(IService) registered}, <code>false</code> otherwise
+	 * @since 4.1
 	 */
-	void removeServicePackage(Class<?> services);
+	boolean isRegisteredService(IService service);
 
 	/**
 	 * Registers a new {@link EPackage} that can be referred during evaluation and validation.

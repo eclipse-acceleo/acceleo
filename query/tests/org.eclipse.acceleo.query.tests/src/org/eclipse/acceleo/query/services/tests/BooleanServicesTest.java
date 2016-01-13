@@ -11,7 +11,10 @@
 package org.eclipse.acceleo.query.services.tests;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.BooleanServices;
 import org.junit.Test;
 
@@ -20,7 +23,8 @@ public class BooleanServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(BooleanServices.class);
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), BooleanServices.class);
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)

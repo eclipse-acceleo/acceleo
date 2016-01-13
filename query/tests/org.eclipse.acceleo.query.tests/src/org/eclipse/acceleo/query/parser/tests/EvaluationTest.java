@@ -24,8 +24,9 @@ import nooperationreflection.NooperationreflectionPackage;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -61,13 +62,14 @@ public class EvaluationTest {
 	IQueryBuilderEngine builder;
 
 	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(RootPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
-		queryEnvironment.registerServicePackage(EObjectServices.class);
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
 		engine = new QueryEvaluationEngine(queryEnvironment);
 		builder = new QueryBuilderEngine(queryEnvironment);
 	}

@@ -12,8 +12,10 @@ package org.eclipse.acceleo.query.runtime.lookup.basic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -114,19 +116,34 @@ public class ServiceStore {
 	 * 
 	 * @param service
 	 *            the {@link IService} to remove
+	 * @return the removed {@link IService} if any, <code>null</code> otherwise
 	 */
-	public void remove(IService service) {
+	public IService remove(IService service) {
+		final IService result;
+
+		if (service == null) {
+			return null;
+		}
+
 		final int argc = service.getNumberOfParameters();
 		final Map<String, List<IService>> argcServices = services.get(argc);
-		final String serviceName = service.getName();
-		final List<IService> servicesList = argcServices.get(serviceName);
-		servicesList.remove(service);
-		if (servicesList.isEmpty()) {
-			argcServices.remove(serviceName);
-			if (argcServices.isEmpty()) {
-				services.remove(argc);
+		if (argcServices != null) {
+			final String serviceName = service.getName();
+			final List<IService> servicesList = argcServices.get(serviceName);
+			if (servicesList != null && servicesList.remove(service)) {
+				result = service;
+				if (servicesList.isEmpty() && argcServices.remove(serviceName) != null
+						&& argcServices.isEmpty()) {
+					services.remove(argc);
+				}
+			} else {
+				result = null;
 			}
+		} else {
+			result = null;
 		}
+
+		return result;
 	}
 
 	/**
@@ -161,9 +178,47 @@ public class ServiceStore {
 				}
 			}
 		}
-		result.getRegistered().add(service);
-		multiService.add(service);
+
+		if (!multiService.contains(service)) {
+			result.getRegistered().add(service);
+			multiService.add(service);
+		}
 
 		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link ServiceStore#add(IService) stored} {@link IService}.
+	 * 
+	 * @return the {@link Set} of {@link ServiceStore#add(IService) stored} {@link IService}
+	 */
+	public Set<IService> getServices() {
+		final Set<IService> result = new LinkedHashSet<IService>();
+
+		for (Map<String, List<IService>> byArgC : services.values()) {
+			for (List<IService> byName : byArgC.values()) {
+				result.addAll(byName);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Tells if the given {@link IService} is registered.
+	 * 
+	 * @param service
+	 *            the {@link IService} to check
+	 * @return <code>true</code> if the given {@link IService} is registered, <code>false</code> otherwise
+	 */
+	public boolean isRegistered(IService service) {
+		if (service == null) {
+			return false;
+		}
+
+		final List<IService> multiService = getMultiService(service.getName(), service
+				.getNumberOfParameters());
+
+		return multiService != null && multiService.contains(service);
 	}
 }

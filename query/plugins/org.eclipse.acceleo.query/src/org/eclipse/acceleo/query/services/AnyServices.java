@@ -325,9 +325,8 @@ public class AnyServices extends AbstractServiceProvider {
 	 * 
 	 * @param type
 	 *            the {@link EClassifier} to check
-	 * @return the registered {@link Class} if any.
 	 * @throws IllegalArgumentException
-	 *             if the type is not registered
+	 *             if the {@link EClassifier} is not registered
 	 */
 	private void checkRegistered(EClassifier type) throws IllegalArgumentException {
 		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {

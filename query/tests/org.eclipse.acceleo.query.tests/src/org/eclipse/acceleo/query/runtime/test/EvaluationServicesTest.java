@@ -30,8 +30,9 @@ import java.util.Set;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -77,9 +78,11 @@ public class EvaluationServicesTest {
 	}
 
 	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-		queryEnvironment.registerServicePackage(TestServiceDefinition.class);
+		final Set<IService> servicesToRegister = ServiceUtils.getServices(queryEnvironment,
+				TestServiceDefinition.class);
+		ServiceUtils.registerServices(queryEnvironment, servicesToRegister);
 		variables = new HashMap<String, Object>();
 		variables.put("x", 1);
 		variables.put("y", 2);

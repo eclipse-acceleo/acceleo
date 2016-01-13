@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -35,7 +36,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServiceInstance(new AnyServices(getQueryEnvironment()));
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
+				getQueryEnvironment()));
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test
