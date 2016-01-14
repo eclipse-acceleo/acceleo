@@ -19,13 +19,17 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IJavaType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.ecore.EClass;
 
 /**
  * Abstract implementation of an {@link org.eclipse.acceleo.query.runtime.IService IService} for
@@ -162,6 +166,73 @@ public class JavaMethodService extends AbstractService {
 		Type returnType = method.getGenericReturnType();
 
 		result.addAll(services.getIType(returnType));
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#matches(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
+	 *      org.eclipse.acceleo.query.validation.type.IType[])
+	 */
+	@Override
+	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
+		final ClassType[] classTypes = getClassTypes(queryEnvironment, argumentTypes);
+
+		return super.matches(queryEnvironment, classTypes);
+	}
+
+	/**
+	 * Gets the {@link ClassType} argument types from the given {@link IType} argument types.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param iTypes
+	 *            the {@link IType} argument types
+	 * @return the {@link ClassType} argument types from the given {@link IType} argument types
+	 */
+	protected ClassType[] getClassTypes(IReadOnlyQueryEnvironment queryEnvironment, IType[] iTypes) {
+		ClassType[] result = new ClassType[iTypes.length];
+
+		for (int i = 0; i < iTypes.length; ++i) {
+			result[i] = new ClassType(queryEnvironment, getClass(queryEnvironment, iTypes[i]));
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets an {@link Class} from a {@link IType}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param iType
+	 *            the {@link IType}
+	 * @return an {@link Class} from a {@link IType}
+	 */
+	protected Class<?> getClass(IReadOnlyQueryEnvironment queryEnvironment, IType iType) {
+		Class<?> result;
+
+		if (iType instanceof EClassifierLiteralType) {
+			result = EClass.class;
+		} else if (iType instanceof EClassifierType) {
+			result = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)iType).getType());
+		} else if (iType instanceof IJavaType) {
+			result = ((IJavaType)iType).getType();
+		} else {
+			throw new AcceleoQueryValidationException(iType.getClass().getCanonicalName());
+		}
+
+		if (result != null) {
+			if ("boolean".equals(result.getName())) {
+				result = Boolean.class;
+			} else if ("int".equals(result.getName())) {
+				result = Integer.class;
+			} else if ("double".equals(result.getName())) {
+				result = Double.class;
+			}
+		}
 
 		return result;
 	}

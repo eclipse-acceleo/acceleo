@@ -20,18 +20,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.ClassType;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
-import org.eclipse.acceleo.query.validation.type.IJavaType;
-import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * Abstract implementation of the language services.
@@ -83,72 +72,6 @@ public abstract class AbstractLanguageServices {
 	 */
 	public AbstractLanguageServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
-	}
-
-	/**
-	 * Gets the {@link Class} argument types from the given {@link IType} argument types.
-	 * 
-	 * @param list
-	 *            the {@link IType} argument types
-	 * @return the {@link Class} argument types from the given {@link IType} argument types
-	 */
-	protected ClassType[] getArgumentTypes(Collection<IType> list) {
-		ClassType[] result = new ClassType[list.size()];
-
-		final List<ClassType> types = getClasses(list);
-		for (int i = 0; i < types.size(); ++i) {
-			result[i] = types.get(i);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Converts a {@link Collection} of {@link Class} into a {@link List} of {@link Class}.
-	 * 
-	 * @param iTypes
-	 *            a {@link List} of {@link Class}
-	 * @return a {@link List} of {@link Class}
-	 */
-	protected List<ClassType> getClasses(Collection<IType> iTypes) {
-		final List<ClassType> result = new ArrayList<ClassType>(iTypes.size());
-		for (IType iType : iTypes) {
-			result.add(new ClassType(queryEnvironment, getClass(iType)));
-		}
-		return result;
-	}
-
-	/**
-	 * Gets an {@link Class} from a {@link IType}.
-	 * 
-	 * @param iType
-	 *            the {@link IType}
-	 * @return an {@link Class} from a {@link IType}
-	 */
-	protected Class<?> getClass(IType iType) {
-		Class<?> result;
-
-		if (iType instanceof EClassifierLiteralType) {
-			result = EClass.class;
-		} else if (iType instanceof EClassifierType) {
-			result = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)iType).getType());
-		} else if (iType instanceof IJavaType) {
-			result = ((IJavaType)iType).getType();
-		} else {
-			throw new AcceleoQueryValidationException(iType.getClass().getCanonicalName());
-		}
-
-		if (result != null) {
-			if ("boolean".equals(result.getName())) {
-				result = Boolean.class;
-			} else if ("int".equals(result.getName())) {
-				result = Integer.class;
-			} else if ("double".equals(result.getName())) {
-				result = Double.class;
-			}
-		}
-
-		return result;
 	}
 
 	/**

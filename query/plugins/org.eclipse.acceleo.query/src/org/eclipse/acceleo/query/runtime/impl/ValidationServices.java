@@ -254,8 +254,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
 			while (it.hasNext()) {
 				List<IType> currentArgTypes = it.next();
-				IType[] argumentTypes = getArgumentTypes(currentArgTypes);
-				IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
+				IService service = queryEnvironment.getLookupEngine().lookup(serviceName,
+						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
 				if (service == null) {
 					result.addAll(callEOperationType(serviceName, currentArgTypes));
 				} else {
