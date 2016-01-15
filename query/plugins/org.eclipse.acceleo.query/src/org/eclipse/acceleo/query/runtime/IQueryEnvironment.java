@@ -87,7 +87,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * 
 	 * @param listener
 	 *            the {@link IQueryEnvironmentListener} to add, can't be <code>null</code>
-         * @since 4.1
+	 * @since 4.1
 	 */
 	void addQueryEnvironmentListener(IQueryEnvironmentListener listener);
 
@@ -96,7 +96,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * 
 	 * @param listener
 	 *            the {@link IQueryEnvironmentListener} to remove
-         * @since 4.1
+	 * @since 4.1
 	 */
 	void removeQueryEnvironmentListener(IQueryEnvironmentListener listener);
 

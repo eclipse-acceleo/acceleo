@@ -52,6 +52,7 @@ public abstract class AbstractType implements IType {
 	 * @param source
 	 *            The class to check for a primitive wrapper.
 	 * @return The primitve wrapper for the given class if any, or the class itself if it isn't a primitive.
+	 * @since 4.1
 	 */
 	protected Class<?> wrapPrimitive(Class<?> source) {
 		Class<?> wrapper = PRIMITIVE_WRAPPERS.get(source);
@@ -72,6 +73,7 @@ public abstract class AbstractType implements IType {
 	 *            The source type from which to convert.
 	 * @return <code>true</code> if <code>toType</code> can be assigned from <code>fromType</code> when
 	 *         considering auto-boxing and primitive widening rules.
+	 * @since 4.1
 	 */
 	protected boolean isAssignableFrom(Class<?> toType, Class<?> fromType) {
 		Class<?> wrappedToType = wrapPrimitive(toType);

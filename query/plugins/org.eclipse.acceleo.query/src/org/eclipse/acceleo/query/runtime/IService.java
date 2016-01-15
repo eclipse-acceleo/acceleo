@@ -29,7 +29,7 @@ public interface IService {
 	 * Gets the name of the service. This name is used to identify the service.
 	 * 
 	 * @return the name of the service
-	 * @since 4.1.0
+	 * @since 4.1
 	 */
 	String getName();
 
@@ -37,6 +37,7 @@ public interface IService {
 	 * Gets a human readable signature of the service.
 	 * 
 	 * @return a human readable signature of the service
+	 * @since 4.1
 	 */
 	String getShortSignature();
 
@@ -44,6 +45,7 @@ public interface IService {
 	 * Gets the identifying signature of the service in the underlying technology.
 	 * 
 	 * @return the identifying signature of the service in the underlying technology
+	 * @since 4.1
 	 */
 	String getLongSignature();
 
@@ -53,7 +55,7 @@ public interface IService {
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
 	 * @return the {@link List} of parameter {@link IType}
-	 * @since 4.1.0
+	 * @since 4.1
 	 */
 	List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment);
 
@@ -61,7 +63,7 @@ public interface IService {
 	 * Gets the number of parameters including the receiver.
 	 * 
 	 * @return the number of parameters including the receiver
-	 * @since 4.1.0
+	 * @since 4.1
 	 */
 	int getNumberOfParameters();
 
@@ -73,7 +75,7 @@ public interface IService {
 	 * @return the result of the invocation
 	 * @throws AcceleoQueryEvaluationException
 	 *             when the invocation goes wrong
-	 * @since 4.1.0
+	 * @since 4.1
 	 */
 	Object invoke(Object... arguments) throws AcceleoQueryEvaluationException;
 
@@ -83,7 +85,7 @@ public interface IService {
 	 * {@link IService} . In the case of same priority the last added {@link IService} will be used.
 	 * 
 	 * @return the priority
-	 * @since 4.1.0
+	 * @since 4.1
 	 */
 	int getPriority();
 
@@ -101,7 +103,7 @@ public interface IService {
 	 * @param argTypes
 	 *            arguments {@link IType}
 	 * @return the {@link IType} of elements returned by the service
-	 * @since 4.0.0
+	 * @since 4.0
 	 */
 	Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes);

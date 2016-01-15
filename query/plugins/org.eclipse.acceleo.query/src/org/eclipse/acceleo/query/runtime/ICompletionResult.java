@@ -71,6 +71,7 @@ public interface ICompletionResult {
 	 * Returns the offset at which this completion proposal should start replacing existing text.
 	 * 
 	 * @return The offset at which this completion proposal should start replacing existing text.
+	 * @since 4.1
 	 */
 	int getReplacementOffset();
 
@@ -79,15 +80,17 @@ public interface ICompletionResult {
 	 * 
 	 * @param offset
 	 *            The offset at which this completion proposal should start replacing existing text.
+	 * @since 4.1
 	 */
 	void setReplacementOffset(int offset);
 
 	/**
-	 * If this proposal is going to replace text when accepted, this will return the number of characters
-	 * to replace.
+	 * If this proposal is going to replace text when accepted, this will return the number of characters to
+	 * replace.
 	 * 
 	 * @return Number of characters to replace from the existing text starting at
 	 *         {@link #getReplacementOffset()}.
+	 * @since 4.1
 	 */
 	int getReplacementLength();
 
@@ -96,6 +99,7 @@ public interface ICompletionResult {
 	 * 
 	 * @param replacementLength
 	 *            The number of characters to replace with this proposal.
+	 * @since 4.1
 	 */
 	void setReplacementLength(int replacementLength);
 }
