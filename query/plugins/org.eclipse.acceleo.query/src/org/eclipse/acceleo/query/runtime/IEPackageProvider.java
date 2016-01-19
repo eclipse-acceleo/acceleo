@@ -89,6 +89,17 @@ public interface IEPackageProvider {
 	EClassifier getType(String name, String classifierName);
 
 	/**
+	 * Returns an {@link EClassifier} instance when a unique one is found in all the registered packages. If
+	 * several are found, returns <code>null</code> and log a warning.
+	 * 
+	 * @param classifierName
+	 *            the name of the search classifier.
+	 * @return the requested classifier unless several classifiers have the same name in different packages.
+	 */
+	@Deprecated
+	EClassifier getType(String classifierName);
+
+	/**
 	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum.
 	 * 
 	 * @param packageName
@@ -117,6 +128,19 @@ public interface IEPackageProvider {
 	 */
 	@Deprecated
 	EEnumLiteral getEnumLiteral(String packageName, String enumName, String literalName);
+
+	/**
+	 * Returns the {@link EEnumLiteral} with the specified name in the specified enum if it exists in one of
+	 * the registered package. Returns <code>null</code> otherwise.
+	 * 
+	 * @param enumName
+	 *            the name of the {@link org.eclipse.emf.ecore.EEnum EEnum} containing the literal.
+	 * @param literalName
+	 *            the name of the searched {@link EEnumLiteral}.
+	 * @return the specified {@link EEnumLiteral}
+	 */
+	@Deprecated
+	EEnumLiteral getEnumLiteral(String enumName, String literalName);
 
 	/**
 	 * Gets the {@link EClassifier} represented by the given {@link Class}.
