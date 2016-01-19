@@ -75,6 +75,15 @@ public interface IEPackageProvider {
 	Collection<EClassifier> getTypes(String name, String classifierName);
 
 	/**
+	 * the list of classifiers known to the package provider with the specified name.
+	 * 
+	 * @param classifierName
+	 *            the name of the searched classifier
+	 * @return the list of classifiers matching the given {@link EClassifier} names.
+	 */
+	Collection<EClassifier> getTypes(String name);
+
+	/**
 	 * the classifier with the specified name in the package registered with the specified name.
 	 * 
 	 * @param name

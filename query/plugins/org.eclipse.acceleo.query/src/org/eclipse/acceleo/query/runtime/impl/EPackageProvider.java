@@ -534,6 +534,23 @@ public class EPackageProvider implements IEPackageProvider {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getTypes(java.lang.String)
+	 */
+	@Override
+	public Collection<EClassifier> getTypes(String classifierName) {
+		Set<EClassifier> result = Sets.newLinkedHashSet();
+		for (EPackage ePackage : ePackages.values()) {
+			EClassifier foundClassifier = ePackage.getEClassifier(classifierName);
+			if (foundClassifier != null) {
+				result.add(foundClassifier);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEnumLiteral(java.lang.String,
 	 *      java.lang.String, java.lang.String)
 	 */
