@@ -10,14 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,12 +25,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.parser.AstBuilder;
+import org.eclipse.acceleo.query.parser.AstEvaluator;
+import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
@@ -45,6 +51,7 @@ import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.anydsl.Company;
 import org.eclipse.acceleo.query.tests.anydsl.Food;
 import org.eclipse.acceleo.query.tests.anydsl.World;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -54,18 +61,89 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.CrossReferencer;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CollectionServicesTest {
 	CollectionServices collectionServices;
+
+	/**
+	 * This will create the cross referencer that's to be used by the "eInverse" library. It will attempt to
+	 * create the cross referencer on the target's resourceSet. If it is null, we'll then attempt to create
+	 * the cross referencer on the target's resource. When the resource too is null, we'll create the cross
+	 * referencer on the target's root container.
+	 * 
+	 * @param target
+	 *            Target of the cross referencing.
+	 */
+	private CrossReferenceProvider createEInverseCrossreferencer(EObject target) {
+		Resource res = null;
+		ResourceSet rs = null;
+		CrossReferencer crossReferencer;
+		if (target.eResource() != null) {
+			res = target.eResource();
+		}
+		if (res != null && res.getResourceSet() != null) {
+			rs = res.getResourceSet();
+		}
+
+		if (rs != null) {
+			// Manually add the ecore.ecore resource in the list of cross
+			// referenced notifiers
+			final Resource ecoreResource = EcorePackage.eINSTANCE.getEClass().eResource();
+			final Collection<Notifier> notifiers = new ArrayList<Notifier>();
+			for (Resource crossReferenceResource : rs.getResources()) {
+				if (!"emtl".equals(crossReferenceResource.getURI().fileExtension())) {
+					notifiers.add(crossReferenceResource);
+				}
+			}
+			notifiers.add(ecoreResource);
+
+			crossReferencer = new CrossReferencer(notifiers) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+					done();
+				}
+			};
+		} else if (res != null) {
+			crossReferencer = new CrossReferencer(res) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+					done();
+				}
+			};
+		} else {
+			EObject targetObject = EcoreUtil.getRootContainer(target);
+			crossReferencer = new CrossReferencer(targetObject) {
+				/** Default SUID. */
+				private static final long serialVersionUID = 1L;
+
+				// static initializer
+				{
+					crossReference();
+					done();
+				}
+			};
+		}
+		return new CrossReferencerToAQL(crossReferencer);
+	}
 
 	@Before
 	public void setup() {
@@ -73,7 +151,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testConcatListList() {
+	public void testConcat() {
 		List<Object> list1 = Lists.newArrayList();
 		List<Object> list2 = Lists.newArrayList();
 
@@ -93,85 +171,23 @@ public class CollectionServicesTest {
 		assertEquals(obj1, list3.get(0));
 		assertEquals(obj2, list3.get(1));
 		assertEquals(obj3, list3.get(2));
+
+		try {
+			collectionServices.concat(list1, null);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
+		try {
+			collectionServices.concat(null, list2);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
 	}
 
 	@Test
-	public void testConcatListSet() {
-		List<Object> list = Lists.newArrayList();
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.concat(list, set).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		list.add(obj1);
-		list.add(obj2);
-
-		set.add(obj3);
-
-		List<Object> list3 = collectionServices.concat(list, set);
-		assertEquals(3, list3.size());
-		assertEquals(obj1, list3.get(0));
-		assertEquals(obj2, list3.get(1));
-		assertEquals(obj3, list3.get(2));
-	}
-
-	@Test
-	public void testConcatListListDifferentTypes() {
-		List<String> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.concat(list1, list2).size());
-
-		list1.add("a");
-		list1.add("b");
-
-		list2.add(1);
-
-		List<? extends Object> list3 = collectionServices.concat(list1, list2);
-		assertEquals(3, list3.size());
-		assertEquals("a", list3.get(0));
-		assertEquals("b", list3.get(1));
-		assertEquals(1, list3.get(2));
-	}
-
-	@Test
-	public void testConcatListSetDifferentTypes() {
-		List<String> list = Lists.newArrayList();
-		Set<Integer> set = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.concat(list, set).size());
-
-		list.add("a");
-		list.add("b");
-
-		set.add(1);
-
-		List<? extends Object> list3 = collectionServices.concat(list, set);
-		assertEquals(3, list3.size());
-		assertEquals("a", list3.get(0));
-		assertEquals("b", list3.get(1));
-		assertEquals(1, list3.get(2));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testConcatListNull() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.concat(list, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testConcatNullList() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.concat(list, null);
-	}
-
-	@Test
-	public void testConcatListsWithDuplicates() {
+	public void testConcatWithDuplicates() {
 		List<Object> list1 = Lists.newArrayList();
 		list1.add("a");
 		list1.add("b");
@@ -213,152 +229,11 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testConcatSetList() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		List<Object> list = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.concat(set, list).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		set.add(obj1);
-		set.add(obj2);
-
-		list.add(obj3);
-
-		Set<Object> res = collectionServices.concat(set, list);
-		assertEquals(3, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
-		assertEquals(obj3, itr.next());
-	}
-
-	@Test
-	public void testConcatSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.concat(set1, set2).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		set1.add(obj1);
-		set1.add(obj2);
-
-		set2.add(obj3);
-
-		Set<Object> res = collectionServices.concat(set1, set2);
-		assertEquals(3, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
-		assertEquals(obj3, itr.next());
-	}
-
-	@Test
-	public void testConcatSetListDifferentTypes() {
-		Set<String> set = Sets.newLinkedHashSet();
-		List<Integer> list = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.concat(set, list).size());
-
-		set.add("a");
-		set.add("b");
-
-		list.add(1);
-
-		Set<? extends Object> res = collectionServices.concat(set, list);
-		assertEquals(3, res.size());
-		Iterator<? extends Object> itr = res.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals(1, itr.next());
-	}
-
-	@Test
-	public void testConcatSetSetDifferentTypes() {
-		Set<String> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.concat(set1, set2).size());
-
-		set1.add("a");
-		set1.add("b");
-
-		set2.add(1);
-
-		Set<? extends Object> res = collectionServices.concat(set1, set2);
-		assertEquals(3, res.size());
-		Iterator<? extends Object> itr = res.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals(1, itr.next());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testConcatSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.concat(set, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testConcatNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.concat(set, null);
-	}
-
-	@Test
-	public void testConcatSetsWithDuplicates() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		set1.add("a");
-		set1.add("b");
-		set1.add("c");
-		set1.add("d");
-
-		Set<String> set2 = Sets.newLinkedHashSet();
-		set2.add("e");
-		set2.add("d");
-		set2.add("c");
-		set2.add("b");
-
-		Set<Object> result = collectionServices.concat(set1, set2);
-		assertEquals(5, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals("c", itr.next());
-		assertEquals("d", itr.next());
-		assertEquals("e", itr.next());
-
-		List<Object> list1 = Lists.newArrayList();
-		list1.add("e");
-		list1.add("d");
-		list1.add("c");
-		list1.add("b");
-
-		Set<Object> result2 = collectionServices.concat(set1, list1);
-		assertEquals(5, result2.size());
-		Iterator<Object> itr2 = result2.iterator();
-		assertEquals("a", itr2.next());
-		assertEquals("b", itr2.next());
-		assertEquals("c", itr2.next());
-		assertEquals("d", itr2.next());
-		assertEquals("e", itr2.next());
-	}
-
-	@Test
-	public void testUnionListList() {
+	public void testAddList() {
 		List<Object> list1 = Lists.newArrayList();
 		List<Object> list2 = Lists.newArrayList();
 
-		assertEquals(0, collectionServices.union(list1, list2).size());
+		assertEquals(0, collectionServices.add(list1, list2).size());
 
 		Object obj1 = new Object();
 		Object obj2 = new Object();
@@ -369,250 +244,31 @@ public class CollectionServicesTest {
 
 		list2.add(obj3);
 
-		List<Object> list3 = collectionServices.concat(list1, list2);
+		List<Object> list3 = collectionServices.add(list1, list2);
 		assertEquals(3, list3.size());
 		assertEquals(obj1, list3.get(0));
 		assertEquals(obj2, list3.get(1));
 		assertEquals(obj3, list3.get(2));
-	}
 
-	@Test
-	public void testUnionListListDifferentTypes() {
-		List<String> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.union(list1, list2).size());
-
-		list1.add("a");
-		list1.add("b");
-
-		list2.add(1);
-
-		List<? extends Object> list3 = collectionServices.union(list1, list2);
-		assertEquals(3, list3.size());
-		assertEquals("a", list3.get(0));
-		assertEquals("b", list3.get(1));
-		assertEquals(1, list3.get(2));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testUnionListNull() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.union(list, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testUnionNullList() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.union(list, null);
-	}
-
-	@Test
-	public void testUnionListsWithDuplicates() {
-		List<Object> list1 = Lists.newArrayList();
-		list1.add("a");
-		list1.add("b");
-		list1.add("c");
-		list1.add("c");
-		list1.add("c");
-
-		List<Object> list2 = Lists.newArrayList();
-		list2.add("c");
-		list2.add("b");
-		list2.add("a");
-
-		List<Object> result = collectionServices.union(list1, list2);
-		assertEquals(8, result.size());
-		assertEquals("a", result.get(0));
-		assertEquals("b", result.get(1));
-		assertEquals("c", result.get(2));
-		assertEquals("c", result.get(3));
-		assertEquals("c", result.get(4));
-		assertEquals("c", result.get(5));
-		assertEquals("b", result.get(6));
-		assertEquals("a", result.get(7));
-	}
-
-	@Test
-	public void testUnionSetSet() {
+		List<Object> list4 = Lists.newArrayList(obj1, obj2, obj3);
 		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.union(set1, set2).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
 		set1.add(obj1);
 		set1.add(obj2);
+		List<Object> list5 = collectionServices.add(list4, set1);
+		assertEquals(5, list5.size());
 
-		set2.add(obj3);
-
-		Set<Object> res = collectionServices.union(set1, set2);
-		assertEquals(3, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
-		assertEquals(obj3, itr.next());
-	}
-
-	@Test
-	public void testUnionSetSetDifferentTypes() {
-		Set<String> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.union(set1, set2).size());
-
-		set1.add("a");
-		set1.add("b");
-
-		set2.add(1);
-
-		Set<? extends Object> res = collectionServices.union(set1, set2);
-		assertEquals(3, res.size());
-		Iterator<? extends Object> itr = res.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals(1, itr.next());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testUnionSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.union(set, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testUnionNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.union(set, null);
-	}
-
-	@Test
-	public void testUnionSetsWithDuplicates() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		set1.add("a");
-		set1.add("b");
-		set1.add("c");
-		set1.add("d");
-
-		Set<String> set2 = Sets.newLinkedHashSet();
-		set2.add("e");
-		set2.add("d");
-		set2.add("c");
-		set2.add("b");
-
-		Set<Object> result = collectionServices.union(set1, set2);
-		assertEquals(5, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals("c", itr.next());
-		assertEquals("d", itr.next());
-		assertEquals("e", itr.next());
-	}
-
-	@Test
-	public void testAddListList() {
-		List<Object> list1 = Lists.newArrayList();
-		List<Object> list2 = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.add(list1, list2).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		list1.add(obj1);
-		list1.add(obj2);
-
-		list2.add(obj3);
-
-		List<Object> res = collectionServices.add(list1, list2);
-		assertEquals(3, res.size());
-		assertEquals(obj1, res.get(0));
-		assertEquals(obj2, res.get(1));
-		assertEquals(obj3, res.get(2));
-	}
-
-	@Test
-	public void testAddListSet() {
-		List<Object> list = Lists.newArrayList();
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.add(list, set).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		list.add(obj1);
-		list.add(obj2);
-
-		set.add(obj3);
-
-		List<Object> res = collectionServices.add(list, set);
-		assertEquals(3, res.size());
-		assertEquals(obj1, res.get(0));
-		assertEquals(obj2, res.get(1));
-		assertEquals(obj3, res.get(2));
-	}
-
-	@Test
-	public void testAddListListDifferentTypes() {
-		List<String> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.add(list1, list2).size());
-
-		list1.add("a");
-		list1.add("b");
-
-		list2.add(1);
-
-		List<? extends Object> res = collectionServices.add(list1, list2);
-		assertEquals(3, res.size());
-		assertEquals("a", res.get(0));
-		assertEquals("b", res.get(1));
-		assertEquals(1, res.get(2));
-	}
-
-	@Test
-	public void testAddListSetDifferentTypes() {
-		List<String> list = Lists.newArrayList();
-		Set<Integer> set = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.add(list, set).size());
-
-		list.add("a");
-		list.add("b");
-
-		set.add(1);
-
-		List<? extends Object> res = collectionServices.add(list, set);
-		assertEquals(3, res.size());
-		assertEquals("a", res.get(0));
-		assertEquals("b", res.get(1));
-		assertEquals(1, res.get(2));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAddListNull() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.add(list, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAddNullList() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.add((List<?>)null, list);
+		try {
+			collectionServices.add(list1, null);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
+		try {
+			collectionServices.add((List<Object>)null, list2);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
 	}
 
 	@Test
@@ -658,148 +314,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testAddSetList() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		List<Object> list = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.add(set, list).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		set.add(obj1);
-		set.add(obj2);
-
-		list.add(obj3);
-
-		Set<Object> res = collectionServices.add(set, list);
-		assertEquals(3, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
-		assertEquals(obj3, itr.next());
-	}
-
-	@Test
-	public void testAddSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.add(set1, set2).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		set1.add(obj1);
-		set1.add(obj2);
-
-		set2.add(obj3);
-
-		Set<Object> res = collectionServices.add(set1, set2);
-		assertEquals(3, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
-		assertEquals(obj3, itr.next());
-	}
-
-	@Test
-	public void testAddSetListDifferentTypes() {
-		Set<String> set = Sets.newLinkedHashSet();
-		List<Integer> list = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.add(set, list).size());
-
-		set.add("a");
-		set.add("b");
-
-		list.add(1);
-
-		Set<? extends Object> res = collectionServices.add(set, list);
-		assertEquals(3, res.size());
-		Iterator<? extends Object> itr = res.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals(1, itr.next());
-	}
-
-	@Test
-	public void testAddSetSetDifferentTypes() {
-		Set<String> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.add(set1, set2).size());
-
-		set1.add("a");
-		set1.add("b");
-
-		set2.add(1);
-
-		Set<? extends Object> res = collectionServices.add(set1, set2);
-		assertEquals(3, res.size());
-		Iterator<? extends Object> itr = res.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals(1, itr.next());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAddSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.add(set, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAddNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.add((Set<?>)null, set);
-	}
-
-	@Test
-	public void testAddSetWithDuplicates() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		set1.add("a");
-		set1.add("b");
-		set1.add("c");
-		set1.add("d");
-
-		Set<String> set2 = Sets.newLinkedHashSet();
-		set2.add("e");
-		set2.add("d");
-		set2.add("c");
-		set2.add("b");
-
-		Set<Object> result = collectionServices.concat(set1, set2);
-		assertEquals(5, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals("a", itr.next());
-		assertEquals("b", itr.next());
-		assertEquals("c", itr.next());
-		assertEquals("d", itr.next());
-		assertEquals("e", itr.next());
-
-		List<Object> list1 = Lists.newArrayList();
-		list1.add("e");
-		list1.add("d");
-		list1.add("c");
-		list1.add("b");
-
-		Set<Object> result2 = collectionServices.concat(set1, list1);
-		assertEquals(5, result2.size());
-		Iterator<Object> itr2 = result2.iterator();
-		assertEquals("a", itr2.next());
-		assertEquals("b", itr2.next());
-		assertEquals("c", itr2.next());
-		assertEquals("d", itr2.next());
-		assertEquals("e", itr2.next());
-	}
-
-	@Test
-	public void testSubListList() {
+	public void testSubList() {
 		List<Object> list1 = Lists.newArrayList();
 		List<Object> list2 = Lists.newArrayList();
 
@@ -811,7 +326,6 @@ public class CollectionServicesTest {
 
 		list1.add(obj1);
 		list1.add(obj2);
-
 		List<Object> list3 = collectionServices.sub(list1, list2);
 		assertEquals(2, list3.size());
 		assertEquals(obj1, list3.get(0));
@@ -823,109 +337,26 @@ public class CollectionServicesTest {
 		list3 = collectionServices.sub(list1, list2);
 		assertEquals(1, list3.size());
 		assertEquals(obj1, list3.get(0));
-	}
 
-	@Test
-	public void testSubListSet() {
-		List<Object> list = Lists.newArrayList();
-		Set<Object> set = Sets.newLinkedHashSet();
+		List<Object> list4 = Lists.newArrayList(obj1, obj2, obj3);
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(obj1);
+		set1.add(obj2);
+		List<Object> list5 = collectionServices.sub(list4, set1);
+		assertEquals(1, list5.size());
 
-		assertEquals(0, collectionServices.sub(list, set).size());
-
-		Object obj1 = new Object();
-		Object obj2 = new Object();
-		Object obj3 = new Object();
-
-		list.add(obj1);
-		list.add(obj2);
-
-		List<Object> list3 = collectionServices.sub(list, set);
-		assertEquals(2, list3.size());
-		assertEquals(obj1, list3.get(0));
-		assertEquals(obj2, list3.get(1));
-
-		set.add(obj2);
-		set.add(obj3);
-
-		list3 = collectionServices.sub(list, set);
-		assertEquals(1, list3.size());
-		assertEquals(obj1, list3.get(0));
-	}
-
-	@Test
-	public void testSubListListDifferentTypes() {
-		List<Number> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.sub(list1, list2).size());
-
-		list1.add(1);
-		list1.add(2d);
-
-		List<Number> list3 = collectionServices.sub(list1, list2);
-		assertEquals(2, list3.size());
-		assertEquals(1, list3.get(0));
-		assertEquals(2d, list3.get(1));
-
-		list2.add(1);
-		list2.add(2);
-
-		list3 = collectionServices.sub(list1, list2);
-		assertEquals(1, list3.size());
-		assertEquals(2d, list3.get(0));
-	}
-
-	@Test
-	public void testSubListSetDifferentTypes() {
-		List<Number> list = Lists.newArrayList();
-		Set<Integer> set = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.sub(list, set).size());
-
-		list.add(1);
-		list.add(2d);
-
-		List<Number> list3 = collectionServices.sub(list, set);
-		assertEquals(2, list3.size());
-		assertEquals(1, list3.get(0));
-		assertEquals(2d, list3.get(1));
-
-		set.add(1);
-		set.add(2);
-
-		list3 = collectionServices.sub(list, set);
-		assertEquals(1, list3.size());
-		assertEquals(2d, list3.get(0));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSubListNull() {
-		List<Object> list = Lists.newArrayList();
-		list.add(new Object());
-
-		collectionServices.sub(list, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSubNullList() {
-		List<Object> list = Lists.newArrayList();
-		list.add(new Object());
-
-		collectionServices.sub((List<?>)null, list);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSubListNullEmptyList() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.sub(list, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSubNullListEmptyList() {
-		List<Object> list = Lists.newArrayList();
-
-		collectionServices.sub((List<?>)null, list);
+		try {
+			collectionServices.sub(list1, null);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
+		try {
+			collectionServices.sub((List<Object>)null, list2);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
 	}
 
 	@Test
@@ -947,38 +378,48 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testSubSetList() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		List<Object> list = Lists.newArrayList();
-
-		assertEquals(0, collectionServices.sub(set, list).size());
+	public void testAddSet() {
+		Set<Object> set1 = new HashSet<Object>();
+		Set<Object> set2 = new HashSet<Object>();
+		assertEquals(0, collectionServices.add(set1, set2).size());
 
 		Object obj1 = new Object();
 		Object obj2 = new Object();
 		Object obj3 = new Object();
+		set1.add(obj1);
+		set1.add(obj2);
+		set2.add(obj3);
+		Set<Object> result = collectionServices.add(set1, set2);
+		assertEquals(3, result.size());
+		assertTrue(result.contains(obj1));
+		assertTrue(result.contains(obj2));
+		assertTrue(result.contains(obj3));
 
-		set.add(obj1);
-		set.add(obj2);
+		Set<Object> set3 = Sets.newLinkedHashSet();
+		set3.add(obj1);
+		set3.add(obj2);
+		List<Object> list1 = Lists.newArrayList(obj1, obj2, obj3);
+		Set<Object> set4 = collectionServices.add(set3, list1);
+		assertEquals(3, set4.size());
 
-		Set<Object> res = collectionServices.sub(set, list);
-		assertEquals(2, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
-
-		list.add(obj2);
-		list.add(obj3);
-
-		res = collectionServices.sub(set, list);
-		assertEquals(1, res.size());
-		itr = res.iterator();
-		assertEquals(obj1, itr.next());
+		try {
+			collectionServices.add(set1, null);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
+		try {
+			collectionServices.add((Set<Object>)null, set2);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
 	}
 
 	@Test
-	public void testSubSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
+	public void testSubSet() {
+		Set<Object> set1 = new HashSet<Object>();
+		Set<Object> set2 = new HashSet<Object>();
 
 		assertEquals(0, collectionServices.sub(set1, set2).size());
 
@@ -988,297 +429,57 @@ public class CollectionServicesTest {
 
 		set1.add(obj1);
 		set1.add(obj2);
-
-		Set<Object> res = collectionServices.sub(set1, set2);
-		assertEquals(2, res.size());
-		Iterator<Object> itr = res.iterator();
-		assertEquals(obj1, itr.next());
-		assertEquals(obj2, itr.next());
+		Set<Object> list3 = collectionServices.sub(set1, set2);
+		assertEquals(2, list3.size());
+		assertTrue(list3.contains(obj1));
+		assertTrue(list3.contains(obj2));
 
 		set2.add(obj2);
 		set2.add(obj3);
 
-		res = collectionServices.sub(set1, set2);
-		assertEquals(1, res.size());
-		itr = res.iterator();
-		assertEquals(obj1, itr.next());
-	}
+		list3 = collectionServices.sub(set1, set2);
+		assertEquals(1, list3.size());
+		assertTrue(list3.contains(obj1));
 
-	@Test
-	public void testSubSetListDifferentTypes() {
-		Set<Number> set = Sets.newLinkedHashSet();
-		List<Integer> list = Lists.newArrayList();
+		Set<Object> set3 = Sets.newLinkedHashSet();
+		set3.add(obj1);
+		set3.add(obj2);
+		set3.add(obj3);
+		List<Object> list1 = Lists.newArrayList(obj1, obj2);
+		Set<Object> set4 = collectionServices.sub(set3, list1);
+		assertEquals(1, set4.size());
 
-		assertEquals(0, collectionServices.sub(set, list).size());
-
-		set.add(1);
-		set.add(2d);
-
-		Set<Number> res = collectionServices.sub(set, list);
-		assertEquals(2, res.size());
-		Iterator<Number> itr = res.iterator();
-		assertEquals(1, itr.next());
-		assertEquals(2d, itr.next());
-
-		list.add(1);
-		list.add(2);
-
-		res = collectionServices.sub(set, list);
-		assertEquals(1, res.size());
-		itr = res.iterator();
-		assertEquals(2d, itr.next());
-	}
-
-	@Test
-	public void testSubSetSetDifferentTypes() {
-		Set<Number> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
-
-		assertEquals(0, collectionServices.sub(set1, set2).size());
-
-		set1.add(1);
-		set1.add(2d);
-
-		Set<Number> res = collectionServices.sub(set1, set2);
-		assertEquals(2, res.size());
-		Iterator<Number> itr = res.iterator();
-		assertEquals(1, itr.next());
-		assertEquals(2d, itr.next());
-
-		set2.add(1);
-		set2.add(2);
-
-		res = collectionServices.sub(set1, set2);
-		assertEquals(1, res.size());
-		itr = res.iterator();
-		assertEquals(2d, itr.next());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSubSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.sub(set, null);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSubNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-
-		collectionServices.sub((Set<?>)null, set);
-	}
-
-	@Test
-	public void testIncludingList() {
-		List<Object> list = Lists.newArrayList();
-		Object elt = new Object();
-		list.add(elt);
-
-		Object elt2 = new Object();
-		List<Object> result = collectionServices.including(list, elt2);
-		assertEquals(2, result.size());
-		assertEquals(result.get(0), elt);
-		assertEquals(result.get(1), elt2);
-
-		// make sure we didn't modify the original list
-		result = collectionServices.including(list, elt);
-		assertEquals(2, result.size());
-		assertEquals(result.get(0), elt);
-		assertEquals(result.get(1), elt);
-	}
-
-	@Test
-	public void testIncludingListNull() {
-		List<Object> list = Lists.newArrayList();
-		Object elt = new Object();
-		list.add(elt);
-
-		List<Object> result = collectionServices.including(list, null);
-		assertEquals(2, result.size());
-		assertEquals(result.get(0), elt);
-		assertEquals(result.get(1), null);
+		try {
+			collectionServices.sub(set1, null);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
+		try {
+			collectionServices.sub((Set<Object>)null, set2);
+			fail("The collectionServices must trow a NullPointerException");
+		} catch (Exception exception) {
+			// Do noting we expect to get a NPE
+		}
 	}
 
 	@Test
 	public void testIncludingSet() {
 		Set<Object> set = new HashSet<Object>();
+		assertEquals(1, collectionServices.including(set, null).size());
+
 		Object elt = new Object();
-		set.add(elt);
-
 		Object elt2 = new Object();
+		set.add(elt);
 		Set<Object> result = collectionServices.including(set, elt2);
+		assertTrue(result.contains(elt2));
+		assertTrue(result.contains(elt));
 		assertEquals(2, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals(elt, itr.next());
-		assertEquals(elt2, itr.next());
 
-		// make sure we didn't modify the original set
 		result = collectionServices.including(set, elt);
 		assertEquals(set, result);
-		assertEquals(1, result.size());
 		assertTrue(result.contains(elt));
-	}
-
-	@Test
-	public void testIncludingSetNull() {
-		Set<Object> set = new HashSet<Object>();
-		Object elt = new Object();
-		set.add(elt);
-
-		Set<Object> result = collectionServices.including(set, null);
-		assertEquals(2, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals(elt, itr.next());
-		assertEquals(null, itr.next());
-	}
-
-	@Test
-	public void testExcludingList() {
-		List<Object> list = Lists.newArrayList();
-		Object elt = new Object();
-		Object elt2 = new Object();
-		list.add(elt);
-		list.add(elt2);
-
-		List<Object> result = collectionServices.excluding(list, elt2);
 		assertEquals(1, result.size());
-		assertFalse(result.contains(elt2));
-		assertEquals(elt, result.get(0));
-
-		list = Lists.newArrayList();
-		list.add(elt);
-		result = collectionServices.excluding(list, elt2);
-		assertEquals(list, result);
-		assertEquals(1, result.size());
-		assertEquals(elt, result.get(0));
-	}
-
-	@Test
-	public void testExcludingListNull() {
-		List<Object> list = Lists.newArrayList();
-		Object elt = new Object();
-		list.add(elt);
-		list.add(null);
-
-		List<Object> result = collectionServices.excluding(list, null);
-		assertEquals(1, result.size());
-		assertFalse(result.contains(null));
-		assertEquals(elt, result.get(0));
-
-		list = Lists.newArrayList();
-		list.add(elt);
-		result = collectionServices.excluding(list, null);
-		assertEquals(list, result);
-		assertEquals(1, result.size());
-		assertEquals(elt, result.get(0));
-	}
-
-	@Test
-	public void testExcludingWithDuplicates() {
-		List<Object> list = new ArrayList<Object>();
-		String a = "a";
-		String b = "b";
-		String c = "c";
-
-		list.add(a);
-		list.add(b);
-		list.add(c);
-		list.add(b);
-
-		List<Object> result = collectionServices.excluding(list, b);
-		assertEquals(2, result.size());
-		assertFalse(result.contains(b));
-		assertEquals(a, result.get(0));
-		assertEquals(c, result.get(1));
-	}
-
-	@Test
-	public void testExcludingSet() {
-		Set<Object> set = new HashSet<Object>();
-		Object elt = new Object();
-		Object elt2 = new Object();
-		set.add(elt);
-		set.add(elt2);
-
-		Set<Object> result = collectionServices.excluding(set, elt2);
-		assertEquals(1, result.size());
-		assertFalse(result.contains(elt2));
-		assertTrue(result.contains(elt));
-
-		set = new HashSet<Object>();
-		set.add(elt);
-		result = collectionServices.excluding(set, elt2);
-		assertEquals(set, result);
-		assertEquals(1, result.size());
-		assertTrue(result.contains(elt));
-
-		set = new HashSet<Object>();
-		assertEquals(0, collectionServices.excluding(set, null).size());
-	}
-
-	@Test
-	public void testExcludingSetNull() {
-		Set<Object> set = new HashSet<Object>();
-		Object elt = new Object();
-		set.add(elt);
-		set.add(null);
-
-		Set<Object> result = collectionServices.excluding(set, null);
-		assertEquals(1, result.size());
-		assertFalse(result.contains(null));
-		assertTrue(result.contains(elt));
-
-		set = new HashSet<Object>();
-		set.add(elt);
-		result = collectionServices.excluding(set, null);
-		assertEquals(set, result);
-		assertEquals(1, result.size());
-		assertTrue(result.contains(elt));
-	}
-
-	@Test
-	public void testReverseList() {
-		List<Object> list = Lists.newArrayList();
-		assertEquals(0, collectionServices.reverse(list).size());
-		Object elt = new Object();
-		Object elt2 = new Object();
-		list.add(elt);
-		list.add(elt);
-		list.add(elt2);
-		list.add(elt);
-		assertEquals(4, collectionServices.reverse(list).size());
-
-		List<Object> result = collectionServices.reverse(list);
-		assertSame(elt, result.get(0));
-		assertSame(elt2, result.get(1));
-		assertSame(elt, result.get(2));
-		assertSame(elt, result.get(3));
-
-		Object elt3 = new Object();
-		list.add(elt3);
-		result = collectionServices.reverse(list);
-		assertSame(elt3, result.get(0));
-		assertSame(elt, result.get(1));
-		assertSame(elt2, result.get(2));
-		assertSame(elt, result.get(3));
-		assertSame(elt, result.get(4));
-	}
-
-	@Test
-	public void testReverseListCopy() {
-		// make sure "reverse" returns a copy of the list
-		List<Object> list = Lists.newArrayList();
-		assertEquals(0, collectionServices.reverse(list).size());
-		Object elt = new Object();
-		Object elt2 = new Object();
-		list.add(elt);
-		list.add(elt);
-		list.add(elt2);
-		list.add(elt);
-		List<Object> result = collectionServices.reverse(list);
-
-		list.remove(elt2);
-		assertTrue(result.contains(elt2));
 	}
 
 	@Test
@@ -1294,29 +495,42 @@ public class CollectionServicesTest {
 		Iterator<Object> iterator = collectionServices.reverse(set).iterator();
 		assertSame(elt2, iterator.next());
 		assertSame(elt, iterator.next());
-
 		Object elt3 = new Object();
 		set.add(elt3);
 		iterator = collectionServices.reverse(set).iterator();
 		assertSame(elt3, iterator.next());
-		assertSame(elt2, iterator.next());
-		assertSame(elt, iterator.next());
 	}
 
 	@Test
-	public void testIsEmptyList() {
+	public void testExcludingSet() {
+		Set<Object> set = new HashSet<Object>();
+		Object elt = new Object();
+		Object elt2 = new Object();
+		set.add(elt);
+		set.add(elt2);
+		Set<Object> result = collectionServices.excluding(set, elt2);
+		assertFalse(result.contains(elt2));
+		assertTrue(result.contains(elt));
+		assertEquals(1, result.size());
+
+		set = new HashSet<Object>();
+		set.add(elt);
+		result = collectionServices.excluding(set, elt2);
+		assertEquals(set, result);
+		assertTrue(result.contains(elt));
+		assertEquals(1, result.size());
+
+		set = new HashSet<Object>();
+		assertEquals(0, collectionServices.excluding(set, null).size());
+	}
+
+	@Test
+	public void testEmpty() {
 		assertTrue(collectionServices.isEmpty(Lists.newArrayList()));
-		assertFalse(collectionServices.isEmpty(ImmutableList.of(new Object())));
 	}
 
 	@Test
-	public void testIsEmptySet() {
-		assertTrue(collectionServices.isEmpty(Sets.newLinkedHashSet()));
-		assertFalse(collectionServices.isEmpty(ImmutableSet.of(new Object())));
-	}
-
-	@Test
-	public void testNotEmptyList() {
+	public void testNotEmpty() {
 		List<Object> list = Lists.newArrayList();
 		assertFalse(collectionServices.notEmpty(list));
 		list.add(new Object());
@@ -1324,15 +538,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testNotEmptySet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		assertFalse(collectionServices.notEmpty(set));
-		set.add(new Object());
-		assertTrue(collectionServices.notEmpty(set));
-	}
-
-	@Test
-	public void testFirstList() {
+	public void testFirst() {
 		List<Object> list = Lists.newArrayList();
 		Object elt = new Object();
 		list.add(elt);
@@ -1347,318 +553,205 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testFirstSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		Object elt = new Object();
-		set.add(elt);
-		set.add(new Object());
-		assertEquals(elt, collectionServices.first(set));
-	}
-
-	@Test
-	public void testFirstEmptySet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		assertEquals(null, collectionServices.first(set));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testFirstNullCollection() {
-		collectionServices.first(null);
-	}
-
-	@Test
 	public void testAt() {
 		List<Object> list = Lists.newArrayList();
 		Object elt = new Object();
-		Object elt2 = new Object();
-		Object elt3 = new Object();
-		Object elt4 = new Object();
 		list.add(elt);
-		list.add(elt2);
-		list.add(elt3);
-		list.add(elt3);
-		list.add(elt4);
 		assertEquals(elt, collectionServices.at(list, 1));
+		Object elt2 = new Object();
+		list.add(elt2);
 		assertEquals(elt2, collectionServices.at(list, 2));
+		Object elt3 = new Object();
+		list.add(elt3);
+		list.add(elt3);
+		Object elt4 = new Object();
+		list.add(elt4);
 		assertEquals(elt4, collectionServices.at(list, 5));
 
-		list.add(0, elt4);
-		assertEquals(elt4, collectionServices.at(list, 1));
+		try {
+			assertEquals(elt4, collectionServices.at(list, 6));
+			fail("The 'at' operation service must throw a NPE.");
+		} catch (Exception e) {
+			// Do nothing the exception is expected here
+		}
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testAtOutOfBounds() {
+	@Test
+	public void testSize() {
 		List<Object> list = Lists.newArrayList();
-		list.add(new Object());
-		collectionServices.at(list, 2);
+		Object elt = new Object();
+		list.add(elt);
+		assertEquals(new Integer(1), collectionServices.size(list));
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testAtZero() {
+	@Test
+	public void testIncluding() {
 		List<Object> list = Lists.newArrayList();
-		list.add(new Object());
-		collectionServices.at(list, 0);
-	}
+		Object elt = new Object();
+		list.add(elt);
 
-	@Test(expected = NullPointerException.class)
-	public void testAtNullList() {
-		collectionServices.at(null, 1);
-	}
+		Object elt2 = new Object();
+		List<Object> result = collectionServices.including(list, elt2);
+		assertTrue(result.contains(elt2));
+		assertTrue(result.contains(elt));
+		assertEquals(2, result.size());
 
-	@Test
-	public void testSizeList() {
-		List<Integer> list = Lists.newArrayList();
-		list.add(1);
-		assertEquals(Integer.valueOf(1), collectionServices.size(list));
-
-		list.add(2);
-		list.add(3);
-		assertEquals(Integer.valueOf(3), collectionServices.size(list));
-
-		list.remove(1);
-		assertEquals(Integer.valueOf(2), collectionServices.size(list));
+		result = collectionServices.including(list, elt);
+		assertEquals(2, result.size());
+		assertTrue(result.contains(elt));
+		assertEquals(result.get(0), elt);
+		assertEquals(result.get(1), elt);
 	}
 
 	@Test
-	public void testSizeSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(1);
-		assertEquals(new Integer(1), collectionServices.size(set));
-
-		set.add(2);
-		set.add(3);
-		assertEquals(Integer.valueOf(3), collectionServices.size(set));
-
-		set.remove(1);
-		assertEquals(Integer.valueOf(2), collectionServices.size(set));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAsSetNull() {
-		collectionServices.asSet(null);
-	}
-
-	@Test
-	public void testAsSetList() {
+	public void testExcluding() {
 		List<Object> list = Lists.newArrayList();
 		Object elt = new Object();
 		Object elt2 = new Object();
+		list.add(elt);
+		list.add(elt2);
+		List<Object> result = collectionServices.excluding(list, elt2);
+		assertFalse(result.contains(elt2));
+		assertTrue(result.contains(elt));
+		assertEquals(1, result.size());
+
+		list = Lists.newArrayList();
+		list.add(elt);
+		result = collectionServices.excluding(list, elt2);
+		assertEquals(list, result);
+		assertTrue(result.contains(elt));
+		assertEquals(1, result.size());
+	}
+
+	@Test
+	public void testExcludingWithDuplicates() {
+		List<Object> list = new ArrayList<Object>();
+		String a = "a";
+		String b = "b";
+		String c = "c";
+
+		list.add(a);
+		list.add(b);
+		list.add(c);
+		list.add(b);
+
+		List<Object> result = collectionServices.excluding(list, b);
+		assertTrue(result.contains(a));
+		assertTrue(result.contains(c));
+		assertFalse(result.contains(b));
+
+		assertEquals(2, result.size());
+
+		assertEquals(0, result.indexOf(a));
+		assertEquals(1, result.indexOf(c));
+
+	}
+
+	@Test
+	public void testReverse() {
+		List<Object> list = Lists.newArrayList();
+		assertEquals(0, collectionServices.reverse(list).size());
+		Object elt = new Object();
+		Object elt2 = new Object();
+		list.add(elt);
 		list.add(elt);
 		list.add(elt);
 		list.add(elt2);
+		assertEquals(4, collectionServices.reverse(list).size());
 
-		Set<Object> asSet = collectionServices.asSet(list);
-		assertNotNull(asSet);
-		Iterator<Object> itr = asSet.iterator();
-		assertEquals(elt, itr.next());
-		assertEquals(elt2, itr.next());
-		assertFalse(itr.hasNext());
-
+		List<Object> result = collectionServices.reverse(list);
+		assertSame(elt2, result.get(0));
+		assertSame(elt, result.get(1));
 		Object elt3 = new Object();
 		list.add(elt3);
-
-		// Make sure the returned set was a copy
-		assertFalse(asSet.contains(elt3));
+		result = collectionServices.reverse(list);
+		assertSame(elt3, result.get(0));
 	}
 
 	@Test
-	public void testAsSetSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		Object elt = new Object();
-		Object elt2 = new Object();
-		set.add(elt);
-		set.add(elt2);
-
-		Set<Object> asSet = collectionServices.asSet(set);
-		assertNotNull(asSet);
-		Iterator<Object> itr = asSet.iterator();
-		assertEquals(elt, itr.next());
-		assertEquals(elt2, itr.next());
-		assertFalse(itr.hasNext());
-
-		Object elt3 = new Object();
-		set.add(elt3);
-
-		// The given collection was a set, so "asSet" shouldn't have copied it
-		assertTrue(asSet.contains(elt3));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAsOrderedSetNull() {
-		collectionServices.asOrderedSet(null);
-	}
-
-	@Test
-	public void testAsOrderedSetList() {
+	public void testAsSet() {
 		List<Object> list = Lists.newArrayList();
 		Object elt = new Object();
-		Object elt2 = new Object();
 		list.add(elt);
-		list.add(elt);
-		list.add(elt2);
+		Boolean isSet = false;
+		if (collectionServices.asSet(list) instanceof Set) {
+			isSet = true;
+		}
+		assertTrue(isSet);
 
-		Set<Object> asSet = collectionServices.asOrderedSet(list);
-		assertNotNull(asSet);
-		Iterator<Object> itr = asSet.iterator();
-		assertEquals(elt, itr.next());
-		assertEquals(elt2, itr.next());
-		assertFalse(itr.hasNext());
-
-		Object elt3 = new Object();
-		list.add(elt3);
-
-		// Make sure the returned set was a copy
-		assertFalse(asSet.contains(elt3));
-	}
-
-	@Test
-	public void testAsOrderedSetSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		Object elt = new Object();
-		Object elt2 = new Object();
+		Set<Object> set = new HashSet<Object>();
 		set.add(elt);
-		set.add(elt2);
-
-		Set<Object> asSet = collectionServices.asOrderedSet(set);
-		assertNotNull(asSet);
-		Iterator<Object> itr = asSet.iterator();
-		assertEquals(elt, itr.next());
-		assertEquals(elt2, itr.next());
-		assertFalse(itr.hasNext());
-
-		Object elt3 = new Object();
-		set.add(elt3);
-
-		// The given collection was a set, so "asSet" shouldn't have copied it
-		assertTrue(asSet.contains(elt3));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testAsSequenceNull() {
-		collectionServices.asSequence(null);
+		isSet = false;
+		if (collectionServices.asSet(set) instanceof Set) {
+			isSet = true;
+		}
+		assertTrue(isSet);
 	}
 
 	@Test
-	public void testAsSequenceList() {
-		List<Integer> list = Lists.newArrayList();
-		list.add(1);
-		list.add(2);
-		list.add(3);
+	public void testAsSequence() {
+		List<Object> list = Lists.newArrayList();
+		Object elt = new Object();
+		list.add(elt);
+		Boolean isSequence = false;
+		if (collectionServices.asSequence(list) instanceof List) {
+			isSequence = true;
+		}
+		assertTrue(isSequence);
 
-		List<Integer> asSequence = collectionServices.asSequence(list);
-		assertNotNull(asSequence);
-
-		assertEquals(Integer.valueOf(1), asSequence.get(0));
-		assertEquals(Integer.valueOf(2), asSequence.get(1));
-		assertEquals(Integer.valueOf(3), asSequence.get(2));
-
-		// The collection was already a list, so it should not have been copied
-		list.add(4);
-		assertTrue(asSequence.contains(4));
+		Set<Object> set = new HashSet<Object>();
+		set.add(elt);
+		isSequence = false;
+		if (collectionServices.asSequence(set) instanceof List) {
+			isSequence = true;
+		}
+		assertTrue(isSequence);
 	}
 
 	@Test
-	public void testAsSequenceSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(1);
-		set.add(2);
-		set.add(3);
-
-		List<Integer> asSequence = collectionServices.asSequence(set);
-		assertNotNull(asSequence);
-
-		assertEquals(Integer.valueOf(1), asSequence.get(0));
-		assertEquals(Integer.valueOf(2), asSequence.get(1));
-		assertEquals(Integer.valueOf(3), asSequence.get(2));
-
-		// Make sure the returned list was a copy
-		set.add(4);
-		assertFalse(asSequence.contains(4));
-	}
-
-	/*
-	 * A lambda value that returns the length of the first argument if it's a string.
-	 */
-	private LambdaValue createStringLengthLambda() {
-		return new LambdaValue(null, null, null) {
+	public void testSortedByNullSet() {
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
-				if (args[0] instanceof String) {
+				if (args.length == 1 && args[0] instanceof String) {
 					return ((String)args[0]).length();
 				}
 				return 0;
 			}
 		};
-	}
 
-	@Test
-	public void testSortedByNullSet() {
-		Set<Object> sortedBySet = collectionServices.sortedBy((Set<Object>)null, createStringLengthLambda());
+		List<Object> sortedBySet = collectionServices.sortedBy((Set<Object>)null, zeroLambda);
 		assertEquals(null, sortedBySet);
 	}
 
 	@Test
 	public void testSortedByNullList() {
-		List<Object> sortedByList = collectionServices.sortedBy((List<Object>)null,
-				createStringLengthLambda());
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		List<Object> sortedByList = collectionServices.sortedBy((List<Object>)null, zeroLambda);
 		assertEquals(null, sortedByList);
 	}
 
 	@Test
-	public void testSortedBySetNullLambda() {
-		Set<Object> set = new LinkedHashSet<Object>();
-		final TestComparable comp1 = new TestComparable(1);
-		final TestComparable comp2 = new TestComparable(2);
-		final TestComparable comp3 = new TestComparable(3);
-		final TestComparable comp4 = new TestComparable(4);
-		final TestComparable comp5 = new TestComparable(5);
-		set.add(comp2);
-		set.add(comp4);
-		set.add(comp1);
-		set.add(comp3);
-		set.add(comp5);
-
-		Set<Object> sortedBySet = collectionServices.sortedBy(set, null);
-		assertSame(set, sortedBySet);
-		assertEquals(5, sortedBySet.size());
-	}
-
-	@Test
-	public void testSortedByListNullLambda() {
-		List<Object> list = new ArrayList<Object>();
-		final TestComparable comp1 = new TestComparable(1);
-		final TestComparable comp2 = new TestComparable(2);
-		final TestComparable comp3 = new TestComparable(3);
-		final TestComparable comp4 = new TestComparable(4);
-		final TestComparable comp5 = new TestComparable(5);
-		list.add(comp2);
-		list.add(comp4);
-		list.add(comp1);
-		list.add(comp3);
-		list.add(comp5);
-
-		List<Object> sortedByList = collectionServices.sortedBy(list, null);
-		assertSame(list, sortedByList);
-		assertEquals(5, sortedByList.size());
-	}
-
-	/*
-	 * A lambda that returns the first argument.
-	 */
-	private LambdaValue createSelfLambda() {
-		return new LambdaValue(null, null, null) {
+	public void testSortedBySetWithNull() {
+		LambdaValue nameLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
-				if (args.length >= 1) {
+				if (args.length == 1) {
 					return args[0];
 				}
 				return null;
 			}
 		};
-	}
 
-	@Test
-	public void testSortedBySetWithNull() {
 		Set<Object> set = new LinkedHashSet<Object>();
 		final TestComparable comp1 = new TestComparable(1);
 		final TestComparable comp2 = new TestComparable(2);
@@ -1671,19 +764,28 @@ public class CollectionServicesTest {
 		set.add(null);
 		set.add(comp3);
 		set.add(comp5);
-		Set<Object> sortedBySet = collectionServices.sortedBy(set, createSelfLambda());
+		List<Object> sortedBySet = collectionServices.sortedBy(set, nameLambda);
 		assertEquals(6, sortedBySet.size());
-		Iterator<Object> itr = sortedBySet.iterator();
-		assertEquals(null, itr.next());
-		assertEquals(comp1, itr.next());
-		assertEquals(comp2, itr.next());
-		assertEquals(comp3, itr.next());
-		assertEquals(comp4, itr.next());
-		assertEquals(comp5, itr.next());
+		assertEquals(null, sortedBySet.get(0));
+		assertEquals(comp1, sortedBySet.get(1));
+		assertEquals(comp2, sortedBySet.get(2));
+		assertEquals(comp3, sortedBySet.get(3));
+		assertEquals(comp4, sortedBySet.get(4));
+		assertEquals(comp5, sortedBySet.get(5));
 	}
 
 	@Test
 	public void testSortedByListWithNull() {
+		LambdaValue nameLambda = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1) {
+					return args[0];
+				}
+				return null;
+			}
+		};
+
 		List<Object> list = new ArrayList<Object>();
 		final TestComparable comp1 = new TestComparable(1);
 		final TestComparable comp2 = new TestComparable(2);
@@ -1696,7 +798,7 @@ public class CollectionServicesTest {
 		list.add(null);
 		list.add(comp3);
 		list.add(comp5);
-		List<Object> sortedByList = collectionServices.sortedBy(list, createSelfLambda());
+		List<Object> sortedByList = collectionServices.sortedBy(list, nameLambda);
 		assertEquals(6, sortedByList.size());
 		assertEquals(null, sortedByList.get(0));
 		assertEquals(comp1, sortedByList.get(1));
@@ -1708,71 +810,69 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSortedBySet() {
-		Set<String> set = new LinkedHashSet<String>();
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		Set<Object> set = new LinkedHashSet<Object>();
 		set.add("aa");
 		set.add("bbb");
 		set.add("c");
-		Set<String> sortedBySet = collectionServices.sortedBy(set, createStringLengthLambda());
-		assertEquals(3, sortedBySet.size());
-		Iterator<String> itr = sortedBySet.iterator();
-		assertEquals("c", itr.next());
-		assertEquals("aa", itr.next());
-		assertEquals("bbb", itr.next());
-	}
-
-	@Test
-	public void testSortedByList() {
-		List<String> list = new ArrayList<String>();
-		list.add("aa");
-		list.add("bbb");
-		list.add("c");
-		List<String> sortedByList = collectionServices.sortedBy(list, createStringLengthLambda());
+		List<Object> sortedByList = collectionServices.sortedBy(set, zeroLambda);
 		assertEquals(3, sortedByList.size());
 		assertEquals("c", sortedByList.get(0));
 		assertEquals("aa", sortedByList.get(1));
 		assertEquals("bbb", sortedByList.get(2));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testSortedBySetDifferentTypes() {
-		Set<Number> set = new LinkedHashSet<Number>();
-		set.add(1);
-		set.add(1.5d);
-		collectionServices.sortedBy(set, createSelfLambda());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testSortedByListDifferentTypes() {
-		List<Number> list = new ArrayList<Number>();
-		list.add(1);
-		list.add(1.5d);
-		collectionServices.sortedBy(list, createSelfLambda());
-	}
-
-	/*
-	 * A lambda that returns the name of the first argument if it's an ENamedElement
-	 */
-	private LambdaValue createEObjectNameLambda() {
-		return new LambdaValue(null, null, null) {
+	@Test
+	public void testSortedByList() {
+		LambdaValue zeroLambda = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
-				if (args[0] instanceof ENamedElement) {
+				if (args.length == 1 && args[0] instanceof String) {
+					return ((String)args[0]).length();
+				}
+				return 0;
+			}
+		};
+
+		List<Object> list = new ArrayList<Object>();
+		list.add("aa");
+		list.add("bbb");
+		list.add("c");
+		List<Object> sortedByList = collectionServices.sortedBy(list, zeroLambda);
+		assertEquals(3, sortedByList.size());
+		assertEquals("c", sortedByList.get(0));
+		assertEquals("aa", sortedByList.get(1));
+		assertEquals("bbb", sortedByList.get(2));
+	}
+
+	@Test
+	public void testSortedByEObjectName() {
+		LambdaValue nameLambda = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				if (args.length == 1 && args[0] instanceof ENamedElement) {
 					return ((ENamedElement)args[0]).getName();
 				}
 				return 0;
 			}
 		};
-	}
 
-	@Test
-	public void testSortedByEObjectName() {
 		List<Object> list = new ArrayList<Object>();
 		list.add(EcorePackage.eINSTANCE.getEStructuralFeature());
 		list.add(EcorePackage.eINSTANCE.getEAttribute());
 		list.add(EcorePackage.eINSTANCE.getEClassifier());
 		list.add(EcorePackage.eINSTANCE.getEAnnotation());
 		list.add(EcorePackage.eINSTANCE.getENamedElement());
-		List<Object> sortedByList = collectionServices.sortedBy(list, createEObjectNameLambda());
+		List<Object> sortedByList = collectionServices.sortedBy(list, nameLambda);
 		assertEquals(5, sortedByList.size());
 		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), sortedByList.get(0));
 		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), sortedByList.get(1));
@@ -1781,250 +881,208 @@ public class CollectionServicesTest {
 		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), sortedByList.get(4));
 	}
 
-	/*
-	 * A lambda that'll check if the first argument is an instance of the given class
-	 */
-	private LambdaValue createInstanceOfLambda(final Class<?> clazz) {
-		return new LambdaValue(null, null, null) {
-			@Override
-			public Object eval(Object[] args) {
-				return clazz.isInstance(args[0]);
-			}
-		};
-	}
-
 	@Test
 	public void testSelectList() throws URISyntaxException, IOException {
-		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
-		EObject queries = reverseModel.getContents().get(0);
-		TreeIterator<EObject> iterator = queries.eAllContents();
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
 
-		List<EObject> list = Lists.newArrayList();
-		EObject queryWithExpression = iterator.next();
-		list.add(queryWithExpression);
-		list.add(iterator.next());
-		list.add(iterator.next());
-
-		List<EObject> filtered = collectionServices.select(list, null);
-		assertTrue(filtered.isEmpty());
-
-		filtered = collectionServices.select(list,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-		assertEquals(1, filtered.size());
-		assertEquals(queryWithExpression, filtered.get(0));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testSelectNullList() {
 		List<Object> nullList = null;
-		collectionServices.select(nullList,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-	}
+		try {
 
-	@Test
-	public void testSelectListNullLambda() {
-		List<String> list = Lists.newArrayList();
-		list.add("a");
-		list.add("b");
-		list.add("c");
-		List<String> filtered = collectionServices.select(list, null);
-		assertTrue(filtered.isEmpty());
-	}
+			collectionServices.select(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testSelectListNotBooleanLambda() {
-		List<String> list = Lists.newArrayList();
-		list.add("a");
-		list.add("b");
-		list.add("c");
-		collectionServices.select(list, createSelfLambda());
-	}
+		List<Object> list = Lists.newArrayList();
+		collectionServices.select(list, null);
 
-	@Test
-	public void testSelectSet() throws URISyntaxException, IOException {
 		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<EObject> set = Sets.newLinkedHashSet();
-		EObject queryWithExpression = iterator.next();
-		set.add(queryWithExpression);
-		set.add(iterator.next());
-		set.add(iterator.next());
+		list.add(iterator.next());
+		list.add(iterator.next());
+		list.add(iterator.next());
 
-		Set<EObject> filtered = collectionServices.select(set, null);
-		assertTrue(filtered.isEmpty());
+		List<Object> newList = collectionServices.select(list, null);
+		assertEquals(0, newList.size());
 
-		filtered = collectionServices.select(set,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-		assertEquals(1, filtered.size());
-		assertEquals(queryWithExpression, filtered.iterator().next());
+		newList = collectionServices.select(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(0, newList.size());
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testSelectNullSet() {
-		Set<Object> nullSet = null;
-		collectionServices.select(nullSet,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-	}
-
-	@Test
-	public void testSelectSetNullLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
-		set.add("a");
-		set.add("b");
-		set.add("c");
-		Set<String> filtered = collectionServices.select(set, null);
-		assertTrue(filtered.isEmpty());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testSelectSetNotBooleanLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
-		set.add("a");
-		set.add("b");
-		set.add("c");
-		collectionServices.select(set, createSelfLambda());
+	private IQueryEnvironment createEnvironment() {
+		return Query.newEnvironmentWithDefaultServices(createEInverseCrossreferencer(EcorePackage.eINSTANCE));
 	}
 
 	@Test
 	public void testRejectList() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		List<Object> nullList = null;
+		try {
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		List<Object> list = Lists.newArrayList();
+		collectionServices.reject(list, null);
+
 		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		List<EObject> list = Lists.newArrayList();
-		EObject queryWithExpression = iterator.next();
-		EObject eObj2 = iterator.next();
-		EObject eObj3 = iterator.next();
-		list.add(queryWithExpression);
-		list.add(eObj2);
-		list.add(eObj3);
+		list.add(iterator.next());
+		list.add(iterator.next());
+		list.add(iterator.next());
 
-		List<EObject> filtered = collectionServices.reject(list, null);
-		assertTrue(filtered.isEmpty());
+		List<Object> newList = collectionServices.reject(list, null);
+		assertEquals(0, newList.size());
 
-		filtered = collectionServices.reject(list,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-		assertEquals(2, filtered.size());
-		assertEquals(eObj2, filtered.get(0));
-		assertEquals(eObj3, filtered.get(1));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testRejectNullList() {
-		List<Object> nullList = null;
-		collectionServices.reject(nullList,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-	}
-
-	@Test
-	public void testRejectListNullLambda() {
-		List<String> list = Lists.newArrayList();
-		list.add("a");
-		list.add("b");
-		list.add("c");
-		List<String> filtered = collectionServices.reject(list, null);
-		assertTrue(filtered.isEmpty());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testRejectListNotBooleanLambda() {
-		List<String> list = Lists.newArrayList();
-		list.add("a");
-		list.add("b");
-		list.add("c");
-		collectionServices.reject(list, createSelfLambda());
+		newList = collectionServices.reject(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(0, newList.size());
 	}
 
 	@Test
 	public void testRejectSet() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		Set<Object> nullList = null;
+		try {
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		Set<Object> set = new HashSet<Object>();
+		collectionServices.reject(set, null);
+
 		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<EObject> set = Sets.newLinkedHashSet();
-		EObject queryWithExpression = iterator.next();
-		EObject eObj2 = iterator.next();
-		EObject eObj3 = iterator.next();
-		set.add(queryWithExpression);
-		set.add(eObj2);
-		set.add(eObj3);
+		set.add(iterator.next());
+		set.add(iterator.next());
+		set.add(iterator.next());
 
-		Set<EObject> filtered = collectionServices.reject(set, null);
-		assertTrue(filtered.isEmpty());
+		Set<Object> newList = collectionServices.reject(set, null);
+		assertEquals(0, newList.size());
 
-		filtered = collectionServices.reject(set,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-		assertEquals(2, filtered.size());
-		Iterator<EObject> itr = filtered.iterator();
-		assertEquals(eObj2, itr.next());
-		assertEquals(eObj3, itr.next());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testRejectNullSet() {
-		Set<Object> nullSet = null;
-		collectionServices.reject(nullSet,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-	}
-
-	@Test
-	public void testRejectSetNullLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
-		set.add("a");
-		set.add("b");
-		set.add("c");
-		Set<String> filtered = collectionServices.reject(set, null);
-		assertTrue(filtered.isEmpty());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testRejectSetNotBooleanLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
-		set.add("a");
-		set.add("b");
-		set.add("c");
-		collectionServices.reject(set, createSelfLambda());
+		newList = collectionServices.reject(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(0, newList.size());
 	}
 
 	@Test
 	public void testCollectList() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		List<Object> nullList = null;
+		try {
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		List<Object> list = Lists.newArrayList();
+		collectionServices.reject(list, null);
+
 		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		List<Object> list = Lists.newArrayList();
 		list.add(iterator.next());
 		list.add(iterator.next());
 		list.add(iterator.next());
 
-		List<Object> filtered = collectionServices.collect(list, null);
-		assertTrue(filtered.isEmpty());
+		List<Object> newList = collectionServices.reject(list, null);
+		assertEquals(0, newList.size());
 
-		filtered = collectionServices.collect(list,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-		assertEquals(3, filtered.size());
-		assertEquals(Boolean.TRUE, filtered.get(0));
-		assertEquals(Boolean.FALSE, filtered.get(1));
-		assertEquals(Boolean.FALSE, filtered.get(2));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testCollectNullList() {
-		List<Object> nullList = null;
-		collectionServices.collect(nullList,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		newList = collectionServices.reject(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(0, newList.size());
 	}
 
 	@Test
-	public void testCollectListNullLambda() {
-		List<String> list = Lists.newArrayList();
-		list.add("a");
-		list.add("b");
-		list.add("c");
-		List<Object> filtered = collectionServices.collect(list, null);
-		assertTrue(filtered.isEmpty());
+	public void testCollectSet() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		Set<Object> nullList = null;
+		try {
+
+			collectionServices.reject(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		Set<Object> set = new HashSet<Object>();
+		collectionServices.reject(set, null);
+
+		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
+		EObject queries = reverseModel.getContents().get(0);
+		TreeIterator<EObject> iterator = queries.eAllContents();
+
+		set.add(iterator.next());
+		set.add(iterator.next());
+		set.add(iterator.next());
+
+		Set<Object> newList = collectionServices.reject(set, null);
+		assertEquals(0, newList.size());
+
+		newList = collectionServices.reject(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(0, newList.size());
 	}
 
 	/**
@@ -2047,47 +1105,6 @@ public class CollectionServicesTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClassifiers().size() * 2, result.size());
 	}
 
-	@Test
-	public void testCollectSet() throws URISyntaxException, IOException {
-		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
-		EObject queries = reverseModel.getContents().get(0);
-		TreeIterator<EObject> iterator = queries.eAllContents();
-
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(iterator.next());
-		set.add(iterator.next());
-		set.add(iterator.next());
-
-		Set<Object> filtered = collectionServices.collect(set, null);
-		assertTrue(filtered.isEmpty());
-
-		filtered = collectionServices.collect(set,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-		// This "instance of" lambda will return true, false and false...
-		// but our "set" result cannot hold a duplicated Boolean.FALSE
-		assertEquals(2, filtered.size());
-		Iterator<Object> itr = filtered.iterator();
-		assertEquals(Boolean.TRUE, itr.next());
-		assertEquals(Boolean.FALSE, itr.next());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testCollectNullSet() {
-		Set<Object> nullSet = null;
-		collectionServices.collect(nullSet,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-	}
-
-	@Test
-	public void testCollectSetNullLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
-		set.add("a");
-		set.add("b");
-		set.add("c");
-		Set<Object> filtered = collectionServices.collect(set, null);
-		assertTrue(filtered.isEmpty());
-	}
-
 	/**
 	 * Test that the result of a call to collect on a set is flattened properly.
 	 */
@@ -2108,50 +1125,74 @@ public class CollectionServicesTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClassifiers().size(), result.size());
 	}
 
-	private LambdaValue createQueryExpressionLambda() {
-		return new LambdaValue(null, null, null) {
+	/**
+	 * Test that we cannot accept nothing or null in the result of a collect for a list.
+	 */
+	@Test
+	public void testCollectNothingNullList() {
+		LambdaValue nullLambdaValue = new LambdaValue(null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
-				if (args[0] instanceof org.eclipse.acceleo.query.tests.qmodel.Query) {
-					return ((org.eclipse.acceleo.query.tests.qmodel.Query)args[0]).getExpression();
-				}
 				return null;
 			}
 		};
+
+		List<Object> list = new ArrayList<Object>();
+		list.add(EcorePackage.eINSTANCE);
+		List<Object> result = collectionServices.collect(list, nullLambdaValue);
+		assertEquals(0, result.size());
+
+		LambdaValue nothingLambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return new Nothing("");
+			}
+		};
+
+		list = new ArrayList<Object>();
+		list.add(EcorePackage.eINSTANCE);
+		result = collectionServices.collect(list, nothingLambdaValue);
+		assertEquals(0, result.size());
 	}
 
 	/**
-	 * Test that null is trimmed from the result of a collect iteration.
+	 * Test that we cannot accept nothing or null in the result of a collect for a set.
 	 */
 	@Test
-	public void testCollectNothingNullList() throws URISyntaxException, IOException {
-		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
-		EObject queries = reverseModel.getContents().get(0);
-		TreeIterator<EObject> iterator = queries.eAllContents();
+	public void testCollectNothingNullSet() {
+		LambdaValue nullLambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return null;
+			}
+		};
 
-		List<Object> list = Lists.newArrayList();
-		Object queryWithExpression = iterator.next();
-		assertTrue(queryWithExpression instanceof org.eclipse.acceleo.query.tests.qmodel.Query);
-		list.add(queryWithExpression);
-		list.add(iterator.next());
-		list.add(iterator.next());
+		LinkedHashSet<Object> set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		Set<Object> result = collectionServices.collect(set, nullLambdaValue);
+		assertEquals(0, result.size());
 
-		List<Object> filtered = collectionServices.collect(list, null);
-		assertTrue(filtered.isEmpty());
+		LambdaValue nothingLambdaValue = new LambdaValue(null, null, null) {
+			@Override
+			public Object eval(Object[] args) {
+				return new Nothing("");
+			}
+		};
 
-		filtered = collectionServices.collect(list, createQueryExpressionLambda());
-		assertEquals(1, filtered.size());
-		Iterator<Object> itr = filtered.iterator();
-		assertEquals(((org.eclipse.acceleo.query.tests.qmodel.Query)queryWithExpression).getExpression(), itr
-				.next());
+		set = new LinkedHashSet<Object>();
+		set.add(EcorePackage.eINSTANCE);
+		result = collectionServices.collect(set, nothingLambdaValue);
+		assertEquals(0, result.size());
 	}
 
 	private static class TestClosure {
+
 		final List<Object> refs = new ArrayList<Object>();
 
 		public List<Object> getRefs() {
 			return refs;
 		}
+
 	}
 
 	@Test
@@ -2273,30 +1314,44 @@ public class CollectionServicesTest {
 		assertEquals(0, result.size());
 	}
 
-	/**
-	 * Test that null is trimmed from the result of a collect iteration.
-	 */
 	@Test
-	public void testCollectNothingNullSet() throws URISyntaxException, IOException {
+	public void testSelectSet() throws URISyntaxException, IOException {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		Set<Object> nullList = null;
+		try {
+
+			collectionServices.select(nullList, new LambdaValue(lambda, new HashMap<String, Object>(),
+					evaluator));
+			fail("The collectionServices must throw a NPE");
+		} catch (Exception exception) {
+			// Do nothing we expect the NPE
+		}
+
+		Set<Object> set = new HashSet<Object>();
+		collectionServices.select(set, null);
+
 		Resource reverseModel = new UnitTestModels(Setup.createSetupForCurrentEnvironment()).reverse();
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<Object> set = Sets.newLinkedHashSet();
-		Object queryWithExpression = iterator.next();
-		assertTrue(queryWithExpression instanceof org.eclipse.acceleo.query.tests.qmodel.Query);
-		set.add(queryWithExpression);
+		set.add(iterator.next());
 		set.add(iterator.next());
 		set.add(iterator.next());
 
-		Set<Object> filtered = collectionServices.collect(set, null);
-		assertTrue(filtered.isEmpty());
+		Set<Object> newList = collectionServices.select(set, null);
+		assertEquals(0, newList.size());
 
-		filtered = collectionServices.collect(set, createQueryExpressionLambda());
-		assertEquals(1, filtered.size());
-		Iterator<Object> itr = filtered.iterator();
-		assertEquals(((org.eclipse.acceleo.query.tests.qmodel.Query)queryWithExpression).getExpression(), itr
-				.next());
+		newList = collectionServices.select(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(0, newList.size());
 	}
 
 	@Test
@@ -2413,19 +1468,6 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testFilterSetEmptyEClassifierSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
-		set.add(this);
-		set.add("");
-		set.add(EcorePackage.eINSTANCE);
-		set.add(EcorePackage.eINSTANCE.getEClass());
-
-		final Set<Object> result = collectionServices.filter(set, Sets.<EClassifier> newLinkedHashSet());
-
-		assertEquals(0, result.size());
-	}
-
-	@Test
 	public void testFilterSetEClassifierSet() {
 		final Set<Object> set = Sets.newLinkedHashSet();
 		set.add(this);
@@ -2435,12 +1477,10 @@ public class CollectionServicesTest {
 
 		final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
 		eClassifiers.add(EcorePackage.eINSTANCE.getEPackage());
-		eClassifiers.add(EcorePackage.eINSTANCE.getEClass());
 		final Set<Object> result = collectionServices.filter(set, eClassifiers);
 
-		assertEquals(2, result.size());
+		assertEquals(1, result.size());
 		assertTrue(result.contains(EcorePackage.eINSTANCE));
-		assertTrue(result.contains(EcorePackage.eINSTANCE.getEClass()));
 	}
 
 	@Test
@@ -2473,19 +1513,6 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testFilterListEmptyEClassifierSet() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-
-		final List<Object> result = collectionServices.filter(list, Sets.<EClassifier> newLinkedHashSet());
-
-		assertEquals(0, result.size());
-	}
-
-	@Test
 	public void testFilterListEClassifierSet() {
 		final List<Object> list = Lists.newArrayList();
 		list.add(this);
@@ -2495,15 +1522,12 @@ public class CollectionServicesTest {
 
 		final Set<EClassifier> eClassifiers = new LinkedHashSet<EClassifier>();
 		eClassifiers.add(EcorePackage.eINSTANCE.getEPackage());
-		eClassifiers.add(EcorePackage.eINSTANCE.getEClass());
 		final List<Object> result = collectionServices.filter(list, eClassifiers);
 
-		assertEquals(2, result.size());
+		assertEquals(1, result.size());
 		assertTrue(result.contains(EcorePackage.eINSTANCE));
-		assertTrue(result.contains(EcorePackage.eINSTANCE.getEClass()));
 	}
 
-	@Test
 	public void testFilterOnEContents_ecore_477217() {
 		EPackage rootPackage = EcoreFactory.eINSTANCE.createEPackage();
 		EPackage subPackage = EcoreFactory.eINSTANCE.createEPackage();
@@ -2514,6 +1538,7 @@ public class CollectionServicesTest {
 
 		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 
 		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
 		AstResult query = queryBuilder.build("self.eContents()->filter(ecore::EClass)");
@@ -2540,6 +1565,7 @@ public class CollectionServicesTest {
 		world.getFoods().add(food);
 
 		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 
 		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
@@ -2558,7 +1584,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepNullListNullSeparator() {
-		final List<Object> result = collectionServices.sep((List<?>)null, null);
+		final List<Object> result = collectionServices.sep(null, null);
 
 		assertEquals(null, result);
 	}
@@ -2567,39 +1593,22 @@ public class CollectionServicesTest {
 	public void testSepNullList() {
 		final Object separator = new Object();
 
-		final List<Object> result = collectionServices.sep((List<?>)null, separator);
+		final List<Object> result = collectionServices.sep(null, separator);
 
 		assertEquals(null, result);
 	}
 
 	@Test
-	public void testSepEmptyList() {
-		final Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep(Lists.newArrayList(), separator);
-
-		assertTrue(result.isEmpty());
-	}
-
-	@Test
-	public void testSepListNullSeparator() {
-		final List<String> list = Lists.newArrayList();
-		list.add("a");
-		list.add("b");
-		list.add("c");
+	public void testSepNullSeparator() {
+		final List<Object> list = Lists.newArrayList();
 
 		final List<Object> result = collectionServices.sep(list, null);
 
-		assertEquals(5, result.size());
-		assertEquals("a", result.get(0));
-		assertEquals(null, result.get(1));
-		assertEquals("b", result.get(2));
-		assertEquals(null, result.get(3));
-		assertEquals("c", result.get(4));
+		assertEquals(0, result.size());
 	}
 
 	@Test
-	public void testSepList() {
+	public void testSep() {
 		final List<Object> list = Lists.newArrayList();
 		list.add(this);
 		list.add("");
@@ -2620,258 +1629,28 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testSepNullSetNullSeparator() {
-		final List<Object> result = collectionServices.sep((Set<?>)null, null);
-
-		assertEquals(null, result);
-	}
-
-	@Test
-	public void testSepNullSet() {
-		final Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep((Set<?>)null, separator);
-
-		assertEquals(null, result);
-	}
-
-	@Test
-	public void testSepEmptySet() {
-		final Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep(Sets.newLinkedHashSet(), separator);
-
-		assertTrue(result.isEmpty());
-	}
-
-	@Test
-	public void testSepSetNullSeparator() {
-		final Set<String> set = Sets.newLinkedHashSet();
-		set.add("a");
-		set.add("b");
-		set.add("c");
-
-		final List<Object> result = collectionServices.sep(set, null);
-
-		assertEquals(5, result.size());
-		assertEquals("a", result.get(0));
-		assertEquals(null, result.get(1));
-		assertEquals("b", result.get(2));
-		assertEquals(null, result.get(3));
-		assertEquals("c", result.get(4));
-	}
-
-	@Test
-	public void testSepSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
-		set.add(this);
-		set.add("");
-		set.add(EcorePackage.eINSTANCE);
-		set.add(EcorePackage.eINSTANCE.getEClass());
-		final Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep(set, separator);
-
-		assertEquals(7, result.size());
-		assertEquals(this, result.get(0));
-		assertEquals(separator, result.get(1));
-		assertEquals("", result.get(2));
-		assertEquals(separator, result.get(3));
-		assertEquals(EcorePackage.eINSTANCE, result.get(4));
-		assertEquals(separator, result.get(5));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(6));
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullListNullPrefixNullSeparatorNullSuffix() {
-		final List<Object> result = collectionServices.sep((List<?>)null, null, null, null);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(null);
-		expected.add(null);
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullListNullSeparatorNullSuffix() {
-		Object prefix = new Object();
-
-		final List<Object> result = collectionServices.sep((List<?>)null, prefix, null, null);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(prefix);
-		expected.add(null);
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullListNullSuffix() {
-		Object prefix = new Object();
-		Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep((List<?>)null, prefix, separator, null);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(prefix);
-		expected.add(null);
-		assertEquals(expected, result);
-	}
-
-	@Test
 	public void testSepPrefixSuffixNullListNullSeparator() {
-		Object prefix = new Object();
-		Object suffix = new Object();
+		final List<Object> result = collectionServices.sep(null, null);
 
-		final List<Object> result = collectionServices.sep((List<?>)null, prefix, null, suffix);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(prefix);
-		expected.add(suffix);
-		assertEquals(expected, result);
+		assertEquals(null, result);
 	}
 
 	@Test
 	public void testSepPrefixSuffixNullList() {
-		Object prefix = new Object();
-		Object separator = new Object();
-		Object suffix = new Object();
-
-		final List<Object> result = collectionServices.sep((List<?>)null, prefix, separator, suffix);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(prefix);
-		expected.add(suffix);
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullListNullPrefixNullSuffix() {
-		Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep((List<?>)null, null, separator, null);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(null);
-		expected.add(null);
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullListNullPrefixNullSeparator() {
-		Object suffix = new Object();
-
-		final List<Object> result = collectionServices.sep((List<?>)null, null, null, suffix);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(null);
-		expected.add(suffix);
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullListNullPrefix() {
-		Object suffix = new Object();
-		Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep((List<?>)null, null, separator, suffix);
-
-		List<Object> expected = new ArrayList<Object>();
-		expected.add(null);
-		expected.add(suffix);
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullPrefixNullSeparatorNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-
-		final List<Object> result = collectionServices.sep(list, null, null, null);
-
-		assertEquals(9, result.size());
-		assertEquals(null, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(null, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(null, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(null, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(null, result.get(8));
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullSeparatorNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-		final Object prefix = new Object();
-
-		final List<Object> result = collectionServices.sep(list, prefix, null, null);
-
-		assertEquals(9, result.size());
-		assertEquals(prefix, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(null, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(null, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(null, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(null, result.get(8));
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-		final Object prefix = new Object();
 		final Object separator = new Object();
 
-		final List<Object> result = collectionServices.sep(list, prefix, separator, null);
+		final List<Object> result = collectionServices.sep(null, separator);
 
-		assertEquals(9, result.size());
-		assertEquals(prefix, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(separator, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(separator, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(separator, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(null, result.get(8));
+		assertEquals(null, result);
 	}
 
 	@Test
 	public void testSepPrefixSuffixNullSeparator() {
 		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-		final Object prefix = new Object();
-		final Object suffix = new Object();
 
-		final List<Object> result = collectionServices.sep(list, prefix, null, suffix);
+		final List<Object> result = collectionServices.sep(list, null);
 
-		assertEquals(9, result.size());
-		assertEquals(prefix, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(null, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(null, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(null, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(suffix, result.get(8));
+		assertEquals(0, result.size());
 	}
 
 	@Test
@@ -2899,81 +1678,11 @@ public class CollectionServicesTest {
 		assertEquals(suffix, result.get(8));
 	}
 
-	@Test
-	public void testSepPrefixSuffixNullPrefixNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-		final Object separator = new Object();
-
-		final List<Object> result = collectionServices.sep(list, null, separator, null);
-
-		assertEquals(9, result.size());
-		assertEquals(null, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(separator, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(separator, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(separator, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(null, result.get(8));
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullPrefixNullSeparator() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-		final Object suffix = new Object();
-
-		final List<Object> result = collectionServices.sep(list, null, null, suffix);
-
-		assertEquals(9, result.size());
-		assertEquals(null, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(null, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(null, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(null, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(suffix, result.get(8));
-	}
-
-	@Test
-	public void testSepPrefixSuffixNullPrefix() {
-		final List<Object> list = Lists.newArrayList();
-		list.add(this);
-		list.add("");
-		list.add(EcorePackage.eINSTANCE);
-		list.add(EcorePackage.eINSTANCE.getEClass());
-		final Object separator = new Object();
-		final Object suffix = new Object();
-
-		final List<Object> result = collectionServices.sep(list, null, separator, suffix);
-
-		assertEquals(9, result.size());
-		assertEquals(null, result.get(0));
-		assertEquals(this, result.get(1));
-		assertEquals(separator, result.get(2));
-		assertEquals("", result.get(3));
-		assertEquals(separator, result.get(4));
-		assertEquals(EcorePackage.eINSTANCE, result.get(5));
-		assertEquals(separator, result.get(6));
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result.get(7));
-		assertEquals(suffix, result.get(8));
-	}
-
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testLastNullList() {
-		Object result = collectionServices.last((List<?>)null);
+		Object result = collectionServices.last(null);
 
-		assertNull(result);
+		assertEquals(null, result);
 	}
 
 	@Test
@@ -2982,11 +1691,11 @@ public class CollectionServicesTest {
 
 		Object result = collectionServices.last(list);
 
-		assertNull(result);
+		assertEquals(null, result);
 	}
 
 	@Test
-	public void testLastList() {
+	public void testLast() {
 		final List<Object> list = Lists.newArrayList();
 		list.add(this);
 		list.add("");
@@ -2998,37 +1707,8 @@ public class CollectionServicesTest {
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), result);
 	}
 
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testLastNullSet() {
-		Object result = collectionServices.last((Set<?>)null);
-
-		assertNull(result);
-	}
-
 	@Test
-	public void testLastEmptySet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
-
-		Object result = collectionServices.last(set);
-
-		assertNull(result);
-	}
-
-	@Test
-	public void testLastSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
-		set.add(this);
-		set.add("");
-		set.add(EcorePackage.eINSTANCE);
-		set.add(EcorePackage.eINSTANCE.getEClass());
-
-		Object result = collectionServices.last(set);
-
-		assertEquals(EcorePackage.eINSTANCE.getEClass(), result);
-	}
-
-	@Test
-	public void testExcludesList() {
+	public void testExcludes() {
 		final List<Object> list = Lists.newArrayList();
 
 		assertTrue(collectionServices.excludes(list, this));
@@ -3038,29 +1718,8 @@ public class CollectionServicesTest {
 		assertEquals(false, collectionServices.excludes(list, this));
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testExcludesNullList() {
-		collectionServices.excludes((List<?>)null, this);
-	}
-
 	@Test
-	public void testExcludesSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
-
-		assertTrue(collectionServices.excludes(set, this));
-
-		set.add(this);
-
-		assertEquals(false, collectionServices.excludes(set, this));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testExcludesNullSet() {
-		collectionServices.excludes((Set<?>)null, this);
-	}
-
-	@Test
-	public void testIncludesList() {
+	public void testIncludes() {
 		final List<Object> list = Lists.newArrayList();
 
 		assertEquals(false, collectionServices.includes(list, this));
@@ -3070,42 +1729,23 @@ public class CollectionServicesTest {
 		assertTrue(collectionServices.includes(list, this));
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testIncludesNullList() {
-		collectionServices.excludes((List<?>)null, this);
-	}
-
-	@Test
-	public void testIncludesSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
-
-		assertEquals(false, collectionServices.includes(set, this));
-
-		set.add(this);
-
-		assertTrue(collectionServices.includes(set, this));
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testIncludesNullSet() {
-		collectionServices.excludes((Set<?>)null, this);
-	}
-
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAnyNullCollectionNullLambda() {
 		collectionServices.any(null, null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void testAnyNullList() {
-		collectionServices.any((List<?>)null,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
-	}
+	public void testAnyNullCollection() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
 
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testAnyNullSet() {
-		collectionServices.any((Set<?>)null,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.any(null, new LambdaValue(lambda, new HashMap<String, Object>(), evaluator));
 	}
 
 	@Test
@@ -3132,56 +1772,92 @@ public class CollectionServicesTest {
 		assertEquals(null, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAnySetNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		collectionServices.any(set, createSelfLambda());
+		Object result = collectionServices.any(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(null, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAnyListNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		collectionServices.any(list, createSelfLambda());
+		Object result = collectionServices.any(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(null, result);
 	}
 
 	@Test
 	public void testAnySet() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(set, createInstanceOfLambda(String.class));
-		assertNull(result);
-
-		set.add("s");
-		result = collectionServices.any(set, createInstanceOfLambda(String.class));
-		assertEquals("s", result);
+		Object result = collectionServices.any(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(Integer.valueOf(3), result);
 	}
 
 	@Test
 	public void testAnyList() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
 
-		Object result = collectionServices.any(list, createInstanceOfLambda(String.class));
-		assertNull(result);
-
-		list.add("s");
-		result = collectionServices.any(list, createInstanceOfLambda(String.class));
-		assertEquals("s", result);
+		Object result = collectionServices.any(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(Integer.valueOf(3), result);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -3209,11 +1885,7 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(null);
 
-		Integer result = collectionServices.count(set, Integer.valueOf(4));
-		assertEquals(Integer.valueOf(0), result);
-
-		set.add(Integer.valueOf(4));
-		result = collectionServices.count(set, Integer.valueOf(4));
+		Integer result = collectionServices.count(set, Integer.valueOf(1));
 		assertEquals(Integer.valueOf(1), result);
 	}
 
@@ -3241,18 +1913,23 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(null);
-		list.add(Integer.valueOf(1));
 
 		Integer result = collectionServices.count(list, Integer.valueOf(1));
-		assertEquals(Integer.valueOf(2), result);
-
-		result = collectionServices.count(list, Integer.valueOf(4));
-		assertEquals(Integer.valueOf(0), result);
+		assertEquals(Integer.valueOf(1), result);
 	}
 
-	@Test
 	public void testExistsNullCollection() {
-		assertEquals(Boolean.FALSE, collectionServices.exists(null, createInstanceOfLambda(Integer.class)));
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		assertEquals(Boolean.FALSE, collectionServices.exists(null, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator)));
 	}
 
 	@Test
@@ -3279,67 +1956,111 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testExistsSetNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		collectionServices.exists(set, createSelfLambda());
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
+		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testExistsListNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		collectionServices.exists(list, createSelfLambda());
+		Boolean result = collectionServices.exists(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
+		assertEquals(Boolean.FALSE, result);
 	}
 
 	@Test
 	public void testExistsSet() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.FALSE, result);
-
-		set.add("s");
-		result = collectionServices.exists(set, createInstanceOfLambda(String.class));
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
 	@Test
 	public void testExistsList() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(list, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.FALSE, result);
-
-		list.add("s");
-		result = collectionServices.exists(list, createInstanceOfLambda(String.class));
+		Boolean result = collectionServices.exists(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
 	@Test
 	public void testForAllNullCollection() {
-		assertEquals(Boolean.FALSE, collectionServices.forAll(null, createSelfLambda()));
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
+		assertEquals(Boolean.FALSE, collectionServices.forAll(null, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator)));
 	}
 
 	@Test
-	public void testForAllListNullLambda() {
+	public void testForAllSetNullLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -3351,7 +2072,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testForAllSetNullLambda() {
+	public void testForAllListNullLambda() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -3362,57 +2083,135 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testForAllSetNotBooleanLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-		set.add(Integer.valueOf(4));
-
-		collectionServices.forAll(set, createSelfLambda());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testForAllListNotBooleanLambda() {
-		List<Object> list = Lists.newArrayList();
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(2));
-		list.add(Integer.valueOf(3));
-		list.add(Integer.valueOf(4));
-
-		collectionServices.forAll(list, createSelfLambda());
-	}
-
 	@Test
-	public void testForAllSet() {
+	public void testForAllSetNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, createInstanceOfLambda(Integer.class));
-		assertEquals(Boolean.TRUE, result);
-
-		set.add("s");
-		result = collectionServices.forAll(set, createInstanceOfLambda(Integer.class));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
 	@Test
-	public void testForAllList() {
+	public void testForAllListNotBooleanLambda() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
+				selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(list, createInstanceOfLambda(Integer.class));
-		assertEquals(Boolean.TRUE, result);
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
+		assertEquals(Boolean.FALSE, result);
+	}
 
-		list.add("s");
-		result = collectionServices.forAll(list, createInstanceOfLambda(Integer.class));
+	@Test
+	public void testForAllSetTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(0)), selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testForAllListTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(0)), selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
+		assertEquals(Boolean.TRUE, result);
+	}
+
+	@Test
+	public void testForAllSetFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
+		assertEquals(Boolean.FALSE, result);
+	}
+
+	@Test
+	public void testForAllListFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -3796,36 +2595,84 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testIsUniqueSet() {
+	public void testIsUniqueSetTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(set, createInstanceOfLambda(String.class));
+		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
+	}
 
-		set.add("a");
-		result = collectionServices.isUnique(set, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.TRUE, result);
+	@Test
+	public void testIsUniqueSetFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
-		set.add("b");
-		result = collectionServices.isUnique(set, createInstanceOfLambda(String.class));
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+
+		Boolean result = collectionServices.isUnique(set, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
 	@Test
-	public void testIsUniqueList() {
+	public void testIsUniqueListTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.isUnique(list, createInstanceOfLambda(String.class));
+		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.TRUE, result);
+	}
 
-		list.add("a");
-		result = collectionServices.isUnique(list, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.TRUE, result);
+	@Test
+	public void testIsUniqueListFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
 
-		list.add("b");
-		result = collectionServices.isUnique(list, createInstanceOfLambda(String.class));
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Boolean result = collectionServices.isUnique(list, new LambdaValue(lambda,
+				new HashMap<String, Object>(), evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -3842,10 +2689,6 @@ public class CollectionServicesTest {
 
 		Boolean result = collectionServices.one(set, null);
 		assertEquals(Boolean.FALSE, result);
-
-		set.add(null);
-		result = collectionServices.one(set, null);
-		assertEquals(Boolean.FALSE, result);
 	}
 
 	@Test
@@ -3856,63 +2699,87 @@ public class CollectionServicesTest {
 
 		Boolean result = collectionServices.one(list, null);
 		assertEquals(Boolean.FALSE, result);
-
-		list.add(null);
-		result = collectionServices.one(list, null);
-		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testOneSetNotBooleanLambda() {
+	@Test
+	public void testOneSetTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
-		collectionServices.one(set, createSelfLambda());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testOneListNotBooleanLambda() {
-		List<Object> list = Lists.newArrayList();
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(3));
-
-		collectionServices.one(list, createSelfLambda());
+		Boolean result = collectionServices.one(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
+		assertEquals(Boolean.TRUE, result);
 	}
 
 	@Test
-	public void testOneSet() {
+	public void testOneSetFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(3)), selfDeclaration);
+
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(set, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.FALSE, result);
-
-		set.add("s");
-		result = collectionServices.one(set, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.TRUE, result);
-
-		set.add("a");
-		result = collectionServices.one(set, createInstanceOfLambda(String.class));
+		Boolean result = collectionServices.one(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
 	@Test
-	public void testOneList() {
+	public void testOneListTrue() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(2)), selfDeclaration);
+
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
-		Boolean result = collectionServices.one(list, createInstanceOfLambda(String.class));
-		assertEquals(Boolean.FALSE, result);
-
-		list.add("s");
-		result = collectionServices.one(list, createInstanceOfLambda(String.class));
+		Boolean result = collectionServices.one(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.TRUE, result);
+	}
 
-		list.add("a");
-		result = collectionServices.one(list, createInstanceOfLambda(String.class));
+	@Test
+	public void testOneListFalse() {
+		AstBuilder builder = new AstBuilder();
+		IQueryEnvironment environment = createEnvironment();
+		AstEvaluator evaluator = new AstEvaluator(environment);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		selfDeclaration.setName("self");
+		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
+				.integerLiteral(3)), selfDeclaration);
+
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+
+		Boolean result = collectionServices.one(list, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -3942,57 +2809,30 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testSumSetIntegers() {
-		Set<Number> set = Sets.newLinkedHashSet();
+	public void testSumSet() {
+		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
+		set.add(Double.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		Number result = collectionServices.sum(set);
-		assertTrue(result instanceof Long);
-		assertEquals(Long.valueOf(6), result);
+		Double result = collectionServices.sum(set);
+		assertEquals(Double.valueOf(6), result);
 	}
 
 	@Test
-	public void testSumSetTypeMix() {
-		Set<Number> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Long.valueOf(2));
-		set.add(Double.valueOf(3));
-		set.add(Float.valueOf(4));
-
-		Number result = collectionServices.sum(set);
-		assertTrue(result instanceof Double);
-		assertEquals(Double.valueOf(10), result);
-	}
-
-	@Test
-	public void testSumListIntegers() {
-		List<Number> list = Lists.newArrayList();
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(2));
-		list.add(Integer.valueOf(3));
-
-		Number result = collectionServices.sum(list);
-		assertTrue(result instanceof Long);
-		assertEquals(Long.valueOf(6), result);
-	}
-
-	@Test
-	public void testSumListTypeMix() {
-		List<Number> list = Lists.newArrayList();
+	public void testSumList() {
+		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Double.valueOf(2));
-		list.add(Float.valueOf(3));
+		list.add(Integer.valueOf(3));
 
-		Number result = collectionServices.sum(list);
-		assertTrue(result instanceof Double);
+		Double result = collectionServices.sum(list);
 		assertEquals(Double.valueOf(6), result);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void testIndexOfNullListNull() {
-		collectionServices.indexOf((List<?>)null, null);
+	public void testIndexOfNullNull() {
+		collectionServices.indexOf(null, null);
 	}
 
 	@Test
@@ -4004,14 +2844,10 @@ public class CollectionServicesTest {
 
 		Integer result = collectionServices.indexOf(list, null);
 		assertEquals(Integer.valueOf(0), result);
-
-		list.add(2, null);
-		result = collectionServices.indexOf(list, null);
-		assertEquals(Integer.valueOf(3), result);
 	}
 
 	@Test
-	public void testIndexOfList() {
+	public void testIndexOfListNotInList() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4019,79 +2855,26 @@ public class CollectionServicesTest {
 
 		Integer result = collectionServices.indexOf(list, Integer.valueOf(7));
 		assertEquals(Integer.valueOf(0), result);
-
-		result = collectionServices.indexOf(list, Integer.valueOf(3));
-		assertEquals(Integer.valueOf(3), result);
-
-		list.remove(Integer.valueOf(3));
-		result = collectionServices.indexOf(list, Integer.valueOf(3));
-		assertEquals(Integer.valueOf(0), result);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testIndexOfNullSetNull() {
-		collectionServices.indexOf((Set<?>)null, null);
 	}
 
 	@Test
-	public void testIndexOfSetNull() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
+	public void testIndexOfListInList() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
 
-		Integer result = collectionServices.indexOf(set, null);
-		assertEquals(Integer.valueOf(0), result);
-
-		set.add(null);
-		result = collectionServices.indexOf(set, null);
-		assertEquals(Integer.valueOf(4), result);
-	}
-
-	@Test
-	public void testIndexOfSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(null);
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		Integer result = collectionServices.indexOf(set, Integer.valueOf(7));
-		assertEquals(Integer.valueOf(0), result);
-
-		result = collectionServices.indexOf(set, Integer.valueOf(3));
-		assertEquals(Integer.valueOf(4), result);
-
-		set.remove(Integer.valueOf(3));
-		result = collectionServices.indexOf(set, Integer.valueOf(3));
-		assertEquals(Integer.valueOf(0), result);
-	}
-
-	@Test
-	public void testIndexOfSetEquality() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(null);
-		set.add(ImmutableSet.of("s"));
-		set.add(Integer.valueOf(1));
-
-		Integer result = collectionServices.indexOf(set, Integer.valueOf(7));
-		assertEquals(Integer.valueOf(0), result);
-
-		result = collectionServices.indexOf(set, ImmutableSet.of("s"));
+		Integer result = collectionServices.indexOf(list, Integer.valueOf(2));
 		assertEquals(Integer.valueOf(2), result);
-
-		set.remove(ImmutableSet.of("s"));
-		result = collectionServices.indexOf(set, ImmutableSet.of("s"));
-		assertEquals(Integer.valueOf(0), result);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void testInsertAtNullList() {
-		collectionServices.insertAt((List<?>)null, 1, null);
+	public void testInsetAtNull() {
+		collectionServices.insertAt(null, 1, null);
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testInsertAtListUnderLowerBound() {
+	public void testInsetAtUnderLowerBound() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4101,7 +2884,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testInsertAtListOverUpperBound() {
+	public void testInsetAtOverUpperBound() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4111,152 +2894,28 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testInsertAtList() {
+	public void testInsetAt() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 
-		final List<Object> result = collectionServices.insertAt(list, 2, null);
-		assertTrue(list != result);
-		assertEquals(4, result.size());
-		assertEquals(Integer.valueOf(1), result.get(0));
-		assertEquals(null, result.get(1));
-		assertEquals(Integer.valueOf(2), result.get(2));
-		assertEquals(Integer.valueOf(3), result.get(3));
-	}
-
-	@Test
-	public void testInsertAtExtremityList() {
-		List<Object> list = Lists.newArrayList();
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(2));
-		list.add(Integer.valueOf(3));
-
-		List<Object> result = collectionServices.insertAt(list, 1, null);
+		final List<Object> result = collectionServices.insertAt(list, 1, null);
 		assertTrue(list != result);
 		assertEquals(4, result.size());
 		assertEquals(null, result.get(0));
 		assertEquals(Integer.valueOf(1), result.get(1));
 		assertEquals(Integer.valueOf(2), result.get(2));
 		assertEquals(Integer.valueOf(3), result.get(3));
-
-		result = collectionServices.insertAt(result, 5, Double.valueOf(10));
-		assertEquals(5, result.size());
-		assertEquals(null, result.get(0));
-		assertEquals(Integer.valueOf(1), result.get(1));
-		assertEquals(Integer.valueOf(2), result.get(2));
-		assertEquals(Integer.valueOf(3), result.get(3));
-		assertEquals(Double.valueOf(10), result.get(4));
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void testInsertAtNullSet() {
-		collectionServices.insertAt((Set<?>)null, 1, null);
-	}
-
-	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testInsertAtSetUnderLowerBound() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		collectionServices.insertAt(set, 0, null);
-	}
-
-	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testInsertAtSetOverUpperBound() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		collectionServices.insertAt(set, 5, null);
+	public void testPrependNull() {
+		collectionServices.prepend(null, null);
 	}
 
 	@Test
-	public void testInsertAtSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		final Set<Integer> result = collectionServices.insertAt(set, 2, null);
-		assertTrue(set != result);
-		assertEquals(4, result.size());
-		Iterator<Integer> itr = result.iterator();
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(null, itr.next());
-		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(Integer.valueOf(3), itr.next());
-	}
-
-	@Test
-	public void testInsertAtExtremitySet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		Set<Integer> result = collectionServices.insertAt(set, 1, null);
-		assertTrue(set != result);
-		assertEquals(4, result.size());
-		Iterator<Integer> itr = result.iterator();
-		assertEquals(null, itr.next());
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(Integer.valueOf(3), itr.next());
-
-		result = collectionServices.insertAt(result, 5, Integer.valueOf(10));
-		assertEquals(5, result.size());
-		itr = result.iterator();
-		assertEquals(null, itr.next());
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(Integer.valueOf(3), itr.next());
-		assertEquals(Integer.valueOf(10), itr.next());
-	}
-
-	@Test
-	public void testInsertAtSetDuplicate() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		final Set<Integer> result = collectionServices.insertAt(set, 1, Integer.valueOf(3));
-		assertTrue(set != result);
-		assertEquals(3, result.size());
-		Iterator<Integer> itr = result.iterator();
-		assertEquals(Integer.valueOf(3), itr.next());
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(Integer.valueOf(2), itr.next());
-	}
-
-	@Test
-	public void testInsertAtSetDuplicateEquality() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(ImmutableSet.of("s"));
-		set.add(Integer.valueOf(2));
-
-		final Set<Object> result = collectionServices.insertAt(set, 3, ImmutableSet.of("s"));
-		assertTrue(set != result);
-		assertEquals(3, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(ImmutableSet.of("s"), itr.next());
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testPrependNullList() {
-		collectionServices.prepend((List<?>)null, null);
-	}
-
-	@Test
-	public void testPrependList() {
+	public void testPrepend() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4269,60 +2928,6 @@ public class CollectionServicesTest {
 		assertEquals(Integer.valueOf(1), result.get(1));
 		assertEquals(Integer.valueOf(2), result.get(2));
 		assertEquals(Integer.valueOf(3), result.get(3));
-	}
-
-	@Test
-	public void testPrependListDuplicate() {
-		List<Object> list = Lists.newArrayList();
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(2));
-		list.add(Integer.valueOf(3));
-
-		final List<Object> result = collectionServices.prepend(list, Integer.valueOf(2));
-		assertTrue(list != result);
-		assertEquals(4, result.size());
-		assertEquals(Integer.valueOf(2), result.get(0));
-		assertEquals(Integer.valueOf(1), result.get(1));
-		assertEquals(Integer.valueOf(2), result.get(2));
-		assertEquals(Integer.valueOf(3), result.get(3));
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void testPrependNullSet() {
-		collectionServices.prepend((Set<?>)null, null);
-	}
-
-	@Test
-	public void testPrependSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		final Set<Object> result = collectionServices.prepend(set, null);
-		assertTrue(set != result);
-		assertEquals(4, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals(null, itr.next());
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(Integer.valueOf(3), itr.next());
-	}
-
-	@Test
-	public void testPrependSetDuplicate() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		final Set<Object> result = collectionServices.prepend(set, Integer.valueOf(2));
-		assertTrue(set != result);
-		assertEquals(3, result.size());
-		Iterator<Object> itr = result.iterator();
-		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(Integer.valueOf(1), itr.next());
-		assertEquals(Integer.valueOf(3), itr.next());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -4437,29 +3042,6 @@ public class CollectionServicesTest {
 		Iterator<Object> it = result.iterator();
 		assertEquals("anotherString", it.next());
 		assertEquals("aThirdString", it.next());
-		assertFalse(it.hasNext());
-	}
-
-	@Test
-	public void testIntersectionSetList() {
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		List<Integer> list = Lists.newArrayList();
-		list.add(Integer.valueOf(3));
-		list.add(Integer.valueOf(4));
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(5));
-		list.add(Integer.valueOf(1));
-
-		Set<Integer> result = collectionServices.intersection(set, list);
-		assertEquals(2, result.size());
-		// make sure the result is in the order we want (order of the first set)
-		Iterator<Integer> it = result.iterator();
-		assertEquals(Integer.valueOf(1), it.next());
-		assertEquals(Integer.valueOf(3), it.next());
 		assertFalse(it.hasNext());
 	}
 
@@ -4651,37 +3233,13 @@ public class CollectionServicesTest {
 		assertFalse(it.hasNext());
 	}
 
-	@Test
-	public void testIntersectionListSet() {
-		List<Integer> list = Lists.newArrayList();
-		list.add(Integer.valueOf(3));
-		list.add(Integer.valueOf(4));
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(5));
-		list.add(Integer.valueOf(1));
-
-		Set<Integer> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-
-		List<Integer> result = collectionServices.intersection(list, set);
-		assertEquals(3, result.size());
-		// make sure the result is in the order we want (order of the first list)
-		Iterator<Integer> it = result.iterator();
-		assertEquals(Integer.valueOf(3), it.next());
-		assertEquals(Integer.valueOf(1), it.next());
-		assertEquals(Integer.valueOf(1), it.next());
-		assertFalse(it.hasNext());
-	}
-
 	@Test(expected = java.lang.NullPointerException.class)
-	public void testSubOrderedSetNull() {
+	public void TestSubOrderedSetNull() {
 		collectionServices.subOrderedSet(null, Integer.valueOf(1), Integer.valueOf(1));
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubOrderedSetStartTooLow() {
+	public void TestSubOrderedSetStartTooLow() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4692,7 +3250,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubOrderedSetStartTooHigh() {
+	public void TestSubOrderedSetStartTooHi() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4703,7 +3261,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubOrderedSetEndTooLow() {
+	public void TestSubOrderedSetEndTooLow() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4714,7 +3272,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubOrderedSetEndTooHigh() {
+	public void TestSubOrderedSetEndTooHi() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4724,19 +3282,8 @@ public class CollectionServicesTest {
 		collectionServices.subOrderedSet(set, Integer.valueOf(1), Integer.valueOf(5));
 	}
 
-	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubOrderedSetEndLowerThanStart() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		set.add(Integer.valueOf(1));
-		set.add(Integer.valueOf(2));
-		set.add(Integer.valueOf(3));
-		set.add(Integer.valueOf(4));
-
-		collectionServices.subOrderedSet(set, Integer.valueOf(3), Integer.valueOf(2));
-	}
-
 	@Test
-	public void testSubOrderedSetStartEqualsEnd() {
+	public void TestSubOrderedSetStartEqualsEnd() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4751,7 +3298,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testSubOrderedSet() {
+	public void TestSubOrderedSet() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4768,12 +3315,12 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
-	public void testSubSequenceNull() {
+	public void TestSubSequenceNull() {
 		collectionServices.subSequence(null, Integer.valueOf(1), Integer.valueOf(1));
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubSequenceStartTooLow() {
+	public void TestSubSequenceStartTooLow() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4784,7 +3331,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubSequenceStartTooHigh() {
+	public void TestSubSequenceStartTooHi() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4795,7 +3342,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubSequenceEndTooLow() {
+	public void TestSubSequenceEndTooLow() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4806,7 +3353,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubSequenceEndTooHigh() {
+	public void TestSubSequenceEndTooHi() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4816,19 +3363,8 @@ public class CollectionServicesTest {
 		collectionServices.subSequence(list, Integer.valueOf(1), Integer.valueOf(5));
 	}
 
-	@Test(expected = java.lang.IndexOutOfBoundsException.class)
-	public void testSubSequenceEndLowerThanStart() {
-		List<Object> list = Lists.newArrayList();
-		list.add(Integer.valueOf(1));
-		list.add(Integer.valueOf(2));
-		list.add(Integer.valueOf(3));
-		list.add(Integer.valueOf(4));
-
-		collectionServices.subSequence(list, Integer.valueOf(3), Integer.valueOf(2));
-	}
-
 	@Test
-	public void testSubSequenceStartEqualsEnd() {
+	public void TestSubSequenceStartEqualsEnd() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
@@ -4843,7 +3379,7 @@ public class CollectionServicesTest {
 	}
 
 	@Test
-	public void testSubSequence() {
+	public void TestSubSequence() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));

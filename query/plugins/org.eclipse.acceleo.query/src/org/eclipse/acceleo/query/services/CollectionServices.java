@@ -11,8 +11,6 @@
 package org.eclipse.acceleo.query.services;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -46,7 +44,6 @@ import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -57,8 +54,6 @@ import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClassifier;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 //@formatter:off
 @ServiceProvider(
@@ -195,8 +190,6 @@ public class CollectionServices extends AbstractServiceProvider {
 						.getCollectionType()));
 				result.add(new SetType(queryEnvironment, argTypes.get(1)));
 			}
-			// TODO Sequence{'unString'}->including(1) retourne donc en sortie un SetType de String et un
-			// SetType d'integers?
 			return result;
 		}
 
@@ -217,7 +210,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				}
 			}
-			// TODO on devrait donc avoir quelque part un lower ou quelque chose de fait non?
+
 			if (result.isEmpty()) {
 				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getName()));
 			}
@@ -802,11 +795,6 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if ("closure".equals(publicMethod.getName())) {
 			result = new ClosureService(publicMethod, this);
 		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())) {
-			// TODO prepend mustn't be here with set, should it?
-			result = new IncludingService(publicMethod, this);
-		} else if ("add".equals(publicMethod.getName())
-				&& publicMethod.getParameterCount() == 2
-				&& (publicMethod.getParameterTypes()[0] == Object.class || publicMethod.getParameterTypes()[1] == Object.class)) {
 			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
@@ -872,29 +860,26 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         {@link org.eclipse.emf.ecore.EDataType EDataType}, <code>false</code> otherwise
 	 */
 	private static boolean isBooleanType(IReadOnlyQueryEnvironment queryEnvironment, Object type) {
-		final Class<?> typeClass;
+		final boolean result;
+
 		if (type instanceof EClassifier) {
-			typeClass = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
-		} else if (type instanceof ClassType) {
-			typeClass = ((ClassType)type).getType();
-		} else if (type instanceof Class<?>) {
-			typeClass = (Class<?>)type;
+			final Class<?> typeClass = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
+			result = typeClass == Boolean.class || typeClass == boolean.class;
 		} else {
-			return false;
+			result = false;
 		}
 
-		return typeClass == Boolean.class || typeClass == boolean.class;
+		return result;
 	}
 
 	// @formatter:off
-	@SuppressWarnings("unchecked")
 	@Documentation(
 		value = "Returns the concatenation of the current sequence with the given collection.",
 		params = {
 			@Param(name = "sequence", value = "The first operand"),
 			@Param(name = "collection", value = "The second operand")
 		},
-		result = "The concatenation of the two specified collections.",
+		result = "The concatenation of the two specified sequences.",
 		examples = {
 			@Example(
 				expression = "Sequence{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})", result = "Sequence{'a', 'b', 'c', 'd', 'e'}",
@@ -909,50 +894,16 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> concat(List<? extends T> sequence, Collection<? extends T> collection) {
-		checkNotNull(sequence);
-		final List<T> result;
+	public List<Object> concat(List<Object> sequence, Collection<Object> collection) {
+		final List<Object> result;
 
-		if (collection.isEmpty()) {
-			result = (List<T>)sequence;
+		if (sequence.isEmpty()) {
+			result = Lists.newArrayList(collection);
+		} else if (collection.isEmpty()) {
+			result = sequence;
 		} else {
-			result = Lists.newArrayList(Iterables.concat(sequence, collection));
-		}
-
-		return result;
-	}
-
-	// @formatter:off
-	@SuppressWarnings("unchecked")
-	@Documentation(
-		value = "Returns the concatenation of the current set with the given collection.",
-		params = {
-			@Param(name = "set", value = "The first operand"),
-			@Param(name = "collection", value = "The second operand")
-		},
-		result = "The concatenation of the two specified collections.",
-		examples = {
-			@Example(
-				expression = "OrderedSet{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})", result = "OrderedSet{'a', 'b', 'c', 'd', 'e'}",
-				others = {
-					@Other(
-						language = Other.ACCELEO_3,
-						expression = "OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})",
-						result = "OrderedSet{'a', 'b', 'c', 'd', 'e'}"
-					)
-				}
-			)
-		}
-	)
-	// @formatter:on
-	public <T> Set<T> concat(Set<? extends T> set, Collection<? extends T> collection) {
-		checkNotNull(set);
-		final Set<T> result;
-
-		if (collection.isEmpty()) {
-			result = (Set<T>)set;
-		} else {
-			result = Sets.newLinkedHashSet(Iterables.concat(set, collection));
+			result = Lists.newArrayList(sequence);
+			result.addAll(collection);
 		}
 
 		return result;
@@ -991,35 +942,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sequences"
 	)
 	// @formatter:on
-	public <T> List<T> add(List<? extends T> sequence, Collection<? extends T> collection) {
+	public List<Object> add(List<Object> sequence, Collection<Object> collection) {
 		return concat(sequence, collection);
-	}
-
-	// @formatter:off
-	@Documentation(
-		value = "Returns the concatenation of the given collection into the current set.",
-		params = {
-			@Param(name = "set", value = "The first operand"),
-			@Param(name = "collection", value = "The second operand")
-		},
-		result = "The current set including the elements of the given collection.",
-		examples = {
-			@Example(
-				expression = "OrderedSet{'a', 'b', 'c'}.add(OrderedSet{'c', 'b', 'f'})", result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}",
-				others = {
-					@Other(
-						language = Other.ACCELEO_3,
-						expression = "OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})",
-						result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}"
-					)
-				}
-			)
-		},
-		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sets"
-	)
-	// @formatter:on
-	public <T> Set<T> add(Set<? extends T> set, Collection<? extends T> collection) {
-		return concat(set, collection);
 	}
 
 	// @formatter:off
@@ -1055,12 +979,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sequences"
 	)
 	// @formatter:on
-	public <T> List<T> sub(List<T> sequence, Collection<?> collection) {
-		checkNotNull(sequence);
+	public List<Object> sub(List<Object> sequence, Collection<Object> collection) {
 		if (collection.isEmpty()) {
 			return sequence;
 		} else {
-			List<T> result = Lists.newArrayList(sequence);
+			List<Object> result = Lists.newArrayList(sequence);
 			result.removeAll(collection);
 			return result;
 		}
@@ -1089,15 +1012,52 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sets"
 	)
 	// @formatter:on
-	public <T> Set<T> sub(Set<T> set, Collection<?> collection) {
-		checkNotNull(set);
+	public Set<Object> sub(Set<Object> set, Collection<Object> collection) {
 		if (collection.isEmpty()) {
 			return set;
 		} else {
-			Set<T> result = Sets.newLinkedHashSet(set);
+			Set<Object> result = Sets.newLinkedHashSet(set);
 			result.removeAll(collection);
 			return result;
 		}
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the concatenation of the given collection into the current set.",
+		params = {
+			@Param(name = "set", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
+		},
+		result = "The current set including the elements of the given collection.",
+		examples = {
+			@Example(
+				expression = "OrderedSet{'a', 'b', 'c'}.add(OrderedSet{'c', 'b', 'f'})", result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3,
+						expression = "OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})",
+						result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}"
+					)
+				}
+			)
+		},
+		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sets"
+	)
+	// @formatter:on
+	public Set<Object> add(Set<Object> set, Collection<Object> collection) {
+		final Set<Object> result;
+
+		if (set.isEmpty()) {
+			result = Sets.newLinkedHashSet(collection);
+		} else if (collection.isEmpty()) {
+			result = set;
+		} else {
+			result = Sets.newLinkedHashSet(set);
+			result.addAll(collection);
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -1114,21 +1074,23 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> select(List<T> sequence, LambdaValue lambda) {
-		final List<T> newList;
+	public List<Object> select(List<Object> sequence, LambdaValue lambda) {
+		final List<Object> newList;
 
 		if (lambda == null) {
-			newList = Lists.newArrayList();
+			newList = Collections.emptyList();
 		} else {
 			newList = Lists.newArrayList();
-			for (T elt : sequence) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.TRUE.equals(value)) {
-					newList.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a select must return a boolean value.");
+			for (Object elt : sequence) {
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {elt }))) {
+						newList.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1149,21 +1111,23 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> select(Set<T> set, LambdaValue lambda) {
-		final Set<T> newSet;
+	public Set<Object> select(Set<Object> set, LambdaValue lambda) {
+		final Set<Object> newSet;
 
 		if (lambda == null) {
-			newSet = Sets.newLinkedHashSet();
+			newSet = Collections.emptySet();
 		} else {
 			newSet = Sets.newLinkedHashSet();
-			for (T elt : set) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.TRUE.equals(value)) {
-					newSet.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a select must return a boolean value.");
+			for (Object elt : set) {
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {elt }))) {
+						newSet.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1184,21 +1148,23 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> reject(Set<T> set, LambdaValue lambda) {
-		final Set<T> newSet;
+	public Set<Object> reject(Set<Object> set, LambdaValue lambda) {
+		final Set<Object> newSet;
 
 		if (lambda == null) {
-			newSet = Sets.newLinkedHashSet();
+			newSet = Collections.emptySet();
 		} else {
 			newSet = Sets.newLinkedHashSet();
-			for (T elt : set) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.FALSE.equals(value)) {
-					newSet.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a reject must return a boolean value.");
+			for (Object elt : set) {
+				try {
+					if (Boolean.FALSE.equals(lambda.eval(new Object[] {elt }))) {
+						newSet.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1219,21 +1185,23 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> reject(List<T> sequence, LambdaValue lambda) {
-		final List<T> newList;
+	public List<Object> reject(List<Object> sequence, LambdaValue lambda) {
+		final List<Object> newList;
 
 		if (lambda == null) {
-			newList = Lists.newArrayList();
+			newList = Collections.emptyList();
 		} else {
 			newList = Lists.newArrayList();
-			for (T elt : sequence) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.FALSE.equals(value)) {
-					newList.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a reject must return a boolean value.");
+			for (Object elt : sequence) {
+				try {
+					if (Boolean.FALSE.equals(lambda.eval(new Object[] {elt }))) {
+						newList.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1254,7 +1222,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> collect(Set<?> set, LambdaValue lambda) {
+	public Set<Object> collect(Set<Object> set, LambdaValue lambda) {
 		final Set<Object> result;
 
 		if (lambda == null) {
@@ -1296,7 +1264,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> collect(List<?> sequence, LambdaValue lambda) {
+	public List<Object> collect(List<Object> sequence, LambdaValue lambda) {
 		final List<Object> result;
 
 		if (lambda == null) {
@@ -1358,56 +1326,47 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns a sequence containing the elements of the original sequence ordered by the result of the given lamba",
+		value = "Returns a sequence containing the elements of the original collection ordered by the result of the given lamba",
 		params = {
-			@Param(name = "sequence", value = "The original sequence"),
+			@Param(name = "collection", value = "The original collection"),
 			@Param(name = "lambda", value = "The lambda expression")
 		},
-		result = "An ordered version of the given sequence",
+		result = "An ordered version of the given collection",
 		examples = {
 			@Example(expression = "Sequence{'aa', 'bbb', 'c'}->sortedBy(str | str.size())", result = "Sequence{'c', 'aa', 'bbb'}")
 		}
 	)
 	// @formatter:on
-	public <T> List<T> sortedBy(List<T> sequence, final LambdaValue lambda) {
-		final List<T> result;
+	public List<Object> sortedBy(Collection<Object> collection, final LambdaValue lambda) {
+		final List<Object> result;
 
-		if (sequence == null) {
+		if (collection == null) {
 			result = null;
-		} else if (lambda == null) {
-			return sequence;
 		} else {
-			result = Lists.newArrayList(sequence);
-			Collections.sort(result, new LambdaComparator<T>(lambda));
-		}
+			result = new ArrayList<Object>();
+			result.addAll(collection);
+			Collections.sort(result, new Comparator<Object>() {
+				@Override
+				public int compare(Object o1, Object o2) {
+					final int result;
 
-		return result;
-	}
+					Object o1Result = lambda.eval(new Object[] {o1 });
+					Object o2Result = lambda.eval(new Object[] {o2 });
+					if (o1Result instanceof Comparable<?>) {
+						@SuppressWarnings("unchecked")
+						Comparable<Object> c1 = (Comparable<Object>)o1Result;
+						result = c1.compareTo(o2Result);
+					} else if (o2Result instanceof Comparable<?>) {
+						@SuppressWarnings("unchecked")
+						Comparable<Object> c2 = (Comparable<Object>)o2Result;
+						result = -c2.compareTo(o1Result);
+					} else {
+						result = 0;
+					}
 
-	// @formatter:off
-	@Documentation(
-		value = "Returns a set containing the elements of the original set ordered by the result of the given lamba",
-		params = {
-			@Param(name = "set", value = "The original set"),
-			@Param(name = "lambda", value = "The lambda expression")
-		},
-		result = "An ordered version of the given set",
-		examples = {
-			@Example(expression = "OrderedSet{'aa', 'bbb', 'c'}->sortedBy(str | str.size())", result = "OrderedSet{'c', 'aa', 'bbb'}")
-		}
-	)
-	// @formatter:on
-	public <T> Set<T> sortedBy(Set<T> set, final LambdaValue lambda) {
-		final Set<T> result;
-
-		if (set == null) {
-			result = null;
-		} else if (lambda == null) {
-			return set;
-		} else {
-			List<T> sorted = Lists.newArrayList(set);
-			Collections.sort(sorted, new LambdaComparator<T>(lambda));
-			result = Sets.newLinkedHashSet(sorted);
+					return result;
+				}
+			});
 		}
 
 		return result;
@@ -1426,7 +1385,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Integer size(Collection<?> collection) {
+	public Integer size(Collection<Object> collection) {
 		return collection.size();
 	}
 
@@ -1443,11 +1402,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> including(Set<T> set, T object) {
+	public Set<Object> including(Set<Object> set, Object object) {
 		if (set.contains(object)) {
-			return Sets.newLinkedHashSet(set);
+			return set;
 		} else {
-			Set<T> result = Sets.newLinkedHashSet(set);
+			Set<Object> result = Sets.newLinkedHashSet(set);
 			result.add(object);
 			return result;
 		}
@@ -1466,11 +1425,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> excluding(Set<T> set, Object object) {
+	public Set<Object> excluding(Set<Object> set, Object object) {
 		if (!set.contains(object)) {
 			return set;
 		} else {
-			Set<T> result = Sets.newLinkedHashSet(set);
+			Set<Object> result = Sets.newLinkedHashSet(set);
 			result.remove(object);
 			return result;
 		}
@@ -1483,14 +1442,14 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "sequence", value = "The source sequence"),
 			@Param(name = "object", value = "The object to add")
 		},
-		result = "A sequence containing all elements of the source sequence plus the given object",
+		result = "A sequence containing all elements of source sequence plus the given object",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->including('d')", result = "Sequence{'a', 'b', 'c', 'd'}")
 		}
 	)
 	// @formatter:on
-	public <T> List<T> including(List<T> sequence, T object) {
-		List<T> result = Lists.newArrayList(sequence);
+	public List<Object> including(List<Object> sequence, Object object) {
+		List<Object> result = Lists.newArrayList(sequence);
 		result.add(object);
 		return result;
 	}
@@ -1508,10 +1467,14 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> excluding(List<T> sequence, Object object) {
-		List<T> result = Lists.newArrayList(sequence);
-		result.removeAll(Collections.singleton(object));
-		return result;
+	public List<Object> excluding(List<Object> sequence, Object object) {
+		if (!sequence.contains(object)) {
+			return sequence;
+		} else {
+			List<Object> result = Lists.newArrayList(sequence);
+			result.removeAll(Collections.singleton(object));
+			return result;
+		}
 	}
 
 	// @formatter:off
@@ -1528,9 +1491,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> asSequence(Collection<T> collection) {
+	public List<Object> asSequence(Collection<Object> collection) {
 		if (collection instanceof List) {
-			return (List<T>)collection;
+			return (List<Object>)collection;
 		} else {
 			return Lists.newArrayList(collection);
 		}
@@ -1550,9 +1513,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> asSet(Collection<T> collection) {
+	public Set<Object> asSet(Collection<Object> collection) {
 		if (collection instanceof Set) {
-			return (Set<T>)collection;
+			return (Set<Object>)collection;
 		} else {
 			return Sets.newLinkedHashSet(collection);
 		}
@@ -1572,7 +1535,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> asOrderedSet(Collection<T> collection) {
+	public Set<Object> asOrderedSet(Collection<Object> collection) {
 		return asSet(collection);
 	}
 
@@ -1588,8 +1551,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> T first(Collection<T> collection) {
-		return Iterators.getNext(collection.iterator(), null);
+	public Object first(Collection<Object> collection) {
+		Iterator<Object> iterator = collection.iterator();
+		if (iterator.hasNext()) {
+			return iterator.next();
+		}
+		return null;
 	}
 
 	// @formatter:off
@@ -1604,8 +1571,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> reverse(List<T> sequence) {
-		return Lists.newArrayList(Lists.reverse(sequence));
+	public List<Object> reverse(List<Object> sequence) {
+		return Lists.reverse(sequence);
 	}
 
 	// @formatter:off
@@ -1620,8 +1587,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> reverse(Set<T> set) {
-		return Sets.newLinkedHashSet(ImmutableList.copyOf(set).reverse());
+	public Set<Object> reverse(Set<Object> set) {
+		return Sets.newLinkedHashSet(Lists.reverse(ImmutableList.copyOf(set)));
 	}
 
 	// @formatter:off
@@ -1637,7 +1604,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean isEmpty(Collection<?> collection) {
+	public Boolean isEmpty(Collection<Object> collection) {
 		return collection.isEmpty();
 	}
 
@@ -1654,7 +1621,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean notEmpty(Collection<?> collection) {
+	public Boolean notEmpty(Collection<Object> collection) {
 		return !collection.isEmpty();
 	}
 
@@ -1672,7 +1639,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> T at(List<T> sequence, Integer position) {
+	public Object at(List<Object> sequence, Integer position) {
 		return sequence.get(position - 1);
 	}
 
@@ -1689,8 +1656,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Example(expression = "OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "OrederedSet{anEAttribute}"),
 		}
 	)
-	public <T> Set<T> filter(Set<T> set, final EClassifier eClassifier) {
-		final Set<T> result;
+	public Set<Object> filter(Set<Object> set, final EClassifier eClassifier) {
+		final Set<Object> result;
 
 		if (set == null) {
 			result = null;
@@ -1719,8 +1686,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> filter(Set<T> set, final Set<EClassifier> eClassifiers) {
-		final Set<T> result;
+	public Set<Object> filter(Set<Object> set, final Set<EClassifier> eClassifiers) {
+		final Set<Object> result;
 
 		if (set == null) {
 			result = null;
@@ -1728,7 +1695,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Sets.newLinkedHashSet();
 		} else {
 			result = Sets.newLinkedHashSet();
-			for (T object : set) {
+			for (Object object : set) {
 				for (EClassifier eClassifier : eClassifiers) {
 					if (eClassifier.isInstance(object)) {
 						result.add(object);
@@ -1755,8 +1722,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> filter(List<T> sequence, final EClassifier eClassifier) {
-		final List<T> result;
+	public List<Object> filter(List<Object> sequence, final EClassifier eClassifier) {
+		final List<Object> result;
 
 		if (sequence == null) {
 			result = null;
@@ -1785,8 +1752,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> filter(List<T> sequence, final Set<EClassifier> eClassifiers) {
-		final List<T> result;
+	public List<Object> filter(List<Object> sequence, final Set<EClassifier> eClassifiers) {
+		final List<Object> result;
 
 		if (sequence == null) {
 			result = null;
@@ -1794,7 +1761,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Lists.newArrayList();
 		} else {
 			result = Lists.newArrayList();
-			for (T object : sequence) {
+			for (Object object : sequence) {
 				for (EClassifier eClassifier : eClassifiers) {
 					if (eClassifier.isInstance(object)) {
 						result.add(object);
@@ -1821,7 +1788,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> sep(Collection<?> collection, Object separator) {
+	public List<Object> sep(Collection<Object> collection, Object separator) {
 		final List<Object> result;
 
 		if (collection == null) {
@@ -1829,7 +1796,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			result = Lists.newArrayList();
 
-			final Iterator<?> it = collection.iterator();
+			final Iterator<Object> it = collection.iterator();
 			if (it.hasNext()) {
 				result.add(it.next());
 				while (it.hasNext()) {
@@ -1858,7 +1825,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> sep(Collection<?> collection, Object prefix, Object separator, Object suffix) {
+	public List<Object> sep(Collection<Object> collection, Object prefix, Object separator, Object suffix) {
 		final List<Object> result = Lists.newArrayList();
 
 		result.add(prefix);
@@ -1876,34 +1843,18 @@ public class CollectionServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "sequence", value = "The sequence")
 		},
-		result = "The last element of the given sequence.",
+		result = "The last element of the given sequence or null if the given sequence is null",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->last()", result = "'c'")
 		}
 	)
 	// @formatter:on
-	public <T> T last(List<T> sequence) {
-		ListIterator<T> it = sequence.listIterator(sequence.size());
+	public Object last(List<Object> sequence) {
+		ListIterator<Object> it = sequence.listIterator(sequence.size());
 		if (it.hasPrevious()) {
 			return it.previous();
 		}
 		return null;
-	}
-
-	// @formatter:off
-	@Documentation(
-		value = "Returns the last element of the given set.",
-		params = {
-			@Param(name = "set", value = "The set")
-		},
-		result = "The last element of the given set.",
-		examples = {
-			@Example(expression = "OrderedSet{'a', 'b', 'c'}->last()", result = "'c'")
-		}
-	)
-	// @formatter:on
-	public <T> T last(Set<T> set) {
-		return Iterators.getLast(set.iterator(), null);
 	}
 
 	// @formatter:off
@@ -1920,7 +1871,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean excludes(Collection<?> collection, Object object) {
+	public Boolean excludes(Collection<Object> collection, Object object) {
 		return Boolean.valueOf(!collection.contains(object));
 	}
 
@@ -1938,7 +1889,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean includes(Collection<?> collection, Object object) {
+	public Boolean includes(Collection<Object> collection, Object object) {
 		return Boolean.valueOf(collection.contains(object));
 	}
 
@@ -1955,8 +1906,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> union(Set<? extends T> set1, Set<? extends T> set2) {
-		return concat(set1, set2);
+	public Set<Object> union(Set<Object> set1, Set<Object> set2) {
+		return add(set1, set2);
 	}
 
 	// @formatter:off
@@ -1972,7 +1923,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> union(List<? extends T> sequence1, List<? extends T> sequence2) {
+	public List<Object> union(List<Object> sequence1, List<Object> sequence2) {
 		return concat(sequence1, sequence2);
 	}
 
@@ -1990,20 +1941,23 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> T any(Collection<T> collection, LambdaValue lambda) {
-		T result = null;
+	public Object any(Collection<Object> collection, LambdaValue lambda) {
+		Object result = null;
 
 		if (collection != null && lambda == null) {
 			result = null;
 		} else {
-			for (T input : collection) {
-				Object value = lambda.eval(new Object[] {input });
-				if (Boolean.TRUE.equals(value)) {
-					result = input;
-					break;
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException("Expression within any must return a boolean value.");
+			for (Object input : collection) {
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = input;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2024,7 +1978,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Integer count(Set<?> set, Object object) {
+	public Integer count(Set<Object> set, Object object) {
 		final Integer result;
 
 		if (set.contains(object)) {
@@ -2069,19 +2023,21 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean exists(Collection<?> collection, LambdaValue lambda) {
+	public Boolean exists(Collection<Object> collection, LambdaValue lambda) {
 		Boolean result = Boolean.FALSE;
 
 		if (collection != null && lambda != null) {
 			for (Object input : collection) {
-				Object value = lambda.eval(new Object[] {input });
-				if (Boolean.TRUE.equals(value)) {
-					result = Boolean.TRUE;
-					break;
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within exists must return a boolean value.");
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = Boolean.TRUE;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2103,21 +2059,25 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean forAll(Collection<?> collection, LambdaValue lambda) {
+	public Boolean forAll(Collection<Object> collection, LambdaValue lambda) {
 		Boolean result = Boolean.TRUE;
 
 		if (collection == null || lambda == null) {
 			result = Boolean.FALSE;
 		} else {
 			for (Object input : collection) {
-				Object value = lambda.eval(new Object[] {input });
-				if (value instanceof Boolean && !Boolean.TRUE.equals(value)) {
+				try {
+					if (!Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = Boolean.FALSE;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 					result = Boolean.FALSE;
 					break;
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within exists must return a boolean value.");
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2139,7 +2099,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean excludesAll(Collection<?> collection1, Collection<?> collection2) {
+	public Boolean excludesAll(Collection<Object> collection1, Collection<Object> collection2) {
 		return Boolean.valueOf(Collections.disjoint(collection1, collection2));
 	}
 
@@ -2158,7 +2118,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean includesAll(Collection<?> collection1, Collection<?> collection2) {
+	public Boolean includesAll(Collection<Object> collection1, Collection<Object> collection2) {
 		return Boolean.valueOf(collection1.containsAll(collection2));
 	}
 
@@ -2178,7 +2138,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean isUnique(Collection<?> collection, LambdaValue lambda) {
+	public Boolean isUnique(Collection<Object> collection, LambdaValue lambda) {
 		boolean result = true;
 		final Set<Object> evaluated = Sets.newHashSet();
 
@@ -2217,22 +2177,25 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean one(Collection<?> self, LambdaValue lambda) {
+	public Boolean one(Collection<Object> self, LambdaValue lambda) {
 		boolean result = false;
 
 		if (self != null && lambda == null) {
 			result = false;
 		} else {
 			for (Object input : self) {
-				Object value = lambda.eval(new Object[] {input });
-				if (Boolean.TRUE.equals(value)) {
-					result = !result;
-					if (!result) {
-						break;
+				try {
+					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+						result = !result;
+						if (!result) {
+							break;
+						}
 					}
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException("Expression in one must return a boolean value.");
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
 				}
+				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2254,24 +2217,18 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Number sum(Collection<?> collection) {
-		Number result = Long.valueOf(0);
+	public Double sum(Collection<Object> collection) {
+		double result = 0;
 
 		for (Object input : collection) {
-			if (!(input instanceof Number)) {
-				throw new IllegalArgumentException(
-						"The collection sum operation only applies to numeric types.");
-			}
-
-			if (result instanceof Long && (input instanceof Long || input instanceof Integer)) {
-				result = result.longValue() + ((Number)input).longValue();
+			if (input instanceof Number) {
+				result += ((Number)input).doubleValue();
 			} else {
-				// widen anything that is not a long or int to a double
-				result = result.doubleValue() + ((Number)input).doubleValue();
+				throw new IllegalArgumentException("Can only sum numbers.");
 			}
 		}
 
-		return result;
+		return Double.valueOf(result);
 	}
 
 	// @formatter:off
@@ -2287,32 +2244,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Integer indexOf(List<?> sequence, Object object) {
+	public Integer indexOf(List<Object> sequence, Object object) {
 		return Integer.valueOf(sequence.indexOf(object) + 1);
-	}
-
-	// @formatter:off
-	@Documentation(
-		value = "Returns the index of the given object in the given set ([1..size]).",
-		params = {
-			@Param(name = "set", value = "The set"),
-			@Param(name = "object", value = "The object")
-		},
-		result = "The index of the given object",
-		examples = {
-			@Example(expression = "OrderedSet{1, 2, 3, 4}->indexOf(3)", result = "3")
-		}
-	)
-	// @formatter:on
-	public Integer indexOf(Set<?> set, Object object) {
-		int index = 1;
-		for (Object o : set) {
-			if (o == object || (o != null && o.equals(object))) {
-				return index;
-			}
-			index++;
-		}
-		return 0;
 	}
 
 	// @formatter:off
@@ -2329,61 +2262,16 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> insertAt(List<T> sequence, Integer position, T object) {
+	public List<Object> insertAt(List<Object> sequence, Integer position, Object object) {
 		final int initialSize = sequence.size();
-		if (position < 1 || position > initialSize + 1) {
+		if (position < 1 || position > initialSize) {
 			throw new IndexOutOfBoundsException();
 		}
-		final List<T> result = new ArrayList<T>(initialSize + 1);
+		final List<Object> result = new ArrayList<Object>(initialSize + 1);
 
 		result.addAll(sequence.subList(0, position - 1));
 		result.add(object);
 		result.addAll(sequence.subList(position - 1, initialSize));
-
-		return result;
-	}
-
-	// @formatter:off
-	@Documentation(
-		value = "Inserts the given object in a copy of the given set at the given position ([1..size]). "
-				+ "If the given set already contains this object, it will be moved to the accurate position.",
-		params = {
-			@Param(name = "set", value = "The set"),
-			@Param(name = "position", value = "The position"),
-			@Param(name = "object", value = "The object")
-		},
-		result = "A copy of the given set including the object at the given position if it didn't already contain that object.",
-		examples = {
-			@Example(expression = "OrderedSet{'a', 'b', 'c'}->insertAt(2, 'f')", result = "Sequence{'a', 'f', 'b', 'c'}")
-		}
-	)
-	// @formatter:on
-	public <T> Set<T> insertAt(Set<T> set, Integer position, T object) {
-		final int initialSize = set.size();
-		if (position < 1 || position > initialSize + 1) {
-			throw new IndexOutOfBoundsException();
-		}
-		final Set<T> result = new LinkedHashSet<T>(initialSize + 1);
-
-		int current = 1;
-		Iterator<T> iterator = set.iterator();
-		while (iterator.hasNext()) {
-			if (current == position.intValue()) {
-				result.add(object);
-				current++;
-			} else {
-				T value = iterator.next();
-				if (object == value || (object != null && object.equals(value))) {
-					// Do not add our target object here, wait until we reach its demanded position
-				} else {
-					result.add(value);
-					current++;
-				}
-			}
-		}
-		if (current <= position.intValue()) {
-			result.add(object);
-		}
 
 		return result;
 	}
@@ -2395,40 +2283,17 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "sequence", value = "The sequence"),
 			@Param(name = "object", value = "The object")
 		},
-		result = "A copy of the given sequence including the object at the first position",
+		result = "A copy of the given sequence including the object at the given position",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->prepend('f')", result = "Sequence{'f', 'a', 'b', 'c'}")
 		}
 	)
 	// @formatter:on
-	public <T> List<T> prepend(List<T> sequence, T object) {
-		final List<T> result = new ArrayList<T>(sequence.size() + 1);
+	public List<Object> prepend(List<Object> sequence, Object object) {
+		final List<Object> result = new ArrayList<Object>(sequence.size() + 1);
 
 		result.add(object);
 		result.addAll(sequence);
-
-		return result;
-	}
-
-	// @formatter:off
-	@Documentation(
-		value = "Inserts the given object in a copy of the given set at the first position. "
-				+ "If the set already contained the given object, it is moved to the first position.",
-		params = {
-			@Param(name = "set", value = "The sequence"),
-			@Param(name = "object", value = "The object")
-		},
-		result = "A copy of the given set including the object at the first position",
-		examples = {
-			@Example(expression = "OrderedSet{'a', 'b', 'c'}->prepend('f')", result = "OrderedSet{'f', 'a', 'b', 'c'}")
-		}
-	)
-	// @formatter:on
-	public <T> Set<T> prepend(Set<T> set, T object) {
-		final Set<T> result = new LinkedHashSet<T>(set.size() + 1);
-
-		result.add(object);
-		result.addAll(set);
 
 		return result;
 	}
@@ -2495,14 +2360,14 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> Set<T> subOrderedSet(Set<T> set, Integer startIndex, Integer endIndex) {
+	public Set<Object> subOrderedSet(Set<Object> set, Integer startIndex, Integer endIndex) {
 		if (startIndex < 1 || endIndex > set.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
-		final Set<T> result = new LinkedHashSet<T>(endIndex - startIndex + 1);
+		final Set<Object> result = new LinkedHashSet<Object>(endIndex - startIndex + 1);
 
 		int index = 1;
-		for (T input : set) {
+		for (Object input : set) {
 			if (index >= startIndex) {
 				if (index <= endIndex) {
 					result.add(input);
@@ -2534,55 +2399,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public <T> List<T> subSequence(List<T> sequence, Integer startIndex, Integer endIndex) {
+	public List<Object> subSequence(List<Object> sequence, Integer startIndex, Integer endIndex) {
 		if (startIndex < 1 || endIndex > sequence.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
 		return Lists.newArrayList(sequence.subList(startIndex - 1, endIndex));
 	}
 
-	/**
-	 * Evaluates a lambda then uses the result as comparables.
-	 */
-	private static final class LambdaComparator<T> implements Comparator<T> {
-		/** The lambda providing our comparables. */
-		private final LambdaValue lambda;
-
-		/**
-		 * Constructs a comparator given its lambda.
-		 * 
-		 * @param lambda
-		 *            the lambda providing our comparables.
-		 */
-		public LambdaComparator(LambdaValue lambda) {
-			this.lambda = lambda;
-		}
-
-		@Override
-		public int compare(T o1, T o2) {
-			final int result;
-
-			Object o1Result = lambda.eval(new Object[] {o1 });
-			Object o2Result = lambda.eval(new Object[] {o2 });
-			try {
-				if (o1Result instanceof Comparable<?>) {
-					@SuppressWarnings("unchecked")
-					Comparable<Object> c1 = (Comparable<Object>)o1Result;
-					result = c1.compareTo(o2Result);
-				} else if (o2Result instanceof Comparable<?>) {
-					@SuppressWarnings("unchecked")
-					Comparable<Object> c2 = (Comparable<Object>)o2Result;
-					result = -c2.compareTo(o1Result);
-				} else {
-					result = 0;
-				}
-				// CHECKSTYLE:OFF
-			} catch (Exception e) {
-				// CHECKSTYLE:ON
-				throw new IllegalArgumentException("Cannot compare " + o1 + " with " + o2, e);
-			}
-
-			return result;
-		}
-	}
 }
