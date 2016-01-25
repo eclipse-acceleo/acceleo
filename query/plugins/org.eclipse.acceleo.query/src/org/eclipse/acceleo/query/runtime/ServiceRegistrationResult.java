@@ -98,6 +98,7 @@ public final class ServiceRegistrationResult {
 	 *            the new {@link IService}
 	 * @param duplicatedService
 	 *            the duplicated {@link IService}
+	 * @since 4.1
 	 */
 	public void addDuplicated(IService newService, IService duplicatedService) {
 		List<IService> services = duplicated.get(newService);
@@ -115,6 +116,7 @@ public final class ServiceRegistrationResult {
 	 *            the new {@link IService}
 	 * @param maskedService
 	 *            the masked {@link IService}
+	 * @since 4.1
 	 */
 	public void addMasked(IService newService, IService maskedService) {
 		List<IService> services = masked.get(newService);
@@ -132,6 +134,7 @@ public final class ServiceRegistrationResult {
 	 *            the new {@link IService}
 	 * @param isMaskedByService
 	 *            the is masked by {@link IService}
+	 * @since 4.1
 	 */
 	public void addIsMaskedBy(IService newService, IService isMaskedByService) {
 		List<IService> services = isMaskedBy.get(newService);

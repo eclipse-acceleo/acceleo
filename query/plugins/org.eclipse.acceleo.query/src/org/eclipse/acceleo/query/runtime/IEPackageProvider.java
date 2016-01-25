@@ -36,6 +36,7 @@ public interface IEPackageProvider {
 	 * @param name
 	 *            the name of the requested package.
 	 * @return the list of packages registered with the specified name.
+	 * @since 4.1
 	 */
 	Collection<EPackage> getEPackage(String name);
 
@@ -71,15 +72,17 @@ public interface IEPackageProvider {
 	 * @param classifierName
 	 *            the name of the searched classifier
 	 * @return the list of classifiers matching the given {@link EClassifier} and {@link EPackage} names.
+	 * @since 4.1
 	 */
 	Collection<EClassifier> getTypes(String name, String classifierName);
 
 	/**
 	 * the list of classifiers known to the package provider with the specified name.
 	 * 
-	 * @param classifierName
+	 * @param name
 	 *            the name of the searched classifier
 	 * @return the list of classifiers matching the given {@link EClassifier} names.
+	 * @since 4.1
 	 */
 	Collection<EClassifier> getTypes(String name);
 
@@ -119,6 +122,7 @@ public interface IEPackageProvider {
 	 *            the name of the searched {@link EEnumLiteral}.
 	 * @return the list of {@link EEnumLiteral} instances matching the given {@link EPackage},
 	 *         {@link org.eclipse.emf.ecore.EEnum EEnum} and {@link EEnumLiteral} names.
+	 * @since 4.1
 	 */
 	Collection<EEnumLiteral> getEnumLiterals(String packageName, String enumName, String literalName);
 

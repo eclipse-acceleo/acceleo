@@ -14,6 +14,7 @@ package org.eclipse.acceleo.query.runtime;
  * {@link IService} {@link ICompletionProposal}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @since 4.1
  */
 public interface IServiceCompletionProposal extends ICompletionProposal {
 

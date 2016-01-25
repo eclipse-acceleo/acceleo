@@ -210,6 +210,7 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 		 * @param subAst
 		 *            the sub part of {@link Expression AST}
 		 * @return a new {@link AstResult} for the given {@link Expression sub AST}
+		 * @since 4.1
 		 */
 		public AstResult subResult(Expression subAst) {
 			assert startPositions.containsKey(subAst) && endPositions.containsKey(subAst);
