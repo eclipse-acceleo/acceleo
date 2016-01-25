@@ -67,9 +67,10 @@ public final class DocumentationGenerator {
 	public static void main(String[] args) {
 		File pluginFolder = new File(args[0]);
 
-		System.out.println("Prepare the generation of the documentation for "
-				+ pluginFolder.getAbsolutePath());
+		System.out.println("Prepare the generation of the documentation for " + pluginFolder
+				.getAbsolutePath());
 
+		File inputFolder = new File(pluginFolder, "input");//$NON-NLS-1$
 		File documentationFolder = new File(pluginFolder, "pages"); //$NON-NLS-1$
 		File indexHtmlFile = new File(documentationFolder, "index.html"); //$NON-NLS-1$
 
@@ -85,8 +86,20 @@ public final class DocumentationGenerator {
 
 		// index.html
 		try {
-			List<StringBuffer> sections = AQLHelpContentUtils
-					.computeAQLOverviewSections(STANDARD_SERVICE_PROVIDERS);
+			List<StringBuffer> sections = AQLHelpContentUtils.computeAQLOverviewSections();
+
+			String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset.forName(
+					UTF8));
+			int indexOfBodyStart = inputHtmlContent.indexOf("<body>");
+			if (indexOfBodyStart != -1 && indexOfBodyStart + 6 < inputHtmlContent.length()) {
+				inputHtmlContent = inputHtmlContent.substring(indexOfBodyStart + 6);
+			}
+			int indexOfBodyEnd = inputHtmlContent.indexOf("</body>");
+			if (indexOfBodyEnd != -1) {
+				inputHtmlContent = inputHtmlContent.substring(0, indexOfBodyEnd);
+			}
+			sections.add(new StringBuffer(inputHtmlContent));
+
 			StringBuffer stringBuffer = html(head(), body(header(true), sections));
 
 			System.out.println("Writing content of " + indexHtmlFile.getAbsolutePath());
@@ -99,8 +112,8 @@ public final class DocumentationGenerator {
 		for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
 			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
 				try {
-					List<StringBuffer> sections = AQLHelpContentUtils
-							.computeServiceSections(serviceProviderClass);
+					List<StringBuffer> sections = AQLHelpContentUtils.computeServiceSections(
+							serviceProviderClass);
 					StringBuffer stringBuffer = html(head(), body(header(false), sections));
 
 					File file = new File(documentationFolder, AQLHelpContentUtils.AQL_HREF_PREFIX
