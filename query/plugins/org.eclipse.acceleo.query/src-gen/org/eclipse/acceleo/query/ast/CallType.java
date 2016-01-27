@@ -32,17 +32,17 @@ public enum CallType implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	CALLSERVICE(0, "CALLSERVICE", "CALLSERVICE"), /**
-	 * The '<em><b>CALLORAPPLY</b></em>' literal object. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	CALLSERVICE(0, "CALLSERVICE", "CALLSERVICE"),
+	/**
+	 * The '<em><b>CALLORAPPLY</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #CALLORAPPLY_VALUE
 	 * @generated
 	 * @ordered
 	 */
-	CALLORAPPLY(1, "CALLORAPPLY", "CALLORAPPLY"), /**
-	 * The '<em><b>COLLECTIONCALL</b></em>' literal object. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	CALLORAPPLY(1, "CALLORAPPLY", "CALLORAPPLY"),
+	/**
+	 * The '<em><b>COLLECTIONCALL</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #COLLECTIONCALL_VALUE
 	 * @generated
@@ -101,7 +101,8 @@ public enum CallType implements Enumerator {
 	 * 
 	 * @generated
 	 */
-	private static final CallType[] VALUES_ARRAY = new CallType[] {CALLSERVICE, CALLORAPPLY, COLLECTIONCALL, };
+	private static final CallType[] VALUES_ARRAY = new CallType[] {CALLSERVICE, CALLORAPPLY,
+			COLLECTIONCALL, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Call Type</b></em>' enumerators. <!-- begin-user-doc -->

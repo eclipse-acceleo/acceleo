@@ -19,12 +19,12 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
@@ -37,7 +37,6 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * * Implementation of the elementary language completion services like retrieving variable names and service
@@ -75,16 +74,16 @@ public class CompletionServices extends ValidationServices {
 	}
 
 	/**
-	 * Gets the {@link List} of {@link IServiceCompletionProposal} for {@link IService}.
+	 * Gets the {@link List} of {@link ICompletionProposal} for {@link IService}.
 	 * 
 	 * @param receiverTypes
 	 *            the receiver {@link IType types}.
 	 * @param callType
 	 *            Indicate the type of call used, can be <code>null</code>
-	 * @return the {@link List} of {@link IServiceCompletionProposal} for {@link IService}
+	 * @return the {@link List} of {@link ICompletionProposal} for {@link IService}
 	 */
-	public List<IServiceCompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallType callType) {
-		final List<IServiceCompletionProposal> result = new ArrayList<IServiceCompletionProposal>();
+	public List<ICompletionProposal> getServiceProposals(Set<IType> receiverTypes, CallType callType) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		final Set<IType> types;
 
@@ -108,10 +107,7 @@ public class CompletionServices extends ValidationServices {
 
 		for (IService service : queryEnvironment.getLookupEngine().getServices(types)) {
 			if (callType == null || !AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(service.getName())) {
-				final IServiceCompletionProposal serviceCompletionProposal = getServiceCompletionProposal(service);
-				if (serviceCompletionProposal != null) {
-					result.add(serviceCompletionProposal);
-				}
+				result.addAll(service.getProposals(queryEnvironment, receiverTypes));
 			}
 		}
 
@@ -155,38 +151,6 @@ public class CompletionServices extends ValidationServices {
 		}
 		for (EOperation eOperation : queryEnvironment.getEPackageProvider().getEOperations(eClasses)) {
 			result.add(new EOperationCompletionProposal(eOperation));
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the {@link List} of {@link EFeatureCompletionProposal} for {@link EStructuralFeature}.
-	 * 
-	 * @param receiverTypes
-	 *            the receiver types.
-	 * @return the {@link List} of {@link EFeatureCompletionProposal} for {@link EStructuralFeature}
-	 */
-	public List<EFeatureCompletionProposal> getEStructuralFeatureProposals(Set<IType> receiverTypes) {
-		final List<EFeatureCompletionProposal> result = new ArrayList<EFeatureCompletionProposal>();
-		final Set<EClass> eClasses = new LinkedHashSet<EClass>();
-
-		for (IType iType : receiverTypes) {
-			if (iType.getType() instanceof EClass) {
-				eClasses.add((EClass)iType.getType());
-			} else if (iType instanceof ICollectionType) {
-				// Implicit collect
-				ICollectionType collectionType = (ICollectionType)iType;
-				IType type = collectionType.getCollectionType();
-				if (type.getType() instanceof EClass) {
-					eClasses.add((EClass)type.getType());
-				}
-			}
-		}
-
-		for (EStructuralFeature feature : queryEnvironment.getEPackageProvider().getEStructuralFeatures(
-				eClasses)) {
-			result.add(new EFeatureCompletionProposal(feature));
 		}
 
 		return result;

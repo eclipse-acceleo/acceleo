@@ -46,12 +46,10 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -132,6 +130,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * The plugin ID.
 	 */
 	public static final String PLUGIN_ID = "org.eclipse.acceleo.query";
+
+	/**
+	 * Feature access service name.
+	 */
+	public static final String FEATURE_ACCESS_SERVICE_NAME = "aqlFeatureAccess";
 
 	/**
 	 * OCL is kind of service name.
@@ -630,12 +633,11 @@ public class AstBuilderListener extends QueryBaseListener {
 		 */
 		private void navigationSegmentContextError(Object offendingSymbol) {
 			final Expression receiver = pop();
-			final ErrorFeatureAccessOrCall errorFeatureAccessOrCall = builder.errorFeatureAccessOrCall(
-					receiver);
-			startPositions.put(errorFeatureAccessOrCall, startPositions.get(receiver));
-			endPositions.put(errorFeatureAccessOrCall, Integer.valueOf(((Token)offendingSymbol).getStopIndex()
-					+ 1));
-			pushError(errorFeatureAccessOrCall, "missing feature access or service call");
+			final ErrorCall errorCall = builder.errorCall(FEATURE_ACCESS_SERVICE_NAME, false, receiver);
+			errorCall.setType(CallType.CALLORAPPLY);
+			startPositions.put(errorCall, startPositions.get(receiver));
+			endPositions.put(errorCall, Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
+			pushError(errorCall, "missing feature access or service call");
 		}
 
 		/**
@@ -1120,12 +1122,17 @@ public class AstBuilderListener extends QueryBaseListener {
 	@Override
 	public void exitFeature(FeatureContext ctx) {
 		final Expression receiver = pop();
-		final FeatureAccess featureAccess = builder.featureAccess(receiver, ctx.getChild(1).getText());
+		final StringLiteral featureName = builder.stringLiteral(ctx.getChild(1).getText());
+		final Call call = builder.callService(FEATURE_ACCESS_SERVICE_NAME, receiver, featureName);
+		call.setType(CallType.CALLORAPPLY);
 
-		startPositions.put(featureAccess, startPositions.get(receiver));
-		endPositions.put(featureAccess, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+		startPositions.put(featureName, Integer.valueOf(ctx.stop.getStartIndex()));
+		endPositions.put(featureName, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 
-		push(featureAccess);
+		startPositions.put(call, startPositions.get(receiver));
+		endPositions.put(call, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+
+		push(call);
 	}
 
 	/**

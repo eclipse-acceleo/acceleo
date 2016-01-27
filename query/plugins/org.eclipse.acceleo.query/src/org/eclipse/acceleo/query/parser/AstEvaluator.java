@@ -28,7 +28,6 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -153,17 +152,6 @@ public class AstEvaluator extends AstSwitch<Object> {
 	@Override
 	public Object caseTypeLiteral(TypeLiteral object) {
 		return object.getValue();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseFeatureAccess(org.eclipse.acceleo.query.ast.FeatureAccess)
-	 */
-	@Override
-	public Object caseFeatureAccess(FeatureAccess object) {
-		final Object target = doSwitch(object.getTarget());
-		return services.featureAccess(target, object.getFeatureName(), diagnostic);
 	}
 
 	/**
@@ -354,8 +342,8 @@ public class AstEvaluator extends AstSwitch<Object> {
 			}
 		} else {
 			Nothing nothing = new Nothing(String.format(BAD_PREDICATE_TYPE_MSG, selector));
-			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0,
-					nothing.getMessage(), new Object[] {object.getPredicate() });
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0, nothing
+					.getMessage(), new Object[] {object.getPredicate() });
 			((BasicDiagnostic)diagnostic).add(diag);
 			result = nothing;
 		}

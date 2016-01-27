@@ -43,7 +43,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -114,116 +113,6 @@ public class ValidationServices extends AbstractLanguageServices {
 		} catch (NullPointerException e) {
 			throw new AcceleoQueryValidationException(INTERNAL_ERROR_MSG, e);
 		}
-	}
-
-	/**
-	 * Gets the type of a feature access.
-	 * 
-	 * @param receiverTypes
-	 *            the target types to gets the feature from
-	 * @param featureName
-	 *            the feature name
-	 * @return the type of a feature access
-	 */
-	public Set<IType> featureAccessTypes(Set<IType> receiverTypes, String featureName) {
-		try {
-			final Set<IType> result = new LinkedHashSet<IType>();
-			for (IType receiverType : receiverTypes) {
-				if (receiverType.getType() instanceof EClass) {
-					EClass eClass = (EClass)receiverType.getType();
-					EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
-					if (feature == null) {
-						result.add(nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
-					} else {
-						if (feature.isMany()) {
-							result.add(new SequenceType(queryEnvironment, getFeatureBasicType(feature)));
-						} else {
-							result.add(getFeatureBasicType(feature));
-						}
-					}
-				} else if (receiverType instanceof SequenceType) {
-					result.add(getFeatureTypeOnSequence((SequenceType)receiverType, featureName));
-				} else if (receiverType instanceof SetType) {
-					result.add(getFeatureTypeOnSet((SetType)receiverType, featureName));
-				} else {
-					result.add(nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType.getType()
-							.toString()));
-				}
-			}
-			return result;
-			// CHECKSTYLE:OFF
-		} catch (Exception e) {
-			// CHECKSTYLE:ON
-			throw new AcceleoQueryValidationException(INTERNAL_ERROR_MSG, e);
-		}
-	}
-
-	/**
-	 * Get the basic type of the given {@link EStructuralFeature}. It doesn't bother with the cardinality.
-	 * 
-	 * @param feature
-	 *            the {@link EStructuralFeature}
-	 * @return the basic type of the given {@link EStructuralFeature}. It doesn't bother with the cardinality.
-	 */
-	private IType getFeatureBasicType(EStructuralFeature feature) {
-		return new EClassifierType(queryEnvironment, feature.getEType());
-	}
-
-	/**
-	 * Gets the type of a feature applied on a set.
-	 * 
-	 * @param targetType
-	 *            the target type
-	 * @param featureName
-	 *            the feature name
-	 * @return a {@link SetType} for the given feature type
-	 */
-	private IType getFeatureTypeOnSet(SetType targetType, String featureName) {
-		final IType result;
-
-		final IType basicType = targetType.getCollectionType();
-		final Set<IType> basicTypes = new LinkedHashSet<IType>();
-		basicTypes.add(basicType);
-		final IType featureAccessType = featureAccessTypes(basicTypes, featureName).iterator().next();
-		// TODO should we extract Nothing from a set of nothing ? probably not
-
-		// flatten
-		if (featureAccessType instanceof ICollectionType) {
-			result = new SetType(queryEnvironment, ((ICollectionType)featureAccessType).getCollectionType());
-		} else {
-			result = new SetType(queryEnvironment, featureAccessType);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the type of a feature applied on a sequence.
-	 * 
-	 * @param targetType
-	 *            the target type
-	 * @param featureName
-	 *            the feature name
-	 * @return a {@link SequenceType} for the given feature type
-	 */
-	private IType getFeatureTypeOnSequence(SequenceType targetType, String featureName) {
-		final IType result;
-
-		final IType basicType = targetType.getCollectionType();
-		final Set<IType> basicTypes = new LinkedHashSet<IType>();
-		basicTypes.add(basicType);
-		final IType featureAccessType = featureAccessTypes(basicTypes, featureName).iterator().next();
-		// TODO should we extract Nothing from a list of nothing ? probably not
-
-		// flatten
-		if (featureAccessType instanceof ICollectionType) {
-			result = new SequenceType(queryEnvironment, ((ICollectionType)featureAccessType)
-					.getCollectionType());
-		} else {
-			result = new SequenceType(queryEnvironment, featureAccessType);
-		}
-
-		return result;
 	}
 
 	/**
@@ -592,10 +481,8 @@ public class ValidationServices extends AbstractLanguageServices {
 			for (IType receiverType : receiverTypes) {
 				if (receiverType instanceof ClassType && receiverType.getType() == null) {
 					// Call on the NullLiteral
-					newReceiverTypes
-							.add(new SetType(
-									queryEnvironment,
-									nothing("The receiving Collection was empty due to a null value being wrapped as a Collection.")));
+					newReceiverTypes.add(new SetType(queryEnvironment, nothing(
+							"The receiving Collection was empty due to a null value being wrapped as a Collection.")));
 				} else if (!(receiverType instanceof ICollectionType)
 						&& !(receiverType instanceof NothingType)) {
 					// implicit set conversion.
@@ -744,8 +631,8 @@ public class ValidationServices extends AbstractLanguageServices {
 				} else {
 					result = type2;
 				}
-			} else if (type2.isAssignableFrom(type1)
-					|| type2.getType() == EcorePackage.eINSTANCE.getEObject()) {
+			} else if (type2.isAssignableFrom(type1) || type2.getType() == EcorePackage.eINSTANCE
+					.getEObject()) {
 				if (type1 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type1).getType());
 				} else {

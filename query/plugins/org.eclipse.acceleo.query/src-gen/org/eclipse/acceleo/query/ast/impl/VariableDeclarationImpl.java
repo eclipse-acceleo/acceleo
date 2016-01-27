@@ -29,7 +29,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getType <em>Type</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getExpression <em>Expression</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.VariableDeclarationImpl#getExpression <em>Expression</em>}
+ * </li>
  * </ul>
  * </p>
  *
@@ -203,8 +204,8 @@ public class VariableDeclarationImpl extends MinimalEObjectImpl.Container implem
 		Expression oldExpression = expression;
 		expression = newExpression;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AstPackage.VARIABLE_DECLARATION__EXPRESSION, oldExpression, expression));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.VARIABLE_DECLARATION__EXPRESSION,
+					oldExpression, expression));
 	}
 
 	/**

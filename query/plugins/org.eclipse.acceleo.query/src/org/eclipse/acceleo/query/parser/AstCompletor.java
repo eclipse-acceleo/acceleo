@@ -25,7 +25,6 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
@@ -102,8 +101,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			result = doSwitch(errors.get(0));
 		} else {
 			// TODO completVariablesNames(???);
-			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
-					.getAstResult().getAst());
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
+					.getAst());
 			result = getExpressionTextFollows(possibleTypes);
 		}
 
@@ -177,23 +176,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorFeatureAccessOrCall(org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall)
-	 */
-	@Override
-	public List<ICompletionProposal> caseErrorFeatureAccessOrCall(ErrorFeatureAccessOrCall object) {
-		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
-
-		final Set<IType> possibleTypes = validationResult.getPossibleTypes(object.getTarget());
-		result.addAll(services.getEStructuralFeatureProposals(possibleTypes));
-		result.addAll(services.getServiceProposals(possibleTypes, CallType.CALLORAPPLY));
-		result.addAll(services.getEOperationProposals(possibleTypes));
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorTypeLiteral(org.eclipse.acceleo.query.ast.ErrorTypeLiteral)
 	 */
 	@Override
@@ -223,8 +205,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
-				.get(1)));
+		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments().get(
+				1)));
 
 		return result;
 	}
@@ -236,10 +218,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 */
 	@Override
 	public List<ICompletionProposal> caseErrorCall(ErrorCall object) {
-		/*
-		 * NOTE that this will only be called for "collection" type calls. other kind of error calls will be
-		 * handled by caseErrorFeatureAccessOrCall.
-		 */
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		if (!object.isMissingEndParenthesis()) {
@@ -252,15 +230,11 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 						"Argument collection will be empty for call to " + object.getServiceName())));
 			} else {
 				for (IType type : possibleReceiverTypes) {
-					if (type instanceof ICollectionType) {
-						collectionTypes.add(type);
-					} else {
-						// the arrow is an implicit set conversion
-						collectionTypes.add(new SetType(services.getQueryEnvironment(), type));
-					}
+					collectionTypes.add(getCollectionTypes(object, type));
 				}
 			}
 			result.addAll(services.getServiceProposals(collectionTypes, object.getType()));
+			result.addAll(services.getEOperationProposals(collectionTypes));
 		} else {
 			if (object.getArguments().size() == 1) {
 				result.addAll(getExpressionProposals());
@@ -275,6 +249,36 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 				}
 			}
 			result.add(new TextCompletionProposal(")", 0));
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets collection {@link IType} according to the {@link CallType}.
+	 * 
+	 * @param errorCall
+	 *            the {@link ErrorCall}
+	 * @param type
+	 *            the {@link IType}
+	 * @return the collection {@link IType}
+	 */
+	private IType getCollectionTypes(ErrorCall errorCall, IType type) {
+		final IType result;
+
+		if (type instanceof ICollectionType) {
+			if (errorCall.getType() == CallType.CALLORAPPLY) {
+				result = ((ICollectionType)type).getCollectionType();
+			} else {
+				result = type;
+			}
+		} else {
+			if (errorCall.getType() == CallType.COLLECTIONCALL) {
+				// the arrow is an implicit set conversion
+				result = new SetType(services.getQueryEnvironment(), type);
+			} else {
+				result = type;
+			}
 		}
 
 		return result;
@@ -395,17 +399,18 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 * 
 	 * @param possibleTypes
 	 *            possible types of the {@link org.eclipse.acceleo.query.ast.Expression Expression}
-	 * @return the {@link TextCompletionProposal} following an
-	 *         {@link org.eclipse.acceleo.query.ast.Expression Expression}
+	 * @return the {@link TextCompletionProposal} following an {@link org.eclipse.acceleo.query.ast.Expression
+	 *         Expression}
 	 */
 	private List<ICompletionProposal> getExpressionTextFollows(Set<IType> possibleTypes) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		final List<IServiceCompletionProposal> servicesProposal = services.getServiceProposals(possibleTypes,
-				null);
+		final List<ICompletionProposal> servicesProposal = services.getServiceProposals(possibleTypes, null);
 		final Set<String> serviceNames = new HashSet<String>();
-		for (IServiceCompletionProposal proposal : servicesProposal) {
-			serviceNames.add(proposal.getObject().getName());
+		for (ICompletionProposal proposal : servicesProposal) {
+			if (proposal instanceof IServiceCompletionProposal) {
+				serviceNames.add(((IServiceCompletionProposal)proposal).getObject().getName());
+			}
 		}
 
 		if (serviceNames.contains(AstBuilderListener.ADD_SERVICE_NAME)) {

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.runtime.impl;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.validation.type.IType;
@@ -62,7 +64,8 @@ public abstract class AbstractService implements IService {
 	 * @see org.eclipse.acceleo.query.runtime.IService#isLowerOrEqualParameterTypes(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
 	 *      org.eclipse.acceleo.query.runtime.IService)
 	 */
-	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service) {
+	public boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment,
+			IService service) {
 		final List<IType> paramTypes1 = getParameterTypes(queryEnvironment);
 		final List<IType> paramTypes2 = service.getParameterTypes(queryEnvironment);
 		boolean result = paramTypes1.size() == paramTypes2.size();
@@ -93,8 +96,8 @@ public abstract class AbstractService implements IService {
 
 		final List<IType> parameterTypes = getParameterTypes(queryEnvironment);
 		for (int i = 0; i < parameterTypes.size() && result; i++) {
-			if (argumentTypes[i].getType() != null
-					&& !parameterTypes.get(i).isAssignableFrom(argumentTypes[i])) {
+			if (argumentTypes[i].getType() != null && !parameterTypes.get(i).isAssignableFrom(
+					argumentTypes[i])) {
 				result = false;
 			}
 		}
@@ -108,8 +111,8 @@ public abstract class AbstractService implements IService {
 	 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
 	 */
 	@Override
-	public Set<IType> validateAllType(ValidationServices services,
-			IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+	public Set<IType> validateAllType(ValidationServices services, IReadOnlyQueryEnvironment queryEnvironment,
+			Map<List<IType>, Set<IType>> allTypes) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
 		for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
@@ -134,8 +137,8 @@ public abstract class AbstractService implements IService {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
-			throw new AcceleoQueryEvaluationException(getShortSignature() + " with arguments "
-					+ Arrays.deepToString(arguments) + " failed.", e);
+			throw new AcceleoQueryEvaluationException(getShortSignature() + " with arguments " + Arrays
+					.deepToString(arguments) + " failed:\n\t" + e.getCause().getMessage(), e.getCause());
 		}
 
 		return result;
@@ -191,6 +194,18 @@ public abstract class AbstractService implements IService {
 	@Override
 	public String toString() {
 		return getLongSignature();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IService#getProposals(org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment,
+	 *      java.util.Set)
+	 */
+	@Override
+	public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+			Set<IType> receiverTypes) {
+		return Collections.emptyList();
 	}
 
 }

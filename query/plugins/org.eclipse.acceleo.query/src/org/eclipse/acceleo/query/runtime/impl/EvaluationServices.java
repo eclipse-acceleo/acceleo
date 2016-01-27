@@ -33,12 +33,10 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -96,104 +94,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * Returns the value of the specified feature on the specified object. The object must be an
-	 * {@link EObject} instance otherwise the method returns nothing.
-	 * 
-	 * @param context
-	 *            the object in which to read the feature.
-	 * @param featureName
-	 *            the name of the feature to read.
-	 * @param diagnostic
-	 *            The status to update in case of warnings or errors during this call.
-	 * @return the value of the specified feature in the specified object.
-	 */
-	@SuppressWarnings("unchecked")
-	public Object featureAccess(Object context, String featureName, Diagnostic diagnostic) {
-		Object result;
-		if (context instanceof EObject) {
-			EClass eClass = ((EObject)context).eClass();
-			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
-			if (feature == null) {
-				final Nothing placeHolder = nothing(UNKNOWN_FEATURE, featureName, eClass.getName());
-				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-				result = placeHolder;
-			} else {
-				result = ((EObject)context).eGet(feature);
-			}
-		} else if (context instanceof List) {
-			result = applyGetFeatureOnSequence((List<Object>)context, featureName, diagnostic);
-		} else if (context instanceof Set) {
-			result = applyGetFeatureOnSet((Set<Object>)context, featureName, diagnostic);
-		} else if (context != null) {
-			final Nothing placeHolder = nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, context.getClass()
-					.getCanonicalName());
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			result = placeHolder;
-		} else {
-			final Nothing placeHolder = nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			result = placeHolder;
-		}
-		return result;
-	}
-
-	/**
-	 * Applies the 'getFeature' operation on sets.
-	 * 
-	 * @param context
-	 *            the set on which to apply the getFeature operation
-	 * @param featureName
-	 *            the name of the feature to retrieve
-	 * @param diagnostic
-	 *            The status to update in case of warnings or errors during this call.
-	 * @return a set made of the value of the features of context's elements.
-	 */
-	private Object applyGetFeatureOnSet(Set<Object> context, String featureName, Diagnostic diagnostic) {
-		Set<Object> result = new LinkedHashSet<Object>(context.size());
-		for (Object element : context) {
-			Object newElt = featureAccess(element, featureName, diagnostic);
-			// flatten
-			if (!(newElt instanceof Nothing)) {
-				if (newElt instanceof Collection) {
-					result.addAll((Collection<?>)newElt);
-				} else {
-					result.add(newElt);
-				}
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Applies the 'getFeature' operation on lists.
-	 * 
-	 * @param context
-	 *            the set on which to apply the getFeature operation
-	 * @param featureName
-	 *            the name of the feature to retrieve
-	 * @param diagnostic
-	 *            The status to update in case of warnings or errors during this call.
-	 * @return a set made of the value of the features of context's elements.
-	 */
-	private Object applyGetFeatureOnSequence(List<Object> context, String featureName, Diagnostic diagnostic) {
-		List<Object> result = new ArrayList<Object>(context.size());
-		for (Object element : context) {
-			Object newElt = featureAccess(element, featureName, diagnostic);
-			// flatten
-			if (!(newElt instanceof Nothing)) {
-				if (newElt instanceof Collection) {
-					result.addAll((Collection<?>)newElt);
-				} else {
-					result.add(newElt);
-				}
-			}
-		}
-
-		return result;
-	}
-
-	/**
 	 * returns the nothing value and logs the specified error message.
 	 * 
 	 * @param message
@@ -241,7 +141,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 		Object result;
 		try {
 			result = service.invoke(arguments);
-			if (result == null) {
+			if (result == null && !AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(service.getName())) {
 				IType[] argumentTypes = getArgumentTypes(arguments);
 				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, serviceSignature(service.getName(),
 						argumentTypes));
@@ -322,12 +222,12 @@ public class EvaluationServices extends AbstractLanguageServices {
 		if (parameters.length > 1) {
 			final Iterator<List<EParameter>> it = new CombineIterator<EParameter>(eClassifiers);
 			while (eOperation == null && it.hasNext()) {
-				eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
-						((EObject)receiver).eClass(), operationName, it.next());
+				eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(((EObject)receiver)
+						.eClass(), operationName, it.next());
 			}
 		} else {
-			eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(
-					((EObject)receiver).eClass(), operationName, new ArrayList<EParameter>());
+			eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(((EObject)receiver).eClass(),
+					operationName, new ArrayList<EParameter>());
 		}
 		if (eOperation != null) {
 			final EList<Object> eArguments = new BasicEList<Object>();
@@ -369,8 +269,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @throws InvocationTargetException
 	 *             if the invoked {@link EOperation} fail
 	 */
-	private Object eOperationJavaInvoke(String operationName, final Object receiver,
-			final Object[] arguments, Diagnostic diagnostic) throws InvocationTargetException {
+	private Object eOperationJavaInvoke(String operationName, final Object receiver, final Object[] arguments,
+			Diagnostic diagnostic) throws InvocationTargetException {
 		final Object result;
 		final ClassType[] argumentTypes = getArgumentTypes(arguments);
 		final Class<?>[] argumentClasses = getArgumentClasses(argumentTypes);
@@ -467,8 +367,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 				parameter.setEType(((EObject)object).eClass());
 				eParamters.add(parameter);
 			} else if (object != null) {
-				for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getEClass(
-						object.getClass())) {
+				for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getEClass(object
+						.getClass())) {
 					final EParameter parameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
 					parameter.setEType(eClassifier);
 					eParamters.add(parameter);

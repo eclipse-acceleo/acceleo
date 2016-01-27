@@ -33,10 +33,8 @@ import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
@@ -143,8 +141,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final int startPostion;
 			if (expression instanceof Call) {
 				startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
-			} else if (expression instanceof FeatureAccess) {
-				startPostion = astResult.getEndPosition(((FeatureAccess)expression).getTarget());
 			} else {
 				startPostion = astResult.getStartPosition(expression);
 			}
@@ -721,19 +717,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseFeatureAccess(org.eclipse.acceleo.query.ast.FeatureAccess)
-	 */
-	@Override
-	public Set<IType> caseFeatureAccess(FeatureAccess object) {
-		final Set<IType> reveiverTypes = doSwitch(object.getTarget());
-		final String featureName = object.getFeatureName();
-		final Set<IType> flattened = services.featureAccessTypes(reveiverTypes, featureName);
-		return checkWarningsAndErrors(object, flattened);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseIntegerLiteral(org.eclipse.acceleo.query.ast.IntegerLiteral)
 	 */
 	@Override
@@ -911,17 +894,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorExpression(ErrorExpression object) {
-		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorFeatureAccessOrCall(org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall)
-	 */
-	@Override
-	public Set<IType> caseErrorFeatureAccessOrCall(ErrorFeatureAccessOrCall object) {
-		doSwitch(object.getTarget());
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 

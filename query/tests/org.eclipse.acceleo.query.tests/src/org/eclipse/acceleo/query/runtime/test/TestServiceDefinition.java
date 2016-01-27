@@ -35,7 +35,7 @@ public class TestServiceDefinition {
 	}
 
 	public Object serviceThrowsException(Object obj) {
-		throw new NullPointerException();
+		throw new NullPointerException("This is the purpose of this service.");
 	}
 
 	public int size(Collection<?> collection) {

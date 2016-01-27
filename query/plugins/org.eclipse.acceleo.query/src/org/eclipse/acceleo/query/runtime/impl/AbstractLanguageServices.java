@@ -30,11 +30,6 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 public abstract class AbstractLanguageServices {
 
 	/**
-	 * Log message used when accessing a feature on a JavaObject.
-	 */
-	protected static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (%s) on a non ModelObject value (%s).";
-
-	/**
 	 * Log message used when a called service was not found.
 	 */
 	protected static final String SERVICE_NOT_FOUND = "Couldn't find the %s service";
@@ -53,11 +48,6 @@ public abstract class AbstractLanguageServices {
 	 * Log message used when a requested variable was not found.
 	 */
 	protected static final String VARIABLE_NOT_FOUND = "Couldn't find the %s variable";
-
-	/**
-	 * Log message used when accessing an unknown feature.
-	 */
-	protected static final String UNKNOWN_FEATURE = "Feature %s not found in EClass %s";
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.

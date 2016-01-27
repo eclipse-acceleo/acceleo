@@ -26,12 +26,10 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -75,13 +73,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass varRefEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	private EClass featureAccessEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -221,13 +212,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
-	private EClass errorFeatureAccessOrCallEClass = null;
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	private EClass errorCallEClass = null;
 
 	/**
@@ -356,9 +340,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 			return (AstPackage)EPackage.Registry.INSTANCE.getEPackage(AstPackage.eNS_URI);
 
 		// Obtain or create and register package
-		AstPackageImpl theAstPackage = (AstPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof AstPackageImpl ? EPackage.Registry.INSTANCE
-				.get(eNS_URI)
-				: new AstPackageImpl());
+		AstPackageImpl theAstPackage = (AstPackageImpl)(EPackage.Registry.INSTANCE.get(
+				eNS_URI) instanceof AstPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
+						: new AstPackageImpl());
 
 		isInited = true;
 
@@ -404,33 +388,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 */
 	public EAttribute getVarRef_VariableName() {
 		return (EAttribute)varRefEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EClass getFeatureAccess() {
-		return featureAccessEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EAttribute getFeatureAccess_FeatureName() {
-		return (EAttribute)featureAccessEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getFeatureAccess_Target() {
-		return (EReference)featureAccessEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -807,24 +764,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
-	public EClass getErrorFeatureAccessOrCall() {
-		return errorFeatureAccessOrCallEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public EReference getErrorFeatureAccessOrCall_Target() {
-		return (EReference)errorFeatureAccessOrCallEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public EClass getErrorCall() {
 		return errorCallEClass;
 	}
@@ -1051,10 +990,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		varRefEClass = createEClass(VAR_REF);
 		createEAttribute(varRefEClass, VAR_REF__VARIABLE_NAME);
 
-		featureAccessEClass = createEClass(FEATURE_ACCESS);
-		createEAttribute(featureAccessEClass, FEATURE_ACCESS__FEATURE_NAME);
-		createEReference(featureAccessEClass, FEATURE_ACCESS__TARGET);
-
 		callEClass = createEClass(CALL);
 		createEAttribute(callEClass, CALL__SERVICE_NAME);
 		createEAttribute(callEClass, CALL__TYPE);
@@ -1114,9 +1049,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorEnumLiteralEClass = createEClass(ERROR_ENUM_LITERAL);
 		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__SEGMENTS);
 		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__MISSING_COLON);
-
-		errorFeatureAccessOrCallEClass = createEClass(ERROR_FEATURE_ACCESS_OR_CALL);
-		createEReference(errorFeatureAccessOrCallEClass, ERROR_FEATURE_ACCESS_OR_CALL__TARGET);
 
 		errorCallEClass = createEClass(ERROR_CALL);
 		createEAttribute(errorCallEClass, ERROR_CALL__MISSING_END_PARENTHESIS);
@@ -1180,8 +1112,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE
-				.getEPackage(EcorePackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(
+				EcorePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -1189,7 +1121,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		// Add supertypes to classes
 		varRefEClass.getESuperTypes().add(this.getExpression());
-		featureAccessEClass.getESuperTypes().add(this.getExpression());
 		callEClass.getESuperTypes().add(this.getExpression());
 		literalEClass.getESuperTypes().add(this.getExpression());
 		integerLiteralEClass.getESuperTypes().add(this.getLiteral());
@@ -1210,7 +1141,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorTypeLiteralEClass.getESuperTypes().add(this.getTypeLiteral());
 		errorEnumLiteralEClass.getESuperTypes().add(this.getError());
 		errorEnumLiteralEClass.getESuperTypes().add(this.getEnumLiteral());
-		errorFeatureAccessOrCallEClass.getESuperTypes().add(this.getError());
 		errorCallEClass.getESuperTypes().add(this.getError());
 		errorCallEClass.getESuperTypes().add(this.getCall());
 		errorVariableDeclarationEClass.getESuperTypes().add(this.getError());
@@ -1237,15 +1167,6 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 				VarRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
 
-		initEClass(featureAccessEClass, FeatureAccess.class, "FeatureAccess", !IS_ABSTRACT, !IS_INTERFACE,
-				IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getFeatureAccess_FeatureName(), ecorePackage.getEString(), "featureName", null, 0, 1,
-				FeatureAccess.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getFeatureAccess_Target(), this.getExpression(), null, "target", null, 0, 1,
-				FeatureAccess.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(callEClass, Call.class, "Call", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getCall_ServiceName(), ecorePackage.getEString(), "serviceName", null, 0, 1,
 				Call.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
@@ -1253,8 +1174,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEAttribute(getCall_Type(), this.getCallType(), "type", null, 0, 1, Call.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCall_Arguments(), this.getExpression(), null, "arguments", null, 0, -1, Call.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(literalEClass, Literal.class, "Literal", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
@@ -1309,9 +1230,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 
 		initEClass(lambdaEClass, Lambda.class, "Lambda", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getLambda_Parameters(), this.getVariableDeclaration(), null, "parameters", null, 0,
-				-1, Lambda.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLambda_Parameters(), this.getVariableDeclaration(), null, "parameters", null, 0, -1,
+				Lambda.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLambda_Expression(), this.getExpression(), null, "expression", null, 1, 1,
 				Lambda.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1334,17 +1255,17 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEClass(variableDeclarationEClass, VariableDeclaration.class, "VariableDeclaration", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getVariableDeclaration_Name(), ecorePackage.getEString(), "name", null, 1, 1,
-				VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getVariableDeclaration_Type(), this.getTypeLiteral(), null, "type", null, 0, 1,
 				VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
 				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariableDeclaration_Expression(), this.getExpression(), null, "expression", null,
-				1, 1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+		initEReference(getVariableDeclaration_Expression(), this.getExpression(), null, "expression", null, 1,
+				1, VariableDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
 				IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(errorEClass, org.eclipse.acceleo.query.ast.Error.class, "Error", IS_ABSTRACT,
-				IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(errorEClass, org.eclipse.acceleo.query.ast.Error.class, "Error", IS_ABSTRACT, IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(errorExpressionEClass, ErrorExpression.class, "ErrorExpression", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1367,20 +1288,14 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 				1, 1, ErrorEnumLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(errorFeatureAccessOrCallEClass, ErrorFeatureAccessOrCall.class,
-				"ErrorFeatureAccessOrCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getErrorFeatureAccessOrCall_Target(), this.getExpression(), null, "target", null, 0,
-				1, ErrorFeatureAccessOrCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(errorCallEClass, ErrorCall.class, "ErrorCall", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getErrorCall_MissingEndParenthesis(), ecorePackage.getEBoolean(),
 				"missingEndParenthesis", "false", 1, 1, ErrorCall.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(errorVariableDeclarationEClass, ErrorVariableDeclaration.class,
-				"ErrorVariableDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(errorVariableDeclarationEClass, ErrorVariableDeclaration.class, "ErrorVariableDeclaration",
+				!IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(errorStringLiteralEClass, ErrorStringLiteral.class, "ErrorStringLiteral", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1394,22 +1309,22 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 		initEReference(getBinding_Type(), this.getTypeLiteral(), null, "type", null, 0, 1, Binding.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getBinding_Value(), this.getExpression(), null, "value", null, 1, 1, Binding.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(errorBindingEClass, ErrorBinding.class, "ErrorBinding", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(letEClass, Let.class, "Let", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getLet_Bindings(), this.getBinding(), null, "bindings", null, 1, -1, Let.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLet_Body(), this.getExpression(), null, "body", null, 1, 1, Let.class,
-				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(conditionalEClass, Conditional.class, "Conditional", !IS_ABSTRACT, !IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

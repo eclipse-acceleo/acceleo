@@ -162,7 +162,8 @@ public class BindingImpl extends MinimalEObjectImpl.Container implements Binding
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__TYPE, newType, newType));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BINDING__TYPE, newType,
+					newType));
 	}
 
 	/**

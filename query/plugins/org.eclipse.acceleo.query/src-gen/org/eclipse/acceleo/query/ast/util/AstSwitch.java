@@ -24,12 +24,10 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -111,15 +109,6 @@ public class AstSwitch<T> extends Switch<T> {
 				T result = caseVarRef(varRef);
 				if (result == null)
 					result = caseExpression(varRef);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
-			case AstPackage.FEATURE_ACCESS: {
-				FeatureAccess featureAccess = (FeatureAccess)theEObject;
-				T result = caseFeatureAccess(featureAccess);
-				if (result == null)
-					result = caseExpression(featureAccess);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -333,17 +322,6 @@ public class AstSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
-			case AstPackage.ERROR_FEATURE_ACCESS_OR_CALL: {
-				ErrorFeatureAccessOrCall errorFeatureAccessOrCall = (ErrorFeatureAccessOrCall)theEObject;
-				T result = caseErrorFeatureAccessOrCall(errorFeatureAccessOrCall);
-				if (result == null)
-					result = caseError(errorFeatureAccessOrCall);
-				if (result == null)
-					result = caseExpression(errorFeatureAccessOrCall);
-				if (result == null)
-					result = defaultCase(theEObject);
-				return result;
-			}
 			case AstPackage.ERROR_CALL: {
 				ErrorCall errorCall = (ErrorCall)theEObject;
 				T result = caseErrorCall(errorCall);
@@ -501,21 +479,6 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseVarRef(VarRef object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Feature Access</em>'. <!--
-	 * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the
-	 * switch. <!-- end-user-doc -->
-	 * 
-	 * @param object
-	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Feature Access</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseFeatureAccess(FeatureAccess object) {
 		return null;
 	}
 
@@ -802,22 +765,6 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseErrorEnumLiteral(ErrorEnumLiteral object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Error Feature Access Or Call</em>
-	 * '. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate
-	 * the switch. <!-- end-user-doc -->
-	 * 
-	 * @param object
-	 *            the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Error Feature Access Or Call</em>
-	 *         '.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseErrorFeatureAccessOrCall(ErrorFeatureAccessOrCall object) {
 		return null;
 	}
 

@@ -17,11 +17,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -29,7 +32,10 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.StringLiteral;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -37,6 +43,7 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -71,6 +78,16 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * Can't contain directly or indirectly message.
 	 */
 	private static final String S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S = "%s can't contain directly or indirectly %s";
+
+	/**
+	 * Log message used when accessing an unknown feature.
+	 */
+	private static final String UNKNOWN_FEATURE = "Feature %s not found in EClass %s";
+
+	/**
+	 * Log message used when accessing a feature on a JavaObject.
+	 */
+	private static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (%s) on a non ModelObject value (%s).";
 
 	/**
 	 * Filtered eAllContents {@link Iterator}.
@@ -146,6 +163,131 @@ public class EObjectServices extends AbstractServiceProvider {
 
 			}
 		}
+	}
+
+	private static final class EObjectFeatureAccess extends JavaMethodService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param method
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		public EObjectFeatureAccess(Method method, Object serviceInstance) {
+			super(method, serviceInstance);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.JavaMethodService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			final String featureName = ((StringLiteral)call.getArguments().get(1)).getValue();
+			final Set<IType> result = featureAccessTypes(services, queryEnvironment, argTypes.get(0),
+					featureName);
+
+			return result;
+		}
+
+		/**
+		 * Gets the type of a feature access.
+		 * 
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param receiverTypes
+		 *            the target types to gets the feature from
+		 * @param featureName
+		 *            the feature name
+		 * @return the type of a feature access
+		 */
+		public Set<IType> featureAccessTypes(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, IType receiverType, String featureName) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (receiverType.getType() instanceof EClass) {
+				EClass eClass = (EClass)receiverType.getType();
+				EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+				if (feature == null) {
+					result.add(services.nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
+				} else {
+					final EClassifierType featureBasicType = new EClassifierType(queryEnvironment, feature
+							.getEType());
+					if (feature.isMany()) {
+						result.add(new SequenceType(queryEnvironment, featureBasicType));
+					} else {
+						result.add(featureBasicType);
+					}
+				}
+			} else {
+				result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType.getType()
+						.toString()));
+			}
+
+			return result;
+			// CHECKSTYLE:OFF
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
+		 */
+		@Override
+		public Set<IType> validateAllType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final Set<IType> knownReceiverTypes = new LinkedHashSet<IType>();
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				if (knownReceiverTypes.add(entry.getKey().get(0))) {
+					result.addAll(entry.getValue());
+				}
+			}
+
+			return result;
+		}
+
+		@Override
+		public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+				Set<IType> receiverTypes) {
+			return getEStructuralFeatureProposals(queryEnvironment, receiverTypes);
+		}
+
+		/**
+		 * Gets the {@link List} of {@link EFeatureCompletionProposal} for {@link EStructuralFeature}.
+		 * 
+		 * @param receiverTypes
+		 *            the receiver types.
+		 * @return the {@link List} of {@link EFeatureCompletionProposal} for {@link EStructuralFeature}
+		 */
+		public List<ICompletionProposal> getEStructuralFeatureProposals(
+				IReadOnlyQueryEnvironment queryEnvironment, Set<IType> receiverTypes) {
+			final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+			final Set<EClass> eClasses = new LinkedHashSet<EClass>();
+
+			for (IType iType : receiverTypes) {
+				if (iType.getType() instanceof EClass) {
+					eClasses.add((EClass)iType.getType());
+				}
+			}
+
+			for (EStructuralFeature feature : queryEnvironment.getEPackageProvider().getEStructuralFeatures(
+					eClasses)) {
+				result.add(new EFeatureCompletionProposal(feature));
+			}
+
+			return result;
+		}
+
 	}
 
 	/**
@@ -668,6 +810,8 @@ public class EObjectServices extends AbstractServiceProvider {
 			}
 		} else if ("allInstances".equals(publicMethod.getName())) {
 			result = new AllInstancesService(publicMethod, this);
+		} else if (AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(publicMethod.getName())) {
+			result = new EObjectFeatureAccess(publicMethod, this);
 		} else {
 			result = new JavaMethodService(publicMethod, this);
 		}
@@ -1265,4 +1409,37 @@ public class EObjectServices extends AbstractServiceProvider {
 	public Object eCrossReferences(EObject eObject) {
 		return Lists.newArrayList(eObject.eCrossReferences());
 	}
+
+	/**
+	 * Returns the value of the specified feature on the specified object. The object must be an
+	 * {@link EObject} or a {@link Set}, {@link List} of {@link EObject}.
+	 * 
+	 * @param context
+	 *            the object in which to read the feature.
+	 * @param featureName
+	 *            the name of the feature to read.
+	 * @param diagnostic
+	 *            The status to update in case of warnings or errors during this call.
+	 * @return the value of the specified feature in the specified object.
+	 */
+	public Object aqlFeatureAccess(EObject self, String featureName) {
+		final Object result;
+
+		if (self == null) {
+			final String message = String.format(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
+			throw new IllegalArgumentException(message);
+		} else {
+			EClass eClass = ((EObject)self).eClass();
+			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+			if (feature == null) {
+				final String message = String.format(UNKNOWN_FEATURE, featureName, eClass.getName());
+				throw new IllegalArgumentException(message);
+			} else {
+				result = ((EObject)self).eGet(feature);
+			}
+		}
+
+		return result;
+	}
+
 }

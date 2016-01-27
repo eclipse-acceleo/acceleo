@@ -29,6 +29,7 @@ import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.parser.AstBuilder;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -886,11 +887,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		List<Object> nullList = null;
 		try {
@@ -930,11 +931,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		List<Object> nullList = null;
 		try {
@@ -970,11 +971,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		Set<Object> nullList = null;
 		try {
@@ -1010,11 +1011,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		List<Object> nullList = null;
 		try {
@@ -1050,11 +1051,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		Set<Object> nullList = null;
 		try {
@@ -1319,11 +1320,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		Set<Object> nullList = null;
 		try {
@@ -1739,11 +1740,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		collectionServices.any(null, new LambdaValue(lambda, new HashMap<String, Object>(), evaluator));
 	}
@@ -1777,11 +1778,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1799,11 +1800,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -1821,8 +1822,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -1843,8 +1844,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -1922,11 +1923,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		assertEquals(Boolean.FALSE, collectionServices.exists(null, new LambdaValue(lambda,
 				new HashMap<String, Object>(), evaluator)));
@@ -1961,11 +1962,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -1973,8 +1974,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, new LambdaValue(lambda,
-				new HashMap<String, Object>(), evaluator));
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -1983,11 +1984,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -2005,8 +2006,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2017,8 +2018,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.exists(set, new LambdaValue(lambda,
-				new HashMap<String, Object>(), evaluator));
+		Boolean result = collectionServices.exists(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2027,8 +2028,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2049,11 +2050,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		assertEquals(Boolean.FALSE, collectionServices.forAll(null, new LambdaValue(lambda,
 				new HashMap<String, Object>(), evaluator)));
@@ -2088,11 +2089,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -2100,8 +2101,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
-				new HashMap<String, Object>(), evaluator));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2110,11 +2111,11 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
-		Lambda lambda = builder.lambda(builder.featureAccess(builder.varRef("self"), "expression"),
-				selfDeclaration);
+		Lambda lambda = builder.lambda(builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				builder.varRef("self"), builder.stringLiteral("expression")), selfDeclaration);
 
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -2132,8 +2133,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(0)), selfDeclaration);
@@ -2144,8 +2145,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
-				new HashMap<String, Object>(), evaluator));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.TRUE, result);
 	}
 
@@ -2154,8 +2155,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(0)), selfDeclaration);
@@ -2176,8 +2177,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2188,8 +2189,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda,
-				new HashMap<String, Object>(), evaluator));
+		Boolean result = collectionServices.forAll(set, new LambdaValue(lambda, new HashMap<String, Object>(),
+				evaluator));
 		assertEquals(Boolean.FALSE, result);
 	}
 
@@ -2198,8 +2199,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2599,8 +2600,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2619,8 +2620,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2640,8 +2641,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2660,8 +2661,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2706,8 +2707,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2726,8 +2727,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(3)), selfDeclaration);
@@ -2747,8 +2748,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(2)), selfDeclaration);
@@ -2767,8 +2768,8 @@ public class CollectionServicesTest {
 		AstBuilder builder = new AstBuilder();
 		IQueryEnvironment environment = createEnvironment();
 		AstEvaluator evaluator = new AstEvaluator(environment);
-		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil
-				.create(AstPackage.Literals.VARIABLE_DECLARATION);
+		VariableDeclaration selfDeclaration = (VariableDeclaration)EcoreUtil.create(
+				AstPackage.Literals.VARIABLE_DECLARATION);
 		selfDeclaration.setName("self");
 		Lambda lambda = builder.lambda(builder.callService("greaterThan", builder.varRef("self"), builder
 				.integerLiteral(3)), selfDeclaration);
@@ -3290,8 +3291,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(3), Integer
-				.valueOf(3));
+		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(3), Integer.valueOf(
+				3));
 		assertEquals(1, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(3), it.next());
@@ -3305,8 +3306,8 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(2), Integer
-				.valueOf(4));
+		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(2), Integer.valueOf(
+				4));
 		assertEquals(3, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(2), it.next());
@@ -3371,8 +3372,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(3), Integer
-				.valueOf(3));
+		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(3), Integer.valueOf(
+				3));
 		assertEquals(1, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(3), it.next());
@@ -3386,8 +3387,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(2), Integer
-				.valueOf(4));
+		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(2), Integer.valueOf(
+				4));
 		assertEquals(3, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(2), it.next());

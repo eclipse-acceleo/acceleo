@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilder;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
@@ -125,8 +126,8 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Before
 	public void setup() {
-		IQueryEnvironment environment = Query
-				.newEnvironmentWithDefaultServices(createEInverseCrossreferencer(EcorePackage.eINSTANCE));
+		IQueryEnvironment environment = Query.newEnvironmentWithDefaultServices(createEInverseCrossreferencer(
+				EcorePackage.eINSTANCE));
 		evaluator = new AstEvaluator(environment);
 	}
 
@@ -158,8 +159,8 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testTypeLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertOKResultEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions,
-				typeLiteral(EcorePackage.Literals.ECLASS)));
+		assertOKResultEquals(EcorePackage.Literals.ECLASS, evaluator.eval(varDefinitions, typeLiteral(
+				EcorePackage.Literals.ECLASS)));
 		assertOKResultEquals(Integer.class, evaluator.eval(varDefinitions, typeLiteral(Integer.class)));
 	}
 
@@ -167,9 +168,11 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void testFeatureAccess() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		assertOKResultEquals("EClass", evaluator.eval(varDefinitions, featureAccess(varRef("self"), "name")));
-		EvaluationResult result = evaluator.eval(varDefinitions, featureAccess(varRef("self"),
-				"eAllSuperTypes"));
+		assertOKResultEquals("EClass", evaluator.eval(varDefinitions, callService(
+				AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, varRef("self"), stringLiteral("name"))));
+		EvaluationResult result = evaluator.eval(varDefinitions, callService(
+				AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, varRef("self"), stringLiteral(
+						("eAllSuperTypes"))));
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
@@ -191,7 +194,9 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void testCall() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		final Call callService = callService("size", featureAccess(varRef("self"), "eAllSuperTypes"));
+		final Call callService = callService("size", callService(
+				AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, varRef("self"), stringLiteral(
+						"eAllSuperTypes")));
 		callService.setType(CallType.COLLECTIONCALL);
 		EvaluationResult result = evaluator.eval(varDefinitions, callService);
 		assertOKResultEquals(Integer.valueOf(3), result);
@@ -294,8 +299,8 @@ public class AstEvaluatorTest extends AstBuilder {
 	@Test
 	public void testConditionnalBadPredicate() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
-		Conditional conditional = conditional(stringLiteral("Hey, what's this?!"),
-				stringLiteral("trueBranch"), stringLiteral("falseBranch"));
+		Conditional conditional = conditional(stringLiteral("Hey, what's this?!"), stringLiteral(
+				"trueBranch"), stringLiteral("falseBranch"));
 		final EvaluationResult result = evaluator.eval(varDefinitions, conditional);
 		assertTrue(result.getResult() instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
@@ -307,17 +312,16 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Test
 	public void testLetBasic() {
-		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null,
-				stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
+		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null, stringLiteral(
+				"prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		assertOKResultEquals("prefixsuffix", evaluator.eval(varDefinitions, let));
 	}
 
 	@Test
 	public void testLetArenotRecursive() {
-		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null,
-				stringLiteral("prefix")), binding("y", null, callService("concat", varRef("x"),
-				stringLiteral("end"))));
+		Let let = let(callService("concat", varRef("x"), varRef("y")), binding("x", null, stringLiteral(
+				"prefix")), binding("y", null, callService("concat", varRef("x"), stringLiteral("end"))));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("x", "firstx");
 		assertOKResultEquals("prefixfirstxend", evaluator.eval(varDefinitions, let));
@@ -342,8 +346,8 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Test
 	public void testLetWithNothingBody() {
-		Let let = let(callService("concat", varRef("novar"), varRef("y")), binding("x", null,
-				stringLiteral("prefix")), binding("y", null, stringLiteral("suffix")));
+		Let let = let(callService("concat", varRef("novar"), varRef("y")), binding("x", null, stringLiteral(
+				"prefix")), binding("y", null, stringLiteral("suffix")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		final EvaluationResult result = evaluator.eval(varDefinitions, let);
 		assertTrue(result.getResult() instanceof Nothing);
@@ -384,8 +388,8 @@ public class AstEvaluatorTest extends AstBuilder {
 
 	@Test
 	public void testLetOverwriteBinding() {
-		Let let = let(varRef("a"), binding("a", null, stringLiteral("a")), binding("a", null,
-				stringLiteral("aOverritten")));
+		Let let = let(varRef("a"), binding("a", null, stringLiteral("a")), binding("a", null, stringLiteral(
+				"aOverritten")));
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", "self");
 		assertOKResultEquals("aOverritten", evaluator.eval(varDefinitions, let));

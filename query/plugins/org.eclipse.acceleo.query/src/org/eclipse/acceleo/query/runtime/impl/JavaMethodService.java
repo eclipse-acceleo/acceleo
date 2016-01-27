@@ -20,8 +20,10 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
+import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -293,6 +295,16 @@ public class JavaMethodService extends AbstractService {
 	@Override
 	public int hashCode() {
 		return getMethod().hashCode();
+	}
+
+	@Override
+	public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+			Set<IType> receiverTypes) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
+		result.add(new JavaMethodServiceCompletionProposal(this));
+
+		return result;
 	}
 
 }

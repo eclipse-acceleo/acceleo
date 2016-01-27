@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.test;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertTrue;
 
 public class EvaluationServiceStatusTests {
 
-	private static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (containment) on a non ModelObject value (java.lang.Integer).";
+	private static final String NON_EOBJECT_FEATURE_ACCESS = "Couldn't find the aqlFeatureAccess(java.lang.Integer,java.lang.String) service";
 
 	private static final String SERVICE_NOT_FOUND = "Couldn't find the noservice(java.lang.Integer) service";
 
@@ -90,20 +90,22 @@ public class EvaluationServiceStatusTests {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		services.featureAccess(attribute, "noname", status);
+		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {attribute, "noname" },
+				status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals(UNKNOWN_FEATURE, child.getMessage());
-		assertNull(child.getException());
+		assertTrue(child.getMessage().endsWith("\n\t" + UNKNOWN_FEATURE));
+		assertTrue(child.getException().getMessage().endsWith("\n\t" + UNKNOWN_FEATURE));
 	}
 
 	@Test
 	public void featureAccessOnObjectStatusTest() {
 		Diagnostic status = new BasicDiagnostic();
-		services.featureAccess(new Integer(1), "containment", status);
+		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {new Integer(1),
+				"containment" }, status);
 
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
@@ -149,10 +151,11 @@ public class EvaluationServiceStatusTests {
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals("serviceThrowsException(java.lang.Object) with arguments [1] failed.", child
-				.getMessage());
+		assertEquals(
+				"serviceThrowsException(java.lang.Object) with arguments [1] failed:\n\tThis is the purpose of this service.",
+				child.getMessage());
 		assertTrue(child.getException() instanceof AcceleoQueryEvaluationException);
-		assertTrue(child.getException().getCause() instanceof InvocationTargetException);
-		assertTrue(((InvocationTargetException)child.getException().getCause()).getTargetException() instanceof NullPointerException);
+		assertTrue(child.getException().getCause() instanceof NullPointerException);
+		assertEquals("This is the purpose of this service.", child.getException().getCause().getMessage());
 	}
 }

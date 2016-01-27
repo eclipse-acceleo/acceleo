@@ -43,6 +43,7 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.uml2.types.TypesPackage;
 import org.eclipse.uml2.uml.UMLPackage;
 
@@ -61,8 +62,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	private final QmodelSwitch<EObject> varValueSwitch = new QmodelSwitch<EObject>() {
 		@Override
 		public EObject caseVariable(Variable object) {
-			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: "
-					+ object.eClass().getName());
+			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: " + object
+					.eClass().getName());
 		}
 
 		@Override
@@ -74,8 +75,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	private final QmodelSwitch<Set<IType>> varTypeSwitch = new QmodelSwitch<Set<IType>>() {
 		@Override
 		public Set<IType> caseVariable(Variable object) {
-			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: "
-					+ object.eClass().getName());
+			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: " + object
+					.eClass().getName());
 		}
 
 		@Override
@@ -92,6 +93,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		setQueryEnvironnementWithCrossReferencer(startingPoint);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+		queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
+				EStringToStringMapEntryImpl.class);
 		queryEnvironment.registerEPackage(UMLPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(TypesPackage.eINSTANCE);
 

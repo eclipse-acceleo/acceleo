@@ -249,8 +249,8 @@ public class CallImpl extends ExpressionImpl implements Call {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AstPackage.CALL__SERVICE_NAME:
-				return SERVICE_NAME_EDEFAULT == null ? serviceName != null : !SERVICE_NAME_EDEFAULT
-						.equals(serviceName);
+				return SERVICE_NAME_EDEFAULT == null ? serviceName != null
+						: !SERVICE_NAME_EDEFAULT.equals(serviceName);
 			case AstPackage.CALL__TYPE:
 				return type != TYPE_EDEFAULT;
 			case AstPackage.CALL__ARGUMENTS:

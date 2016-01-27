@@ -166,4 +166,16 @@ public interface IService {
 	 */
 	boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes);
 
+	/**
+	 * Gets the {@link List} of {@link ICompletionProposal}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param receiverTypes
+	 *            the possible receiver {@link IType}
+	 * @return the {@link List} of {@link ICompletionProposal}
+	 */
+	List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+			Set<IType> receiverTypes);
+
 }

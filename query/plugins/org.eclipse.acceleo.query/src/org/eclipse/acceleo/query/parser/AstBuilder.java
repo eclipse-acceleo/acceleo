@@ -29,12 +29,10 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -452,22 +450,6 @@ public class AstBuilder {
 	}
 
 	/**
-	 * Creates a new {@link FeatureAccess}.
-	 * 
-	 * @param target
-	 *            the target expression
-	 * @param featureName
-	 *            the feature name
-	 * @return a new {@link FeatureAccess}
-	 */
-	public FeatureAccess featureAccess(Expression target, String featureName) {
-		FeatureAccess res = (FeatureAccess)EcoreUtil.create(AstPackage.Literals.FEATURE_ACCESS);
-		res.setTarget(target);
-		res.setFeatureName(featureName);
-		return res;
-	}
-
-	/**
 	 * Creates a new {@link Lambda}.
 	 * 
 	 * @param expression
@@ -535,22 +517,6 @@ public class AstBuilder {
 				result.getSegments().add(segment);
 			}
 		}
-
-		return result;
-	}
-
-	/**
-	 * Creates a new {@link ErrorFeatureAccessOrCall}.
-	 * 
-	 * @param target
-	 *            the {@link ErrorFeatureAccessOrCall#getTarget() target}
-	 * @return a new {@link ErrorFeatureAccessOrCall}
-	 */
-	public ErrorFeatureAccessOrCall errorFeatureAccessOrCall(Expression target) {
-		final ErrorFeatureAccessOrCall result = (ErrorFeatureAccessOrCall)EcoreUtil.create(
-				AstPackage.Literals.ERROR_FEATURE_ACCESS_OR_CALL);
-
-		result.setTarget(target);
 
 		return result;
 	}
