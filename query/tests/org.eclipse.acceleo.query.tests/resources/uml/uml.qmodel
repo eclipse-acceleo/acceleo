@@ -876,9 +876,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Class" startPosition="33" endPosition="58"/>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Interface" startPosition="62" endPosition="91"/>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Interface)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1709,7 +1708,6 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Property) is not type of EClassifierLiteral=Property" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1720,7 +1718,6 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Property) is not type of EClassifierLiteral=Property" endPosition="31"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1765,7 +1762,6 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Package" startPosition="33" endPosition="60"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -2091,9 +2087,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=Class" startPosition="110" endPosition="135"/>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=DataType" startPosition="139" endPosition="167"/>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=DataType)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -2113,8 +2108,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=Enumeration" startPosition="80" endPosition="111"/>
+        <possibleTypes>Sequence(EClassifier=Enumeration)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>

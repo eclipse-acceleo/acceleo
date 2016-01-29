@@ -154,8 +154,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, ((NothingType)type)
 						.getMessage(), startPostion, endPosition));
 			} else if (type instanceof EClassifierType) {
-				if (services.getQueryEnvironment().getEPackageProvider().isRegistered(((EClassifierType)type)
-						.getType())) {
+				if (services.getQueryEnvironment().getEPackageProvider().isRegistered(
+						((EClassifierType)type).getType())) {
 					result.add(type);
 				} else {
 					msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, String.format(
@@ -473,26 +473,33 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final StringBuilder messageWhenFalse = new StringBuilder("Always true:");
 
 			for (IType originalType : originalTypes) {
-				if (originalType instanceof NothingType) {
-					inferredTrueTypes.add(originalType);
-					inferredFalseTypes.add(originalType);
-				} else {
-					for (IType argType : argTypes) {
-						final IType lowerType = services.lower(argType, argType);
-						if (lowerType.equals(originalType)) {
-							inferredTrueTypes.add(lowerType);
+				for (IType argType : argTypes) {
+					final IType lowerArgType = services.lower(argType, argType);
+					final IType lowerType = services.lower(originalType, lowerArgType);
+					if (lowerArgType.equals(originalType)) {
+						inferredTrueTypes.add(lowerArgType);
+						final Set<EClass> upperSubEClasses = getUpperSubTypes(originalType);
+						if (upperSubEClasses.isEmpty()) {
 							messageWhenFalse.append(String.format(
 									"\nNothing inferred when %s (%s) is not type of %s", varRef
 											.getVariableName(), originalType, argType));
 						} else {
-							messageWhenTrue.append(String.format(
-									"\nNothing inferred when %s (%s) is type of %s", varRef.getVariableName(),
-									originalType, argType));
-							inferredFalseTypes.add(originalType);
+							for (EClass upperSubEClasse : upperSubEClasses) {
+								inferredFalseTypes.add(new EClassifierType(services.getQueryEnvironment(),
+										upperSubEClasse));
+							}
 						}
+					} else if (lowerType != null && lowerType.isAssignableFrom(lowerArgType)) {
+						inferredTrueTypes.add(lowerArgType);
+						inferredFalseTypes.add(originalType);
+					} else {
+						messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is type of %s",
+								varRef.getVariableName(), originalType, argType));
+						inferredFalseTypes.add(originalType);
 					}
 				}
 			}
+
 			if (!inferredTrueTypes.isEmpty()) {
 				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
 				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
@@ -518,6 +525,32 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				validationResult.getMessages().add(message);
 			}
 		}
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link EClass} which {@link EClass#getESuperTypes() direct super types}
+	 * contains the {@link EClass} corresponding to the given {@link IType}.
+	 * 
+	 * @param iType
+	 *            the {@link IType}
+	 * @return the {@link Set} of {@link EClass} which {@link EClass#getESuperTypes() direct super types}
+	 *         contains the {@link EClass} corresponding to the given {@link IType}
+	 */
+	private Set<EClass> getUpperSubTypes(IType iType) {
+		final Set<EClass> result = new LinkedHashSet<EClass>();
+
+		if (iType.getType() instanceof EClass) {
+			final EClass eCls = (EClass)iType.getType();
+			final Set<EClass> subEClasses = services.getQueryEnvironment().getEPackageProvider()
+					.getAllSubTypes(eCls);
+			for (EClass subEClass : subEClasses) {
+				if (subEClass.getESuperTypes().contains(eCls)) {
+					result.add(subEClass);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -566,8 +599,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private Map<String, Set<IType>> unionInferredTypes(Map<String, Set<IType>> inferredLeftVariableTypes,
 			Map<String, Set<IType>> inferredRightVariableTypes) {
 		final Map<String, Set<IType>> result = new HashMap<String, Set<IType>>();
-		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(
-				inferredRightVariableTypes);
+		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(inferredRightVariableTypes);
 
 		for (Entry<String, Set<IType>> entry : inferredLeftVariableTypes.entrySet()) {
 			final Set<IType> inferredTypes = new LinkedHashSet<IType>(entry.getValue());
@@ -631,8 +663,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final Map<String, Set<IType>> inferredRightVariableTypes) {
 		final Map<String, Set<IType>> result = new HashMap<String, Set<IType>>();
 
-		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(
-				inferredRightVariableTypes);
+		final Map<String, Set<IType>> rightLocal = new HashMap<String, Set<IType>>(inferredRightVariableTypes);
 		for (Entry<String, Set<IType>> entry : inferredLeftVariableTypes.entrySet()) {
 			final Set<IType> inferredTypes = new LinkedHashSet<IType>();
 			final Set<IType> inferredRightTypes = rightLocal.remove(entry.getKey());
@@ -682,8 +713,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	@Override
 	public Set<IType> caseEnumLiteral(EnumLiteral object) {
 		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
-		possibleTypes.add(new EClassifierType(services.getQueryEnvironment(), object.getLiteral()
-				.getEEnum()));
+		possibleTypes
+				.add(new EClassifierType(services.getQueryEnvironment(), object.getLiteral().getEEnum()));
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -944,8 +975,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services.nothing(
-					"Empty OrderedSet defined in extension")));
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
+					.nothing("Empty OrderedSet defined in extension")));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
@@ -967,8 +998,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services.nothing(
-					"Empty Sequence defined in extension")));
+			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
+					.nothing("Empty Sequence defined in extension")));
 		}
 
 		return checkWarningsAndErrors(object, possibleTypes);
@@ -1031,8 +1062,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final IType booleanObjectType = new ClassType(services.getQueryEnvironment(), Boolean.class);
 			final IType booleanType = new ClassType(services.getQueryEnvironment(), boolean.class);
 			for (IType type : selectorTypes) {
-				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type) || booleanType
-						.isAssignableFrom(type);
+				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type)
+						|| booleanType.isAssignableFrom(type);
 				onlyBoolean = onlyBoolean && assignableFrom;
 				onlyNotBoolean = onlyNotBoolean && !assignableFrom;
 				if (!onlyBoolean && !onlyNotBoolean) {
