@@ -22,8 +22,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * An {@link EOperation} {@link ICompletionProposal}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ * @since 4.1
  */
-public class EOperationCompletionProposal implements ICompletionProposal {
+public class EOperationServiceCompletionProposal implements ICompletionProposal {
 
 	/**
 	 * The {@link EOperation}.
@@ -36,7 +37,7 @@ public class EOperationCompletionProposal implements ICompletionProposal {
 	 * @param eOperation
 	 *            the {@link EOperation}
 	 */
-	public EOperationCompletionProposal(EOperation eOperation) {
+	public EOperationServiceCompletionProposal(EOperation eOperation) {
 		this.eOperation = eOperation;
 	}
 

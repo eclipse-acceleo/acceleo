@@ -101,8 +101,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			result = doSwitch(errors.get(0));
 		} else {
 			// TODO completVariablesNames(???);
-			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
-					.getAst());
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
+					.getAstResult().getAst());
 			result = getExpressionTextFollows(possibleTypes);
 		}
 
@@ -205,8 +205,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	public List<ICompletionProposal> caseErrorEnumLiteral(ErrorEnumLiteral object) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments().get(
-				1)));
+		result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
+				.get(1)));
 
 		return result;
 	}
@@ -234,7 +234,6 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 				}
 			}
 			result.addAll(services.getServiceProposals(collectionTypes, object.getType()));
-			result.addAll(services.getEOperationProposals(collectionTypes));
 		} else {
 			if (object.getArguments().size() == 1) {
 				result.addAll(getExpressionProposals());
@@ -399,8 +398,8 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 	 * 
 	 * @param possibleTypes
 	 *            possible types of the {@link org.eclipse.acceleo.query.ast.Expression Expression}
-	 * @return the {@link TextCompletionProposal} following an {@link org.eclipse.acceleo.query.ast.Expression
-	 *         Expression}
+	 * @return the {@link TextCompletionProposal} following an
+	 *         {@link org.eclipse.acceleo.query.ast.Expression Expression}
 	 */
 	private List<ICompletionProposal> getExpressionTextFollows(Set<IType> possibleTypes) {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();

@@ -25,17 +25,14 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
-import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.JavaMethodServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.VariableDeclarationCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -128,29 +125,6 @@ public class CompletionServices extends ValidationServices {
 			result = new JavaMethodServiceCompletionProposal((JavaMethodService)service);
 		} else {
 			result = null;
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the {@link List} of {@link EOperationCompletionProposal} for {@link EOperation}.
-	 * 
-	 * @param receiverTypes
-	 *            the receiver types.
-	 * @return the {@link List} of {@link EOperationCompletionProposal} for {@link EOperation}
-	 */
-	public List<EOperationCompletionProposal> getEOperationProposals(Set<IType> receiverTypes) {
-		final List<EOperationCompletionProposal> result = new ArrayList<EOperationCompletionProposal>();
-
-		final Set<EClass> eClasses = new LinkedHashSet<EClass>();
-		for (IType type : receiverTypes) {
-			if (type.getType() instanceof EClass) {
-				eClasses.add((EClass)type.getType());
-			}
-		}
-		for (EOperation eOperation : queryEnvironment.getEPackageProvider().getEOperations(eClasses)) {
-			result.add(new EOperationCompletionProposal(eOperation));
 		}
 
 		return result;

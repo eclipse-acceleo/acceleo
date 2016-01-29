@@ -10,26 +10,20 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IEPackageProvider;
-import org.eclipse.acceleo.query.runtime.impl.CacheEPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Before;
@@ -52,8 +46,6 @@ public class EPackageProviderTests {
 
 	public static interface ITestEPackageProvider extends IEPackageProvider {
 
-		Map<Integer, Map<String, List<EOperation>>> getEOperations();
-
 		void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls);
 
 		EPackage registerPackage(EPackage ePackage);
@@ -63,30 +55,6 @@ public class EPackageProviderTests {
 	}
 
 	public static class TestEPackageProvider extends EPackageProvider implements ITestEPackageProvider {
-
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.tests.runtime.impl.EPackageProviderTests.ITestEPackageProvider#getEOperations()
-		 */
-		@Override
-		public Map<Integer, Map<String, List<EOperation>>> getEOperations() {
-			return eOperations;
-		}
-
-	}
-
-	public static class TestCacheEPackageProvider extends CacheEPackageProvider implements ITestEPackageProvider {
-
-		/**
-		 * {@inheritDoc}
-		 *
-		 * @see org.eclipse.acceleo.query.tests.runtime.impl.EPackageProviderTests.ITestEPackageProvider#getEOperations()
-		 */
-		@Override
-		public Map<Integer, Map<String, List<EOperation>>> getEOperations() {
-			return eOperations;
-		}
 
 	}
 
@@ -100,8 +68,7 @@ public class EPackageProviderTests {
 
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> classes() {
-		return Arrays.asList(new Object[][] { {TestEPackageProvider.class, },
-				{TestCacheEPackageProvider.class, }, });
+		return Arrays.asList(new Object[][] {{TestEPackageProvider.class, }, });
 	}
 
 	@Before
@@ -128,82 +95,6 @@ public class EPackageProviderTests {
 		final EPackage ePkg = provider.getEPackage("ecore").iterator().next();
 
 		assertEquals(EcorePackage.eINSTANCE, ePkg);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void lookupEOperationNull() {
-		final EOperation eOperation = provider.lookupEOperation(null, null, null);
-
-		assertEquals(null, eOperation);
-	}
-
-	@Test
-	public void lookupEOperationNotRegistered() {
-		final EOperation eOperation = provider.lookupEOperation(EcorePackage.eINSTANCE.getEObject(),
-				"eClass", new ArrayList<EParameter>());
-
-		assertEquals(null, eOperation);
-	}
-
-	@Test
-	public void lookupEOperationRegistered() {
-		provider.registerPackage(EcorePackage.eINSTANCE);
-
-		final EOperation eOperation = provider.lookupEOperation(EcorePackage.eINSTANCE.getEObject(),
-				"eClass", new ArrayList<EParameter>());
-
-		assertEquals(EcorePackage.eINSTANCE.getEObject__EClass(), eOperation);
-	}
-
-	@Test
-	public void lookupEOperationWithParameterNotRegistered() {
-		final ArrayList<EParameter> parameterTypes = new ArrayList<EParameter>();
-		parameterTypes.addAll(EcorePackage.eINSTANCE.getEObject__EGet__EStructuralFeature().getEParameters());
-		final EOperation eOperation = provider.lookupEOperation(EcorePackage.eINSTANCE.getEObject(), "eGet",
-				parameterTypes);
-
-		assertEquals(null, eOperation);
-	}
-
-	@Test
-	public void lookupEOperationWithParameterRegistered() {
-		provider.registerPackage(EcorePackage.eINSTANCE);
-
-		final ArrayList<EParameter> parameterTypes = new ArrayList<EParameter>();
-		parameterTypes.addAll(EcorePackage.eINSTANCE.getEObject__EGet__EStructuralFeature().getEParameters());
-		final EOperation eOperation = provider.lookupEOperation(EcorePackage.eINSTANCE.getEObject(), "eGet",
-				parameterTypes);
-
-		assertEquals(EcorePackage.eINSTANCE.getEObject__EGet__EStructuralFeature(), eOperation);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void getEOperationsNull() {
-		provider.getEOperations(null);
-	}
-
-	@Test
-	public void getEOperationsNotRegistered() {
-		final Set<EClass> eClasses = new LinkedHashSet<EClass>();
-		eClasses.add(EcorePackage.eINSTANCE.getEObject());
-
-		final Set<EOperation> eOperations = provider.getEOperations(eClasses);
-
-		assertEquals(0, eOperations.size());
-	}
-
-	@Test
-	public void getEOperationsRegistered() {
-		provider.registerPackage(EcorePackage.eINSTANCE);
-
-		final Set<EClass> eClasses = new LinkedHashSet<EClass>();
-		eClasses.add(EcorePackage.eINSTANCE.getEObject());
-
-		final Set<EOperation> eOperations = provider.getEOperations(eClasses);
-
-		assertEquals(15, eOperations.size());
-		final Iterator<EOperation> it = eOperations.iterator();
-		assertEquals(EcorePackage.eINSTANCE.getEObject__EClass(), it.next());
 	}
 
 	@Test
@@ -249,14 +140,14 @@ public class EPackageProviderTests {
 
 	@Test
 	public void getEClassNull() {
-		final Set<EClassifier> eClasses = provider.getEClass(null);
+		final Set<EClassifier> eClasses = provider.getEClassifiers(null);
 
 		assertEquals(null, eClasses);
 	}
 
 	@Test
 	public void getEClassNotRegistered() {
-		final Set<EClassifier> eClasses = provider.getEClass(EObject.class);
+		final Set<EClassifier> eClasses = provider.getEClassifiers(EObject.class);
 
 		assertEquals(null, eClasses);
 	}
@@ -265,7 +156,7 @@ public class EPackageProviderTests {
 	public void getEClassRegistered() {
 		provider.registerPackage(EcorePackage.eINSTANCE);
 
-		final Set<EClassifier> eClasses = provider.getEClass(EObject.class);
+		final Set<EClassifier> eClasses = provider.getEClassifiers(EObject.class);
 
 		assertEquals(1, eClasses.size());
 		assertEquals(EcorePackage.eINSTANCE.getEObject(), eClasses.iterator().next());

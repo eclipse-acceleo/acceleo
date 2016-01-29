@@ -96,8 +96,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Nothing(Couldn't find the customToString(EClassifier=Adress) service or EOperation)</possibleTypes>
-        <validationMessages severity="ERROR" message="Couldn't find the customToString(EClassifier=Adress) service or EOperation" startPosition="4" endPosition="21"/>
+        <possibleTypes>Nothing(Couldn't find the customToString(EClassifier=Adress) service)</possibleTypes>
+        <validationMessages severity="ERROR" message="Couldn't find the customToString(EClassifier=Adress) service" startPosition="4" endPosition="21"/>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.EObjectServices</classesToImport>

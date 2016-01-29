@@ -17,7 +17,12 @@ import java.lang.reflect.Modifier;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.impl.EOperationService;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * Utility for {@link IService}.
@@ -176,6 +181,45 @@ public final class ServiceUtils {
 		for (IService service : services) {
 			queryEnvironment.removeService(service);
 		}
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} for the given {@link EPackage}.
+	 * 
+	 * @param ePkg
+	 *            the {@link EPackage}
+	 * @return the {@link Set} of {@link IService} for the given {@link EPackage}
+	 */
+	public static Set<IService> getServices(EPackage ePkg) {
+		final Set<IService> result = new LinkedHashSet<IService>();
+
+		for (EClassifier eClassifier : ePkg.getEClassifiers()) {
+			if (eClassifier instanceof EClass) {
+				result.addAll(getServices((EClass)eClassifier));
+			}
+		}
+		for (EPackage child : ePkg.getESubpackages()) {
+			result.addAll(getServices(child));
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} for the given {@link EClass}.
+	 * 
+	 * @param eCls
+	 *            the {@link EClass}
+	 * @return the {@link Set} of {@link IService} for the given {@link EClass}
+	 */
+	public static Set<IService> getServices(EClass eCls) {
+		final Set<IService> result = new LinkedHashSet<IService>();
+
+		for (EOperation eOperation : eCls.getEAllOperations()) {
+			result.add(new EOperationService(eOperation));
+		}
+
+		return result;
 	}
 
 }

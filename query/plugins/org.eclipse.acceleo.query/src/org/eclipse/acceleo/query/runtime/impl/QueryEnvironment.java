@@ -13,11 +13,13 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
@@ -93,6 +95,8 @@ public class QueryEnvironment implements IQueryEnvironment {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRegistered(ePackage);
 			}
+			final Set<IService> services = ServiceUtils.getServices(ePackage);
+			ServiceUtils.registerServices(this, services);
 		}
 	}
 

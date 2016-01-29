@@ -41,8 +41,6 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -116,7 +114,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * Gets the {@link IType} for the given service or {@link EOperation} name and {@link IType} of
+	 * Gets the {@link IType} for the given {@link IService#getName() service name} and {@link IType} of
 	 * parameters.
 	 * 
 	 * @param call
@@ -124,10 +122,10 @@ public class ValidationServices extends AbstractLanguageServices {
 	 * @param validationResult
 	 *            the {@link IValidationResult} being constructed
 	 * @param serviceName
-	 *            the service name
+	 *            the {@link IService#getName() service name}
 	 * @param argTypes
 	 *            the {@link IType} of parameters
-	 * @return the {@link IType} for the given service or {@link EOperation} name and {@link IType} of
+	 * @return the {@link IType} for the given {@link IService#getName() service name} and {@link IType} of
 	 *         parameters
 	 */
 	public Set<IType> callType(Call call, IValidationResult validationResult, String serviceName,
@@ -139,28 +137,45 @@ public class ValidationServices extends AbstractLanguageServices {
 		}
 		try {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
-			Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
+			final CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
+			final Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
+			boolean serviceFound = false;
+			boolean emptyCombination = !it.hasNext();
+			List<String> notFoundSignatures = new ArrayList<String>();
 			while (it.hasNext()) {
 				List<IType> currentArgTypes = it.next();
 				IService service = queryEnvironment.getLookupEngine().lookup(serviceName,
 						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
-				if (service == null) {
-					result.addAll(callEOperationType(serviceName, currentArgTypes));
-				} else {
+				if (service != null) {
 					Map<List<IType>, Set<IType>> typeMapping = typesPerService.get(service);
 					if (typeMapping == null) {
 						typeMapping = new LinkedHashMap<List<IType>, Set<IType>>();
 						typesPerService.put(service, typeMapping);
 					}
-					Set<IType> serviceTypes = getServiceTypes(call, validationResult, service,
+					Set<IType> serviceTypes = service.getType(call, this, validationResult, queryEnvironment,
 							currentArgTypes);
 					typeMapping.put(currentArgTypes, serviceTypes);
+					serviceFound = true;
+				} else {
+					notFoundSignatures.add(serviceSignature(serviceName, currentArgTypes));
 				}
 			}
-			for (Entry<IService, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
-				Set<IType> validatedTypes = validateServiceAllTypes(entry.getKey(), entry.getValue());
-				result.addAll(validatedTypes);
+
+			if (!emptyCombination) {
+				if (serviceFound) {
+					for (Entry<IService, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
+						final IService service = entry.getKey();
+						final Map<List<IType>, Set<IType>> types = entry.getValue();
+						Set<IType> validatedTypes = service.validateAllType(this, queryEnvironment, types);
+						result.addAll(validatedTypes);
+					}
+				} else {
+					final StringBuilder builder = new StringBuilder();
+					for (String signature : notFoundSignatures) {
+						builder.append(String.format(SERVICE_NOT_FOUND, signature) + "\n");
+					}
+					result.add(nothing(builder.substring(0, builder.length() - 1)));
+				}
 			}
 
 			return result;
@@ -169,147 +184,6 @@ public class ValidationServices extends AbstractLanguageServices {
 			// CHECKSTYLE:ON
 			throw new AcceleoQueryValidationException(INTERNAL_ERROR_MSG, e);
 		}
-	}
-
-	/**
-	 * Gets the {@link IType} for the given {@link EOperation} name and {@link IType} of parameters.
-	 * 
-	 * @param eOperationName
-	 *            the {@link EOperation#getName() name}
-	 * @param currentArgTypes
-	 *            the {@link IType} of parameters
-	 * @return the {@link IType} for the given service or {@link EOperation} name and {@link IType} of
-	 *         parameters
-	 */
-	private Set<IType> callEOperationType(String eOperationName, List<IType> currentArgTypes) {
-		final Set<IType> result = Sets.newLinkedHashSet();
-
-		if (currentArgTypes.get(0).getType() instanceof EClass) {
-			final List<EParameter> eParameters = getEParameters(currentArgTypes);
-			final EOperation eOperation;
-			if (!eParameters.contains(null)) {
-				final EClass reveiverType = (EClass)eParameters.remove(0).getEType();
-				eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(reveiverType,
-						eOperationName, eParameters);
-				if (eOperation != null) {
-					result.add(getEOperationType(eOperation));
-				} else {
-					result.add(nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(eOperationName,
-							currentArgTypes)));
-				}
-			} else {
-				for (int i = 0; i < currentArgTypes.size(); i++) {
-					if (eParameters.get(i) == null) {
-						result.add(nothing("Couldn't create EClassifier type for %s parameter %s",
-								serviceSignature(eOperationName, currentArgTypes), currentArgTypes.get(i)));
-					}
-				}
-			}
-		} else {
-			result.add(nothing(SERVICE_NOT_FOUND, serviceSignature(eOperationName, currentArgTypes)));
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the {@link List} of {@link EParameter} for given {@link List} of {@link IType}.
-	 * 
-	 * @param types
-	 *            the {@link List} of {@link IType}
-	 * @return the {@link List} of {@link EParameter} for given {@link List} of {@link IType}
-	 */
-	private List<EParameter> getEParameters(List<IType> types) {
-		final List<EParameter> result = new ArrayList<EParameter>();
-
-		for (IType type : types) {
-			result.add(getEParameter(type));
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the {@link EParameter} for given {@link IType}.
-	 * 
-	 * @param type
-	 *            the {@link IType}
-	 * @return the {@link EParameter} for given {@link IType} if any can be created, <code>null</code>
-	 *         otherwise
-	 */
-	private EParameter getEParameter(IType type) {
-		final EParameter result;
-
-		if (type instanceof SequenceType) {
-			result = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-			result.setUpperBound(-1);
-			result.setEType(getEParameter(((SequenceType)type).getCollectionType()).getEType());
-		} else if (type instanceof EClassifierType) {
-			result = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-			result.setEType(((EClassifierType)type).getType());
-		} else if (type instanceof ClassType) {
-			if (type.getType() == null) {
-				result = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-				result.setEType(null);
-			} else {
-				result = null;
-			}
-		} else {
-			throw new IllegalStateException("EParameter with no EClassifier type.");
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets the return {@link IType} of a {@link IService service}.
-	 * 
-	 * @param call
-	 *            the {@link Call}
-	 * @param validationResult
-	 *            the {@link IValidationResult} being constructed
-	 * @param service
-	 *            the {@link IService}
-	 * @param argTypes
-	 *            the {@link IType} of parameters
-	 * @return the return {@link IType} of a {@link IService service}
-	 */
-	private Set<IType> getServiceTypes(Call call, IValidationResult validationResult, IService service,
-			List<IType> argTypes) {
-		return service.getType(call, this, validationResult, queryEnvironment, argTypes);
-	}
-
-	/**
-	 * Gets the validated return {@link IType} of a {@link IService service}.
-	 * 
-	 * @param service
-	 *            the {@link IService}
-	 * @param allTypes
-	 *            the {@link IType} of parameters to possible service types
-	 * @return the validated return {@link IType} of a {@link IService service}
-	 */
-	private Set<IType> validateServiceAllTypes(IService service, Map<List<IType>, Set<IType>> allTypes) {
-		return service.validateAllType(this, queryEnvironment, allTypes);
-	}
-
-	/**
-	 * Gets the return {@link IType} of an {@link EOperation}.
-	 * 
-	 * @param eOperation
-	 *            the {@link EOperation}
-	 * @return the return {@link IType} of a {@link EOperation}
-	 */
-	private IType getEOperationType(EOperation eOperation) {
-		final IType result;
-
-		final IType eClassifierType = new EClassifierType(queryEnvironment, eOperation.getEType());
-		if (eOperation.isMany()) {
-			result = new SequenceType(queryEnvironment, eClassifierType);
-		} else {
-			result = eClassifierType;
-		}
-
-		return result;
 	}
 
 	/**
@@ -481,8 +355,10 @@ public class ValidationServices extends AbstractLanguageServices {
 			for (IType receiverType : receiverTypes) {
 				if (receiverType instanceof ClassType && receiverType.getType() == null) {
 					// Call on the NullLiteral
-					newReceiverTypes.add(new SetType(queryEnvironment, nothing(
-							"The receiving Collection was empty due to a null value being wrapped as a Collection.")));
+					newReceiverTypes
+							.add(new SetType(
+									queryEnvironment,
+									nothing("The receiving Collection was empty due to a null value being wrapped as a Collection.")));
 				} else if (!(receiverType instanceof ICollectionType)
 						&& !(receiverType instanceof NothingType)) {
 					// implicit set conversion.
@@ -570,7 +446,7 @@ public class ValidationServices extends AbstractLanguageServices {
 	private Set<IType> getIType(final Class<?> cls) {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
-		final Set<EClassifier> classifiers = queryEnvironment.getEPackageProvider().getEClass(cls);
+		final Set<EClassifier> classifiers = queryEnvironment.getEPackageProvider().getEClassifiers(cls);
 		if (List.class.isAssignableFrom(cls)) {
 			result.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
 		} else if (Set.class.isAssignableFrom(cls)) {
@@ -631,8 +507,8 @@ public class ValidationServices extends AbstractLanguageServices {
 				} else {
 					result = type2;
 				}
-			} else if (type2.isAssignableFrom(type1) || type2.getType() == EcorePackage.eINSTANCE
-					.getEObject()) {
+			} else if (type2.isAssignableFrom(type1)
+					|| type2.getType() == EcorePackage.eINSTANCE.getEObject()) {
 				if (type1 instanceof EClassifierLiteralType) {
 					result = new EClassifierType(queryEnvironment, ((EClassifierLiteralType)type1).getType());
 				} else {

@@ -32,6 +32,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * Abstract implementation of an {@link org.eclipse.acceleo.query.runtime.IService IService} for
@@ -45,7 +46,7 @@ public class JavaMethodService extends AbstractService {
 	 * The {@link org.eclipse.acceleo.query.runtime.IService#getPriority() priority} for
 	 * {@link JavaMethodService}.
 	 */
-	public static final int PRIORITY = 10;
+	public static final int PRIORITY = 200;
 
 	/**
 	 * The method that realizes the service.
@@ -180,63 +181,44 @@ public class JavaMethodService extends AbstractService {
 	 */
 	@Override
 	public boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes) {
-		final ClassType[] classTypes = getClassTypes(queryEnvironment, argumentTypes);
+		final ClassType[] classTypes = new ClassType[argumentTypes.length];
+
+		for (int i = 0; i < argumentTypes.length; ++i) {
+			Class<?> cls;
+			final IType iType = argumentTypes[i];
+			if (iType instanceof EClassifierLiteralType) {
+				cls = EClass.class;
+			} else if (iType instanceof EClassifierType) {
+				cls = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)iType).getType());
+				if (cls == null) {
+					if (iType.getType() instanceof EClass) {
+						// instances of EClass are EObjects
+						cls = EObject.class;
+					} else {
+						// other instances can be anything
+						cls = Object.class;
+					}
+				}
+			} else if (iType instanceof IJavaType) {
+				cls = ((IJavaType)iType).getType();
+			} else {
+				throw new AcceleoQueryValidationException(iType.getClass().getCanonicalName());
+			}
+
+			if (cls != null) {
+				if ("boolean".equals(cls.getName())) {
+					cls = Boolean.class;
+				} else if ("int".equals(cls.getName())) {
+					cls = Integer.class;
+				} else if ("double".equals(cls.getName())) {
+					cls = Double.class;
+				}
+			}
+
+			classTypes[i] = new ClassType(queryEnvironment, cls);
+		}
 
 		return super.matches(queryEnvironment, classTypes);
-	}
-
-	/**
-	 * Gets the {@link ClassType} argument types from the given {@link IType} argument types.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param iTypes
-	 *            the {@link IType} argument types
-	 * @return the {@link ClassType} argument types from the given {@link IType} argument types
-	 */
-	protected ClassType[] getClassTypes(IReadOnlyQueryEnvironment queryEnvironment, IType[] iTypes) {
-		ClassType[] result = new ClassType[iTypes.length];
-
-		for (int i = 0; i < iTypes.length; ++i) {
-			result[i] = new ClassType(queryEnvironment, getClass(queryEnvironment, iTypes[i]));
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets an {@link Class} from a {@link IType}.
-	 * 
-	 * @param queryEnvironment
-	 *            the {@link IReadOnlyQueryEnvironment}
-	 * @param iType
-	 *            the {@link IType}
-	 * @return an {@link Class} from a {@link IType}
-	 */
-	protected Class<?> getClass(IReadOnlyQueryEnvironment queryEnvironment, IType iType) {
-		Class<?> result;
-
-		if (iType instanceof EClassifierLiteralType) {
-			result = EClass.class;
-		} else if (iType instanceof EClassifierType) {
-			result = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)iType).getType());
-		} else if (iType instanceof IJavaType) {
-			result = ((IJavaType)iType).getType();
-		} else {
-			throw new AcceleoQueryValidationException(iType.getClass().getCanonicalName());
-		}
-
-		if (result != null) {
-			if ("boolean".equals(result.getName())) {
-				result = Boolean.class;
-			} else if ("int".equals(result.getName())) {
-				result = Integer.class;
-			} else if ("double".equals(result.getName())) {
-				result = Double.class;
-			}
-		}
-
-		return result;
 	}
 
 	/**

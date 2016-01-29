@@ -10,34 +10,24 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
-import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.common.util.BasicDiagnostic;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EParameter;
-import org.eclipse.emf.ecore.EcorePackage;
 
 /**
  * Implementation of the elementary language services like variable access and service call.
@@ -114,11 +104,13 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 *            the argument from which types are required
 	 * @return the argument {@link IType} array that corresponds to the specified arguments array
 	 */
-	private ClassType[] getArgumentTypes(Object[] arguments) {
-		ClassType[] argumentTypes = new ClassType[arguments.length];
+	private IType[] getArgumentTypes(Object[] arguments) {
+		IType[] argumentTypes = new IType[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
 			if (arguments[i] == null) {
 				argumentTypes[i] = new ClassType(queryEnvironment, null);
+			} else if (arguments[i] instanceof EObject) {
+				argumentTypes[i] = new EClassifierType(queryEnvironment, ((EObject)arguments[i]).eClass());
 			} else {
 				argumentTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
 			}
@@ -142,11 +134,9 @@ public class EvaluationServices extends AbstractLanguageServices {
 		try {
 			result = service.invoke(arguments);
 			if (result == null && !AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(service.getName())) {
-				IType[] argumentTypes = getArgumentTypes(arguments);
-				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, serviceSignature(service.getName(),
-						argumentTypes));
+				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, service.getShortSignature());
 				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-				// TODO why are we not returning that one?
+				// We do not return the current Nothing because null is a valid value anyway
 			}
 			return result;
 		} catch (AcceleoQueryEvaluationException e) {
@@ -160,7 +150,7 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * Evaluate a service call.
 	 * 
 	 * @param serviceName
-	 *            the name of the {@link IService} or {@link EOperation} that must be evaluated.
+	 *            the @link IService#getName() service name}.
 	 * @param arguments
 	 *            the arguments to pass to the service evaluation.
 	 * @param diagnostic
@@ -179,14 +169,9 @@ public class EvaluationServices extends AbstractLanguageServices {
 			IType[] argumentTypes = getArgumentTypes(arguments);
 			IService service = queryEnvironment.getLookupEngine().lookup(serviceName, argumentTypes);
 			if (service == null) {
-				if (arguments[0] instanceof EObject) {
-					result = callEOperation(serviceName, arguments, diagnostic);
-				} else {
-					Nothing placeHolder = nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName,
-							argumentTypes));
-					addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-					result = placeHolder;
-				}
+				Nothing placeHolder = nothing(SERVICE_NOT_FOUND, serviceSignature(serviceName, argumentTypes));
+				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+				result = placeHolder;
 			} else {
 				result = callService(service, arguments, diagnostic);
 			}
@@ -194,191 +179,6 @@ public class EvaluationServices extends AbstractLanguageServices {
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Calls an {@link EOperation} with the given name and given arguments.
-	 * 
-	 * @param operationName
-	 *            the {@link EOperation#getName() name}
-	 * @param parameters
-	 *            the {@link EOperation#getEParameters() parameters}
-	 * @param diagnostic
-	 *            the {@link Diagnostic}
-	 * @return the {@link EOperation} result if any, {@link Nothing} otherwise
-	 * @throws InvocationTargetException
-	 *             if the {@link EOperation} invocation fails
-	 */
-	private Object callEOperation(String operationName, Object[] parameters, Diagnostic diagnostic)
-			throws InvocationTargetException {
-		final Object result;
-		final Object[] arguments = Arrays.copyOfRange(parameters, 1, parameters.length);
-		final List<Set<EParameter>> eClassifiers = getEParameters(arguments);
-		EOperation eOperation = null;
-		final Object receiver = parameters[0];
-		if (parameters.length > 1) {
-			final Iterator<List<EParameter>> it = new CombineIterator<EParameter>(eClassifiers);
-			while (eOperation == null && it.hasNext()) {
-				eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(((EObject)receiver)
-						.eClass(), operationName, it.next());
-			}
-		} else {
-			eOperation = queryEnvironment.getEPackageProvider().lookupEOperation(((EObject)receiver).eClass(),
-					operationName, new ArrayList<EParameter>());
-		}
-		if (eOperation != null) {
-			final EList<Object> eArguments = new BasicEList<Object>();
-			for (int i = 1; i < parameters.length; ++i) {
-				eArguments.add(parameters[i]);
-			}
-			if (!eOperation.getEContainingClass().isSuperTypeOf(((EObject)receiver).eClass())) {
-				// This will be the case for EObject contained eOperations : eContents, eContainer,
-				// eCrossReferences... are available to be called, but "EObject" is not a modeled super-type
-				// of the receiver; this "eInvoke" will fail. Fall back to plain reflection.
-				result = eOperationJavaInvoke(operationName, receiver, arguments, diagnostic);
-			} else if (hasEInvoke(receiver)) {
-				result = ((EObject)receiver).eInvoke(eOperation, eArguments);
-			} else {
-				result = eOperationJavaInvoke(operationName, receiver, arguments, diagnostic);
-			}
-		} else {
-			final IType[] argumentTypes = getArgumentTypes(parameters);
-			Nothing placeHolder = nothing(SERVICE_EOPERATION_NOT_FOUND, serviceSignature(operationName,
-					argumentTypes));
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			result = placeHolder;
-		}
-		return result;
-	}
-
-	/**
-	 * Call the {@link EOperation} thru a Java invoke.
-	 * 
-	 * @param operationName
-	 *            the {@link EOperation#getName() name}
-	 * @param receiver
-	 *            the receiver
-	 * @param arguments
-	 *            arguments
-	 * @param diagnostic
-	 *            the {@link Diagnostic}
-	 * @return the {@link EOperation} result if any, {@link Nothing} otherwise
-	 * @throws InvocationTargetException
-	 *             if the invoked {@link EOperation} fail
-	 */
-	private Object eOperationJavaInvoke(String operationName, final Object receiver, final Object[] arguments,
-			Diagnostic diagnostic) throws InvocationTargetException {
-		final Object result;
-		final ClassType[] argumentTypes = getArgumentTypes(arguments);
-		final Class<?>[] argumentClasses = getArgumentClasses(argumentTypes);
-		Object invokeResult = null;
-		try {
-			final Method method = receiver.getClass().getMethod(operationName, argumentClasses);
-			invokeResult = method.invoke(receiver, arguments);
-		} catch (NoSuchMethodException e) {
-			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
-					argumentTypes), e.getMessage());
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			invokeResult = placeHolder;
-		} catch (SecurityException e) {
-			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
-					argumentTypes), e.getMessage());
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			invokeResult = placeHolder;
-		} catch (IllegalAccessException e) {
-			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
-					argumentTypes), e.getMessage());
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			invokeResult = placeHolder;
-		} catch (IllegalArgumentException e) {
-			Nothing placeHolder = nothing(COULDN_T_INVOKE_EOPERATION, serviceSignature(operationName,
-					argumentTypes), e.getMessage());
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-			invokeResult = placeHolder;
-		} finally {
-			result = invokeResult;
-		}
-		return result;
-	}
-
-	/**
-	 * Converts the given array of {@link ClassType} to {@link Class}.
-	 * 
-	 * @param argumentTypes
-	 *            the given array of {@link ClassType}
-	 * @return the given array of {@link ClassType} to {@link Class}
-	 * @deprecated we should convert {@link EOperation} call to {@link IService}...
-	 */
-	private Class<?>[] getArgumentClasses(ClassType[] argumentTypes) {
-		final Class<?>[] result = new Class<?>[argumentTypes.length];
-
-		int i = 0;
-		for (ClassType argumentType : argumentTypes) {
-			result[i++] = argumentType.getType();
-		}
-
-		return result;
-	}
-
-	/**
-	 * Try to find out if the Operation reflection is enable for the given {@link Object}.
-	 * 
-	 * @param object
-	 *            the {@link Object} to test.
-	 * @return <code>true</code> if the Operation reflection is enable for the given {@link Object},
-	 *         <code>false</code> otherwise
-	 */
-	private boolean hasEInvoke(Object object) {
-		Method method = null;
-
-		try {
-			method = object.getClass().getDeclaredMethod("eInvoke", int.class, EList.class);
-		} catch (NoSuchMethodException e) {
-			// nothing to do here
-		} catch (SecurityException e) {
-			// nothing to do here
-		}
-
-		return method != null;
-	}
-
-	/**
-	 * Gets the {@link Set} of {@link EParameter} for each given {@link Object}.
-	 * 
-	 * @param objects
-	 *            the {@link List} of {@link Object}
-	 * @return the {@link Set} of {@link EClassifier} for each given {@link Object}
-	 */
-	private List<Set<EParameter>> getEParameters(Object[] objects) {
-		final List<Set<EParameter>> result = new ArrayList<Set<EParameter>>();
-
-		for (Object object : objects) {
-			final Set<EParameter> eParamters = new LinkedHashSet<EParameter>();
-			if (object instanceof List) {
-				final EParameter parameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-				parameter.setUpperBound(-1);
-				parameter.setEType(null);
-				eParamters.add(parameter);
-			} else if (object instanceof EObject) {
-				final EParameter parameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-				parameter.setEType(((EObject)object).eClass());
-				eParamters.add(parameter);
-			} else if (object != null) {
-				for (EClassifier eClassifier : queryEnvironment.getEPackageProvider().getEClass(object
-						.getClass())) {
-					final EParameter parameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-					parameter.setEType(eClassifier);
-					eParamters.add(parameter);
-				}
-			} else {
-				final EParameter parameter = EcorePackage.eINSTANCE.getEcoreFactory().createEParameter();
-				parameter.setEType(null);
-				eParamters.add(parameter);
-			}
-			result.add(eParamters);
 		}
 
 		return result;
@@ -538,16 +338,15 @@ public class EvaluationServices extends AbstractLanguageServices {
 	}
 
 	/**
-	 * build up the specified service's signature for reporting.
+	 * Build up the specified service's signature for reporting. Only use this when the service is not
+	 * available directly, otherwise use {@link IService#getShortSignature() short signature}.
 	 * 
 	 * @param serviceName
-	 *            the name of the service.
+	 *            the name of the service
 	 * @param argumentTypes
-	 *            the service's call argument types.
+	 *            the service's call argument types
 	 * @return the specified service's signature.
-	 * @deprecated use {@link IService#getShortSignature()}
 	 */
-	@Deprecated
 	protected String serviceSignature(String serviceName, IType[] argumentTypes) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(serviceName).append('(');

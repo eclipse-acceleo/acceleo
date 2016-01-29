@@ -35,16 +35,6 @@ public abstract class AbstractLanguageServices {
 	protected static final String SERVICE_NOT_FOUND = "Couldn't find the %s service";
 
 	/**
-	 * Log message used when a called service or EOperation was not found.
-	 */
-	protected static final String SERVICE_EOPERATION_NOT_FOUND = "Couldn't find the %s service or EOperation";
-
-	/**
-	 * Log message used when a called EOperation can't be invoked.
-	 */
-	protected static final String COULDN_T_INVOKE_EOPERATION = "Couldn't invoke the %s EOperation (%s)";
-
-	/**
 	 * Log message used when a requested variable was not found.
 	 */
 	protected static final String VARIABLE_NOT_FOUND = "Couldn't find the %s variable";

@@ -359,7 +359,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			IType type = it.next();
 			assertTrue(type instanceof NothingType);
 			assertEquals(
-					"Couldn't find the eContainer(EClassifier=EStringToStringMapEntry,EClassifierLiteral=EAnnotation) service or EOperation",
+					"Couldn't find the eContainer(EClassifier=EStringToStringMapEntry,EClassifierLiteral=EAnnotation) service",
 					((NothingType)type).getMessage());
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());

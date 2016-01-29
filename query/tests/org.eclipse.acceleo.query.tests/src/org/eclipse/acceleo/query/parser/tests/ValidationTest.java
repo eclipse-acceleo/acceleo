@@ -270,13 +270,12 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
-		assertEquals(2, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
-		assertEquals(2, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service", 1, 9);
-		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.ERROR,
-				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service", 1, 9);
+				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service\nCouldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service",
+				1, 9);
 	}
 
 	@Test
@@ -317,8 +316,8 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service or EOperation",
-				4, 22);
+				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service", 4,
+				22);
 	}
 
 	@Test
@@ -342,16 +341,14 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
-		assertEquals(1, stripNothingTypes(possibleTypes).size());
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
-		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
-				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=SingleString) service or EOperation",
-				5, 30);
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -364,7 +361,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=EIntegerObject) service or EOperation",
+				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=EIntegerObject) service",
 				5, 23);
 	}
 
@@ -887,27 +884,6 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
-	@Test
-	public void eOperationLookupNoEClassifierForClassType() {
-		final Set<IType> nonEMFTypes = new LinkedHashSet<IType>();
-		nonEMFTypes.add(new ClassType(queryEnvironment, Query.class));
-		variableTypes.put("nonEMF", nonEMFTypes);
-
-		final IValidationResult validationResult = engine.validate("self.triggerEOperationLookUp(nonEMF)",
-				variableTypes);
-
-		final Expression ast = validationResult.getAstResult().getAst();
-
-		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
-		assertEquals(1, stripNothingTypes(possibleTypes).size());
-		assertEquals(0, possibleTypes.size());
-		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't create EClassifier type for triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query) parameter org.eclipse.acceleo.query.runtime.Query",
-				4, 36);
-	}
-
-	@Test
 	public void collectionTypeLiteralSequence() {
 		final IValidationResult validationResult = engine.validate("Sequence(String)", variableTypes);
 
