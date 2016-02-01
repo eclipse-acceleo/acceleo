@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.query.services.tests;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -32,7 +30,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -345,22 +342,13 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 	@Test
 	public void testEContainerOnEStringToStringMapEntryBasicMapping() {
-		final List<Set<IType>> argTypes = new ArrayList<Set<IType>>();
-		argTypes.add(createTypeSet(new EClassifierType(getQueryEnvironment(), EcorePackage.eINSTANCE
-				.getEStringToStringMapEntry())));
-		argTypes.add(createTypeSet(new EClassifierLiteralType(getQueryEnvironment(), EcorePackage.eINSTANCE
-				.getEAnnotation())));
-
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-			final Set<IType> types = getValidationServices().callType(null, null, "eContainer", argTypes);
-			assertEquals(1, types.size());
-			Iterator<IType> it = types.iterator();
-			IType type = it.next();
-			assertTrue(type instanceof NothingType);
-			assertEquals(
-					"Couldn't find the eContainer(EClassifier=EStringToStringMapEntry,EClassifierLiteral=EAnnotation) service",
-					((NothingType)type).getMessage());
+
+			final IType[] parameterTypes = new IType[] {new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStringToStringMapEntry()) };
+
+			assertNoService("eContainer", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
 		}
@@ -373,8 +361,8 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerCustomClassMapping(
 					EcorePackage.eINSTANCE.getEStringToStringMapEntry(), EStringToStringMapEntryImpl.class);
 
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEClass()),
-					eClassifierLiteralType(EcorePackage.eINSTANCE.getEAnnotation()) };
+			final IType[] parameterTypes = new IType[] {new EClassifierType(getQueryEnvironment(),
+					EcorePackage.eINSTANCE.getEStringToStringMapEntry()) };
 			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
 					.getEAnnotation()) };
 

@@ -53,6 +53,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
+import org.eclipse.acceleo.query.runtime.impl.ServicesValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -200,21 +201,24 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final List<Set<IType>> argTypes = inferArgTypes(call);
 
 		final String serviceName = call.getServiceName();
+		final ServicesValidationResult servicesValidationResult;
 		switch (call.getType()) {
 			case CALLSERVICE:
-				possibleTypes = services.callType(call, validationResult, serviceName, argTypes);
+				servicesValidationResult = services.callType(call, validationResult, serviceName, argTypes);
 				break;
 			case CALLORAPPLY:
-				possibleTypes = services.callOrApplyTypes(call, validationResult, serviceName, argTypes);
+				servicesValidationResult = services.callOrApplyTypes(call, validationResult, serviceName,
+						argTypes);
 				break;
 			case COLLECTIONCALL:
-				possibleTypes = services.collectionServiceCallTypes(call, validationResult, serviceName,
-						argTypes);
+				servicesValidationResult = services.collectionServiceCallTypes(call, validationResult,
+						serviceName, argTypes);
 				break;
 			default:
 				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 		}
 
+		possibleTypes = servicesValidationResult.getResultingTypes();
 		return checkWarningsAndErrors(call, possibleTypes);
 	}
 

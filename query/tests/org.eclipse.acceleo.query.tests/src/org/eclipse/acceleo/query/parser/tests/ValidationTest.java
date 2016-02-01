@@ -273,7 +273,9 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR,
 				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service\nCouldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service",
 				1, 9);
 	}
@@ -316,8 +318,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service", 4,
-				22);
+				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service", 4, 22);
 	}
 
 	@Test
@@ -436,8 +437,8 @@ public class ValidationTest {
 
 	@Test
 	public void enumLiteralError() {
-		final IValidationResult validationResult = engine.validate("anydsl::Part::NotExisting",
-				variableTypes);
+		final IValidationResult validationResult = engine
+				.validate("anydsl::Part::NotExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -654,7 +655,9 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEPackage(), possibleType.getType());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.WARNING,
 				"The predicate may evaluate to a value that is not a boolean type ([java.lang.Boolean, java.lang.Object]).",
 				0, 38);
 		assertNotNull(validationResult.getPossibleTypes(((Conditional)ast).getTrueBranch()));
@@ -663,8 +666,8 @@ public class ValidationTest {
 
 	@Test
 	public void testLetMaskingVariable() {
-		final IValidationResult validationResult = engine.validate("let stuff = self in stuff",
-				variableTypes);
+		final IValidationResult validationResult = engine
+				.validate("let stuff = self in stuff", variableTypes);
 
 		final Expression ast = validationResult.getAstResult().getAst();
 
@@ -884,6 +887,7 @@ public class ValidationTest {
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
+	@Test
 	public void collectionTypeLiteralSequence() {
 		final IValidationResult validationResult = engine.validate("Sequence(String)", variableTypes);
 
@@ -925,6 +929,30 @@ public class ValidationTest {
 		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((SetType)possibleType).getCollectionType()
 				.getType());
 		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void oclAsTypeManyTypesNoneMatching() {
+		final IValidationResult validationResult = engine.validate(
+				"self.eContainer().oclAsType(ecore::EInt)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertEquals(1, possibleTypes.size());
+		assertTrue(possibleType instanceof NothingType);
+		assertEquals(
+				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with EClassifierLiteral=EInt",
+				((NothingType)possibleType).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR,
+				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with EClassifierLiteral=EInt",
+				17, 40);
 	}
 
 	/**

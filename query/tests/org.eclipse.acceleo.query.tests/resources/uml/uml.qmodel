@@ -156,15 +156,6 @@
         <possibleTypes>EClassifier=EString</possibleTypes>
         <possibleTypes>EClassifier=SingleString</possibleTypes>
         <possibleTypes>EClassifier=String</possibleTypes>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=MultiplicityElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Slot is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameter is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameterSubstitution is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateSignature is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateableElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateBinding is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=LinkEndData is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EAnnotation is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -177,15 +168,6 @@
         <possibleTypes>EClassifier=EString</possibleTypes>
         <possibleTypes>EClassifier=SingleString</possibleTypes>
         <possibleTypes>EClassifier=String</possibleTypes>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=MultiplicityElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Slot is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameter is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameterSubstitution is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateSignature is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateableElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateBinding is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=LinkEndData is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EAnnotation is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
       </expectedResult>
     </expectations>
   </queries>
