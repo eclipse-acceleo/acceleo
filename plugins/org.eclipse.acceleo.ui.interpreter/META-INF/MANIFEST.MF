@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.6.4.qualifier
+Bundle-Version: 3.6.3.qualifier
 Bundle-SymbolicName: org.eclipse.acceleo.ui.interpreter;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.ui.interpreter.InterpreterPlugin
 Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.ui.interpreter";tag=R3_3_0
