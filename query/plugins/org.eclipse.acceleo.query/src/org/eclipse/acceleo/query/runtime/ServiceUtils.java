@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.EPackage;
  * Utility for {@link IService}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
- * @since 4.1
+ * @since 5.0
  */
 public final class ServiceUtils {
 

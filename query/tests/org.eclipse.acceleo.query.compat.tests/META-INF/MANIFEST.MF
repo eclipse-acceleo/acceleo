@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.acceleo.query.compat.tests
-Bundle-Version: 4.1.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-Name: %pluginName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

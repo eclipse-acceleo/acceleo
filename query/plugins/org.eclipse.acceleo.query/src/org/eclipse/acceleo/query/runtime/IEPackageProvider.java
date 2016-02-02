@@ -135,7 +135,7 @@ public interface IEPackageProvider {
 	 *            the {@link Class}
 	 * @return the {@link EClassifier} represented by the given {@link Class} if any, <code>null</code>
 	 *         otherwise
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	Set<EClassifier> getEClassifiers(Class<?> cls);
 

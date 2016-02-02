@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.doc.internal;
 
+import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.body;
+import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.head;
+import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.header;
+import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.html;
+
 import com.google.common.io.Files;
 
 import java.io.File;
@@ -27,11 +32,6 @@ import org.eclipse.acceleo.query.services.NumberServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
-
-import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.body;
-import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.head;
-import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.header;
-import static org.eclipse.acceleo.query.doc.internal.AQLHelpContentUtils.html;
 
 /**
  * Utility class used to generate the Acceleo Query documentation.
@@ -67,10 +67,10 @@ public final class DocumentationGenerator {
 	public static void main(String[] args) {
 		File pluginFolder = new File(args[0]);
 
-		System.out.println("Prepare the generation of the documentation for " + pluginFolder
-				.getAbsolutePath());
+		System.out.println("Prepare the generation of the documentation for "
+				+ pluginFolder.getAbsolutePath());
 
-		File inputFolder = new File(pluginFolder, "input");//$NON-NLS-1$
+		File inputFolder = new File(pluginFolder, "input"); //$NON-NLS-1$
 		File documentationFolder = new File(pluginFolder, "pages"); //$NON-NLS-1$
 		File indexHtmlFile = new File(documentationFolder, "index.html"); //$NON-NLS-1$
 
@@ -88,8 +88,8 @@ public final class DocumentationGenerator {
 		try {
 			List<StringBuffer> sections = AQLHelpContentUtils.computeAQLOverviewSections();
 
-			String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset.forName(
-					UTF8));
+			String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset
+					.forName(UTF8));
 			int indexOfBodyStart = inputHtmlContent.indexOf("<body>");
 			if (indexOfBodyStart != -1 && indexOfBodyStart + 6 < inputHtmlContent.length()) {
 				inputHtmlContent = inputHtmlContent.substring(indexOfBodyStart + 6);
@@ -112,8 +112,8 @@ public final class DocumentationGenerator {
 		for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
 			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
 				try {
-					List<StringBuffer> sections = AQLHelpContentUtils.computeServiceSections(
-							serviceProviderClass);
+					List<StringBuffer> sections = AQLHelpContentUtils
+							.computeServiceSections(serviceProviderClass);
 					StringBuffer stringBuffer = html(head(), body(header(false), sections));
 
 					File file = new File(documentationFolder, AQLHelpContentUtils.AQL_HREF_PREFIX

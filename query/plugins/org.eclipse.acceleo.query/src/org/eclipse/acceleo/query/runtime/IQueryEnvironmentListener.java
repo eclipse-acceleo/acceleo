@@ -29,6 +29,7 @@ public interface IQueryEnvironmentListener {
 	 *            {@link IQueryEnvironment#registerService(IService)}
 	 * @param service
 	 *            the registered {@link IService}
+	 * @since 5.0
 	 */
 	void serviceRegistered(ServiceRegistrationResult result, IService service);
 
@@ -37,6 +38,7 @@ public interface IQueryEnvironmentListener {
 	 * 
 	 * @param service
 	 *            the removed {@link IService}
+	 * @since 5.0
 	 */
 	void serviceRemoved(IService service);
 

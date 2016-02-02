@@ -89,7 +89,7 @@ public final class Query {
 	 * Create a new {@link IQueryEnvironment} with no services configured.
 	 * 
 	 * @return a new {@link IQueryEnvironment} with no services configured.
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	public static IQueryEnvironment newEnvironment() {
 		return new QueryEnvironment();

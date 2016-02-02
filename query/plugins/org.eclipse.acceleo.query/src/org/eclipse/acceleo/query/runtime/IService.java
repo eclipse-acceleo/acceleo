@@ -134,7 +134,7 @@ public interface IService {
 	 * @param service
 	 *            ISe {@link IService} to compare
 	 * @return <code>true</code> if this <= service in terms of parameter types, <code>false</code> otherwise
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	boolean isLowerOrEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
 
@@ -147,7 +147,7 @@ public interface IService {
 	 * @param service
 	 *            the {@link IService} to compare
 	 * @return <code>true</code> if this == service in terms of parameter types, <code>false</code> otherwise
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	boolean isEqualParameterTypes(IReadOnlyQueryEnvironment queryEnvironment, IService service);
 
@@ -162,7 +162,7 @@ public interface IService {
 	 *            the argument {@link IType} to match against the
 	 *            {@link IService#getParameterTypes(IReadOnlyQueryEnvironment) service parameters type}
 	 * @return <code>true</code> when the specified service matches the specified set of types
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	boolean matches(IReadOnlyQueryEnvironment queryEnvironment, IType[] argumentTypes);
 
@@ -174,6 +174,7 @@ public interface IService {
 	 * @param receiverTypes
 	 *            the possible receiver {@link IType}
 	 * @return the {@link List} of {@link ICompletionProposal}
+	 * @since 5.0
 	 */
 	List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
 			Set<IType> receiverTypes);

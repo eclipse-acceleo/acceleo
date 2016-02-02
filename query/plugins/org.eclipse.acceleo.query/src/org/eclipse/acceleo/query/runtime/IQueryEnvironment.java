@@ -26,7 +26,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * @param service
 	 *            the {@link IService} to register.
 	 * @return the {@link ServiceRegistrationResult}
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	ServiceRegistrationResult registerService(IService service);
 
@@ -36,7 +36,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 * 
 	 * @param service
 	 *            the {@link IService} to remove
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	void removeService(IService service);
 
@@ -47,7 +47,7 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	 *            the {@link IService} to check
 	 * @return <code>true</code> if the given {@link IService} is
 	 *         {@link IQueryEnvironment#registerService(IService) registered}, <code>false</code> otherwise
-	 * @since 4.1
+	 * @since 5.0
 	 */
 	boolean isRegisteredService(IService service);
 
