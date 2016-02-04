@@ -192,6 +192,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	public static final String EQUALS_OPERATOR = "=";
 
 	/**
+	 * <code>==<code> operator.
+	 */
+	public static final String EQUALS_JAVA_OPERATOR = "==";
+
+	/**
 	 * <code>&gt;=<code> service name.
 	 */
 	public static final String GREATER_THAN_EQUAL_SERVICE_NAME = "greaterThanEqual";
@@ -412,8 +417,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		 * @param e
 		 *            the {@link RecognitionException}
 		 */
-		private void classifierTypeRuleContextError(Object offendingSymbol, String msg,
-				RecognitionException e) {
+		private void classifierTypeRuleContextError(Object offendingSymbol, String msg, RecognitionException e) {
 			final ClassifierTypeRuleContext ctx = (ClassifierTypeRuleContext)e.getCtx();
 			final Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
@@ -467,8 +471,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			errorRule = QueryParser.RULE_expression;
 			final ErrorExpression errorExpression = builder.errorExpression();
 			pushError(errorExpression, MISSING_EXPRESSION);
-			final Integer position = Integer.valueOf(((IterationCallContext)e.getCtx()).start
-					.getStartIndex());
+			final Integer position = Integer
+					.valueOf(((IterationCallContext)e.getCtx()).start.getStartIndex());
 			startPositions.put(errorExpression, position);
 			endPositions.put(errorExpression, position);
 		}
@@ -534,8 +538,8 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 			final String ePackage = ctx.getParent().getStart().getText();
 			errorRule = QueryParser.RULE_typeLiteral;
-			final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {
-					ePackage, });
+			final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false,
+					new String[] {ePackage, });
 			startPositions.put(errorTypeLiteral, startPosition);
 			endPositions.put(errorTypeLiteral, endPosition);
 			pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
@@ -580,8 +584,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				endPositions.put(errorVariableDeclaration, endPosition);
 				pushError(errorVariableDeclaration, "missing variable declaration");
 			}
-			if (((Token)offendingSymbol).getText().isEmpty() || ")".equals(((Token)offendingSymbol)
-					.getText())) {
+			if (((Token)offendingSymbol).getText().isEmpty()
+					|| ")".equals(((Token)offendingSymbol).getText())) {
 				final ErrorExpression errorExpression = builder.errorExpression();
 				startPositions.put(errorExpression, endPosition);
 				endPositions.put(errorExpression, endPosition);
@@ -620,8 +624,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				errorCollectionCall = builder.errorCall(null, false, receiver);
 			}
 			startPositions.put(errorCollectionCall, startPositions.get(receiver));
-			endPositions.put(errorCollectionCall, Integer.valueOf(((Token)offendingSymbol).getStopIndex()
-					+ 1));
+			endPositions.put(errorCollectionCall, Integer
+					.valueOf(((Token)offendingSymbol).getStopIndex() + 1));
 			pushError(errorCollectionCall, "missing collection service call");
 		}
 
@@ -838,11 +842,12 @@ public class AstBuilderListener extends QueryBaseListener {
 
 			if (!diagnosticStack.isEmpty()) {
 				final List<?> data = diagnosticStack.peek().getData();
-				if (data.get(0).equals(startPositions.get(expression)) && data.get(1).equals(endPositions.get(
-						expression))) {
+				if (data.get(0).equals(startPositions.get(expression))
+						&& data.get(1).equals(endPositions.get(expression))) {
 					final Diagnostic tmpDiagnostic = diagnosticStack.pop();
-					diagnostic.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(), tmpDiagnostic.getSource(),
-							tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(), new Object[] {expression }));
+					diagnostic.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(),
+							tmpDiagnostic.getSource(), tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(),
+							new Object[] {expression }));
 				}
 			}
 
@@ -1248,7 +1253,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			pushBinary(GREATER_THAN_SERVICE_NAME, ctx);
 		} else if (GREATER_THAN_EQUAL_OPERATOR.equals(op)) {
 			pushBinary(GREATER_THAN_EQUAL_SERVICE_NAME, ctx);
-		} else if (EQUALS_OPERATOR.equals(op)) {
+		} else if (EQUALS_OPERATOR.equals(op) || EQUALS_JAVA_OPERATOR.equals(op)) {
 			pushBinary(EQUALS_SERVICE_NAME, ctx);
 		} else if (DIFFERS_OPERATOR.equals(op) || DIFFERS_JAVA_OPERATOR.equals(op)) {
 			pushBinary(DIFFERS_SERVICE_NAME, ctx);
@@ -1284,8 +1289,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				final Expression variableExpression = pop();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(), typeLiteral,
 						variableExpression);
-				endPositions.put(variableDeclaration, Integer.valueOf(((ParserRuleContext)ctx.getChild(
-						2)).stop.getStopIndex() + 1));
+				endPositions.put(variableDeclaration, Integer
+						.valueOf(((ParserRuleContext)ctx.getChild(2)).stop.getStopIndex() + 1));
 			} else {
 				final Expression variableExpression = pop();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
@@ -1359,7 +1364,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			if (eEnumLiterals.size() > 1) {
 				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
 						AMBIGUOUS_ENUM_LITERAL, eEnumLiteralName, eEnumName, ePackageName), new Object[] {
-								startPosition, stopPosition, }));
+						startPosition, stopPosition, }));
 			}
 		}
 		startPositions.put(toPush, startPosition);
@@ -1422,7 +1427,7 @@ public class AstBuilderListener extends QueryBaseListener {
 				if (type.size() > 1) {
 					diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
 							AMBIGUOUS_TYPE_LITERAL, eClassName, ePackageName), new Object[] {startPosition,
-									stopPosition, }));
+							stopPosition, }));
 				}
 			}
 			startPositions.put(toPush, startPosition);
@@ -1515,8 +1520,8 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitExplicitSeqLit(ExplicitSeqLitContext ctx) {
-		final SequenceInExtensionLiteral sequenceInExtension = builder.sequenceInExtension(getExpressions(
-				ctx));
+		final SequenceInExtensionLiteral sequenceInExtension = builder
+				.sequenceInExtension(getExpressions(ctx));
 
 		startPositions.put(sequenceInExtension, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(sequenceInExtension, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1550,8 +1555,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		}
 
 		final Conditional conditional;
-		if (errorRule == QueryParser.RULE_expression || count == CONDITIONAL_CONTEXT_CHILD_COUNT && ctx
-				.getChild(6) instanceof ErrorNode) {
+		if (errorRule == QueryParser.RULE_expression || count == CONDITIONAL_CONTEXT_CHILD_COUNT
+				&& ctx.getChild(6) instanceof ErrorNode) {
 			conditional = builder.errorConditional(predicate, trueBranch, falseBranch);
 			errorRule = NO_ERROR;
 			pushError((ErrorConditional)conditional, "incomplet conditional");

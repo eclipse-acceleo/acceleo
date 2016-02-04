@@ -1407,6 +1407,25 @@ public class BuildTest {
 	}
 
 	@Test
+	public void incompletEqualsJavaStyleTest() {
+		IQueryBuilderEngine.AstResult build = engine.build("self ==");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 7, ast);
+		assertEquals("equals", ((Call)ast).getServiceName());
+		assertEquals(CallType.CALLSERVICE, ((Call)ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
+		assertExpression(build, ErrorExpression.class, 7, 7, ((Call)ast).getArguments().get(1));
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+	}
+
+	@Test
 	public void incompletDiffersTest() {
 		IQueryBuilderEngine.AstResult build = engine.build("self <>");
 		Expression ast = build.getAst();
