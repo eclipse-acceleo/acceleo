@@ -18,9 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nooperationreflection.NoOperationReflection;
-import nooperationreflection.NooperationreflectionPackage;
-
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -52,6 +49,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import nooperationreflection.NoOperationReflection;
+import nooperationreflection.NooperationreflectionPackage;
 
 public class EvaluationTest {
 
@@ -545,6 +545,29 @@ public class EvaluationTest {
 				variables);
 
 		assertEquals("helloworld", result.getResult());
+	}
+
+	@Test
+	public void eOperationWithNothingParameter_487245() {
+		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
+
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", pack);
+		EvaluationResult result = engine.eval(builder.build("self.eGet(notExisting)"), variables);
+
+		assertEquals(null, result.getResult());
+
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
+		assertEquals(2, result.getDiagnostic().getChildren().size());
+
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("Couldn't find the notExisting variable", result.getDiagnostic().getChildren().get(0)
+				.getMessage());
+
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals(
+				"Couldn't find the eGet(EClassifier=EPackage,org.eclipse.acceleo.query.runtime.impl.Nothing) service",
+				result.getDiagnostic().getChildren().get(1).getMessage());
 	}
 
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {
