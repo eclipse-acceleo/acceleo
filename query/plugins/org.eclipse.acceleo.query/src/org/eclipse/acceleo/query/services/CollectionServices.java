@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -1465,7 +1466,19 @@ public class CollectionServices extends AbstractServiceProvider {
 			return sequence;
 		} else {
 			result = Lists.newArrayList(sequence);
-			Collections.sort(result, new LambdaComparator<T>(lambda));
+
+			final Map<T, Object> values = new HashMap<T, Object>();
+			for (T object : result) {
+				try {
+					values.put(object, lambda.eval(new Object[] {object }));
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+
+			Collections.sort(result, new LambdaComparator<T>(values));
 		}
 
 		return result;
@@ -1493,7 +1506,19 @@ public class CollectionServices extends AbstractServiceProvider {
 			return set;
 		} else {
 			List<T> sorted = Lists.newArrayList(set);
-			Collections.sort(sorted, new LambdaComparator<T>(lambda));
+
+			final Map<T, Object> values = new HashMap<T, Object>();
+			for (T object : sorted) {
+				try {
+					values.put(object, lambda.eval(new Object[] {object }));
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// TODO: log the exception.
+				}
+				// CHECKSTYLE:ON
+			}
+
+			Collections.sort(sorted, new LambdaComparator<T>(values));
 			result = Sets.newLinkedHashSet(sorted);
 		}
 
@@ -2643,8 +2668,11 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * Evaluates a lambda then uses the result as comparables.
 	 */
 	private static final class LambdaComparator<T> implements Comparator<T> {
-		/** The lambda providing our comparables. */
-		private final LambdaValue lambda;
+		/**
+		 * Pre-populated map linking the objects from the collection we're sorting with the values calculated
+		 * by this lambda.
+		 */
+		private final Map<T, Object> preComputedValues;
 
 		/**
 		 * Constructs a comparator given its lambda.
@@ -2652,16 +2680,16 @@ public class CollectionServices extends AbstractServiceProvider {
 		 * @param lambda
 		 *            the lambda providing our comparables.
 		 */
-		public LambdaComparator(LambdaValue lambda) {
-			this.lambda = lambda;
+		public LambdaComparator(Map<T, Object> preComputedValues) {
+			this.preComputedValues = preComputedValues;
 		}
 
 		@Override
 		public int compare(T o1, T o2) {
 			final int result;
 
-			Object o1Result = lambda.eval(new Object[] {o1 });
-			Object o2Result = lambda.eval(new Object[] {o2 });
+			Object o1Result = preComputedValues.get(o1);
+			Object o2Result = preComputedValues.get(o2);
 			try {
 				if (o1Result instanceof Comparable<?>) {
 					@SuppressWarnings("unchecked")

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
@@ -1791,6 +1793,44 @@ public class CollectionServicesTest {
 				return clazz.isInstance(args[0]);
 			}
 		};
+	}
+
+	private final class SortedByCounter extends LambdaValue {
+		private int counter = 0;
+
+		/**
+		 * @param literal
+		 * @param variables
+		 * @param envEvaluator
+		 */
+		private SortedByCounter(Lambda literal, Map<String, Object> variables, AstEvaluator envEvaluator) {
+			super(literal, variables, envEvaluator);
+		}
+
+		@Override
+		public Object eval(Object[] args) {
+			counter++;
+			return args[0];
+		}
+	}
+
+	@Test
+	public void sortByPerf() {
+		final int size = 1000000;
+		final List<Object> list = new ArrayList<Object>(size);
+
+		final SortedByCounter nameLambda = new SortedByCounter(null, null, null);
+
+		for (int i = 0; i < size; i++) {
+			list.add(size - i - 1);
+		}
+
+		List<Object> sortedByList = collectionServices.sortedBy(list, nameLambda);
+		assertEquals(size, nameLambda.counter);
+
+		for (int i = 0; i < size; i++) {
+			assertEquals(i, sortedByList.get(i));
+		}
 	}
 
 	@Test
