@@ -34,6 +34,11 @@ public class UnitTestModels {
 		return loadResource(localPath);
 	}
 
+	public Resource reverseEcore() throws URISyntaxException, IOException {
+		String localPath = "ecore/reverse.ecore";
+		return loadResource(localPath);
+	}
+
 	public Resource anydsl() throws URISyntaxException, IOException {
 		String localPath = "anydsl/anyDSLModel.qmodel";
 		return loadResource(localPath);
