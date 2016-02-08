@@ -793,6 +793,156 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void eInverseFeatureNameStringLiteral() {
+		final IValidationResult validationResult = engine
+				.validate("self.eInverse('ePackage')", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eInverseFeatureNameExpression() {
+		final IValidationResult validationResult = engine.validate("self.eInverse('ePac'+'kage')",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(8, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEOperation(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEReference(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
+				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getETypedElement(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eInverse() {
+		final IValidationResult validationResult = engine.validate("self.eInverse()", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(8, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEOperation(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEReference(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
+				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getETypedElement(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eInverseFiltered() {
+		final IValidationResult validationResult = engine.validate(
+				"self.eInverse(ecore::EStructuralFeature)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(2, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEReference(), ((EClassifierType)((SetType)possibleType)
+				.getCollectionType()).getType());
+		possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(),
+				((EClassifierType)((SetType)possibleType).getCollectionType()).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
 	public void booleanLambdaCheck_484375() {
 		final IValidationResult validationResult = engine.validate("Sequence{'hello'}->any(i | i = 'hello')",
 				variableTypes);
@@ -884,6 +1034,28 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eOperationLookupNoEClassifierForClassType() {
+		final Set<IType> nonEMFTypes = new LinkedHashSet<IType>();
+		nonEMFTypes.add(new ClassType(queryEnvironment, Query.class));
+		variableTypes.put("nonEMF", nonEMFTypes);
+
+		final IValidationResult validationResult = engine.validate("self.triggerEOperationLookUp(nonEMF)",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(1, stripNothingTypes(possibleTypes).size());
+		assertEquals(0, possibleTypes.size());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR,
+				"Couldn't find the triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query) service",
+				4, 36);
 	}
 
 	@Test

@@ -899,43 +899,6 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	}
 
 	@Test
-	public void testEInverse() {
-		try {
-			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-
-			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEFactory())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())) };
-
-			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
-		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
-		}
-	}
-
-	@Test
-	public void testEInverseFeatureName() {
-		try {
-			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()), classType(String.class) };
-			final IType[] expectedReturnTypes = new IType[] {
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEFactory())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-					setType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())) };
-
-			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
-		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
-		}
-	}
-
-	@Test
 	public void testEInverseFeatureNameEObject() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);

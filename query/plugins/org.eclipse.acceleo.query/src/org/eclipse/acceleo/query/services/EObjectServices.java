@@ -692,7 +692,7 @@ public class EObjectServices extends AbstractServiceProvider {
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(call, services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SetType(queryEnvironment, services.nothing(
@@ -706,6 +706,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
 		 * {@link EObject} {@link EClass}.
 		 * 
+		 * @param call
+		 *            the {@link Call}
 		 * @param services
 		 *            the {@link ValidationServices}
 		 * @param queryEnvironment
@@ -717,34 +719,94 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services,
+		private Set<IType> getTypeForSpecificType(Call call, ValidationServices services,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			final Set<EClass> inverseEClasses = queryEnvironment.getEPackageProvider().getInverseEClasses(
 					receiverEClass);
 			if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClass)) {
-				for (EClass inverseEClass : inverseEClasses) {
+				result.addAll(getTypeForSpecificTypeNoFilterOrName(call, services, queryEnvironment,
+						argTypes, inverseEClasses));
+			} else if (argTypes.size() == 2) {
+				result.addAll(getTypeForSpecificTypeFilter(services, queryEnvironment, argTypes,
+						inverseEClasses));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Computes {@link IType} for {@link EObjectServices#eInverse(EObject) eInverse(EObject)} and
+		 * {@link EObjectServices#eInverse(EObject, String) eInverse(EObject, String)}.
+		 * 
+		 * @param call
+		 *            the {@link Call}
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param inverseEClasses
+		 *            the {@link Set} of inverse {@link EClass}
+		 * @return the {@link Set} of possible {@link IType}
+		 */
+		private Set<IType> getTypeForSpecificTypeNoFilterOrName(Call call, ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final Set<EClass> inverseEClasses) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final String featureName;
+			if (call.getArguments().size() == 2 && call.getArguments().get(1) instanceof StringLiteral) {
+				featureName = ((StringLiteral)call.getArguments().get(1)).getValue();
+			} else {
+				featureName = null;
+			}
+			for (EClass inverseEClass : inverseEClasses) {
+				if (featureName == null || inverseEClass.getEStructuralFeature(featureName) != null) {
 					result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
 							inverseEClass)));
 				}
-				if (result.isEmpty()) {
-					result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse",
-							argTypes.get(0))));
+			}
+			if (result.isEmpty()) {
+				result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse", argTypes
+						.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Computes {@link IType} for {@link EObjectServices#eInverse(EObject, EClassifier) eInverse(EObject,
+		 * EClassifier)}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param inverseEClasses
+		 *            the {@link Set} of inverse {@link EClass}
+		 * @return the {@link Set} of possible {@link IType}
+		 */
+		private Set<IType> getTypeForSpecificTypeFilter(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final Set<EClass> inverseEClasses) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final IType filterType = argTypes.get(1);
+			for (EClass inverseEClass : inverseEClasses) {
+				final IType lowerType = services.lower(new EClassifierType(queryEnvironment, inverseEClass),
+						filterType);
+				if (lowerType != null) {
+					result.add(new SetType(queryEnvironment, lowerType));
 				}
-			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass inverseEClass : inverseEClasses) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							inverseEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SetType(queryEnvironment, lowerType));
-					}
-				}
-				if (result.isEmpty()) {
-					result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse to %s",
-							argTypes.get(0), filterType)));
-				}
+			}
+			if (result.isEmpty()) {
+				result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse to %s",
+						argTypes.get(0), filterType)));
 			}
 
 			return result;
