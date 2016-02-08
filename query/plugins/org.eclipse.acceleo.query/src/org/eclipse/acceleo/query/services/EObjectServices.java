@@ -1388,8 +1388,11 @@ public class EObjectServices extends AbstractServiceProvider {
 	public List<EObject> allInstances(Set<EClass> types) {
 		final List<EObject> result = Lists.newArrayList();
 
-		if (rootProvider != null) {
+		if (rootProvider != null && types != null) {
 			for (EObject root : rootProvider.getRoots()) {
+				if (eIsInstanceOf(root, types)) {
+					result.add(root);
+				}
 				result.addAll(eAllContents(root, types));
 			}
 		}

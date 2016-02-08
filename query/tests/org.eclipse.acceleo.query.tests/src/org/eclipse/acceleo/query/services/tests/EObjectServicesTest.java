@@ -932,6 +932,19 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 	}
 
 	@Test
+	public void testAllInstancesEClassKeepRootElement() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
+				new RootEObjectProvider(EcorePackage.eINSTANCE, AnydslPackage.eINSTANCE));
+
+		final List<EObject> result = eObjectServices.allInstances(EcorePackage.eINSTANCE.getEPackage());
+
+		assertEquals(2, result.size());
+		assertEquals(EcorePackage.eINSTANCE, result.get(0));
+		assertEquals(AnydslPackage.eINSTANCE, result.get(1));
+	}
+
+	@Test
 	public void testAllInstancesSet() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null,
