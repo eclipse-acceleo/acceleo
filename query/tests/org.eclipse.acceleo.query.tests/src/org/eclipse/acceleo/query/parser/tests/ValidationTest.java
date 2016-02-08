@@ -954,6 +954,38 @@ public class ValidationTest {
 				17, 40);
 	}
 
+	@Test
+	public void eGetWithStringLiteral() {
+		final IValidationResult validationResult = engine.validate("self.eGet('name')", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eGetWithExpression() {
+		final IValidationResult validationResult = engine.validate("self.eGet('na'+'me')", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Object.class, possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
 	/**
 	 * Asserts the given {@link IValidationMessage} against expected values.
 	 * 

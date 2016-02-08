@@ -899,22 +899,6 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	}
 
 	@Test
-	public void testEGet() {
-		try {
-			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-
-			final IType[] parameterTypes = new IType[] {
-					eClassifierType(EcorePackage.eINSTANCE.getEPackage()), classType(String.class) };
-			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
-					.getEJavaObject()) };
-
-			assertValidation(expectedReturnTypes, "eGet", parameterTypes);
-		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
-		}
-	}
-
-	@Test
 	public void testEInverse() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -34,6 +32,7 @@ import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -44,6 +43,7 @@ import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -752,6 +752,61 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
+	 * EGet {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private static final class EGetService extends JavaMethodService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param method
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		public EGetService(Method method, Object serviceInstance) {
+			super(method, serviceInstance);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.JavaMethodService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (call.getArguments().get(1) instanceof StringLiteral) {
+				final String featureName = ((StringLiteral)call.getArguments().get(1)).getValue();
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				final EStructuralFeature feature = eCls.getEStructuralFeature(featureName);
+				if (feature != null) {
+					if (feature.isMany()) {
+						result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
+								feature.getEType())));
+					} else {
+						result.add(new EClassifierType(queryEnvironment, feature.getEType()));
+					}
+				} else {
+					result.add(services.nothing("EStructuralFeature %s not found for %s", featureName,
+							argTypes.get(0)));
+				}
+			} else {
+				result.add(new ClassType(queryEnvironment, Object.class));
+			}
+
+			return result;
+		}
+	}
+
+	/**
 	 * The cross referencer needed to realize the service eInverse().
 	 */
 	private final CrossReferenceProvider crossReferencer;
@@ -812,6 +867,8 @@ public class EObjectServices extends AbstractServiceProvider {
 			result = new AllInstancesService(publicMethod, this);
 		} else if (AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(publicMethod.getName())) {
 			result = new EObjectFeatureAccess(publicMethod, this);
+		} else if ("eGet".equals(publicMethod.getName())) {
+			result = new EGetService(publicMethod, this);
 		} else {
 			result = new JavaMethodService(publicMethod, this);
 		}
@@ -1329,17 +1386,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (eObject == null || featureName == null) {
 			throw new NullPointerException();
 		}
-		Optional<EStructuralFeature> feature = Iterables.tryFind(
-				eObject.eClass().getEAllStructuralFeatures(), new Predicate<EStructuralFeature>() {
-					@Override
-					public boolean apply(EStructuralFeature input) {
-						return input != null && featureName.equals(input.getName());
-					}
-				});
+		final EStructuralFeature feature = eObject.eClass().getEStructuralFeature(featureName);
 
 		Object result = null;
-		if (feature.isPresent()) {
-			result = eObject.eGet(feature.get());
+		if (feature != null) {
+			result = eObject.eGet(feature);
 		}
 
 		if (result instanceof Set<?>) {
