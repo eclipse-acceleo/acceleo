@@ -2329,6 +2329,159 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(ImmutableSet.of(setType(classType(null))), types);
 	}
 
+	@Test
+	public void testFilterList() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
+						eClassifierType(EcorePackage.eINSTANCE.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))),
+				types);
+	}
+
+	@Test
+	public void testFilterListMultipleTypes() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EDataType})",
+				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
+						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+	}
+
+	@Test
+	public void testFilterListMultipleTypesSameHierarchy() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"Sequence{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
+				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
+						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testFilterListNull() {
+		final IValidationResult validationResult = validate("Sequence{'hello'}->filter(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing will be left after calling filter:\nEClassifier on filter cannot be null.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testFilterOnNull() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate("null->filter(ecore::EClass)",
+				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
+						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing will be left after calling filter:\nThe Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testFilterSet() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter(ecore::EClass)", new VariableBuilder().addVar("pkg",
+						eClassifierType(EcorePackage.eINSTANCE.getEPackage())).build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+	}
+
+	@Test
+	public void testFilterSetMultipleTypes() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EDataType})",
+				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
+						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+	}
+
+	@Test
+	public void testFilterSetMultipleTypesSameHierarchy() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IValidationResult validationResult = validate(
+				"OrderedSet{pkg}.eClassifiers->filter({ecore::EClass | ecore::EClassifier})",
+				new VariableBuilder().addVar("pkg", eClassifierType(EcorePackage.eINSTANCE.getEPackage()))
+						.build());
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+	}
+
+	@Test
+	public void testFilterSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->filter(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing will be left after calling filter:\nEClassifier on filter cannot be null.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 

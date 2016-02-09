@@ -693,7 +693,15 @@ public class CollectionServices extends AbstractServiceProvider {
 
 			final Set<EClassifierType> rawTypes = Sets.newLinkedHashSet();
 
-			if (argTypes.get(1) instanceof EClassifierType) {
+			final IType receiverType = argTypes.get(0);
+			if (receiverType instanceof NothingType) {
+				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
+				result.add(receiverType);
+			} else if (argTypes.get(1) instanceof ClassType && ((ClassType)argTypes.get(1)).getType() == null) {
+				result.add(services.nothing("EClassifier on %s cannot be null.", getName()));
+			} else if (argTypes.get(1) instanceof EClassifierType) {
 				rawTypes.add(new EClassifierType(queryEnvironment, ((EClassifierType)argTypes.get(1))
 						.getType()));
 			} else if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
