@@ -16,8 +16,10 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -33,6 +35,15 @@ import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
+import org.eclipse.acceleo.query.services.AnyServices;
+import org.eclipse.acceleo.query.services.BooleanServices;
+import org.eclipse.acceleo.query.services.CollectionServices;
+import org.eclipse.acceleo.query.services.ComparableServices;
+import org.eclipse.acceleo.query.services.EObjectServices;
+import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.ResourceServices;
+import org.eclipse.acceleo.query.services.StringServices;
+import org.eclipse.acceleo.query.services.XPathServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
@@ -1327,6 +1338,45 @@ public class LookupEngineTest {
 				.getQueryEnvironment(), EClassifier.class) });
 
 		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupPerf() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		final Map<String, IType[]> services = new LinkedHashMap<String, IType[]>();
+
+		registerServices(engine);
+		for (IService service : engine.getRegisteredServices()) {
+			services.put(service.getName(), service.getParameterTypes(engine.getQueryEnvironment()).toArray(
+					new IType[service.getNumberOfParameters()]));
+		}
+
+		System.out.println(services.size());
+		for (int i = 0; i < 10000; i++) {
+			for (Entry<String, IType[]> entry : services.entrySet()) {
+				assertNotNull(engine.lookup(entry.getKey(), entry.getValue()));
+			}
+		}
+	}
+
+	private void registerServices(ITestLookupEngine engine) {
+		Set<IService> services = ServiceUtils.getServices(engine.getQueryEnvironment(), new AnyServices(
+				engine.getQueryEnvironment()));
+		services = ServiceUtils.getServices(engine.getQueryEnvironment(), new EObjectServices(engine
+				.getQueryEnvironment(), null, null));
+		services = ServiceUtils.getServices(engine.getQueryEnvironment(), new XPathServices(engine
+				.getQueryEnvironment()));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ComparableServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), NumberServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), StringServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), BooleanServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), CollectionServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ResourceServices.class));
+
+		for (IService service : services) {
+			engine.registerService(service);
+		}
 	}
 
 }

@@ -21,6 +21,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -52,7 +53,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	public QueryEnvironment() {
 		ePackageProvider = new EPackageProvider();
-		lookupEngine = new BasicLookupEngine(this);
+		lookupEngine = new CacheLookupEngine(this);
 	}
 
 	@Override
