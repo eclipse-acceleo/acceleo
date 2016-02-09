@@ -148,7 +148,11 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=NamedElement)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Company)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Food)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Producer)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Chef)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Recipe)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>

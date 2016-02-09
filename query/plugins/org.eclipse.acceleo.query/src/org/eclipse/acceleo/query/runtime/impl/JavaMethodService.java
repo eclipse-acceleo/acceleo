@@ -289,4 +289,25 @@ public class JavaMethodService extends AbstractService {
 		return result;
 	}
 
+	/**
+	 * Creates a collection corresponding to this java method's {@link Method#getReturnType() return type}
+	 * (either Sequence or Set) with the given type as collection type.
+	 * 
+	 * @param queryEnvironment
+	 *            The query environment.
+	 * @param collectionType
+	 *            The type of the content for the new collection type.
+	 * @return The created collection, <code>collectionType</code> itself if the java method's
+	 *         {@link Method#getReturnType() return type} was not a collection.
+	 */
+	protected IType createReturnCollectionWithType(IReadOnlyQueryEnvironment queryEnvironment,
+			IType collectionType) {
+		IType result = collectionType;
+		if (List.class.isAssignableFrom(getMethod().getReturnType())) {
+			result = new SequenceType(queryEnvironment, collectionType);
+		} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
+			result = new SetType(queryEnvironment, collectionType);
+		}
+		return result;
+	}
 }

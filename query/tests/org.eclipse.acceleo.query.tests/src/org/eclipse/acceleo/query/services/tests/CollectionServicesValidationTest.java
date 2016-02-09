@@ -203,7 +203,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testSortedBySet() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
 				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
 	}
@@ -827,7 +827,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testRejectNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
 				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in a reject must return a boolean") };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("expression in a reject must return a boolean")) };
 
 		assertValidation(expectedReturnTypes, "reject", parameterTypes);
 	}
@@ -870,7 +870,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testSelectNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
 				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in a select must return a boolean") };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("expression in a select must return a boolean")) };
 
 		assertValidation(expectedReturnTypes, "select", parameterTypes);
 	}
@@ -1002,17 +1002,49 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testSumList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
+	public void testSumListInt() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumListReal() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Double.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
 
 	@Test
-	public void testSumSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
+	public void testSumListNotNumber() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType("Sum can only be used on a collection of numbers.") };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumSetInt() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumSetReal() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Double.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumSetNotNumber() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType("Sum can only be used on a collection of numbers.") };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
@@ -1074,7 +1106,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}
-
 
 	@Test
 	public void testFilterSetEClassifierSet() {

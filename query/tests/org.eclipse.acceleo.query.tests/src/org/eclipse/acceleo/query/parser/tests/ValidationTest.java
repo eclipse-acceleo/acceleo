@@ -541,9 +541,9 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof SetType);
-		assertTrue(((SetType)possibleType).getCollectionType() instanceof NothingType);
-		assertEquals("Empty Sequence defined in extension", ((NothingType)((SetType)possibleType)
+		assertTrue(possibleType instanceof SequenceType);
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof NothingType);
+		assertEquals("Empty Sequence defined in extension", ((NothingType)((SequenceType)possibleType)
 				.getCollectionType()).getMessage());
 	}
 
@@ -864,8 +864,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"The receiving Collection was empty due to a null value being wrapped as a Collection.", 4,
-				13);
+				"The Collection was empty due to a null value being wrapped as a Collection.", 4, 13);
 	}
 
 	@Test

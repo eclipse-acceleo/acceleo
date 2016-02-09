@@ -974,7 +974,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
+			possibleTypes.add(new SequenceType(services.getQueryEnvironment(), services
 					.nothing("Empty Sequence defined in extension")));
 		}
 

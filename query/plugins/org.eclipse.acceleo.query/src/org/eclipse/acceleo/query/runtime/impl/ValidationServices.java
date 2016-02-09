@@ -322,7 +322,7 @@ public class ValidationServices extends AbstractLanguageServices {
 					newReceiverTypes
 							.add(new SetType(
 									queryEnvironment,
-									nothing("The receiving Collection was empty due to a null value being wrapped as a Collection.")));
+									nothing("The Collection was empty due to a null value being wrapped as a Collection.")));
 				} else if (!(receiverType instanceof ICollectionType)
 						&& !(receiverType instanceof NothingType)) {
 					// implicit set conversion.
