@@ -62,7 +62,7 @@ public class EObjectServicesPerformanceTest {
 	public void before() throws Exception {
 		this.queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		this.queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
-		this.eObjectService = new EObjectServices(queryEnvironment, null, null);
+		this.eObjectService = new EObjectServices(queryEnvironment);
 	}
 
 	@Test
