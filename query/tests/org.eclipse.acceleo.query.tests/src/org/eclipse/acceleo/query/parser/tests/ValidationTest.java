@@ -277,7 +277,7 @@ public class ValidationTest {
 				validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR,
 				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service\nCouldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service",
-				1, 9);
+				0, 9);
 	}
 
 	@Test

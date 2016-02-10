@@ -141,7 +141,17 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final AstResult astResult = validationResult.getAstResult();
 			final int startPostion;
 			if (expression instanceof Call) {
-				startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+				final String serviceName = ((Call)expression).getServiceName();
+				if (AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(serviceName)) {
+					if (AstBuilderListener.NOT_OPERATOR.equals(serviceName)
+							|| AstBuilderListener.UNARY_MIN_OPERATOR.equals(serviceName)) {
+						startPostion = astResult.getStartPosition(expression);
+					} else {
+						startPostion = astResult.getStartPosition(((Call)expression).getArguments().get(0));
+					}
+				} else {
+					startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+				}
 			} else {
 				startPostion = astResult.getStartPosition(expression);
 			}
