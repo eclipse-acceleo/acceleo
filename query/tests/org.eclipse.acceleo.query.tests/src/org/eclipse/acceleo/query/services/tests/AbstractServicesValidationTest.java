@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
+import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -164,4 +167,19 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 		return result;
 	}
+
+	protected IValidationResult validate(String expression, Map<String, Set<IType>> vars) {
+		final Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
+		if (vars != null) {
+			variableTypes.putAll(vars);
+		}
+
+		final IQueryValidationEngine builder = new QueryValidationEngine(getQueryEnvironment());
+		return builder.validate(expression, variableTypes);
+	}
+
+	protected IValidationResult validate(String expression) {
+		return validate(expression, null);
+	}
+
 }

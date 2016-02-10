@@ -18,10 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
-import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
@@ -36,25 +34,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CollectionServicesAstValidationTest extends AbstractServicesValidationTest {
-
-	@Override
-	public void before() throws Exception {
-		super.before();
-	}
-
-	private IValidationResult validate(String expression, Map<String, Set<IType>> vars) {
-		final Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
-		if (vars != null) {
-			variableTypes.putAll(vars);
-		}
-
-		final IQueryValidationEngine builder = new QueryValidationEngine(getQueryEnvironment());
-		return builder.validate(expression, variableTypes);
-	}
-
-	private IValidationResult validate(String expression) {
-		return validate(expression, null);
-	}
 
 	@Test
 	public void testConcatEmptyListEmptyList() {

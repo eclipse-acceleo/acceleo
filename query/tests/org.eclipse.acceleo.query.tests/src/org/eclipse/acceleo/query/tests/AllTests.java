@@ -28,6 +28,7 @@ import org.eclipse.acceleo.query.runtime.test.FilterCamelCaseTest;
 import org.eclipse.acceleo.query.runtime.test.ShortcutEvaluationTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesValidationTest;
+import org.eclipse.acceleo.query.services.tests.BooleanServicesAstValidationTest;
 import org.eclipse.acceleo.query.services.tests.BooleanServicesTest;
 import org.eclipse.acceleo.query.services.tests.BooleanServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.CollectionServicesAstValidationTest;
@@ -78,8 +79,9 @@ import org.junit.runners.Suite.SuiteClasses;
 		CombineIteratorTest.class, CompletionTest.class, EvaluationTest.class, LexerTest.class,
 		ValidationTest.class, BasicLookupCrossReferencerTest.class, BasicLookupTest.class,
 		EvaluationServiceStatusTests.class, EvaluationServicesTest.class, AnyServicesTest.class,
-		AnyServicesValidationTest.class, BooleanServicesTest.class, BooleanServicesValidationTest.class,
-		CollectionServicesTest.class, CollectionServicesValidationTest.class, ComparableServicesTest.class,
+		BooleanServicesAstValidationTest.class, AnyServicesValidationTest.class, BooleanServicesTest.class,
+		BooleanServicesValidationTest.class, CollectionServicesTest.class,
+		CollectionServicesValidationTest.class, ComparableServicesTest.class,
 		ComparableServicesValidationTest.class, EObjectServicesTest.class, XPathServicesTest.class,
 		EObjectServicesValidationTest.class, XPathServicesValidationTest.class, NumberServicesTest.class,
 		NumberServicesValidationTest.class, StringServicesTest.class, StringServicesValidationTest.class,
