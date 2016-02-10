@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.services.tests;
 
 import com.google.common.collect.ImmutableSet;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -2480,6 +2481,318 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertTrue(type instanceof SetType);
 		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
 		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testSepList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testSepListNull() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
+				types);
+	}
+
+	@Test
+	public void testSepOnNull() {
+		final IValidationResult validationResult = validate("null->sep(' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(2, types.size());
+		Iterator<IType> typeItr = types.iterator();
+		IType type = typeItr.next();
+		if (!type.equals(sequenceType(classType(String.class)))) {
+			assertTrue(type instanceof SequenceType);
+			assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+			assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+			type = typeItr.next();
+			assertEquals(sequenceType(classType(String.class)), type);
+		} else {
+			type = typeItr.next();
+			assertTrue(type instanceof SequenceType);
+			assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+			assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+		}
+	}
+
+	@Test
+	public void testSepSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testSepSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
+				types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullPrefixNullSeparatorNullSuffix() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(null, null, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
+				types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullSeparatorNullSuffix() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(1, null, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullSuffix() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(1, 2, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullSeparator() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(1, null, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullPrefixNullSuffix() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(null, 2, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullPrefixNullSeparator() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(null, null, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixListNullPrefix() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(null, 2, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(1, 2, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixOnNull() {
+		final IValidationResult validationResult = validate("null->sep(1, 2, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(2, types.size());
+		Iterator<IType> typeItr = types.iterator();
+		IType type = typeItr.next();
+		if (!type.equals(sequenceType(classType(Integer.class)))) {
+			assertTrue(type instanceof SequenceType);
+			assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+			assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+			type = typeItr.next();
+			assertEquals(sequenceType(classType(Integer.class)), type);
+		} else {
+			type = typeItr.next();
+			assertTrue(type instanceof SequenceType);
+			assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+			assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+		}
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullPrefixNullSeparatorNullSuffix() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, null, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
+				types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullSeparatorNullSuffix() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(1, null, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullSuffix() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(1, 2, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullSeparator() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(1, null, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullPrefixNullSuffix() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, 2, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullPrefixNullSeparator() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, null, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSetNullPrefix() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, 2, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+	}
+
+	@Test
+	public void testSepPrefixSuffixSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(1, 2, 3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(String.class))), types);
 	}
 
 	private static class VariableBuilder {
