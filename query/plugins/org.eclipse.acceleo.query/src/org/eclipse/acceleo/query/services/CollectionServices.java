@@ -1186,12 +1186,15 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			newList = Lists.newArrayList();
 			for (T elt : sequence) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.TRUE.equals(value)) {
-					newList.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a select must return a boolean value.");
+				try {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.TRUE.equals(value)) {
+						newList.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					// TODO: log the exception.
 				}
 			}
 		}
@@ -1221,12 +1224,15 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			newSet = Sets.newLinkedHashSet();
 			for (T elt : set) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.TRUE.equals(value)) {
-					newSet.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a select must return a boolean value.");
+				try {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.TRUE.equals(value)) {
+						newSet.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					// TODO: log the exception.
 				}
 			}
 		}
@@ -1256,12 +1262,15 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			newSet = Sets.newLinkedHashSet();
 			for (T elt : set) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.FALSE.equals(value)) {
-					newSet.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a reject must return a boolean value.");
+				try {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.FALSE.equals(value)) {
+						newSet.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					// TODO: log the exception.
 				}
 			}
 		}
@@ -1400,17 +1409,23 @@ public class CollectionServices extends AbstractServiceProvider {
 			do {
 				added = Sets.newLinkedHashSet();
 				for (Object current : currentSet) {
-					final Object lambdaResult = lambda.eval(new Object[] {current });
-					if (lambdaResult instanceof Collection) {
-						for (Object child : (Collection<?>)lambdaResult) {
-							if (result.add(child)) {
-								added.add(child);
+					try {
+						final Object lambdaResult = lambda.eval(new Object[] {current });
+						if (lambdaResult instanceof Collection) {
+							for (Object child : (Collection<?>)lambdaResult) {
+								if (result.add(child)) {
+									added.add(child);
+								}
+							}
+						} else if (lambdaResult != null && !(lambdaResult instanceof Nothing)) {
+							if (result.add(lambdaResult)) {
+								added.add(lambdaResult);
 							}
 						}
-					} else if (lambdaResult != null && !(lambdaResult instanceof Nothing)) {
-						if (result.add(lambdaResult)) {
-							added.add(lambdaResult);
-						}
+						// CHECKSTYLE:OFF
+					} catch (Exception e) {
+						// CHECKSTYLE:ON
+						// TODO: log the exception.
 					}
 				}
 				currentSet = added;
@@ -2138,13 +2153,16 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		if (collection != null && lambda != null) {
 			for (Object input : collection) {
-				Object value = lambda.eval(new Object[] {input });
-				if (Boolean.TRUE.equals(value)) {
-					result = Boolean.TRUE;
-					break;
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within exists must return a boolean value.");
+				try {
+					Object value = lambda.eval(new Object[] {input });
+					if (Boolean.TRUE.equals(value)) {
+						result = Boolean.TRUE;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					// TODO: log the exception.
 				}
 			}
 		}
@@ -2174,13 +2192,18 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Boolean.FALSE;
 		} else {
 			for (Object input : collection) {
-				Object value = lambda.eval(new Object[] {input });
-				if (value instanceof Boolean && !Boolean.TRUE.equals(value)) {
+				try {
+					Object value = lambda.eval(new Object[] {input });
+					if (!(value instanceof Boolean) || !Boolean.TRUE.equals(value)) {
+						result = Boolean.FALSE;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					// TODO: log the exception.
 					result = Boolean.FALSE;
 					break;
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within exists must return a boolean value.");
 				}
 			}
 		}
@@ -2288,14 +2311,18 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = false;
 		} else {
 			for (Object input : self) {
-				Object value = lambda.eval(new Object[] {input });
-				if (Boolean.TRUE.equals(value)) {
-					result = !result;
-					if (!result) {
-						break;
+				try {
+					Object value = lambda.eval(new Object[] {input });
+					if (Boolean.TRUE.equals(value)) {
+						result = !result;
+						if (!result) {
+							break;
+						}
 					}
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException("Expression in one must return a boolean value.");
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					// TODO: log the exception.
 				}
 			}
 		}

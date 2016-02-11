@@ -1831,13 +1831,14 @@ public class CollectionServicesTest {
 		assertTrue(filtered.isEmpty());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSelectListNotBooleanLambda() {
 		List<String> list = Lists.newArrayList();
 		list.add("a");
 		list.add("b");
 		list.add("c");
-		collectionServices.select(list, createSelfLambda());
+		List<String> result = collectionServices.select(list, createSelfLambda());
+		assertTrue(result.isEmpty());
 	}
 
 	@Test
@@ -1878,13 +1879,14 @@ public class CollectionServicesTest {
 		assertTrue(filtered.isEmpty());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSelectSetNotBooleanLambda() {
 		Set<String> set = Sets.newLinkedHashSet();
 		set.add("a");
 		set.add("b");
 		set.add("c");
-		collectionServices.select(set, createSelfLambda());
+		Set<String> result = collectionServices.select(set, createSelfLambda());
+		assertTrue(result.isEmpty());
 	}
 
 	@Test
@@ -1979,13 +1981,14 @@ public class CollectionServicesTest {
 		assertTrue(filtered.isEmpty());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testRejectSetNotBooleanLambda() {
 		Set<String> set = Sets.newLinkedHashSet();
 		set.add("a");
 		set.add("b");
 		set.add("c");
-		collectionServices.reject(set, createSelfLambda());
+		Set<String> result = collectionServices.reject(set, createSelfLambda());
+		assertTrue(result.isEmpty());
 	}
 
 	@Test
@@ -3332,7 +3335,7 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testExistsSetNotBooleanLambda() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -3340,10 +3343,11 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		collectionServices.exists(set, createSelfLambda());
+		Boolean result = collectionServices.exists(set, createSelfLambda());
+		assertFalse(result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testExistsListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -3351,7 +3355,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		collectionServices.exists(list, createSelfLambda());
+		Boolean result = collectionServices.exists(list, createSelfLambda());
+		assertFalse(result);
 	}
 
 	@Test
@@ -3415,7 +3420,7 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testForAllSetNotBooleanLambda() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -3423,10 +3428,11 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		collectionServices.forAll(set, createSelfLambda());
+		Boolean result = collectionServices.forAll(set, createSelfLambda());
+		assertFalse(result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testForAllListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -3434,7 +3440,8 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		collectionServices.forAll(list, createSelfLambda());
+		Boolean result = collectionServices.forAll(list, createSelfLambda());
+		assertFalse(result);
 	}
 
 	@Test
@@ -3915,22 +3922,24 @@ public class CollectionServicesTest {
 		assertEquals(Boolean.FALSE, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testOneSetNotBooleanLambda() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
-		collectionServices.one(set, createSelfLambda());
+		Boolean result = collectionServices.one(set, createSelfLambda());
+		assertFalse(result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testOneListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
-		collectionServices.one(list, createSelfLambda());
+		Boolean result = collectionServices.one(list, createSelfLambda());
+		assertFalse(result);
 	}
 
 	@Test
