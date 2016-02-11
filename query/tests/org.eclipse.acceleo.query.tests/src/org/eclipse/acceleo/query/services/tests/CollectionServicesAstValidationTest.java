@@ -2795,6 +2795,111 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				sequenceType(classType(String.class))), types);
 	}
 
+	@Test
+	public void testLastList() {
+		final IValidationResult validationResult = validate("Sequence{'hello'}->last()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(String.class)), types);
+	}
+
+	@Test
+	public void testLastEmptyList() {
+		final IValidationResult validationResult = validate("Sequence{}->last()");
+
+		String message = "Empty Sequence defined in extension";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testLastListMultipleTypes() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 1}->last()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testLastOnNull() {
+		final IValidationResult validationResult = validate("null->last()");
+
+		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testLastSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->last()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(String.class)), types);
+	}
+
+	@Test
+	public void testLastSetMultipleTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 1}->last()");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testLastEmptySet() {
+		final IValidationResult validationResult = validate("OrderedSet{}->last()");
+
+		String message = "Empty OrderedSet defined in extension";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
