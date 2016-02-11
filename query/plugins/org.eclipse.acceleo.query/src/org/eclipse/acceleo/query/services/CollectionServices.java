@@ -877,8 +877,6 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new ClosureService(publicMethod, this);
 		} else if ("including".equals(publicMethod.getName()) || "prepend".equals(publicMethod.getName())) {
 			result = new IncludingService(publicMethod, this);
-		} else if ("add".equals(publicMethod.getName())) {
-			result = new IncludingService(publicMethod, this);
 		} else if ("sep".equals(publicMethod.getName())) {
 			if (publicMethod.getParameterTypes().length == 2) {
 				result = new JavaMethodService(publicMethod, this) {
