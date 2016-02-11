@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.tests.ValidationTest;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
@@ -461,10 +462,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("self->add('hello'->asSequence())", variables
 				.build());
 
-		assertFalse(validationResult.getMessages().isEmpty());
-		assertEquals("Empty", validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
 		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "Empty", 0, 4);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -477,10 +477,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		VariableBuilder variables = new VariableBuilder().addVar("self", nothingType("Empty"));
 		final IValidationResult validationResult = validate("self->add('hello'->asSet())", variables.build());
 
-		assertFalse(validationResult.getMessages().isEmpty());
-		assertEquals("Empty", validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
 		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "Empty", 0, 4);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -546,10 +545,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello'}->add(self)", variables
 				.build());
 
-		assertFalse(validationResult.getMessages().isEmpty());
-		assertEquals("Empty", validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
 		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "Empty", 25, 29);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -589,10 +587,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		VariableBuilder variables = new VariableBuilder().addVar("self", nothingType("Empty"));
 		final IValidationResult validationResult = validate("Sequence{'hello'}->add(self)", variables.build());
 
-		assertFalse(validationResult.getMessages().isEmpty());
-		assertEquals("Empty", validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
 		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "Empty", 23, 27);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1147,10 +1144,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->first()");
 
 		String message = "Empty Sequence defined in extension";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, message, 10, 19);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1178,10 +1174,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->first()");
 
 		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, message, 4, 13);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1221,10 +1216,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->first()");
 
 		String message = "Empty OrderedSet defined in extension";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, message, 12, 21);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1300,10 +1294,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->asSequence()->at(0)");
 
 		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, message, 18, 25);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1737,10 +1730,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello'}->select(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 30, 51);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1753,10 +1745,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello'}->select(i | not i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 34, 56);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1832,10 +1823,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello'}->select(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 32, 53);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1848,10 +1838,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello'}->select(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 32, 54);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2064,10 +2053,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 40, 61);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2080,10 +2068,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{1, 2}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of java.lang.String";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 28, 49);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2170,10 +2157,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 42, 63);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2186,10 +2172,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{1, 2}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of java.lang.String";
-		assertFalse(validationResult.getMessages().isEmpty());
 		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(message, validationResult.getMessages().get(0).getMessage());
-		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, message, 30, 51);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
