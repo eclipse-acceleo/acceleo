@@ -3313,6 +3313,90 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(message, ((NothingType)type).getMessage());
 	}
 
+	@Test
+	public void testCountList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 'map', 'map', 'hello'}->count('map')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testCountListDifferentTypes() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2, 1, 3}->count(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testCountListNull() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 'map', 'map', 'hello'}->count(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testCountOnNull() {
+		final IValidationResult validationResult = validate("null->count(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testCountSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 'map', 'map', 'hello'}->count('map')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testCountSetDifferentTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2, 1, 3}->count(1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testCountSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 'map', 'map', 'hello'}->count(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
