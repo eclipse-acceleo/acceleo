@@ -380,7 +380,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		IType next = it.next();
 		assertTrue(next instanceof NothingType);
 		String message = ((NothingType)next).getMessage();
-		assertEquals(argTypes.get(0) + " is not compatible with " + argTypes.get(1), message);
+		assertEquals(argTypes.get(0) + " is not compatible with type " + argTypes.get(1), message);
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
@@ -391,7 +391,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertTrue(next instanceof NothingType);
 		String allTypesMesg = ((NothingType)next).getMessage();
 		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
-		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with " + argTypes.get(1)));
+		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with type " + argTypes.get(1)));
 	}
 
 	@Test

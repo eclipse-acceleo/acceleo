@@ -1115,14 +1115,14 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		assertTrue(possibleType instanceof NothingType);
 		assertEquals(
-				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with EClassifierLiteral=EInt",
+				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
 				((NothingType)possibleType).getMessage());
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
 				validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR,
-				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with EClassifierLiteral=EInt",
+				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
 				17, 40);
 	}
 

@@ -183,13 +183,25 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
-		assertNotNull(inferredWhenTrue);
-		assertNotNull(inferredWhenFalse);
-		assertEquals(inferredWhenTrue, inferredWhenFalse);
 
-		assertEquals(1, validationResult.getMessages().size());
+		assertNull(inferredWhenTrue);
+
+		assertNotNull(inferredWhenFalse);
+		assertEquals(1, inferredWhenFalse.size());
+		Iterator<IType> it = inferredWhenFalse.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("Nothing", ((NothingType)type).getMessage());
+
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 10);
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(1),
+						ValidationMessageLevel.INFO,
+						"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
+						0, 31);
 	}
 
 	@Test
@@ -563,13 +575,25 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
-		assertNotNull(inferredWhenTrue);
-		assertNotNull(inferredWhenFalse);
-		assertEquals(inferredWhenTrue, inferredWhenFalse);
 
-		assertEquals(1, validationResult.getMessages().size());
+		assertNotNull(inferredWhenTrue);
+		assertEquals(1, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("Nothing", ((NothingType)type).getMessage());
+
+		assertNull(inferredWhenFalse);
+
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 4, 14);
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(1),
+						ValidationMessageLevel.INFO,
+						"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
+						4, 35);
 	}
 
 	@Test

@@ -433,7 +433,8 @@ public class AnyServices extends AbstractServiceProvider {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							filterType));
 				} else {
-					result.add(services.nothing("%s is not compatible with %s", receiverType, filterType));
+					result.add(services
+							.nothing("%s is not compatible with type %s", receiverType, filterType));
 				}
 			}
 

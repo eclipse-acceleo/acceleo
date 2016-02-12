@@ -374,91 +374,36 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final StringBuilder messageWhenFalse = new StringBuilder("Always true:");
 
 			for (IType originalType : originalTypes) {
-				if (originalType instanceof NothingType) {
-					inferredTrueTypes.add(originalType);
-					inferredFalseTypes.add(originalType);
-				} else {
-					for (IType argType : argTypes) {
-						inferOclIsKindOfForArgType(varRef, inferredTrueTypes, inferredFalseTypes,
-								messageWhenTrue, messageWhenFalse, originalType, argType);
+				for (IType argType : argTypes) {
+					final IType lowerArgType = services.lower(argType, argType);
+					if (lowerArgType != null && lowerArgType.isAssignableFrom(originalType)) {
+						inferredTrueTypes.add(originalType);
+						messageWhenFalse.append(String.format(
+								"\nNothing inferred when %s (%s) is not kind of %s",
+								varRef.getVariableName(), originalType, argType));
+					} else if (originalType != null && originalType.isAssignableFrom(lowerArgType)) {
+						inferredTrueTypes.add(lowerArgType);
+						inferredFalseTypes.add(originalType);
+					} else {
+						final Set<IType> intersectionTypes = services
+								.intersection(originalType, lowerArgType);
+						if (intersectionTypes.isEmpty()) {
+							messageWhenTrue.append(String.format(
+									"\nNothing inferred when %s (%s) is kind of %s",
+									varRef.getVariableName(), originalType, argType));
+							inferredFalseTypes.add(originalType);
+						} else {
+							inferredTrueTypes.addAll(intersectionTypes);
+							inferredFalseTypes.add(originalType);
+						}
 					}
 				}
 			}
-			if (!inferredTrueTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
-				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenTrue.toString(), startPostion, endPosition);
-				messages.add(message);
-			}
-			if (!inferredFalseTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
-				inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenFalse.toString(), startPostion, endPosition);
-				validationResult.getMessages().add(message);
-			}
-		}
-	}
 
-	/**
-	 * Computes inferred {@link IType} for {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
-	 * for one argument {@link IType}.
-	 * 
-	 * @param varRef
-	 *            the {@link Call} {@link VarRef}
-	 * @param inferredTrueTypes
-	 *            the {@link Set} of inferred {@link IType} when {@link Boolean#TRUE}
-	 * @param inferredFalseTypes
-	 *            the {@link Set} of inferred {@link IType} when {@link Boolean#FALSE}
-	 * @param messageWhenTrue
-	 *            the message when {@link Boolean#TRUE}
-	 * @param messageWhenFalse
-	 *            the message when {@link Boolean#FALSE}
-	 * @param originalType
-	 *            the original {@link VarRef} {@link IType}
-	 * @param argType
-	 *            the argument {@link IType}
-	 */
-	private void inferOclIsKindOfForArgType(VarRef varRef, final Set<IType> inferredTrueTypes,
-			final Set<IType> inferredFalseTypes, final StringBuilder messageWhenTrue,
-			final StringBuilder messageWhenFalse, IType originalType, IType argType) {
-		final IType lowerType = services.lower(originalType, argType);
-		if (lowerType != null) {
-			inferredTrueTypes.add(lowerType);
-			if (lowerType.isAssignableFrom(argType) && !lowerType.equals(originalType)) {
-				inferredFalseTypes.add(originalType);
-			} else {
-				messageWhenFalse.append(String.format("\nNothing inferred when %s (%s) is not kind of %s",
-						varRef.getVariableName(), originalType, argType));
+			if (!argTypes.isEmpty()) {
+				registerInferredTypes(call, varRef, inferredTrueTypes, inferredFalseTypes, messageWhenTrue,
+						messageWhenFalse);
 			}
-		} else if (originalType.getType() instanceof EClass && argType.getType() instanceof EClass) {
-			Set<IType> intesectionTypes = new LinkedHashSet<IType>();
-			for (EClass eCls : services.getSubTypesTopIntersection((EClass)originalType.getType(),
-					(EClass)argType.getType())) {
-				intesectionTypes.add(new EClassifierType(services.getQueryEnvironment(), eCls));
-			}
-			if (intesectionTypes.isEmpty()) {
-				messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is kind of %s", varRef
-						.getVariableName(), originalType, argType));
-			} else {
-				inferredTrueTypes.addAll(intesectionTypes);
-			}
-			inferredFalseTypes.add(originalType);
-		} else {
-			messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is kind of %s", varRef
-					.getVariableName(), originalType, argType));
-			inferredFalseTypes.add(originalType);
 		}
 	}
 
@@ -486,7 +431,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				for (IType argType : argTypes) {
 					final IType lowerArgType = services.lower(argType, argType);
 					final IType lowerType = services.lower(originalType, lowerArgType);
-					if (lowerArgType.equals(originalType)) {
+					if (lowerArgType != null && lowerArgType.equals(originalType)) {
 						inferredTrueTypes.add(lowerArgType);
 						final Set<EClass> upperSubEClasses = getUpperSubTypes(originalType);
 						if (upperSubEClasses.isEmpty()) {
@@ -510,30 +455,55 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 
-			if (!inferredTrueTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
-				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenTrue.toString(), startPostion, endPosition);
-				messages.add(message);
+			if (!argTypes.isEmpty()) {
+				registerInferredTypes(call, varRef, inferredTrueTypes, inferredFalseTypes, messageWhenTrue,
+						messageWhenFalse);
 			}
-			if (!inferredFalseTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
-				inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenFalse.toString(), startPostion, endPosition);
-				validationResult.getMessages().add(message);
-			}
+		}
+	}
+
+	/**
+	 * Registers inferred {@link IType} and mesages.
+	 * 
+	 * @param call
+	 *            the {@link Call} that inferred types (oclIsKindOf, oclIsTypeOf, ...)
+	 * @param varRef
+	 *            the {@link VarRef} use in the {@link Call}
+	 * @param inferredTrueTypes
+	 *            inferred {@link IType} when <code>true</code>
+	 * @param inferredFalseTypes
+	 *            inferred {@link IType} when <code>false</code>
+	 * @param messageWhenTrue
+	 *            message when <code>true</code>
+	 * @param messageWhenFalse
+	 *            message when <code>false</code>
+	 */
+	private void registerInferredTypes(Call call, VarRef varRef, final Set<IType> inferredTrueTypes,
+			final Set<IType> inferredFalseTypes, final StringBuilder messageWhenTrue,
+			final StringBuilder messageWhenFalse) {
+		if (!inferredTrueTypes.isEmpty()) {
+			Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
+			inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
+			validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
+		} else {
+			final AstResult astResult = validationResult.getAstResult();
+			final int startPostion = astResult.getStartPosition(call);
+			final int endPosition = astResult.getEndPosition(call);
+			final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+					messageWhenTrue.toString(), startPostion, endPosition);
+			messages.add(message);
+		}
+		if (!inferredFalseTypes.isEmpty()) {
+			Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
+			inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
+			validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
+		} else {
+			final AstResult astResult = validationResult.getAstResult();
+			final int startPostion = astResult.getStartPosition(call);
+			final int endPosition = astResult.getEndPosition(call);
+			final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+					messageWhenFalse.toString(), startPostion, endPosition);
+			validationResult.getMessages().add(message);
 		}
 	}
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -44,6 +46,23 @@ import static org.junit.Assert.assertNull;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public abstract class AbstractServicesValidationTest extends AbstractServicesTest {
+
+	protected static class VariableBuilder {
+		private Map<String, Set<IType>> variables;
+
+		public VariableBuilder() {
+			variables = new LinkedHashMap<String, Set<IType>>();
+		}
+
+		public VariableBuilder addVar(String name, IType... types) {
+			variables.put(name, ImmutableSet.copyOf(types));
+			return this;
+		}
+
+		public Map<String, Set<IType>> build() {
+			return variables;
+		}
+	}
 
 	protected void assertNoService(String serviceName, IType parameterTypes[]) {
 		final IService service = serviceLookUp(serviceName, parameterTypes);

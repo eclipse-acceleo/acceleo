@@ -1583,7 +1583,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-         <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Package is not compatible with EClassifierLiteral=Component" startPosition="4" endPosition="30"/>
+         <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Package is not compatible with type EClassifierLiteral=Component" startPosition="4" endPosition="30"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1710,7 +1710,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with type EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1721,7 +1721,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with type EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1892,7 +1892,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with type EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1902,7 +1902,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with type EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
