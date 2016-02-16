@@ -3621,6 +3621,230 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(message, ((NothingType)type).getMessage());
 	}
 
+	@Test
+	public void testForAllList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.size() > 2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllListAlwaysTrue() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
+
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllListAlwaysFalse() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
+
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllListDifferentTypes() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->forAll(i | i <> null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllListDifferentTypesNarrowing() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->forAll(i | i.oclIsKindOf(String))");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllListNotBooleanLambda() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.size())");
+
+		String message = "expression in forAll must return a boolean";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testForAllListNull() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(null)");
+
+		String message = "expression in forAll must return a boolean";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testForAllOnNull() {
+		final IValidationResult validationResult = validate("null->forAll(i | i <> null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.size() > 2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllSetAlwaysTrue() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
+
+		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllSetAlwaysFalse() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
+
+		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.INFO, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllSetDifferentTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->forAll(i | i <> null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllSetDifferentTypesNarrowing() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->forAll(i | i.oclIsKindOf(String))");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testForAllSetNotBooleanLambda() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.size())");
+
+		String message = "expression in forAll must return a boolean";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
+	@Test
+	public void testForAllSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(null)");
+
+		String message = "expression in forAll must return a boolean";
+		assertFalse(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(message, validationResult.getMessages().get(0).getMessage());
+		assertEquals(ValidationMessageLevel.ERROR, validationResult.getMessages().get(0).getLevel());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof NothingType);
+		assertEquals(message, ((NothingType)type).getMessage());
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
