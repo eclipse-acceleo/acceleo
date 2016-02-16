@@ -3845,6 +3845,246 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(message, ((NothingType)type).getMessage());
 	}
 
+	@Test
+	public void testExcludesAllListList() {
+		final IValidationResult validationResult = validate("Sequence{'hello'}->excludesAll(Sequence{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllListSet() {
+		final IValidationResult validationResult = validate("Sequence{'hello'}->excludesAll(OrderedSet{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllEmptyListList() {
+		final IValidationResult validationResult = validate("Sequence{}->excludesAll(Sequence{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllEmptyListSet() {
+		final IValidationResult validationResult = validate("Sequence{}->excludesAll(OrderedSet{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllListEmptyList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(Sequence{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllListEmptySet() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(OrderedSet{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllListListMultipleTypes() {
+		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->excludesAll(Sequence{'world', null})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllListSetMultipleTypes() {
+		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->excludesAll(OrderedSet{'world', null})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllListNull() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllOnNullList() {
+		final IValidationResult validationResult = validate("null->excludesAll(Sequence{'hello'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllOnNullSet() {
+		final IValidationResult validationResult = validate("null->excludesAll(OrderedSet{'hello'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetList() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->excludesAll(Sequence{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->excludesAll(OrderedSet{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllEmptySetList() {
+		final IValidationResult validationResult = validate("OrderedSet{}->excludesAll(Sequence{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllEmptySetSet() {
+		final IValidationResult validationResult = validate("OrderedSet{}->excludesAll(OrderedSet{'hello', 'world'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetEmptyList() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(Sequence{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetEmptySet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(OrderedSet{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetListMultipleTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->excludesAll(Sequence{'world', null})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetSetMultipleTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->excludesAll(OrderedSet{'world', null})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
+	@Test
+	public void testExcludesAllSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
