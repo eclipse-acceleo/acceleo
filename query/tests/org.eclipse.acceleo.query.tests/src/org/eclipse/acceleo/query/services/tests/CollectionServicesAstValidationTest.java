@@ -4850,6 +4850,114 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(message, ((NothingType)type).getMessage());
 	}
 
+	@Test
+	public void testIndexOfList() {
+		final IValidationResult validationResult = validate("Sequence{'hello'}->indexOf('hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfEmptyList() {
+		final IValidationResult validationResult = validate("Sequence{}->indexOf('hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfListMultipleTypes() {
+		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->indexOf('world')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfListNull() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->indexOf(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfOnNull() {
+		final IValidationResult validationResult = validate("null->indexOf('hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello'}->indexOf('hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfSetList() {
+		final IValidationResult validationResult = validate("OrderedSet{}->indexOf('hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfSetMultipleTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->indexOf('world')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
+	@Test
+	public void testIndexOfSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->indexOf(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
