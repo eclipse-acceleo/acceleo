@@ -166,7 +166,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class IncludingService extends JavaMethodService {
+	private static class IncludingService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -176,7 +176,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
 		 */
-		private IncludingService(Method serviceMethod, Object serviceInstance) {
+		protected IncludingService(Method serviceMethod, Object serviceInstance) {
 			super(serviceMethod, serviceInstance);
 		}
 
@@ -754,7 +754,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class InsertAtService extends JavaMethodService {
+	private static final class InsertAtService extends IncludingService {
 
 		/**
 		 * Constructor.

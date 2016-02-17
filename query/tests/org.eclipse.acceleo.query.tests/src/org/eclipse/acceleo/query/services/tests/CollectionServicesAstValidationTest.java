@@ -4958,6 +4958,189 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
 	}
 
+	@Test
+	public void testInsertAtList() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(1, ' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtListDifferentTypes() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(1, 1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
+				sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testInsertAtListUnderLowerBound() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(-1, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtListOverUpperBound() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(3, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtListLowerBound() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(0, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtListUpperBound() {
+		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(2, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtListNull() {
+		final IValidationResult validationResult = validate("Sequence{1, 2}->insertAt(1, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)), sequenceType(classType(null))),
+				types);
+	}
+
+	@Test
+	public void testInsertAtOnNull() {
+		final IValidationResult validationResult = validate("null->insertAt(0, 'hello')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtSet() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(1, ' ')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtSetDifferentTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(1, 1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
+				types);
+	}
+
+	@Test
+	public void testInsertAtSetUnderLowerBound() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(-1, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtSetOverUpperBound() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(3, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtSetLowerBound() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(0, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtSetUpperBound() {
+		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(2, 'newString')");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+	}
+
+	@Test
+	public void testInsertAtSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2}->insertAt(1, null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(null))), types);
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
