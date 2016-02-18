@@ -5228,6 +5228,438 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(null))), types);
 	}
 
+	@Test
+	public void testIntersectionListList() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(Sequence{2})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionEmptyListEmptyList() {
+		final IValidationResult validationResult = validate("Sequence{}->intersection(Sequence{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty Sequence defined in extension\n"
+				+ " Empty Sequence defined in extension";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionIntListRealList() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(Sequence{2.0})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionListListIncompatibleTypes() {
+		final IValidationResult validationResult = validate("Sequence{1.0, 2.0, 3.0}->intersection(Sequence{'hello'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n"
+				+ " Nothing left after intersection of Sequence(java.lang.Double) and Sequence(java.lang.String)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionListListMixedTypes() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->intersection(Sequence{'hello', 3})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionListSet() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(OrderedSet{2})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionEmptyListEmptySet() {
+		final IValidationResult validationResult = validate("Sequence{}->intersection(OrderedSet{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty Sequence defined in extension\n"
+				+ " Empty OrderedSet defined in extension";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionIntListRealSet() {
+		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(OrderedSet{2.0})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionListSetIncompatibleTypes() {
+		final IValidationResult validationResult = validate("Sequence{1.0, 2.0, 3.0}->intersection(OrderedSet{'hello'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n"
+				+ " Nothing left after intersection of Sequence(java.lang.Double) and Set(java.lang.String)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionListSetMixedTypes() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->intersection(OrderedSet{'hello', 3})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionListNull() {
+		final IValidationResult validationResult = validate("Sequence{}->intersection(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty Sequence defined in extension\n"
+				+ " intersection can only be called on collections, but null was used as its argument.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionListNullAsList() {
+		final IValidationResult validationResult = validate("Sequence{}->intersection(null->asSequence())");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty Sequence defined in extension\n"
+				+ " The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionListNullAsSet() {
+		final IValidationResult validationResult = validate("Sequence{}->intersection(null->asSet())");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty Sequence defined in extension\n"
+				+ " The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionNullList() {
+		final IValidationResult validationResult = validate("null->intersection(Sequence{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n"
+				+ " Empty Sequence defined in extension";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionNullSet() {
+		final IValidationResult validationResult = validate("null->intersection(OrderedSet{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n"
+				+ " Empty OrderedSet defined in extension";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionSetSet() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(OrderedSet{2})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionEmptySetEmptySet() {
+		final IValidationResult validationResult = validate("OrderedSet{}->intersection(OrderedSet{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty OrderedSet defined in extension\n"
+				+ " Empty OrderedSet defined in extension";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionIntSetRealSet() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(OrderedSet{2.0})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionSetSetIncompatibleTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1.0, 2.0, 3.0}->intersection(OrderedSet{'hello'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n"
+				+ " Nothing left after intersection of Set(java.lang.Double) and Set(java.lang.String)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionSetSetMixedTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->intersection(OrderedSet{'hello', 3})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionSetList() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(Sequence{2})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionEmptySetEmptyList() {
+		final IValidationResult validationResult = validate("OrderedSet{}->intersection(Sequence{})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty OrderedSet defined in extension\n"
+				+ " Empty Sequence defined in extension";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionIntSetRealList() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(Sequence{2.0})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionSetListIncompatibleTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1.0, 2.0, 3.0}->intersection(Sequence{'hello'})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n"
+				+ " Nothing left after intersection of Set(java.lang.Double) and Sequence(java.lang.String)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionSetListMixedTypes() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->intersection(Sequence{'hello', 3})");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+	}
+
+	@Test
+	public void testIntersectionSetNull() {
+		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty OrderedSet defined in extension\n"
+				+ " intersection can only be called on collections, but null was used as its argument.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionSetNullAsList() {
+		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null->asSequence())");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty OrderedSet defined in extension\n"
+				+ " The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testIntersectionSetNullAsSet() {
+		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null->asSet())");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "Nothing left after intersection:\n Empty OrderedSet defined in extension\n"
+				+ " The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 

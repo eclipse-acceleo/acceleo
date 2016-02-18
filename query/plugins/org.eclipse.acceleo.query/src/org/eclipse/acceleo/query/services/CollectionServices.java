@@ -803,12 +803,39 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			IType selfRawType = ((ICollectionType)argTypes.get(0)).getCollectionType();
-			IType otherRawType = ((ICollectionType)argTypes.get(1)).getCollectionType();
-			final Set<IType> resultRawTypes = services.intersection(selfRawType, otherRawType);
+			final IType arg1Type;
+			if (argTypes.get(0) instanceof ICollectionType) {
+				arg1Type = ((ICollectionType)argTypes.get(0)).getCollectionType();
+			} else if (argTypes.get(0) instanceof NothingType) {
+				arg1Type = argTypes.get(0);
+			} else {
+				arg1Type = services.nothing(
+						"%s can only be called on collections, but %s was used as its receiver.", getName(),
+						argTypes.get(0));
+			}
+			final IType arg2Type;
+			if (argTypes.get(1) instanceof ICollectionType) {
+				arg2Type = ((ICollectionType)argTypes.get(1)).getCollectionType();
+			} else if (argTypes.get(1) instanceof NothingType) {
+				arg2Type = argTypes.get(1);
+			} else {
+				arg2Type = services.nothing(
+						"%s can only be called on collections, but %s was used as its argument.", getName(),
+						argTypes.get(1));
+			}
+
+			final Set<IType> resultRawTypes = services.intersection(arg1Type, arg2Type);
 			if (resultRawTypes.isEmpty()) {
-				resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s", argTypes
-						.get(0), argTypes.get(1)));
+				if (arg1Type instanceof NothingType) {
+					resultRawTypes.add(arg1Type);
+				}
+				if (arg2Type instanceof NothingType) {
+					resultRawTypes.add(arg2Type);
+				}
+				if (resultRawTypes.isEmpty()) {
+					resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s",
+							argTypes.get(0), argTypes.get(1)));
+				}
 			}
 			for (IType resultRawType : resultRawTypes) {
 				result.add(createReturnCollectionWithType(queryEnvironment, resultRawType));
@@ -836,8 +863,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				result.add(createReturnCollectionWithType(queryEnvironment, services
-						.nothing("Nothing left after intersection:" + builder.toString())));
+				IType nothing = services.nothing("Nothing left after intersection:" + builder.toString());
+				result.add(createReturnCollectionWithType(queryEnvironment, nothing));
 			}
 
 			return result;
