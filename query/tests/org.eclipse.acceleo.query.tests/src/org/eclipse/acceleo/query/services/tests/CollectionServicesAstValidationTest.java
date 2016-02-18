@@ -5661,7 +5661,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetList() {
+	public void testSubOrderedSet() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,3)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5674,7 +5674,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetListStartUnderLowerBound() {
+	public void testSubOrderedSetStartUnderLowerBound() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(0,2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5687,7 +5687,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetListStartAboveUpperBound() {
+	public void testSubOrderedSetStartAboveUpperBound() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(4,2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5700,7 +5700,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetListEndUnderLowerBound() {
+	public void testSubOrderedSetEndUnderLowerBound() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,0)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5713,7 +5713,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetListEndAboveUpperBound() {
+	public void testSubOrderedSetEndAboveUpperBound() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,4)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5726,7 +5726,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetListStartHigherThanEnd() {
+	public void testSubOrderedSetStartHigherThanEnd() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(3,2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5739,7 +5739,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	}
 
 	@Test
-	public void testSubOrderedSetListStartEqualsEnd() {
+	public void testSubOrderedSetStartEqualsEnd() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
@@ -5766,6 +5766,97 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertTrue(type instanceof SetType);
 		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
 		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
+	@Test
+	public void testSubSequence() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(2,3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
+	}
+
+	@Test
+	public void testSubSequenceStartUnderLowerBound() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(0,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
+	}
+
+	@Test
+	public void testSubSequenceStartAboveUpperBound() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(4,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
+	}
+
+	@Test
+	public void testSubSequenceEndUnderLowerBound() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(2,0)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
+	}
+
+	@Test
+	public void testSubSequenceEndAboveUpperBound() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(2,4)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
+	}
+
+	@Test
+	public void testSubSequenceStartHigherThanEnd() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(3,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
+	}
+
+	@Test
+	public void testSubSequenceStartEqualsEnd() {
+		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->subSequence(2,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
 	}
 
 	private static class VariableBuilder {
