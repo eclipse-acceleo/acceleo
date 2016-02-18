@@ -5660,6 +5660,114 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
 	}
 
+	@Test
+	public void testSubOrderedSetList() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,3)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetListStartUnderLowerBound() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(0,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetListStartAboveUpperBound() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(4,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetListEndUnderLowerBound() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,0)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetListEndAboveUpperBound() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,4)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetListStartHigherThanEnd() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(3,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetListStartEqualsEnd() {
+		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->subOrderedSet(2,2)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
+				types);
+	}
+
+	@Test
+	public void testSubOrderedSetOnNull() {
+		final IValidationResult validationResult = validate("null->subOrderedSet(1,1)");
+
+		assertTrue(validationResult.getMessages().isEmpty());
+
+		AstResult ast = validationResult.getAstResult();
+		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
+
+		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
+	}
+
 	private static class VariableBuilder {
 		private Map<String, Set<IType>> variables;
 
