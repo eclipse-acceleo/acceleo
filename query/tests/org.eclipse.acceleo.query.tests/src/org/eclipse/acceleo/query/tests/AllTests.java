@@ -36,7 +36,6 @@ import org.eclipse.acceleo.query.services.tests.CollectionServicesTest;
 import org.eclipse.acceleo.query.services.tests.CollectionServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.ComparableServicesTest;
 import org.eclipse.acceleo.query.services.tests.ComparableServicesValidationTest;
-import org.eclipse.acceleo.query.services.tests.EObjectServicesPerformanceTest;
 import org.eclipse.acceleo.query.services.tests.EObjectServicesTest;
 import org.eclipse.acceleo.query.services.tests.EObjectServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesTest;
@@ -94,8 +93,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		EEnumLiteralCompletionProposalTests.class, VariableCompletionProposalTests.class,
 		EClassifierCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
 		QueryEnvironmentTests.class, EPackageProviderTests.class, CompletionCheck.class,
-		FilterCamelCaseTest.class, EObjectServicesPerformanceTest.class,
-		CollectionServicesAstValidationTest.class })
+		FilterCamelCaseTest.class, CollectionServicesAstValidationTest.class })
 public class AllTests {
 
 }

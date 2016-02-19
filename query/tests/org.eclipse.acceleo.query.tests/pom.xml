@@ -33,6 +33,7 @@
                 <configuration>	   
                     <includes>
                         <include>org/eclipse/acceleo/query/tests/AllTests.class</include>
+                        <include>org/eclipse/acceleo/query/tests/LongRunningTestSuite.class</include>
                     </includes>
                 </configuration>
             </plugin>  
