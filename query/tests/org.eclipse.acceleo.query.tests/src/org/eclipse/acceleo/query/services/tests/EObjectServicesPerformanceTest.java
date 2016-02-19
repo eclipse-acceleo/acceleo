@@ -100,10 +100,9 @@ public class EObjectServicesPerformanceTest {
 		final long aqlElapsed = aql.elapsed(TimeUnit.MILLISECONDS);
 		final long emfElapsed = emf.elapsed(TimeUnit.MILLISECONDS);
 
-		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than...
-		final long buffer = Math.min((long)(emfElapsed * 0.15), 4000L);
+		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than emf + 4s
 		assertTrue("The AQL implementation is supposed to be faster than the EMF one.",
-				(aqlElapsed - emfElapsed) < buffer);
+				(aqlElapsed - emfElapsed) < 4000L);
 	}
 
 	@Test
@@ -141,10 +140,9 @@ public class EObjectServicesPerformanceTest {
 		final long aqlElapsed = aql.elapsed(TimeUnit.MILLISECONDS);
 		final long emfElapsed = emf.elapsed(TimeUnit.MILLISECONDS);
 
-		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than...
-		final long buffer = Math.min((long)(emfElapsed * 0.15), 4000L);
+		// We expect AQL to be faster, but do not fail this test if AQL hasn't been longer than emf + 4s
 		assertTrue("The AQL implementation is supposed to be faster than the EMF one.",
-				(aqlElapsed - emfElapsed) < buffer);
+				(aqlElapsed - emfElapsed) < 4000L);
 	}
 
 }
