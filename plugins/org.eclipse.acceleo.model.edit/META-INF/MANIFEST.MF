@@ -6,7 +6,6 @@ Bundle-Version: 3.6.4.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.model.edit;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.model.mtl.provider.MtlEditPlugin$Implementation
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.model.edit";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.acceleo.model.mtl.provider;uses:="org.eclipse.emf.common.notify",

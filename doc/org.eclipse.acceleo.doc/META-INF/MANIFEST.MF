@@ -8,4 +8,3 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.help
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="doc/org.eclipse.acceleo.doc";tag=R3_3_0

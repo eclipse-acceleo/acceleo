@@ -44,10 +44,11 @@
 
     <resource-encoding>UTF-8</resource-encoding>
     <maven-resources-version>2.6</maven-resources-version>
+    <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git</tycho.scmUrl>
   </properties>
 
   <scm>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git</developerConnection>
+    <developerConnection>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git</developerConnection>
   </scm>
 
   <modules>
@@ -169,15 +170,25 @@
         </executions>
       </plugin>
       <plugin>
-          <groupId>org.eclipse.tycho</groupId>
-          <artifactId>tycho-packaging-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <archive>
-              <addMavenDescriptor>false</addMavenDescriptor>
-            </archive>
-          </configuration>
-        </plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+          <sourceReferences>
+            <generate>true</generate>
+          </sourceReferences>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.eclipse.tycho.extras</groupId>
+            <artifactId>tycho-sourceref-jgit</artifactId>
+            <version>${tycho-extras-version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>

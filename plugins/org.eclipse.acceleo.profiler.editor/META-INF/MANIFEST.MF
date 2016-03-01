@@ -6,7 +6,6 @@ Bundle-Version: 3.6.4.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: org.eclipse.acceleo.profiler.presentation.ProfilerEditorPlugin$Implementation
 Bundle-SymbolicName: org.eclipse.acceleo.profiler.editor;singleton:=true
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.profiler.editor";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: org.eclipse.acceleo.profiler.editor;x-internal:=true,

@@ -8,7 +8,7 @@
   <description>The Acceleo maven launcher plugin.</description>
   
   <scm>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git/maven/org.eclipse.acceleo.maven.launcher</developerConnection>
+    <developerConnection>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git/maven/org.eclipse.acceleo.maven.launcher</developerConnection>
   </scm>
   
   <repositories>

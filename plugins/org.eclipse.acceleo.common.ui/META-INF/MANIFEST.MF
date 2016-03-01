@@ -6,7 +6,6 @@ Bundle-Version: 3.6.4.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.common.ui;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.common.ui.AcceleoCommonUIPlugin
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.common.ui";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,

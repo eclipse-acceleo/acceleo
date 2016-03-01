@@ -9,7 +9,6 @@ Bundle-SymbolicName: org.eclipse.acceleo.common;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.common.AcceleoCommonPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.common";tag=R3_3_0
 Export-Package: org.eclipse.acceleo.common;
   uses:="org.osgi.framework,
    org.eclipse.emf.ecore,
