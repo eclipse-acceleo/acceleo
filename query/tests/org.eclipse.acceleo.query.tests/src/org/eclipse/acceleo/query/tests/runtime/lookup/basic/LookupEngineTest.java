@@ -1352,7 +1352,6 @@ public class LookupEngineTest {
 					new IType[service.getNumberOfParameters()]));
 		}
 
-		System.out.println(services.size());
 		for (int i = 0; i < 10000; i++) {
 			for (Entry<String, IType[]> entry : services.entrySet()) {
 				assertNotNull(engine.lookup(entry.getKey(), entry.getValue()));
