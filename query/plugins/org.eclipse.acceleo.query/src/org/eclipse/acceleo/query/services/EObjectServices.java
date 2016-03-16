@@ -89,6 +89,11 @@ public class EObjectServices extends AbstractServiceProvider {
 	private static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (%s) on a non ModelObject value (%s).";
 
 	/**
+	 * Illegal state message.
+	 */
+	private static final String DON_T_KNOW_WHAT_TO_DO_WITH = "don't know what to do with ";
+
+	/**
 	 * Filtered eAllContents {@link Iterator}.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -155,7 +160,7 @@ public class EObjectServices extends AbstractServiceProvider {
 						result.add(childElement);
 					}
 				} else {
-					throw new IllegalStateException("don't know what to do with " + value.getClass());
+					throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + value.getClass());
 				}
 			} else if (value instanceof EObject) {
 				result.add((EObject)value);
@@ -211,23 +216,41 @@ public class EObjectServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, IType receiverType, String featureName) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
+			final Set<EClass> receiverEClasses = new LinkedHashSet<EClass>();
 			if (receiverType.getType() instanceof EClass) {
-				EClass eClass = (EClass)receiverType.getType();
-				EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
-				if (feature == null) {
-					result.add(services.nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
-				} else {
-					final EClassifierType featureBasicType = new EClassifierType(queryEnvironment, feature
-							.getEType());
-					if (feature.isMany()) {
-						result.add(new SequenceType(queryEnvironment, featureBasicType));
-					} else {
-						result.add(featureBasicType);
+				receiverEClasses.add((EClass)receiverType.getType());
+			} else if (receiverType.getType() instanceof Class) {
+				final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
+						(Class<?>)receiverType.getType());
+				if (eClassifiers != null) {
+					for (EClassifier eCls : eClassifiers) {
+						if (eCls instanceof EClass) {
+							receiverEClasses.add((EClass)eCls);
+						}
 					}
 				}
 			} else {
+				throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + receiverType.getType());
+			}
+
+			if (receiverEClasses.isEmpty()) {
 				result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType.getType()
 						.toString()));
+			} else {
+				for (EClass eClass : receiverEClasses) {
+					EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+					if (feature == null) {
+						result.add(services.nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
+					} else {
+						final EClassifierType featureBasicType = new EClassifierType(queryEnvironment,
+								feature.getEType());
+						if (feature.isMany()) {
+							result.add(new SequenceType(queryEnvironment, featureBasicType));
+						} else {
+							result.add(featureBasicType);
+						}
+					}
+				}
 			}
 
 			return result;
@@ -1200,7 +1223,7 @@ public class EObjectServices extends AbstractServiceProvider {
 			if (child instanceof Collection<?>) {
 				eContentsVisitCollectionChild(result, (Collection<?>)child, types, features);
 			} else {
-				throw new IllegalStateException("don't know what to do with " + child.getClass());
+				throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + child.getClass());
 			}
 		} else if (child instanceof EObject) {
 			if (eIsInstanceOf((EObject)child, types)) {

@@ -108,6 +108,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private final Stack<Map<String, Set<IType>>> variableTypesStack;
 
 	/**
+	 * The {@link IReadOnlyQueryEnvironment}.
+	 */
+	private final IReadOnlyQueryEnvironment queryEnvironment;
+
+	/**
 	 * Set of {@link IValidationMessage}.
 	 */
 	private Set<IValidationMessage> messages = new LinkedHashSet<IValidationMessage>();
@@ -120,6 +125,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	public AstValidator(IReadOnlyQueryEnvironment environment) {
 		this.services = new ValidationServices(environment);
+		this.queryEnvironment = environment;
 		this.variableTypesStack = new Stack<Map<String, Set<IType>>>();
 	}
 
@@ -195,7 +201,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseBooleanLiteral(BooleanLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.Boolean.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(queryEnvironment, java.lang.Boolean.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -705,7 +714,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseIntegerLiteral(IntegerLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.Integer.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(queryEnvironment, java.lang.Integer.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -764,7 +776,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseRealLiteral(RealLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.Double.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(queryEnvironment, java.lang.Double.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -775,7 +790,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseStringLiteral(StringLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.String.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(queryEnvironment, java.lang.String.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -826,7 +844,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			possibleTypes.add(new EClassifierLiteralType(services.getQueryEnvironment(), (EClassifier)object
 					.getValue()));
 		} else if (object.getValue() instanceof Class<?>) {
-			possibleTypes = services.getIType((Class<?>)object.getValue());
+			possibleTypes = Sets.newLinkedHashSet();
+			possibleTypes.add(new ClassType(queryEnvironment, (Class<?>)object.getValue()));
 		} else {
 			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 		}

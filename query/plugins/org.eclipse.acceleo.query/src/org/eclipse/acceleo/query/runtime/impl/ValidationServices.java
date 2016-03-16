@@ -12,8 +12,6 @@ package org.eclipse.acceleo.query.runtime.impl;
 
 import com.google.common.collect.Sets;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -40,7 +38,6 @@ import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EcorePackage;
 
 /**
@@ -362,68 +359,6 @@ public class ValidationServices extends AbstractLanguageServices {
 			builder.append(argType.toString());
 		}
 		return builder.append(')').toString();
-	}
-
-	/**
-	 * Gets {@link IType} from a {@link Type}.
-	 * 
-	 * @param type
-	 *            the {@link Type}
-	 * @return {@link IType} from a {@link Type}
-	 * @see ValidationServices#getIType(Class)
-	 */
-	public Set<IType> getIType(Type type) {
-		final Set<IType> result = new LinkedHashSet<IType>();
-
-		if (type instanceof ParameterizedType) {
-			final Class<?> cls = (Class<?>)((ParameterizedType)type).getRawType();
-			if (List.class.isAssignableFrom(cls)) {
-				for (IType t : getIType(((ParameterizedType)type).getActualTypeArguments()[0])) {
-					result.add(new SequenceType(queryEnvironment, t));
-				}
-			} else if (Set.class.isAssignableFrom(cls)) {
-				for (IType t : getIType(((ParameterizedType)type).getActualTypeArguments()[0])) {
-					result.add(new SetType(queryEnvironment, t));
-				}
-			} else {
-				result.add(new ClassType(queryEnvironment, cls));
-			}
-		} else if (type instanceof Class<?>) {
-			final Class<?> cls = (Class<?>)type;
-			// TODO double check this it seems wrong
-			result.addAll(getIType(cls));
-		} else {
-			result.add(new ClassType(queryEnvironment, Object.class));
-		}
-
-		return result;
-	}
-
-	/**
-	 * Gets {@link IType} from a {@link Class}.
-	 * 
-	 * @param cls
-	 *            the {@link Class}
-	 * @return {@link IType} from a {@link Class}
-	 * @see ValidationServices#getIType(Type)
-	 */
-	private Set<IType> getIType(final Class<?> cls) {
-		final Set<IType> result = new LinkedHashSet<IType>();
-
-		final Set<EClassifier> classifiers = queryEnvironment.getEPackageProvider().getEClassifiers(cls);
-		if (List.class.isAssignableFrom(cls)) {
-			result.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
-		} else if (Set.class.isAssignableFrom(cls)) {
-			result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
-		} else if (classifiers != null) {
-			for (EClassifier eCls : classifiers) {
-				result.add(new EClassifierType(queryEnvironment, eCls));
-			}
-		} else {
-			result.add(new ClassType(queryEnvironment, cls));
-		}
-
-		return result;
 	}
 
 	/**

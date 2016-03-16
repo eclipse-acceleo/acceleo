@@ -186,8 +186,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEIntegerObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Integer.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -200,8 +200,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEDoubleObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Double.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -214,8 +214,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Boolean.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -228,8 +228,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Boolean.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -239,15 +239,11 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
-		assertEquals(2, possibleTypes.size());
+		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
-		possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), possibleType.getType());
-		assertEquals(0, validationResult.getMessages().size());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(String.class, possibleType.getType());
 	}
 
 	@Test
@@ -259,8 +255,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Boolean.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -273,11 +269,8 @@ public class ValidationTest {
 		assertEquals(1, stripNothingTypes(possibleTypes).size());
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
-		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
-				"Couldn't find the and(EClassifier=EIntegerObject,EClassifier=EString) service\nCouldn't find the and(EClassifier=EIntegerObject,EClassifier=SingleString) service",
-				0, 9);
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"Couldn't find the and(java.lang.Integer,java.lang.String) service", 0, 9);
 	}
 
 	@Test
@@ -289,8 +282,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Boolean.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -303,8 +296,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEInt(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(int.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -318,7 +311,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the someService(EClassifier=EClass,EClassifier=EBooleanObject) service", 4, 22);
+				"Couldn't find the someService(EClassifier=EClass,java.lang.Boolean) service", 4, 22);
 	}
 
 	@Test
@@ -330,8 +323,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEInt(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(int.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -362,8 +355,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the getEClassifier(EClassifier=EPackage,EClassifier=EIntegerObject) service",
-				5, 23);
+				"Couldn't find the getEClassifier(EClassifier=EPackage,java.lang.Integer) service", 5, 23);
 	}
 
 	@Test
@@ -491,9 +483,8 @@ public class ValidationTest {
 				.getCollectionType()).getType());
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
-		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), ((EClassifierType)((SetType)possibleType)
-				.getCollectionType()).getType());
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof ClassType);
+		assertEquals(Boolean.class, ((ClassType)((SetType)possibleType).getCollectionType()).getType());
 	}
 
 	@Test
@@ -527,9 +518,8 @@ public class ValidationTest {
 				.getCollectionType()).getType());
 		possibleType = it.next();
 		assertTrue(possibleType instanceof SequenceType);
-		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(),
-				((EClassifierType)((SequenceType)possibleType).getCollectionType()).getType());
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof ClassType);
+		assertEquals(Boolean.class, ((ClassType)((SequenceType)possibleType).getCollectionType()).getType());
 	}
 
 	@Test
@@ -950,22 +940,19 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
-		assertEquals(2, possibleTypes.size());
+		assertEquals(1, possibleTypes.size());
 		Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEString(), ((EClassifierType)possibleType).getType());
-		possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((EClassifierType)possibleType).getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(String.class, ((ClassType)possibleType).getType());
 
 		possibleTypes = validationResult.getPossibleTypes(((Lambda)((Call)ast).getArguments().get(1))
 				.getExpression());
 		assertEquals(1, possibleTypes.size());
 		it = possibleTypes.iterator();
 		possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEBooleanObject(), ((EClassifierType)possibleType).getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Boolean.class, ((ClassType)possibleType).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 	}
@@ -977,15 +964,11 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
-		assertEquals(2, possibleTypes.size());
+		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
-		possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), possibleType.getType());
-		assertEquals(0, validationResult.getMessages().size());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(String.class, possibleType.getType());
 	}
 
 	@Test
@@ -998,8 +981,8 @@ public class ValidationTest {
 		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
-		assertTrue(possibleType instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEIntegerObject(), possibleType.getType());
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(Integer.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -1065,18 +1048,13 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
-		assertEquals(2, possibleTypes.size());
+		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof SequenceType);
-		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEString(), ((SequenceType)possibleType).getCollectionType()
-				.getType());
-		possibleType = it.next();
-		assertTrue(possibleType instanceof SequenceType);
-		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((SequenceType)possibleType)
-				.getCollectionType().getType());
+		assertTrue(((SequenceType)possibleType).getCollectionType() instanceof ClassType);
+		assertEquals(String.class, ((SequenceType)possibleType).getCollectionType().getType());
+
 		assertEquals(0, validationResult.getMessages().size());
 	}
 
@@ -1087,18 +1065,13 @@ public class ValidationTest {
 		final Expression ast = validationResult.getAstResult().getAst();
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
 
-		assertEquals(2, possibleTypes.size());
+		assertEquals(1, possibleTypes.size());
 		final Iterator<IType> it = possibleTypes.iterator();
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof SetType);
-		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(EcorePackage.eINSTANCE.getEString(), ((SetType)possibleType).getCollectionType()
-				.getType());
-		possibleType = it.next();
-		assertTrue(possibleType instanceof SetType);
-		assertTrue(((SetType)possibleType).getCollectionType() instanceof EClassifierType);
-		assertEquals(AnydslPackage.eINSTANCE.getSingleString(), ((SetType)possibleType).getCollectionType()
-				.getType());
+		assertTrue(((SetType)possibleType).getCollectionType() instanceof ClassType);
+		assertEquals(String.class, ((SetType)possibleType).getCollectionType().getType());
+
 		assertEquals(0, validationResult.getMessages().size());
 	}
 

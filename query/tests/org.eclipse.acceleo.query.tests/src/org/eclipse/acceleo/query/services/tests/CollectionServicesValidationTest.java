@@ -786,8 +786,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 					setType(classType(String.class)),
 					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
 							.getEBooleanObject())) };
-			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
-					.getEBooleanObject()) };
+			final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
@@ -804,8 +803,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 					sequenceType(classType(String.class)),
 					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
 							.getEBooleanObject())) };
-			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
-					.getEBooleanObject()) };
+			final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {

@@ -501,7 +501,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())), types);
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -522,7 +522,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())), types);
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -538,7 +538,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())), types);
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -628,7 +628,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())), types);
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -649,7 +649,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())), types);
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -665,7 +665,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEBooleanObject())), types);
+		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
 	}
 
 	@Test

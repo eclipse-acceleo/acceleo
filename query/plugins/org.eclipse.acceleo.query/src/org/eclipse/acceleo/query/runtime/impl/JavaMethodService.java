@@ -59,6 +59,17 @@ public class JavaMethodService extends AbstractService {
 	private final Object instance;
 
 	/**
+	 * Known {@link IReadOnlyQueryEnvironment} to invalidate {@link JavaMethodService#returnTypes cached
+	 * return types}.
+	 */
+	private IReadOnlyQueryEnvironment knwonEnvironment;
+
+	/**
+	 * Return {@link IType} cache.
+	 */
+	private Set<IType> returnTypes;
+
+	/**
 	 * Creates a new service instance given a method and an instance.
 	 * 
 	 * @param method
@@ -165,10 +176,76 @@ public class JavaMethodService extends AbstractService {
 	@Override
 	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
-		final Set<IType> result = new LinkedHashSet<IType>();
-		Type returnType = method.getGenericReturnType();
 
-		result.addAll(services.getIType(returnType));
+		if (knwonEnvironment != queryEnvironment || returnTypes == null) {
+			knwonEnvironment = queryEnvironment;
+			returnTypes = new LinkedHashSet<IType>();
+			Type returnType = method.getGenericReturnType();
+			returnTypes.addAll(getIType(queryEnvironment, returnType));
+		}
+
+		return returnTypes;
+	}
+
+	/**
+	 * Gets {@link IType} from a {@link Type}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param type
+	 *            the {@link Type}
+	 * @return {@link IType} from a {@link Type}
+	 * @see ValidationServices#getIType(Class)
+	 */
+	public Set<IType> getIType(IReadOnlyQueryEnvironment queryEnvironment, Type type) {
+		final Set<IType> result = new LinkedHashSet<IType>();
+
+		if (type instanceof ParameterizedType) {
+			final Class<?> cls = (Class<?>)((ParameterizedType)type).getRawType();
+			if (List.class.isAssignableFrom(cls)) {
+				for (IType t : getIType(queryEnvironment,
+						((ParameterizedType)type).getActualTypeArguments()[0])) {
+					result.add(new SequenceType(queryEnvironment, t));
+				}
+			} else if (Set.class.isAssignableFrom(cls)) {
+				for (IType t : getIType(queryEnvironment,
+						((ParameterizedType)type).getActualTypeArguments()[0])) {
+					result.add(new SetType(queryEnvironment, t));
+				}
+			} else {
+				result.add(new ClassType(queryEnvironment, cls));
+			}
+		} else if (type instanceof Class<?>) {
+			final Class<?> cls = (Class<?>)type;
+			// TODO double check this it seems wrong
+			result.addAll(getIType(queryEnvironment, cls));
+		} else {
+			result.add(new ClassType(queryEnvironment, Object.class));
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets {@link IType} from a {@link Class}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param cls
+	 *            the {@link Class}
+	 * @return {@link IType} from a {@link Class}
+	 * @see ValidationServices#getIType(Type)
+	 */
+	private Set<IType> getIType(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
+		final Set<IType> result = new LinkedHashSet<IType>();
+
+		if (List.class.isAssignableFrom(cls)) {
+			result.add(new SequenceType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
+		} else if (Set.class.isAssignableFrom(cls)) {
+			result.add(new SetType(queryEnvironment, new ClassType(queryEnvironment, Object.class)));
+		} else {
+			result.add(new ClassType(queryEnvironment, cls));
+		}
 
 		return result;
 	}

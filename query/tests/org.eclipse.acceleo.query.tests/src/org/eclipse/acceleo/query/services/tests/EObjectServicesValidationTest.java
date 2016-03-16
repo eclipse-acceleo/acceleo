@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -285,8 +286,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEPackage()) };
-			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
-					.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {classType(EClass.class) };
 
 			assertValidation(expectedReturnTypes, "eClass", parameterTypes);
 		} finally {
@@ -1112,8 +1112,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEObject())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EObject.class)) };
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {
@@ -1149,8 +1148,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			final IType[] parameterTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 					.getEClass())) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
-					.getEObject())) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(EObject.class)) };
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {

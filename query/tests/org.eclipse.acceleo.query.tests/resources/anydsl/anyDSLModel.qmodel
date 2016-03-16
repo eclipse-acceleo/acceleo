@@ -182,7 +182,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -202,9 +202,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -214,9 +212,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -226,9 +222,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -252,9 +246,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -264,7 +256,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when i (EClassifier=Producer) is kind of EClassifierLiteral=Food&#xA;Nothing inferred when i (EClassifier=EAnnotation) is kind of EClassifierLiteral=Food" startPosition="131" endPosition="158"/>
       </expectedResult>
     </expectations>
@@ -275,7 +267,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -285,7 +277,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -295,7 +287,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -305,9 +297,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -317,9 +307,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -329,7 +317,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -375,7 +363,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -385,9 +373,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -397,7 +383,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Plant) is not kind of EClassifierLiteral=MultiNamedElement" endPosition="43"/>
       </expectedResult>
     </expectations>
@@ -408,7 +394,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Plant) is type of EClassifierLiteral=MultiNamedElement" endPosition="43"/>
       </expectedResult>
     </expectations>
@@ -419,7 +405,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Plant) is type of EClassifierLiteral=Source" endPosition="32"/>
       </expectedResult>
     </expectations>
@@ -430,7 +416,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Plant) is not type of EClassifierLiteral=Plant" endPosition="31"/>
       </expectedResult>
     </expectations>
@@ -441,7 +427,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -451,7 +437,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -461,7 +447,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -471,7 +457,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -481,7 +467,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -523,7 +509,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -533,9 +519,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -545,7 +529,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -565,9 +549,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -587,7 +569,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -607,7 +589,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -641,7 +623,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -651,9 +633,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -665,9 +645,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=EString)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=SingleString)</possibleTypes>
-        <possibleTypes>Sequence(EClassifier=String)</possibleTypes>
+        <possibleTypes>Sequence(java.lang.String)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -679,9 +657,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Set(EClassifier=EString)</possibleTypes>
-        <possibleTypes>Set(EClassifier=SingleString)</possibleTypes>
-        <possibleTypes>Set(EClassifier=String)</possibleTypes>
+        <possibleTypes>Set(java.lang.String)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -701,7 +677,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -711,7 +687,7 @@ EClassifierLiteral=Food can't contain directly or indirectly EClassifier=Adress)
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>

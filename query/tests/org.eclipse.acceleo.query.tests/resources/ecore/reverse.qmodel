@@ -62,9 +62,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.EObjectServices</classesToImport>
@@ -170,9 +168,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -182,9 +178,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -194,9 +188,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -206,7 +198,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -245,9 +237,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -257,7 +247,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -267,7 +257,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -277,7 +267,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -287,9 +277,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -299,7 +287,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -321,7 +309,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -331,9 +319,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -343,7 +329,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=EClass) is type of EClassifierLiteral=ENamedElement" endPosition="38"/>
       </expectedResult>
     </expectations>
@@ -354,7 +340,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=EClass) is not type of EClassifierLiteral=EClass" endPosition="31"/>
       </expectedResult>
     </expectations>
@@ -365,7 +351,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=EClass) is not kind of EClassifierLiteral=ENamedElement" endPosition="38"/>
       </expectedResult>
     </expectations>
@@ -376,7 +362,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="session" value="//@modelElements.0"/>
@@ -387,7 +373,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
