@@ -380,7 +380,7 @@ public class AnyServices extends AbstractServiceProvider {
 
 				if (service1.getPriority() < service2.getPriority()) {
 					result = -1;
-				} else if (service1.getPriority() < service2.getPriority()) {
+				} else if (service1.getPriority() > service2.getPriority()) {
 					result = 1;
 				} else {
 					result = service1.getName().compareTo(service2.getName());
