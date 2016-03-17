@@ -423,6 +423,26 @@ public class EPackageProviderTests {
 		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), it.next());
 	}
 
+	@Test
+	public void getInverseEClassesRegisteredWithSubClasses() {
+		provider.registerPackage(EcorePackage.eINSTANCE);
+
+		final Set<EClass> eClasses = provider.getInverseEClasses(EcorePackage.eINSTANCE.getEClassifier());
+
+		assertEquals(10, eClasses.size());
+		final Iterator<EClass> it = eClasses.iterator();
+		assertEquals(EcorePackage.eINSTANCE.getEOperation(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getETypedElement(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAnnotation(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEReference(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEAttribute(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEEnumLiteral(), it.next());
+	}
+
 	@Test(expected = java.lang.NullPointerException.class)
 	public void getFollowingSiblingsEClassesNull() {
 		provider.getFollowingSiblingsEClasses(null);
