@@ -469,6 +469,26 @@ public class EPackageProviderTests {
 		assertEquals(EcorePackage.eINSTANCE.getEObject(), it.next());
 	}
 
+	@Test
+	public void getFollowingSiblingsEClassesRegisteredWithSubClasses() {
+		provider.registerPackage(EcorePackage.eINSTANCE);
+
+		final Set<EClass> eClasses = provider.getFollowingSiblingsEClasses(EcorePackage.eINSTANCE
+				.getENamedElement());
+
+		assertEquals(9, eClasses.size());
+		final Iterator<EClass> it = eClasses.iterator();
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEPackage(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEEnumLiteral(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEOperation(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEStructuralFeature(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEGenericType(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEParameter(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getETypeParameter(), it.next());
+		assertEquals(EcorePackage.eINSTANCE.getEObject(), it.next());
+	}
+
 	@Test(expected = java.lang.NullPointerException.class)
 	public void getPrecedingSiblingsEClassesNull() {
 		provider.getPrecedingSiblingsEClasses(null);
