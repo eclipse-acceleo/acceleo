@@ -176,7 +176,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 	}
 
 	@Test
-	public void testEAllContentsFiltered() {
+	public void testEAllContentsFilteredEClassifierLiteral() {
 		try {
 			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 
@@ -201,6 +201,33 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 					eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
 			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
 					.getEPackage())) };
+
+			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
+		} finally {
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+		}
+	}
+
+	@Test
+	public void testEAllContentsFilteredEClassifier() {
+		try {
+			getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+
+			final IType[] parameterTypes = new IType[] {
+					eClassifierType(EcorePackage.eINSTANCE.getEPackage()),
+					eClassifierType(EcorePackage.eINSTANCE.getEClass()) };
+			final IType[] expectedReturnTypes = new IType[] {
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEAnnotation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStringToStringMapEntry())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEObject())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getETypeParameter())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEOperation())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEStructuralFeature())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEGenericType())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEEnumLiteral())),
+					sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEParameter())), };
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
