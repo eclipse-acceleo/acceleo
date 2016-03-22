@@ -1836,7 +1836,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		Object result;
 		if (expression == null) {
 			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationVisitor.UnresolvedCompilationError")); //$NON-NLS-1$
+					.getString("AcceleoEvaluationVisitor.UnresolvedCompilationErrorNull")); //$NON-NLS-1$
 		}
 		AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> delegate = getAcceleoVisitor();
 		if (expression instanceof Template) {
@@ -1916,8 +1916,32 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		} else if (!(expression instanceof TemplateExpression)) {
 			result = super.visitExpression(expression);
 		} else {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationVisitor.UnresolvedCompilationError")); //$NON-NLS-1$
+			// The expression itself fails, so it's toString will likely end in NPE
+			// (OCLExpression.toString() will do so). Try and go up to the container.
+			String failedOnExpression = null;
+			try {
+				failedOnExpression = expression.eContainer().toString();
+				// CHECKSTYLE:OFF We're trying to be resilient to any errors on this toString since we're
+				// going to throw an exception anyway
+			} catch (Exception e) {
+				// CHECKSTYLE:ON
+				// Try and find a Template containing our expression
+				EObject container = expression.eContainer();
+				while (!(container instanceof Template) && container != null) {
+					container = container.eContainer();
+				}
+				if (container != null) {
+					failedOnExpression = container.toString();
+				}
+			}
+			if (failedOnExpression == null) {
+				throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+						"AcceleoEvaluationVisitor.UnresolvedCompilationErrorNoExpression", expression //$NON-NLS-1$
+								.eResource().getURI().lastSegment()));
+			}
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationVisitor.UnresolvedCompilationError", expression.eContainer(), //$NON-NLS-1$
+					expression.eResource().getURI().lastSegment()));
 		}
 		return result;
 	}
