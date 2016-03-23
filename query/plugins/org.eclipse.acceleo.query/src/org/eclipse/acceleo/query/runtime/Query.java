@@ -22,6 +22,8 @@ import org.eclipse.acceleo.query.services.NumberServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 
 /**
  * Static utility methods pertaining to Acceleo queries.
@@ -65,6 +67,9 @@ public final class Query {
 
 		Set<IService> services = ServiceUtils.getServices(env, new AnyServices(env));
 		ServiceUtils.registerServices(env, services);
+		env.registerEPackage(EcorePackage.eINSTANCE);
+		env.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
+				EStringToStringMapEntryImpl.class);
 		services = ServiceUtils.getServices(env, new EObjectServices(env, xRefProvider, rootProvider));
 		ServiceUtils.registerServices(env, services);
 		services = ServiceUtils.getServices(env, new XPathServices(env));
