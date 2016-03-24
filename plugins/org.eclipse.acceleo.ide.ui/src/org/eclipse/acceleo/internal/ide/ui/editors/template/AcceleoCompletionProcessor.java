@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -90,6 +91,8 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoCompletionProcessor implements IContentAssistProcessor {
+	/** Pre-compiled pattern that'll allow us to match proposals with camel case. */
+	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile("([a-z]+|[A-Z][a-z]*)"); //$NON-NLS-1$
 
 	/** The auto activation characters for completion proposal. */
 	private static final char[] AUTO_ACTIVATION_CHARACTERS;
@@ -426,7 +429,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		Set<String> duplicated = new CompactHashSet<String>();
 		for (Choice next : choices) {
 			String replacementString = next.getName();
-			if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(replacementString, start)) {
 				switch (next.getKind()) {
 					case OPERATION:
 						if (next.getElement() instanceof EOperation) {
@@ -474,14 +477,19 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (startPosition > offset) {
 			startPosition = offset;
 		}
-		String textOCL = text.substring(startPosition, offset);
-		Collection<Choice> choices = content.getSyntaxHelp(textOCL, offset);
+		// Do not let OCL pre-filter.
+		int oclIndex = offset;
+		while (oclIndex > 0 && Character.isJavaIdentifierPart(text.charAt(oclIndex - 1))) {
+			oclIndex--;
+		}
+		String textOCL = text.substring(startPosition, oclIndex);
+		Collection<Choice> choices = content.getSyntaxHelp(textOCL, oclIndex);
 		Set<String> duplicated = new CompactHashSet<String>();
 		for (Choice next : choices) {
 			String choiceValue = next.getName();
 			String replacement = getReplacementStringFor(choiceValue);
-			if (choiceValue.toLowerCase().startsWith(start.toLowerCase())
-					|| replacement.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(choiceValue, start)
+					|| startsWithOrMatchCamelCase(replacement, start)) {
 				switch (next.getKind()) {
 					case OPERATION:
 						addOCLOperationChoice(proposals, next, start, duplicated);
@@ -733,7 +741,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		while (dependencies.hasNext()) {
 			URI uri = dependencies.next();
 			String displayString = new Path(uri.lastSegment()).removeFileExtension().lastSegment();
-			if (displayString.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(displayString, start)) {
 				proposals.add(new AcceleoCompletionImportProposal(uri, offset - start.length(), start
 						.length(), AcceleoUIActivator.getDefault().getImage(
 						IAcceleoContantsImage.TemplateEditor.Completion.MODULE), displayString));
@@ -758,7 +766,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				.iterator();
 		while (entries.hasNext()) {
 			String pURI = entries.next();
-			if (pURI.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(pURI, start)) {
 				proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(), pURI
 						.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI, null, pURI));
 			}
@@ -779,7 +787,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						shortName = resolved.getName();
 					}
 				}
-				if (shortName.startsWith(start.toLowerCase())) {
+				if (startsWithOrMatchCamelCase(shortName, start)) {
 					proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(),
 							pURI.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI,
 							null, pURI));
@@ -791,14 +799,14 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			computeEcoreFiles(ecoreFiles, ResourcesPlugin.getWorkspace().getRoot());
 			for (IFile ecoreFile : ecoreFiles) {
 				String ecorePath = ecoreFile.getFullPath().toString();
-				if (ecorePath.toLowerCase().startsWith(start.toLowerCase())) {
+				if (startsWithOrMatchCamelCase(ecorePath, start)) {
 					proposals.add(createCompletionProposal(ecorePath, offset - start.length(),
 							start.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
 									uriImagePath), ecorePath, null, ecorePath));
 				}
 				if (start.length() > 0) {
 					String shortName = new Path(ecorePath).removeFileExtension().lastSegment();
-					if (shortName.startsWith(start.toLowerCase())) {
+					if (startsWithOrMatchCamelCase(shortName, start)) {
 						proposals.add(createCompletionProposal(ecorePath, offset - start.length(), start
 								.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
 								uriImagePath), ecorePath, null, ecorePath));
@@ -870,7 +878,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			Iterator<EClassifier> eClassifierIt = content.getTypes().iterator();
 			while (eClassifierIt.hasNext()) {
 				EClassifier eClassifier = eClassifierIt.next();
-				if (eClassifier.getName().toLowerCase().startsWith(start.toLowerCase())) {
+				if (startsWithOrMatchCamelCase(eClassifier.getName(), start)) {
 					String name = eClassifier.getName();
 					if (name.endsWith(")")) { //$NON-NLS-1$
 						name = name.replaceAll("\\(", "(\\${"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1846,4 +1854,57 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 
+	/**
+	 * Checks whether the given candidate starts with the given query, or if it matches said query as
+	 * camelCase.
+	 * <p>
+	 * The String "thisIsAPotentialResult" must match the given queries :
+	 * <ul>
+	 * <li>th</li>
+	 * <li>thIAPR</li>
+	 * <li>tIA</li>
+	 * <li>tIAPoR</li>
+	 * <li>thisisa</li>
+	 * <li>thisisA</li>
+	 * </ul>
+	 * However, it will not match :
+	 * <ul>
+	 * <li>tho</li>
+	 * <li>tIaP</li>
+	 * <li>tIApotential</li>
+	 * <li>TIApotential</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param candidate
+	 *            The candidate string.
+	 * @param query
+	 *            The query {@code candidate} must match.
+	 * @return <code>true</code> if {@code candidate} matches {@code query}, <code>false</code> otherwise.
+	 */
+	private static boolean startsWithOrMatchCamelCase(String candidate, String query) {
+		boolean result = false;
+		if (startsWithIgnoreCase(candidate, query)) {
+			result = true;
+		} else if (candidate != null) {
+			// transform the query into a camelCase regex
+			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*";
+			result = candidate.matches(regex);
+		}
+		return result;
+	}
+
+	/**
+	 * Checks if the given candidate String starts with the given prefix, ignoring case.
+	 * 
+	 * @param candidate
+	 *            The candidate string.
+	 * @param prefix
+	 *            The expected prefix of {@code candidate}.
+	 * @return <code>true</code> if the given {@code candidate} starts with the given {@code prefix}, ignoring
+	 *         case.
+	 */
+	private static boolean startsWithIgnoreCase(String candidate, String prefix) {
+		return candidate != null && candidate.regionMatches(true, 0, prefix, 0, prefix.length());
+	}
 }
