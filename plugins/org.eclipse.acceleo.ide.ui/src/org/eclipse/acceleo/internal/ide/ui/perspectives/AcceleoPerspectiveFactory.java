@@ -65,7 +65,6 @@ public class AcceleoPerspectiveFactory implements IPerspectiveFactory {
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
 
 		// views - acceleo
-		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"); //$NON-NLS-1$
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"); //$NON-NLS-1$
 		layout.addShowViewShortcut("org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"); //$NON-NLS-1$
 		layout.addShowViewShortcut("org.eclipse.acceleo.ui.interpreter.view"); //$NON-NLS-1$
