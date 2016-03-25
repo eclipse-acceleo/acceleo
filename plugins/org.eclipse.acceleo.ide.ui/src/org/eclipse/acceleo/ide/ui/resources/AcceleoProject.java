@@ -37,7 +37,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -828,17 +827,6 @@ public class AcceleoProject {
 								outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
 							}
 						}
-					}
-				}
-			}
-			// Deprecated? Yes, but the following API give more results
-			for (IPluginDescriptor descriptor : Platform.getPluginRegistry().getPluginDescriptors()) {
-				String name = descriptor.getUniqueIdentifier();
-				if (!done.contains(name)) {
-					done.add(name);
-					Bundle bundle = Platform.getBundle(name);
-					if (bundle != null) {
-						outputURIs.addAll(getOrCreatePlatformPluginSavedURIs(bundle));
 					}
 				}
 			}
