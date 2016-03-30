@@ -198,8 +198,8 @@ public class JavaServicesWrapperInitializationStrategy implements IAcceleoInitia
 					IMethod[] methods = iType.getMethods();
 					for (IMethod iMethod : methods) {
 						if (Flags.isPublic(iMethod.getFlags())) {
-							buffer.append(JavaServicesUtils.createQuery(iType, iMethod,
-									this.shouldGenerateDocumentation));
+							buffer.append(JavaServicesUtils.createQuery(iType, iMethod, System
+									.getProperty("line.separator"), this.shouldGenerateDocumentation)); //$NON-NLS-1$
 						}
 					}
 				} catch (JavaModelException e) {

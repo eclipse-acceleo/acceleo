@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix;
 
+import com.google.common.base.Joiner;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.AcceleoUIMessages;
 import org.eclipse.swt.graphics.Image;
@@ -52,16 +57,22 @@ public class AcceleoCreateTemplateResolutionAfterLastMember extends AbstractCrea
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AbstractCreateModuleElementResolution#append(java.lang.StringBuilder,
-	 *      java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AbstractCreateModuleElementResolution#append(StringBuilder,
+	 *      String, String, String[], String[])
 	 */
 	@Override
-	protected void append(StringBuilder newText, String name, String paramType, String paramName) {
+	protected void append(StringBuilder newText, String lineDelimiter, String name, String[] paramTypes,
+			String[] paramNames) {
+		assert paramNames.length == paramTypes.length;
 		newText.append("[template public " + name + " ("); //$NON-NLS-1$ //$NON-NLS-2$
-		newText.append(paramName);
-		newText.append(" : "); //$NON-NLS-1$
-		newText.append(paramType);
-		newText.append(") ]\n\n"); //$NON-NLS-1$
+
+		List<String> argList = new ArrayList<String>();
+		for (int i = 0; i < paramTypes.length; i++) {
+			argList.add(paramNames[i] + " : " + paramTypes[i]); //$NON-NLS-1$
+		}
+
+		newText.append(Joiner.on(", ").join(argList)); //$NON-NLS-1$
+		newText.append(") ]" + lineDelimiter + lineDelimiter); //$NON-NLS-1$
 		newText.append("[/template]"); //$NON-NLS-1$
 	}
 

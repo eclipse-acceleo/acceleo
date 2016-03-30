@@ -200,7 +200,7 @@ public final class JavaServicesUtils {
 			for (IType iType : types) {
 				IMethod[] methods = iType.getMethods();
 				for (IMethod iMethod : methods) {
-					buffer.append(JavaServicesUtils.createQuery(iType, iMethod, true));
+					buffer.append(JavaServicesUtils.createQuery(iType, iMethod, LS, true));
 				}
 			}
 		} catch (JavaModelException e) {
@@ -217,11 +217,14 @@ public final class JavaServicesUtils {
 	 *            The type containing the method
 	 * @param javaMethod
 	 *            is the current method of the class
+	 * @param lineDelimiter
+	 *            The line delimiter to use in this file
 	 * @param withDocumentation
 	 *            Indicates if we should generate some documentation too
 	 * @return the textual format of the query
 	 */
-	public static String createQuery(IType type, IMethod javaMethod, boolean withDocumentation) {
+	public static String createQuery(IType type, IMethod javaMethod, String lineDelimiter,
+			boolean withDocumentation) {
 		final String argPrefix = "arg"; //$NON-NLS-1$
 		final String parenthesisStart = "("; //$NON-NLS-1$
 
@@ -229,13 +232,13 @@ public final class JavaServicesUtils {
 		try {
 			String[] javaParameters = javaMethod.getParameterTypes();
 			if (withDocumentation) {
-				buffer.append("[**\n * The documentation of the query\n"); //$NON-NLS-1$
+				buffer.append("[**" + lineDelimiter + " * The documentation of the query" + lineDelimiter); //$NON-NLS-1$ //$NON-NLS-2$
 				for (int i = 0; i < javaParameters.length; i++) {
 					buffer.append(" * @param arg"); //$NON-NLS-1$
 					buffer.append(i);
-					buffer.append("\n"); //$NON-NLS-1$
+					buffer.append(lineDelimiter);
 				}
-				buffer.append(" */]\n"); //$NON-NLS-1$
+				buffer.append(" */]" + lineDelimiter); //$NON-NLS-1$
 			}
 
 			buffer.append("[query public "); //$NON-NLS-1$
@@ -260,7 +263,7 @@ public final class JavaServicesUtils {
 			buffer.append(") : "); //$NON-NLS-1$
 			buffer.append(javaClassToOclType(type, Signature.getTypeErasure(Signature
 					.getSignatureSimpleName(javaMethod.getReturnType()))));
-			buffer.append("\n\t= invoke('"); //$NON-NLS-1$
+			buffer.append(lineDelimiter + "\t= invoke('"); //$NON-NLS-1$
 			buffer.append(type.getFullyQualifiedName());
 			buffer.append("', '"); //$NON-NLS-1$
 			buffer.append(javaMethod.getElementName());
@@ -291,7 +294,7 @@ public final class JavaServicesUtils {
 				buffer.append(argPrefix);
 				buffer.append(i);
 			}
-			buffer.append("})\n/]\n\n"); //$NON-NLS-1$
+			buffer.append("})" + lineDelimiter + "/]" + lineDelimiter + lineDelimiter); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (JavaModelException e) {
 			AcceleoUIActivator.log(e, true);
 		}

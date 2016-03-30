@@ -71,14 +71,15 @@ public class AcceleoCreateJavaServiceWrapperResolutionAfterLastMember extends Ab
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AbstractCreateModuleElementResolution#append(java.lang.StringBuilder,
-	 *      java.lang.String, java.lang.String, java.lang.String)
+	 * @see org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix.AbstractCreateModuleElementResolution#append(StringBuilder,
+	 *      String, String, String[], String[])
 	 */
 	@Override
-	protected void append(StringBuilder newText, String name, String paramType, String paramName) {
+	protected void append(StringBuilder newText, String lineDelimiter, String name, String[] paramTypes,
+			String[] paramName) {
 		try {
 			for (IFile javaFile : getProjectJavaFiles()) {
-				createJavaWrappers(newText, javaFile, name);
+				createJavaWrappers(newText, lineDelimiter, javaFile, name);
 			}
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
@@ -142,12 +143,15 @@ public class AcceleoCreateJavaServiceWrapperResolutionAfterLastMember extends Ab
 	 * 
 	 * @param buffer
 	 *            is the buffer to fill
+	 * @param lineDelimiter
+	 *            The line delimiter to use in this file
 	 * @param javaFile
 	 *            is the java file that contains the Java services
 	 * @param serviceName
 	 *            is the name of the service to call
 	 */
-	private void createJavaWrappers(StringBuilder buffer, IFile javaFile, String serviceName) {
+	private void createJavaWrappers(StringBuilder buffer, String lineDelimiter, IFile javaFile,
+			String serviceName) {
 		IJavaElement javaElement = JavaCore.create(javaFile);
 		if (javaElement instanceof ICompilationUnit) {
 			ICompilationUnit classFile = (ICompilationUnit)javaElement;
@@ -162,7 +166,7 @@ public class AcceleoCreateJavaServiceWrapperResolutionAfterLastMember extends Ab
 				try {
 					IMethod[] methods = iType.getMethods();
 					for (IMethod iMethod : methods) {
-						buffer.append(JavaServicesUtils.createQuery(iType, iMethod, true));
+						buffer.append(JavaServicesUtils.createQuery(iType, iMethod, lineDelimiter, true));
 					}
 				} catch (JavaModelException e) {
 					AcceleoUIActivator.log(e, true);
