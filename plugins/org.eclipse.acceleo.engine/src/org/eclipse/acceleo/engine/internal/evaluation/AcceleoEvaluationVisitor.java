@@ -1631,7 +1631,11 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Template actualTemplate;
 
 		if (invocation.isSuper()) {
-			final Template containingTemplate = (Template)invocation.eContainer();
+			EObject container = invocation.eContainer();
+			while (!(container instanceof Template)) {
+				container = container.eContainer();
+			}
+			Template containingTemplate = (Template)container;
 			// Was the containing template called through another template invocation?
 			// If Yes, then this latter is the actual *super* we seek
 			// If No, then our super is the first template overriden
