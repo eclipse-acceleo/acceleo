@@ -54,6 +54,7 @@ import org.eclipse.ocl.ecore.OperationCallExp;
 import org.eclipse.ocl.ecore.Variable;
 import org.eclipse.ocl.ecore.VariableExp;
 import org.eclipse.ocl.helper.Choice;
+import org.eclipse.ocl.helper.ChoiceKind;
 import org.eclipse.ocl.helper.ConstraintKind;
 import org.eclipse.ocl.utilities.ASTNode;
 import org.eclipse.ocl.utilities.CallingASTNode;
@@ -1222,6 +1223,24 @@ public class OCLParser {
 			// do not log, it can happen during the parsing.
 		} finally {
 			popContext();
+		}
+		/*
+		 * OCL places the choices in a set when we call it with an empty set, resulting in a lot of lost
+		 * choices since Choice doesn't use a logical equals/hashcode (only uses the name, so two eAllContent
+		 * operations can't coexist even if their parameters are distinct), see also
+		 * org.eclipse.ocl.internal.helper.OCLSyntaxHelper.getVariableChoices(...). We'll only keep the
+		 * variable choices from there (there cannot be two variables with the same name) and trick OCL into
+		 * thinking we're asking for the completion after a self call instead.
+		 */
+		if ("".equals(text)) { //$NON-NLS-1$
+			List<Choice> erroneousResult = result;
+			result = new ArrayList<Choice>();
+			for (Choice c : erroneousResult) {
+				if (c.getKind() == ChoiceKind.VARIABLE) {
+					result.add(c);
+				}
+			}
+			result.addAll(getSyntaxHelp("self.")); //$NON-NLS-1$
 		}
 		return result;
 	}
