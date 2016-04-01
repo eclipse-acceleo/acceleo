@@ -845,30 +845,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		final Query query = invocation.getDefinition();
 		String implicitContextVariableName = null;
 
-		final List<Object> arguments = new ArrayList<Object>();
-		boolean fireEvents = fireGenerationEvent;
-		fireGenerationEvent = false;
-		for (int i = 0; i < query.getParameter().size(); i++) {
-			final Variable var = query.getParameter().get(i);
-			var.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation.getArgument().get(
-					i)));
-			getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
-			final Object argValue = getEvaluationEnvironment().getValueOf(var.getName());
-			if (isInvalid(argValue)) {
-				final OCLExpression<C> failingExpression = (OCLExpression<C>)invocation.getArgument().get(i);
-				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-				final AcceleoEvaluationException exception = getContext().createAcceleoException(invocation,
-						failingExpression, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
-				// Evaluation of this query failed. Remove all previously created variables
-				for (int j = 0; j <= i; j++) {
-					getEvaluationEnvironment().remove(query.getParameter().get(j).getName());
-				}
-				throw exception;
-			}
-			arguments.add(argValue);
-			var.setInitExpression(null);
-		}
-		fireGenerationEvent = fireEvents;
+		final List<Object> arguments = prepareInvocation(invocation);
 
 		// If the query has already been run with these arguments, return the cached result
 		Object cachedResult = delegateGetCachedResult(query, arguments);
@@ -1746,6 +1723,73 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		}
 
 		return actualTemplate;
+	}
+
+	/**
+	 * Evaluate all parameters of the query before changing the actual values of the associated variables. See
+	 * bug 344424 for an example of what would fail (strangely) if we didn't do that.
+	 * 
+	 * @param invocation
+	 *            The invocation to prepare
+	 * @return The list of argument values.
+	 */
+	@SuppressWarnings("unchecked")
+	private List<Object> prepareInvocation(QueryInvocation invocation) {
+		final List<Object> arguments = new ArrayList<Object>();
+		final List<Variable> temporaryArgVars = new ArrayList<Variable>(invocation.getArgument().size());
+		final Query query = invocation.getDefinition();
+
+		boolean fireEvents = fireGenerationEvent;
+		fireGenerationEvent = false;
+		for (int i = 0; i < query.getParameter().size(); i++) {
+			/*
+			 * We'll create a temporary var beforehand for each parameter to avoid scoping issues with the
+			 * variables context (temporary vars are global). This shouldn't be too much overhead in terms of
+			 * raw performance.
+			 */
+			final Variable tempVar = EcoreFactory.eINSTANCE.createVariable();
+			tempVar.setName(TEMPORARY_INVOCATION_ARG_PREFIX + i);
+			tempVar.setInitExpression(new ParameterInitExpression((OCLExpression<C>)invocation.getArgument()
+					.get(i)));
+			temporaryArgVars.add(tempVar);
+			// Evaluate the value of this new variable
+			getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)tempVar);
+
+			final Object argValue = getEvaluationEnvironment().getValueOf(tempVar.getName());
+			if (isInvalid(argValue)) {
+				final OCLExpression<C> failingExpression = (OCLExpression<C>)invocation.getArgument().get(i);
+				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
+				final AcceleoEvaluationException exception = getContext().createAcceleoException(invocation,
+						failingExpression, "AcceleoEvaluationVisitor.UndefinedArgument", currentSelf); //$NON-NLS-1$
+				// Evaluation of this query failed. Remove all previously created variables
+				for (int j = 0; j <= i; j++) {
+					getEvaluationEnvironment().remove(temporaryArgVars.get(j).getName());
+				}
+				throw exception;
+			}
+		}
+
+		// Now that they've all been computed, we can set the final variable values
+		for (int i = 0; i < query.getParameter().size(); i++) {
+			Variable var = query.getParameter().get(i);
+			final VariableExp init = EcoreFactory.eINSTANCE.createVariableExp();
+			final Variable temporaryVar = temporaryArgVars.get(i);
+			init.setReferredVariable(temporaryVar);
+			var.setInitExpression(init);
+			// Evaluate the value of this new variable
+			getVisitor().visitVariable((org.eclipse.ocl.expressions.Variable<C, PM>)var);
+			// Unset every temporary reference we've set to prevent cross referencers from keeping these
+			var.setInitExpression(null);
+			init.setReferredVariable(null);
+			temporaryVar.setType(null);
+			temporaryVar.setInitExpression(null);
+
+			final Object argValue = getEvaluationEnvironment().getValueOf(var.getName());
+			arguments.add(argValue);
+		}
+		fireGenerationEvent = fireEvents;
+
+		return arguments;
 	}
 
 	/**
