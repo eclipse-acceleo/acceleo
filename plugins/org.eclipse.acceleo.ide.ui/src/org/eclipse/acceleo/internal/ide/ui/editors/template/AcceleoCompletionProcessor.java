@@ -132,6 +132,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 */
 	private String defaultVariableType;
 
+	/** Tells us whether auto activation is enabled or not for this processor. */
+	private boolean disableAutoActivation;
+
 	static {
 		/*
 		 * Assume the version of Eclipse is tied to the associated OCL Version. If this assumption is false,
@@ -1725,8 +1728,15 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
 	 */
 	public char[] getCompletionProposalAutoActivationCharacters() {
-		// TODO JMU should return a copy of the array to avoid accidental modifications.
+		if (disableAutoActivation) {
+			return new char[0];
+		}
 		return AUTO_ACTIVATION_CHARACTERS;
+	}
+
+	/** Disables auto activation for this processor. */
+	public void disableAutoActivation() {
+		disableAutoActivation = true;
 	}
 
 	/**
@@ -1888,7 +1898,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			result = true;
 		} else if (candidate != null) {
 			// transform the query into a camelCase regex
-			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*";
+			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
 			result = candidate.matches(regex);
 		}
 		return result;
