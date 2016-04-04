@@ -704,26 +704,24 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	private String getPropertyDisplay(EStructuralFeature eStructuralFeature) {
 		StringBuffer displayProperty = new StringBuffer();
 		displayProperty.append(eStructuralFeature.getName());
-		if (eStructuralFeature.getEType() != null) {
+		if (eStructuralFeature.isMany()) {
+			displayProperty.append(": "); //$NON-NLS-1$
+			if (eStructuralFeature.isUnique() && eStructuralFeature.isOrdered()) {
+				displayProperty.append("OrderedSet("); //$NON-NLS-1$
+			} else if (eStructuralFeature.isUnique()) {
+				displayProperty.append("Set("); //$NON-NLS-1$
+			} else if (eStructuralFeature.isOrdered()) {
+				displayProperty.append("Sequence("); //$NON-NLS-1$
+			} else {
+				displayProperty.append("Bag("); //$NON-NLS-1$
+			}
+			if (eStructuralFeature.getEType() != null) {
+				displayProperty.append(eStructuralFeature.getEType().getName());
+			}
+			displayProperty.append(')');
+		} else if (eStructuralFeature.getEType() != null) {
 			displayProperty.append(':');
 			displayProperty.append(eStructuralFeature.getEType().getName());
-		}
-		if (eStructuralFeature.getLowerBound() == eStructuralFeature.getUpperBound()) {
-			displayProperty.append(' ');
-			displayProperty.append('[');
-			displayProperty.append(eStructuralFeature.getLowerBound());
-			displayProperty.append(']');
-		} else {
-			displayProperty.append(' ');
-			displayProperty.append('[');
-			displayProperty.append(eStructuralFeature.getLowerBound());
-			displayProperty.append(".."); //$NON-NLS-1$
-			if (eStructuralFeature.getUpperBound() == -1) {
-				displayProperty.append("*"); //$NON-NLS-1$
-			} else {
-				displayProperty.append(eStructuralFeature.getUpperBound());
-			}
-			displayProperty.append(']');
 		}
 		return displayProperty.toString();
 	}
