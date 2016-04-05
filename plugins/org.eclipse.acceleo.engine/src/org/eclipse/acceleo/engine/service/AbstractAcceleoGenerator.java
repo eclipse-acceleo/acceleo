@@ -192,9 +192,7 @@ public abstract class AbstractAcceleoGenerator {
 			AcceleoPreferences.switchNotifications(true);
 		}
 		File target = getTargetFolder();
-		if (!target.exists() && !target.mkdirs()) {
-			throw new IOException("target directory " + target + " couldn't be created."); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		checkTargetExists(target);
 		AcceleoService service = createAcceleoService();
 		String[] templateNames = getTemplateNames();
 		Map<String, String> result = new HashMap<String, String>();
@@ -231,6 +229,21 @@ public abstract class AbstractAcceleoGenerator {
 			AcceleoPreferences.switchNotifications(notificationsState);
 		}
 		return result;
+	}
+
+	/**
+	 * Checks that the target folder exists or can be created on disk.
+	 * 
+	 * @param target
+	 *            target folder for this generation.
+	 * @throws IOException
+	 *             if the folder doesn't exist and cannot be created.
+	 * @since 3.6
+	 */
+	public void checkTargetExists(File target) throws IOException {
+		if (!target.exists() && !target.mkdirs()) {
+			throw new IOException("target directory " + target + " couldn't be created."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 	}
 
 	/**
@@ -640,7 +653,8 @@ public abstract class AbstractAcceleoGenerator {
 					EPackage ePackage = (EPackage)object;
 					if (AcceleoWorkspaceUtil.INSTANCE.isInDynamicBundle(ePackage.getClass())) {
 						instance.remove(entry.getKey());
-					} else if (ePackage.eResource() != null && ePackage.eResource().getResourceSet() != null && ePackage.eResource().getResourceSet().getPackageRegistry() == instance) {
+					} else if (ePackage.eResource() != null && ePackage.eResource().getResourceSet() != null
+							&& ePackage.eResource().getResourceSet().getPackageRegistry() == instance) {
 						instance.remove(entry.getKey());
 					}
 				}
