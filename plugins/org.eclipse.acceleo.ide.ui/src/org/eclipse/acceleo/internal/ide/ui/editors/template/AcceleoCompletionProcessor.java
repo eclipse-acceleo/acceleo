@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import com.google.common.base.Strings;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,6 +35,7 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIDocumentationUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.IAcceleoContantsImage;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser;
 import org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser;
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
@@ -62,6 +66,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -742,10 +747,29 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		while (dependencies.hasNext()) {
 			URI uri = dependencies.next();
 			String displayString = new Path(uri.lastSegment()).removeFileExtension().lastSegment();
-			if (startsWithOrMatchCamelCase(displayString, start)) {
+			if (Strings.isNullOrEmpty(start)) {
 				proposals.add(new AcceleoCompletionImportProposal(uri, offset - start.length(), start
 						.length(), AcceleoUIActivator.getDefault().getImage(
 						IAcceleoContantsImage.TemplateEditor.Completion.MODULE), displayString));
+			} else {
+				try {
+					EObject eObject = AcceleoUIResourceSet.getResource(uri);
+					if (eObject instanceof org.eclipse.acceleo.model.mtl.Module
+							&& ((org.eclipse.acceleo.model.mtl.Module)eObject).getNsURI() != null
+							&& ((org.eclipse.acceleo.model.mtl.Module)eObject).getNsURI().length() > 0) {
+						if (startsWithOrMatchCamelCase(((org.eclipse.acceleo.model.mtl.Module)eObject)
+								.getNsURI(), start)) {
+							proposals.add(new AcceleoCompletionImportProposal(
+									((org.eclipse.acceleo.model.mtl.Module)eObject).getNsURI(), offset
+											- start.length(), start.length(),
+									AcceleoUIActivator.getDefault().getImage(
+											IAcceleoContantsImage.TemplateEditor.Completion.MODULE),
+									displayString));
+						}
+					}
+				} catch (IOException e) {
+					// Don't show any completion for this module since we can't load it
+				}
 			}
 		}
 	}

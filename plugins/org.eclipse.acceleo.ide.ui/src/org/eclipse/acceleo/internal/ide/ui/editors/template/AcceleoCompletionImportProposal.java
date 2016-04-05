@@ -85,8 +85,29 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 	 */
 	public AcceleoCompletionImportProposal(URI emtlURI, int replacementOffset, int replacementLength,
 			Image image, String displayString) {
-		this.dynamicReplacementString = new Path(emtlURI.lastSegment()).removeFileExtension().lastSegment();
+		this(new Path(emtlURI.lastSegment()).removeFileExtension().lastSegment(), replacementOffset,
+				replacementLength, image, displayString);
 		this.emtlURI = emtlURI;
+	}
+
+	/**
+	 * Creates a new completion proposal for which we already know the replacement string
+	 * ("package::subpackage::modulename" in this case).
+	 * 
+	 * @param replacementString
+	 *            the string to be appended in the text if this proposal is applied
+	 * @param replacementOffset
+	 *            the offset of the text to be replaced
+	 * @param replacementLength
+	 *            the length of the text to be replaced
+	 * @param image
+	 *            the image to display
+	 * @param displayString
+	 *            the string to display
+	 */
+	public AcceleoCompletionImportProposal(String replacementString, int replacementOffset,
+			int replacementLength, Image image, String displayString) {
+		this.dynamicReplacementString = replacementString;
 		this.replacementOffset = replacementOffset;
 		this.replacementLength = replacementLength;
 		this.image = image;
@@ -100,17 +121,19 @@ public final class AcceleoCompletionImportProposal implements ICompletionProposa
 	 */
 	public void apply(IDocument document) {
 		try {
-			EObject eObject;
-			try {
-				eObject = AcceleoUIResourceSet.getResource(emtlURI);
-			} catch (IOException e) {
-				eObject = null;
-				AcceleoUIActivator.getDefault().getLog().log(
-						new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
-			}
-			if (eObject instanceof Module && ((Module)eObject).getNsURI() != null
-					&& ((Module)eObject).getNsURI().length() > 0) {
-				dynamicReplacementString = ((Module)eObject).getNsURI();
+			if (emtlURI != null) {
+				EObject eObject;
+				try {
+					eObject = AcceleoUIResourceSet.getResource(emtlURI);
+				} catch (IOException e) {
+					eObject = null;
+					AcceleoUIActivator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, AcceleoUIActivator.PLUGIN_ID, e.getMessage(), e));
+				}
+				if (eObject instanceof Module && ((Module)eObject).getNsURI() != null
+						&& ((Module)eObject).getNsURI().length() > 0) {
+					dynamicReplacementString = ((Module)eObject).getNsURI();
+				}
 			}
 			document.replace(replacementOffset, replacementLength, dynamicReplacementString);
 		} catch (BadLocationException x) {
