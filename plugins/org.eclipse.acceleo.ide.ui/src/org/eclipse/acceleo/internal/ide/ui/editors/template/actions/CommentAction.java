@@ -80,13 +80,11 @@ public class CommentAction extends Action implements IWorkbenchWindowActionDeleg
 				e = cstNode.getEndPosition();
 				newText = ((Comment)cstNode).getBody();
 			} else {
-				if (b == e) {
-					while (b > 0 && text.charAt(b - 1) != '\n') {
-						b--;
-					}
-					while (e < text.length() && text.charAt(e) != '\r' && text.charAt(e) != '\n') {
-						e++;
-					}
+				while (b > 0 && text.charAt(b - 1) != '\n') {
+					b--;
+				}
+				while (e < text.length() && text.charAt(e) != '\r' && text.charAt(e) != '\n') {
+					e++;
 				}
 				// FIXME comment sections are in IAcceleoConstants ... isn't the following error-prone?
 				newText = "[comment]" + text.substring(b, e) + "[/comment]"; //$NON-NLS-1$ //$NON-NLS-2$
