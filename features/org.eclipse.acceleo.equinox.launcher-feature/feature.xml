@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.acceleo.equinox.launcher"
+      label="%featureName"
+      version="3.7.0.qualifier"
+      provider-name="%providerName"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.1">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.core.contenttype"/>
+      <import plugin="org.eclipse.core.jobs"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.equinox.app"/>
+      <import plugin="org.eclipse.equinox.common"/>
+      <import plugin="org.eclipse.equinox.ds"/>
+      <import plugin="org.eclipse.equinox.preferences"/>
+      <import plugin="org.eclipse.equinox.registry"/>
+      <import plugin="org.eclipse.equinox.simpleconfigurator"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.osgi.services"/>
+      <import feature="org.eclipse.equinox.core.feature"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.acceleo.equinox.launcher"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.kohsuke.args4j"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

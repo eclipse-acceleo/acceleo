@@ -6,4 +6,5 @@ location "http://download.eclipse.org/tools/orbit/downloads/drops/R2015051921075
 	com.google.guava [15.0.0,16.0.0)
 	org.junit [4,5)
 	org.antlr.runtime [4.3.0,4.4.0)
+	org.kohsuke.args4j [2.0.21,2.1.0)
 }

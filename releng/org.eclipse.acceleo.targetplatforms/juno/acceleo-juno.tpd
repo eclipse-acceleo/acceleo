@@ -6,11 +6,15 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "http://download.eclipse.org/releases/juno" {
+location "http://download.eclipse.org/eclipse/updates/4.2" {
 	org.eclipse.platform.sdk lazy
-	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.jdt.feature.group lazy
-	org.eclipse.pde.feature.group lazy
+	org.eclipse.pde.feature.group lazy	
+}
+
+location "http://download.eclipse.org/releases/juno" {
+	org.eclipse.emf.sdk.feature.group lazy
 	org.eclipse.uml2.feature.group lazy
 	
 	lpg.runtime.java lazy

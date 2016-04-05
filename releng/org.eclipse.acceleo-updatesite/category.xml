@@ -9,6 +9,9 @@
    <feature id="org.eclipse.acceleo.runtime" version="0.0.0">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.equinox.launcher" version="0.0.0">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.runtime.source" version="0.0.0">
       <category name="org.eclipse.acceleo"/>
    </feature>

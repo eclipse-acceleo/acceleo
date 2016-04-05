@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/mbarbero/fr.obeo.releng.targetplatform -->
-<target name="Acceleo Luna Target Platform" sequenceNumber="1438782432">
+<target name="Acceleo Luna Target Platform" sequenceNumber="1441099843">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="com.google.guava" version="15.0.0.v201403281430"/>
       <unit id="org.junit" version="4.12.0.v201504281640"/>
       <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
+      <unit id="org.kohsuke.args4j" version="2.0.21.v201301150030"/>
       <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
@@ -18,14 +19,18 @@
       <repository location="http://download.eclipse.org/technology/swtbot/releases/latest/"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
+      <unit id="org.eclipse.equinox.core.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
       <unit id="lpg.runtime.java" version="0.0.0"/>
       <unit id="org.eclipse.ocl" version="0.0.0"/>
       <unit id="org.eclipse.ocl.ecore" version="0.0.0"/>
       <unit id="org.eclipse.ocl.common" version="0.0.0"/>
-      <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
       <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.uml2.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
       <repository location="http://download.eclipse.org/releases/luna"/>
