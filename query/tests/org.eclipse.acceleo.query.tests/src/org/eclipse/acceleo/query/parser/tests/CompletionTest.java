@@ -104,6 +104,47 @@ public class CompletionTest {
 	}
 
 	@Test
+	public void enumLiteral() {
+		final ICompletionResult completionResult = engine.getCompletion("anydsl::Color::", 15, variableTypes);
+
+		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+		assertEquals(0, completionResult.getReplacementOffset());
+		assertEquals(15, completionResult.getReplacementLength());
+	}
+
+	@Test
+	public void enumLiteralWithinCollectionLiteralOneColon() {
+		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{anydsl::Color:", 25,
+				variableTypes);
+
+		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+		assertEquals(11, completionResult.getReplacementOffset());
+		assertEquals(14, completionResult.getReplacementLength());
+	}
+
+	@Test
+	public void enumLiteralWithinCollectionLiteral() {
+		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{anydsl::Color::", 26,
+				variableTypes);
+
+		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+		assertEquals(11, completionResult.getReplacementOffset());
+		assertEquals(15, completionResult.getReplacementLength());
+	}
+
+	@Test
 	public void nullTest() {
 		final ICompletionResult completionResult = engine.getCompletion(null, 0, variableTypes);
 		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(

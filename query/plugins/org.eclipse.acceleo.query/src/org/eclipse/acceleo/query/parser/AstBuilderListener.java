@@ -337,6 +337,11 @@ public class AstBuilderListener extends QueryBaseListener {
 	private static final String THIS_SHOULDN_T_HAPPEN = "This shouldn't happen.";
 
 	/**
+	 * Invalid enum literal message.
+	 */
+	private static final String INVALID_ENUM_LITERAL = "invalid enum literal: %s";
+
+	/**
 	 * Invalid type literal.
 	 */
 	private static final String INVALID_TYPE_LITERAL = "invalid type literal %s";
@@ -538,11 +543,20 @@ public class AstBuilderListener extends QueryBaseListener {
 			final Integer endPosition = Integer.valueOf(((Token)offendingSymbol).getStopIndex() + 1);
 			final String ePackage = ctx.getParent().getStart().getText();
 			errorRule = QueryParser.RULE_typeLiteral;
-			final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false,
-					new String[] {ePackage, });
-			startPositions.put(errorTypeLiteral, startPosition);
-			endPositions.put(errorTypeLiteral, endPosition);
-			pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
+			if (ctx.getChildCount() == 4) {
+				final String eEnumName = ctx.getChild(2).getText();
+				final ErrorEnumLiteral errorEnumLiteral = builder
+						.errorEnumLiteral(false, ePackage, eEnumName);
+				startPositions.put(errorEnumLiteral, startPosition);
+				endPositions.put(errorEnumLiteral, endPosition);
+				pushError(errorEnumLiteral, String.format(INVALID_ENUM_LITERAL, msg));
+			} else {
+				final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(false,
+						new String[] {ePackage, });
+				startPositions.put(errorTypeLiteral, startPosition);
+				endPositions.put(errorTypeLiteral, endPosition);
+				pushError(errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, msg));
+			}
 		}
 
 		/**
@@ -1341,34 +1355,41 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitEnumLit(EnumLitContext ctx) {
-		final EnumLiteral toPush;
-		final String ePackageName = ctx.getChild(0).getText();
-		final String eEnumName = ctx.getChild(2).getText();
-		final String eEnumLiteralName = ctx.getChild(4).getText();
-		final Collection<EEnumLiteral> eEnumLiterals = environment.getEPackageProvider().getEnumLiterals(
-				ePackageName, eEnumName, eEnumLiteralName);
-		Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
-		Integer stopPosition = Integer.valueOf(ctx.stop.getStopIndex() + 1);
-		if (eEnumLiterals.size() == 0) {
-			List<String> segments = new ArrayList<String>(3);
-			segments.add(ePackageName);
-			segments.add(eEnumName);
-			if (!(ctx.getChild(4) instanceof ErrorNode)) {
-				segments.add(eEnumLiteralName);
+		if (ctx.getChildCount() >= 5) {
+			final EnumLiteral toPush;
+			final String ePackageName = ctx.getChild(0).getText();
+			final String eEnumName = ctx.getChild(2).getText();
+			Integer startPosition = Integer.valueOf(ctx.start.getStartIndex());
+			Integer stopPosition = Integer.valueOf(ctx.stop.getStopIndex() + 1);
+			final String eEnumLiteralName = ctx.getChild(4).getText();
+			final Collection<EEnumLiteral> eEnumLiterals = environment.getEPackageProvider().getEnumLiterals(
+					ePackageName, eEnumName, eEnumLiteralName);
+			if (eEnumLiterals.size() == 0) {
+				List<String> segments = new ArrayList<String>(3);
+				segments.add(ePackageName);
+				segments.add(eEnumName);
+				if (!(ctx.getChild(4) instanceof ErrorNode)) {
+					segments.add(eEnumLiteralName);
+				}
+				toPush = builder.errorEnumLiteral(false, segments.toArray(new String[segments.size()]));
+				if (segments.size() == 3) {
+					pushError((Error)toPush, String.format(INVALID_ENUM_LITERAL,
+							"no literal registered with this name"));
+				} else {
+					pushError((Error)toPush, String.format(INVALID_ENUM_LITERAL, "missing literal name"));
+				}
+			} else {
+				toPush = builder.enumLiteral(eEnumLiterals.iterator().next());
+				push(toPush);
+				if (eEnumLiterals.size() > 1) {
+					diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
+							AMBIGUOUS_ENUM_LITERAL, eEnumLiteralName, eEnumName, ePackageName), new Object[] {
+							startPosition, stopPosition, }));
+				}
 			}
-			toPush = builder.errorEnumLiteral(false, segments.toArray(new String[segments.size()]));
-			pushError((Error)toPush, "invalid enum literal");
-		} else {
-			toPush = builder.enumLiteral(eEnumLiterals.iterator().next());
-			push(toPush);
-			if (eEnumLiterals.size() > 1) {
-				diagnosticStack.push(new BasicDiagnostic(Diagnostic.WARNING, PLUGIN_ID, 0, String.format(
-						AMBIGUOUS_ENUM_LITERAL, eEnumLiteralName, eEnumName, ePackageName), new Object[] {
-						startPosition, stopPosition, }));
-			}
+			startPositions.put(toPush, startPosition);
+			endPositions.put(toPush, stopPosition);
 		}
-		startPositions.put(toPush, startPosition);
-		endPositions.put(toPush, stopPosition);
 	}
 
 	/**
@@ -1384,7 +1405,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 			final ErrorEnumLiteral errorEnumLiteral = builder.errorEnumLiteral(true, ePackageName, eEnumName);
 
-			pushError(errorEnumLiteral, "invalid enum literal");
+			pushError(errorEnumLiteral, String.format(INVALID_ENUM_LITERAL, "':' instead of '::'"));
 			startPositions.put(errorEnumLiteral, Integer.valueOf(ctx.start.getStartIndex()));
 			endPositions.put(errorEnumLiteral, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 		} else {

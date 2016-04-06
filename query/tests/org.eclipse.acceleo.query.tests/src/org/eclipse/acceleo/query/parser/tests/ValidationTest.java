@@ -438,7 +438,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"invalid enum literal", 0, 25);
+				"invalid enum literal: no literal registered with this name", 0, 25);
 	}
 
 	@Test
@@ -451,7 +451,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"invalid enum literal", 0, 13);
+				"invalid enum literal: ':' instead of '::'", 0, 13);
 	}
 
 	@Test

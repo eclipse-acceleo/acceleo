@@ -841,8 +841,7 @@ public class BuildTest {
 		assertExpression(build, SetInExtensionLiteral.class, 0, 24, ast);
 		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 12, 16, ((SetInExtensionLiteral)ast).getValues().get(0));
-		assertExpression(build, BooleanLiteral.class, 18, 22, ((SetInExtensionLiteral)ast).getValues().get(
-				1));
+		assertExpression(build, BooleanLiteral.class, 18, 22, ((SetInExtensionLiteral)ast).getValues().get(1));
 	}
 
 	@Test
@@ -872,8 +871,8 @@ public class BuildTest {
 		assertExpression(build, CollectionTypeLiteral.class, 12, 28, ((Call)ast).getArguments().get(1));
 		assertExpression(build, TypeLiteral.class, 21, 27, ((CollectionTypeLiteral)((Call)ast).getArguments()
 				.get(1)).getElementType());
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getValue() == List.class);
+		assertEquals(true,
+				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == List.class);
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
 				.getValue() == String.class);
 		assertEquals(0, build.getErrors().size());
@@ -892,8 +891,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 30, ((Call)ast).getArguments().get(1));
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getValue() == Set.class);
+		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == Set.class);
 		assertExpression(build, TypeLiteral.class, 23, 29, ((CollectionTypeLiteral)((Call)ast).getArguments()
 				.get(1)).getElementType());
 		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
@@ -984,7 +982,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(1, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid enum literal: no literal registered with this name", build.getDiagnostic()
+				.getChildren().get(0).getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 	}
 
@@ -1142,8 +1141,8 @@ public class BuildTest {
 
 	@Test
 	public void letTwoBindingsWithType() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"let a : ecore::EString = 'a', b : ecore::EString = 'b' in a + b");
+		IQueryBuilderEngine.AstResult build = engine
+				.build("let a : ecore::EString = 'a', b : ecore::EString = 'b' in a + b");
 		final Expression ast = build.getAst();
 
 		assertExpression(build, Let.class, 0, 63, ast);
@@ -1720,8 +1719,8 @@ public class BuildTest {
 		assertExpression(build, SetInExtensionLiteral.class, 0, 17, ast);
 		assertEquals(2, ((SetInExtensionLiteral)ast).getValues().size());
 		assertExpression(build, VarRef.class, 12, 16, ((SetInExtensionLiteral)ast).getValues().get(0));
-		assertExpression(build, ErrorExpression.class, 17, 17, ((SetInExtensionLiteral)ast).getValues().get(
-				1));
+		assertExpression(build, ErrorExpression.class, 17, 17, ((SetInExtensionLiteral)ast).getValues()
+				.get(1));
 		assertEquals(build.getErrors().get(0), ((SetInExtensionLiteral)ast).getValues().get(1));
 	}
 
@@ -1757,7 +1756,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(2, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid enum literal: missing literal name", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.WARNING, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing Ident at ''", build.getDiagnostic().getChildren().get(1).getMessage());
@@ -1923,8 +1923,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid type literal ecore::<missing Ident>", build.getDiagnostic().getChildren().get(0)
-				.getMessage());
+		assertEquals("invalid type literal ecore::<missing Ident>", build.getDiagnostic().getChildren()
+				.get(0).getMessage());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing expression", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
@@ -2083,8 +2083,8 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 21, ((Call)ast).getArguments().get(1));
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getValue() == List.class);
+		assertEquals(true,
+				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == List.class);
 		assertExpression(build, ErrorTypeLiteral.class, 21, 21, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
 		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
@@ -2114,8 +2114,8 @@ public class BuildTest {
 		assertExpression(build, CollectionTypeLiteral.class, 12, 27, ((Call)ast).getArguments().get(1));
 		assertExpression(build, TypeLiteral.class, 21, 27, ((CollectionTypeLiteral)((Call)ast).getArguments()
 				.get(1)).getElementType());
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getValue() == List.class);
+		assertEquals(true,
+				((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == List.class);
 		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getElementType()
 				.getValue() == String.class);
 		assertEquals(1, build.getErrors().size());
@@ -2142,8 +2142,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 23, ((Call)ast).getArguments().get(1));
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getValue() == Set.class);
+		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == Set.class);
 		assertExpression(build, ErrorTypeLiteral.class, 23, 23, ((CollectionTypeLiteral)((Call)ast)
 				.getArguments().get(1)).getElementType());
 		assertFalse(((ErrorTypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
@@ -2171,8 +2170,7 @@ public class BuildTest {
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, VarRef.class, 0, 4, ((Call)ast).getArguments().get(0));
 		assertExpression(build, CollectionTypeLiteral.class, 12, 29, ((Call)ast).getArguments().get(1));
-		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
-				.getValue() == Set.class);
+		assertEquals(true, ((CollectionTypeLiteral)((Call)ast).getArguments().get(1)).getValue() == Set.class);
 		assertExpression(build, TypeLiteral.class, 23, 29, ((CollectionTypeLiteral)((Call)ast).getArguments()
 				.get(1)).getElementType());
 		assertEquals(true, ((TypeLiteral)((CollectionTypeLiteral)((Call)ast).getArguments().get(1))
@@ -2500,14 +2498,14 @@ public class BuildTest {
 
 	@Test
 	public void testClassifierSetType() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"{ecore::EClass | ecore::EPackage | ecore::EAttribute}");
+		IQueryBuilderEngine.AstResult build = engine
+				.build("{ecore::EClass | ecore::EPackage | ecore::EAttribute}");
 		Expression ast = build.getAst();
 
 		assertExpression(build, TypeSetLiteral.class, 0, 53, ast);
 		assertEquals(3, ((TypeSetLiteral)ast).getTypes().size());
-		assertExpression(build, TypeLiteral.class, 1, 14, (TypeLiteral)((TypeSetLiteral)ast).getTypes().get(
-				0));
+		assertExpression(build, TypeLiteral.class, 1, 14, (TypeLiteral)((TypeSetLiteral)ast).getTypes()
+				.get(0));
 		assertExpression(build, TypeLiteral.class, 17, 32, (TypeLiteral)((TypeSetLiteral)ast).getTypes().get(
 				1));
 		assertExpression(build, TypeLiteral.class, 35, 52, (TypeLiteral)((TypeSetLiteral)ast).getTypes().get(
@@ -2586,15 +2584,15 @@ public class BuildTest {
 
 	@Test
 	public void incompletTypeSeparatorInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.packagedElement->select(e | e.oclIsTypeOf(uml:");
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.packagedElement->select(e | e.oclIsTypeOf(uml:");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 51, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
 		assertExpression(build, Call.class, 0, 20, ((Call)ast).getArguments().get(0));
-		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
-				.getServiceName());
+		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				((Call)((Call)ast).getArguments().get(0)).getServiceName());
 		assertExpression(build, StringLiteral.class, 5, 20, ((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1));
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
@@ -2626,14 +2624,14 @@ public class BuildTest {
 
 	@Test
 	public void incompletEnumLiteralSeparatorInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.packagedElement->select(e | e.oclIsTypeOf(anydsl::Color:");
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.packagedElement->select(e | e.oclIsTypeOf(anydsl::Color:");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 61, ast);
 		assertEquals(2, ((Call)ast).getArguments().size());
-		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
-				.getServiceName());
+		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				((Call)((Call)ast).getArguments().get(0)).getServiceName());
 		assertExpression(build, StringLiteral.class, 5, 20, ((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1));
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
@@ -2653,7 +2651,8 @@ public class BuildTest {
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
 		assertEquals(3, build.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("invalid enum literal", build.getDiagnostic().getChildren().get(0).getMessage());
+		assertEquals("invalid enum literal: ':' instead of '::'", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals("missing collection service call", build.getDiagnostic().getChildren().get(1)
@@ -2666,8 +2665,8 @@ public class BuildTest {
 
 	@Test
 	public void incompletTypeLiteralInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.eAllContents(ecore::EClass)->select(a: ecore::");
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.eAllContents(ecore::EClass)->select(a: ecore::");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 51, ast);
@@ -2694,15 +2693,15 @@ public class BuildTest {
 
 	@Test
 	public void incompletParentExpressionInSelect() {
-		IQueryBuilderEngine.AstResult build = engine.build(
-				"self.value->select(value | not (value.owner.oclAsType(uml::Slot)");
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.value->select(value | not (value.owner.oclAsType(uml::Slot)");
 		Expression ast = build.getAst();
 
 		assertExpression(build, Call.class, 0, 64, ast);
 		assertEquals("select", ((Call)ast).getServiceName());
 		assertEquals(2, ((Call)ast).getArguments().size());
-		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, ((Call)((Call)ast).getArguments().get(0))
-				.getServiceName());
+		assertEquals(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				((Call)((Call)ast).getArguments().get(0)).getServiceName());
 		assertExpression(build, StringLiteral.class, 5, 10, ((Call)((Call)ast).getArguments().get(0))
 				.getArguments().get(1));
 		final StringLiteral featureName = (StringLiteral)((Call)((Call)ast).getArguments().get(0))
