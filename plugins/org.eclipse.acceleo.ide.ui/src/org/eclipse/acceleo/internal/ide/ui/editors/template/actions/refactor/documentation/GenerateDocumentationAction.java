@@ -36,11 +36,6 @@ import org.eclipse.ocl.ecore.Variable;
 public class GenerateDocumentationAction extends AbstractRefactoringAction {
 
 	/**
-	 * The end of line character.
-	 */
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator"); //$NON-NLS-1$
-
-	/**
 	 * The space character.
 	 */
 	private static final String SPACE = " "; //$NON-NLS-1$
@@ -84,6 +79,26 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 	}
 
 	/**
+	 * Returns the line delimiter for this document, <code>System.getProperty("line.separator")</code> if none
+	 * can be found.
+	 * 
+	 * @param document
+	 *            The document.
+	 * @return the line delimiter for this document.
+	 */
+	private String getLineDelimiter(IDocument document) {
+		String lineDelimiter = System.getProperty("line.separator"); //$NON-NLS-1$
+		if (document != null && document.getNumberOfLines() > 0) {
+			try {
+				lineDelimiter = document.getLineDelimiter(0);
+			} catch (BadLocationException e) {
+				// Won't happen since we guarded against it
+			}
+		}
+		return lineDelimiter;
+	}
+
+	/**
 	 * Generate the documentation of the module.
 	 * 
 	 * @param module
@@ -91,15 +106,17 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 	 */
 	private void generateModuleDocumentation(Module module) {
 		String username = System.getProperty("user.name"); //$NON-NLS-1$
-		int startPosition = module.getStartHeaderPosition() - 1;
 
 		IDocument document = this.editor.getDocumentProvider().getDocument(this.editor.getEditorInput());
+		String lineDelimiter = getLineDelimiter(document);
+		int startPosition = module.getStartHeaderPosition() - lineDelimiter.length();
+
 		StringBuffer newBuffer = new StringBuffer();
-		newBuffer.append(LINE_SEPARATOR + IAcceleoConstants.DEFAULT_BEGIN
-				+ IAcceleoConstants.DOCUMENTATION_BEGIN + LINE_SEPARATOR);
-		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE + LINE_SEPARATOR);
+		newBuffer.append(lineDelimiter + IAcceleoConstants.DEFAULT_BEGIN
+				+ IAcceleoConstants.DOCUMENTATION_BEGIN + lineDelimiter);
+		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE + lineDelimiter);
 		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE
-				+ IAcceleoConstants.TAG_AUTHOR + SPACE + username + LINE_SEPARATOR);
+				+ IAcceleoConstants.TAG_AUTHOR + SPACE + username + lineDelimiter);
 		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE
 				+ IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END);
 
@@ -118,14 +135,15 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 	 *            the query
 	 */
 	private void generateQueryDocumentation(final Query query) {
-		int startPosition = query.getStartPosition() - 1;
-
 		IDocument document = this.editor.getDocumentProvider().getDocument(this.editor.getEditorInput());
+		String lineDelimiter = getLineDelimiter(document);
+		int startPosition = query.getStartPosition() - lineDelimiter.length();
+
 		StringBuffer newBuffer = new StringBuffer();
-		newBuffer.append(LINE_SEPARATOR + IAcceleoConstants.DEFAULT_BEGIN
-				+ IAcceleoConstants.DOCUMENTATION_BEGIN + LINE_SEPARATOR);
-		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE + LINE_SEPARATOR);
-		newBuffer.append(this.generateParameterDocumentation(query.getParameter()));
+		newBuffer.append(lineDelimiter + IAcceleoConstants.DEFAULT_BEGIN
+				+ IAcceleoConstants.DOCUMENTATION_BEGIN + lineDelimiter);
+		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE + lineDelimiter);
+		newBuffer.append(this.generateParameterDocumentation(query.getParameter(), lineDelimiter));
 		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE
 				+ IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END);
 
@@ -142,14 +160,16 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 	 * 
 	 * @param eList
 	 *            The variable list.
+	 * @param lineDelimiter
+	 *            the separator to use between lines.
 	 * @return The part of the documentation for the parameters
 	 */
-	private StringBuffer generateParameterDocumentation(EList<Variable> eList) {
+	private StringBuffer generateParameterDocumentation(EList<Variable> eList, String lineDelimiter) {
 		StringBuffer result = new StringBuffer();
 
 		for (Variable variable : eList) {
 			result.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE
-					+ IAcceleoConstants.TAG_PARAM + SPACE + variable.getName() + SPACE + LINE_SEPARATOR);
+					+ IAcceleoConstants.TAG_PARAM + SPACE + variable.getName() + SPACE + lineDelimiter);
 		}
 
 		return result;
@@ -162,14 +182,15 @@ public class GenerateDocumentationAction extends AbstractRefactoringAction {
 	 *            The template
 	 */
 	private void generateTemplateDocumentation(final Template template) {
-		int startPosition = template.getStartPosition() - 1;
-
 		IDocument document = this.editor.getDocumentProvider().getDocument(this.editor.getEditorInput());
+		String lineDelimiter = getLineDelimiter(document);
+		int startPosition = template.getStartPosition() - lineDelimiter.length();
+
 		StringBuffer newBuffer = new StringBuffer();
-		newBuffer.append(LINE_SEPARATOR + IAcceleoConstants.DEFAULT_BEGIN
-				+ IAcceleoConstants.DOCUMENTATION_BEGIN + LINE_SEPARATOR);
-		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE + LINE_SEPARATOR);
-		newBuffer.append(this.generateParameterDocumentation(template.getParameter()));
+		newBuffer.append(lineDelimiter + IAcceleoConstants.DEFAULT_BEGIN
+				+ IAcceleoConstants.DOCUMENTATION_BEGIN + lineDelimiter);
+		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE + SPACE + lineDelimiter);
+		newBuffer.append(this.generateParameterDocumentation(template.getParameter(), lineDelimiter));
 		newBuffer.append(SPACE + IAcceleoConstants.DOCUMENTATION_NEW_LINE
 				+ IAcceleoConstants.DEFAULT_END_BODY_CHAR + IAcceleoConstants.DEFAULT_END);
 
