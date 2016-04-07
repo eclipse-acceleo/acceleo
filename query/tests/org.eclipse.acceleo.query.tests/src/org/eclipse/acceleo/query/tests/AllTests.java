@@ -12,6 +12,8 @@ package org.eclipse.acceleo.query.tests;
 
 import org.eclipse.acceleo.query.ast.test.AstBuilderTest;
 import org.eclipse.acceleo.query.ast.test.AstEvaluatorTest;
+import org.eclipse.acceleo.query.ast.test.delegates.DelegateTests;
+import org.eclipse.acceleo.query.ast.test.delegates.DelegateUtilsTests;
 import org.eclipse.acceleo.query.parser.tests.BuildTest;
 import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
 import org.eclipse.acceleo.query.parser.tests.CompletionCheck;
@@ -96,7 +98,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		VariableCompletionProposalTests.class, EClassifierCompletionProposalTests.class,
 		ValidationInferrenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
 		EPackageProviderTests.class, CompletionCheck.class, FilterCamelCaseTest.class,
-		CollectionServicesAstValidationTest.class })
+		CollectionServicesAstValidationTest.class, DelegateTests.class })
 public class AllTests {
 
 }
