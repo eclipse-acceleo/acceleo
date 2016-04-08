@@ -890,20 +890,48 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (content.getCST() == null) {
 			return;
 		}
-		int i = offset;
-		while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
-			i--;
+		int startOfCurrentWord = offset;
+		int startOfQualifiedName = offset;
+		while (startOfCurrentWord > 0 && Character.isJavaIdentifierPart(text.charAt(startOfCurrentWord - 1))) {
+			startOfCurrentWord--;
 		}
-		int j = i;
-		while (j > 0 && Character.isWhitespace(text.charAt(j - 1))) {
-			j--;
+		startOfQualifiedName = startOfCurrentWord;
+		while (text.charAt(startOfQualifiedName - 1) == ':' && startOfQualifiedName - 1 > 0
+				&& text.charAt(startOfQualifiedName - 2) == ':') {
+			startOfQualifiedName -= 2;
+			while (startOfQualifiedName > 0
+					&& Character.isJavaIdentifierPart(text.charAt(startOfQualifiedName - 1))) {
+				startOfQualifiedName--;
+			}
 		}
-		if (j > 0 && (text.charAt(j - 1) == ':' || typeIsRequiredAfterParenthesis(j))) {
-			String start = text.substring(i, offset);
+		// Look for the ":" separating the var name and its type if any
+		int indexOfVarTypeSeparator = startOfQualifiedName;
+		while (indexOfVarTypeSeparator > 0
+				&& Character.isWhitespace(text.charAt(indexOfVarTypeSeparator - 1))) {
+			indexOfVarTypeSeparator--;
+		}
+		if (indexOfVarTypeSeparator > 0
+				&& (text.charAt(indexOfVarTypeSeparator - 1) == ':' || typeIsRequiredAfterParenthesis(indexOfVarTypeSeparator))) {
+			String qualifiedNameStart = text.substring(startOfQualifiedName, startOfCurrentWord);
+			// Remove the last "::" since we have no package name there (rather, it's the start of the
+			// classifier name)
+			final String[] packageNames;
+			if (qualifiedNameStart.contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
+				packageNames = qualifiedNameStart.substring(0,
+						qualifiedNameStart.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR)).split(
+						IAcceleoConstants.NAMESPACE_SEPARATOR);
+			} else if (qualifiedNameStart.length() > 0) {
+				packageNames = new String[] {qualifiedNameStart, };
+			} else {
+				packageNames = new String[0];
+			}
+
+			String start = text.substring(startOfCurrentWord, offset);
 			Iterator<EClassifier> eClassifierIt = content.getTypes().iterator();
 			while (eClassifierIt.hasNext()) {
 				EClassifier eClassifier = eClassifierIt.next();
-				if (startsWithOrMatchCamelCase(eClassifier.getName(), start)) {
+				if (matchesQualifiedName(packageNames, eClassifier)
+						&& startsWithOrMatchCamelCase(eClassifier.getName(), start)) {
 					String name = eClassifier.getName();
 					if (name.endsWith(")")) { //$NON-NLS-1$
 						name = name.replaceAll("\\(", "(\\${"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -923,6 +951,40 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Checks whether the given classifier is in a package matching the given qualified name.
+	 * <p>
+	 * Note that the qualified name may not be complete. A classifier contained in the given hierarchy :
+	 * <code>org.eclipse.acceleo.module.ClassifierName</code> will match the given qualified name :
+	 * <code>org::eclipse::</code>.
+	 * </p>
+	 * 
+	 * @param qualifiedNameParts
+	 *            parts of the qualified name for this classifier.
+	 * @param classifier
+	 *            The classifier to check.
+	 * @return <code>true</code> if the classifier is a possible match for the given qualified name;
+	 */
+	private boolean matchesQualifiedName(String[] qualifiedNameParts, EClassifier classifier) {
+		if (qualifiedNameParts.length > 0) {
+			List<EPackage> superPackages = new ArrayList<EPackage>();
+			EPackage pack = classifier.getEPackage();
+			while (pack != null) {
+				superPackages.add(pack);
+				pack = pack.getESuperPackage();
+			}
+
+			// "qualifiedNameParts" is in the descending order (org, eclipse, acceleo, module)
+			// but "superPackages" is in ascending order (module, acceleo, eclipse, org)
+			for (int i = 0; i < qualifiedNameParts.length; i++) {
+				if (!qualifiedNameParts[i].equals(superPackages.get(superPackages.size() - i - 1).getName())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
