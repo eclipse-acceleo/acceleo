@@ -181,6 +181,9 @@ public class BundleURLConverter {
 						Long.valueOf(segments[i]).longValue());
 			} else {
 				tempBundle = Platform.getBundle(segments[i]);
+				if (tempBundle == null) {
+					tempBundle = Platform.getBundle(trimQualifier(segments[i]));
+				}
 			}
 
 			if (tempBundle != null && qualifiedName == null) {
@@ -266,5 +269,25 @@ public class BundleURLConverter {
 			actualPath = actualPath.replaceFirst("\\.jar!", ""); //$NON-NLS-1$  //$NON-NLS-2$
 		}
 		return actualPath;
+	}
+
+	/**
+	 * Removes the qualifier out of the given segment.
+	 * <p>
+	 * For example, <code>org.eclipse.acceleo.module.sample_1.0.0.201009131516</code> will be turned into
+	 * <code>org.eclipse.acceleo.module.sample</code>. Mostly useful in the case of unpacked plugins such as
+	 * is the case on bug 376774.
+	 * <p>
+	 * 
+	 * @param segment
+	 *            The segment from which to remove the qualifier.
+	 * @return The segment without its qualifier, unchanged if it had none.
+	 */
+	private String trimQualifier(String segment) {
+		int underscoreIndex = segment.lastIndexOf('_');
+		if (underscoreIndex > 0) {
+			return segment.substring(0, underscoreIndex);
+		}
+		return segment;
 	}
 }
