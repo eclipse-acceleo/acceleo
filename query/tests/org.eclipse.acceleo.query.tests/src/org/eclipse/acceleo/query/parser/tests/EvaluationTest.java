@@ -575,4 +575,14 @@ public class EvaluationTest {
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
 	}
+
+	@Test
+	public void emoji() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		EvaluationResult result = engine.eval(builder
+				.build("Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}->sep(' ')->toString()"),
+				variables);
+
+		assertEquals("\u1F61C \u1F62D \u1F63D \u1F1EB\u1F1F7", result.getResult());
+	}
 }

@@ -2765,4 +2765,29 @@ public class BuildTest {
 				.isEmpty());
 	}
 
+	@Test
+	public void emoji() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}");
+		Expression ast = build.getAst();
+
+		assertExpression(build, SequenceInExtensionLiteral.class, 0, 31, ast);
+		assertExpression(build, StringLiteral.class, 9, 13, ((SequenceInExtensionLiteral)ast).getValues()
+				.get(0));
+		assertEquals("\u1F61C", ((StringLiteral)((SequenceInExtensionLiteral)ast).getValues().get(0))
+				.getValue());
+		assertExpression(build, StringLiteral.class, 14, 18, ((SequenceInExtensionLiteral)ast).getValues()
+				.get(1));
+		assertEquals("\u1F62D", ((StringLiteral)((SequenceInExtensionLiteral)ast).getValues().get(1))
+				.getValue());
+		assertExpression(build, StringLiteral.class, 19, 23, ((SequenceInExtensionLiteral)ast).getValues()
+				.get(2));
+		assertEquals("\u1F63D", ((StringLiteral)((SequenceInExtensionLiteral)ast).getValues().get(2))
+				.getValue());
+		assertExpression(build, StringLiteral.class, 24, 30, ((SequenceInExtensionLiteral)ast).getValues()
+				.get(3));
+		assertEquals("\u1F1EB\u1F1F7", ((StringLiteral)((SequenceInExtensionLiteral)ast).getValues().get(3))
+				.getValue());
+	}
+
 }
