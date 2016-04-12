@@ -27,6 +27,6 @@ public class CompactLinkedHashSupplier<E> implements Supplier<CompactHashSet<E>>
 	 * @see com.google.common.base.Supplier#get()
 	 */
 	public CompactHashSet<E> get() {
-		return new CompactHashSet<E>();
+		return new CompactLinkedHashSet<E>();
 	}
 }
