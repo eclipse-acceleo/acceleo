@@ -718,6 +718,10 @@ public class InterpreterView extends ViewPart {
 		activationListener = new ActivationListener(this);
 		site.getPage().addPartListener(activationListener);
 		site.getPage().addSelectionListener(eobjectSelectionListener);
+
+		if (site.getPart() != null && site.getPage().getSelection() != null) {
+			eobjectSelectionListener.selectionChanged(site.getPart(), site.getPage().getSelection());
+		}
 	}
 
 	/**
