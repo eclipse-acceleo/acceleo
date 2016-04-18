@@ -13,8 +13,12 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.Map;
 
 import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.DiagnosticChain;
 
 /**
  * Values of type Lambda must be represented by a Java Object other than the Ast.
@@ -40,6 +44,11 @@ public class LambdaValue {
 	private final Map<String, Object> variables;
 
 	/**
+	 * The {@link Diagnostic} to {@link LambdaValue#logException(Exception) log} evaluation {@link Exception}.
+	 */
+	private final Diagnostic diagnostic;
+
+	/**
 	 * Creates a new {@link LambdaValue} instance.
 	 * 
 	 * @param literal
@@ -48,11 +57,16 @@ public class LambdaValue {
 	 *            environment variable
 	 * @param envEvaluator
 	 *            the evaluator capturing the environment
+	 * @param diagnostic
+	 *            the {@link Diagnostic} to {@link LambdaValue#logException(Exception) log} evaluation
+	 *            {@link Exception}
 	 */
-	public LambdaValue(Lambda literal, Map<String, Object> variables, AstEvaluator envEvaluator) {
+	public LambdaValue(Lambda literal, Map<String, Object> variables, AstEvaluator envEvaluator,
+			Diagnostic diagnostic) {
 		this.evaluator = envEvaluator;
 		this.lambdaLiteral = literal;
 		this.variables = variables;
+		this.diagnostic = diagnostic;
 	}
 
 	/**
@@ -69,6 +83,22 @@ public class LambdaValue {
 		}
 		final EvaluationResult evalResult = evaluator.eval(variables, lambdaLiteral.getExpression());
 		return evalResult.getResult();
+	}
+
+	/**
+	 * Logs the given {@link Exception}.
+	 * 
+	 * @param severity
+	 *            {@link Diagnostic#INFO}, {@link Diagnostic#WARNING}, or {@link Diagnostic#ERROR}
+	 * @param e
+	 *            the {@link Exception} to log
+	 */
+	public void logException(int severity, Exception e) {
+		if (diagnostic instanceof DiagnosticChain) {
+			Diagnostic child = new BasicDiagnostic(severity, AstBuilderListener.PLUGIN_ID, 0, e.getMessage(),
+					new Object[] {lambdaLiteral });
+			((DiagnosticChain)diagnostic).add(child);
+		}
 	}
 
 }

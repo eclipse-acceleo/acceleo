@@ -58,6 +58,7 @@ import org.eclipse.acceleo.query.validation.type.LambdaType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 
 //@formatter:off
@@ -1228,7 +1229,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// CHECKSTYLE:ON
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}
@@ -1266,7 +1267,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// CHECKSTYLE:ON
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}
@@ -1304,7 +1305,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// CHECKSTYLE:ON
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}
@@ -1334,12 +1335,15 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			newList = Lists.newArrayList();
 			for (T elt : sequence) {
-				Object value = lambda.eval(new Object[] {elt });
-				if (Boolean.FALSE.equals(value)) {
-					newList.add(elt);
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException(
-							"Expression within a reject must return a boolean value.");
+				try {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.FALSE.equals(value)) {
+						newList.add(elt);
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}
@@ -1380,7 +1384,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -1422,7 +1426,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -1459,7 +1463,7 @@ public class CollectionServices extends AbstractServiceProvider {
 						// CHECKSTYLE:OFF
 					} catch (Exception e) {
 						// CHECKSTYLE:ON
-						// TODO: log the exception.
+						lambda.logException(Diagnostic.WARNING, e);
 					}
 				}
 				currentSet = added;
@@ -1498,7 +1502,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					values.put(object, lambda.eval(new Object[] {object }));
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -1538,7 +1542,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					values.put(object, lambda.eval(new Object[] {object }));
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -2134,12 +2138,16 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = null;
 		} else {
 			for (T input : collection) {
-				Object value = lambda.eval(new Object[] {input });
-				if (Boolean.TRUE.equals(value)) {
-					result = input;
-					break;
-				} else if (!(value instanceof Boolean)) {
-					throw new IllegalArgumentException("Expression within any must return a boolean value.");
+				try {
+					Object value = lambda.eval(new Object[] {input });
+					if (Boolean.TRUE.equals(value)) {
+						result = input;
+						break;
+					}
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}
@@ -2220,7 +2228,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// CHECKSTYLE:ON
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}
@@ -2259,7 +2267,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// CHECKSTYLE:ON
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 					result = Boolean.FALSE;
 					break;
 				}
@@ -2338,7 +2346,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -2380,7 +2388,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
 					// CHECKSTYLE:ON
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 			}
 		}

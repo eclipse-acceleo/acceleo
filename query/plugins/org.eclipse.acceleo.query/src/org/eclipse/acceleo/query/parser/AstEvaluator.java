@@ -270,7 +270,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLambda(Lambda object) {
-		return new LambdaValue(object, new HashMap<String, Object>(variablesStack.peek()), this);
+		return new LambdaValue(object, new HashMap<String, Object>(variablesStack.peek()), this, diagnostic);
 	}
 
 	/**
@@ -342,8 +342,8 @@ public class AstEvaluator extends AstSwitch<Object> {
 			}
 		} else {
 			Nothing nothing = new Nothing(String.format(BAD_PREDICATE_TYPE_MSG, selector));
-			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0, nothing
-					.getMessage(), new Object[] {object.getPredicate() });
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.WARNING, AstBuilderListener.PLUGIN_ID, 0,
+					nothing.getMessage(), new Object[] {object.getPredicate() });
 			((BasicDiagnostic)diagnostic).add(diag);
 			result = nothing;
 		}
@@ -382,4 +382,5 @@ public class AstEvaluator extends AstSwitch<Object> {
 
 		return result;
 	}
+
 }

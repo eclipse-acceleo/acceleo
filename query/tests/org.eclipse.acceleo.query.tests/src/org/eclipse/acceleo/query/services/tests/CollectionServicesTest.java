@@ -18,6 +18,7 @@ import com.google.common.collect.Sets;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,6 +48,8 @@ import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.anydsl.Company;
 import org.eclipse.acceleo.query.tests.anydsl.Food;
 import org.eclipse.acceleo.query.tests.anydsl.World;
+import org.eclipse.emf.common.util.BasicDiagnostic;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -1582,7 +1585,7 @@ public class CollectionServicesTest {
 	 * A lambda value that returns the length of the first argument if it's a string.
 	 */
 	private LambdaValue createStringLengthLambda() {
-		return new LambdaValue(null, null, null) {
+		return new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args[0] instanceof String) {
@@ -1648,13 +1651,25 @@ public class CollectionServicesTest {
 	 * A lambda that returns the first argument.
 	 */
 	private LambdaValue createSelfLambda() {
-		return new LambdaValue(null, null, null) {
+		return new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args.length >= 1) {
 					return args[0];
 				}
 				return null;
+			}
+		};
+	}
+
+	/*
+	 * A lambda that throw an exception.
+	 */
+	private LambdaValue createExceptionLambda(Diagnostic diagnostic) {
+		return new LambdaValue(null, null, null, diagnostic) {
+			@Override
+			public Object eval(Object[] args) {
+				throw new RuntimeException("Test runtime exception lambda.");
 			}
 		};
 	}
@@ -1751,11 +1766,43 @@ public class CollectionServicesTest {
 		collectionServices.sortedBy(list, createSelfLambda());
 	}
 
+	@Test
+	public void testSortedByListExceptionLambda() {
+		List<Number> list = new ArrayList<Number>();
+		list.add(1);
+		list.add(1.5d);
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(list, collectionServices.sortedBy(list, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(2, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+	}
+
+	@Test
+	public void testSortedBySetExceptionLambda() {
+		Set<Number> set = new LinkedHashSet<Number>();
+		set.add(1);
+		set.add(1.5d);
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(set, collectionServices.sortedBy(set, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(2, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+	}
+
 	/*
 	 * A lambda that returns the name of the first argument if it's an ENamedElement
 	 */
 	private LambdaValue createEObjectNameLambda() {
-		return new LambdaValue(null, null, null) {
+		return new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args[0] instanceof ENamedElement) {
@@ -1787,7 +1834,7 @@ public class CollectionServicesTest {
 	 * A lambda that'll check if the first argument is an instance of the given class
 	 */
 	private LambdaValue createInstanceOfLambda(final Class<?> clazz) {
-		return new LambdaValue(null, null, null) {
+		return new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return clazz.isInstance(args[0]);
@@ -1804,7 +1851,7 @@ public class CollectionServicesTest {
 		 * @param envEvaluator
 		 */
 		private SortedByCounter(Lambda literal, Map<String, Object> variables, AstEvaluator envEvaluator) {
-			super(literal, variables, envEvaluator);
+			super(literal, variables, envEvaluator, null);
 		}
 
 		@Override
@@ -1879,6 +1926,26 @@ public class CollectionServicesTest {
 		list.add("c");
 		List<String> result = collectionServices.select(list, createSelfLambda());
 		assertTrue(result.isEmpty());
+	}
+
+	@Test
+	public void testSelectListExceptionLambda() {
+		List<String> list = Lists.newArrayList();
+		list.add("a");
+		list.add("b");
+		list.add("c");
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list,
+				createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(3, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
 	}
 
 	@Test
@@ -1970,13 +2037,33 @@ public class CollectionServicesTest {
 		assertTrue(filtered.isEmpty());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testRejectListNotBooleanLambda() {
 		List<String> list = Lists.newArrayList();
 		list.add("a");
 		list.add("b");
 		list.add("c");
-		collectionServices.reject(list, createSelfLambda());
+		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list, createSelfLambda()));
+	}
+
+	@Test
+	public void testRejectListExceptionLambda() {
+		List<String> list = Lists.newArrayList();
+		list.add("a");
+		list.add("b");
+		list.add("c");
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list,
+				createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(3, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
 	}
 
 	@Test
@@ -2029,6 +2116,25 @@ public class CollectionServicesTest {
 		set.add("c");
 		Set<String> result = collectionServices.reject(set, createSelfLambda());
 		assertTrue(result.isEmpty());
+	}
+
+	@Test
+	public void testRejectSetExceptionLambda() {
+		Set<String> set = Sets.newLinkedHashSet();
+		set.add("a");
+		set.add("b");
+		set.add("c");
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(Collections.EMPTY_SET, collectionServices.reject(set, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(3, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
 	}
 
 	@Test
@@ -2101,7 +2207,7 @@ public class CollectionServicesTest {
 	 */
 	@Test
 	public void testCollectImplicitFlattenList() {
-		LambdaValue lambdaValue = new LambdaValue(null, null, null) {
+		LambdaValue lambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return EcorePackage.eINSTANCE.getEClassifiers();
@@ -2188,7 +2294,7 @@ public class CollectionServicesTest {
 	 */
 	@Test
 	public void testCollectImplicitFlattenSet() {
-		LambdaValue lambdaValue = new LambdaValue(null, null, null) {
+		LambdaValue lambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return EcorePackage.eINSTANCE.getEClassifiers();
@@ -2204,7 +2310,7 @@ public class CollectionServicesTest {
 	}
 
 	private LambdaValue createQueryExpressionLambda() {
-		return new LambdaValue(null, null, null) {
+		return new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args[0] instanceof org.eclipse.acceleo.query.tests.qmodel.Query) {
@@ -2225,7 +2331,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testClosure() {
-		final LambdaValue lambdaValue = new LambdaValue(null, null, null) {
+		final LambdaValue lambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				final Object result;
@@ -2271,7 +2377,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testClosureRecursive() {
-		final LambdaValue lambdaValue = new LambdaValue(null, null, null) {
+		final LambdaValue lambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				final Object result;
@@ -2319,7 +2425,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testClosureNothingNull() {
-		final LambdaValue nullLambdaValue = new LambdaValue(null, null, null) {
+		final LambdaValue nullLambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return null;
@@ -2332,7 +2438,7 @@ public class CollectionServicesTest {
 		assertEquals(1, result.size());
 		assertEquals(EcorePackage.eINSTANCE, result.iterator().next());
 
-		final LambdaValue nothingLambdaValue = new LambdaValue(null, null, null) {
+		final LambdaValue nothingLambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				return new Nothing("");
@@ -2372,7 +2478,7 @@ public class CollectionServicesTest {
 		package111.getESubpackages().add(package1111);
 		package111.getESubpackages().add(package1112);
 
-		final LambdaValue subPackagesLambdaValue = new LambdaValue(null, null, null) {
+		final LambdaValue subPackagesLambdaValue = new LambdaValue(null, null, null, null) {
 			@Override
 			public Object eval(Object[] args) {
 				if (args[0] instanceof EPackage)
@@ -3228,7 +3334,7 @@ public class CollectionServicesTest {
 		assertEquals(null, result);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAnySetNotBooleanLambda() {
 		Set<Object> set = Sets.newLinkedHashSet();
 		set.add(Integer.valueOf(1));
@@ -3236,10 +3342,32 @@ public class CollectionServicesTest {
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		collectionServices.any(set, createSelfLambda());
+		assertEquals(null, collectionServices.any(set, createSelfLambda()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
+	public void testAnySetExceptionLambda() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(null, collectionServices.any(set, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(4, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(3).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(3).getMessage());
+	}
+
+	@Test
 	public void testAnyListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -3247,7 +3375,29 @@ public class CollectionServicesTest {
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		collectionServices.any(list, createSelfLambda());
+		assertEquals(null, collectionServices.any(list, createSelfLambda()));
+	}
+
+	@Test
+	public void testAnyListExceptionLambda() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertEquals(null, collectionServices.any(list, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(4, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(3).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(3).getMessage());
 	}
 
 	@Test
@@ -3388,6 +3538,29 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testExistsSetExceptionLambda() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertFalse(collectionServices.exists(set, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(4, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(3).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(3).getMessage());
+
+	}
+
+	@Test
 	public void testExistsListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -3397,6 +3570,28 @@ public class CollectionServicesTest {
 
 		Boolean result = collectionServices.exists(list, createSelfLambda());
 		assertFalse(result);
+	}
+
+	@Test
+	public void testExistsListExceptionLambda() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertFalse(collectionServices.exists(list, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(4, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(2).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(2).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(3).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(3).getMessage());
 	}
 
 	@Test
@@ -3473,6 +3668,22 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testForAllSetExceptionLambda() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(2));
+		set.add(Integer.valueOf(3));
+		set.add(Integer.valueOf(4));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertFalse(collectionServices.forAll(set, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(1, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+	}
+
+	@Test
 	public void testForAllListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -3482,6 +3693,25 @@ public class CollectionServicesTest {
 
 		Boolean result = collectionServices.forAll(list, createSelfLambda());
 		assertFalse(result);
+	}
+
+	@Test
+	public void testForAllListExceptionLambda() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(2));
+		list.add(Integer.valueOf(3));
+		list.add(Integer.valueOf(4));
+
+		Boolean result = collectionServices.forAll(list, createSelfLambda());
+		assertFalse(result);
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertFalse(collectionServices.forAll(list, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(1, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
 	}
 
 	@Test
@@ -3973,6 +4203,22 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testOneSetExceptionLambda() {
+		Set<Object> set = Sets.newLinkedHashSet();
+		set.add(Integer.valueOf(1));
+		set.add(Integer.valueOf(3));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertFalse(collectionServices.one(set, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(2, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
+	}
+
+	@Test
 	public void testOneListNotBooleanLambda() {
 		List<Object> list = Lists.newArrayList();
 		list.add(Integer.valueOf(1));
@@ -3980,6 +4226,22 @@ public class CollectionServicesTest {
 
 		Boolean result = collectionServices.one(list, createSelfLambda());
 		assertFalse(result);
+	}
+
+	@Test
+	public void testOneListExceptionLambda() {
+		List<Object> list = Lists.newArrayList();
+		list.add(Integer.valueOf(1));
+		list.add(Integer.valueOf(3));
+
+		Diagnostic diagnostic = new BasicDiagnostic();
+		assertFalse(collectionServices.one(list, createExceptionLambda(diagnostic)));
+		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
+		assertEquals(2, diagnostic.getChildren().size());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(0).getMessage());
+		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(1).getSeverity());
+		assertEquals("Test runtime exception lambda.", diagnostic.getChildren().get(1).getMessage());
 	}
 
 	@Test
