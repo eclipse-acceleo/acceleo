@@ -362,6 +362,8 @@ public final class JavaServicesUtils {
 			result = "OclAny"; //$NON-NLS-1$
 		} else if ("void".equals(qualifiedType)) { //$NON-NLS-1$
 			result = "OclVoid"; //$NON-NLS-1$
+		} else if ("byte[]".equals(qualifiedType)) { //$NON-NLS-1$
+			result = "EByteArray"; //$NON-NLS-1$
 		} else {
 			result = qualifiedType;
 			int lastDot = result.lastIndexOf('.');
