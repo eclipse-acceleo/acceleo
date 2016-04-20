@@ -160,11 +160,11 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
 				attribute, "noname" }, status) instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals(Diagnostic.WARNING, child.getSeverity());
+		assertEquals(Diagnostic.ERROR, child.getSeverity());
 		assertTrue(child.getException().getMessage().contains("Feature noname"));
 	}
 
@@ -726,8 +726,9 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.call("toString", new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
+		assertEquals(Diagnostic.ERROR, status.getChildren().get(0).getSeverity());
 		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
 		assertTrue(status.getChildren().get(0).getException().getCause() instanceof NullPointerException);
 	}
@@ -740,8 +741,9 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.callOrApply("toString", new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
+		assertEquals(Diagnostic.ERROR, status.getChildren().get(0).getSeverity());
 		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
 		assertTrue(status.getChildren().get(0).getException().getCause() instanceof NullPointerException);
 	}

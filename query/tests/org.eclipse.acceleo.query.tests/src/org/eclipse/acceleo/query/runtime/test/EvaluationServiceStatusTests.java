@@ -91,10 +91,11 @@ public class EvaluationServiceStatusTests {
 		services.call(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {attribute, "noname" },
 				status);
 
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.ERROR, child.getSeverity());
 		assertTrue(child.getMessage().endsWith("\n\t" + UNKNOWN_FEATURE));
 		assertTrue(child.getException().getMessage().endsWith("\n\t" + UNKNOWN_FEATURE));
 	}
@@ -140,11 +141,11 @@ public class EvaluationServiceStatusTests {
 		Diagnostic status = new BasicDiagnostic();
 		services.call("serviceThrowsException", new Object[] {1 }, status);
 
-		// TODO shouldn't this be an error level?
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
+		assertEquals(Diagnostic.ERROR, child.getSeverity());
 		assertEquals(
 				"serviceThrowsException(java.lang.Object) with arguments [1] failed:\n\tThis is the purpose of this service.",
 				child.getMessage());
