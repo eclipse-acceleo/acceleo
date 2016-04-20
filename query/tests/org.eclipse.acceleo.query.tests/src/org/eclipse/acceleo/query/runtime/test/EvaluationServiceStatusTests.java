@@ -44,8 +44,6 @@ public class EvaluationServiceStatusTests {
 
 	private static final String UNKNOWN_FEATURE = "Feature noname not found in EClass EAttribute";
 
-	private static final String SERVICE_RETURNS_NULL = "Service serviceReturnsNull(java.lang.Object) returned a null value";
-
 	Map<String, Object> variables;
 
 	BasicLookupEngine engine;
@@ -133,12 +131,8 @@ public class EvaluationServiceStatusTests {
 		Diagnostic status = new BasicDiagnostic();
 		services.call("serviceReturnsNull", new Object[] {1 }, status);
 
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
-		assertEquals(1, status.getChildren().size());
-
-		Diagnostic child = status.getChildren().iterator().next();
-		assertEquals(SERVICE_RETURNS_NULL, child.getMessage());
-		assertNull(child.getException());
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertEquals(0, status.getChildren().size());
 	}
 
 	@Test

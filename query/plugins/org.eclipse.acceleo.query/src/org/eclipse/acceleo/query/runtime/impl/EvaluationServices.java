@@ -37,11 +37,6 @@ import org.eclipse.emf.ecore.EObject;
 public class EvaluationServices extends AbstractLanguageServices {
 
 	/**
-	 * Log message used when a called service returned null.
-	 */
-	private static final String SERVICE_RETURNED_NULL = "Service %s returned a null value";
-
-	/**
 	 * Log message used when an internal evaluation error is encountered.
 	 */
 	private static final String INTERNAL_ERROR_MSG = "An internal error occured during evaluation of a query";
@@ -130,15 +125,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 	 * @return the value produced by the service execution.
 	 */
 	private Object callService(IService service, Object[] arguments, Diagnostic diagnostic) {
-		Object result;
 		try {
-			result = service.invoke(arguments);
-			if (result == null && !AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(service.getName())) {
-				Nothing placeHolder = nothing(SERVICE_RETURNED_NULL, service.getShortSignature());
-				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
-				// We do not return the current Nothing because null is a valid value anyway
-			}
-			return result;
+			return service.invoke(arguments);
 		} catch (AcceleoQueryEvaluationException e) {
 			Nothing placeHolder = new Nothing(e.getMessage(), e);
 			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);

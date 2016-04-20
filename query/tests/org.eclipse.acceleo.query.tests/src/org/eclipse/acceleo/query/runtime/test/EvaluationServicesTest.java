@@ -791,7 +791,8 @@ public class EvaluationServicesTest {
 
 		result = services.collectionServiceCall("first", new Object[] {null, }, status);
 		assertNull(result);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertEquals(0, status.getChildren().size());
 	}
 
 	@Test
@@ -815,8 +816,8 @@ public class EvaluationServicesTest {
 	public void testEOperationGeneratedClass() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("getEClassifier", new Object[] {EcorePackage.eINSTANCE,
-				"EClass", }, status);
+		final Object result = services.call("getEClassifier",
+				new Object[] {EcorePackage.eINSTANCE, "EClass", }, status);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), result);
 	}
 
@@ -824,8 +825,8 @@ public class EvaluationServicesTest {
 	public void testEOperationGeneratedClassWithEObjectParameter() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("isSuperTypeOf", new Object[] {EcorePackage.eINSTANCE.getEClass(),
-				EcorePackage.eINSTANCE.getEPackage(), }, status);
+		final Object result = services.call("isSuperTypeOf", new Object[] {
+				EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE.getEPackage(), }, status);
 		assertEquals(false, result);
 	}
 
