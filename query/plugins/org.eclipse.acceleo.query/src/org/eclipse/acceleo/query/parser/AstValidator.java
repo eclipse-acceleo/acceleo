@@ -88,6 +88,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	private static final String ECLASSIFIER_NOT_REGISTERED = "%s is not registered in the current environment";
 
 	/**
+	 * Message used when an empty {@link ICollectionType} is produced.
+	 */
+	private static final String EMPTY_COLLECTION = "Empty collection:\n%s";
+
+	/**
 	 * Should never happen message.
 	 */
 	private static final String SHOULD_NEVER_HAPPEN = "should never happen";
@@ -143,26 +148,11 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final Set<IType> result = new LinkedHashSet<IType>();
 		final Set<IType> validationTypes = new LinkedHashSet<IType>();
 		final List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
+		final List<ValidationMessage> infoMsgs = new ArrayList<ValidationMessage>();
 		for (IType type : types) {
 			final AstResult astResult = validationResult.getAstResult();
-			final int startPostion;
-			if (expression instanceof Call) {
-				final String serviceName = ((Call)expression).getServiceName();
-				if (AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(serviceName)) {
-					if (AstBuilderListener.NOT_OPERATOR.equals(serviceName)
-							|| AstBuilderListener.UNARY_MIN_OPERATOR.equals(serviceName)) {
-						startPostion = astResult.getStartPosition(expression);
-					} else {
-						startPostion = astResult.getStartPosition(((Call)expression).getArguments().get(0));
-					}
-				} else {
-					startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
-				}
-			} else {
-				startPostion = astResult.getStartPosition(expression);
-			}
+			final int startPostion = getStartPosition(astResult, expression);
 			final int endPosition = astResult.getEndPosition(expression);
-
 			if (type instanceof NothingType) {
 				msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, ((NothingType)type)
 						.getMessage(), startPostion, endPosition));
@@ -175,6 +165,12 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 							ECLASSIFIER_NOT_REGISTERED, type), startPostion, endPosition));
 				}
 			} else {
+				if (type instanceof ICollectionType
+						&& ((ICollectionType)type).getCollectionType() instanceof NothingType) {
+					final NothingType nothing = (NothingType)((ICollectionType)type).getCollectionType();
+					infoMsgs.add(new ValidationMessage(ValidationMessageLevel.INFO, String.format(
+							EMPTY_COLLECTION, nothing.getMessage()), startPostion, endPosition));
+				}
 				result.add(type);
 			}
 			// Even if it's a Nothing, make the type known for validation purposes
@@ -188,10 +184,40 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		messages.addAll(msgs);
+		messages.addAll(infoMsgs);
 		validationResult.addTypes(expression, validationTypes);
 
 		return result;
 
+	}
+
+	/**
+	 * Gets the start position for the given {@link Expression} and {@link AstResult}.
+	 * 
+	 * @param astResult
+	 *            the {@link AstResult}
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the start position for the given {@link Expression} and {@link AstResult}
+	 */
+	private int getStartPosition(final AstResult astResult, Expression expression) {
+		final int startPostion;
+		if (expression instanceof Call) {
+			final String serviceName = ((Call)expression).getServiceName();
+			if (AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(serviceName)) {
+				if (AstBuilderListener.NOT_OPERATOR.equals(serviceName)
+						|| AstBuilderListener.UNARY_MIN_OPERATOR.equals(serviceName)) {
+					startPostion = astResult.getStartPosition(expression);
+				} else {
+					startPostion = astResult.getStartPosition(((Call)expression).getArguments().get(0));
+				}
+			} else {
+				startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+			}
+		} else {
+			startPostion = astResult.getStartPosition(expression);
+		}
+		return startPostion;
 	}
 
 	/**
