@@ -45,11 +45,13 @@ import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -1359,13 +1361,76 @@ public class LookupEngineTest {
 		}
 	}
 
+	@Test
+	public void lookup_492250_twoParameters() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {
+				new ClassType(engine.getQueryEnvironment(), EClass.class),
+				new ClassType(engine.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	@Test
+	public void lookup_492250_oneParameter() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	@Test
+	public void lookup_492250_twoThenOneParameters() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {
+				new ClassType(engine.getQueryEnvironment(), EClass.class),
+				new ClassType(engine.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+
+		service = engine.lookup("eAllContents", new IType[] {new ClassType(engine.getQueryEnvironment(),
+				EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	@Test
+	public void lookup_492250_oneThenTwoParameters() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {new EClassifierType(engine
+				.getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()) });
+
+		assertNotNull(service);
+
+		service = engine.lookup("eAllContents", new IType[] {
+				new ClassType(engine.getQueryEnvironment(), EClass.class),
+				new ClassType(engine.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+	}
+
 	private void registerServices(ITestLookupEngine engine) {
-		Set<IService> services = ServiceUtils.getServices(engine.getQueryEnvironment(), new AnyServices(
-				engine.getQueryEnvironment()));
-		services = ServiceUtils.getServices(engine.getQueryEnvironment(), new EObjectServices(engine
-				.getQueryEnvironment(), null, null));
-		services = ServiceUtils.getServices(engine.getQueryEnvironment(), new XPathServices(engine
-				.getQueryEnvironment()));
+		final Set<IService> services = new LinkedHashSet<IService>();
+
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new AnyServices(engine
+				.getQueryEnvironment())));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new EObjectServices(engine
+				.getQueryEnvironment(), null, null)));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new XPathServices(engine
+				.getQueryEnvironment())));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ComparableServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), NumberServices.class));
 		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), StringServices.class));
