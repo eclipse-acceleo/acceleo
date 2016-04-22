@@ -79,6 +79,9 @@ public class CacheLookupEngine extends BasicLookupEngine {
 		if (cachedNode != null) {
 			if (cachedNode.service == NO_SERVICE) {
 				result = null;
+			} else if (cachedNode.service == null) {
+				result = super.lookup(name, argumentTypes);
+				cachedNode.service = result;
 			} else {
 				result = cachedNode.service;
 			}
