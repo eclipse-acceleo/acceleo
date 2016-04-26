@@ -90,7 +90,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * Message used when an empty {@link ICollectionType} is produced.
 	 */
-	private static final String EMPTY_COLLECTION = "Empty collection:\n%s";
+	private static final String EMPTY_COLLECTION = "Empty collection: %s";
 
 	/**
 	 * Should never happen message.
@@ -166,7 +166,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			} else {
 				if (type instanceof ICollectionType
-						&& ((ICollectionType)type).getCollectionType() instanceof NothingType) {
+						&& ((ICollectionType)type).getCollectionType() instanceof NothingType
+						&& !isCollectionInExtension(expression)) {
 					final NothingType nothing = (NothingType)((ICollectionType)type).getCollectionType();
 					infoMsgs.add(new ValidationMessage(ValidationMessageLevel.INFO, String.format(
 							EMPTY_COLLECTION, nothing.getMessage()), startPostion, endPosition));
@@ -189,6 +190,20 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 
 		return result;
 
+	}
+
+	/**
+	 * Tells if the given expression is either a {@link SetInExtensionLiteral} or a
+	 * {@link SetInExtensionLiteral}.
+	 * 
+	 * @param expression
+	 *            the {@link Expression} to check
+	 * @return <code>true</code> if the given expression is either a {@link SetInExtensionLiteral} or a
+	 *         {@link SetInExtensionLiteral}, <code>false</code> otherwise
+	 */
+	private boolean isCollectionInExtension(Expression expression) {
+		return expression instanceof SetInExtensionLiteral
+				|| expression instanceof SequenceInExtensionLiteral;
 	}
 
 	/**

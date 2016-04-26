@@ -40,17 +40,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatEmptyListEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->concat(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 19, 29);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
 						10, 30);
 
 		AstResult ast = validationResult.getAstResult();
@@ -82,17 +77,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatEmptyListEmptySet() {
 		final IValidationResult validationResult = validate("Sequence{}->concat(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 19,
-				31);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
 						10, 32);
 
 		AstResult ast = validationResult.getAstResult();
@@ -124,14 +114,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatListNull() {
 		final IValidationResult validationResult = validate("Sequence{}->concat(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty Sequence defined in extension\n concat can only be called on collections, but null was used as its argument.",
+						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n concat can only be called on collections, but null was used as its argument.",
 						10, 24);
 
 		AstResult ast = validationResult.getAstResult();
@@ -150,20 +138,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatListNullAsList() {
 		final IValidationResult validationResult = validate("Sequence{}->concat(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						23, 37);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						23, 37);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						10, 38);
 
 		AstResult ast = validationResult.getAstResult();
@@ -182,20 +168,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatListNullAsSet() {
 		final IValidationResult validationResult = validate("Sequence{}->concat(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						23, 32);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						23, 32);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						10, 33);
 
 		AstResult ast = validationResult.getAstResult();
@@ -214,15 +198,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatNullList() {
 		final IValidationResult validationResult = validate("null->concat(Sequence{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 13, 23);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
 						4, 24);
 
 		AstResult ast = validationResult.getAstResult();
@@ -241,15 +222,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatNullSet() {
 		final IValidationResult validationResult = validate("null->concat(OrderedSet{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 13,
-				25);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
 						4, 26);
 
 		AstResult ast = validationResult.getAstResult();
@@ -268,18 +246,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatEmptySetEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 21,
-				33);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
 						12, 34);
 
 		AstResult ast = validationResult.getAstResult();
@@ -311,18 +283,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatEmptySetEmptyList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 21, 31);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
 						12, 32);
 
 		AstResult ast = validationResult.getAstResult();
@@ -354,15 +320,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatSetNull() {
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty OrderedSet defined in extension\n concat can only be called on collections, but null was used as its argument.",
+						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n concat can only be called on collections, but null was used as its argument.",
 						12, 26);
 
 		AstResult ast = validationResult.getAstResult();
@@ -381,21 +344,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatSetNullAsList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						25, 39);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						25, 39);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						12, 40);
 
 		AstResult ast = validationResult.getAstResult();
@@ -414,21 +374,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testConcatSetNullAsSet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						25, 34);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						25, 34);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						12, 35);
 
 		AstResult ast = validationResult.getAstResult();
@@ -447,17 +404,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionEmptyListEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->union(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 18, 28);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
 						10, 29);
 
 		AstResult ast = validationResult.getAstResult();
@@ -489,14 +441,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionListNull() {
 		final IValidationResult validationResult = validate("Sequence{}->union(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n Empty Sequence defined in extension\n union can only be called on collections, but null was used as its argument.",
+						"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n union can only be called on collections, but null was used as its argument.",
 						10, 23);
 
 		AstResult ast = validationResult.getAstResult();
@@ -515,20 +465,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionListNullAsList() {
 		final IValidationResult validationResult = validate("Sequence{}->union(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						22, 36);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						22, 36);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						10, 37);
 
 		AstResult ast = validationResult.getAstResult();
@@ -547,15 +495,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionNullSet() {
 		final IValidationResult validationResult = validate("null->union(OrderedSet{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 12,
-				24);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after union:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
 						4, 25);
 
 		AstResult ast = validationResult.getAstResult();
@@ -574,18 +519,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionEmptySetEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->union(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 20,
-				32);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
 						12, 33);
 
 		AstResult ast = validationResult.getAstResult();
@@ -617,15 +556,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionSetNull() {
 		final IValidationResult validationResult = validate("OrderedSet{}->union(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n Empty OrderedSet defined in extension\n union can only be called on collections, but null was used as its argument.",
+						"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n union can only be called on collections, but null was used as its argument.",
 						12, 25);
 
 		AstResult ast = validationResult.getAstResult();
@@ -644,21 +580,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testUnionSetNullAsSet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->union(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						24, 33);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						24, 33);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after union:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						12, 34);
 
 		AstResult ast = validationResult.getAstResult();
@@ -711,7 +644,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty", 13, 17);
+				ValidationMessageLevel.INFO, "Empty collection: Empty", 13, 17);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -726,7 +659,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty", 13, 17);
+				ValidationMessageLevel.INFO, "Empty collection: Empty", 13, 17);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -754,7 +687,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty", 0, 4);
+				ValidationMessageLevel.INFO, "Empty collection: Empty", 0, 4);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -798,7 +731,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty", 0, 4);
+				ValidationMessageLevel.INFO, "Empty collection: Empty", 0, 4);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -838,14 +771,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubEmptyListEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->sub(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 16, 26);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 27);
+				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 27);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -874,14 +802,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubEmptyListEmptySet() {
 		final IValidationResult validationResult = validate("Sequence{}->sub(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 16,
-				28);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 29);
+				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 29);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -910,11 +833,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubListNull() {
 		final IValidationResult validationResult = validate("Sequence{}->sub(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 21);
+				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 21);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -931,17 +852,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubListNullAsList() {
 		final IValidationResult validationResult = validate("Sequence{}->sub(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						20, 34);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 35);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 35);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -958,17 +877,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubListNullAsSet() {
 		final IValidationResult validationResult = validate("Sequence{}->sub(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						20, 29);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 30);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 30);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -985,15 +902,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubNullList() {
 		final IValidationResult validationResult = validate("null->sub(Sequence{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 10, 20);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						0, 21);
 
 		AstResult ast = validationResult.getAstResult();
@@ -1011,15 +925,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubNullSet() {
 		final IValidationResult validationResult = validate("null->sub(OrderedSet{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 10,
-				22);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						0, 23);
 
 		AstResult ast = validationResult.getAstResult();
@@ -1037,16 +948,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubEmptySetEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 18,
-				30);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				31);
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+						"Empty collection: Empty OrderedSet defined in extension", 0, 31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1075,16 +980,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubEmptySetEmptyList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 18, 28);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				29);
+				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+						"Empty collection: Empty OrderedSet defined in extension", 0, 29);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1113,13 +1012,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubSetNull() {
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				23);
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+						"Empty collection: Empty OrderedSet defined in extension", 0, 23);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1136,19 +1032,16 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubSetNullAsList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						22, 36);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				37);
+		ValidationTest
+				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
+						"Empty collection: Empty OrderedSet defined in extension", 0, 37);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1165,19 +1058,16 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSubSetNullAsSet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						22, 31);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(2),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				32);
+		ValidationTest
+				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
+						"Empty collection: Empty OrderedSet defined in extension", 0, 32);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1310,7 +1200,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 21);
 
 		AstResult ast = validationResult.getAstResult();
@@ -1369,7 +1259,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 15);
 
 		AstResult ast = validationResult.getAstResult();
@@ -1484,10 +1374,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->first()");
 
 		String message = "Empty Sequence defined in extension";
-		assertEquals(2, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 10, 19);
 
 		AstResult ast = validationResult.getAstResult();
@@ -1558,11 +1446,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->first()");
 
 		String message = "Empty OrderedSet defined in extension";
-		assertEquals(2, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 12, 21);
 
 		AstResult ast = validationResult.getAstResult();
@@ -1644,7 +1529,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 18);
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 18, 25);
@@ -1674,9 +1559,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSizeEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->size()");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1688,9 +1571,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSizeOnNull() {
 		final IValidationResult validationResult = validate("Sequence{}->size()");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1714,10 +1595,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testSizeEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->size()");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1973,7 +1851,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 28);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2126,7 +2004,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a select must return a boolean", 17, 31);
+				"Empty collection: expression in a select must return a boolean", 17, 31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2146,7 +2024,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a select must return a boolean", 26, 48);
+				"Empty collection: expression in a select must return a boolean", 26, 48);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2168,7 +2046,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 27);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2231,7 +2109,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a select must return a boolean", 19, 33);
+				"Empty collection: expression in a select must return a boolean", 19, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2251,7 +2129,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a select must return a boolean", 28, 50);
+				"Empty collection: expression in a select must return a boolean", 28, 50);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2283,7 +2161,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a reject must return a boolean", 17, 31);
+				"Empty collection: expression in a reject must return a boolean", 17, 31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2303,7 +2181,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a reject must return a boolean", 26, 48);
+				"Empty collection: expression in a reject must return a boolean", 26, 48);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2325,7 +2203,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 30);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2358,7 +2236,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a reject must return a boolean", 19, 33);
+				"Empty collection: expression in a reject must return a boolean", 19, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2378,7 +2256,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
-				"Empty collection:\nexpression in a reject must return a boolean", 28, 50);
+				"Empty collection: expression in a reject must return a boolean", 28, 50);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2487,7 +2365,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 27);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2645,7 +2523,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 51);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2765,7 +2643,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing will be left after calling filter:\nEClassifier on filter cannot be null.",
+						"Empty collection: Nothing will be left after calling filter:\nEClassifier on filter cannot be null.",
 						17, 31);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2791,7 +2669,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing will be left after calling filter:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing will be left after calling filter:\nThe Collection was empty due to a null value being wrapped as a Collection.",
 						4, 27);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2863,7 +2741,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing will be left after calling filter:\nEClassifier on filter cannot be null.",
+						"Empty collection: Nothing will be left after calling filter:\nEClassifier on filter cannot be null.",
 						19, 33);
 
 		AstResult ast = validationResult.getAstResult();
@@ -2911,7 +2789,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 14);
 
 		AstResult ast = validationResult.getAstResult();
@@ -3073,7 +2951,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 18);
 
 		AstResult ast = validationResult.getAstResult();
@@ -3219,10 +3097,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		String message = "Empty Sequence defined in extension";
 		assertFalse(validationResult.getMessages().isEmpty());
-		assertEquals(2, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 10, 18);
 
 		AstResult ast = validationResult.getAstResult();
@@ -3294,11 +3170,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->last()");
 
 		String message = "Empty OrderedSet defined in extension";
-		assertEquals(2, validationResult.getMessages().size());
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 12, 20);
 
 		AstResult ast = validationResult.getAstResult();
@@ -3326,9 +3199,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->excludes('hello')");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -3388,10 +3259,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesSetList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->excludes('hello')");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -3439,9 +3307,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->includes('hello')");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -3501,10 +3367,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesSetList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->includes('hello')");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4329,9 +4192,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllEmptyListList() {
 		final IValidationResult validationResult = validate("Sequence{}->excludesAll(Sequence{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4343,9 +4204,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllEmptyListSet() {
 		final IValidationResult validationResult = validate("Sequence{}->excludesAll(OrderedSet{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4357,10 +4216,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllListEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(Sequence{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 40, 50);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4372,10 +4228,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllListEmptySet() {
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(OrderedSet{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 40,
-				52);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4471,10 +4324,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllEmptySetList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->excludesAll(Sequence{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4486,10 +4336,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllEmptySetSet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->excludesAll(OrderedSet{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4501,10 +4348,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllSetEmptyList() {
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(Sequence{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 42, 52);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4516,10 +4360,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testExcludesAllSetEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(OrderedSet{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 42,
-				54);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4591,9 +4432,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllEmptyListList() {
 		final IValidationResult validationResult = validate("Sequence{}->includesAll(Sequence{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4605,9 +4444,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllEmptyListSet() {
 		final IValidationResult validationResult = validate("Sequence{}->includesAll(OrderedSet{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4619,10 +4456,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllListEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->includesAll(Sequence{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 40, 50);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4634,10 +4468,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllListEmptySet() {
 		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->includesAll(OrderedSet{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 40,
-				52);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4733,10 +4564,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllEmptySetList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->includesAll(Sequence{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4748,10 +4576,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllEmptySetSet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->includesAll(OrderedSet{'hello', 'world'})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4763,10 +4588,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllSetEmptyList() {
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->includesAll(Sequence{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 42, 52);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -4778,10 +4600,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIncludesAllSetEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->includesAll(OrderedSet{})");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 42,
-				54);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5366,9 +5185,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIndexOfEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->indexOf('hello')");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5428,10 +5245,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIndexOfSetList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->indexOf('hello')");
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5749,17 +5563,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionEmptyListEmptyList() {
 		final IValidationResult validationResult = validate("Sequence{}->intersection(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 25, 35);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
 						10, 36);
 
 		AstResult ast = validationResult.getAstResult();
@@ -5795,7 +5604,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Sequence(java.lang.String)",
+						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Sequence(java.lang.String)",
 						23, 56);
 
 		AstResult ast = validationResult.getAstResult();
@@ -5838,17 +5647,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionEmptyListEmptySet() {
 		final IValidationResult validationResult = validate("Sequence{}->intersection(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 25,
-				37);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
 						10, 38);
 
 		AstResult ast = validationResult.getAstResult();
@@ -5884,7 +5688,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Set(java.lang.String)",
+						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Set(java.lang.String)",
 						23, 58);
 
 		AstResult ast = validationResult.getAstResult();
@@ -5915,14 +5719,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionListNull() {
 		final IValidationResult validationResult = validate("Sequence{}->intersection(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty Sequence defined in extension\n intersection can only be called on collections, but null was used as its argument.",
+						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n intersection can only be called on collections, but null was used as its argument.",
 						10, 30);
 
 		AstResult ast = validationResult.getAstResult();
@@ -5941,20 +5743,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionListNullAsList() {
 		final IValidationResult validationResult = validate("Sequence{}->intersection(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						29, 43);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						29, 43);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						10, 44);
 
 		AstResult ast = validationResult.getAstResult();
@@ -5973,20 +5773,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionListNullAsSet() {
 		final IValidationResult validationResult = validate("Sequence{}->intersection(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty Sequence defined in extension", 0, 10);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						29, 38);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						29, 38);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						10, 39);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6005,15 +5803,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionNullList() {
 		final IValidationResult validationResult = validate("null->intersection(Sequence{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 19, 29);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
 						4, 30);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6032,15 +5827,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionNullSet() {
 		final IValidationResult validationResult = validate("null->intersection(OrderedSet{})");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 19,
-				31);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
 						4, 32);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6071,18 +5863,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionEmptySetEmptySet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(OrderedSet{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 27,
-				39);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
+						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
 						12, 40);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6118,7 +5904,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Set(java.lang.String)",
+						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Set(java.lang.String)",
 						25, 60);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6161,18 +5947,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionEmptySetEmptyList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(Sequence{})");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection:\nEmpty Sequence defined in extension", 27, 37);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(2),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
+						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
 						12, 38);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6208,7 +5988,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Sequence(java.lang.String)",
+						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Sequence(java.lang.String)",
 						25, 58);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6239,15 +6019,12 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionSetNull() {
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null)");
 
-		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
-						validationResult.getMessages().get(1),
+						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty OrderedSet defined in extension\n intersection can only be called on collections, but null was used as its argument.",
+						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n intersection can only be called on collections, but null was used as its argument.",
 						12, 32);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6266,21 +6043,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionSetNullAsList() {
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null->asSequence())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						31, 45);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						31, 45);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						12, 46);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6299,21 +6073,18 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionSetNullAsSet() {
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null->asSet())");
 
-		assertEquals(3, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO, "Empty collection:\nEmpty OrderedSet defined in extension", 0,
-				12);
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+						31, 40);
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(1),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						31, 40);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(2),
-						ValidationMessageLevel.INFO,
-						"Empty collection:\nNothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
 						12, 41);
 
 		AstResult ast = validationResult.getAstResult();
@@ -6428,7 +6199,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Empty collection:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
 						4, 24);
 
 		AstResult ast = validationResult.getAstResult();
