@@ -38,7 +38,7 @@ Calls can be chained, as such @self.parents.name@ will return a collection conta
 If one want to access the collection itself, then the separator @->@ must be used, as such @self.parents.name->size()@ will return the number of elements in the collection whereas @self.parents.name.size()@ will return a collection containing 
 the sizes of each name.  
 
-AQL can also call methods modeled as EOperations or defined through Java services. The syntax denoting such a call is @(..)@. @self.someCall()@ will call the *someCall* method and return the result.
+AQL can also call methods modeled as EOperations or defined through Java services. The syntax denoting such a call is @.@ for instance @self.someCall()@ will call the *someCall* method and return the result.
 
 h3. Working with collections
 
@@ -147,7 +147,7 @@ As languages, AQL and MTL are very close yet there are some notable differences:
 
 h3. Implicit variable references
 
-There is no implicit variable reference. With this change, you can easily find out if you are using a feature of an object or a string representation of said object. As a result, instead of using @[something/]@, you must use @self.something@ if you want to access the feature named "something" of the current object or "something" if you want to retrieve the object named something.
+There is no implicit variable reference. With this change, you can easily find out if you are using a feature of an object or a string representation of said object. As a result, instead of using @something@, you must use @self.something@ if you want to access the feature named "something" of the current object or "something" if you want to retrieve the object named something.
 
 In a lambda expression, you must now define the name of the variable used for the iteration in order to easily identify which variable is used by an expression. In Acceleo MTL, you can write @Sequence{self}->collect(eAllContents(uml::Property))@ and Acceleo will use the implicit iterator as a source of the operation eAllContents.
 
