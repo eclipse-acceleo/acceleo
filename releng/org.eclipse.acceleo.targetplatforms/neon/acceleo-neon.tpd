@@ -8,6 +8,8 @@ with source requirements
 
 location "http://download.eclipse.org/releases/neon" {
 	org.eclipse.platform.sdk lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
+	
 	org.eclipse.emf.sdk.feature.group lazy
 	org.eclipse.jdt.feature.group lazy
 	org.eclipse.pde.feature.group lazy
