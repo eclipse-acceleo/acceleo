@@ -329,10 +329,10 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't have following siblings")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling followingSiblings:\nEClassifier=eCls1 can't have following siblings")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+					.getEObject())) };
 
-			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "followingSiblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -462,10 +462,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifierLiteral=eCls1 can't be a following sibling of EClassifier=eCls2")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling followingSiblings:\nEClassifierLiteral=eCls1 can't be a following sibling of EClassifier=eCls2")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls1)) };
 
-			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "followingSiblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -560,10 +559,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifierLiteral=eCls2 can't be a following sibling of EClassifier=eCls1")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling followingSiblings:\nEClassifierLiteral=eCls2 can't be a following sibling of EClassifier=eCls1")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls2)) };
 
-			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "followingSiblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "followingSiblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -585,10 +583,10 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't have preceding siblings")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling precedingSiblings:\nEClassifier=eCls1 can't have preceding siblings")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+					.getEObject())) };
 
-			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "precedingSiblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -725,10 +723,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifierLiteral=eCls1 can't be a preceding sibling of EClassifier=eCls2")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling precedingSiblings:\nEClassifierLiteral=eCls1 can't be a preceding sibling of EClassifier=eCls2")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls1)) };
 
-			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "precedingSiblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -824,10 +821,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifierLiteral=eCls2 can't be a preceding sibling of EClassifier=eCls1")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling precedingSiblings:\nEClassifierLiteral=eCls2 can't be a preceding sibling of EClassifier=eCls1")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls2)) };
 
-			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "precedingSiblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "precedingSiblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -849,10 +845,10 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifier=eCls1 can't have siblings")) };
-			final IType[] expectedReturnAllTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling siblings:\nEClassifier=eCls1 can't have siblings")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(EcorePackage.eINSTANCE
+					.getEObject())) };
 
-			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "siblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -950,10 +946,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls2), eClassifierLiteralType(eCls1) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifierLiteral=eCls1 can't be a sibling of EClassifier=eCls2")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling siblings:\nEClassifierLiteral=eCls1 can't be a sibling of EClassifier=eCls2")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls1)) };
 
-			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "siblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
@@ -1096,10 +1091,9 @@ public class XPathServicesValidationTest extends AbstractServicesValidationTest 
 			getQueryEnvironment().registerEPackage(ePkg);
 
 			final IType[] parameterTypes = new IType[] {eClassifierType(eCls1), eClassifierLiteralType(eCls2) };
-			final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("EClassifierLiteral=eCls2 can't be a sibling of EClassifier=eCls1")) };
-			final IType[] expectedAllReturnTypes = new IType[] {sequenceType(nothingType("Nothing will be left after calling siblings:\nEClassifierLiteral=eCls2 can't be a sibling of EClassifier=eCls1")) };
+			final IType[] expectedReturnTypes = new IType[] {sequenceType(eClassifierType(eCls2)) };
 
-			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "siblings", parameterTypes);
+			assertValidation(expectedReturnTypes, "siblings", parameterTypes);
 		} finally {
 			getQueryEnvironment().removeEPackage(ePkg.getName());
 		}
