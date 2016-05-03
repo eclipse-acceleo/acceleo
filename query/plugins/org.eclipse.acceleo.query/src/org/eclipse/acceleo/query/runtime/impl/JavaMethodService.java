@@ -217,7 +217,6 @@ public class JavaMethodService extends AbstractService {
 			}
 		} else if (type instanceof Class<?>) {
 			final Class<?> cls = (Class<?>)type;
-			// TODO double check this it seems wrong
 			result.addAll(getIType(queryEnvironment, cls));
 		} else {
 			result.add(new ClassType(queryEnvironment, Object.class));
