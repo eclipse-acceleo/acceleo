@@ -100,7 +100,7 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			completeVariablesNames(errors.get(0));
 			result = doSwitch(errors.get(0));
 		} else {
-			// TODO completVariablesNames(???);
+			// no need for variables here since "expression variable" can't be valid
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
 					.getAstResult().getAst());
 			result = getExpressionTextFollows(possibleTypes);
