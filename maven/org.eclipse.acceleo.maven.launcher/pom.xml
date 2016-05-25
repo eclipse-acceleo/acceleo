@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.maven.launcher</artifactId>
-  <version>3.6.4</version>
+  <version>3.6.4-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven.launcher</name>
   <description>The Acceleo maven launcher plugin.</description>
