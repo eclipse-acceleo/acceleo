@@ -19,6 +19,9 @@ import java.util.Map;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenFactory;
+import org.antlr.v4.runtime.DefaultErrorStrategy;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.UnbufferedCharStream;
 import org.antlr.v4.runtime.UnbufferedTokenStream;
@@ -74,6 +77,19 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 			parser.removeErrorListeners();
 			parser.addErrorListener(astBuilder.getErrorListener());
 			// parser.setTrace(true);
+			parser.setErrorHandler(new DefaultErrorStrategy() {
+
+				/**
+				 * {@inheritDoc}
+				 *
+				 * @see org.antlr.v4.runtime.DefaultErrorStrategy#sync(org.antlr.v4.runtime.Parser)
+				 */
+				@Override
+				public void sync(Parser recognizer) throws RecognitionException {
+					// nothing to do here
+				}
+
+			});
 			parser.entry();
 			result = astBuilder.getAstResult();
 		} else {

@@ -2721,7 +2721,7 @@ public class BuildTest {
 				.getMessage());
 		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
 		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
-		assertEquals("missing ')'", build.getDiagnostic().getChildren().get(1).getMessage());
+		assertEquals("invalid iteration call", build.getDiagnostic().getChildren().get(1).getMessage());
 		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
 	}
 
@@ -2788,6 +2788,37 @@ public class BuildTest {
 				.get(3));
 		assertEquals("\u1F1EB\u1F1F7", ((StringLiteral)((SequenceInExtensionLiteral)ast).getValues().get(3))
 				.getValue());
+	}
+
+	@Test
+	public void incompleteSelect_494432() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("var->select(oclIsKindOf(String) or oclIsKindOf(Integer))");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorCall.class, 0, 56, ast);
+		assertEquals("select", ((ErrorCall)ast).getServiceName());
+		assertEquals(CallType.COLLECTIONCALL, ((ErrorCall)ast).getType());
+		assertFalse(((ErrorCall)ast).isMissingEndParenthesis());
+	}
+
+	@Test
+	public void emptySelect() {
+		IQueryBuilderEngine.AstResult build = engine.build("var->select()");
+		Expression ast = build.getAst();
+
+		assertExpression(build, ErrorCall.class, 0, 13, ast);
+		assertEquals("select", ((ErrorCall)ast).getServiceName());
+		assertEquals(CallType.COLLECTIONCALL, ((ErrorCall)ast).getType());
+		assertFalse(((ErrorCall)ast).isMissingEndParenthesis());
+		assertEquals(2, ((ErrorCall)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 3, ((ErrorCall)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 12, 12, ((ErrorCall)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((ErrorCall)ast).getArguments().get(1);
+		assertEquals(1, lambda.getParameters().size());
+		assertTrue(lambda.getParameters().get(0) instanceof ErrorVariableDeclaration);
+		assertEquals(null, ((ErrorVariableDeclaration)lambda.getParameters().get(0)).getName());
+		assertExpression(build, ErrorExpression.class, 12, 12, lambda.getExpression());
 	}
 
 }

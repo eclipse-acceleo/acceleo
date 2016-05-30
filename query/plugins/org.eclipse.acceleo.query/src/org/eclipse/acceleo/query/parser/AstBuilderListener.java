@@ -473,13 +473,15 @@ public class AstBuilderListener extends QueryBaseListener {
 		 *            the {@link RecognitionException}
 		 */
 		private void iterationCallContextError(RecognitionException e) {
-			errorRule = QueryParser.RULE_expression;
-			final ErrorExpression errorExpression = builder.errorExpression();
-			pushError(errorExpression, MISSING_EXPRESSION);
-			final Integer position = Integer
-					.valueOf(((IterationCallContext)e.getCtx()).start.getStartIndex());
-			startPositions.put(errorExpression, position);
-			endPositions.put(errorExpression, position);
+			if (e.getCtx().getChildCount() == 0) {
+				errorRule = QueryParser.RULE_expression;
+				final ErrorExpression errorExpression = builder.errorExpression();
+				pushError(errorExpression, MISSING_EXPRESSION);
+				final Integer position = Integer.valueOf(((IterationCallContext)e.getCtx()).start
+						.getStartIndex());
+				startPositions.put(errorExpression, position);
+				endPositions.put(errorExpression, position);
+			}
 		}
 
 		/**
@@ -601,8 +603,15 @@ public class AstBuilderListener extends QueryBaseListener {
 			if (((Token)offendingSymbol).getText().isEmpty()
 					|| ")".equals(((Token)offendingSymbol).getText())) {
 				final ErrorExpression errorExpression = builder.errorExpression();
-				startPositions.put(errorExpression, endPosition);
-				endPositions.put(errorExpression, endPosition);
+				// not missing ')' only missing expression
+				if (((Token)offendingSymbol).getStartIndex() == ((Token)offendingSymbol).getStopIndex()) {
+					// position is indeed before the closing parenthesis
+					startPositions.put(errorExpression, endPosition - 1);
+					endPositions.put(errorExpression, endPosition - 1);
+				} else {
+					startPositions.put(errorExpression, endPosition);
+					endPositions.put(errorExpression, endPosition);
+				}
 				pushError(errorExpression, MISSING_EXPRESSION);
 			}
 		}
@@ -1314,7 +1323,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			}
 			startPositions.put(variableDeclaration, Integer.valueOf(ctx.start.getStartIndex()));
 
-			stack.push(variableDeclaration);
+			push(variableDeclaration);
 		} else {
 			errorRule = NO_ERROR;
 		}
@@ -1327,18 +1336,27 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitIterationCall(IterationCallContext ctx) {
-		// the stack contains [receiver, variableDef, expression]
+		// the stack contains [variableDef, expression]
 		final String serviceName = ctx.getChild(0).getText();
 		final Expression ast = pop();
-		final VariableDeclaration iterator;
-		iterator = popVariableDeclaration();
+		final VariableDeclaration iterator = popVariableDeclaration();
 		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));
 		endPositions.put(lambda, Integer.valueOf(endPositions.get(ast)));
 		final Call call;
 		if (ctx.getChild(ctx.getChildCount() - 1) instanceof ErrorNode) {
-			call = builder.errorCall(serviceName, true, iterator.getExpression(), lambda);
-			pushError((Error)call, "missing ')'");
+			// at this point ANTLR can report a missing ')' even is the closing parenthesis is present
+			// so we check by hand
+			final ParserRuleContext parenthesisNode = (ParserRuleContext)ctx
+					.getChild(ctx.getChildCount() - 2).getChild(0);
+			final boolean missingParenthesis = parenthesisNode != null
+					&& !")".equals(parenthesisNode.stop.getText());
+			call = builder.errorCall(serviceName, missingParenthesis, iterator.getExpression(), lambda);
+			if (missingParenthesis) {
+				pushError((Error)call, "missing ')'");
+			} else {
+				pushError((Error)call, "invalid iteration call");
+			}
 		} else {
 			call = builder.callService(serviceName, iterator.getExpression(), lambda);
 			push(call);
