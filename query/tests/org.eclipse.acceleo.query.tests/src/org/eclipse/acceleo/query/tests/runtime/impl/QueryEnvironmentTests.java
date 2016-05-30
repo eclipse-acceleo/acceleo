@@ -258,15 +258,33 @@ public class QueryEnvironmentTests {
 		assertListener(listener, 0, 0, 1, 0, 0);
 	}
 
-	@Test
+	@Test(expected = java.lang.NullPointerException.class)
 	public void removeEPackageNull() {
-		queryEnvironment.removeEPackage(null);
+		queryEnvironment.removeEPackage((EPackage)null);
+	}
+
+	@Test
+	public void removeEPackageNullName() {
+		queryEnvironment.removeEPackage((String)null);
 
 		assertListener(listener, 0, 0, 0, 0, 0);
 	}
 
 	@Test
 	public void removeEPackageNotRegistered() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("test");
+		ePkg.setNsURI("test");
+		ePkg.setNsPrefix("test");
+
+		queryEnvironment.removeEPackage(ePkg);
+
+		assertFalse(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
+		assertListener(listener, 0, 0, 0, 0, 0);
+	}
+
+	@Test
+	public void removeEPackageNotRegisteredName() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 		ePkg.setName("test");
 		ePkg.setNsURI("test");
@@ -280,6 +298,24 @@ public class QueryEnvironmentTests {
 
 	@Test
 	public void removeEPackageRegistered() {
+		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePkg.setName("test");
+		ePkg.setNsURI("test");
+		ePkg.setNsPrefix("test");
+
+		queryEnvironment.registerEPackage(ePkg);
+
+		assertTrue(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
+		assertListener(listener, 0, 0, 1, 0, 0);
+
+		queryEnvironment.removeEPackage(ePkg);
+
+		assertFalse(queryEnvironment.getEPackageProvider().getRegisteredEPackages().contains(ePkg));
+		assertListener(listener, 0, 0, 1, 1, 0);
+	}
+
+	@Test
+	public void removeEPackageRegisteredName() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 		ePkg.setName("test");
 		ePkg.setNsURI("test");

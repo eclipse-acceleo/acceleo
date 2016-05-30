@@ -60,10 +60,20 @@ public interface IQueryEnvironment extends IReadOnlyQueryEnvironment {
 	void registerEPackage(EPackage ePackage);
 
 	/**
+	 * Remove the given {@link EPackage}.
+	 * 
+	 * @param ePackage
+	 *            the {@link EPackage} to remove
+	 * @since 6.0
+	 */
+	void removeEPackage(EPackage ePackage);
+
+	/**
 	 * Remove a registered package given it's name.
 	 * 
 	 * @param name
-	 *            the name of the package to be removed.
+	 *            the name of the package to be removed
+	 * @deprecated
 	 */
 	void removeEPackage(String name);
 

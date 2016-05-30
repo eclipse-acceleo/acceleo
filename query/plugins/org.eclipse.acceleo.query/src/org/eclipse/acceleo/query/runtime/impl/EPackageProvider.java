@@ -14,6 +14,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,11 +94,42 @@ public class EPackageProvider implements IEPackageProvider {
 
 	/**
 	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage}s having the
+	 * given {@link EPackage}.
+	 * 
+	 * @param ePackage
+	 *            the {@link EPackage} to remove
+	 * @return the list of removed {@link EPackage}
+	 */
+	public Collection<EPackage> removePackage(EPackage ePackage) {
+		final Collection<EPackage> result = new ArrayList<EPackage>();
+
+		if (ePackages.remove(ePackage.getName(), ePackage)) {
+			result.add(ePackage);
+			for (EClassifier eCls : ePackage.getEClassifiers()) {
+				removeEClassifierClass(eCls);
+				if (eCls instanceof EClass) {
+					removeFeatures((EClass)eCls);
+					removeSubType((EClass)eCls);
+				}
+			}
+			for (EPackage childPkg : ePackage.getESubpackages()) {
+				removePackage(childPkg.getName());
+			}
+			containingFeatures.clear();
+			allContainingFeatures.clear();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage}s having the
 	 * given {@link EPackage#getName() name}.
 	 * 
 	 * @param name
 	 *            the {@link EPackage#getName() name}
-	 * @return the list of removed {@link EPackage}.
+	 * @return the list of removed {@link EPackage}
+	 * @deprecated
 	 */
 	public Collection<EPackage> removePackage(String name) {
 		final Collection<EPackage> removed = ePackages.removeAll(name);
