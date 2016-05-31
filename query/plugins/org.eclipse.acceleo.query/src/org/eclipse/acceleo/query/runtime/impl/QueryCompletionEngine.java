@@ -67,7 +67,8 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 
 		final AstCompletor completor = new AstCompletor(new CompletionServices(queryEnvironment));
 		if (offset < 0 || (expression != null && offset > expression.length())) {
-			throw new IllegalArgumentException("offset must be in the range of the given expression.");
+			throw new IllegalArgumentException("offset (" + offset
+					+ ") must be in the range of the given expression: \"" + expression + "\"");
 		}
 		final String prefix = getPrefix(expression, offset);
 		final String remaining = getRemaining(expression, offset);

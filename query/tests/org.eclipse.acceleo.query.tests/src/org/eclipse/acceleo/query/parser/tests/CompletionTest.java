@@ -1535,6 +1535,40 @@ public class CompletionTest {
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
+	@Test
+	public void negativeIndex() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		boolean exception = false;
+		try {
+			engine.getCompletion("self", -1, types);
+		} catch (IllegalArgumentException e) {
+			assertEquals("offset (-1) must be in the range of the given expression: \"self\"", e.getMessage());
+			exception = true;
+		}
+		assertTrue(exception);
+	}
+
+	@Test
+	public void tooHighIndex() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new SequenceType(queryEnvironment, new NothingType("whatever")));
+		types.put("self", selfType);
+
+		boolean exception = false;
+		try {
+			engine.getCompletion("self", 5, types);
+		} catch (IllegalArgumentException e) {
+			assertEquals("offset (5) must be in the range of the given expression: \"self\"", e.getMessage());
+			exception = true;
+		}
+		assertTrue(exception);
+	}
+
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);
