@@ -357,10 +357,16 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		if (object.getFalseBranch() != null) {
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(object.getFalseBranch());
+			result.addAll(getExpressionTextFollows(possibleTypes));
 			result.add(new TextCompletionProposal("endif ", 0));
 		} else if (object.getTrueBranch() != null) {
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(object.getTrueBranch());
+			result.addAll(getExpressionTextFollows(possibleTypes));
 			result.add(new TextCompletionProposal("else ", 0));
 		} else if (object.getPredicate() != null) {
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(object.getPredicate());
+			result.addAll(getExpressionTextFollows(possibleTypes));
 			result.add(new TextCompletionProposal("then ", 0));
 		}
 

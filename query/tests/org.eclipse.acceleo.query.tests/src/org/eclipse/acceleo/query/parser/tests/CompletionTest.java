@@ -644,11 +644,29 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("then ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
+		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("then ", completionResult.getProposals(new BasicFilter(completionResult)).get(11)
 				.getProposal());
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
 		assertEquals(8, completionResult.getReplacementOffset());
 		assertEquals(0, completionResult.getReplacementLength());
+	}
+
+	@Test
+	public void thenVar() {
+		final Set<IType> thenVarTypes = new LinkedHashSet<IType>();
+		thenVarTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		variableTypes.put("thenVar", thenVarTypes);
+		final ICompletionResult completionResult = engine.getCompletion("then", 4, variableTypes);
+		assertEquals("then", completionResult.getPrefix());
+		assertEquals("", completionResult.getRemaining());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("thenVar", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
+				.getProposal());
+		assertEquals(0, completionResult.getReplacementOffset());
+		assertEquals(4, completionResult.getReplacementLength());
 	}
 
 	/**
@@ -656,17 +674,18 @@ public class CompletionTest {
 	 */
 	@Test
 	public void testConditionalAfterThenCompletion() {
+		final Set<IType> thenVarTypes = new LinkedHashSet<IType>();
+		thenVarTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		variableTypes.put("thenVar", thenVarTypes);
 		final ICompletionResult completionResult = engine.getCompletion("if stuff then ", 13, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
+		assertEquals("then", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertNoFeatureCompletionProposal(completionResult);
-		assertNoEOperationCompletionProposal(completionResult);
-		assertNoServiceCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("then ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
+				.getProposal());
+		assertEquals(9, completionResult.getReplacementOffset());
+		assertEquals(4, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -676,9 +695,12 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("else ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
+		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("else ", completionResult.getProposals(new BasicFilter(completionResult)).get(11)
 				.getProposal());
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
 		assertEquals(18, completionResult.getReplacementOffset());
 		assertEquals(0, completionResult.getReplacementLength());
 	}
@@ -701,18 +723,19 @@ public class CompletionTest {
 	 */
 	@Test
 	public void testConditionalAfterElseCompletion() {
+		final Set<IType> elseVarTypes = new LinkedHashSet<IType>();
+		elseVarTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		variableTypes.put("elseVar", elseVarTypes);
 		final ICompletionResult completionResult = engine.getCompletion("if stuff then self else ", 23,
 				variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
+		assertEquals("else", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertNoFeatureCompletionProposal(completionResult);
-		assertNoEOperationCompletionProposal(completionResult);
-		assertNoServiceCompletionProposal(completionResult);
-		assertEquals(23, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("else ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
+				.getProposal());
+		assertEquals(19, completionResult.getReplacementOffset());
+		assertEquals(4, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -722,9 +745,12 @@ public class CompletionTest {
 
 		assertEquals("", completionResult.getPrefix());
 		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("endif ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
+		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertEquals("endif ", completionResult.getProposals(new BasicFilter(completionResult)).get(11)
 				.getProposal());
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
 		assertEquals(29, completionResult.getReplacementOffset());
 		assertEquals(0, completionResult.getReplacementLength());
 	}
