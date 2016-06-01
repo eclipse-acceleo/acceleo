@@ -1595,6 +1595,14 @@ public class CompletionTest {
 		assertTrue(exception);
 	}
 
+	@Test
+	public void suffixFilter_479632() {
+		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents()", 5,
+				variableTypes);
+
+		assertEquals(73, completionResult.getProposals(new BasicFilter(completionResult)).size());
+	}
+
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
 		for (ICompletionProposal prop : completionResult.getProposals(new BasicFilter(completionResult))) {
 			assertEquals(false, prop instanceof VariableCompletionProposal);
