@@ -129,7 +129,11 @@ public class EvaluationServices extends AbstractLanguageServices {
 			return service.invoke(arguments);
 		} catch (AcceleoQueryEvaluationException e) {
 			Nothing placeHolder = new Nothing(e.getMessage(), e);
-			addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			if (e.getCause() instanceof AcceleoQueryEvaluationException) {
+				addDiagnosticFor(diagnostic, Diagnostic.WARNING, placeHolder);
+			} else {
+				addDiagnosticFor(diagnostic, Diagnostic.ERROR, placeHolder);
+			}
 			return placeHolder;
 		}
 	}

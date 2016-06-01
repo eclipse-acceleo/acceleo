@@ -32,6 +32,7 @@ import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -1565,13 +1566,13 @@ public class EObjectServices extends AbstractServiceProvider {
 
 		if (self == null) {
 			final String message = String.format(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
-			throw new IllegalArgumentException(message);
+			throw new AcceleoQueryEvaluationException(message);
 		} else {
 			EClass eClass = ((EObject)self).eClass();
 			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
 			if (feature == null) {
 				final String message = String.format(UNKNOWN_FEATURE, featureName, eClass.getName());
-				throw new IllegalArgumentException(message);
+				throw new AcceleoQueryEvaluationException(message);
 			} else {
 				result = ((EObject)self).eGet(feature);
 			}

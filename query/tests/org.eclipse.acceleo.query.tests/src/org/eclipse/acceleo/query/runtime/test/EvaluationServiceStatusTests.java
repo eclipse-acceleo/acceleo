@@ -140,8 +140,7 @@ public class EvaluationServiceStatusTests {
 		Diagnostic status = new BasicDiagnostic();
 		services.call("serviceThrowsException", new Object[] {1 }, status);
 
-		// TODO shouldn't this be an error level?
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();

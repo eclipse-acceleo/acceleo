@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -978,6 +979,48 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		final List<EObject> result = eObjectServices.allInstances((Set<EClass>)null);
 
 		assertEquals(0, result.size());
+	}
+
+	@Test(expected = AcceleoQueryEvaluationException.class)
+	public void aqlFeatureAccessNullNull() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		eObjectServices.aqlFeatureAccess(null, null);
+	}
+
+	@Test(expected = AcceleoQueryEvaluationException.class)
+	public void aqlFeatureAccessNullName() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		eObjectServices.aqlFeatureAccess(null, "feature");
+	}
+
+	@Test(expected = AcceleoQueryEvaluationException.class)
+	public void aqlFeatureAccessEObjectNull() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, null);
+	}
+
+	@Test(expected = AcceleoQueryEvaluationException.class)
+	public void aqlFeatureAccessEObjectNotExistingFeature() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, "notExistingFeature");
+	}
+
+	@Test
+	public void aqlFeatureAccess() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
+
+		final Object result = eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, "name");
+
+		assertEquals("ecore", result);
 	}
 
 }

@@ -726,7 +726,7 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.call("toString", new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
 		assertTrue(status.getChildren().get(0).getException().getCause() instanceof NullPointerException);
@@ -740,7 +740,7 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.callOrApply("toString", new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
 		assertTrue(status.getChildren().get(0).getException().getCause() instanceof NullPointerException);

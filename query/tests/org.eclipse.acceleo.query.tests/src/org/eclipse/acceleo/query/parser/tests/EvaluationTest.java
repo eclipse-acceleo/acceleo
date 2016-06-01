@@ -113,6 +113,24 @@ public class EvaluationTest {
 	}
 
 	@Test
+	public void featureAccessNotExistingFeatureTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		variables.put("self", EcorePackage.eINSTANCE);
+
+		final EvaluationResult result = engine.eval(builder.build("self.notExistingFeature"), variables);
+
+		assertEquals(null, result.getResult());
+
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(1, result.getDiagnostic().getChildren().size());
+
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(0).getSeverity());
+		result.getDiagnostic().getChildren().get(0).getMessage().startsWith("aqlFeatureAccess");
+		result.getDiagnostic().getChildren().get(0).getMessage().endsWith(
+				"Feature notExistingFeature not found in EClass EPackage");
+	}
+
+	@Test
 	public void intliteralTest() {
 		Map<String, Object> variables = Maps.newHashMap();
 		assertOKResultEquals(Integer.valueOf(2), engine.eval(builder.build("2"), variables));
