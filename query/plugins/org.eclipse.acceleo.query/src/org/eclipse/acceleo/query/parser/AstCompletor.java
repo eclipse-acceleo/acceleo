@@ -34,6 +34,7 @@ import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.VariableDeclaration;
 import org.eclipse.acceleo.query.ast.util.AstSwitch;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.CompletionServices;
@@ -97,13 +98,40 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 
 		final List<Error> errors = validationRes.getAstResult().getErrors();
 		if (errors.size() > 0) {
-			completeVariablesNames(errors.get(0));
-			result = doSwitch(errors.get(0));
+			final Error errorToComplete = getErrorToComplete(validationRes.getAstResult(), errors);
+			completeVariablesNames(errorToComplete);
+			result = doSwitch(errorToComplete);
 		} else {
 			// no need for variables here since "expression variable" can't be valid
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
 					.getAstResult().getAst());
 			result = getExpressionTextFollows(possibleTypes);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Error} to use for completion starting point. It's the first error that
+	 * {@link AstResult#getEndPosition(Expression) end} at the end of the {@link Expression}.
+	 * 
+	 * @param astResult
+	 *            the {@link AstResult}
+	 * @param errors
+	 *            the possible {@link Error}
+	 * @return the {@link Error} to use for completion starting point
+	 */
+	private Error getErrorToComplete(AstResult astResult, List<Error> errors) {
+		Error result = errors.get(0);
+
+		int currentEnd = astResult.getEndPosition(result);
+		for (int i = 1; i < errors.size(); i++) {
+			final Error error = errors.get(i);
+			int end = astResult.getEndPosition(error);
+			if (end > currentEnd) {
+				currentEnd = end;
+				result = error;
+			}
 		}
 
 		return result;
@@ -296,12 +324,12 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 			result.addAll(services.getVariableDeclarationProposals(validationResult.getPossibleTypes(object
 					.getExpression())));
 		} else if (object.getType() == null) {
-			result.add(new TextCompletionProposal(" : ", 0));
-			result.add(new TextCompletionProposal(" | ", 0));
+			result.add(new TextCompletionProposal(": ", 0));
+			result.add(new TextCompletionProposal("| ", 0));
 		} else if (object.getType() instanceof ErrorTypeLiteral) {
 			result.addAll(doSwitch(object.getType()));
 		} else {
-			result.add(new TextCompletionProposal(" | ", 0));
+			result.add(new TextCompletionProposal("| ", 0));
 		}
 
 		return result;
@@ -333,10 +361,10 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 				result.addAll(doSwitch(object.getType()));
 			} else {
 				if (object.getType() == null) {
-					result.add(new TextCompletionProposal(" : ", 0));
+					result.add(new TextCompletionProposal(": ", 0));
 				}
 				if (object.getValue() == null) {
-					result.add(new TextCompletionProposal(" = ", 0));
+					result.add(new TextCompletionProposal("= ", 0));
 				}
 				if (object.getValue() instanceof ErrorExpression) {
 					result.addAll(doSwitch(object.getValue()));

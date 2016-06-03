@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -81,39 +81,27 @@ public class CompletionTest {
 	public void typeLiteralOneColon() {
 		final ICompletionResult completionResult = engine.getCompletion("ecore:", 6, variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 53, "", "", 0, 6, "ecore::EClass", "ecore::EPackage");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(6, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void enumLiteralOneColon() {
 		final ICompletionResult completionResult = engine.getCompletion("anydsl::Color:", 14, variableTypes);
 
-		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 10, "", "", 0, 14, "anydsl::Color::black", "anydsl::Color::red");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(14, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void enumLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("anydsl::Color::", 15, variableTypes);
 
-		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 10, "", "", 0, 15, "anydsl::Color::black", "anydsl::Color::yellow");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(15, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -121,13 +109,10 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{anydsl::Color:", 25,
 				variableTypes);
 
-		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 10, "", "", 11, 14, "anydsl::Color::white",
+				"anydsl::Color::palPink");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(11, completionResult.getReplacementOffset());
-		assertEquals(14, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -135,26 +120,19 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{anydsl::Color::", 26,
 				variableTypes);
 
-		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 10, "", "", 11, 15, "anydsl::Color::white", "anydsl::Color::red");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(11, completionResult.getReplacementOffset());
-		assertEquals(15, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void nullTest() {
 		final ICompletionResult completionResult = engine.getCompletion(null, 0, variableTypes);
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertEquals(null, completionResult.getPrefix());
-		assertEquals(null, completionResult.getRemaining());
+
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, null, null, 0, 0, "self",
+				"ecore::EPackage", "not ");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -170,85 +148,62 @@ public class CompletionTest {
 	@Test
 	public void emptyTest() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 0, 0, "anydsl::Group::Fruit",
+				"true");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void navigationSegmentEmptyTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, variableTypes);
 
-		assertEquals(73, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 73, "", "", 5, 0, "eAllContents()", "eClass()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(5, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void navigationSegmentPrefixTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.na", 7, variableTypes);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("na", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "na", "", 5, 2, "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(5, completionResult.getReplacementOffset());
-		assertEquals(2, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void navigationSegmentPrefixRemainingTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.nam", 7, variableTypes);
 
-		assertEquals("na", completionResult.getPrefix());
-		assertEquals("m", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 1, "na", "m", 5, 2, "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(5, completionResult.getReplacementOffset());
-		assertEquals(2, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void navigationSegmentPrefixLongExpressionRemainingTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.nam.size()", 7, variableTypes);
 
-		assertEquals("na", completionResult.getPrefix());
-		assertEquals("m", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 1, "na", "m", 5, 2, "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(5, completionResult.getReplacementOffset());
-		assertEquals(2, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void selfTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self ", 5, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(3, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 3, "", "", 5, 0, "= ", "+ ", "<> ");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(5, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -259,15 +214,11 @@ public class CompletionTest {
 		variableTypes.put("someInt", someIntTypes);
 		final ICompletionResult completionResult = engine.getCompletion("someInt ", 8, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(10, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 10, "", "", 8, 0, "= ", "+ ", "- ");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(8, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -277,39 +228,31 @@ public class CompletionTest {
 		variableTypes.put("someInt", someIntTypes);
 		final ICompletionResult completionResult = engine.getCompletion("someInt * ", 10, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(132, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		// plus "someInt"
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL + 1, "", "", 10, 0, "someInt",
+				"ecore::EChar", "if ");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(10, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void notTest() {
 		final ICompletionResult completionResult = engine.getCompletion("not ", 4, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 4, 0, "true", "let ", "self",
+				"ecore::EPackage");
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(4, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void selfDotTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(73, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 73, "", "", 5, 0, "eClass()", "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertEquals(5, completionResult.getReplacementOffset());
@@ -320,15 +263,11 @@ public class CompletionTest {
 	public void selfArrowTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "including()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(6, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	/**
@@ -340,24 +279,7 @@ public class CompletionTest {
 		final ICompletionResult dotCompletionResult = engine.getCompletion("Sequence{self}.", 15,
 				variableTypes);
 
-		List<ICompletionProposal> dotCompletionProposals = dotCompletionResult.getProposals(new BasicFilter(
-				dotCompletionResult));
-		assertEquals("", dotCompletionResult.getPrefix());
-		assertEquals("", dotCompletionResult.getRemaining());
-		assertEquals(73, dotCompletionProposals.size());
-
-		List<String> dotProposals = new ArrayList<String>();
-		for (ICompletionProposal dotCompletionProposal : dotCompletionProposals) {
-			dotProposals.add(dotCompletionProposal.getProposal());
-		}
-
-		assertTrue(dotProposals.contains("name"));
-		assertTrue(dotProposals.contains("eContainer()"));
-		assertTrue(dotProposals.contains("oclIsKindOf()"));
-		assertTrue(!dotProposals.contains("size()"));
-
-		assertEquals(15, dotCompletionResult.getReplacementOffset());
-		assertEquals(0, dotCompletionResult.getReplacementLength());
+		assertCompletion(dotCompletionResult, 73, "", "", 15, 0, "name", "eContainer()", "oclIsKindOf()");
 	}
 
 	@Test
@@ -365,24 +287,7 @@ public class CompletionTest {
 		final ICompletionResult arrowCompletionResult = engine.getCompletion("Sequence{self}->", 16,
 				variableTypes);
 
-		List<ICompletionProposal> arrowCompletionProposals = arrowCompletionResult
-				.getProposals(new BasicFilter(arrowCompletionResult));
-		assertEquals("", arrowCompletionResult.getPrefix());
-		assertEquals("", arrowCompletionResult.getRemaining());
-		assertEquals(44, arrowCompletionProposals.size());
-
-		List<String> arrowProposals = new ArrayList<String>();
-		for (ICompletionProposal arrowCompletionProposal : arrowCompletionProposals) {
-			arrowProposals.add(arrowCompletionProposal.getProposal());
-		}
-
-		assertTrue(arrowProposals.contains("size()"));
-		assertTrue(arrowProposals.contains("select()"));
-		assertTrue(arrowProposals.contains("collect()"));
-		assertTrue(!arrowProposals.contains("name"));
-
-		assertEquals(16, arrowCompletionResult.getReplacementOffset());
-		assertEquals(0, arrowCompletionResult.getReplacementLength());
+		assertCompletion(arrowCompletionResult, 44, "", "", 16, 0, "size()", "select()", "collect()");
 	}
 
 	@Test
@@ -390,68 +295,38 @@ public class CompletionTest {
 		final ICompletionResult noSeparatorCompletionResult = engine.getCompletion("Sequence{self}", 14,
 				variableTypes);
 
-		List<ICompletionProposal> nothingCompletionProposals = noSeparatorCompletionResult
-				.getProposals(new BasicFilter(noSeparatorCompletionResult));
-		assertEquals("", noSeparatorCompletionResult.getPrefix());
-		assertEquals("", noSeparatorCompletionResult.getRemaining());
-		assertEquals(4, nothingCompletionProposals.size());
-
-		List<String> nothingProposals = new ArrayList<String>();
-		for (ICompletionProposal nothingCompletionProposal : nothingCompletionProposals) {
-			nothingProposals.add(nothingCompletionProposal.getProposal());
-		}
-
-		assertTrue(nothingProposals.contains("+ "));
-		assertTrue(nothingProposals.contains("- "));
-		assertTrue(nothingProposals.contains("= "));
-		assertTrue(nothingProposals.contains("<> "));
-
-		assertEquals(14, noSeparatorCompletionResult.getReplacementOffset());
-		assertEquals(0, noSeparatorCompletionResult.getReplacementLength());
+		assertCompletion(noSeparatorCompletionResult, 4, "", "", 14, 0, "+ ", "- ", "= ", "<> ");
 	}
 
 	@Test
 	public void errorTypeLiteralOneSegmentTest() {
 		final ICompletionResult completionResult = engine.getCompletion("ecore::", 7, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 53, "", "", 0, 7, "ecore::EObject", "ecore::EInt");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(7, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void errorTypeLiteralTwoSegmentsTest() {
 		final ICompletionResult completionResult = engine.getCompletion("ecore::EClass::", 15, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 0, "", "", 0, 15);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(15, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void selfSelectTest() {
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myEClass | ");
 		final ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
 				.get(0);
 		assertEquals(true, proposal instanceof VariableDeclarationCompletionProposal);
-		assertEquals("myEClass | ", proposal.getProposal());
 		assertEquals("myEClass | ".length(), proposal.getCursorOffset());
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -459,16 +334,12 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->select( a : ", 17,
 				variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 118, "", "", 17, 0, "ecore::EClass", "ecore::EString");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(17, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -476,182 +347,119 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->service(self, ", 20,
 				variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 20, 0, "self", "ecore::EBoolean");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(20, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void testLetCompletionFromNothing() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		List<ICompletionProposal> proposals = completionResult
-				.getProposals(new BasicFilter(completionResult));
-		boolean found = false;
-		for (ICompletionProposal proposal : proposals) {
-			if ("let ".equals(proposal.getProposal())) {
-				found = true;
-				break;
-			}
-		}
-		assertTrue(found);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 0, 0, "let ");
 	}
 
 	@Test
 	public void testLetCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("le", 2, variableTypes);
 
-		assertEquals("le", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
-				.get(0);
-		assertEquals("let ", proposal.getProposal());
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(2, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "le", "", 0, 2, "let ");
 	}
 
 	@Test
 	public void testLetCompletionNoBinding() {
 		final ICompletionResult completionResult = engine.getCompletion("let ", 4, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals(4, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 0, "", "", 4, 0);
 	}
 
 	@Test
 	public void testBindingCompletionNoEquals() {
+		final ICompletionResult completionResult = engine.getCompletion("let a", 5, variableTypes);
+
+		assertCompletion(completionResult, 0, "a", "", 4, 1);
+	}
+
+	@Test
+	public void testBindingCompletionNoEqualsWithSpace() {
 		final ICompletionResult completionResult = engine.getCompletion("let a ", 6, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals(6, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 2, "", "", 6, 0, ": ", "= ");
 	}
 
 	@Test
 	public void testBindingCompletionWithErrorType() {
 		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::", 15, variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 53, "", "", 8, 7, "ecore::EPackage", "ecore::EString");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(8, completionResult.getReplacementOffset());
-		assertEquals(7, completionResult.getReplacementLength());
 	}
 
 	@Test
-	public void testBindingCompletionWithType() {
+	public void testBindingCompletionWithTypeNoSpace() {
+		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::EClass", 21,
+				variableTypes);
+
+		assertCompletion(completionResult, 2, "EClass", "", 8, 13, "ecore::EClass", "ecore::EClassifier");
+	}
+
+	@Test
+	public void testBindingCompletionWithTypeAndSpace() {
 		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::EClass ", 22,
 				variableTypes);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
-				.get(0);
-		assertEquals(" = ", proposal.getProposal());
-		assertEquals(22, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "", "", 22, 0, "= ");
 	}
 
 	@Test
 	public void testBindingCompletionNoType() {
 		final ICompletionResult completionResult = engine.getCompletion("let a = ", 8, variableTypes);
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertEquals(8, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 8, 0, "self", "true");
 	}
 
 	@Test
 	public void testLetBodyCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("let a=3 in ", 11, variableTypes);
 
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL + 1, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertEquals(11, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		// "a" is a new possible variable
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL + 1, "", "", 11, 0, "a", "self",
+				"ecore::EInt", "not ", "if ");
 	}
 
 	@Test
 	public void testConditionalIfCompletionFromNothing() {
 		final ICompletionResult completionResult = engine.getCompletion("", 0, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		List<ICompletionProposal> proposals = completionResult
-				.getProposals(new BasicFilter(completionResult));
-		boolean found = false;
-		for (ICompletionProposal proposal : proposals) {
-			if ("if ".equals(proposal.getProposal())) {
-				found = true;
-				break;
-			}
-		}
-		assertTrue(found);
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 0, 0, "if ");
 	}
 
 	@Test
 	public void testConditionalIfCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("i", 1, variableTypes);
 
-		assertEquals("i", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		ICompletionProposal proposal = completionResult.getProposals(new BasicFilter(completionResult))
-				.get(0);
-		assertEquals("if ", proposal.getProposal());
-		assertEquals(0, completionResult.getReplacementOffset());
-		assertEquals(1, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "i", "", 0, 1, "if ");
 	}
 
 	@Test
 	public void testConditionAfterIfCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if ", 3, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 3, 0, "self", "if ", "let ");
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
-		assertEquals(3, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void testConditionAfterPredicateCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if true ", 8, variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("then ", completionResult.getProposals(new BasicFilter(completionResult)).get(11)
-				.getProposal());
-		assertNoFeatureCompletionProposal(completionResult);
-		assertNoEOperationCompletionProposal(completionResult);
-		assertNoServiceCompletionProposal(completionResult);
-		assertEquals(8, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 12, "", "", 8, 0, "then ");
 	}
 
 	@Test
@@ -679,13 +487,10 @@ public class CompletionTest {
 		variableTypes.put("thenVar", thenVarTypes);
 		final ICompletionResult completionResult = engine.getCompletion("if stuff then ", 13, variableTypes);
 
-		assertEquals("then", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("then ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
-				.getProposal());
-		assertEquals(9, completionResult.getReplacementOffset());
-		assertEquals(4, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "then", "", 9, 4, "then ");
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -693,29 +498,14 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("if true then true ", 18,
 				variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("else ", completionResult.getProposals(new BasicFilter(completionResult)).get(11)
-				.getProposal());
-		assertNoFeatureCompletionProposal(completionResult);
-		assertNoEOperationCompletionProposal(completionResult);
-		assertNoServiceCompletionProposal(completionResult);
-		assertEquals(18, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 12, "", "", 18, 0, "else ");
 	}
 
 	@Test
 	public void testConditionWithinTrueBranchCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if true then tr", 15, variableTypes);
 
-		assertEquals("tr", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("true", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
-				.getProposal());
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(2, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "tr", "", 13, 2, "true");
 	}
 
 	/**
@@ -729,13 +519,10 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("if stuff then self else ", 23,
 				variableTypes);
 
-		assertEquals("else", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("else ", completionResult.getProposals(new BasicFilter(completionResult)).get(0)
-				.getProposal());
-		assertEquals(19, completionResult.getReplacementOffset());
-		assertEquals(4, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "else", "", 19, 4, "else ");
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
+		assertNoServiceCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -743,16 +530,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("if true then true else false ", 29,
 				variableTypes);
 
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("endif ", completionResult.getProposals(new BasicFilter(completionResult)).get(11)
-				.getProposal());
-		assertNoFeatureCompletionProposal(completionResult);
-		assertNoEOperationCompletionProposal(completionResult);
-		assertNoServiceCompletionProposal(completionResult);
-		assertEquals(29, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 12, "", "", 29, 0, "endif ");
 	}
 
 	/**
@@ -763,14 +541,10 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self.)", 35, variableTypes);
 
-		assertEquals(73, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 73, "", "", 35, 0, "name", "eAllContents()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(35, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	/**
@@ -781,13 +555,9 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(p | self->)", 36, variableTypes);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 36, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(36, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	/**
@@ -798,14 +568,10 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self.))", 65, variableTypes);
 
-		assertEquals(73, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 73, "", "", 65, 0, "name");
 		assertNoVariableCompletionProposal(completionResult);
 		assertApplyOn(completionResult, queryEnvironment, EcorePackage.eINSTANCE.getEClass());
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(65, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	/**
@@ -816,13 +582,9 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self.eClassifiers->select(w | self.eClassifiers->select(p | self->))", 66, variableTypes);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 66, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(66, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -830,13 +592,9 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eContainer(ecore::EP)", 25,
 				variableTypes);
 
-		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("EP", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 2, "EP", "", 16, 9, "ecore::EPackage", "ecore::EParameter");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(16, completionResult.getReplacementOffset());
-		assertEquals(9, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -844,13 +602,9 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eContainer(ecore::EPack)", 28,
 				variableTypes);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("EPack", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "EPack", "", 16, 12, "ecore::EPackage");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(16, completionResult.getReplacementOffset());
-		assertEquals(12, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -858,14 +612,10 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eContainer(ecore::EPack)", 26,
 				variableTypes);
 
-		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("EPa", completionResult.getPrefix());
-		assertEquals("ck", completionResult.getRemaining());
+		// the "remaining" ck are not part of the replacement
+		assertCompletion(completionResult, 2, "EPa", "ck", 16, 10, "ecore::EPackage", "ecore::EParameter");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(16, completionResult.getReplacementOffset());
-		// the "remaining" ck are not part of the replacement
-		assertEquals(10, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -873,13 +623,9 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 53, "", "", 27, 7, "ecore::EPackage", "ecore::EClass");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(27, completionResult.getReplacementOffset());
-		assertEquals(7, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -891,15 +637,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 14, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(14, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -911,15 +653,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 14, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(14, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -931,15 +669,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 14, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(14, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -951,15 +685,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->collect()", 14, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 14, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(14, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -971,15 +701,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -991,15 +717,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1011,15 +733,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1031,15 +749,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1051,15 +765,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1071,15 +781,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myEObject | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1091,15 +797,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1111,15 +813,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->reject(", 13, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 1, "", "", 13, 0, "myNothing | ");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1131,11 +829,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self = ''", 8, types);
 
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(8, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 0, "", "", 8, 0);
 	}
 
 	@Test
@@ -1147,14 +841,9 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self = 'test'", 10, types);
 
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("te", completionResult.getPrefix());
-		assertEquals("st", completionResult.getRemaining());
-
 		// This would replace part of the string...
 		// but makes no sense as there is no completion within string literals
-		assertEquals(8, completionResult.getReplacementOffset());
-		assertEquals(2, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 0, "te", "st", 8, 2);
 	}
 
 	@Test
@@ -1166,11 +855,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(e ", 15, types);
 
-		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(15, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 2, "", "", 15, 0, "| ", ": ");
 	}
 
 	@Test
@@ -1182,15 +867,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(e :", 16, types);
 
-		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 118, "", "", 16, 0, "ecore::EPackage", "ecore::EClass");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
-		assertEquals(16, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1203,11 +884,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->select(e : ecore::EClass ",
 				31, types);
 
-		assertEquals(1, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(31, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 1, "", "", 31, 0, "| ");
 	}
 
 	@Test
@@ -1216,14 +893,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}-", 13, types);
 
-		assertEquals(129, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 129, "", "", 13, 0, "OrderedSet{}", "ecore::EPackage");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(13, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1232,14 +905,10 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{}->", 14, types);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 14, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(14, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1248,40 +917,28 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("Sequence{}->", 12, types);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 12, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(12, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void testTypeLiteralInTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::", 8, variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 53, "", "", 1, 7, "ecore::EClass", "ecore::EInt");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(1, completionResult.getReplacementOffset());
-		assertEquals(7, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void testTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{", 1, variableTypes);
 
-		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 118, "", "", 1, 0, "ecore::EPackage");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(1, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1289,22 +946,16 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->filter({ecore::", 21,
 				variableTypes);
 
-		assertEquals(53, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 53, "", "", 14, 7, "ecore::EClass", "ecore::EInt");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(14, completionResult.getReplacementOffset());
-		assertEquals(7, completionResult.getReplacementLength());
 	}
 
 	@Test
 	public void testTypeSetLiteralInServiceCall() {
 		final ICompletionResult completionResult = engine.getCompletion("self->filter({", 14, variableTypes);
 
-		assertEquals(118, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 118, "", "", 14, 0, "ecore::EPackage");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertEquals(14, completionResult.getReplacementOffset());
@@ -1316,13 +967,9 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine
 				.getCompletion("{ecore::EClass}.", 16, variableTypes);
 
-		assertEquals(46, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 46, "", "", 16, 0, "name", "eClass()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
-		assertEquals(16, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1330,15 +977,11 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::EClass}->", 17,
 				variableTypes);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 17, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
-		assertEquals(17, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
 	}
 
 	@Test
@@ -1350,11 +993,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("'\\n", 3, types);
 
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("n", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(2, completionResult.getReplacementOffset());
-		assertEquals(1, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 0, "n", "", 2, 1);
 	}
 
 	@Test
@@ -1367,11 +1006,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->select(a | a.startsWith('",
 				31, types);
 
-		assertEquals(0, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
-		assertEquals(31, completionResult.getReplacementOffset());
-		assertEquals(0, completionResult.getReplacementLength());
+		assertCompletion(completionResult, 0, "", "", 31, 0);
 	}
 
 	@Test
@@ -1383,10 +1018,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents(", 18, types);
 
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, completionResult.getProposals(
-				new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 18, 0, "self", "ecore::EClass");
 	}
 
 	@Test
@@ -1398,9 +1030,11 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(a | true ", 22, types);
 
-		assertEquals(12, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 12, "", "", 22, 0, "and ", "or ", "implies ");
+		assertNoVariableCompletionProposal(completionResult);
+		assertNoVariableDeclarationCompletionProposal(completionResult);
+		assertNoFeatureCompletionProposal(completionResult);
+		assertNoEOperationCompletionProposal(completionResult);
 	}
 
 	@Test
@@ -1412,9 +1046,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents(self ", 23, types);
 
-		assertEquals(2, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 2, "", "", 23, 0, ", ", ")");
 	}
 
 	@Test
@@ -1436,9 +1068,7 @@ public class CompletionTest {
 			}
 		}
 		assertTrue(variableAFound);
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, proposals.size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 17, 0, "self", "ecore::EClass");
 	}
 
 	@Test
@@ -1450,19 +1080,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("let a = self in ", 16, types);
 
-		final List<ICompletionProposal> proposals = completionResult.getProposals(new BasicFilter(
-				completionResult));
-		boolean variableAFound = false;
-		for (ICompletionProposal proposal : proposals) {
-			if ("a".equals(proposal.getProposal())) {
-				variableAFound = true;
-				break;
-			}
-		}
-		assertTrue(variableAFound);
-		assertEquals(TOTAL_NUMBER_OF_PROPOSAL, proposals.size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, TOTAL_NUMBER_OF_PROPOSAL, "", "", 16, 0, "a", "self");
 	}
 
 	@Test
@@ -1484,9 +1102,7 @@ public class CompletionTest {
 			}
 		}
 		assertFalse(variableAFound);
-		assertEquals(130, proposals.size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 130, "", "", 18, 0, "self");
 	}
 
 	@Test
@@ -1498,9 +1114,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self.", 5, types);
 
-		assertEquals(5, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 5, "", "", 5, 0, "toString()", "oclIsKindOf()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
@@ -1516,9 +1130,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "first()");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoVariableCompletionProposal(completionResult);
@@ -1534,9 +1146,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1552,9 +1162,7 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->", 6, types);
 
-		assertEquals(44, completionResult.getProposals(new BasicFilter(completionResult)).size());
-		assertEquals("", completionResult.getPrefix());
-		assertEquals("", completionResult.getRemaining());
+		assertCompletion(completionResult, 44, "", "", 6, 0, "size()", "first()");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -1595,12 +1203,32 @@ public class CompletionTest {
 		assertTrue(exception);
 	}
 
-	@Test
 	public void suffixFilter_479632() {
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents()", 5,
 				variableTypes);
 
-		assertEquals(73, completionResult.getProposals(new BasicFilter(completionResult)).size());
+		assertCompletion(completionResult, 73, "", "eAllContents", 5, 0, "eContainer()", "eAttributes");
+	}
+
+	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,
+			String suffix, int replacementOffset, int replacementLength, String... proposalStrings) {
+		final List<ICompletionProposal> proposals = completionResult.getProposals(new BasicFilter(
+				completionResult));
+		if (proposalStrings.length != 0) {
+			final Set<String> actualProposalStrings = new HashSet<String>(proposals.size());
+			for (ICompletionProposal proposal : proposals) {
+				actualProposalStrings.add(proposal.getProposal());
+			}
+			for (String proposalString : proposalStrings) {
+				assertTrue(proposalString + " is missing", actualProposalStrings.contains(proposalString));
+			}
+		}
+
+		assertEquals(size, proposals.size());
+		assertEquals(prefix, completionResult.getPrefix());
+		assertEquals(suffix, completionResult.getRemaining());
+		assertEquals(replacementOffset, completionResult.getReplacementOffset());
+		assertEquals(replacementLength, completionResult.getReplacementLength());
 	}
 
 	public void assertNoVariableCompletionProposal(ICompletionResult completionResult) {
