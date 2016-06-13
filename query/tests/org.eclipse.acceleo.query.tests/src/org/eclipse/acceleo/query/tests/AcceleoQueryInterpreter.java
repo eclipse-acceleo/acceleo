@@ -26,7 +26,9 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.qmodel.EObjectVariable;
@@ -62,8 +64,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	private final QmodelSwitch<EObject> varValueSwitch = new QmodelSwitch<EObject>() {
 		@Override
 		public EObject caseVariable(Variable object) {
-			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: " + object
-					.eClass().getName());
+			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: "
+					+ object.eClass().getName());
 		}
 
 		@Override
@@ -75,8 +77,8 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	private final QmodelSwitch<Set<IType>> varTypeSwitch = new QmodelSwitch<Set<IType>>() {
 		@Override
 		public Set<IType> caseVariable(Variable object) {
-			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: " + object
-					.eClass().getName());
+			throw new UnsupportedOperationException("Unsupported variable kind in Query tests: "
+					+ object.eClass().getName());
 		}
 
 		@Override
@@ -140,7 +142,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 	@Override
 	public QueryEvaluationResult computeQuery(Query query) {
-		AstEvaluator evaluator = new AstEvaluator(queryEnvironment);
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment));
 		Object result = evaluator.eval(variables, astResult.getAst());
 		QueryEvaluationResultFactory factory = new QueryEvaluationResultFactory();
 
@@ -165,7 +167,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		for (Variable var : q.getVariables()) {
 			variableTypes.put(var.getName(), varTypeSwitch.doSwitch(var));
 		}
-		final AstValidator validator = new AstValidator(queryEnvironment);
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 
 		return transformResult(q, validator.validate(variableTypes, astResult));
 	}

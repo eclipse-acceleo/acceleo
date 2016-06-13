@@ -250,7 +250,7 @@ public class ValidationServices extends AbstractLanguageServices {
 			newArgTypes.add(0, newReceiverTypes);
 			ServicesValidationResult result = callOrApplyTypes(call, validationResult, serviceName,
 					newArgTypes);
-			result.flattenSequence();
+			flattenSequence(result);
 			return result;
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
@@ -258,6 +258,16 @@ public class ValidationServices extends AbstractLanguageServices {
 			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply "
 					+ serviceName, e);
 		}
+	}
+
+	/**
+	 * Flatten {@link List} on the given {@link ServicesValidationResult}.
+	 * 
+	 * @param result
+	 *            the {@link ServicesValidationResult}
+	 */
+	protected void flattenSequence(ServicesValidationResult result) {
+		result.flattenSequence();
 	}
 
 	/**
@@ -284,7 +294,7 @@ public class ValidationServices extends AbstractLanguageServices {
 			newArgTypes.add(0, newReceiverTypes);
 			ServicesValidationResult result = callOrApplyTypes(call, validationResult, serviceName,
 					newArgTypes);
-			result.flattenSet();
+			flattenSet(result);
 			return result;
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
@@ -292,6 +302,16 @@ public class ValidationServices extends AbstractLanguageServices {
 			throw new AcceleoQueryValidationException("empty argument array passed to callOrApply "
 					+ serviceName, e);
 		}
+	}
+
+	/**
+	 * Flatten {@link Set} on the given {@link ServicesValidationResult}.
+	 * 
+	 * @param result
+	 *            the {@link ServicesValidationResult} to flatten
+	 */
+	protected void flattenSet(ServicesValidationResult result) {
+		result.flattenSet();
 	}
 
 	/**

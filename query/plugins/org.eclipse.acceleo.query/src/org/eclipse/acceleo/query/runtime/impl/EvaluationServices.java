@@ -264,15 +264,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 			Object[] innerArguments = arguments.clone();
 			for (Object obj : origin) {
 				innerArguments[0] = obj;
-				Object newResult = callOrApply(serviceName, innerArguments, diagnostic);
-				// flatten
-				if (!(newResult instanceof Nothing)) {
-					if (newResult instanceof Collection) {
-						result.addAll((Collection<?>)newResult);
-					} else if (newResult != null) {
-						result.add(newResult);
-					}
-				}
+				final Object newResult = callOrApply(serviceName, innerArguments, diagnostic);
+				flattenList(result, newResult);
 			}
 
 			return result;
@@ -281,6 +274,24 @@ public class EvaluationServices extends AbstractLanguageServices {
 			// CHECKSTYLE:ON
 			throw new AcceleoQueryEvaluationException("empty argument array passed to callOrApply "
 					+ serviceName, e);
+		}
+	}
+
+	/**
+	 * Flatten the given {@link Object} into the given {@link List}.
+	 * 
+	 * @param list
+	 *            the {@link List}
+	 * @param object
+	 *            the {@link Object}
+	 */
+	protected void flattenList(List<Object> list, Object object) {
+		if (!(object instanceof Nothing)) {
+			if (object instanceof Collection) {
+				list.addAll((Collection<?>)object);
+			} else if (object != null) {
+				list.add(object);
+			}
 		}
 	}
 
@@ -305,15 +316,8 @@ public class EvaluationServices extends AbstractLanguageServices {
 			Object[] innerArguments = arguments.clone();
 			for (Object obj : origin) {
 				innerArguments[0] = obj;
-				Object newResult = callOrApply(serviceName, innerArguments, diagnostic);
-				// flatten
-				if (!(newResult instanceof Nothing)) {
-					if (newResult instanceof Collection) {
-						result.addAll((Collection<?>)newResult);
-					} else if (newResult != null) {
-						result.add(newResult);
-					}
-				}
+				final Object newResult = callOrApply(serviceName, innerArguments, diagnostic);
+				flattenSet(result, newResult);
 			}
 
 			return result;
@@ -323,6 +327,24 @@ public class EvaluationServices extends AbstractLanguageServices {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		}
 
+	}
+
+	/**
+	 * Flatten the given {@link Object} into the given {@link Set}.
+	 * 
+	 * @param set
+	 *            the {@link Set}
+	 * @param object
+	 *            the {@link Object}
+	 */
+	protected void flattenSet(Set<Object> set, Object object) {
+		if (!(object instanceof Nothing)) {
+			if (object instanceof Collection) {
+				set.addAll((Collection<?>)object);
+			} else if (object != null) {
+				set.add(object);
+			}
+		}
 	}
 
 	/**

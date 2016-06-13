@@ -76,13 +76,24 @@ public class AstEvaluator extends AstSwitch<Object> {
 	private Diagnostic diagnostic;
 
 	/**
-	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
+	 * Creates a new {@link AstEvaluator} instance given an {@link IReadOnlyQueryEnvironment} instance.
 	 * 
 	 * @param queryEnv
-	 *            the environment used to evaluate.
+	 *            the environment used to evaluate
+	 * @deprecated use {@link #AstEvaluator(EvaluationServices)}
 	 */
 	public AstEvaluator(IReadOnlyQueryEnvironment queryEnv) {
-		this.services = new EvaluationServices(queryEnv);
+		this(new EvaluationServices(queryEnv));
+	}
+
+	/**
+	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
+	 * 
+	 * @param services
+	 *            the {@link EvaluationServices} used to evaluate
+	 */
+	public AstEvaluator(EvaluationServices services) {
+		this.services = services;
 		variablesStack = new Stack<Map<String, Object>>();
 	}
 
