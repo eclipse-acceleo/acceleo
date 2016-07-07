@@ -977,7 +977,6 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				final Variable param = actualTemplate.getParameter().get(i);
 				param.setInitExpression(null);
 				getEvaluationEnvironment().remove(param.getName());
-				getEvaluationEnvironment().remove(TEMPORARY_INVOCATION_ARG_PREFIX + i);
 			}
 			// [255379] restore self if need be
 			if (actualTemplate.getParameter().size() > 0) {
@@ -1657,6 +1656,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				init.setReferredVariable(null);
 				temporaryVar.setType(null);
 				temporaryVar.setInitExpression(null);
+
+				// We're done with this temporary variable
+				getEvaluationEnvironment().remove(temporaryVar.getName());
 			}
 			fireGenerationEvent = fireEvents;
 		} else {
@@ -1714,6 +1716,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					init.setReferredVariable(null);
 					temporaryVar.setType(null);
 					temporaryVar.setInitExpression(null);
+
+					// We're done with this temporary variable
+					getEvaluationEnvironment().remove(temporaryVar.getName());
 				}
 			} else {
 				// No template remains after guard evaluation. Create an empty template so no
@@ -1786,6 +1791,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 			final Object argValue = getEvaluationEnvironment().getValueOf(var.getName());
 			arguments.add(argValue);
+
+			// We're done with this temporary variable
+			getEvaluationEnvironment().remove(temporaryVar.getName());
 		}
 		fireGenerationEvent = fireEvents;
 
