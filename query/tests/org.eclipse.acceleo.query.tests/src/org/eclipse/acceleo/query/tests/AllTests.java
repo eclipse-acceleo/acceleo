@@ -13,9 +13,7 @@ package org.eclipse.acceleo.query.tests;
 import org.eclipse.acceleo.query.ast.test.AstBuilderTest;
 import org.eclipse.acceleo.query.ast.test.AstEvaluatorTest;
 import org.eclipse.acceleo.query.ast.test.delegates.DelegateTests;
-import org.eclipse.acceleo.query.ast.test.delegates.DelegateUtilsTests;
 import org.eclipse.acceleo.query.parser.tests.BuildTest;
-import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
 import org.eclipse.acceleo.query.parser.tests.CompletionCheck;
 import org.eclipse.acceleo.query.parser.tests.CompletionTest;
 import org.eclipse.acceleo.query.parser.tests.EvaluationTest;
@@ -78,11 +76,10 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {AstBuilderTest.class, AstEvaluatorTest.class, BuildTest.class,
-		CombineIteratorTest.class, CompletionTest.class, EvaluationTest.class, LexerTest.class,
-		ValidationTest.class, BasicLookupCrossReferencerTest.class, BasicLookupTest.class,
-		EvaluationServiceStatusTests.class, EvaluationServicesTest.class, AnyServicesTest.class,
-		BooleanServicesAstValidationTest.class, AnyServicesValidationTest.class,
+@SuiteClasses(value = {AstBuilderTest.class, AstEvaluatorTest.class, BuildTest.class, CompletionTest.class,
+		EvaluationTest.class, LexerTest.class, ValidationTest.class, BasicLookupCrossReferencerTest.class,
+		BasicLookupTest.class, EvaluationServiceStatusTests.class, EvaluationServicesTest.class,
+		AnyServicesTest.class, BooleanServicesAstValidationTest.class, AnyServicesValidationTest.class,
 		AnyServicesAstValidationTest.class, BooleanServicesTest.class, BooleanServicesValidationTest.class,
 		CollectionServicesTest.class, CollectionServicesValidationTest.class, ComparableServicesTest.class,
 		ComparableServicesValidationTest.class, ComparableServicesAstValidationTest.class,
