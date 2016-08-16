@@ -36,7 +36,6 @@ Export-Package: org.eclipse.acceleo.common;
    org.eclipse.acceleo.traceability,
    org.eclipse.acceleo.model",
  org.eclipse.acceleo.common.interpreter;uses:="org.eclipse.core.runtime",
- org.eclipse.acceleo.common.library.connector;uses:="org.eclipse.emf.ecore,org.eclipse.emf.common.util",
  org.eclipse.acceleo.common.preference,
  org.eclipse.acceleo.common.utils;
   uses:="org.eclipse.emf.ecore,

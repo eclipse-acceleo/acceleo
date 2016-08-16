@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common;
 
-import org.eclipse.acceleo.common.internal.utils.AcceleoLibrariesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.AcceleoLogger;
 import org.eclipse.acceleo.common.internal.utils.AcceleoServicesEclipseUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil;
 import org.eclipse.acceleo.common.internal.utils.workspace.ClassLoadingCompanionProvider;
 import org.eclipse.acceleo.common.internal.utils.workspace.ClassLoadingCompanionsRegistry;
-import org.eclipse.acceleo.common.library.connector.ILibrary;
 import org.eclipse.acceleo.common.preference.AcceleoPreferences;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -28,7 +25,6 @@ import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.emf.common.util.URI;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -37,18 +33,12 @@ import org.osgi.framework.BundleContext;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoCommonPlugin extends Plugin {
-	/** Name of the extension point to parse for other libraries. */
-	public static final String LIBRARIES_EXTENSION_POINT = "org.eclipse.acceleo.common.libraries"; //$NON-NLS-1$
-
 	/**
 	 * Name of the extension point to parse for class loading companions.
 	 * 
 	 * @since 3.6
 	 */
 	public static final String COMPANIONS_EXTENSION_POINT = "org.eclipse.acceleo.common.internal.classloadingcompanion"; //$NON-NLS-1$
-
-	/** Name of the extension point to parse for other languages queries. */
-	public static final String LIBRARY_CONNECTORS_EXTENSION_POINT = "org.eclipse.acceleo.common.library.connectors"; //$NON-NLS-1$
 
 	/** The plug-in ID. */
 	public static final String PLUGIN_ID = "org.eclipse.acceleo.common"; //$NON-NLS-1$
@@ -77,13 +67,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	private BundleContext context;
 
 	/** The registry listener that will be used to listen to Acceleo library connector changes. */
-	private final AcceleoLibraryConnectorsRegistryListener librariesConnectorListener = new AcceleoLibraryConnectorsRegistryListener();
-
-	/** The registry listener that will be used to listen to Acceleo library connector changes. */
 	private final AcceleoCompanionsRegistryListener companionsListener = new AcceleoCompanionsRegistryListener();
-
-	/** The registry listener that will be used to listen to Acceleo libraries changes. */
-	private final AcceleoLibrariesRegistryListener librariesListener = new AcceleoLibrariesRegistryListener();
 
 	/**
 	 * Default constructor for the plugin.
@@ -186,11 +170,8 @@ public class AcceleoCommonPlugin extends Plugin {
 
 		context = bundleContext;
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		registry.addListener(librariesConnectorListener, LIBRARY_CONNECTORS_EXTENSION_POINT);
-		registry.addListener(librariesListener, LIBRARIES_EXTENSION_POINT);
 		registry.addListener(companionsListener, COMPANIONS_EXTENSION_POINT);
 		parseInitialContributions();
-
 	}
 
 	/**
@@ -202,13 +183,9 @@ public class AcceleoCommonPlugin extends Plugin {
 	public void stop(final BundleContext bundleContext) throws Exception {
 		try {
 			final IExtensionRegistry registry = Platform.getExtensionRegistry();
-			registry.removeListener(librariesConnectorListener);
-			registry.removeListener(librariesListener);
 			registry.removeListener(companionsListener);
 
 			AcceleoServicesEclipseUtil.clearRegistry();
-			AcceleoLibraryConnectorsRegistry.INSTANCE.clearRegistry();
-			AcceleoLibrariesEclipseUtil.clearRegistry();
 			ClassLoadingCompanionsRegistry.INSTANCE.clearRegistry();
 			AcceleoWorkspaceUtil.INSTANCE.dispose();
 			AcceleoPreferences.save();
@@ -227,172 +204,7 @@ public class AcceleoCommonPlugin extends Plugin {
 	@SuppressWarnings("unchecked")
 	private void parseInitialContributions() {
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
-		for (IExtension extension : registry.getExtensionPoint(LIBRARY_CONNECTORS_EXTENSION_POINT)
-				.getExtensions()) {
-			for (IConfigurationElement service : extension.getConfigurationElements()) {
-				try {
-					AcceleoLibraryConnectorsRegistry.INSTANCE.addLibraryConnector((Class<ILibrary>)service
-							.createExecutableExtension(CLASS_TAG_NAME).getClass(), service
-							.getAttribute(FILE_EXTENSION_TAG_NAME));
-				} catch (CoreException e) {
-					AcceleoLogger.log(e, false);
-				}
-			}
-		}
-
-		for (IExtension extension : registry.getExtensionPoint(LIBRARIES_EXTENSION_POINT).getExtensions()) {
-			for (IConfigurationElement library : extension.getConfigurationElements()) {
-				String pathToFile = library.getAttribute(FILE_TAG_NAME);
-
-				Class<ILibrary> libClass = AcceleoLibraryConnectorsRegistry.INSTANCE
-						.getConnectorForResource(pathToFile);
-				if (libClass != null) {
-					try {
-						ILibrary lib = libClass.newInstance();
-						lib.setURI(URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getProject(
-								extension.getContributor().getName()).getFile(pathToFile).getLocation()
-								.toString()));
-						AcceleoLibrariesEclipseUtil.addLibrary(lib);
-					} catch (InstantiationException e) {
-						AcceleoLogger.log(e, true);
-					} catch (IllegalAccessException e) {
-						AcceleoLogger.log(e, true);
-					}
-				} else {
-					AcceleoLogger.log(AcceleoCommonMessages.getString(
-							"AcceleoLogger.MissingHandle", pathToFile), //$NON-NLS-1$
-							false);
-				}
-			}
-		}
-	}
-
-	/**
-	 * This will allow us to be aware of changes of extension against the Acceleo library connector extension
-	 * point.
-	 */
-	final class AcceleoLibrariesRegistryListener implements IRegistryEventListener {
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
-		 */
-		public void added(IExtension[] extensions) {
-			for (IExtension extension : extensions) {
-				for (IConfigurationElement service : extension.getConfigurationElements()) {
-					String pathToFile = service.getAttribute(FILE_TAG_NAME);
-					Class<ILibrary> libClass = AcceleoLibraryConnectorsRegistry.INSTANCE
-							.getConnectorForResource(pathToFile);
-					if (libClass != null) {
-						try {
-							ILibrary lib = libClass.newInstance();
-							lib.setURI(URI.createFileURI(ResourcesPlugin.getWorkspace().getRoot().getProject(
-									extension.getContributor().getName()).getFile(pathToFile).getLocation()
-									.toString()));
-							AcceleoLibrariesEclipseUtil.addLibrary(lib);
-						} catch (InstantiationException e) {
-							AcceleoLogger.log(e, true);
-						} catch (IllegalAccessException e) {
-							AcceleoLogger.log(e, true);
-						}
-					} else {
-						AcceleoLogger.log(AcceleoCommonMessages.getString(
-								"AcceleoLogger.MissingHandle", pathToFile), //$NON-NLS-1$
-								false);
-					}
-				}
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void added(IExtensionPoint[] extensionPoints) {
-			// no need to listen to this
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
-		 */
-		public void removed(IExtension[] extensions) {
-			for (IExtension extension : extensions) {
-				for (IConfigurationElement service : extension.getConfigurationElements()) {
-					AcceleoLibrariesEclipseUtil.removeLibrary(service.getAttribute(FILE_TAG_NAME));
-				}
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void removed(IExtensionPoint[] extensionPoints) {
-			// no need to listen to this event
-		}
-	}
-
-	/**
-	 * This will allow us to be aware of changes of extension against the Acceleo library connector extension
-	 * point.
-	 */
-	final class AcceleoLibraryConnectorsRegistryListener implements IRegistryEventListener {
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtension[])
-		 */
-		@SuppressWarnings("unchecked")
-		public void added(IExtension[] extensions) {
-			for (IExtension extension : extensions) {
-				for (IConfigurationElement service : extension.getConfigurationElements()) {
-					try {
-						AcceleoLibraryConnectorsRegistry.INSTANCE
-								.addLibraryConnector((Class<ILibrary>)service.createExecutableExtension(
-										CLASS_TAG_NAME).getClass(), service
-										.getAttribute(FILE_EXTENSION_TAG_NAME));
-					} catch (CoreException e) {
-						AcceleoLogger.log(e, false);
-					}
-				}
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#added(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void added(IExtensionPoint[] extensionPoints) {
-			// no need to listen to this
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtension[])
-		 */
-		public void removed(IExtension[] extensions) {
-			for (IExtension extension : extensions) {
-				for (IConfigurationElement service : extension.getConfigurationElements()) {
-					AcceleoLibraryConnectorsRegistry.INSTANCE.removeLibraryConnector(service
-							.getAttribute(CLASS_TAG_NAME));
-				}
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 * 
-		 * @see org.eclipse.core.runtime.IRegistryEventListener#removed(org.eclipse.core.runtime.IExtensionPoint[])
-		 */
-		public void removed(IExtensionPoint[] extensionPoints) {
-			// no need to listen to this event
-		}
+		// and the class loading companions?
 	}
 
 	/**
