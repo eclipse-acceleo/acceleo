@@ -68,7 +68,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testOrIntegerInteger() {
 		final IValidationResult validationResult = validate("1 or 1");
 
-		final String expectedMessage = "Couldn't find the or(java.lang.Integer,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'or(java.lang.Integer,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -88,7 +88,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testOrBooleanInteger() {
 		final IValidationResult validationResult = validate("false or 1");
 
-		final String expectedMessage = "Couldn't find the or(java.lang.Boolean,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'or(java.lang.Boolean,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -108,7 +108,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testOrIntegerBoolean() {
 		final IValidationResult validationResult = validate("1 or false");
 
-		final String expectedMessage = "Couldn't find the or(java.lang.Integer,java.lang.Boolean) service";
+		final String expectedMessage = "Couldn't find the 'or(java.lang.Integer,java.lang.Boolean)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -212,7 +212,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testAndIntegerInteger() {
 		final IValidationResult validationResult = validate("1 and 1");
 
-		final String expectedMessage = "Couldn't find the and(java.lang.Integer,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'and(java.lang.Integer,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -232,7 +232,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testAndBooleanInteger() {
 		final IValidationResult validationResult = validate("false and 1");
 
-		final String expectedMessage = "Couldn't find the and(java.lang.Boolean,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'and(java.lang.Boolean,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -252,7 +252,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testAndIntegerBoolean() {
 		final IValidationResult validationResult = validate("1 and false");
 
-		final String expectedMessage = "Couldn't find the and(java.lang.Integer,java.lang.Boolean) service";
+		final String expectedMessage = "Couldn't find the 'and(java.lang.Integer,java.lang.Boolean)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -332,7 +332,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testNotInteger() {
 		final IValidationResult validationResult = validate("not 1");
 
-		final String expectedMessage = "Couldn't find the not(java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'not(java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -412,7 +412,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testImpliesIntegerInteger() {
 		final IValidationResult validationResult = validate("1 implies 1");
 
-		final String expectedMessage = "Couldn't find the implies(java.lang.Integer,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'implies(java.lang.Integer,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -432,7 +432,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testImpliesBooleanInteger() {
 		final IValidationResult validationResult = validate("false implies 1");
 
-		final String expectedMessage = "Couldn't find the implies(java.lang.Boolean,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'implies(java.lang.Boolean,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -452,7 +452,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testImpliesIntegerBoolean() {
 		final IValidationResult validationResult = validate("1 implies false");
 
-		final String expectedMessage = "Couldn't find the implies(java.lang.Integer,java.lang.Boolean) service";
+		final String expectedMessage = "Couldn't find the 'implies(java.lang.Integer,java.lang.Boolean)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -556,7 +556,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testXorIntegerInteger() {
 		final IValidationResult validationResult = validate("1 xor 1");
 
-		final String expectedMessage = "Couldn't find the xor(java.lang.Integer,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'xor(java.lang.Integer,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -576,7 +576,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testXorBooleanInteger() {
 		final IValidationResult validationResult = validate("false xor 1");
 
-		final String expectedMessage = "Couldn't find the xor(java.lang.Boolean,java.lang.Integer) service";
+		final String expectedMessage = "Couldn't find the 'xor(java.lang.Boolean,java.lang.Integer)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -596,7 +596,7 @@ public class BooleanServicesAstValidationTest extends AbstractServicesValidation
 	public void testXorIntegerBoolean() {
 		final IValidationResult validationResult = validate("1 xor false");
 
-		final String expectedMessage = "Couldn't find the xor(java.lang.Integer,java.lang.Boolean) service";
+		final String expectedMessage = "Couldn't find the 'xor(java.lang.Integer,java.lang.Boolean)' service";
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),

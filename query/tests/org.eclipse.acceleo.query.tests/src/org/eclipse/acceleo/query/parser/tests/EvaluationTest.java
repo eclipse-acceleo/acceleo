@@ -454,7 +454,7 @@ public class EvaluationTest {
 		assertEquals(1, result.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		String message = result.getDiagnostic().getChildren().get(0).getMessage();
-		assertTrue(message.contains("Couldn't find the x variable"));
+		assertTrue(message.contains("Couldn't find the 'x' variable"));
 		assertEquals("prefixsuffix", result.getResult());
 	}
 
@@ -467,10 +467,10 @@ public class EvaluationTest {
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
-		assertTrue(message1.contains("Couldn't find the x variable"));
+		assertTrue(message1.contains("Couldn't find the 'x' variable"));
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
-		assertTrue(message2.contains("Couldn't find the concat"));
+		assertTrue(message2.contains("Couldn't find the 'concat"));
 		assertEquals(null, result.getResult());
 	}
 
@@ -561,12 +561,12 @@ public class EvaluationTest {
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
-		assertEquals("Couldn't find the notExisting variable", result.getDiagnostic().getChildren().get(0)
+		assertEquals("Couldn't find the 'notExisting' variable", result.getDiagnostic().getChildren().get(0)
 				.getMessage());
 
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		assertEquals(
-				"Couldn't find the eGet(EClassifier=EPackage,org.eclipse.acceleo.query.runtime.impl.Nothing) service",
+				"Couldn't find the 'eGet(EClassifier=EPackage,org.eclipse.acceleo.query.runtime.impl.Nothing)' service",
 				result.getDiagnostic().getChildren().get(1).getMessage());
 	}
 

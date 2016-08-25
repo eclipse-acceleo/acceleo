@@ -32,12 +32,12 @@ public abstract class AbstractLanguageServices {
 	/**
 	 * Log message used when a called service was not found.
 	 */
-	protected static final String SERVICE_NOT_FOUND = "Couldn't find the %s service";
+	protected static final String SERVICE_NOT_FOUND = "Couldn't find the '%s' service";
 
 	/**
 	 * Log message used when a requested variable was not found.
 	 */
-	protected static final String VARIABLE_NOT_FOUND = "Couldn't find the %s variable";
+	protected static final String VARIABLE_NOT_FOUND = "Couldn't find the '%s' variable";
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.

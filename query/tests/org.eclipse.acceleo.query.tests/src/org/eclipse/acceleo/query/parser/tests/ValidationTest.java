@@ -147,7 +147,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the notExisting variable", 0, 11);
+				"Couldn't find the 'notExisting' variable", 0, 11);
 	}
 
 	@Test
@@ -270,7 +270,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the and(java.lang.Integer,java.lang.String) service", 0, 9);
+				"Couldn't find the 'and(java.lang.Integer,java.lang.String)' service", 0, 9);
 	}
 
 	@Test
@@ -311,7 +311,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the someService(EClassifier=EClass,java.lang.Boolean) service", 4, 22);
+				"Couldn't find the 'someService(EClassifier=EClass,java.lang.Boolean)' service", 4, 22);
 	}
 
 	@Test
@@ -355,7 +355,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the getEClassifier(EClassifier=EPackage,java.lang.Integer) service", 5, 23);
+				"Couldn't find the 'getEClassifier(EClassifier=EPackage,java.lang.Integer)' service", 5, 23);
 	}
 
 	@Test
@@ -430,7 +430,7 @@ public class ValidationTest {
 	@Test
 	public void enumLiteralError() {
 		final IValidationResult validationResult = engine
-				.validate("anydsl::Part::NotExisting", variableTypes);
+		        .validate("anydsl::Part::NotExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -763,7 +763,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the notAVariable variable", 32, 44);
+				"Couldn't find the 'notAVariable' variable", 32, 44);
 	}
 
 	@Test
@@ -777,7 +777,7 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(2, validationResult.getMessages().size());
 		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
-				"Couldn't find the notAVariable variable", 13, 25);
+				"Couldn't find the 'notAVariable' variable", 13, 25);
 		assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.ERROR,
 				"The newVar variable has no types", 29, 35);
 	}
@@ -1035,9 +1035,9 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
-				"Couldn't find the triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query) service",
+		        validationResult.getMessages().get(0),
+		        ValidationMessageLevel.ERROR,
+				"Couldn't find the 'triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query)' service",
 				4, 36);
 	}
 
@@ -1093,8 +1093,8 @@ public class ValidationTest {
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
-				validationResult.getMessages().get(0),
-				ValidationMessageLevel.ERROR,
+		        validationResult.getMessages().get(0),
+		        ValidationMessageLevel.ERROR,
 				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
 				17, 40);
 	}

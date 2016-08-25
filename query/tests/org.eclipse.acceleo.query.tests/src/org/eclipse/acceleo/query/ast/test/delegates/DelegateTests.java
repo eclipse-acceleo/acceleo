@@ -283,7 +283,7 @@ public class DelegateTests {
 		assertEquals(Diagnostic.ERROR, diagnostic.getSeverity());
 		assertEquals(1, diagnostic.getChildren().size());
 		assertTrue(diagnostic.getChildren().get(0).getMessage().endsWith(
-				"Couldn't find the notAVariable variable"));
+				"Couldn't find the 'notAVariable' variable"));
 	}
 
 	@Test

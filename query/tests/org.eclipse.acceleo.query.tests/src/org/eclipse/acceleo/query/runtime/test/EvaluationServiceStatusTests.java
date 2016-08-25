@@ -36,11 +36,11 @@ import static org.junit.Assert.assertTrue;
 
 public class EvaluationServiceStatusTests {
 
-	private static final String NON_EOBJECT_FEATURE_ACCESS = "Couldn't find the aqlFeatureAccess(java.lang.Integer,java.lang.String) service";
+	private static final String NON_EOBJECT_FEATURE_ACCESS = "Couldn't find the 'aqlFeatureAccess(java.lang.Integer,java.lang.String)' service";
 
-	private static final String SERVICE_NOT_FOUND = "Couldn't find the noservice(java.lang.Integer) service";
+	private static final String SERVICE_NOT_FOUND = "Couldn't find the 'noservice(java.lang.Integer)' service";
 
-	private static final String VARIABLE_NOT_FOUND = "Couldn't find the novariable variable";
+	private static final String VARIABLE_NOT_FOUND = "Couldn't find the 'novariable' variable";
 
 	private static final String UNKNOWN_FEATURE = "Feature noname not found in EClass EAttribute";
 
