@@ -123,6 +123,7 @@ public class AcceleoGeneratorRunner {
 			AcceleoEquinoxLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
 					AcceleoEquinoxLauncherPlugin.INSTANCE.getSymbolicName(), message));
 		}
+		throw new RuntimeException(message, e);
 	}
 
 	/**

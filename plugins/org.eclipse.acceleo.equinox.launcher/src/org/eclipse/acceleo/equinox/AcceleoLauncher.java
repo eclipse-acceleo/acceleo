@@ -67,7 +67,7 @@ public class AcceleoLauncher implements IApplication {
 	/**
 	 * Return code for the application in case of error.
 	 */
-	private static final int APPLICATION_ERROR = -1;
+	private static final Integer APPLICATION_ERROR = Integer.valueOf(-1);
 
 	/**
 	 * The EMF Ecore/Genmodel generator.
@@ -142,6 +142,7 @@ public class AcceleoLauncher implements IApplication {
 	public Object doMain(String[] args) {
 		CmdLineParser parser = new CmdLineParser(this);
 
+		boolean somethingWentWrong = false;
 		try {
 			parser.parseArgument(args);
 
@@ -181,6 +182,10 @@ public class AcceleoLauncher implements IApplication {
 						prj.refreshLocal(IResource.DEPTH_INFINITE, BasicMonitor.toIProgressMonitor(monitor));
 					} catch (CoreException e) {
 						AcceleoEquinoxLauncherPlugin.INSTANCE.log(e);
+						/*
+						 * we don't set "somethingWentWrong" in case of error in this phase as the launch
+						 * might not fail even if one of the projects in the workspace is in a stale state.
+						 */
 					}
 
 				}
@@ -204,12 +209,17 @@ public class AcceleoLauncher implements IApplication {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						AcceleoEquinoxLauncherPlugin.INSTANCE.log(e);
+						/*
+						 * we don't set "somethingWentWrong" in case of error in this phase as it's we are
+						 * just trying, best-effort style, to wait for the workspace to be ready.
+						 */
 					}
 					secondsWaiting++;
 				}
 				if (set.getURIConverter().exists(rawURI, Collections.EMPTY_MAP)) {
 					modelURIS.add(rawURI);
 				} else {
+					somethingWentWrong = true;
 					if (rawURI != null) {
 						AcceleoEquinoxLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
 								AcceleoEquinoxLauncherPlugin.INSTANCE.getSymbolicName(), "File " + modelPath
@@ -232,13 +242,21 @@ public class AcceleoLauncher implements IApplication {
 						try {
 							eGen.generateAll(modelURIS, monitor);
 						} catch (CoreException e) {
+							somethingWentWrong = true;
 							AcceleoEquinoxLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
 									AcceleoEquinoxLauncherPlugin.INSTANCE.getSymbolicName(),
 									"Error launching EMF Codegen", e));
 						}
 					} else {
-						new AcceleoGeneratorRunner(output, generatorParameters).launchAcceleoGenerator(
-								monitor, modelURIS, generatorsFullName);
+						try {
+							new AcceleoGeneratorRunner(output, generatorParameters).launchAcceleoGenerator(
+									monitor, modelURIS, generatorsFullName);
+						} catch (RuntimeException e) {
+							/*
+							 * the exception has been logged in the launchAcceleoGenerator method.
+							 */
+							somethingWentWrong = true;
+						}
 					}
 					if (projectSearchPaths.length > 0) {
 						wks.clearWorkspace(monitor);
@@ -249,6 +267,7 @@ public class AcceleoLauncher implements IApplication {
 						new LaunchConfigurationRunner().launch(launchConfigurationPath, BasicMonitor
 								.toIProgressMonitor(monitor));
 					} catch (CoreException e) {
+						somethingWentWrong = true;
 						AcceleoEquinoxLauncherPlugin.INSTANCE.log(new Status(IStatus.ERROR,
 								AcceleoEquinoxLauncherPlugin.INSTANCE.getSymbolicName(),
 								"Error launching the " + launchConfigurationPath + " file.", e));
@@ -268,10 +287,12 @@ public class AcceleoLauncher implements IApplication {
 			 */
 			parser.printUsage(System.err);
 			System.err.println();
-
-			return APPLICATION_ERROR;
+			somethingWentWrong = true;
 		}
 
+		if (somethingWentWrong) {
+			return APPLICATION_ERROR;
+		}
 		return IApplication.EXIT_OK;
 
 	}
