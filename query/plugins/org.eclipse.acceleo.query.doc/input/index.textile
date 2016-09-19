@@ -62,7 +62,6 @@ AQL provides operations out of the box to browse the model. Most notably :
 * @self.eAllContents(some::Type)@ returns all direct and indirect children matching the given type.
 * @self.eContents()@ return all the direct children.
 * @self.eInverse('father')@ returns the cross reference of the reference named 'father'. In this case it will return all the persons which have the current object (self) as a father.
- 
 
 h3. Conditions
 
@@ -70,15 +69,129 @@ AQL provides an *If* but it has to be an expression and not a statement. As such
 
 *if* @self.name.startsWith('a')@ *then* @self@ *else* @self.eContainer()@ *endif* 
 
+h3. Walkthrough using an UML example
 
-h3. References
+Let's move to a slightly more complex example to learn how to navigate through a model. We will work with a model instance from the following metamodel: a simplified view of the UML2 metamodel with *Package*, *UseCase*, *Model* or *Component* instances. 
+
+!../assets/pics/simple-uml-ecore.jpg! 
+
+
+The following illustration demonstrate the result of the just typing @self@ as a query. At the bottom every instance of the UML model is represented by a node with containment relationships from top to bottom and displaying the non-contained references in between those nodes through horizontal edges. The result of the query is highlighted in *blue*. 
+
+!../assets/pics/self.jpg!  
+
+The variable *self* here is the *Class* named "Invoice" in the model, as such the query @self@ hightlight this instance.
+
+h4. eContainer()
+
+!../assets/pics/self-econtainer.jpg!
+
+When using the query @self.eContainer()@ the cursor move from the @self@ variable to its most direct parent, here the *Component* instance named "Accounting".
+
+!../assets/pics/self-econtainer-econtainer.jpg!
+
+Such calls can be chained and as such @self.eContainer().eContainer()@ return the *Component* parents: the *Package* named "Components".
+
+!../assets/pics/self-econtainer-model.jpg!
+
+The @eContainer()@ call can also be used with a type parameter, in that case it will be transitively executed up to the point where an instance of the given type is found.
+
+In this case then @self.eContainer(uml::Model)@ goes up to the root of the graph. If no instance of the given type is found in the parents then the query returns an empty result.  
+
+!../assets/pics/self-econtainer-class.jpg!
+
+@eContainer()@ or any other service using types as parameters will match both the given types or its subtypes. The only exception to this rule is the @oclIsTypeOf(..)@ service which is intended to check only for the given type and not its subtypes.  
+
+When using the query @self.eContainer(uml::Class)@ the result is an instance of *Component* as the *Component* type extends *Class* in the metamodel.
+
+!../assets/pics/self-econtainerorself.jpg!
+
+A variant of @eContainer(..)@ named @eContainerOrSelf(..)@ is provided it will first check the type of the current instance. As such the query @self.eContainerOrSelf(uml::Class)@ when *self* is the "Invoice" class returns this instance. 
+  
+
+h4. eContents()
+
+!../assets/pics/self-econtents.jpg!
+
+One use @eContainer()@ to go up in the parent. The @eContents()@ axes is its counterpart and returns the direct children of the element.
+
+h4. select()
+
+!../assets/pics/self-econtents-select-name-id.jpg!
+
+The @select(...)@ service can be used to filter elements from a list by veryfing a predicate. In the query @self.eContents()->select(p | p.name = 'id')@ the query only returns the elements which have a name equal to *"id"*, in this case a single element.
+
+
+!../assets/pics/self-econtents-select-name-notid.jpg!
+
+Equality is checked with a single @=@, inequality is expressed with the operator @<>@.
+
+!../assets/pics/self-econtents-select-visibility.jpg!
+
+Comparing values with an enumeration is slightly different as the enumeration value should be explicitely qualified. In the @self.eContents()->select(p | p.visibility =  uml::VisibilityKind::private )@ query the expression @uml::VisibilityKind::private@ denotes the enumeration literal named *private* which is contained in the *VisibilityKind* enumeration of the *uml* metamodel.
+
+h4. eAllContents()
+
+!../assets/pics/self-econtainer-model-eallcontents.jpg!
+
+The @eAllContents()@ axe is used to browse direct and indirect children. It goes from the starting point to the leafs of the model. Here the expression starts with @self.eContainer(uml::Model)@ which has we've seen before goes up until an instance of *Model* is found. From here @eAllContents@ is executed returning all the direct and indirect childrens of the "Travel Agency"  *model* instance.
+
+!../assets/pics/econtainer-eallcontents-select-name-startswith.jpg!
+
+Just like any other collection it can be filtered to retrieve, for instace, the elements whose name is starting by the letter "I".
+
+!../assets/pics/self-econtainer-model-eallcontents-components.jpg!
+
+A type parameter can be used to retrieve the direct or indirect children of a specific type: here *components*.
+
+!../assets/pics/self-econtainer-model-eallcontents-usecases.jpg!
+
+Or *use case* instances.
+
+!../assets/pics/self.econtainer-model-eallcontents-multipletypes.jpg!
+
+It is interesting to note that the parameter can also be a collection of types, enabling the retrieval of many elements through a single pass.  
+
+
+h4. eInverse()
+
+Queries using @eAllContents@ must be designed with care as they tend to lead to an intense browsing of the model. In many cases they can be replaced with @eInverse()@ calls to retrieve elements of interests.
+
+!../assets/pics/self-econtainer-einverse.jpg!
+
+@eInverse()@ returns any element which as a relationship with the current one. This relationship can be indifferently a containment one or not.
+
+!../assets/pics/econtainer-einverse-usecase.jpg!
+
+It is often of interest to restrict the type of elements we expect out of the @eInverse()@ call. With the query @self.eContainer().eInverse(uml::UseCase)@ only use cases instances will be returned, here the *UseCase* named "to Invoice" which refers to the "Accounting" *Component* through the reference named *subject*
+
+!../assets/pics/self-econtainer-einverse-packagedelement.jpg!
+
+One can also be even more explicit and query for a specific reference name, here @packagedElement@ : only the *Package* named "Components" refers to the "Accounting" *Component* through the reference named "packagedElement".
+
+
+h2. Language Reference
+
+These sections are listing all the services of the standard library of AQL.
+
+* "Services available for all types":./aql_service_anyservices.html
+* "Services available for Booleans":./aql_service_booleanservices.html
+* "Services available for Collections":./aql_service_collectionservices.html
+* "Services available for Comparables":./aql_service_comparableservices.html
+* "Services available for EObjects":./aql_service_eobjectservices.html
+* "Services available for Resources and URIs":./aql_service_resourceservices.html
+* "Services available for Strings":./aql_service_stringservices.html
+
+h3. Syntax Reference
+
+h4. References
 
 |<. _variable_name_ |a reference to a variable| myVariable |
 |<. _expression_ *.* _feature_name_ |implicit collect| eClass.name |
 |<. _expression_ *.* _service_name_*(* ( _expression_ (*,* _expression_ ) * ) ? *)* |implicit collect| myVariable.toString() |
 |<. _expression_ *->* _service_name_*(* ( _expression_ (*,* _expression_ ) * ) ? *)* |call on the collection itself if the expression is not a collection it will be wrapped into an ordered set| mySequence->sep(',') |
 
-h3. Operators
+h4. Operators
 
 |<. *not* _expression_ |call the not service| not eClass.interface |
 |<. *-* _expression_ |call the unaryMin service| -3 |
@@ -98,13 +211,13 @@ h3. Operators
 |<. _expression_ *xor* _expression_ |call the xor service| eClass.interface xor eClass.abstact |
 |<. _expression_ *implies* _expression_ |call implies service| eClass.interface implies eClass.abstact |
 
-h3. Structures
+h4. Structures
 
 |<. *(* _expression_ *)* | parenthesis are used to change priority during evaluation | (2 + 2 ) * 3 |
 |<. *if* _expression_ *then* _expression_ *else* _expression_ *endif* | conditional expression | if eClass.abstract then 'blue' else 'red' endif | 
 |<. *let* _new_variable_name_ (*:* _type_literal_)? (*,* _new_variable_name_ (*:* _type_literal_)?)* *in* _expression_ | let allows to define variables in order to factorise expression | let container = self.eContainer() in container.eAllContents() |
 
-h3. Literals
+h4. Literals
 
 |<. *'* _escaped_string_ *'* |you can use java style escape sequence *\u0000* *\x00* *\\* *\'*  *\b* *\t* *\n* ...| 'TODO list:\n\t- walk the dog\n\t- make diner' |
 |<. [*0* - *9*]+ |an integer| 100 |
@@ -116,7 +229,7 @@ h3. Literals
 |<. *OrderedSet{* (_expression_ (*,* _expression_) * ) ? *}* | an ordered set defined in extension | OrderedSet{1, 2, 3} |
 |<. _epackage_name_ *::* _eenum_name_ *::* _eenum_literal_name_ | an EEnumLiteral| art::Color::blue |
 
-h3. Type literals
+h4. Type literals
 
 |<. *String* | the string type | String |
 |<. *Integer* | the integer type | Integer |
@@ -126,20 +239,6 @@ h3. Type literals
 |<. *OrderedSet(* _type_litral_ *)* | an ordered set type | OrderedSet(String) |
 |<. _epackage_name_ *::* _eclassifier_name_ | an eclassifier type | ecore::EPackage |
 |<. *{* _epackage_name_ *::* _eclassifier_name_ (*|* _epackage_name_ *::* _eclassifier_name_) * *}* | a set of eclassifiers | {ecore::EPackage &#124; ecore::EClass} |
-
-h2. Language Reference
-
-These sections are listing all the services of the standard library of AQL.
-
-* "Services available for all types":./aql_service_anyservices.html
-* "Services available for Booleans":./aql_service_booleanservices.html
-* "Services available for Collections":./aql_service_collectionservices.html
-* "Services available for Comparables":./aql_service_comparableservices.html
-* "Services available for EObjects":./aql_service_eobjectservices.html
-* "Services available for Resources and URIs":./aql_service_resourceservices.html
-* "Services available for Strings":./aql_service_stringservices.html
-
-
 
 h2. Migrating from MTL queries
 
