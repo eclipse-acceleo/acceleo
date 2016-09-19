@@ -61,8 +61,8 @@ public class ComparableServices {
 		},
 		result = "\"true\" \"a\" is less than \"b\", \"false\" otherwise.",
 		examples = {
-				@Example(expression = "'Hello'.lessThan('Hello')", result = "false"),
-				@Example(expression = "'Hello'.lessThan('World')", result = "true")
+				@Example(expression = "'Hello' < 'Hello'", result = "false"),
+				@Example(expression = "'Hello' < 'World'", result = "true")
 		}
 	)
 	// @formatter:on
@@ -79,8 +79,8 @@ public class ComparableServices {
 		},
 		result = "\"true\" \"a\" is less than or equal to \"b\", \"false\" otherwise.",
 		examples = {
-			@Example(expression = "'Hello'.lessThanEqual('Hello')", result = "true"),
-			@Example(expression = "'Hello'.lessThanEqual('World')", result = "true")
+			@Example(expression = "'Hello' <='Hello'", result = "true"),
+			@Example(expression = "'Hello' <='World'", result = "true")
 		}
 	)
 	// @formatter:on
@@ -97,8 +97,8 @@ public class ComparableServices {
 		},
 		result = "\"true\" \"a\" is greater than \"b\", \"false\" otherwise.",
 		examples = {
-			@Example(expression = "'Hello'.greaterThan('Abc')", result = "true"),
-			@Example(expression = "'Hello'.greaterThan('Hello')", result = "false")
+			@Example(expression = "'Hello' > 'Abc'", result = "true"),
+			@Example(expression = "'Hello' > 'Hello'", result = "false")
 		}
 	)
 	// @formatter:on
@@ -115,8 +115,8 @@ public class ComparableServices {
 		},
 		result = "\"true\" \"a\" is greater than or equal to \"b\", \"false\" otherwise.",
 		examples = {
-			@Example(expression = "'Hello'.greaterThanEqual('Abc')", result = "true"),
-			@Example(expression = "'Hello'.greaterThanEqual('Hello')", result = "true")
+			@Example(expression = "'Hello' >= 'Abc'", result = "true"),
+			@Example(expression = "'Hello' >= 'Hello'", result = "true")
 		}
 	)
 	// @formatter:on

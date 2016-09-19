@@ -97,8 +97,8 @@ public class AnyServices extends AbstractServiceProvider {
 		result = "true\" if the object \"o1\" is the same as the object \"o2\", " +
 		         "\"false\" otherwise",
 		examples = {
-			@Example(expression = "'Hello'.equals('World')", result = "false"),
-			@Example(expression = "'Hello'.equals('Hello')", result = "true")
+			@Example(expression = "'Hello' = 'World'", result = "false"),
+			@Example(expression = "'Hello' = 'Hello'", result = "true")
 		}
 	)
 	// @formatter:on
@@ -124,8 +124,8 @@ public class AnyServices extends AbstractServiceProvider {
 		result = "\"true\" if the object \"o1\" is not the same as the object \"o2\", " +
 				 "\"false\" otherwise.",
 		examples = {
-			@Example(expression = "'Hello'.differs('World')", result = "true"),
-			@Example(expression = "'Hello'.differs('Hello')", result = "false")
+			@Example(expression = "'Hello' <> 'World'", result = "true"),
+			@Example(expression = "'Hello' <> 'Hello'", result = "false")
 		}
 	)
 	// @formatter:on
@@ -142,7 +142,7 @@ public class AnyServices extends AbstractServiceProvider {
 		},
 		result = "The string representation of self for which we added the string \"s\".",
 		examples = {
-			@Example(expression = "42.add(' times')", result = "'42 times'")
+			@Example(expression = "42 + ' times'", result = "'42 times'")
 		}
 	)
 	// @formatter:on
@@ -167,7 +167,7 @@ public class AnyServices extends AbstractServiceProvider {
 		},
 		result = "The current string with the object \"any\" appended (as a String).",
 		examples = {
-			@Example(expression = "'times '.add(42)", result = "'times 42'")
+			@Example(expression = "'times ' + 42", result = "'times 42'")
 		}
 	)
 	// @formatter:on
@@ -422,19 +422,17 @@ public class AnyServices extends AbstractServiceProvider {
 					result.add(services.nothing("Unknown type %s", "null"));
 				}
 			} else {
-				if (receiverType instanceof EClassifierType
-						&& !environment.getEPackageProvider().isRegistered(
-								((EClassifierType)receiverType).getType())) {
+				if (receiverType instanceof EClassifierType && !environment.getEPackageProvider()
+						.isRegistered(((EClassifierType)receiverType).getType())) {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							receiverType));
-				} else if (filterType instanceof EClassifierType
-						&& !environment.getEPackageProvider().isRegistered(
-								((EClassifierType)filterType).getType())) {
+				} else if (filterType instanceof EClassifierType && !environment.getEPackageProvider()
+						.isRegistered(((EClassifierType)filterType).getType())) {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							filterType));
 				} else {
-					result.add(services
-							.nothing("%s is not compatible with type %s", receiverType, filterType));
+					result.add(services.nothing("%s is not compatible with type %s", receiverType,
+							filterType));
 				}
 			}
 

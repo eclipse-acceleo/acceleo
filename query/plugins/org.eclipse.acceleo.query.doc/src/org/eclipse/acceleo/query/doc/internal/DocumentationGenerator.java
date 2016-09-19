@@ -40,6 +40,11 @@ import org.eclipse.acceleo.query.services.XPathServices;
  */
 public final class DocumentationGenerator {
 	/**
+	 * 
+	 */
+	private static final String TRIGGER_TO_APPEND_STD_DOC = "<p>These sections are listing all the services of the standard library of AQL.</p>";
+
+	/**
 	 * The name of the charset to use to write the documentation.
 	 */
 	private static final String UTF8 = "UTF-8"; //$NON-NLS-1$
@@ -67,8 +72,8 @@ public final class DocumentationGenerator {
 	public static void main(String[] args) {
 		File pluginFolder = new File(args[0]);
 
-		System.out.println("Prepare the generation of the documentation for "
-				+ pluginFolder.getAbsolutePath());
+		System.out.println("Prepare the generation of the documentation for " + pluginFolder
+				.getAbsolutePath());
 
 		File inputFolder = new File(pluginFolder, "input"); //$NON-NLS-1$
 		File documentationFolder = new File(pluginFolder, "pages"); //$NON-NLS-1$
@@ -84,12 +89,42 @@ public final class DocumentationGenerator {
 			exception.printStackTrace();
 		}
 
+		// Services
+		StringBuffer aggregated = new StringBuffer();
+		for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
+			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
+				try {
+					List<StringBuffer> sections = AQLHelpContentUtils.computeServiceSections(
+							serviceProviderClass);
+					StringBuffer stringBuffer = html(head(), body(header(false), sections));
+
+					File file = new File(documentationFolder, AQLHelpContentUtils.AQL_HREF_PREFIX
+							+ serviceProviderClass.getSimpleName().toLowerCase() + ".html");
+					System.out.println("Writing content of " + file.getAbsolutePath());
+					Files.write(stringBuffer, file, Charset.forName(UTF8));
+
+					/*
+					 * generating a documentation aggregating all the services at once.
+					 */
+					List<StringBuffer> sectionsForAggregatedServices = AQLHelpContentUtils
+							.computeServiceSections(serviceProviderClass, 3,
+									AQLHelpContentUtils.METHOD_SIGNATURE_GENERATOR_2016);
+					for (StringBuffer b : sectionsForAggregatedServices) {
+						aggregated.append(b);
+					}
+
+				} catch (IOException exception) {
+					exception.printStackTrace();
+				}
+			}
+		}
+
 		// index.html
 		try {
 			List<StringBuffer> sections = AQLHelpContentUtils.computeAQLOverviewSections();
 
-			String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset
-					.forName(UTF8));
+			String inputHtmlContent = Files.toString(new File(inputFolder, "index.html"), Charset.forName(
+					UTF8));
 			int indexOfBodyStart = inputHtmlContent.indexOf("<body>");
 			if (indexOfBodyStart != -1 && indexOfBodyStart + 6 < inputHtmlContent.length()) {
 				inputHtmlContent = inputHtmlContent.substring(indexOfBodyStart + 6);
@@ -101,29 +136,13 @@ public final class DocumentationGenerator {
 			sections.add(new StringBuffer(inputHtmlContent));
 
 			StringBuffer stringBuffer = html(head(), body(header(true), sections));
+			String out = stringBuffer.toString().replace(TRIGGER_TO_APPEND_STD_DOC, TRIGGER_TO_APPEND_STD_DOC
+					+ "\n" + aggregated);
 
 			System.out.println("Writing content of " + indexHtmlFile.getAbsolutePath());
-			Files.write(stringBuffer, indexHtmlFile, Charset.forName(UTF8));
+			Files.write(out, indexHtmlFile, Charset.forName(UTF8));
 		} catch (IOException exception) {
 			exception.printStackTrace();
-		}
-
-		// Services
-		for (Class<?> serviceProviderClass : STANDARD_SERVICE_PROVIDERS) {
-			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
-				try {
-					List<StringBuffer> sections = AQLHelpContentUtils
-							.computeServiceSections(serviceProviderClass);
-					StringBuffer stringBuffer = html(head(), body(header(false), sections));
-
-					File file = new File(documentationFolder, AQLHelpContentUtils.AQL_HREF_PREFIX
-							+ serviceProviderClass.getSimpleName().toLowerCase() + ".html");
-					System.out.println("Writing content of " + file.getAbsolutePath());
-					Files.write(stringBuffer, file, Charset.forName(UTF8));
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-			}
 		}
 	}
 }

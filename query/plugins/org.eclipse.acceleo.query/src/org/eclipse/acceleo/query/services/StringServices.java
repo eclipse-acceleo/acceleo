@@ -66,7 +66,7 @@ public class StringServices {
 		},
 		result = "The concatenated String.",
 		examples = {
-			@Example(expression = "'Hello'.add('World')", result = "HelloWorld")
+			@Example(expression = "'Hello' + 'World'", result = "HelloWorld")
 		},
 		comment = "This operation behaves like '+' between two strings."
 	)

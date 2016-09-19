@@ -172,15 +172,9 @@ One can also be even more explicit and query for a specific reference name, here
 
 h2. Language Reference
 
-These sections are listing all the services of the standard library of AQL.
+###.  The actual reference documentation will be appended to 'These sections are listing all the services of the standard library of AQL' at build time. See DocumentationGenerator.java
 
-* "Services available for all types":./aql_service_anyservices.html
-* "Services available for Booleans":./aql_service_booleanservices.html
-* "Services available for Collections":./aql_service_collectionservices.html
-* "Services available for Comparables":./aql_service_comparableservices.html
-* "Services available for EObjects":./aql_service_eobjectservices.html
-* "Services available for Resources and URIs":./aql_service_resourceservices.html
-* "Services available for Strings":./aql_service_stringservices.html
+These sections are listing all the services of the standard library of AQL.
 
 h3. Syntax Reference
 
