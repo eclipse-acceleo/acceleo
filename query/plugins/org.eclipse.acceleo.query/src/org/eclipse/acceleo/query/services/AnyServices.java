@@ -276,8 +276,8 @@ public class AnyServices extends AbstractServiceProvider {
 		},
 		result = "\"true\" if the object o1 is a type of the classifier, \"false\" otherwise.",
 		examples = {
-			@Example(expression = "anEPackage.oclIsKindOf(ecore::EPackage)", result = "true"),
-			@Example(expression = "anEPackage.oclIsKindOf(ecore::ENamedElement)", result = "false")
+			@Example(expression = "anEPackage.oclIsTypeOf(ecore::EPackage)", result = "true"),
+			@Example(expression = "anEPackage.oclIsTypeOf(ecore::ENamedElement)", result = "false")
 		}
 	)
 	// @formatter:on
