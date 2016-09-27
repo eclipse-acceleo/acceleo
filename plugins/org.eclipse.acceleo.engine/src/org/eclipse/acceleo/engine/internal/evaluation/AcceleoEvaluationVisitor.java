@@ -810,7 +810,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @return The protected content without any indentation marker.
 	 */
 	public static String removeProtectedMarkers(String string) {
-		final Matcher matcher = Pattern.compile(PROTECTED_AREA_MARKER + "\\{(.)(.)?\\}").matcher(string); //$NON-NLS-1$
+		final Matcher matcher = Pattern
+				.compile(PROTECTED_AREA_MARKER + "\\{([^}])([^}])?\\}").matcher(string); //$NON-NLS-1$
 		if (matcher.find()) {
 			final StringBuffer buffer = new StringBuffer();
 			do {
