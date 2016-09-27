@@ -2692,6 +2692,62 @@ public class BuildTest {
 	}
 
 	@Test
+	public void incompletTypeLiteralInSelectWithExpression() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("self.eAllContents(ecore::EClass)->select(a: ecore:: | a)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 56, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, Call.class, 0, 32, ((Call)ast).getArguments().get(0));
+		assertExpression(build, Lambda.class, 55, 55, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorExpression.class, 55, 55, lambda.getExpression());
+		assertExpression(build, ErrorTypeLiteral.class, 44, 56, lambda.getParameters().get(0).getType());
+
+		assertEquals(4, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(4, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal ecore::|a", build.getDiagnostic().getChildren().get(0)
+				.getMessage());
+		assertEquals(build.getErrors().get(0), build.getDiagnostic().getChildren().get(0).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals("incomplete variable definition", build.getDiagnostic().getChildren().get(1)
+				.getMessage());
+		assertEquals(build.getErrors().get(1), build.getDiagnostic().getChildren().get(1).getData().get(0));
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(2).getSeverity());
+		assertEquals("missing expression", build.getDiagnostic().getChildren().get(2).getMessage());
+		assertEquals(build.getErrors().get(2), build.getDiagnostic().getChildren().get(2).getData().get(0));
+	}
+
+	@Test
+	public void incompletTypeLiteralInSelectWithExpression_500204() {
+		IQueryBuilderEngine.AstResult build = engine
+				.build("aPackage->reject(aPackage: Package | aPackage.eContainer() != null)");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 67, ast);
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 8, ((Call)ast).getArguments().get(0));
+		assertEquals("aPackage", ((VarRef)((Call)ast).getArguments().get(0)).getVariableName());
+		assertExpression(build, Lambda.class, 37, 66, ((Call)ast).getArguments().get(1));
+		final Lambda lambda = (Lambda)((Call)ast).getArguments().get(1);
+		assertExpression(build, ErrorTypeLiteral.class, 27, 36, lambda.getParameters().get(0).getType());
+		assertEquals(0, ((ErrorTypeLiteral)lambda.getParameters().get(0).getType()).getSegments().size());
+		assertEquals("", lambda.getParameters().get(0).getName());
+		assertExpression(build, Call.class, 37, 66, lambda.getExpression());
+		assertEquals("differs", ((Call)lambda.getExpression()).getServiceName());
+
+		assertEquals(1, build.getErrors().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getSeverity());
+		assertEquals(1, build.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, build.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("invalid type literal ", build.getDiagnostic().getChildren().get(0).getMessage());
+
+	}
+
+	@Test
 	public void incompletParentExpressionInSelect() {
 		IQueryBuilderEngine.AstResult build = engine
 				.build("self.value->select(value | not (value.owner.oclAsType(uml::Slot)");

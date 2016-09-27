@@ -438,10 +438,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				}
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
-				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
+				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, ctx.getText()), new Object[] {errorTypeLiteral }));
 				errors.add(errorTypeLiteral);
-				final Expression variableExpression = pop();
+				final Expression variableExpression = popExpression();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
 						errorTypeLiteral, variableExpression);
 				startPositions.put(variableDeclaration, startPosition);
@@ -504,10 +504,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				final ErrorTypeLiteral type = builder.errorTypeLiteral(false, new String[] {});
 				startPositions.put(type, startPosition);
 				endPositions.put(type, endPosition);
-				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
+				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, String.format(
 						INVALID_TYPE_LITERAL, msg), new Object[] {type }));
 				errors.add(type);
-				final Expression variableExpression = pop();
+				final Expression variableExpression = popExpression();
 				final VariableDeclaration variableDeclaration = builder.variableDeclaration(variableName,
 						type, variableExpression);
 				startPositions.put(variableDeclaration, startPosition);
@@ -585,14 +585,14 @@ public class AstBuilderListener extends QueryBaseListener {
 				} else {
 					type = null;
 				}
-				final Expression variableExpression = pop();
+				final Expression variableExpression = popExpression();
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						variableName, type, variableExpression);
 				startPositions.put(errorVariableDeclaration, startPosition);
 				endPositions.put(errorVariableDeclaration, endPosition);
 				pushError(errorVariableDeclaration, "incomplete variable definition");
 			} else {
-				final Expression variableExpression = pop();
+				final Expression variableExpression = popExpression();
 				errorRule = QueryParser.RULE_variableDefinition;
 				final ErrorVariableDeclaration errorVariableDeclaration = builder.errorVariableDeclaration(
 						null, null, variableExpression);
@@ -638,12 +638,12 @@ public class AstBuilderListener extends QueryBaseListener {
 				final int argc = getNumberOfArgs(e.getCtx().getChild(2).getChildCount());
 				final Expression[] args = new Expression[argc];
 				for (int i = argc - 1; i >= 0; i--) {
-					args[i] = pop();
+					args[i] = popExpression();
 				}
 				receiver = args[0];
 				errorCollectionCall = builder.errorCall(name, false, args);
 			} else {
-				receiver = pop();
+				receiver = popExpression();
 				errorCollectionCall = builder.errorCall(null, false, receiver);
 			}
 			startPositions.put(errorCollectionCall, startPositions.get(receiver));
@@ -659,7 +659,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		 *            the offending symbol
 		 */
 		private void navigationSegmentContextError(Object offendingSymbol) {
-			final Expression receiver = pop();
+			final Expression receiver = popExpression();
 			final ErrorCall errorCall = builder.errorCall(FEATURE_ACCESS_SERVICE_NAME, false, receiver);
 			errorCall.setType(CallType.CALLORAPPLY);
 			startPositions.put(errorCall, startPositions.get(receiver));
@@ -708,7 +708,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		 */
 		private void defaultError(Object offendingSymbol, String msg, RecognitionException e) {
 			if (offendingSymbol == null && e.getCtx() == null) {
-				diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, msg, new Object[] {}));
+				diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, msg, new Object[] {}));
 			} else {
 				switch (e.getCtx().getRuleIndex()) {
 					case QueryParser.RULE_expression:
@@ -790,7 +790,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	private Stack<Diagnostic> diagnosticStack = new Stack<Diagnostic>();
 
 	/** Aggregated status of the parsing. */
-	private final BasicDiagnostic diagnostic = new BasicDiagnostic();
+	private final List<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 
 	/**
 	 * The {@link ANTLRErrorListener} pushing {@link org.eclipse.acceleo.query.ast.Error Error}.
@@ -851,7 +851,12 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @return the {@link AstResult}.
 	 */
 	public AstResult getAstResult() {
-		return new AstResult(pop(), startPositions, endPositions, errors, diagnostic);
+		final Expression ast = popExpression();
+		final BasicDiagnostic diagnostic = new BasicDiagnostic();
+		for (Diagnostic diag : diagnostics) {
+			diagnostic.add(diag);
+		}
+		return new AstResult(ast, startPositions, endPositions, errors, diagnostic);
 	}
 
 	/**
@@ -859,17 +864,17 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * 
 	 * @return the value on top of the stack
 	 */
-	private Expression pop() {
+	private Expression popExpression() {
 		try {
-			final Expression expression = (Expression)stack.pop();
+			final Expression expression = (Expression)pop();
 
 			if (!diagnosticStack.isEmpty()) {
 				final List<?> data = diagnosticStack.peek().getData();
 				if (data.get(0).equals(startPositions.get(expression))
 						&& data.get(1).equals(endPositions.get(expression))) {
 					final Diagnostic tmpDiagnostic = diagnosticStack.pop();
-					diagnostic.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(),
-							tmpDiagnostic.getSource(), tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(),
+					diagnostics.add(new BasicDiagnostic(tmpDiagnostic.getSeverity(), tmpDiagnostic
+							.getSource(), tmpDiagnostic.getCode(), tmpDiagnostic.getMessage(),
 							new Object[] {expression }));
 				}
 			}
@@ -889,7 +894,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	private Binding popBinding() {
 		try {
-			return (Binding)stack.pop();
+			return (Binding)pop();
 		} catch (EmptyStackException e) {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		} catch (ClassCastException e2) {
@@ -904,7 +909,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	private VariableDeclaration popVariableDeclaration() {
 		try {
-			return (VariableDeclaration)stack.pop();
+			return (VariableDeclaration)pop();
 		} catch (EmptyStackException e) {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		} catch (ClassCastException e2) {
@@ -919,7 +924,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	private TypeLiteral popTypeLiteral() {
 		try {
-			return (TypeLiteral)stack.pop();
+			return (TypeLiteral)pop();
 		} catch (EmptyStackException e) {
 			throw new AcceleoQueryEvaluationException(INTERNAL_ERROR_MSG, e);
 		} catch (ClassCastException e2) {
@@ -947,6 +952,16 @@ public class AstBuilderListener extends QueryBaseListener {
 	}
 
 	/**
+	 * Pops the stack.
+	 * 
+	 * @return the element at the top of the stack if any
+	 */
+	protected Object pop() {
+		final Object element = stack.pop();
+		return element;
+	}
+
+	/**
 	 * Pushes an {@link Error} on the stack.
 	 * 
 	 * @param error
@@ -956,8 +971,19 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	private void pushError(Error error, String msg) {
 		errors.add(error);
-		diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, msg, new Object[] {error }));
-		this.stack.push(error);
+		diagnostics.add(new BasicDiagnostic(Diagnostic.ERROR, PLUGIN_ID, 0, msg, new Object[] {error }));
+		push(error);
+	}
+
+	/**
+	 * Pops the last {@link ErrorExpression}.
+	 */
+	private void popErrorExpression() {
+		if (!stack.isEmpty() && stack.peek() instanceof ErrorExpression) {
+			final ErrorExpression error = (ErrorExpression)pop();
+			errors.remove(error);
+			diagnostics.remove(diagnostics.size() - 1);
+		}
 	}
 
 	@Override
@@ -1026,7 +1052,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitNot(NotContext ctx) {
-		final Call callService = builder.callService(NOT_SERVICE_NAME, pop());
+		final Call callService = builder.callService(NOT_SERVICE_NAME, popExpression());
 
 		startPositions.put(callService, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1084,8 +1110,8 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitOr(OrContext ctx) {
-		Expression op2 = pop();
-		Expression op1 = pop();
+		Expression op2 = popExpression();
+		Expression op1 = popExpression();
 		final Or callService = builder.callOrService(op1, op2);
 		startPositions.put(callService, startPositions.get(op1));
 		endPositions.put(callService, endPositions.get(op2));
@@ -1099,8 +1125,8 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitImplies(ImpliesContext ctx) {
-		Expression op2 = pop();
-		Expression op1 = pop();
+		Expression op2 = popExpression();
+		Expression op1 = popExpression();
 		final Implies callService = builder.callImpliesService(op1, op2);
 		startPositions.put(callService, startPositions.get(op1));
 		endPositions.put(callService, endPositions.get(op2));
@@ -1129,8 +1155,8 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitAnd(AndContext ctx) {
-		Expression op2 = pop();
-		Expression op1 = pop();
+		Expression op2 = popExpression();
+		Expression op1 = popExpression();
 		final And callService = builder.callAndService(op1, op2);
 		startPositions.put(callService, startPositions.get(op1));
 		endPositions.put(callService, endPositions.get(op2));
@@ -1149,7 +1175,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitFeature(FeatureContext ctx) {
-		final Expression receiver = pop();
+		final Expression receiver = popExpression();
 		final StringLiteral featureName = builder.stringLiteral(ctx.getChild(1).getText());
 		final Call call = builder.callService(FEATURE_ACCESS_SERVICE_NAME, receiver, featureName);
 		call.setType(CallType.CALLORAPPLY);
@@ -1172,8 +1198,8 @@ public class AstBuilderListener extends QueryBaseListener {
 	 *            the {@link ParserRuleContext}
 	 */
 	private void pushBinary(String service, ParserRuleContext ctx) {
-		Expression op2 = pop();
-		Expression op1 = pop();
+		Expression op2 = popExpression();
+		Expression op1 = popExpression();
 		final Call callService = builder.callService(service, op1, op2);
 		startPositions.put(callService, startPositions.get(op1));
 		endPositions.put(callService, endPositions.get(op2));
@@ -1192,7 +1218,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			final int argc = getNumberOfArgs(ctx.getChild(2).getChildCount());
 			final Expression[] args = new Expression[argc];
 			for (int i = argc - 1; i >= 0; i--) {
-				args[i] = pop();
+				args[i] = popExpression();
 			}
 			final String serviceName = ctx.getChild(0).getText().replace("::", ".");
 			final Call call;
@@ -1230,7 +1256,7 @@ public class AstBuilderListener extends QueryBaseListener {
 
 	@Override
 	public void exitMin(MinContext ctx) {
-		final Call callService = builder.callService(UNARY_MIN_SERVICE_NAME, pop());
+		final Call callService = builder.callService(UNARY_MIN_SERVICE_NAME, popExpression());
 
 		startPositions.put(callService, Integer.valueOf(ctx.start.getStartIndex()));
 		endPositions.put(callService, Integer.valueOf(ctx.stop.getStopIndex() + 1));
@@ -1309,13 +1335,13 @@ public class AstBuilderListener extends QueryBaseListener {
 
 			if (ctx.getChildCount() == 4) {
 				final TypeLiteral typeLiteral = popTypeLiteral();
-				final Expression variableExpression = pop();
+				final Expression variableExpression = popExpression();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(), typeLiteral,
 						variableExpression);
 				endPositions.put(variableDeclaration, Integer
 						.valueOf(((ParserRuleContext)ctx.getChild(2)).stop.getStopIndex() + 1));
 			} else {
-				final Expression variableExpression = pop();
+				final Expression variableExpression = popExpression();
 				variableDeclaration = builder.variableDeclaration(ctx.getChild(0).getText(),
 						variableExpression);
 				endPositions.put(variableDeclaration, Integer.valueOf(((TerminalNode)ctx.getChild(0))
@@ -1338,7 +1364,8 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitIterationCall(IterationCallContext ctx) {
 		// the stack contains [variableDef, expression]
 		final String serviceName = ctx.getChild(0).getText();
-		final Expression ast = pop();
+		final Expression ast = popExpression();
+		popErrorExpression();
 		final VariableDeclaration iterator = popVariableDeclaration();
 		final Lambda lambda = builder.lambda(ast, iterator);
 		startPositions.put(lambda, startPositions.get(ast));
@@ -1546,7 +1573,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		final Expression[] expressions = new Expression[nbExpressions];
 
 		for (int i = nbExpressions - 1; i >= 0; i--) {
-			expressions[i] = pop();
+			expressions[i] = popExpression();
 		}
 
 		return Arrays.asList(expressions);
@@ -1580,17 +1607,17 @@ public class AstBuilderListener extends QueryBaseListener {
 		final Expression trueBranch;
 		final Expression falseBranch;
 		if (count <= 3) {
-			predicate = pop();
+			predicate = popExpression();
 			trueBranch = null;
 			falseBranch = null;
 		} else if (count <= 5) {
-			trueBranch = pop();
-			predicate = pop();
+			trueBranch = popExpression();
+			predicate = popExpression();
 			falseBranch = null;
 		} else {
-			falseBranch = pop();
-			trueBranch = pop();
-			predicate = pop();
+			falseBranch = popExpression();
+			trueBranch = popExpression();
+			predicate = popExpression();
 		}
 
 		final Conditional conditional;
@@ -1619,7 +1646,7 @@ public class AstBuilderListener extends QueryBaseListener {
 		// there.
 		if (errorRule != QueryParser.RULE_binding) {
 			final String variable = ctx.getChild(0).getText();
-			final Expression expression = pop();
+			final Expression expression = popExpression();
 			final TypeLiteral type;
 			if (ctx.getChildCount() == 5) {
 				type = popTypeLiteral();
@@ -1650,7 +1677,7 @@ public class AstBuilderListener extends QueryBaseListener {
 			startPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 			endPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 		} else {
-			body = pop();
+			body = popExpression();
 		}
 		int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
 		Binding[] bindings = new Binding[bindingNumber];
