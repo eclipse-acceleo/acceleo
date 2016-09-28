@@ -11,9 +11,10 @@
 package org.eclipse.acceleo.query.delegates;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.SettingDelegate;
 import org.eclipse.emf.ecore.EStructuralFeature.Internal.SettingDelegate.Factory;
@@ -37,7 +38,7 @@ public class AQLSettingDelegateFactory extends AbstractEnvironmentProvider imple
 		final String expression = EcoreUtil.getAnnotation(eStructuralFeature, AstPackage.eNS_URI,
 				"derivation");
 
-		final QueryBuilderEngine engine = new QueryBuilderEngine(env);
+		final IQueryBuilderEngine engine = QueryParsing.newBuilder(env);
 		final AstResult astResult = engine.build(expression);
 
 		// TODO test if something went wrong

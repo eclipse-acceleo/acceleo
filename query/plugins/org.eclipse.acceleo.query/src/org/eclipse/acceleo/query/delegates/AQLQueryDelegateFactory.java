@@ -12,9 +12,10 @@ package org.eclipse.acceleo.query.delegates;
 
 import java.util.Map;
 
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.QueryDelegate;
 import org.eclipse.emf.ecore.util.QueryDelegate.Factory;
@@ -37,7 +38,7 @@ public class AQLQueryDelegateFactory extends AbstractEnvironmentProvider impleme
 			String expression) {
 		final IQueryEnvironment env = getEnvironment();
 
-		final QueryBuilderEngine engine = new QueryBuilderEngine(env);
+		final IQueryBuilderEngine engine = QueryParsing.newBuilder(env);
 		final AstResult astResult = engine.build(expression);
 
 		// TODO test if something went wrong

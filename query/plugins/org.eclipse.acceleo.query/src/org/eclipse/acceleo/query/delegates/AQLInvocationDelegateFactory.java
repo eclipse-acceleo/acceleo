@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
 import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate.Factory;
@@ -40,7 +41,7 @@ public class AQLInvocationDelegateFactory extends AbstractEnvironmentProvider im
 		final IQueryEnvironment env = getEnvironment();
 		final String expression = EcoreUtil.getAnnotation(operation, AstPackage.eNS_URI, "body");
 
-		final QueryBuilderEngine engine = new QueryBuilderEngine(env);
+		final IQueryBuilderEngine engine = QueryParsing.newBuilder(env);
 		final AstResult astResult = engine.build(expression);
 		final List<String> parameterNames = new ArrayList<String>();
 		for (EParameter parameter : operation.getEParameters()) {

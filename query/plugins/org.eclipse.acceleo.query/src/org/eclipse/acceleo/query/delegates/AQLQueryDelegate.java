@@ -18,7 +18,8 @@ import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.QueryDelegate;
 
@@ -30,9 +31,9 @@ import org.eclipse.emf.ecore.util.QueryDelegate;
 public class AQLQueryDelegate implements QueryDelegate {
 
 	/**
-	 * The {@link QueryEvaluationEngine}.
+	 * The {@link IQueryEvaluationEngine}.
 	 */
-	private final QueryEvaluationEngine engine;
+	private final IQueryEvaluationEngine engine;
 
 	/**
 	 * The {@link AstResult}.
@@ -48,7 +49,7 @@ public class AQLQueryDelegate implements QueryDelegate {
 	 *            the {@link AstResult}
 	 */
 	public AQLQueryDelegate(IQueryEnvironment queryEnvironment, AstResult astResult) {
-		engine = new QueryEvaluationEngine(queryEnvironment);
+		engine = QueryEvaluation.newEngine(queryEnvironment);
 		this.astResult = astResult;
 	}
 

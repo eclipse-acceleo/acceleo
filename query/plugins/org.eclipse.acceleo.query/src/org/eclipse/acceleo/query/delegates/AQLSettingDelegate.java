@@ -16,7 +16,8 @@ import java.util.Map;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -30,9 +31,9 @@ import org.eclipse.emf.ecore.util.BasicSettingDelegate;
 public class AQLSettingDelegate extends BasicSettingDelegate.Stateless {
 
 	/**
-	 * The {@link QueryEvaluationEngine}.
+	 * The {@link IQueryEvaluationEngine}.
 	 */
-	private final QueryEvaluationEngine engine;
+	private final IQueryEvaluationEngine engine;
 
 	/**
 	 * The {@link AstResult}.
@@ -52,7 +53,7 @@ public class AQLSettingDelegate extends BasicSettingDelegate.Stateless {
 	public AQLSettingDelegate(EStructuralFeature eStructuralFeature, IQueryEnvironment queryEnvironment,
 			AstResult astResult) {
 		super(eStructuralFeature);
-		engine = new QueryEvaluationEngine(queryEnvironment);
+		engine = QueryEvaluation.newEngine(queryEnvironment);
 		this.astResult = astResult;
 	}
 

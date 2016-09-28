@@ -21,7 +21,7 @@
       <package
             uri="http://www.eclipse.org/acceleo/query/1.0"
             class="org.eclipse.acceleo.query.ast.AstPackage"
-            genModel="model/ast.genmodel"/>
+            genModel="platform:/plugin/org.eclipse.acceleo.query/model/ast.genmodel"/>
    </extension>
    <extension
          point="org.eclipse.emf.ecore.validation_delegate">
@@ -47,7 +47,7 @@
    <extension
          point="org.eclipse.emf.ecore.query_delegate">
       <factory
-            class="org.eclipse.acceleo.query.delegates."
+            class="org.eclipse.acceleo.query.delegates.AQLQueryDelegateFactory"
             uri="http://www.eclipse.org/acceleo/query/1.0">
       </factory>
    </extension>

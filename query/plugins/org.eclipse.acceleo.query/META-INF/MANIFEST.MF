@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-SymbolicName: org.eclipse.acceleo.query;singleton:=true
+Bundle-SymbolicName: org.eclipse.acceleo.query
 Bundle-Version: 6.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Name: %pluginName
@@ -9,13 +9,12 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.emf.common;bundle-version="[2.8.0,3.0.0)",
  org.eclipse.emf.ecore;bundle-version="[2.8.0,3.0.0)"
-Bundle-ActivationPolicy: lazy
-Export-Package: org.eclipse.acceleo.query.ast;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
+Export-Package: org.eclipse.acceleo.query.ast;version="5.0.1",
  org.eclipse.acceleo.query.ast.impl;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
- org.eclipse.acceleo.query.ast.util;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
+ org.eclipse.acceleo.query.ast.util;version="5.0.1",
  org.eclipse.acceleo.query.ast.validation;version="5.0.0",
- org.eclipse.acceleo.query.delegates;version="5.0.0",
- org.eclipse.acceleo.query.parser;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
+ org.eclipse.acceleo.query.delegates;version="5.0.1",
+ org.eclipse.acceleo.query.parser;version="5.0.1",
  org.eclipse.acceleo.query.runtime;version="5.0.1",
  org.eclipse.acceleo.query.runtime.impl;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",
  org.eclipse.acceleo.query.runtime.impl.completion;x-friends:="org.eclipse.acceleo.query.tests,org.eclipse.acceleo.query.ide.ui,org.eclipse.acceleo.query.ide.ui.test",

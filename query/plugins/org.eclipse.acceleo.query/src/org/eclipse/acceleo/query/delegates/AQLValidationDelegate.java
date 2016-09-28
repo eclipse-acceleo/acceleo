@@ -14,10 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
+import org.eclipse.acceleo.query.runtime.QueryEvaluation;
+import org.eclipse.acceleo.query.runtime.QueryParsing;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -88,11 +90,11 @@ public class AQLValidationDelegate extends AbstractEnvironmentProvider implement
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(SELF, self);
 
-		final QueryBuilderEngine builderEngine = new QueryBuilderEngine(environment);
+		final IQueryBuilderEngine builderEngine = QueryParsing.newBuilder(environment);
 		final AstResult astResult = builderEngine.build(expression);
 
 		if (astResult.getDiagnostic().getSeverity() == Diagnostic.OK) {
-			final QueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(environment);
+			final IQueryEvaluationEngine evaluationEngine = QueryEvaluation.newEngine(environment);
 			final EvaluationResult evaluationResult = evaluationEngine.eval(astResult, variables);
 
 			if (evaluationResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
