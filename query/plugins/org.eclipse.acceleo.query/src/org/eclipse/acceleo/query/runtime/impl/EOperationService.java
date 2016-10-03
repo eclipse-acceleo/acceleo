@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +67,11 @@ public class EOperationService extends AbstractService {
 	private final EOperation eOperation;
 
 	/**
+	 * The Java method which actually implements the EOperation.
+	 */
+	private final Method method;
+
+	/**
 	 * Creates a new service instance given a method and an instance.
 	 * 
 	 * @param eOperation
@@ -73,6 +79,43 @@ public class EOperationService extends AbstractService {
 	 */
 	public EOperationService(EOperation eOperation) {
 		this.eOperation = eOperation;
+		this.method = lookupMethod(this.eOperation);
+	}
+
+	/**
+	 * Finds the Java {@link Method} which implements a given {@link EOperation}.
+	 * 
+	 * @param operation
+	 *            the {@link EOperation} to look for.
+	 * @return the Java method which implements the {@link EOperation}, or <code>null</code> if none could be
+	 *         found.
+	 */
+	private Method lookupMethod(EOperation operation) {
+		Method result;
+
+		final Class<?> containerClass = operation.getEContainingClass().getInstanceClass();
+		if (containerClass != null) {
+			final Class<?>[] argumentClasses = new Class<?>[operation.getEParameters().size()];
+			for (int i = 0; i < argumentClasses.length; i++) {
+				EParameter param = operation.getEParameters().get(i);
+				if (param.isMany()) {
+					argumentClasses[i] = EList.class;
+				} else {
+					argumentClasses[i] = param.getEType().getInstanceClass();
+				}
+			}
+			try {
+				result = containerClass.getMethod(operation.getName(), argumentClasses);
+			} catch (SecurityException e) {
+				result = null;
+			} catch (NoSuchMethodException e) {
+				result = null;
+			}
+		} else {
+			result = null;
+		}
+
+		return result;
 	}
 
 	/**
@@ -125,54 +168,39 @@ public class EOperationService extends AbstractService {
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		final Object result;
-		final Object[] localArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
-		final Object receiver = arguments[0];
-
-		if (!eOperation.getEContainingClass().isSuperTypeOf(((EObject)receiver).eClass())) {
-			// This will be the case for EObject contained eOperations : eContents, eContainer,
-			// eCrossReferences... are available to be called, but "EObject" is not a modeled super-type
-			// of the receiver; this "eInvoke" will fail. Fall back to plain reflection.
-			result = eOperationJavaInvoke(eOperation.getName(), receiver, localArguments);
-		} else if (hasEInvoke(receiver)) {
-			final EList<Object> eArguments = new BasicEList<Object>(arguments.length);
-			for (int i = 1; i < arguments.length; ++i) {
-				eArguments.add(arguments[i]);
-			}
-			result = ((EObject)receiver).eInvoke(eOperation, eArguments);
-		} else {
-			result = eOperationJavaInvoke(eOperation.getName(), receiver, localArguments);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Call the {@link EOperation} thru a Java invoke.
-	 * 
-	 * @param operationName
-	 *            the {@link EOperation#getName() name}
-	 * @param receiver
-	 *            the receiver
-	 * @param arguments
-	 *            arguments
-	 * @return the {@link EOperation} result if any, {@link Nothing} otherwise
-	 * @throws Exception
-	 *             if the invoked {@link EOperation} fail
-	 */
-	private Object eOperationJavaInvoke(String operationName, final Object receiver, final Object[] arguments)
-			throws Exception {
-		final Object result;
-
-		final Class<?>[] argumentClasses = new Class<?>[arguments.length];
-		for (int i = 0; i < arguments.length; i++) {
-			if (arguments[i] != null) {
-				argumentClasses[i] = arguments[i].getClass();
+		final EObject receiver = (EObject)arguments[0];
+		final Object[] localArguments = new Object[arguments.length];
+		for (int i = 1; i < arguments.length; ++i) {
+			if (eOperation.getEParameters().get(i - 1).isMany()) {
+				localArguments[i] = new BasicEList<Object>((Collection<?>)arguments[i]);
 			} else {
-				argumentClasses[i] = null;
+				localArguments[i] = arguments[i];
 			}
 		}
-		final Method method = receiver.getClass().getMethod(operationName, argumentClasses);
-		result = method.invoke(receiver, arguments);
+
+		if (!eOperation.getEContainingClass().isSuperTypeOf(receiver.eClass())) {
+			if (method != null) {
+				final Object[] parameters = Arrays.copyOfRange(localArguments, 1, localArguments.length);
+				result = eOperationJavaInvoke(method, receiver, parameters);
+			} else {
+				throw new IllegalStateException(String.format(
+						"EOperation %s not in %s type hierarchy of %s and no %s method in %s", getName(),
+						getEOperation().getEContainingClass().getName(), receiver.eClass().getName(),
+						getName(), receiver.getClass().getName()));
+			}
+		} else if (hasEInvoke(receiver)) {
+			final EList<Object> eArguments = new BasicEList<Object>(localArguments.length);
+			for (int i = 1; i < localArguments.length; ++i) {
+				eArguments.add(localArguments[i]);
+			}
+			result = receiver.eInvoke(eOperation, eArguments);
+		} else if (method != null) {
+			final Object[] parameters = Arrays.copyOfRange(localArguments, 1, localArguments.length);
+			result = eOperationJavaInvoke(method, receiver, parameters);
+		} else {
+			throw new IllegalStateException(String.format("No eInvoke nor %s methods in %s", getName(),
+					receiver.getClass().getName()));
+		}
 
 		return result;
 	}
@@ -186,17 +214,39 @@ public class EOperationService extends AbstractService {
 	 *         <code>false</code> otherwise
 	 */
 	private boolean hasEInvoke(Object object) {
-		Method method = null;
+		Method eInvokeMethod = null;
 
 		try {
-			method = object.getClass().getDeclaredMethod("eInvoke", int.class, EList.class);
+			eInvokeMethod = object.getClass().getDeclaredMethod("eInvoke", int.class, EList.class);
 		} catch (NoSuchMethodException e) {
 			// nothing to do here
 		} catch (SecurityException e) {
 			// nothing to do here
 		}
 
-		return method != null;
+		return eInvokeMethod != null;
+	}
+
+	/**
+	 * Call the {@link EOperation} thru a Java invoke.
+	 * 
+	 * @param eInvokeMethod
+	 *            the {@link Method}
+	 * @param receiver
+	 *            the receiver
+	 * @param arguments
+	 *            arguments
+	 * @return the {@link EOperation} result if any, {@link Nothing} otherwise
+	 * @throws Exception
+	 *             if the invoked {@link EOperation} fail
+	 */
+	private Object eOperationJavaInvoke(Method eInvokeMethod, final Object receiver, final Object[] arguments)
+			throws Exception {
+		if (eInvokeMethod != null && receiver != null) {
+			return eInvokeMethod.invoke(receiver, arguments);
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	/**
@@ -244,17 +294,23 @@ public class EOperationService extends AbstractService {
 			} else if (iType instanceof EClassifierType) {
 				eClassifiers = new LinkedHashSet<EClassifier>();
 				eClassifiers.add(((EClassifierType)iType).getType());
+			} else if (iType instanceof SequenceType) {
+				eClassifiers = new LinkedHashSet<EClassifier>();
+				eClassifiers.add(EcorePackage.eINSTANCE.getEEList());
 			} else if (iType instanceof IJavaType) {
-				if (iType.getType() != null) {
+				if (iType.getType() == null) {
+					eClassifiers = new LinkedHashSet<EClassifier>();
+					eClassifiers.add(null);
+				} else if (List.class.isAssignableFrom(((IJavaType)iType).getType())) {
+					eClassifiers = new LinkedHashSet<EClassifier>();
+					eClassifiers.add(EcorePackage.eINSTANCE.getEEList());
+				} else {
 					eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
 							((IJavaType)iType).getType());
 					if (eClassifiers == null) {
 						canMatch = false;
 						break;
 					}
-				} else {
-					eClassifiers = new LinkedHashSet<EClassifier>();
-					eClassifiers.add(null);
 				}
 			} else {
 				throw new AcceleoQueryValidationException(iType.getClass().getCanonicalName());

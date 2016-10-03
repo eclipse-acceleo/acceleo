@@ -50,6 +50,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import nooperationreflection.NooperationreflectionPackage;
+
 public class ValidationTest {
 
 	QueryValidationEngine engine;
@@ -66,6 +68,7 @@ public class ValidationTest {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
 		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
 		ServiceUtils.registerServices(queryEnvironment, services);
 		engine = new QueryValidationEngine(queryEnvironment);
@@ -77,6 +80,11 @@ public class ValidationTest {
 		final Set<IType> stuffTypes = new LinkedHashSet<IType>();
 		stuffTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
 		variableTypes.put("stuff", stuffTypes);
+		final Set<IType> noReflexionTypes = new LinkedHashSet<IType>();
+		noReflexionTypes.add(new EClassifierType(queryEnvironment, NooperationreflectionPackage.eINSTANCE
+				.getNoOperationReflection()));
+		variableTypes.put("noReflexion", noReflexionTypes);
+
 	}
 
 	@Test
@@ -121,7 +129,7 @@ public class ValidationTest {
 
 	@Test
 	public void variableNotRegisteredEClassifierTest() {
-		queryEnvironment.removeEPackage(EcorePackage.eINSTANCE.getName());
+		queryEnvironment.removeEPackage(EcorePackage.eINSTANCE);
 
 		final IValidationResult validationResult = engine.validate("self", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
@@ -430,7 +438,7 @@ public class ValidationTest {
 	@Test
 	public void enumLiteralError() {
 		final IValidationResult validationResult = engine
-		        .validate("anydsl::Part::NotExisting", variableTypes);
+				.validate("anydsl::Part::NotExisting", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
 
 		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
@@ -1035,8 +1043,8 @@ public class ValidationTest {
 		assertEquals(0, possibleTypes.size());
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
-		        validationResult.getMessages().get(0),
-		        ValidationMessageLevel.ERROR,
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR,
 				"Couldn't find the 'triggerEOperationLookUp(EClassifier=EClass,org.eclipse.acceleo.query.runtime.Query)' service",
 				4, 36);
 	}
@@ -1093,8 +1101,8 @@ public class ValidationTest {
 
 		assertEquals(1, validationResult.getMessages().size());
 		assertValidationMessage(
-		        validationResult.getMessages().get(0),
-		        ValidationMessageLevel.ERROR,
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR,
 				"Nothing will be left after calling oclAsType:\nEClassifier=EPackage is not compatible with type EClassifierLiteral=EInt\nEClassifier=EAnnotation is not compatible with type EClassifierLiteral=EInt",
 				17, 40);
 	}
@@ -1127,6 +1135,59 @@ public class ValidationTest {
 		IType possibleType = it.next();
 		assertTrue(possibleType instanceof ClassType);
 		assertEquals(Object.class, possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eOperationNoReflectionTest() {
+		final IValidationResult validationResult = engine.validate(
+				"noReflexion.eOperationNoReflection('text')", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eOperationNoReflectionSubParameterTypeTest() {
+		final IValidationResult validationResult = engine.validate(
+				"noReflexion.eOperationNoReflectionSubParameterType(ecore::EClass)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void eOperationNoReflectionListParameterTest() {
+		final IValidationResult validationResult = engine
+				.validate(
+						"noReflexion.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})",
+						variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
 
 		assertEquals(0, validationResult.getMessages().size());
 	}

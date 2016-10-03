@@ -321,6 +321,29 @@ public class EvaluationTest {
 	}
 
 	@Test
+	public void eOperationNoReflectionSubParameterTypeTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
+				.getNooperationreflectionFactory().createNoOperationReflection();
+		variables.put("self", self);
+		assertOKResultEquals("EClass", engine.eval(builder
+				.build("self.eOperationNoReflectionSubParameterType(ecore::EClass)"), variables));
+	}
+
+	@Test
+	public void eOperationNoReflectionListParameterTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
+				.getNooperationreflectionFactory().createNoOperationReflection();
+		variables.put("self", self);
+		assertOKResultEquals(
+				"EClassEOperation",
+				engine.eval(
+						builder.build("self.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})"),
+						variables));
+	}
+
+	@Test
 	public void serviceNullParameterTest() {
 		Map<String, Object> variables = Maps.newHashMap();
 		variables.put("self", EcorePackage.eINSTANCE.getEClass());
