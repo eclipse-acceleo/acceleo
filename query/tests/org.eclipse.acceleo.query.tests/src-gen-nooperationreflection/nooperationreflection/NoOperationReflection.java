@@ -2,6 +2,8 @@
  */
 package nooperationreflection;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -22,5 +24,21 @@ public interface NoOperationReflection extends EObject {
 	 * @generated
 	 */
 	String eOperationNoReflection(String message);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model classifierRequired="true"
+	 * @generated
+	 */
+	String eOperationNoReflectionSubParameterType(EClassifier classifier);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model classifiersRequired="true" classifiersMany="true"
+	 * @generated
+	 */
+	String eOperationNoReflectionListParameter(EList<EClassifier> classifiers);
 
 } // NoOperationReflection

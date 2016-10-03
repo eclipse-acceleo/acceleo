@@ -162,6 +162,12 @@ public class NooperationreflectionPackageImpl extends EPackageImpl implements No
 		EOperation op = addEOperation(noOperationReflectionEClass, ecorePackage.getEString(), "eOperationNoReflection", 1, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "message", 1, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(noOperationReflectionEClass, ecorePackage.getEString(), "eOperationNoReflectionSubParameterType", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEClassifier(), "classifier", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(noOperationReflectionEClass, ecorePackage.getEString(), "eOperationNoReflectionListParameter", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEClassifier(), "classifiers", 1, -1, IS_UNIQUE, IS_ORDERED);
+
 		// Create resource
 		createResource(eNS_URI);
 	}

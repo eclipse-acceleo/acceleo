@@ -10,6 +10,12 @@
       <genOperations ecoreOperation="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflection">
         <genParameters ecoreParameter="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflection/message"/>
       </genOperations>
+      <genOperations ecoreOperation="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflectionSubParameterType">
+        <genParameters ecoreParameter="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflectionSubParameterType/classifier"/>
+      </genOperations>
+      <genOperations ecoreOperation="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflectionListParameter">
+        <genParameters ecoreParameter="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflectionListParameter/classifiers"/>
+      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -81,7 +81,7 @@ literal :    String         #StringLit
 		   |'true'        #TrueLit
 		   |'false'        #FalseLit
 		   |'null'        #NullLit
-		   |'Sequence{' expressionSequence'}'  #ExplicitSeqLit
+		   |'Sequence{' expressionSequence '}'  #ExplicitSeqLit
 		   |'OrderedSet{' expressionSequence '}'  #ExplicitSetLit
 		   | Ident '::' Ident '::' Ident     #EnumLit
 		   | Ident '::' Ident ':'     #ErrorEnumLit
