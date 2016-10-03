@@ -95,7 +95,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String replace(String self, String regex, String replacement) {
-		return self.replaceFirst(regex, replacement);
+		return Strings.nullToEmpty(self).replaceFirst(Strings.nullToEmpty(regex),
+				Strings.nullToEmpty(replacement));
 	}
 
 	// @formatter:off
@@ -118,7 +119,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String replaceAll(String self, String regex, String replacement) {
-		return self.replaceAll(regex, replacement);
+		return Strings.nullToEmpty(self).replaceAll(Strings.nullToEmpty(regex),
+				Strings.nullToEmpty(replacement));
 	}
 
 	// @formatter:off
@@ -155,7 +157,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean contains(String self, String b) {
-		return Boolean.valueOf(self.contains(b));
+		return Boolean.valueOf(Strings.nullToEmpty(self).contains(Strings.nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -175,7 +177,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean matches(String self, String regex) {
-		return Boolean.valueOf(self.matches(regex));
+		return Boolean.valueOf(Strings.nullToEmpty(self).matches(Strings.nullToEmpty(regex)));
 	}
 
 	// @formatter:off
@@ -195,7 +197,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean endsWith(String self, String b) {
-		return Boolean.valueOf(self.endsWith(b));
+		return Boolean.valueOf(Strings.nullToEmpty(self).endsWith(Strings.nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -215,7 +217,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean startsWith(String self, String b) {
-		return Boolean.valueOf(self.startsWith(b));
+		return Boolean.valueOf(Strings.nullToEmpty(self).startsWith(Strings.nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -235,7 +237,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean equalsIgnoreCase(String self, String b) {
-		return Boolean.valueOf(self.equalsIgnoreCase(b));
+		return Boolean.valueOf(Strings.nullToEmpty(self).equalsIgnoreCase(Strings.nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -256,12 +258,14 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String first(String self, Integer n) {
-		String result = null;
-		if (self.length() < n) {
+		final String result;
+
+		if (self == null || self.length() < n) {
 			result = self;
 		} else {
 			result = self.substring(0, n);
 		}
+
 		return result;
 	}
 
@@ -283,12 +287,14 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String last(String self, Integer n) {
-		String result = null;
-		if (self.length() < n) {
+		final String result;
+
+		if (self == null || self.length() < n) {
 			result = self;
 		} else {
 			result = self.substring(self.length() - n, self.length());
 		}
+
 		return result;
 	}
 
@@ -310,10 +316,12 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer lastIndex(String self, String subString) {
-		int index = self.lastIndexOf(subString) + 1;
+		int index = Strings.nullToEmpty(self).lastIndexOf(Strings.nullToEmpty(subString)) + 1;
+
 		if (index == 0) {
 			index = -1;
 		}
+
 		return Integer.valueOf(index);
 	}
 
@@ -335,10 +343,12 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer index(String self, String b) {
-		int index = self.indexOf(b) + 1;
+		int index = Strings.nullToEmpty(self).indexOf(Strings.nullToEmpty(b)) + 1;
+
 		if (index == 0) {
 			index = -1;
 		}
+
 		return Integer.valueOf(index);
 	}
 
@@ -361,10 +371,12 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer index(String self, String subString, Integer index) {
-		int indexResult = self.indexOf(subString, index) + 1;
+		int indexResult = Strings.nullToEmpty(self).indexOf(Strings.nullToEmpty(subString), index) + 1;
+
 		if (indexResult == 0) {
 			indexResult = -1;
 		}
+
 		return Integer.valueOf(indexResult);
 	}
 
@@ -387,10 +399,12 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer lastIndex(String self, String subString, Integer index) {
-		int indexResult = self.lastIndexOf(subString, index) + 1;
+		int indexResult = Strings.nullToEmpty(self).lastIndexOf(Strings.nullToEmpty(subString), index) + 1;
+
 		if (indexResult == 0) {
 			indexResult = -1;
 		}
+
 		return Integer.valueOf(indexResult);
 
 	}
@@ -411,7 +425,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String toLower(String self) {
-		return self.toLowerCase();
+		final String result;
+
+		if (self == null) {
+			result = null;
+		} else {
+			result = self.toLowerCase();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -432,7 +454,9 @@ public class StringServices {
 	public String toLowerFirst(String self) {
 		final String resultString;
 
-		if (self.length() == 0) {
+		if (self == null) {
+			resultString = null;
+		} else if (self.length() == 0) {
 			resultString = self;
 		} else if (self.length() == 1) {
 			resultString = self.toLowerCase();
@@ -459,7 +483,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String toUpper(String self) {
-		return self.toUpperCase();
+		final String result;
+
+		if (self == null) {
+			result = null;
+		} else {
+			result = self.toUpperCase();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -480,7 +512,9 @@ public class StringServices {
 	public String toUpperFirst(String self) {
 		final String resultString;
 
-		if (self.length() == 0) {
+		if (self == null) {
+			resultString = null;
+		} else if (self.length() == 0) {
 			resultString = self;
 		} else if (self.length() == 1) {
 			resultString = self.toUpperCase();
@@ -505,13 +539,21 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean isAlpha(String self) {
-		final char[] chars = self.toCharArray();
-		for (final char c : chars) {
-			if (!Character.isLetter(c)) {
-				return Boolean.FALSE;
+		Boolean result = Boolean.TRUE;
+
+		if (self != null) {
+			final char[] chars = self.toCharArray();
+			for (final char c : chars) {
+				if (!Character.isLetter(c)) {
+					result = Boolean.FALSE;
+					break;
+				}
 			}
+		} else {
+			result = Boolean.FALSE;
 		}
-		return Boolean.TRUE;
+
+		return result;
 	}
 
 	// @formatter:off
@@ -528,13 +570,21 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean isAlphaNum(String self) {
-		final char[] chars = self.toCharArray();
-		for (final char c : chars) {
-			if (!Character.isLetterOrDigit(c)) {
-				return Boolean.FALSE;
+		Boolean result = Boolean.TRUE;
+
+		if (self != null) {
+			final char[] chars = self.toCharArray();
+			for (final char c : chars) {
+				if (!Character.isLetterOrDigit(c)) {
+					result = Boolean.FALSE;
+					break;
+				}
 			}
+		} else {
+			result = Boolean.FALSE;
 		}
-		return Boolean.TRUE;
+
+		return result;
 	}
 
 	// @formatter:off
@@ -550,7 +600,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer size(String self) {
-		return Integer.valueOf(self.length());
+		final int result;
+
+		if (self == null || self.isEmpty()) {
+			result = 0;
+		} else {
+			result = Strings.nullToEmpty(self).length();
+		}
+
+		return Integer.valueOf(result);
 	}
 
 	// @formatter:off
@@ -570,7 +628,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substring(String self, Integer lower) {
-		return self.substring(lower.intValue() - 1);
+		final String result;
+
+		if (self == null) {
+			result = null;
+		} else {
+			result = self.substring(lower.intValue() - 1);
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -592,7 +658,15 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substring(String self, Integer lower, Integer upper) {
-		return self.substring(lower.intValue() - 1, upper.intValue());
+		final String result;
+
+		if (self == null) {
+			result = null;
+		} else {
+			result = self.substring(lower.intValue() - 1, upper.intValue());
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -611,7 +685,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer toInteger(String self) {
-		return Integer.valueOf(self);
+		return Integer.valueOf(Strings.nullToEmpty(self));
 	}
 
 	// @formatter:off
@@ -630,7 +704,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Double toReal(String self) {
-		return Double.valueOf(self);
+		return Double.valueOf(Strings.nullToEmpty(self));
 	}
 
 	// @formatter:off
@@ -653,7 +727,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer strcmp(String self, String s1) {
-		return Integer.valueOf(self.compareTo(s1));
+		return Integer.valueOf(Strings.nullToEmpty(self).compareTo(Strings.nullToEmpty(s1)));
 	}
 
 	// @formatter:off
@@ -670,7 +744,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean strstr(String self, String r) {
-		return Boolean.valueOf(self.indexOf(r) > -1);
+		return Boolean.valueOf(Strings.nullToEmpty(self).indexOf(Strings.nullToEmpty(r)) > -1);
 	}
 
 	// @formatter:off
@@ -689,7 +763,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substitute(String self, String r, String t) {
-		return Pattern.compile(r, Pattern.LITERAL).matcher(self).replaceFirst(Matcher.quoteReplacement(t));
+		return Pattern.compile(Strings.nullToEmpty(r), Pattern.LITERAL).matcher(Strings.nullToEmpty(self))
+				.replaceFirst(Matcher.quoteReplacement(Strings.nullToEmpty(t)));
 	}
 
 	// @formatter:off
@@ -708,7 +783,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substituteAll(String self, String r, String t) {
-		return Pattern.compile(r, Pattern.LITERAL).matcher(self).replaceAll(Matcher.quoteReplacement(t));
+		return Pattern.compile(Strings.nullToEmpty(r), Pattern.LITERAL).matcher(Strings.nullToEmpty(self))
+				.replaceAll(Matcher.quoteReplacement(Strings.nullToEmpty(t)));
 	}
 
 	// @formatter:off
@@ -724,7 +800,17 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String trim(String self) {
-		return Strings.nullToEmpty(self).trim();
+		final String result;
+
+		if (self == null) {
+			result = null;
+		} else if (self.isEmpty()) {
+			result = self;
+		} else {
+			result = Strings.nullToEmpty(self).trim();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -740,11 +826,13 @@ public class StringServices {
 	)
 	// @formatter:on
 	public List<String> tokenize(String self) {
-		List<String> segments = new ArrayList<String>();
-		StringTokenizer tokenizer = new StringTokenizer(self);
+		final List<String> segments = new ArrayList<String>();
+		final StringTokenizer tokenizer = new StringTokenizer(Strings.nullToEmpty(self));
+
 		while (tokenizer.hasMoreTokens()) {
 			segments.add(tokenizer.nextToken());
 		}
+
 		return segments;
 	}
 
@@ -762,11 +850,14 @@ public class StringServices {
 	)
 	// @formatter:on
 	public List<String> tokenize(String self, String delimiter) {
-		List<String> segments = new ArrayList<String>();
-		StringTokenizer tokenizer = new StringTokenizer(self, delimiter);
+		final List<String> segments = new ArrayList<String>();
+
+		StringTokenizer tokenizer = new StringTokenizer(Strings.nullToEmpty(self), Strings
+				.nullToEmpty(delimiter));
 		while (tokenizer.hasMoreTokens()) {
 			segments.add(tokenizer.nextToken());
 		}
+
 		return segments;
 	}
 

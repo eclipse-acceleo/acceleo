@@ -10,17 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import java.lang.reflect.InvocationTargetException;
-
-import junit.framework.AssertionFailedError;
-
 import org.eclipse.acceleo.query.services.StringServices;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * StringServices class tests.
@@ -37,728 +31,1263 @@ public class StringServicesTest extends AbstractServicesTest {
 		stringServices = new StringServices();
 	}
 
-	private void assertException(Exception e, Class<?> class1) throws AssertionFailedError {
-		if (class1.isAssignableFrom(e.getClass())) {
-			assertTrue(true);
-		} else {
-			throw new AssertionFailedError();
-		}
+	@Test
+	public void addNullNull() {
+		assertEquals("", stringServices.add(null, null));
 	}
 
 	@Test
-	public void testConcat() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public void addNullEmpty() {
+		assertEquals("", stringServices.add(null, ""));
+	}
 
-		assertEquals("" + "", stringServices.concat("", ""));
-		assertEquals("a" + "", stringServices.concat("a", ""));
-		assertEquals("" + "a", stringServices.concat("", "a"));
-		assertEquals("aa" + "bb", stringServices.concat("aa", "bb"));
+	@Test
+	public void addEmptyNull() {
+		assertEquals("", stringServices.add("", null));
+	}
 
-		assertEquals("bb", stringServices.concat(null, "bb"));
-		assertEquals("aa", stringServices.concat("aa", null));
+	@Test
+	public void addEmptyEmpty() {
+		assertEquals("", stringServices.add("", ""));
+	}
+
+	@Test
+	public void addEmptyString() {
+		assertEquals("string", stringServices.add("", "string"));
+	}
+
+	@Test
+	public void addStringEmpty() {
+		assertEquals("string", stringServices.add("string", ""));
+	}
+
+	@Test
+	public void addNullString() {
+		assertEquals("string", stringServices.add(null, "string"));
+	}
+
+	@Test
+	public void addStringNull() {
+		assertEquals("string", stringServices.add("string", null));
+	}
+
+	@Test
+	public void addStringString() {
+		assertEquals("stringstring", stringServices.add("string", "string"));
+	}
+
+	@Test
+	public void concatNullNull() {
 		assertEquals("", stringServices.concat(null, null));
 	}
 
 	@Test
-	public void testPrefix() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public void concatNullEmpty() {
+		assertEquals("", stringServices.concat(null, ""));
+	}
 
-		assertEquals("" + "", stringServices.prefix("", ""));
-		assertEquals("" + "a", stringServices.prefix("a", ""));
-		assertEquals("a" + "", stringServices.prefix("", "a"));
-		assertEquals("bbaa", stringServices.prefix("aa", "bb"));
+	@Test
+	public void concatEmptyNull() {
+		assertEquals("", stringServices.concat("", null));
+	}
 
-		assertEquals("bb", stringServices.prefix(null, "bb"));
-		assertEquals("aa", stringServices.prefix("aa", null));
+	@Test
+	public void concatEmptyEmpty() {
+		assertEquals("", stringServices.concat("", ""));
+	}
+
+	@Test
+	public void concatEmptyString() {
+		assertEquals("string", stringServices.concat("", "string"));
+	}
+
+	@Test
+	public void concatStringEmpty() {
+		assertEquals("string", stringServices.concat("string", ""));
+	}
+
+	@Test
+	public void concatNullString() {
+		assertEquals("string", stringServices.concat(null, "string"));
+	}
+
+	@Test
+	public void concatStringNull() {
+		assertEquals("string", stringServices.concat("string", null));
+	}
+
+	@Test
+	public void concatStringString() {
+		assertEquals("stringstring", stringServices.concat("string", "string"));
+	}
+
+	@Test
+	public void containsNullNull() {
+		assertEquals(true, stringServices.contains(null, null));
+	}
+
+	@Test
+	public void containsNullEmpty() {
+		assertEquals(true, stringServices.contains(null, ""));
+	}
+
+	@Test
+	public void containsEmptyNull() {
+		assertEquals(true, stringServices.contains("", null));
+	}
+
+	@Test
+	public void containsEmptyEmpty() {
+		assertEquals(true, stringServices.contains("", ""));
+	}
+
+	@Test
+	public void containsEmptyString() {
+		assertEquals(false, stringServices.contains("", "string"));
+	}
+
+	@Test
+	public void containsStringEmpty() {
+		assertEquals(true, stringServices.contains("string", ""));
+	}
+
+	@Test
+	public void containsNullString() {
+		assertEquals(false, stringServices.contains(null, "string"));
+	}
+
+	@Test
+	public void containsStringNull() {
+		assertEquals(true, stringServices.contains("string", null));
+	}
+
+	@Test
+	public void containsAllString() {
+		assertEquals(true, stringServices.contains("string", "string"));
+	}
+
+	@Test
+	public void containsSubString() {
+		assertEquals(true, stringServices.contains("string", "in"));
+	}
+
+	@Test
+	public void containsFlase() {
+		assertEquals(false, stringServices.contains("string", "fr"));
+	}
+
+	@Test
+	public void endsWithNullNull() {
+		assertEquals(true, stringServices.endsWith(null, null));
+	}
+
+	@Test
+	public void endsWithNullEmpty() {
+		assertEquals(true, stringServices.endsWith(null, ""));
+	}
+
+	@Test
+	public void endsWithEmptyNull() {
+		assertEquals(true, stringServices.endsWith("", null));
+	}
+
+	@Test
+	public void endsWithEmptyEmpty() {
+		assertEquals(true, stringServices.endsWith("", ""));
+	}
+
+	@Test
+	public void endsWithEmptyString() {
+		assertEquals(false, stringServices.endsWith("", "string"));
+	}
+
+	@Test
+	public void endsWithStringEmpty() {
+		assertEquals(true, stringServices.endsWith("string", ""));
+	}
+
+	@Test
+	public void endsWithNullString() {
+		assertEquals(false, stringServices.endsWith(null, "string"));
+	}
+
+	@Test
+	public void endsWithStringNull() {
+		assertEquals(true, stringServices.endsWith("string", null));
+	}
+
+	@Test
+	public void endsWithStringString() {
+		assertEquals(true, stringServices.endsWith("string", "string"));
+	}
+
+	@Test
+	public void endsWithFalse() {
+		assertEquals(false, stringServices.endsWith("stringa", "string"));
+	}
+
+	@Test
+	public void equalsIgnoreCaseNullNull() {
+		assertEquals(true, stringServices.equalsIgnoreCase(null, null));
+	}
+
+	@Test
+	public void equalsIgnoreCaseNullEmpty() {
+		assertEquals(true, stringServices.equalsIgnoreCase(null, ""));
+	}
+
+	@Test
+	public void equalsIgnoreCaseEmptyNull() {
+		assertEquals(true, stringServices.equalsIgnoreCase("", null));
+	}
+
+	@Test
+	public void equalsIgnoreCaseEmptyEmpty() {
+		assertEquals(true, stringServices.equalsIgnoreCase("", ""));
+	}
+
+	@Test
+	public void equalsIgnoreCaseEmptyString() {
+		assertEquals(false, stringServices.equalsIgnoreCase("", "string"));
+	}
+
+	@Test
+	public void equalsIgnoreCaseStringEmpty() {
+		assertEquals(false, stringServices.equalsIgnoreCase("string", ""));
+	}
+
+	@Test
+	public void equalsIgnoreCaseNullString() {
+		assertEquals(false, stringServices.equalsIgnoreCase(null, "string"));
+	}
+
+	@Test
+	public void equalsIgnoreCaseStringNull() {
+		assertEquals(false, stringServices.equalsIgnoreCase("string", null));
+	}
+
+	@Test
+	public void equalsIgnoreCaseStringString() {
+		assertEquals(true, stringServices.equalsIgnoreCase("strIng", "strinG"));
+	}
+
+	@Test
+	public void firstNullNull() {
+		assertEquals(null, stringServices.first(null, null));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void firstEmptyNull() {
+		stringServices.first("", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void firstStringNull() {
+		stringServices.first("string", null);
+	}
+
+	@Test(expected = StringIndexOutOfBoundsException.class)
+	public void firstStringNegative() {
+		stringServices.first("string", -10);
+	}
+
+	@Test
+	public void firstStringInRange() {
+		assertEquals("str", stringServices.first("string", 3));
+	}
+
+	@Test
+	public void firstStringOverRange() {
+		assertEquals("string", stringServices.first("string", 300));
+	}
+
+	@Test
+	public void indexNullNull() {
+		assertEquals(Integer.valueOf(1), stringServices.index(null, null));
+	}
+
+	@Test
+	public void indexNullEmpty() {
+		assertEquals(Integer.valueOf(1), stringServices.index(null, ""));
+	}
+
+	@Test
+	public void indexEmptyNull() {
+		assertEquals(Integer.valueOf(1), stringServices.index("", null));
+	}
+
+	@Test
+	public void indexEmptyEmpty() {
+		assertEquals(Integer.valueOf(1), stringServices.index("", ""));
+	}
+
+	@Test
+	public void indexEmptyString() {
+		assertEquals(Integer.valueOf(-1), stringServices.index("", "string"));
+	}
+
+	@Test
+	public void indexStringEmpty() {
+		assertEquals(Integer.valueOf(1), stringServices.index("string", ""));
+	}
+
+	@Test
+	public void indexNullString() {
+		assertEquals(Integer.valueOf(-1), stringServices.index(null, "string"));
+	}
+
+	@Test
+	public void indexStringNull() {
+		assertEquals(Integer.valueOf(1), stringServices.index("string", null));
+	}
+
+	@Test
+	public void indexStringString() {
+		assertEquals(Integer.valueOf(1), stringServices.index("string", "string"));
+	}
+
+	@Test
+	public void index() {
+		assertEquals(Integer.valueOf(4), stringServices.index("string", "ing"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexNullNullNull() {
+		stringServices.index(null, null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexNullEmptyNull() {
+		stringServices.index(null, "", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexEmptyNullNull() {
+		stringServices.index("", null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexEmptyEmptyNull() {
+		stringServices.index("", "", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexEmptyStringNull() {
+		stringServices.index("", "string", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexStringEmptyNull() {
+		stringServices.index("string", "", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexNullStringNull() {
+		stringServices.index(null, "string", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexStringNullNull() {
+		stringServices.index("string", null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexStringStringNull() {
+		stringServices.index("string", "string", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void indexNull() {
+		stringServices.index("string", "ing", null);
+	}
+
+	@Test
+	public void indexNegativeStartPosition() {
+		assertEquals(Integer.valueOf(4), stringServices.index("string", "ing", -10));
+	}
+
+	@Test
+	public void indexOutOfRangeStartPosition() {
+		assertEquals(Integer.valueOf(-1), stringServices.index("string", "ing", 100));
+	}
+
+	@Test
+	public void indexStartPosition() {
+		assertEquals(Integer.valueOf(10), stringServices.index("stringstring", "ing", 4));
+	}
+
+	@Test
+	public void isAlphaNull() {
+		assertEquals(false, stringServices.isAlpha(null));
+	}
+
+	@Test
+	public void isAlphaEmpty() {
+		assertEquals(true, stringServices.isAlpha(""));
+	}
+
+	@Test
+	public void isAlphaTrue() {
+		assertEquals(true, stringServices.isAlpha("abcD"));
+	}
+
+	@Test
+	public void isAlphaFalse() {
+		assertEquals(false, stringServices.isAlpha("abcD1"));
+	}
+
+	@Test
+	public void isAlphaNumNull() {
+		assertEquals(false, stringServices.isAlphaNum(null));
+	}
+
+	@Test
+	public void isAlphaNumEmpty() {
+		assertEquals(true, stringServices.isAlphaNum(""));
+	}
+
+	@Test
+	public void isAlphaNumTrue() {
+		assertEquals(true, stringServices.isAlphaNum("abcD1"));
+	}
+
+	@Test
+	public void isAlphaNumFalse() {
+		assertEquals(false, stringServices.isAlphaNum("abcD1_"));
+	}
+
+	@Test
+	public void lastNullNull() {
+		assertEquals(null, stringServices.last(null, null));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastEmptyNull() {
+		stringServices.last("", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastStringNull() {
+		stringServices.last("string", null);
+	}
+
+	@Test(expected = StringIndexOutOfBoundsException.class)
+	public void lastStringNegative() {
+		stringServices.last("string", -10);
+	}
+
+	@Test
+	public void lastStringInRange() {
+		assertEquals("ng", stringServices.last("string", 2));
+	}
+
+	@Test
+	public void lastStringOverRange() {
+		assertEquals("string", stringServices.last("string", 300));
+	}
+
+	@Test
+	public void lastIndexNullNull() {
+		assertEquals(Integer.valueOf(1), stringServices.lastIndex(null, null));
+	}
+
+	@Test
+	public void lastIndexNullEmpty() {
+		assertEquals(Integer.valueOf(1), stringServices.lastIndex(null, ""));
+	}
+
+	@Test
+	public void lastIndexEmptyNull() {
+		assertEquals(Integer.valueOf(1), stringServices.lastIndex("", null));
+	}
+
+	@Test
+	public void lastIndexEmptyEmpty() {
+		assertEquals(Integer.valueOf(1), stringServices.lastIndex("", ""));
+	}
+
+	@Test
+	public void lastIndexEmptyString() {
+		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("", "string"));
+	}
+
+	@Test
+	public void lastIndexStringEmpty() {
+		assertEquals(Integer.valueOf(7), stringServices.lastIndex("string", ""));
+	}
+
+	@Test
+	public void lastIndexNullString() {
+		assertEquals(Integer.valueOf(-1), stringServices.lastIndex(null, "string"));
+	}
+
+	@Test
+	public void lastIndexStringNull() {
+		assertEquals(Integer.valueOf(7), stringServices.lastIndex("string", null));
+	}
+
+	@Test
+	public void lastIndexStringString() {
+		assertEquals(Integer.valueOf(1), stringServices.lastIndex("string", "string"));
+	}
+
+	@Test
+	public void lastIndex() {
+		assertEquals(Integer.valueOf(4), stringServices.lastIndex("string", "ing"));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexNullNullNull() {
+		stringServices.lastIndex(null, null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexNullEmptyNull() {
+		stringServices.lastIndex(null, "", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexEmptyNullNull() {
+		stringServices.lastIndex("", null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexEmptyEmptyNull() {
+		stringServices.lastIndex("", "", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexEmptyStringNull() {
+		stringServices.lastIndex("", "string", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexStringEmptyNull() {
+		stringServices.lastIndex("string", "", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexNullStringNull() {
+		stringServices.lastIndex(null, "string", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexStringNullNull() {
+		stringServices.lastIndex("string", null, null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexStringStringNull() {
+		stringServices.lastIndex("string", "string", null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void lastIndexNull() {
+		stringServices.lastIndex("string", "ing", null);
+	}
+
+	@Test
+	public void lastIndexNegativeStartPosition() {
+		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("string", "ing", -10));
+	}
+
+	@Test
+	public void lastIndexOutOfRangeStartPosition() {
+		assertEquals(Integer.valueOf(4), stringServices.lastIndex("string", "ing", 100));
+	}
+
+	@Test
+	public void lastIndexStartPosition() {
+		assertEquals(Integer.valueOf(4), stringServices.lastIndex("stringstring", "ing", 4));
+	}
+
+	@Test
+	public void matchesNullNull() {
+		assertEquals(true, stringServices.matches(null, null));
+	}
+
+	@Test
+	public void matchesNullEmpty() {
+		assertEquals(true, stringServices.matches(null, ""));
+	}
+
+	@Test
+	public void matchesEmptyNull() {
+		assertEquals(true, stringServices.matches("", null));
+	}
+
+	@Test
+	public void matchesEmptyEmpty() {
+		assertEquals(true, stringServices.matches("", ""));
+	}
+
+	@Test
+	public void matchesEmptyString() {
+		assertEquals(false, stringServices.matches("", "string"));
+	}
+
+	@Test
+	public void matchesStringEmpty() {
+		assertEquals(false, stringServices.matches("string", ""));
+	}
+
+	@Test
+	public void matchesNullString() {
+		assertEquals(false, stringServices.matches(null, "string"));
+	}
+
+	@Test
+	public void matchesStringNull() {
+		assertEquals(false, stringServices.matches("string", null));
+	}
+
+	@Test
+	public void matchesStringString() {
+		assertEquals(true, stringServices.matches("string", "string"));
+	}
+
+	@Test
+	public void matchesTrue() {
+		assertEquals(true, stringServices.matches("string", "s.ri(n|g)+"));
+	}
+
+	@Test
+	public void matchesFalse() {
+		assertEquals(false, stringServices.matches("string", "s.ri(t|g)+"));
+	}
+
+	@Test
+	public void prefixNullNull() {
 		assertEquals("", stringServices.prefix(null, null));
 	}
 
 	@Test
-	public void testContains() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals("".contains(""), stringServices.contains("", ""));
-		assertEquals("a".contains(""), stringServices.contains("a", ""));
-		assertEquals("".contains("a"), stringServices.contains("", "a"));
-		assertEquals("aa".contains("bb"), stringServices.contains("aa", "bb"));
-		assertEquals("aa".contains("aa"), stringServices.contains("aa", "aa"));
-		assertEquals("baa".contains("aa"), stringServices.contains("baa", "aa"));
-		assertEquals("aab".contains("aa"), stringServices.contains("aab", "aa"));
-		assertEquals("baab".contains("aa"), stringServices.contains("baab", "aa"));
-
-		try {
-			stringServices.contains(null, "bb");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.contains("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.contains(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void prefixNullEmpty() {
+		assertEquals("", stringServices.prefix(null, ""));
 	}
 
 	@Test
-	public void testMatches() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals("".matches(""), stringServices.matches("", ""));
-		assertEquals("a".matches(""), stringServices.matches("a", ""));
-		assertEquals("".matches("a"), stringServices.matches("", "a"));
-		assertEquals("aa".matches("bb"), stringServices.matches("aa", "bb"));
-		assertEquals("baa".matches("aa"), stringServices.matches("baa", "aa"));
-		assertEquals("aab".matches("aa"), stringServices.matches("aab", "aa"));
-		assertEquals("baab".matches("aa"), stringServices.matches("baab", "aa"));
-
-		try {
-			stringServices.matches(null, "bb");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.matches("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.matches(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void prefixEmptyNull() {
+		assertEquals("", stringServices.prefix("", null));
 	}
 
 	@Test
-	public void testEndsWith() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals("".endsWith(""), stringServices.endsWith("", ""));
-		assertEquals("a".endsWith(""), stringServices.endsWith("a", ""));
-		assertEquals("".endsWith("a"), stringServices.endsWith("", "a"));
-		assertEquals("aa".endsWith("bb"), stringServices.endsWith("aa", "bb"));
-		assertEquals("ab".endsWith("ab"), stringServices.endsWith("ab", "ab"));
-		assertEquals("ab".endsWith("b"), stringServices.endsWith("ab", "b"));
-		assertEquals("aba".endsWith("b"), stringServices.endsWith("aba", "b"));
-		assertEquals("ba".endsWith("b"), stringServices.endsWith("ba", "b"));
-
-		try {
-			stringServices.endsWith(null, "bb");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.endsWith("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.endsWith(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void prefixEmptyEmpty() {
+		assertEquals("", stringServices.prefix("", ""));
 	}
 
 	@Test
-	public void testStartsWith() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals("".startsWith(""), stringServices.startsWith("", ""));
-		assertEquals("a".startsWith(""), stringServices.startsWith("a", ""));
-		assertEquals("".startsWith("a"), stringServices.startsWith("", "a"));
-		assertEquals("aa".startsWith("bb"), stringServices.startsWith("aa", "bb"));
-		assertEquals("ab".startsWith("ab"), stringServices.startsWith("ab", "ab"));
-		assertEquals("ab".startsWith("b"), stringServices.startsWith("ab", "b"));
-		assertEquals("aba".startsWith("b"), stringServices.startsWith("aba", "b"));
-		assertEquals("ba".startsWith("b"), stringServices.startsWith("ba", "b"));
-
-		try {
-			stringServices.startsWith(null, "bb");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.startsWith("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.startsWith(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void prefixEmptyString() {
+		assertEquals("string", stringServices.prefix("", "string"));
 	}
 
 	@Test
-	public void testEqualsIgnoreCase() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals("".equalsIgnoreCase(""), stringServices.equalsIgnoreCase("", ""));
-		assertEquals("a".equalsIgnoreCase(""), stringServices.equalsIgnoreCase("a", ""));
-		assertEquals("".equalsIgnoreCase("a"), stringServices.equalsIgnoreCase("", "a"));
-		assertEquals("a".equalsIgnoreCase("a"), stringServices.equalsIgnoreCase("a", "a"));
-		assertEquals("a".equalsIgnoreCase("A"), stringServices.equalsIgnoreCase("a", "A"));
-		assertEquals("ab".equalsIgnoreCase("aB"), stringServices.equalsIgnoreCase("ab", "aB"));
-		assertEquals("aB".equalsIgnoreCase("aB"), stringServices.equalsIgnoreCase("aB", "aB"));
-		assertEquals("A".equalsIgnoreCase("A"), stringServices.equalsIgnoreCase("A", "A"));
-		assertEquals("aa".equalsIgnoreCase(null), stringServices.equalsIgnoreCase("aa", null));
-
-		try {
-			stringServices.equalsIgnoreCase(null, "bb");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.equalsIgnoreCase(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void prefixStringEmpty() {
+		assertEquals("string", stringServices.prefix("string", ""));
 	}
 
 	@Test
-	public void testFirst() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals("", stringServices.first("", Integer.valueOf(2)));
-		assertEquals("", stringServices.first("", Integer.valueOf(0)));
-		assertEquals("", stringServices.first("ab", Integer.valueOf(0)));
-		assertEquals("a", stringServices.first("ab", Integer.valueOf(1)));
-		assertEquals("ab", stringServices.first("ab", Integer.valueOf(2)));
-		assertEquals("ab", stringServices.first("ab", Integer.valueOf(3)));
-
-		try {
-			stringServices.first(null, Integer.valueOf(0));
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.first("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.first(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.first("ab", Integer.valueOf(-1));
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, IndexOutOfBoundsException.class);
-		}
+	public void prefixNullString() {
+		assertEquals("string", stringServices.prefix(null, "string"));
 	}
 
 	@Test
-	public void testLast() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		assertEquals("", stringServices.last("", Integer.valueOf(2)));
-		assertEquals("", stringServices.last("", Integer.valueOf(0)));
-		assertEquals("", stringServices.last("ab", Integer.valueOf(0)));
-		assertEquals("b", stringServices.last("ab", Integer.valueOf(1)));
-		assertEquals("ab", stringServices.last("ab", Integer.valueOf(2)));
-		assertEquals("ab", stringServices.last("ab", Integer.valueOf(3)));
-
-		try {
-			stringServices.last(null, Integer.valueOf(0));
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.last("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.last(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.last("ab", Integer.valueOf(-1));
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, IndexOutOfBoundsException.class);
-		}
+	public void prefixStringNull() {
+		assertEquals("string", stringServices.prefix("string", null));
 	}
 
 	@Test
-	public void testLastIndex() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("", ""));
-		assertEquals(Integer.valueOf(3), stringServices.lastIndex("aa", ""));
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("", "aa"));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("aab", "aa"));
-		assertEquals(Integer.valueOf(2), stringServices.lastIndex("aab", "ab"));
-		assertEquals(Integer.valueOf(3), stringServices.lastIndex("aab", "b"));
-		assertEquals(Integer.valueOf(2), stringServices.lastIndex("aab", "a"));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("abc", "a"));
-		assertEquals(Integer.valueOf(3), stringServices.lastIndex("abab", "ab"));
-
-		try {
-			stringServices.lastIndex(null, "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.lastIndex("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.lastIndex(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void prefixStringString() {
+		assertEquals("bbbaaa", stringServices.prefix("aaa", "bbb"));
 	}
 
 	@Test
-	public void testLastIndexFromIndex() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("", "", -5));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("", "", 3));
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("ab", "a", -5));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("ab", "a", 0));
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("ab", "b", 0));
-		assertEquals(Integer.valueOf(2), stringServices.lastIndex("ab", "b", 1));
-		assertEquals(Integer.valueOf(2), stringServices.lastIndex("ab", "b", 2));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("ab", "a", 1));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("ab", "a", 2));
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("", "aa", 0));
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("", "aa", -1));
-		assertEquals(Integer.valueOf(-1), stringServices.lastIndex("", "aa", -2));
-		assertEquals(Integer.valueOf(1), stringServices.lastIndex("abab", "ab", 0));
-		assertEquals(Integer.valueOf(3), stringServices.lastIndex("abab", "ab", 2));
-		try {
-			stringServices.lastIndex(null, "", 1);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.lastIndex("aa", null, 1);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.lastIndex("aa", "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.lastIndex(null, null, 1);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.lastIndex(null, "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.lastIndex("", null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.lastIndex(null, null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
+	public void replaceNullNullNull() {
+		assertEquals("", stringServices.replace(null, null, null));
 	}
 
 	@Test
-	public void testIndex() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals(Integer.valueOf(1), stringServices.index("", ""));
-		assertEquals(Integer.valueOf(1), stringServices.index("aa", ""));
-		assertEquals(Integer.valueOf(-1), stringServices.index("", "aa"));
-		assertEquals(Integer.valueOf(1), stringServices.index("aab", "aa"));
-		assertEquals(Integer.valueOf(2), stringServices.index("aab", "ab"));
-		assertEquals(Integer.valueOf(3), stringServices.index("aab", "b"));
-
-		try {
-			stringServices.index(null, "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.index("aa", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.index(null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
+	public void replaceNullEmptyNull() {
+		assertEquals("", stringServices.replace(null, "", null));
 	}
 
 	@Test
-	public void testIndexFromIndex() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertEquals(Integer.valueOf(1), stringServices.index("", "", -5));
-		assertEquals(Integer.valueOf(1), stringServices.index("", "", 3));
-		assertEquals(Integer.valueOf(1), stringServices.index("ab", "a", -5));
-		assertEquals(Integer.valueOf(1), stringServices.index("ab", "a", 0));
-		assertEquals(Integer.valueOf(-1), stringServices.index("ab", "a", 1));
-		assertEquals(Integer.valueOf(-1), stringServices.index("", "aa", 0));
-		assertEquals(Integer.valueOf(-1), stringServices.index("", "aa", -1));
-		assertEquals(Integer.valueOf(-1), stringServices.index("", "aa", -2));
-
-		try {
-			stringServices.index(null, "", 1);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.index("aa", null, 1);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.index("aa", "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.index(null, null, 1);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.index(null, "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.index("", null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.index(null, null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
+	public void replaceEmptyNullNull() {
+		assertEquals("", stringServices.replace("", null, null));
 	}
 
 	@Test
-	public void testToLower() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-
-		assertEquals("".toLowerCase(), stringServices.toLower(""));
-		assertEquals("aa".toLowerCase(), stringServices.toLower("aa"));
-		assertEquals("Aa".toLowerCase(), stringServices.toLower("Aa"));
-		assertEquals("aA".toLowerCase(), stringServices.toLower("aA"));
-		assertEquals("AA".toLowerCase(), stringServices.toLower("AA"));
-		assertEquals("A�".toLowerCase(), stringServices.toLower("A�"));
-
-		try {
-			stringServices.toLower(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceEmptyEmptyNull() {
+		assertEquals("", stringServices.replace("", "", null));
 	}
 
 	@Test
-	public void testToLowerFirst() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-
-		assertEquals("", stringServices.toLowerFirst(""));
-		assertEquals("a", stringServices.toLowerFirst("a"));
-		assertEquals("a", stringServices.toLowerFirst("A"));
-		assertEquals("r", stringServices.toLowerFirst("\u0052"));
-		assertEquals("aa", stringServices.toLowerFirst("aa"));
-		assertEquals("aa", stringServices.toLowerFirst("Aa"));
-		assertEquals("aA", stringServices.toLowerFirst("aA"));
-		assertEquals("aA", stringServices.toLowerFirst("AA"));
-		assertEquals("a�", stringServices.toLowerFirst("A�"));
-		assertEquals("rA", stringServices.toLowerFirst("\u0052A"));
-
-		try {
-			stringServices.toLowerFirst(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceEmptyStringNull() {
+		assertEquals("", stringServices.replace("", "string", null));
 	}
 
 	@Test
-	public void testToUpper() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-
-		assertEquals("".toUpperCase(), stringServices.toUpper(""));
-		assertEquals("aa".toUpperCase(), stringServices.toUpper("aa"));
-		assertEquals("Aa".toUpperCase(), stringServices.toUpper("Aa"));
-		assertEquals("aA".toUpperCase(), stringServices.toUpper("aA"));
-		assertEquals("AA".toUpperCase(), stringServices.toUpper("AA"));
-		assertEquals("A�".toUpperCase(), stringServices.toUpper("A�"));
-
-		try {
-			stringServices.toUpper(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceStringEmptyNull() {
+		assertEquals("string", stringServices.replace("string", "", null));
 	}
 
 	@Test
-	public void testToUpperFirst() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-
-		assertEquals("", stringServices.toUpperFirst(""));
-		assertEquals("A", stringServices.toUpperFirst("a"));
-		assertEquals("A", stringServices.toUpperFirst("A"));
-		assertEquals("R", stringServices.toUpperFirst("\u0052"));
-		assertEquals("Aa", stringServices.toUpperFirst("aa"));
-		assertEquals("Aa", stringServices.toUpperFirst("Aa"));
-		assertEquals("AA", stringServices.toUpperFirst("aA"));
-		assertEquals("AA", stringServices.toUpperFirst("AA"));
-		assertEquals("A�", stringServices.toUpperFirst("A�"));
-		assertEquals("RA", stringServices.toUpperFirst("\u0052A"));
-
-		try {
-			stringServices.toUpperFirst(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceNullStringNull() {
+		assertEquals("", stringServices.replace(null, "string", null));
 	}
 
 	@Test
-	public void testAdd() {
-		assertEquals("string1 string2", stringServices.add("string1 ", "string2"));
-		assertEquals("string2", stringServices.add(null, "string2"));
-		assertEquals("string1 ", stringServices.add("string1 ", null));
+	public void replaceStringNullNull() {
+		assertEquals("string", stringServices.replace("string", null, null));
 	}
 
 	@Test
-	public void testIsAlpha() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertTrue(stringServices.isAlpha(""));
-		assertTrue(stringServices.isAlpha("a"));
-		assertTrue(stringServices.isAlpha("aa"));
-		assertTrue(stringServices.isAlpha("\u00E0"));
-		assertFalse(stringServices.isAlpha("a5"));
-		assertFalse(stringServices.isAlpha("5"));
-		assertFalse(stringServices.isAlpha("\u0020"));
-		assertFalse(stringServices.isAlpha("\u0020a"));
-
-		try {
-			stringServices.isAlpha(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceStringStringNull() {
+		assertEquals("", stringServices.replace("string", "string", null));
 	}
 
 	@Test
-	public void testIsAlphaNum() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		assertTrue(stringServices.isAlphaNum("\u00e9\u00e8"));
-		assertTrue(stringServices.isAlphaNum("a"));
-		assertTrue(stringServices.isAlphaNum("aa"));
-		assertTrue(stringServices.isAlphaNum("\u00E0"));
-		assertTrue(stringServices.isAlphaNum("a5"));
-		assertTrue(stringServices.isAlphaNum("5"));
-		assertFalse(stringServices.isAlphaNum("\u0020"));
-		assertFalse(stringServices.isAlphaNum("\u0020a"));
-
-		try {
-			stringServices.isAlphaNum(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceNull() {
+		assertEquals("str", stringServices.replace("string", "ing", null));
 	}
 
 	@Test
-	public void testReplace() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		final String value = "start .*abc.* - .*abc.* end";
-		String search = "(.*?)abc.*( end)";
-		String replace = "$1 -$2";
-		assertEquals(value.replaceFirst(search, replace), stringServices.replace(value, search, replace));
+	public void replaceNullNullEmpty() {
+		assertEquals("", stringServices.replace(null, null, ""));
+	}
 
+	@Test
+	public void replaceNullEmptyEmpty() {
+		assertEquals("", stringServices.replace(null, "", ""));
+	}
+
+	@Test
+	public void replaceEmptyNullEmpty() {
+		assertEquals("", stringServices.replace("", null, ""));
+	}
+
+	@Test
+	public void replaceEmptyEmptyEmpty() {
 		assertEquals("", stringServices.replace("", "", ""));
-
-		try {
-			stringServices.replace(null, "", "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.replace("aa", null, "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.replace("aa", "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace(null, null, "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace(null, "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace("", null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace(null, null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
 	}
 
 	@Test
-	public void testSize() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		assertEquals((Integer)"".length(), stringServices.size(""));
-		assertEquals((Integer)"a".length(), stringServices.size("b"));
-		assertEquals((Integer)"ab".length(), stringServices.size("cd"));
-
-		try {
-			stringServices.size(null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceEmptyStringEmpty() {
+		assertEquals("", stringServices.replace("", "string", ""));
 	}
 
 	@Test
-	public void testReplaceAll() throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		final String value = "start .*abc.* - .*abc.* end";
-		String search = "(.*?)abc";
-		String replace = "$1def";
-		assertEquals(value.replaceAll(search, replace), stringServices.replaceAll(value, search, replace));
-
-		assertEquals("", stringServices.replace("", "", ""));
-
-		try {
-			stringServices.replace(null, "", "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.replace("aa", null, "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-		try {
-			stringServices.replace("aa", "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace(null, null, "");
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace(null, "", null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace("", null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
-
-		try {
-			stringServices.replace(null, null, null);
-			throw new AssertionFailedError();
-		} catch (Exception e) {
-			assertException(e, NullPointerException.class);
-		}
+	public void replaceStringEmptyEmpty() {
+		assertEquals("string", stringServices.replace("string", "", ""));
 	}
 
-	@Test(expected = java.lang.NullPointerException.class)
-	public void substringNullString() {
-		stringServices.substring(null, 1, 1);
+	@Test
+	public void replaceNullStringEmpty() {
+		assertEquals("", stringServices.replace(null, "string", ""));
+	}
+
+	@Test
+	public void replaceStringNullEmpty() {
+		assertEquals("string", stringServices.replace("string", null, ""));
+	}
+
+	@Test
+	public void replaceStringStringEmpty() {
+		assertEquals("", stringServices.replace("string", "string", ""));
+	}
+
+	@Test
+	public void replaceEmpty() {
+		assertEquals("str", stringServices.replace("string", "ing", ""));
+	}
+
+	@Test
+	public void replace() {
+		assertEquals("strremplacement and string", stringServices.replace("string and string", "i[nz]g",
+				"remplacement"));
+	}
+
+	@Test
+	public void replaceAllNullNullNull() {
+		assertEquals("", stringServices.replaceAll(null, null, null));
+	}
+
+	@Test
+	public void replaceAllNullEmptyNull() {
+		assertEquals("", stringServices.replaceAll(null, "", null));
+	}
+
+	@Test
+	public void replaceAllEmptyNullNull() {
+		assertEquals("", stringServices.replaceAll("", null, null));
+	}
+
+	@Test
+	public void replaceAllEmptyEmptyNull() {
+		assertEquals("", stringServices.replaceAll("", "", null));
+	}
+
+	@Test
+	public void replaceAllEmptyStringNull() {
+		assertEquals("", stringServices.replaceAll("", "string", null));
+	}
+
+	@Test
+	public void replaceAllStringEmptyNull() {
+		assertEquals("string", stringServices.replaceAll("string", "", null));
+	}
+
+	@Test
+	public void replaceAllNullStringNull() {
+		assertEquals("", stringServices.replaceAll(null, "string", null));
+	}
+
+	@Test
+	public void replaceAllStringNullNull() {
+		assertEquals("string", stringServices.replaceAll("string", null, null));
+	}
+
+	@Test
+	public void replaceAllStringStringNull() {
+		assertEquals("", stringServices.replaceAll("string", "string", null));
+	}
+
+	@Test
+	public void replaceAllNull() {
+		assertEquals("str", stringServices.replaceAll("string", "ing", null));
+	}
+
+	@Test
+	public void replaceAllNullNullEmpty() {
+		assertEquals("", stringServices.replaceAll(null, null, ""));
+	}
+
+	@Test
+	public void replaceAllNullEmptyEmpty() {
+		assertEquals("", stringServices.replaceAll(null, "", ""));
+	}
+
+	@Test
+	public void replaceAllEmptyNullEmpty() {
+		assertEquals("", stringServices.replaceAll("", null, ""));
+	}
+
+	@Test
+	public void replaceAllEmptyEmptyEmpty() {
+		assertEquals("", stringServices.replaceAll("", "", ""));
+	}
+
+	@Test
+	public void replaceAllEmptyStringEmpty() {
+		assertEquals("", stringServices.replaceAll("", "string", ""));
+	}
+
+	@Test
+	public void replaceAllStringEmptyEmpty() {
+		assertEquals("string", stringServices.replaceAll("string", "", ""));
+	}
+
+	@Test
+	public void replaceAllNullStringEmpty() {
+		assertEquals("", stringServices.replaceAll(null, "string", ""));
+	}
+
+	@Test
+	public void replaceAllStringNullEmpty() {
+		assertEquals("string", stringServices.replaceAll("string", null, ""));
+	}
+
+	@Test
+	public void replaceAllStringStringEmpty() {
+		assertEquals("", stringServices.replaceAll("string", "string", ""));
+	}
+
+	@Test
+	public void replaceAllEmpty() {
+		assertEquals("str", stringServices.replaceAll("string", "ing", ""));
+	}
+
+	@Test
+	public void replaceAll() {
+		assertEquals("strremplacement and strremplacement", stringServices.replaceAll("string and string",
+				"i[nz]g", "remplacement"));
+	}
+
+	@Test
+	public void sizeNull() {
+		assertEquals(Integer.valueOf(0), stringServices.size(null));
+	}
+
+	@Test
+	public void sizeEmpty() {
+		assertEquals(Integer.valueOf(0), stringServices.size(""));
+	}
+
+	@Test
+	public void size() {
+		assertEquals(Integer.valueOf(5), stringServices.size("acbde"));
+	}
+
+	@Test
+	public void startsWithNullNull() {
+		assertEquals(true, stringServices.startsWith(null, null));
+	}
+
+	@Test
+	public void startsWithNullEmpty() {
+		assertEquals(true, stringServices.startsWith(null, ""));
+	}
+
+	@Test
+	public void startsWithEmptyNull() {
+		assertEquals(true, stringServices.startsWith("", null));
+	}
+
+	@Test
+	public void startsWithEmptyEmpty() {
+		assertEquals(true, stringServices.startsWith("", ""));
+	}
+
+	@Test
+	public void startsWithEmptyString() {
+		assertEquals(false, stringServices.startsWith("", "string"));
+	}
+
+	@Test
+	public void startsWithStringEmpty() {
+		assertEquals(true, stringServices.startsWith("string", ""));
+	}
+
+	@Test
+	public void startsWithNullString() {
+		assertEquals(false, stringServices.startsWith(null, "string"));
+	}
+
+	@Test
+	public void startsWithStringNull() {
+		assertEquals(true, stringServices.startsWith("string", null));
+	}
+
+	@Test
+	public void startsWithStringString() {
+		assertEquals(true, stringServices.startsWith("string", "string"));
+	}
+
+	@Test
+	public void startsWithFalse() {
+		assertEquals(false, stringServices.startsWith("astring", "string"));
+	}
+
+	@Test
+	public void strcmpNullNull() {
+		assertEquals(Integer.valueOf(0), stringServices.strcmp(null, null));
+	}
+
+	@Test
+	public void strcmpNullEmpty() {
+		assertEquals(Integer.valueOf(0), stringServices.strcmp(null, ""));
+	}
+
+	@Test
+	public void strcmpEmptyNull() {
+		assertEquals(Integer.valueOf(0), stringServices.strcmp("", null));
+	}
+
+	@Test
+	public void strcmpEmptyEmpty() {
+		assertEquals(Integer.valueOf(0), stringServices.strcmp("", ""));
+	}
+
+	@Test
+	public void strcmpEmptyString() {
+		assertEquals(Integer.valueOf(-6), stringServices.strcmp("", "string"));
+	}
+
+	@Test
+	public void strcmpStringEmpty() {
+		assertEquals(Integer.valueOf(6), stringServices.strcmp("string", ""));
+	}
+
+	@Test
+	public void strcmpNullString() {
+		assertEquals(Integer.valueOf(-6), stringServices.strcmp(null, "string"));
+	}
+
+	@Test
+	public void strcmpStringNull() {
+		assertEquals(Integer.valueOf(6), stringServices.strcmp("string", null));
+	}
+
+	@Test
+	public void strcmpZero() {
+		assertEquals(Integer.valueOf(0), stringServices.strcmp("string", "string"));
+	}
+
+	@Test
+	public void strcmp() {
+		assertEquals(Integer.valueOf(-18), stringServices.strcmp("astring", "string"));
+	}
+
+	@Test
+	public void strstrNullNull() {
+		assertEquals(true, stringServices.strstr(null, null));
+	}
+
+	@Test
+	public void strstrNullEmpty() {
+		assertEquals(true, stringServices.strstr(null, ""));
+	}
+
+	@Test
+	public void strstrEmptyNull() {
+		assertEquals(true, stringServices.strstr("", null));
+	}
+
+	@Test
+	public void strstrEmptyEmpty() {
+		assertEquals(true, stringServices.strstr("", ""));
+	}
+
+	@Test
+	public void strstrEmptyString() {
+		assertEquals(false, stringServices.strstr("", "string"));
+	}
+
+	@Test
+	public void strstrStringEmpty() {
+		assertEquals(true, stringServices.strstr("string", ""));
+	}
+
+	@Test
+	public void strstrNullString() {
+		assertEquals(false, stringServices.strstr(null, "string"));
+	}
+
+	@Test
+	public void strstrStringNull() {
+		assertEquals(true, stringServices.strstr("string", null));
+	}
+
+	@Test
+	public void strstrStringString() {
+		assertEquals(true, stringServices.strstr("string", "string"));
+	}
+
+	@Test
+	public void strstrFalse() {
+		assertEquals(false, stringServices.strstr("astrrng", "string"));
+	}
+
+	@Test
+	public void substituteNullNullNull() {
+		assertEquals("", stringServices.substitute(null, null, null));
+	}
+
+	@Test
+	public void substituteNullEmptyNull() {
+		assertEquals("", stringServices.substitute(null, "", null));
+	}
+
+	@Test
+	public void substituteEmptyNullNull() {
+		assertEquals("", stringServices.substitute("", null, null));
+	}
+
+	@Test
+	public void substituteEmptyEmptyNull() {
+		assertEquals("", stringServices.substitute("", "", null));
+	}
+
+	@Test
+	public void substituteEmptyStringNull() {
+		assertEquals("", stringServices.substitute("", "string", null));
+	}
+
+	@Test
+	public void substituteStringEmptyNull() {
+		assertEquals("string", stringServices.substitute("string", "", null));
+	}
+
+	@Test
+	public void substituteNullStringNull() {
+		assertEquals("", stringServices.substitute(null, "string", null));
+	}
+
+	@Test
+	public void substituteStringNullNull() {
+		assertEquals("string", stringServices.substitute("string", null, null));
+	}
+
+	@Test
+	public void substituteStringStringNull() {
+		assertEquals("", stringServices.substitute("string", "string", null));
+	}
+
+	@Test
+	public void substituteNull() {
+		assertEquals("str", stringServices.substitute("string", "ing", null));
+	}
+
+	@Test
+	public void substituteNullNullEmpty() {
+		assertEquals("", stringServices.substitute(null, null, ""));
+	}
+
+	@Test
+	public void substituteNullEmptyEmpty() {
+		assertEquals("", stringServices.substitute(null, "", ""));
+	}
+
+	@Test
+	public void substituteEmptyNullEmpty() {
+		assertEquals("", stringServices.substitute("", null, ""));
+	}
+
+	@Test
+	public void substituteEmptyEmptyEmpty() {
+		assertEquals("", stringServices.substitute("", "", ""));
+	}
+
+	@Test
+	public void substituteEmptyStringEmpty() {
+		assertEquals("", stringServices.substitute("", "string", ""));
+	}
+
+	@Test
+	public void substituteStringEmptyEmpty() {
+		assertEquals("string", stringServices.substitute("string", "", ""));
+	}
+
+	@Test
+	public void substituteNullStringEmpty() {
+		assertEquals("", stringServices.substitute(null, "string", ""));
+	}
+
+	@Test
+	public void substituteStringNullEmpty() {
+		assertEquals("string", stringServices.substitute("string", null, ""));
+	}
+
+	@Test
+	public void substituteStringStringEmpty() {
+		assertEquals("", stringServices.substitute("string", "string", ""));
+	}
+
+	@Test
+	public void substituteEmpty() {
+		assertEquals("str", stringServices.substitute("string", "ing", ""));
+	}
+
+	@Test
+	public void substitute() {
+		assertEquals("strremplacement and string", stringServices.substitute("string and string", "ing",
+				"remplacement"));
+	}
+
+	@Test
+	public void substituteAllNullNullNull() {
+		assertEquals("", stringServices.substituteAll(null, null, null));
+	}
+
+	@Test
+	public void substituteAllNullEmptyNull() {
+		assertEquals("", stringServices.substituteAll(null, "", null));
+	}
+
+	@Test
+	public void substituteAllEmptyNullNull() {
+		assertEquals("", stringServices.substituteAll("", null, null));
+	}
+
+	@Test
+	public void substituteAllEmptyEmptyNull() {
+		assertEquals("", stringServices.substituteAll("", "", null));
+	}
+
+	@Test
+	public void substituteAllEmptyStringNull() {
+		assertEquals("", stringServices.substituteAll("", "string", null));
+	}
+
+	@Test
+	public void substituteAllStringEmptyNull() {
+		assertEquals("string", stringServices.substituteAll("string", "", null));
+	}
+
+	@Test
+	public void substituteAllNullStringNull() {
+		assertEquals("", stringServices.substituteAll(null, "string", null));
+	}
+
+	@Test
+	public void substituteAllStringNullNull() {
+		assertEquals("string", stringServices.substituteAll("string", null, null));
+	}
+
+	@Test
+	public void substituteAllStringStringNull() {
+		assertEquals("", stringServices.substituteAll("string", "string", null));
+	}
+
+	@Test
+	public void substituteAllNull() {
+		assertEquals("str", stringServices.substituteAll("string", "ing", null));
+	}
+
+	@Test
+	public void substituteAllNullNullEmpty() {
+		assertEquals("", stringServices.substituteAll(null, null, ""));
+	}
+
+	@Test
+	public void substituteAllNullEmptyEmpty() {
+		assertEquals("", stringServices.substituteAll(null, "", ""));
+	}
+
+	@Test
+	public void substituteAllEmptyNullEmpty() {
+		assertEquals("", stringServices.substituteAll("", null, ""));
+	}
+
+	@Test
+	public void substituteAllEmptyEmptyEmpty() {
+		assertEquals("", stringServices.substituteAll("", "", ""));
+	}
+
+	@Test
+	public void substituteAllEmptyStringEmpty() {
+		assertEquals("", stringServices.substituteAll("", "string", ""));
+	}
+
+	@Test
+	public void substituteAllStringEmptyEmpty() {
+		assertEquals("string", stringServices.substituteAll("string", "", ""));
+	}
+
+	@Test
+	public void substituteAllNullStringEmpty() {
+		assertEquals("", stringServices.substituteAll(null, "string", ""));
+	}
+
+	@Test
+	public void substituteAllStringNullEmpty() {
+		assertEquals("string", stringServices.substituteAll("string", null, ""));
+	}
+
+	@Test
+	public void substituteAllStringStringEmpty() {
+		assertEquals("", stringServices.substituteAll("string", "string", ""));
+	}
+
+	@Test
+	public void substituteAllEmpty() {
+		assertEquals("str", stringServices.substituteAll("string", "ing", ""));
+	}
+
+	@Test
+	public void substituteAll() {
+		assertEquals("strremplacement and strremplacement", stringServices.substituteAll("string and string",
+				"ing", "remplacement"));
 	}
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
@@ -777,6 +1306,36 @@ public class StringServicesTest extends AbstractServicesTest {
 	}
 
 	@Test
+	public void substringNullNull() {
+		assertEquals(null, stringServices.substring(null, null));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void substringEmptyNull() {
+		assertEquals("", stringServices.substring("", null));
+	}
+
+	@Test
+	public void substringNullNullNull() {
+		assertEquals(null, stringServices.substring(null, null, null));
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void substringEmptyNullNull() {
+		assertEquals("", stringServices.substring("", null, null));
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void substringNegative() {
+		assertEquals("", stringServices.substring("", -100, -10));
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void substringOverRange() {
+		assertEquals("", stringServices.substring("", 10, 100));
+	}
+
+	@Test
 	public void substring() {
 		String result = stringServices.substring("some string", 4, 7);
 		assertEquals("some string".substring(3, 7), result);
@@ -786,19 +1345,19 @@ public class StringServicesTest extends AbstractServicesTest {
 	}
 
 	@Test
-	public void substring_1() {
+	public void substringUpperBound() {
 		String result = stringServices.substring("substring operation", 11, 19);
 		assertEquals("operation", result);
 	}
 
 	@Test
-	public void substring_2() {
+	public void substringLowerBound() {
 		String result = stringServices.substring("substring operation", 1, 1);
 		assertEquals("s", result);
 	}
 
 	@Test(expected = java.lang.NumberFormatException.class)
-	public void toIntegerNullString() {
+	public void toIntegerNull() {
 		stringServices.toInteger(null);
 	}
 
@@ -823,9 +1382,105 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(4), result);
 	}
 
-	@Test(expected = java.lang.NullPointerException.class)
-	public void toRealNullString() {
+	@Test
+	public void tokenizeSpaceNull() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize(null).toArray());
+	}
+
+	@Test
+	public void tokenizeSpaceEmpty() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize("").toArray());
+	}
+
+	@Test
+	public void tokenizeSpace() {
+		assertArrayEquals(new String[] {"a", "b", "c", "d" }, stringServices.tokenize("a b c d").toArray());
+	}
+
+	@Test
+	public void tokenizeNullNull() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize(null, null).toArray());
+	}
+
+	@Test
+	public void tokenizeNullEmpty() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize(null, "").toArray());
+	}
+
+	@Test
+	public void tokenizeEmptyNull() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize("", null).toArray());
+	}
+
+	@Test
+	public void tokenizeEmptyEmpty() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize("", "").toArray());
+	}
+
+	@Test
+	public void tokenizeEmptyString() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize("", "string").toArray());
+	}
+
+	@Test
+	public void tokenizeStringEmpty() {
+		assertArrayEquals(new String[] {"string" }, stringServices.tokenize("string", "").toArray());
+	}
+
+	@Test
+	public void tokenizeNullString() {
+		assertArrayEquals(new String[] {}, stringServices.tokenize(null, "string").toArray());
+	}
+
+	@Test
+	public void tokenizeStringNull() {
+		assertArrayEquals(new String[] {"string" }, stringServices.tokenize("string", null).toArray());
+	}
+
+	@Test
+	public void tokenizeStringString() {
+		assertArrayEquals(new String[] {"a", "b", "c", "d" }, stringServices.tokenize("a|b|c|d", "|")
+				.toArray());
+	}
+
+	@Test
+	public void toLowerNull() {
+		assertEquals(null, stringServices.toLower(null));
+	}
+
+	@Test
+	public void toLowerEmpty() {
+		assertEquals("", stringServices.toLower(""));
+	}
+
+	@Test
+	public void toLower() {
+		assertEquals("abcd", stringServices.toLower("ABCD"));
+	}
+
+	@Test
+	public void toLowerNullFirst() {
+		assertEquals(null, stringServices.toLowerFirst(null));
+	}
+
+	@Test
+	public void toLowerEmptyFirst() {
+		assertEquals("", stringServices.toLowerFirst(""));
+	}
+
+	@Test
+	public void toLowerFirst() {
+		assertEquals("aBCD", stringServices.toLowerFirst("ABCD"));
+	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toRealNull() {
 		stringServices.toReal(null);
+	}
+
+	@Test(expected = java.lang.NumberFormatException.class)
+	public void toRealEmpty() {
+		stringServices.toReal("");
 	}
 
 	@Test
@@ -845,105 +1500,49 @@ public class StringServicesTest extends AbstractServicesTest {
 		assertEquals(Double.valueOf(3.14), result);
 	}
 
-	@Test(expected = java.lang.NullPointerException.class)
-	public void strcmpNullNull() {
-		stringServices.strcmp(null, null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void strcmpStringNull() {
-		stringServices.strcmp("", null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void strcmpNullString() {
-		stringServices.strcmp(null, "");
+	@Test
+	public void toUpperNull() {
+		assertEquals(null, stringServices.toUpper(null));
 	}
 
 	@Test
-	public void strcmp() {
-		assertEquals(Integer.valueOf(10), stringServices.strcmp("strcmp operation", "strcmp"));
-		assertEquals(Integer.valueOf(0), stringServices.strcmp("strcmp operation", "strcmp operation"));
-		assertEquals(Integer.valueOf(-17), stringServices.strcmp("strcmp operation", "strtok"));
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void strstrNullNull() {
-		stringServices.strstr(null, null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void strstrStringNull() {
-		stringServices.strstr("", null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void strstrNullString() {
-		stringServices.strstr(null, "");
+	public void toUpperEmpty() {
+		assertEquals("", stringServices.toUpper(""));
 	}
 
 	@Test
-	public void strstr() {
-		assertEquals(Boolean.TRUE, stringServices.strstr("strstr operation", "ope"));
-		assertEquals(Boolean.FALSE, stringServices.strstr("strstr operation", "false"));
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void substituteNullNullNull() {
-		stringServices.substitute(null, null, null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void substituteStringNullNull() {
-		stringServices.substitute("", null, null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void substituteNullStringNull() {
-		stringServices.substitute(null, "", null);
-	}
-
-	@Test(expected = java.lang.NullPointerException.class)
-	public void substituteNullNullString() {
-		stringServices.substitute(null, null, "");
+	public void toUpper() {
+		assertEquals("ABCD", stringServices.toUpper("abcd"));
 	}
 
 	@Test
-	public void substitute() {
-		assertEquals("subsTitute operation", stringServices.substitute("substitute operation", "t", "T"));
-		assertEquals("foobar foobar foobar", stringServices.substitute("foobar foobar foobar", "t", "T"));
-		assertEquals("fo.bar f..bar f..bar", stringServices.substitute("f..bar f..bar f..bar", ".", "o"));
+	public void toUpperNullFirst() {
+		assertEquals(null, stringServices.toUpperFirst(null));
 	}
 
 	@Test
-	public void substituteAll() {
-		assertEquals("subsTiTuTe operaTion", stringServices.substituteAll("substitute operation", "t", "T"));
-		assertEquals("foobar foobar foobar", stringServices.substituteAll("foobar foobar foobar", "t", "T"));
-		assertEquals("foobar foobar foobar", stringServices.substituteAll("f..bar f..bar f..bar", ".", "o"));
+	public void toUpperEmptyFirst() {
+		assertEquals("", stringServices.toUpperFirst(""));
+	}
+
+	@Test
+	public void toUpperFirst() {
+		assertEquals("Abcd", stringServices.toUpperFirst("abcd"));
 	}
 
 	@Test
 	public void trimNull() {
-		assertEquals("", stringServices.trim(null));
+		assertEquals(null, stringServices.trim(null));
 	}
 
 	@Test
-	public void trimEmptyString() {
+	public void trimEmpty() {
 		assertEquals("", stringServices.trim(""));
 	}
 
 	@Test
 	public void trim() {
 		assertEquals("azerty", stringServices.trim("\n\t    \razerty \t\t"));
-	}
-
-	@Test
-	public void tokenize() {
-		assertArrayEquals(new String[] {"a", "b", "c", "d" }, stringServices.tokenize("a b c d").toArray());
-		assertArrayEquals(new String[] {"Hello", "World" }, stringServices.tokenize("Hello World").toArray());
-
-		assertArrayEquals(new String[] {"Test", "Value" }, stringServices.tokenize("Test-Value", "-")
-				.toArray());
 	}
 
 }
