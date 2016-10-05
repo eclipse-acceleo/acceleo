@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl.completion;
 
-import org.eclipse.acceleo.query.runtime.impl.completion.EOperationCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.EOperationServiceCompletionProposal;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class EOperationCompletionProposalTests {
 	@Test
 	public void testCreateEClassEOperationCompletionProposal() {
 		EOperation createEClassEOperation = EcorePackage.eINSTANCE.getEFactory__Create__EClass();
-		EOperationCompletionProposal eOperationCompletionProposal = new EOperationCompletionProposal(
+		EOperationServiceCompletionProposal eOperationCompletionProposal = new EOperationServiceCompletionProposal(
 				createEClassEOperation);
 
 		assertEquals("create(eClass: ecore::EClass): ecore::EObject", eOperationCompletionProposal.toString());
@@ -35,7 +35,7 @@ public class EOperationCompletionProposalTests {
 	@Test
 	public void getCursorOffest() {
 		EOperation createEClassEOperation = EcorePackage.eINSTANCE.getEFactory__Create__EClass();
-		EOperationCompletionProposal eOperationCompletionProposal = new EOperationCompletionProposal(
+		EOperationServiceCompletionProposal eOperationCompletionProposal = new EOperationServiceCompletionProposal(
 				createEClassEOperation);
 
 		assertEquals(7, eOperationCompletionProposal.getCursorOffset());
@@ -44,7 +44,7 @@ public class EOperationCompletionProposalTests {
 	@Test
 	public void getDescription() {
 		EOperation createEClassEOperation = EcorePackage.eINSTANCE.getEFactory__Create__EClass();
-		EOperationCompletionProposal eOperationCompletionProposal = new EOperationCompletionProposal(
+		EOperationServiceCompletionProposal eOperationCompletionProposal = new EOperationServiceCompletionProposal(
 				createEClassEOperation);
 
 		assertEquals("EOperation named create in EFactory(http://www.eclipse.org/emf/2002/Ecore)",
@@ -54,7 +54,7 @@ public class EOperationCompletionProposalTests {
 	@Test
 	public void getObject() {
 		EOperation createEClassEOperation = EcorePackage.eINSTANCE.getEFactory__Create__EClass();
-		EOperationCompletionProposal eOperationCompletionProposal = new EOperationCompletionProposal(
+		EOperationServiceCompletionProposal eOperationCompletionProposal = new EOperationServiceCompletionProposal(
 				createEClassEOperation);
 
 		assertEquals(createEClassEOperation, eOperationCompletionProposal.getObject());

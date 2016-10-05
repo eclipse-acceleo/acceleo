@@ -2,9 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.6.3.qualifier
+Bundle-Version: 3.6.5.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.ui.capabilities;singleton:=true
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.ui.capabilities";tag=R3_3_0
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui;bundle-version="3.4.0"

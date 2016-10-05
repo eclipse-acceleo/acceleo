@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import com.google.common.collect.Sets;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,10 +32,6 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class QueryCompletionEngine implements IQueryCompletionEngine {
-	/**
-	 * the set of keywords of the language.
-	 */
-	private static final Set<String> KEYWORD_SET = Sets.newHashSet("if", "then", "else", "endif");
 
 	/**
 	 * The environment containing all necessary information and used to execute query services.
@@ -67,7 +61,8 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 
 		final AstCompletor completor = new AstCompletor(new CompletionServices(queryEnvironment));
 		if (offset < 0 || (expression != null && offset > expression.length())) {
-			throw new IllegalArgumentException("offset must be in the range of the given expression.");
+			throw new IllegalArgumentException("offset (" + offset
+					+ ") must be in the range of the given expression: \"" + expression + "\"");
 		}
 		final String prefix = getPrefix(expression, offset);
 		final String remaining = getRemaining(expression, offset);
@@ -138,11 +133,8 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			}
 			result = expression.substring(start, offset);
 		}
-		if (KEYWORD_SET.contains(result)) {
-			return "";
-		} else {
-			return result;
-		}
+
+		return result;
 	}
 
 	/**

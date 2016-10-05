@@ -45,7 +45,7 @@ public abstract class TestValidationQModel {
 			underTest = new AcceleoQueryInterpreter(q);
 			underTest.compileQuery(q);
 			QueryValidationResult actualResult = underTest.validateQuery(q);
-			QueryResultAssert.printValidation(q, actualResult);
+			// QueryResultAssert.printValidation(q, actualResult);
 			QueryResultAssert.assertEquivalentValidation(qExpect.getExpectedResult(), actualResult);
 		}
 	}

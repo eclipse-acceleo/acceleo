@@ -128,52 +128,6 @@ public interface AstPackage extends EPackage {
 	int VAR_REF_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
-	 * <em>Feature Access</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
-	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getFeatureAccess()
-	 * @generated
-	 */
-	int FEATURE_ACCESS = 2;
-
-	/**
-	 * The feature id for the '<em><b>Feature Name</b></em>' attribute. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ACCESS__FEATURE_NAME = EXPRESSION_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ACCESS__TARGET = EXPRESSION_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Feature Access</em>' class. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ACCESS_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 2;
-
-	/**
-	 * The number of operations of the '<em>Feature Access</em>' class. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ACCESS_OPERATION_COUNT = EXPRESSION_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.CallImpl <em>Call</em>}' class.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -181,7 +135,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCall()
 	 * @generated
 	 */
-	int CALL = 3;
+	int CALL = 2;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -234,7 +188,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLiteral()
 	 * @generated
 	 */
-	int LITERAL = 4;
+	int LITERAL = 3;
 
 	/**
 	 * The number of structural features of the '<em>Literal</em>' class. <!-- begin-user-doc --> <!--
@@ -261,7 +215,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getIntegerLiteral()
 	 * @generated
 	 */
-	int INTEGER_LITERAL = 5;
+	int INTEGER_LITERAL = 4;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -297,7 +251,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getRealLiteral()
 	 * @generated
 	 */
-	int REAL_LITERAL = 6;
+	int REAL_LITERAL = 5;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -333,7 +287,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getStringLiteral()
 	 * @generated
 	 */
-	int STRING_LITERAL = 7;
+	int STRING_LITERAL = 6;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -369,7 +323,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBooleanLiteral()
 	 * @generated
 	 */
-	int BOOLEAN_LITERAL = 8;
+	int BOOLEAN_LITERAL = 7;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -405,7 +359,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getEnumLiteral()
 	 * @generated
 	 */
-	int ENUM_LITERAL = 9;
+	int ENUM_LITERAL = 8;
 
 	/**
 	 * The feature id for the '<em><b>Literal</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -442,7 +396,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getTypeLiteral()
 	 * @generated
 	 */
-	int TYPE_LITERAL = 10;
+	int TYPE_LITERAL = 9;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -478,7 +432,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getTypeSetLiteral()
 	 * @generated
 	 */
-	int TYPE_SET_LITERAL = 11;
+	int TYPE_SET_LITERAL = 10;
 
 	/**
 	 * The feature id for the '<em><b>Types</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -515,7 +469,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCollectionTypeLiteral()
 	 * @generated
 	 */
-	int COLLECTION_TYPE_LITERAL = 12;
+	int COLLECTION_TYPE_LITERAL = 11;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -560,7 +514,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLambda()
 	 * @generated
 	 */
-	int LAMBDA = 13;
+	int LAMBDA = 12;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -605,7 +559,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getNullLiteral()
 	 * @generated
 	 */
-	int NULL_LITERAL = 14;
+	int NULL_LITERAL = 13;
 
 	/**
 	 * The number of structural features of the '<em>Null Literal</em>' class. <!-- begin-user-doc --> <!--
@@ -633,7 +587,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getSetInExtensionLiteral()
 	 * @generated
 	 */
-	int SET_IN_EXTENSION_LITERAL = 15;
+	int SET_IN_EXTENSION_LITERAL = 14;
 
 	/**
 	 * The feature id for the '<em><b>Values</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -670,7 +624,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getSequenceInExtensionLiteral()
 	 * @generated
 	 */
-	int SEQUENCE_IN_EXTENSION_LITERAL = 16;
+	int SEQUENCE_IN_EXTENSION_LITERAL = 15;
 
 	/**
 	 * The feature id for the '<em><b>Values</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -707,7 +661,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getVariableDeclaration()
 	 * @generated
 	 */
-	int VARIABLE_DECLARATION = 17;
+	int VARIABLE_DECLARATION = 16;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -761,7 +715,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getError()
 	 * @generated
 	 */
-	int ERROR = 18;
+	int ERROR = 17;
 
 	/**
 	 * The number of structural features of the '<em>Error</em>' class. <!-- begin-user-doc --> <!--
@@ -788,7 +742,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorExpression()
 	 * @generated
 	 */
-	int ERROR_EXPRESSION = 19;
+	int ERROR_EXPRESSION = 18;
 
 	/**
 	 * The number of structural features of the '<em>Error Expression</em>' class. <!-- begin-user-doc -->
@@ -816,7 +770,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorTypeLiteral()
 	 * @generated
 	 */
-	int ERROR_TYPE_LITERAL = 20;
+	int ERROR_TYPE_LITERAL = 19;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -870,7 +824,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorEnumLiteral()
 	 * @generated
 	 */
-	int ERROR_ENUM_LITERAL = 21;
+	int ERROR_ENUM_LITERAL = 20;
 
 	/**
 	 * The feature id for the '<em><b>Literal</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -918,51 +872,14 @@ public interface AstPackage extends EPackage {
 	int ERROR_ENUM_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
-	 * <em>Error Feature Access Or Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
-	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorFeatureAccessOrCall()
-	 * @generated
-	 */
-	int ERROR_FEATURE_ACCESS_OR_CALL = 22;
-
-	/**
-	 * The feature id for the '<em><b>Target</b></em>' containment reference. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FEATURE_ACCESS_OR_CALL__TARGET = ERROR_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Error Feature Access Or Call</em>' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FEATURE_ACCESS_OR_CALL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of operations of the '<em>Error Feature Access Or Call</em>' class. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FEATURE_ACCESS_OR_CALL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
-	 * <em>Error Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl <em>Error Call</em>
+	 * }' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCall()
 	 * @generated
 	 */
-	int ERROR_CALL = 23;
+	int ERROR_CALL = 21;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1025,7 +942,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
 	 * @generated
 	 */
-	int ERROR_VARIABLE_DECLARATION = 24;
+	int ERROR_VARIABLE_DECLARATION = 22;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1079,7 +996,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorStringLiteral()
 	 * @generated
 	 */
-	int ERROR_STRING_LITERAL = 25;
+	int ERROR_STRING_LITERAL = 23;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1115,7 +1032,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorConditional()
 	 * @generated
 	 */
-	int ERROR_CONDITIONAL = 26;
+	int ERROR_CONDITIONAL = 24;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1170,7 +1087,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 27;
+	int BINDING = 25;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1223,7 +1140,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorBinding()
 	 * @generated
 	 */
-	int ERROR_BINDING = 28;
+	int ERROR_BINDING = 26;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1277,7 +1194,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
 	 * @generated
 	 */
-	int LET = 29;
+	int LET = 27;
 
 	/**
 	 * The feature id for the '<em><b>Bindings</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -1322,7 +1239,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
 	 * @generated
 	 */
-	int CONDITIONAL = 30;
+	int CONDITIONAL = 28;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1377,7 +1294,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getOr()
 	 * @generated
 	 */
-	int OR = 31;
+	int OR = 29;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1430,7 +1347,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAnd()
 	 * @generated
 	 */
-	int AND = 32;
+	int AND = 30;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1483,7 +1400,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getImplies()
 	 * @generated
 	 */
-	int IMPLIES = 33;
+	int IMPLIES = 31;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1536,7 +1453,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 34;
+	int CALL_TYPE = 32;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1546,7 +1463,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 35;
+	int OBJECT_TYPE = 33;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -1578,40 +1495,6 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getVarRef_VariableName();
-
-	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.FeatureAccess
-	 * <em>Feature Access</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for class '<em>Feature Access</em>'.
-	 * @see org.eclipse.acceleo.query.ast.FeatureAccess
-	 * @generated
-	 */
-	EClass getFeatureAccess();
-
-	/**
-	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.ast.FeatureAccess#getFeatureName <em>Feature Name</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Feature Name</em>'.
-	 * @see org.eclipse.acceleo.query.ast.FeatureAccess#getFeatureName()
-	 * @see #getFeatureAccess()
-	 * @generated
-	 */
-	EAttribute getFeatureAccess_FeatureName();
-
-	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.FeatureAccess#getTarget <em>Target</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the containment reference '<em>Target</em>'.
-	 * @see org.eclipse.acceleo.query.ast.FeatureAccess#getTarget()
-	 * @see #getFeatureAccess()
-	 * @generated
-	 */
-	EReference getFeatureAccess_Target();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Call <em>Call</em>}'. <!--
@@ -1678,9 +1561,8 @@ public interface AstPackage extends EPackage {
 	EClass getIntegerLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.ast.IntegerLiteral#getValue <em>Value</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.IntegerLiteral#getValue
+	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.IntegerLiteral#getValue()
@@ -2061,28 +1943,6 @@ public interface AstPackage extends EPackage {
 	EAttribute getErrorEnumLiteral_MissingColon();
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
-	 * <em>Error Feature Access Or Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for class '<em>Error Feature Access Or Call</em>'.
-	 * @see org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
-	 * @generated
-	 */
-	EClass getErrorFeatureAccessOrCall();
-
-	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall#getTarget <em>Target</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the containment reference '<em>Target</em>'.
-	 * @see org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall#getTarget()
-	 * @see #getErrorFeatureAccessOrCall()
-	 * @generated
-	 */
-	EReference getErrorFeatureAccessOrCall_Target();
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorCall <em>Error Call</em>}
 	 * '. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2094,8 +1954,8 @@ public interface AstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis
-	 * <em>Missing End Parenthesis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis <em>Missing End Parenthesis</em>
+	 * }'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Missing End Parenthesis</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis()
@@ -2212,9 +2072,8 @@ public interface AstPackage extends EPackage {
 	EReference getLet_Bindings();
 
 	/**
-	 * Returns the meta object for the containment reference '
-	 * {@link org.eclipse.acceleo.query.ast.Let#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Let#getBody
+	 * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Body</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Let#getBody()
@@ -2370,32 +2229,6 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute VAR_REF__VARIABLE_NAME = eINSTANCE.getVarRef_VariableName();
-
-		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
-		 * <em>Feature Access</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @see org.eclipse.acceleo.query.ast.impl.FeatureAccessImpl
-		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getFeatureAccess()
-		 * @generated
-		 */
-		EClass FEATURE_ACCESS = eINSTANCE.getFeatureAccess();
-
-		/**
-		 * The meta object literal for the '<em><b>Feature Name</b></em>' attribute feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute FEATURE_ACCESS__FEATURE_NAME = eINSTANCE.getFeatureAccess_FeatureName();
-
-		/**
-		 * The meta object literal for the '<em><b>Target</b></em>' containment reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EReference FEATURE_ACCESS__TARGET = eINSTANCE.getFeatureAccess_Target();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.CallImpl <em>Call</em>}'
@@ -2765,25 +2598,6 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ERROR_ENUM_LITERAL__MISSING_COLON = eINSTANCE.getErrorEnumLiteral_MissingColon();
-
-		/**
-		 * The meta object literal for the '
-		 * {@link org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
-		 * <em>Error Feature Access Or Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @see org.eclipse.acceleo.query.ast.impl.ErrorFeatureAccessOrCallImpl
-		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorFeatureAccessOrCall()
-		 * @generated
-		 */
-		EClass ERROR_FEATURE_ACCESS_OR_CALL = eINSTANCE.getErrorFeatureAccessOrCall();
-
-		/**
-		 * The meta object literal for the '<em><b>Target</b></em>' containment reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EReference ERROR_FEATURE_ACCESS_OR_CALL__TARGET = eINSTANCE.getErrorFeatureAccessOrCall_Target();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl

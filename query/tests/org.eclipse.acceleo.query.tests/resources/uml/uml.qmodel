@@ -6,9 +6,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -18,9 +16,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="instance" value="//@modelElements.1"/>
@@ -31,9 +27,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -43,9 +37,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -55,9 +47,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -67,9 +57,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -79,9 +67,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -91,9 +77,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -103,9 +87,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -115,9 +97,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="source" value="//@modelElements.1"/>
@@ -129,9 +109,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -141,9 +119,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -153,18 +129,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=MultiplicityElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Slot is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameter is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameterSubstitution is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateSignature is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateableElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateBinding is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=LinkEndData is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EAnnotation is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -174,18 +139,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=MultiplicityElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Slot is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameter is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateParameterSubstitution is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateSignature is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateableElement is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=TemplateBinding is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=LinkEndData is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
-        <validationMessages severity="WARNING" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=EAnnotation is not compatible with EClassifierLiteral=NamedElement" startPosition="51" endPosition="80"/>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -195,9 +149,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -208,9 +160,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -221,9 +171,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -234,7 +182,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -245,7 +193,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Class" startPosition="5" endPosition="33"/>
       </expectedResult>
     </expectations>
@@ -257,7 +205,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -268,7 +216,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -279,7 +227,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Class" startPosition="1" endPosition="29"/>
       </expectedResult>
     </expectations>
@@ -291,7 +239,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Class" startPosition="1" endPosition="29"/>
       </expectedResult>
     </expectations>
@@ -303,7 +251,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when source (EClassifier=ActivityPartition) is type of EClassifierLiteral=Property" startPosition="1" endPosition="34"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when source (EClassifier=ActivityPartition) is kind of EClassifierLiteral=StructuredClassifier" startPosition="92" endPosition="137"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when source (EClassifier=ActivityPartition) is kind of EClassifierLiteral=Port" startPosition="195" endPosition="224"/>
@@ -319,7 +267,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=ActivityPartition) is type of EClassifierLiteral=Property" startPosition="1" endPosition="34"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=ActivityPartition) is kind of EClassifierLiteral=StructuredClassifier" startPosition="92" endPosition="137"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=ActivityPartition) is kind of EClassifierLiteral=Port" startPosition="195" endPosition="224"/>
@@ -335,7 +283,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -345,7 +293,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -367,7 +315,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -628,7 +576,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -648,7 +596,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -658,7 +606,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -668,7 +616,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
@@ -679,7 +627,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
@@ -690,7 +638,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.4"/>
@@ -723,7 +671,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Set(EClassifier=Type)</possibleTypes>
+        <possibleTypes>Set(org.eclipse.uml2.uml.Type)</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -761,7 +709,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when container (EClassifier=Class) is not kind of EClassifierLiteral=StructuredClassifier" startPosition="40" endPosition="88"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when container (EClassifier=Class) is kind of EClassifierLiteral=Property" endPosition="36"/>
       </expectedResult>
@@ -826,7 +774,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="class" value="//@modelElements.4"/>
@@ -876,9 +824,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=PackageableElement)</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Class" startPosition="33" endPosition="58"/>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Interface" startPosition="62" endPosition="91"/>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=Interface)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -888,7 +835,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -898,9 +845,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -926,7 +871,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -936,7 +881,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EIntegerObject</possibleTypes>
+        <possibleTypes>java.lang.Integer</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -990,9 +935,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1181,9 +1124,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1193,7 +1134,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=ActivityPartition) is type of EClassifierLiteral=Operation" endPosition="32"/>
       </expectedResult>
     </expectations>
@@ -1230,9 +1171,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1242,9 +1181,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1256,7 +1193,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=Type</possibleTypes>
+        <possibleTypes>org.eclipse.uml2.uml.Type</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -1329,7 +1266,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
+        <possibleTypes>Sequence(org.eclipse.uml2.uml.Package)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=Operation)</possibleTypes>
         <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
       </expectedResult>
@@ -1353,7 +1290,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1428,7 +1365,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1438,7 +1375,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=Comment</possibleTypes>
+        <possibleTypes>org.eclipse.uml2.uml.Comment</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -1475,9 +1412,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EString</possibleTypes>
-        <possibleTypes>EClassifier=SingleString</possibleTypes>
-        <possibleTypes>EClassifier=String</possibleTypes>
+        <possibleTypes>java.lang.String</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1487,7 +1422,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="target" value="//@modelElements.4"/>
@@ -1499,7 +1434,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is kind of EClassifierLiteral=InterfaceRealization" startPosition="4" endPosition="47"/>
       </expectedResult>
     </expectations>
@@ -1510,7 +1445,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="4" endPosition="34"/>
       </expectedResult>
     </expectations>
@@ -1521,7 +1456,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=InputPin) is type of EClassifierLiteral=Actor" startPosition="4" endPosition="32"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=InputPin) is type of EClassifierLiteral=UseCase" startPosition="41" endPosition="71"/>
       </expectedResult>
@@ -1533,7 +1468,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Manifestation" startPosition="4" endPosition="40"/>
       </expectedResult>
     </expectations>
@@ -1544,7 +1479,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is type of EClassifierLiteral=Comment" startPosition="4" endPosition="34"/>
       </expectedResult>
     </expectations>
@@ -1555,7 +1490,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when source (EClassifier=Association) is not kind of EClassifierLiteral=Association" startPosition="4" endPosition="40"/>
       </expectedResult>
     </expectations>
@@ -1567,7 +1502,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.1"/>
@@ -1578,7 +1513,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when object (EClassifier=Model) is kind of EClassifierLiteral=EncapsulatedClassifier" endPosition="47"/>
       </expectedResult>
     </expectations>
@@ -1590,7 +1525,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when object (EClassifier=Model) is kind of EClassifierLiteral=Property" endPosition="33"/>
       </expectedResult>
     </expectations>
@@ -1602,7 +1537,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-         <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Package is not compatible with EClassifierLiteral=Component" startPosition="4" endPosition="30"/>
+         <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Package is not compatible with type EClassifierLiteral=Component" startPosition="4" endPosition="30"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1654,7 +1589,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" startPosition="67" endPosition="112"/>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=PackageableElement" startPosition="116" endPosition="157"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=Interface" endPosition="32"/>
@@ -1668,7 +1603,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" startPosition="31" endPosition="61"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is kind of EClassifierLiteral=Node" endPosition="27"/>
       </expectedResult>
@@ -1680,7 +1615,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" endPosition="30"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Package) is kind of EClassifierLiteral=StructuredClassifier" startPosition="34" endPosition="77"/>
       </expectedResult>
@@ -1692,7 +1627,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Package" endPosition="30"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Component" startPosition="34" endPosition="66"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=ExecutionEnvironment" startPosition="70" endPosition="113"/>
@@ -1708,8 +1643,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Property) is not type of EClassifierLiteral=Property" endPosition="31"/>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1719,8 +1653,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Property) is not type of EClassifierLiteral=Property" endPosition="31"/>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1731,7 +1664,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with type EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1742,7 +1675,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Model is not compatible with type EClassifierLiteral=Property" startPosition="40" endPosition="65"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1752,7 +1685,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Property" endPosition="31"/>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Model) is type of EClassifierLiteral=Operation" startPosition="35" endPosition="67"/>
       </expectedResult>
@@ -1764,8 +1697,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=PackageableElement) is type of EClassifierLiteral=Package" startPosition="33" endPosition="60"/>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1775,7 +1707,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.1"/>
@@ -1787,7 +1719,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preSource" value="//@modelElements.1"/>
@@ -1799,8 +1731,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBoolean</possibleTypes>
-        <possibleTypes>EClassifier=Boolean</possibleTypes>
+        <possibleTypes>boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -1814,7 +1745,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -1827,7 +1758,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when preSource (EClassifier=Model) is kind of EClassifierLiteral=Classifier" endPosition="38"/>
       </expectedResult>
     </expectations>
@@ -1839,7 +1770,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="preTarget" value="//@modelElements.1"/>
@@ -1850,7 +1781,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when preTarget (EClassifier=Model) is kind of EClassifierLiteral=Classifier" endPosition="38"/>
       </expectedResult>
     </expectations>
@@ -1862,7 +1793,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when preTarget (EClassifier=Model) is kind of EClassifierLiteral=Component" endPosition="37"/>
       </expectedResult>
     </expectations>
@@ -1874,7 +1805,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1884,7 +1815,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1894,7 +1825,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1904,7 +1835,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1914,7 +1845,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with type EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1924,7 +1855,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
+        <validationMessages severity="ERROR" message="Nothing will be left after calling oclAsType:&#xA;EClassifier=Behavior is not compatible with type EClassifierLiteral=UseCase" startPosition="14" endPosition="38"/>
       </expectedResult>
     </expectations>
   </queries>
@@ -1934,7 +1865,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1944,7 +1875,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1954,7 +1885,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1964,7 +1895,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -1985,7 +1916,7 @@
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
         <possibleTypes>Set(EClassifier=Association)</possibleTypes>
-        <possibleTypes>Set(EClassifier=Property)</possibleTypes>
+        <possibleTypes>Set(org.eclipse.uml2.uml.Property)</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>
@@ -2013,7 +1944,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="container" value="//@modelElements.1"/>
@@ -2069,7 +2000,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=Class" endPosition="28"/>
       </expectedResult>
     </expectations>
@@ -2080,7 +2011,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Package) is not kind of EClassifierLiteral=Package" endPosition="30"/>
       </expectedResult>
     </expectations>
@@ -2091,9 +2022,8 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=Class" startPosition="110" endPosition="135"/>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=DataType" startPosition="139" endPosition="167"/>
+        <possibleTypes>Sequence(EClassifier=Class)</possibleTypes>
+        <possibleTypes>Sequence(EClassifier=DataType)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -2113,8 +2043,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=Classifier)</possibleTypes>
-        <validationMessages message="Always false:&#xA;Nothing inferred when e (EClassifier=Classifier) is type of EClassifierLiteral=Enumeration" startPosition="80" endPosition="111"/>
+        <possibleTypes>Sequence(EClassifier=Enumeration)</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -2183,7 +2112,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when target (EClassifier=Class) is kind of EClassifierLiteral=Interface" endPosition="34"/>
       </expectedResult>
     </expectations>
@@ -2236,7 +2165,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.8"/>
@@ -2247,7 +2176,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
     <variables xsi:type="qmodel:EObjectVariable" name="object" value="//@modelElements.2"/>
@@ -2258,7 +2187,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always true:&#xA;Nothing inferred when self (EClassifier=Class) is not kind of EClassifierLiteral=EncapsulatedClassifier" endPosition="45"/>
       </expectedResult>
     </expectations>
@@ -2269,7 +2198,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
         <validationMessages message="Always false:&#xA;Nothing inferred when self (EClassifier=Class) is kind of EClassifierLiteral=InterfaceRealization" endPosition="43"/>
       </expectedResult>
     </expectations>
@@ -2280,7 +2209,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>EClassifier=EBooleanObject</possibleTypes>
+        <possibleTypes>java.lang.Boolean</possibleTypes>
       </expectedResult>
     </expectations>
   </queries>
@@ -2294,7 +2223,7 @@
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">
-        <possibleTypes>Sequence(EClassifier=Package)</possibleTypes>
+        <possibleTypes>Sequence(org.eclipse.uml2.uml.Package)</possibleTypes>
       </expectedResult>
     </expectations>
     <classesToImport>org.eclipse.acceleo.query.tests.services.UMLServices</classesToImport>

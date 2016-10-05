@@ -48,7 +48,7 @@ public class QueryEvaluationEngine implements IQueryEvaluationEngine {
 		EvaluationResult result = null;
 		if (expression != null && expression.getAst() != null) {
 			Expression ast = expression.getAst();
-			AstEvaluator evaluator = new AstEvaluator(queryEnvironment);
+			AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment));
 			result = evaluator.eval(environment, ast);
 			if (result.getResult() instanceof Nothing) {
 				result = new EvaluationResult(null, result.getDiagnostic());

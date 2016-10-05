@@ -18,9 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,9 +28,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -44,12 +40,6 @@ import org.eclipse.emf.ecore.EcorePackage;
  * @author <a href="mailto:romain.guider@obeo.fr">Romain Guider</a>
  */
 public class EPackageProvider implements IEPackageProvider {
-
-	/**
-	 * Maps of multi-EOperations : maps the arity to maps that maps {@link EOperation#getName() EOperation's
-	 * name} to their {@link EOperation} {@link List}.
-	 */
-	protected final Map<Integer, Map<String, List<EOperation>>> eOperations = new HashMap<Integer, Map<String, List<EOperation>>>();
 
 	/**
 	 * Map the name to their corresponding package.
@@ -65,11 +55,6 @@ public class EPackageProvider implements IEPackageProvider {
 	 * {@link EClassifier} to {@link Class} mapping.
 	 */
 	private final Map<EClassifier, Class<?>> classifier2class = new HashMap<EClassifier, Class<?>>();
-
-	/**
-	 * {@link List} of known {@link EOperation} and their addition order.
-	 */
-	private final List<EOperation> eOperationsList = new ArrayList<EOperation>();
 
 	/**
 	 * Mapping from an {@link EClass} to its containing {@link EStructuralFeature} for one {@link EClass}
@@ -109,11 +94,42 @@ public class EPackageProvider implements IEPackageProvider {
 
 	/**
 	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage}s having the
+	 * given {@link EPackage}.
+	 * 
+	 * @param ePackage
+	 *            the {@link EPackage} to remove
+	 * @return the list of removed {@link EPackage}
+	 */
+	public Collection<EPackage> removePackage(EPackage ePackage) {
+		final Collection<EPackage> result = new ArrayList<EPackage>();
+
+		if (ePackages.remove(ePackage.getName(), ePackage)) {
+			result.add(ePackage);
+			for (EClassifier eCls : ePackage.getEClassifiers()) {
+				removeEClassifierClass(eCls);
+				if (eCls instanceof EClass) {
+					removeFeatures((EClass)eCls);
+					removeSubType((EClass)eCls);
+				}
+			}
+			for (EPackage childPkg : ePackage.getESubpackages()) {
+				removePackage(childPkg.getName());
+			}
+			containingFeatures.clear();
+			allContainingFeatures.clear();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Removes the {@link EPackageProvider#registerPackage(EPackage) registered} {@link EPackage}s having the
 	 * given {@link EPackage#getName() name}.
 	 * 
 	 * @param name
 	 *            the {@link EPackage#getName() name}
-	 * @return the list of removed {@link EPackage}.
+	 * @return the list of removed {@link EPackage}
+	 * @deprecated
 	 */
 	public Collection<EPackage> removePackage(String name) {
 		final Collection<EPackage> removed = ePackages.removeAll(name);
@@ -121,7 +137,6 @@ public class EPackageProvider implements IEPackageProvider {
 			for (EClassifier eCls : ePackage.getEClassifiers()) {
 				removeEClassifierClass(eCls);
 				if (eCls instanceof EClass) {
-					removeEOperations((EClass)eCls);
 					removeFeatures((EClass)eCls);
 					removeSubType((EClass)eCls);
 				}
@@ -193,25 +208,6 @@ public class EPackageProvider implements IEPackageProvider {
 	}
 
 	/**
-	 * Removes {@link EOperation} of the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 */
-	private void removeEOperations(EClass eCls) {
-		for (EOperation eOperation : eCls.getEOperations()) {
-			final List<EOperation> multiEOperation = getMultiEOperation(eOperation.getName(), eOperation
-					.getEParameters().size());
-			if (multiEOperation != null) {
-				if (multiEOperation.remove(eOperation) && multiEOperation.size() == 0) {
-					eOperations.get(eOperation.getEParameters().size()).remove(eOperation.getName());
-				}
-			}
-			eOperationsList.remove(eOperation);
-		}
-	}
-
-	/**
 	 * Removes the given {@link EClassifier} from {@link EPackageProvider#class2classifiers the class mapping}
 	 * .
 	 * 
@@ -253,7 +249,6 @@ public class EPackageProvider implements IEPackageProvider {
 				for (EClassifier eCls : ePackage.getEClassifiers()) {
 					registerEClassifierClass(eCls);
 					if (eCls instanceof EClass) {
-						registerEOperations((EClass)eCls);
 						registerFeatures((EClass)eCls);
 						registerSubTypes((EClass)eCls);
 					}
@@ -342,112 +337,6 @@ public class EPackageProvider implements IEPackageProvider {
 			class2classifiers.put(instanceClass, classifiers);
 		}
 		classifiers.add(eCls);
-	}
-
-	/**
-	 * Registers {@link EOperation} of the given {@link EClass}.
-	 * 
-	 * @param eCls
-	 *            the {@link EClass}
-	 */
-	private void registerEOperations(EClass eCls) {
-		for (EOperation eOperation : eCls.getEOperations()) {
-			final List<EOperation> multiEOperation = getOrCreateMultimethod(eOperation.getName(), eOperation
-					.getEParameters().size());
-			multiEOperation.add(eOperation);
-			eOperationsList.add(eOperation);
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#lookupEOperation(org.eclipse.emf.ecore.EClass,
-	 *      java.lang.String, java.util.List)
-	 */
-	@Override
-	public EOperation lookupEOperation(EClass receiverEClass, String eOperationName,
-			List<EParameter> parameterTypes) {
-		final EOperation result;
-
-		final List<EOperation> multiEOperations = getMultiEOperation(eOperationName, parameterTypes.size());
-		if (multiEOperations != null) {
-			EOperation compatibleEOperation = null;
-			Iterator<EOperation> itOp = multiEOperations.iterator();
-			while (itOp.hasNext() && compatibleEOperation == null) {
-				EOperation eOperation = itOp.next();
-				if (eOperation.getEContainingClass() == EcorePackage.eINSTANCE.getEObject()
-						|| eOperation.getEContainingClass().isSuperTypeOf(receiverEClass)) {
-
-					boolean parametersAreCompatibles = parameterTypes.size() == eOperation.getEParameters()
-							.size();
-					final Iterator<EParameter> itParamType = parameterTypes.iterator();
-					final Iterator<EParameter> itOperationParam = eOperation.getEParameters().iterator();
-
-					while (parametersAreCompatibles && itOperationParam.hasNext() && itParamType.hasNext()) {
-						parametersAreCompatibles = isCompatibleType(itOperationParam.next(), itParamType
-								.next());
-					}
-					if (parametersAreCompatibles) {
-						compatibleEOperation = eOperation;
-					}
-				}
-			}
-			result = compatibleEOperation;
-		} else {
-			result = null;
-		}
-
-		return result;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEOperations(java.util.Set)
-	 */
-	@Override
-	public Set<EOperation> getEOperations(Set<EClass> receiverTypes) {
-		final Set<EOperation> result = new LinkedHashSet<EOperation>();
-
-		for (EClass eCls : receiverTypes) {
-			for (EOperation eOperation : eOperationsList) {
-				if (eOperation.getEContainingClass().isSuperTypeOf(eCls)) {
-					result.add(eOperation);
-				}
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Tells if the given declared {@link EParameter} is compatible with the given passed {@link Class}.
-	 * 
-	 * @param parameter
-	 *            the declared {@link EParameter}
-	 * @param passedParameter
-	 *            the passed {@link EParameter}
-	 * @return <code>true</code> if the given declared {@link EParameter} is compatible with the given passed
-	 *         {@link Class}, <code>false</code> otherwise
-	 */
-	private boolean isCompatibleType(EParameter parameter, EParameter passedParameter) {
-		final boolean result;
-
-		if (parameter.isMany() == passedParameter.isMany()) {
-			if (parameter.getEType() instanceof EClass && passedParameter.getEType() instanceof EClass) {
-				result = parameter.getEType() == EcorePackage.eINSTANCE.getEObject()
-						|| ((EClass)parameter.getEType()).isSuperTypeOf((EClass)passedParameter.getEType());
-			} else if (passedParameter.getEType() != null) {
-				result = parameter.getEType() == passedParameter.getEType();
-			} else {
-				result = true;
-			}
-		} else {
-			result = false;
-		}
-
-		return result;
 	}
 
 	/**
@@ -603,10 +492,10 @@ public class EPackageProvider implements IEPackageProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEClass(java.lang.Class)
+	 * @see org.eclipse.acceleo.query.runtime.IEPackageProvider#getEClassifiers(java.lang.Class)
 	 */
 	@Override
-	public Set<EClassifier> getEClass(Class<?> cls) {
+	public Set<EClassifier> getEClassifiers(Class<?> cls) {
 		return class2classifiers.get(cls);
 	}
 
@@ -707,52 +596,6 @@ public class EPackageProvider implements IEPackageProvider {
 			}
 		}
 
-		return result;
-	}
-
-	/**
-	 * Retrieves a multiEOperation from the given number of {@link EOperation#getEParameters() eParameters}
-	 * and the {@link EOperation#getName() EOperation's name}.
-	 * 
-	 * @param eOperationName
-	 *            the {@link EOperation#getName() EOperation's name} of the multiEOperation to retrieve.
-	 * @param argc
-	 *            the {@link EOperation#getEParameters() eParameters} count of the multiEOperation to
-	 *            retrieve.
-	 * @return the list of {@link EOperation} instances that make up the retrieve multiEOperation.
-	 */
-
-	private List<EOperation> getMultiEOperation(String eOperationName, int argc) {
-		Map<String, List<EOperation>> argcServices = eOperations.get(argc);
-		if (argcServices == null) {
-			return null;
-		} else {
-			return argcServices.get(eOperationName);
-		}
-	}
-
-	/**
-	 * Retrieves or creates a multiEOperation from the given number of {@link EOperation#getEParameters()
-	 * eParameters} and the {@link EOperation#getName() EOperation's name}.
-	 * 
-	 * @param eOperationName
-	 *            the {@link EOperation#getName() EOperation's name} of the multiEOperation to retrieve.
-	 * @param argc
-	 *            the {@link EOperation#getEParameters() eParameters} count of the multiEOperation to
-	 *            retrieve.
-	 * @return the {@link List} of {@link EOperation} instances that make up the retrieve multiEOperation.
-	 */
-	private List<EOperation> getOrCreateMultimethod(String eOperationName, int argc) {
-		Map<String, List<EOperation>> argcEOperations = eOperations.get(argc);
-		if (argcEOperations == null) {
-			argcEOperations = new HashMap<String, List<EOperation>>();
-			eOperations.put(argc, argcEOperations);
-		}
-		List<EOperation> result = argcEOperations.get(eOperationName);
-		if (result == null) {
-			result = new ArrayList<EOperation>();
-			argcEOperations.put(eOperationName, result);
-		}
 		return result;
 	}
 

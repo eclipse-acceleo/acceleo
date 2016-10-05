@@ -33,12 +33,14 @@ public final class ServiceRegistrationResult {
 	private final Map<IService, List<IService>> duplicated = new LinkedHashMap<IService, List<IService>>();
 
 	/**
-	 * Mapping from newly registered services and {@link IService} it masks.
+	 * Mapping from newly registered services and {@link IService} it masks (at least one call to the masked
+	 * {@link IService} can be handled by the new {@link IService}).
 	 */
 	private final Map<IService, List<IService>> masked = new LinkedHashMap<IService, List<IService>>();
 
 	/**
-	 * Mapping from newly registered services and {@link IService} it is masked by.
+	 * Mapping from newly registered services and {@link IService} it is masked by (at least one call that can
+	 * be handled by the new {@link IService} will be handled by the masked by {@link IService}).
 	 */
 	private final Map<IService, List<IService>> isMaskedBy = new LinkedHashMap<IService, List<IService>>();
 
@@ -61,18 +63,23 @@ public final class ServiceRegistrationResult {
 	}
 
 	/**
-	 * Gets the mapping from newly registered services and {@link IService} it masks.
+	 * Gets the mapping from newly registered services and {@link IService} it masks (at least one call to the
+	 * masked {@link IService} can be handled by the new {@link IService}).
 	 * 
-	 * @return the mapping from newly registered services and {@link IService} it masks
+	 * @return the mapping from newly registered services and {@link IService} it masks (at least one call to
+	 *         the masked {@link IService} can be handled by the new {@link IService})
 	 */
 	public Map<IService, List<IService>> getMasked() {
 		return masked;
 	}
 
 	/**
-	 * Gets the mapping from newly registered services and {@link IService} it is masked by.
+	 * Gets the mapping from newly registered services and {@link IService} it is masked by (at least one call
+	 * that can be handled by the new {@link IService} will be handled by the masked by {@link IService}).
 	 * 
-	 * @return the mapping from newly registered services and {@link IService} it is masked by
+	 * @return the mapping from newly registered services and {@link IService} it is masked by (at least one
+	 *         call that can be handled by the new {@link IService} will be handled by the masked by
+	 *         {@link IService})
 	 */
 	public Map<IService, List<IService>> getIsMaskedBy() {
 		return isMaskedBy;
@@ -110,7 +117,8 @@ public final class ServiceRegistrationResult {
 	}
 
 	/**
-	 * Adds the the given masked {@link IService} as a masks of the new {@link IService}.
+	 * Adds the the given masked {@link IService} as a masks (at least one call to the masked {@link IService}
+	 * can be handled by the new {@link IService}) of the new {@link IService}.
 	 * 
 	 * @param newService
 	 *            the new {@link IService}
@@ -128,7 +136,9 @@ public final class ServiceRegistrationResult {
 	}
 
 	/**
-	 * Adds the the given is masked by {@link IService} as a is masked by of the new {@link IService}.
+	 * Adds the the given is masked by {@link IService} as a is masked by (at least one call that can be
+	 * handled by the new {@link IService} will be handled by the masked by {@link IService}) of the new
+	 * {@link IService}.
 	 * 
 	 * @param newService
 	 *            the new {@link IService}

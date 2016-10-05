@@ -229,6 +229,9 @@ public class InterpreterView extends ViewPart {
 	 */
 	private static final String WORKBENCH_CONSTANT_EDIT_UNDO = "org.eclipse.ui.edit.undo"; //$NON-NLS-1$
 
+	/** This will be added to the result view for OclVoid instances. */
+	private static final String NULL_RESULT_OBJECT = "null"; //$NON-NLS-1$
+
 	/**
 	 * If we have a compilation result, this will contain it (note that some language are not compiled, thus
 	 * an evaluation task can legally be created while this is <code>null</code>.
@@ -715,6 +718,10 @@ public class InterpreterView extends ViewPart {
 		activationListener = new ActivationListener(this);
 		site.getPage().addPartListener(activationListener);
 		site.getPage().addSelectionListener(eobjectSelectionListener);
+
+		if (site.getPart() != null && site.getPage().getSelection() != null) {
+			eobjectSelectionListener.selectionChanged(site.getPart(), site.getPage().getSelection());
+		}
 	}
 
 	/**
@@ -1681,6 +1688,8 @@ public class InterpreterView extends ViewPart {
 			for (Object child : (Collection<?>)evaluationResult) {
 				if (child != null) {
 					input.add(child);
+				} else {
+					input.add(NULL_RESULT_OBJECT);
 				}
 			}
 		} else if (evaluationResult != null) {

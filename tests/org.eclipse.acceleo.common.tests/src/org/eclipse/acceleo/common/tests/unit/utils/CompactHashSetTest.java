@@ -21,6 +21,7 @@ import static org.junit.Assert.fail;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,12 +45,14 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testAdd() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
-			int dupe = i / 2;
+			// our random integers and strings are values from 0-100000.
+			// Make sure we cannot have a conflict
+			int dupe = ((i / 2) + 1) * 100001;
 			duplicatesList.add(Integer.valueOf(dupe));
 			duplicatesList.add(String.valueOf(dupe));
 		}
@@ -115,12 +118,14 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testAddAll() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
-			int dupe = i / 2;
+			// our random integers and strings are values from 0-100000.
+			// Make sure we cannot have a conflict
+			int dupe = ((i / 2) + 1) * 100001;
 			duplicatesList.add(Integer.valueOf(dupe));
 			duplicatesList.add(String.valueOf(dupe));
 		}
@@ -271,12 +276,14 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testClear() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
-			int dupe = i / 2;
+			// our random integers and strings are values from 0-100000.
+			// Make sure we cannot have a conflict
+			int dupe = ((i / 2) + 1) * 100001;
 			duplicatesList.add(Integer.valueOf(dupe));
 			duplicatesList.add(String.valueOf(dupe));
 		}
@@ -413,12 +420,14 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testContains() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
-			int dupe = i / 2;
+			// our random integers and strings are values from 0-100000.
+			// Make sure we cannot have a conflict
+			int dupe = ((i / 2) + 1) * 100001;
 			duplicatesList.add(Integer.valueOf(dupe));
 			duplicatesList.add(String.valueOf(dupe));
 		}
@@ -573,12 +582,14 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testContainsAll() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
-			int dupe = i / 2;
+			// our random integers and strings are values from 0-100000.
+			// Make sure we cannot have a conflict
+			int dupe = ((i / 2) + 1) * 100001;
 			duplicatesList.add(Integer.valueOf(dupe));
 			duplicatesList.add(String.valueOf(dupe));
 		}
@@ -657,7 +668,7 @@ public class CompactHashSetTest {
 
 		Collection<Object> objects1 = new ArrayList<Object>();
 		objects1.add(null);
-		objects1.addAll(randomStringDeque(40));
+		objects1.addAll(randomStringDequeNotIn(40, Collections.<String> emptySet()));
 		objects1.add(null);
 		assertSame(42, objects1.size());
 
@@ -678,6 +689,9 @@ public class CompactHashSetTest {
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (set1.contains(rand)) {
+				rand = getRandomString();
+			}
 			set1.add(rand);
 			set2.add(rand);
 		}
@@ -754,7 +768,7 @@ public class CompactHashSetTest {
 
 		Collection<Object> objects1 = new ArrayList<Object>();
 		objects1.add(null);
-		objects1.addAll(randomStringDeque(40));
+		objects1.addAll(randomStringDequeNotIn(40, Collections.<String> emptySet()));
 		objects1.add(null);
 		assertSame(42, objects1.size());
 
@@ -775,6 +789,9 @@ public class CompactHashSetTest {
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (set1.contains(rand)) {
+				rand = getRandomString();
+			}
 			set1.add(rand);
 			set2.add(rand);
 		}
@@ -846,9 +863,9 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testInstantiationCopy() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
 			int dupe = i / 2;
@@ -1068,9 +1085,9 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testIterator() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Set<Object> set = createSet();
 
@@ -1162,9 +1179,9 @@ public class CompactHashSetTest {
 	 */
 	@Test
 	public void testIteratorRemove() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.<Integer> emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.<String> emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Set<Object> set = createSet();
 
@@ -1286,12 +1303,8 @@ public class CompactHashSetTest {
 	@Test
 	public void testRemove() {
 		Set<Object> set = createSet();
-		List<Object> objects = new ArrayList<Object>();
+		List<String> objects = randomStringListNotIn(20, Collections.<String> emptySet());
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objects.add(rand);
-		}
 		assertFalse(set.containsAll(objects));
 
 		for (Object o : objects) {
@@ -1370,29 +1383,39 @@ public class CompactHashSetTest {
 	 * 
 	 * @param size
 	 *            Size of the list to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
 	 * @return A list containing <code>size</code> random Integers.
 	 */
-	protected List<Integer> randomIntegerList(int size) {
+	protected List<Integer> randomIntegerListNotIn(int size, Collection<?> excluded) {
 		List<Integer> list = new ArrayList<Integer>(size);
-		// for (int i = 0; i < size; i++) {
-		// Integer integer = getRandomInteger();
-		// while (list.contains(integer)) {
-		// integer = getRandomInteger();
-		// }
-		// list.add(integer);
-		// }
+		for (int i = 0; i < size; i++) {
+			Integer integer = getRandomInteger();
+			while (list.contains(integer) || excluded.contains(integer)) {
+				integer = getRandomInteger();
+			}
+			list.add(integer);
+		}
+		return list;
+	}
 
-		if (size >= 10) {
-			list.add(104);
-			list.add(108);
-			list.add(115);
-			list.add(116);
-			list.add(123);
-			list.add(142);
-			list.add(22517);
-			list.add(90210);
-			list.add(123456798);
-			list.add(259);
+	/**
+	 * Returns a list containing <code>size</code> random Strings.
+	 * 
+	 * @param size
+	 *            Size of the list to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
+	 * @return A list containing <code>size</code> random Strings.
+	 */
+	protected List<String> randomStringListNotIn(int size, Collection<?> excluded) {
+		List<String> list = new ArrayList<String>(size);
+		for (int i = 0; i < size; i++) {
+			String string = getRandomString();
+			while (list.contains(string) || excluded.contains(string)) {
+				string = getRandomString();
+			}
+			list.add(string);
 		}
 		return list;
 	}
@@ -1402,61 +1425,18 @@ public class CompactHashSetTest {
 	 * 
 	 * @param size
 	 *            Size of the deque to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
 	 * @return A deque containing <code>size</code> random Strings.
 	 */
-	protected Deque<String> randomStringDeque(int size) {
+	protected Deque<String> randomStringDequeNotIn(int size, Collection<?> excluded) {
 		Deque<String> deque = new CircularArrayDeque<String>(size);
-		// for (int i = 0; i < size; i++) {
-		// String s = getRandomString();
-		// while (deque.contains(s)) {
-		// s = getRandomString();
-		// }
-		// deque.add(s);
-		// }
-
-		if (size >= 10) {
-			deque.add("102"); //$NON-NLS-1$
-			deque.add("87464"); //$NON-NLS-1$
-			deque.add("137"); //$NON-NLS-1$
-			deque.add("476431"); //$NON-NLS-1$
-			deque.add("56546"); //$NON-NLS-1$
-			deque.add("546"); //$NON-NLS-1$
-			deque.add("105"); //$NON-NLS-1$
-			deque.add("78854"); //$NON-NLS-1$
-			deque.add("489746"); //$NON-NLS-1$
-			deque.add("374"); //$NON-NLS-1$
-		}
-		if (size >= 40) {
-			deque.add("11211"); //$NON-NLS-1$
-			deque.add("11212"); //$NON-NLS-1$
-			deque.add("11213"); //$NON-NLS-1$
-			deque.add("11214"); //$NON-NLS-1$
-			deque.add("11215"); //$NON-NLS-1$
-			deque.add("11216"); //$NON-NLS-1$
-			deque.add("94121"); //$NON-NLS-1$
-			deque.add("94122"); //$NON-NLS-1$
-			deque.add("94123"); //$NON-NLS-1$
-			deque.add("94124"); //$NON-NLS-1$
-			deque.add("94125"); //$NON-NLS-1$
-			deque.add("94126"); //$NON-NLS-1$
-			deque.add("94127"); //$NON-NLS-1$
-			deque.add("94128"); //$NON-NLS-1$
-			deque.add("94129"); //$NON-NLS-1$
-			deque.add("94120"); //$NON-NLS-1$
-			deque.add("23123"); //$NON-NLS-1$
-			deque.add("23121"); //$NON-NLS-1$
-			deque.add("23122"); //$NON-NLS-1$
-			deque.add("23124"); //$NON-NLS-1$
-			deque.add("23125"); //$NON-NLS-1$
-			deque.add("23126"); //$NON-NLS-1$
-			deque.add("23127"); //$NON-NLS-1$
-			deque.add("23128"); //$NON-NLS-1$
-			deque.add("23129"); //$NON-NLS-1$
-			deque.add("99990"); //$NON-NLS-1$
-			deque.add("99991"); //$NON-NLS-1$
-			deque.add("99992"); //$NON-NLS-1$
-			deque.add("99994"); //$NON-NLS-1$
-			deque.add("99995"); //$NON-NLS-1$
+		for (int i = 0; i < size; i++) {
+			String s = getRandomString();
+			while (deque.contains(s) || excluded.contains(s)) {
+				s = getRandomString();
+			}
+			deque.add(s);
 		}
 		return deque;
 	}
@@ -1466,41 +1446,18 @@ public class CompactHashSetTest {
 	 * 
 	 * @param size
 	 *            Size of the set to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
 	 * @return A set containing <code>size</code> random Strings.
 	 */
-	protected Set<String> randomStringSet(int size) {
+	protected Set<String> randomStringSetNotIn(int size, Collection<?> excluded) {
 		Set<String> set = new HashSet<String>(size);
-		// for (int i = 0; i < size; i++) {
-		// String s = getRandomString();
-		// while (set.contains(s)) {
-		// s = getRandomString();
-		// }
-		// set.add(s);
-		// }
-
-		if (size >= 10) {
-			set.add("8743"); //$NON-NLS-1$
-			set.add("548746"); //$NON-NLS-1$
-			set.add("19513"); //$NON-NLS-1$
-			set.add("19463"); //$NON-NLS-1$
-			set.add("76413"); //$NON-NLS-1$
-			set.add("564"); //$NON-NLS-1$
-			set.add("197"); //$NON-NLS-1$
-			set.add("6541"); //$NON-NLS-1$
-			set.add("794"); //$NON-NLS-1$
-			set.add("123484"); //$NON-NLS-1$
-		}
-		if (size >= 20) {
-			set.add("77770"); //$NON-NLS-1$
-			set.add("77771"); //$NON-NLS-1$
-			set.add("77772"); //$NON-NLS-1$
-			set.add("77773"); //$NON-NLS-1$
-			set.add("77774"); //$NON-NLS-1$
-			set.add("77775"); //$NON-NLS-1$
-			set.add("77776"); //$NON-NLS-1$
-			set.add("77777"); //$NON-NLS-1$
-			set.add("77778"); //$NON-NLS-1$
-			set.add("77779"); //$NON-NLS-1$
+		for (int i = 0; i < size; i++) {
+			String s = getRandomString();
+			while (set.contains(s) || excluded.contains(s)) {
+				s = getRandomString();
+			}
+			set.add(s);
 		}
 		return set;
 	}

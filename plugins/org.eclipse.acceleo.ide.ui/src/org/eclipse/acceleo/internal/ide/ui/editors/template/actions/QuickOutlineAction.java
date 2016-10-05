@@ -61,8 +61,10 @@ public class QuickOutlineAction extends Action implements IWorkbenchWindowAction
 	 */
 	public void run(IAction action) {
 		super.run();
-		IInformationPresenter presenter = getCurrentEditor().getQuickOutlinePresenter();
-		presenter.showInformation();
+		if (getCurrentEditor() != null) {
+			IInformationPresenter presenter = getCurrentEditor().getQuickOutlinePresenter();
+			presenter.showInformation();
+		}
 	}
 
 	/**

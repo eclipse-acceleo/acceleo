@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template.quickfix;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoEditor;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.AcceleoSourceContent;
@@ -66,37 +71,48 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 	 * @return the offset to reveal
 	 */
 	protected int createModuleElement(IDocument document, AcceleoSourceContent content, IMarker marker) {
+		int result = -1;
 		try {
 			String message = marker.getAttribute(IMarker.MESSAGE, ""); //$NON-NLS-1$
 			int posBegin = marker.getAttribute(IMarker.CHAR_START, -1);
 			int posEnd = marker.getAttribute(IMarker.CHAR_END, posBegin);
+			String lineDelimiter = "\n"; //$NON-NLS-1$
+			if (document.getNumberOfLines() > 0) {
+				lineDelimiter = document.getLineDelimiter(0);
+			}
 			if (message != null && posBegin > -1 && posEnd > -1) {
 				int newOffset = newOffset(document, content, posBegin);
-				String paramType = ""; //$NON-NLS-1$
-				if (message.contains("for the type") && message.endsWith(")") //$NON-NLS-1$ //$NON-NLS-2$
-						&& message.lastIndexOf('(') > -1) {
-					paramType = message.substring(message.lastIndexOf('(') + 1, message.length() - 1).trim();
+				Pattern messagePattern = Pattern
+						.compile("Cannot find operation \\(([^()]+)\\(([^()]+)\\)\\) for the type \\(([^()]+)\\)"); //$NON-NLS-1$
+				Matcher matcher = messagePattern.matcher(message);
+				String templateName;
+				String[] paramTypes;
+				String[] paramNames;
+				if (matcher.find()) {
+					templateName = matcher.group(1).trim();
+					paramTypes = splitParamTypes(matcher.group(3) + ',' + matcher.group(2));
+					paramNames = computeParamNames(paramTypes);
+				} else {
+					return -1;
 				}
-				if (paramType.length() == 0) {
+				if (paramTypes.length == 0) {
 					CSTNode currentNode = content.getCSTNode(posBegin, posBegin);
-					paramType = getCurrentVariableTypeName(currentNode, "Type"); //$NON-NLS-1$
+					paramTypes = new String[] {getCurrentVariableTypeName(currentNode, "Type"), }; //$NON-NLS-1$
 				}
-				String paramName = 'a' + paramType;
 				StringBuilder newText = new StringBuilder();
 				if (newOffset > 0) {
-					newText.append('\n');
-					if (!"\n".equals(document.get(newOffset - 1, 1))) { //$NON-NLS-1$
-						newText.append("\n"); //$NON-NLS-1$
+					newText.append(lineDelimiter);
+					if (!lineDelimiter.equals(document.get(newOffset - 1, 1))) {
+						newText.append(lineDelimiter);
 					}
 				}
 				int selectAndReveal = newOffset + newText.length();
-				String templateName = document.get(posBegin, posEnd - posBegin);
 				int newTextLength = newText.length();
-				append(newText, templateName, paramType, paramName);
+				append(newText, lineDelimiter, templateName, paramTypes, paramNames);
 				if (newText.length() > newTextLength) {
 					document.replace(newOffset, 0, newText.toString());
 					marker.delete();
-					return selectAndReveal;
+					result = selectAndReveal;
 				}
 			}
 		} catch (BadLocationException e) {
@@ -105,7 +121,45 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 		} catch (CoreException e) {
 			AcceleoUIActivator.getDefault().getLog().log(e.getStatus());
 		}
-		return -1;
+		return result;
+	}
+
+	/**
+	 * Splits the given String (in the form "Type1, Type2, ..., Typen") in its individual types.
+	 * 
+	 * @param parameters
+	 *            The String to split.
+	 * @return The split types.
+	 */
+	private String[] splitParamTypes(String parameters) {
+		String[] types = parameters.split(","); //$NON-NLS-1$
+		for (int i = 0; i < types.length; i++) {
+			types[i] = types[i].trim();
+		}
+		return types;
+	}
+
+	/**
+	 * Computes names that can be used as parameter names for the given types.
+	 * 
+	 * @param paramTypes
+	 *            The types for which we need names.
+	 * @return The names for theses types.
+	 */
+	private String[] computeParamNames(String[] paramTypes) {
+		Set<String> names = new LinkedHashSet<String>(paramTypes.length);
+		for (String type : paramTypes) {
+			String candidate = 'a' + type;
+			if (names.contains(candidate)) {
+				int count = 1;
+				while (names.contains(candidate + count)) {
+					count++;
+				}
+				candidate += count;
+			}
+			names.add(candidate);
+		}
+		return names.toArray(new String[names.size()]);
 	}
 
 	/**
@@ -170,13 +224,16 @@ public abstract class AbstractCreateModuleElementResolution implements IMarkerRe
 	 * 
 	 * @param newText
 	 *            the buffer that will contain the new content, it's an input/output parameter
+	 * @param lineDelimiter
+	 *            the String to use as a line delimiter.
 	 * @param name
 	 *            is the name of the new module element
-	 * @param paramType
-	 *            is the type of the first parameter
-	 * @param paramName
-	 *            is the name of the first parameter
+	 * @param paramTypes
+	 *            Types of the parameters for this element
+	 * @param paramNames
+	 *            Names of the parameters for this element
 	 */
-	protected abstract void append(StringBuilder newText, String name, String paramType, String paramName);
+	protected abstract void append(StringBuilder newText, String lineDelimiter, String name,
+			String[] paramTypes, String[] paramNames);
 
 }

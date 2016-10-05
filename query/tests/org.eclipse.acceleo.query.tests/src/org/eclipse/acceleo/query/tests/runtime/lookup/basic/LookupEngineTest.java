@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,18 +25,33 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
 import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
+import org.eclipse.acceleo.query.runtime.lookup.basic.ServiceStore;
+import org.eclipse.acceleo.query.services.AnyServices;
+import org.eclipse.acceleo.query.services.BooleanServices;
+import org.eclipse.acceleo.query.services.CollectionServices;
+import org.eclipse.acceleo.query.services.ComparableServices;
+import org.eclipse.acceleo.query.services.EObjectServices;
+import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.ResourceServices;
+import org.eclipse.acceleo.query.services.StringServices;
+import org.eclipse.acceleo.query.services.XPathServices;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.EClassifierType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -60,24 +76,30 @@ public class LookupEngineTest {
 
 	private interface ITestLookupEngine extends ILookupEngine {
 
-		ServiceRegistrationResult registerServices(Class<?> newServices)
-				throws InvalidAcceleoPackageException;
+		ServiceRegistrationResult registerService(IService service);
 
-		Class<?> removeServices(Class<?> servicesClass);
+		IService removeService(IService service);
 
-		Map<Integer, Map<String, List<IService>>> getServices();
+		ServiceStore getServices();
+
+		IReadOnlyQueryEnvironment getQueryEnvironment();
 
 	}
 
 	private static class TestBasicLookupEngine extends BasicLookupEngine implements ITestLookupEngine {
 
 		public TestBasicLookupEngine(CrossReferenceProvider crossReferencer) {
-			super(Query.newEnvironmentWithDefaultServices(crossReferencer), crossReferencer);
+			super(Query.newEnvironmentWithDefaultServices(crossReferencer));
 		}
 
 		@Override
-		public Map<Integer, Map<String, List<IService>>> getServices() {
+		public ServiceStore getServices() {
 			return super.getServices();
+		}
+
+		@Override
+		public IReadOnlyQueryEnvironment getQueryEnvironment() {
+			return queryEnvironment;
 		}
 
 	}
@@ -85,12 +107,17 @@ public class LookupEngineTest {
 	private static class TestCacheLookupEngine extends CacheLookupEngine implements ITestLookupEngine {
 
 		public TestCacheLookupEngine(CrossReferenceProvider crossReferencer) {
-			super(Query.newEnvironmentWithDefaultServices(crossReferencer), crossReferencer);
+			super(Query.newEnvironmentWithDefaultServices(crossReferencer));
 		}
 
 		@Override
-		public Map<Integer, Map<String, List<IService>>> getServices() {
+		public ServiceStore getServices() {
 			return super.getServices();
+		}
+
+		@Override
+		public IReadOnlyQueryEnvironment getQueryEnvironment() {
+			return queryEnvironment;
 		}
 
 	}
@@ -102,7 +129,11 @@ public class LookupEngineTest {
 	 */
 	public static class TestServices1 {
 
-		public CrossReferenceProvider crossReferencer;
+		public final CrossReferenceProvider crossReferencer;
+
+		public TestServices1(CrossReferenceProvider crossReferencer) {
+			this.crossReferencer = crossReferencer;
+		}
 
 		public Boolean service1(EClassifier eObj) {
 			return Boolean.FALSE;
@@ -111,10 +142,6 @@ public class LookupEngineTest {
 		@SuppressWarnings("unused")
 		private Boolean notAService(EClassifier eObj) {
 			return Boolean.FALSE;
-		}
-
-		public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-			this.crossReferencer = crossReferencer;
 		}
 
 	}
@@ -169,6 +196,10 @@ public class LookupEngineTest {
 	 */
 	public static class ExtendedTestServices1 extends TestServices1 {
 
+		public ExtendedTestServices1(CrossReferenceProvider crossReferencer) {
+			super(crossReferencer);
+		}
+
 		public Boolean service2(EClassifier eObj) {
 			return Boolean.FALSE;
 		}
@@ -184,7 +215,11 @@ public class LookupEngineTest {
 
 		private IService service1;
 
-		public CrossReferenceProvider crossReferencer;
+		public final CrossReferenceProvider crossReferencer;
+
+		public TestServicesProvider1(CrossReferenceProvider crossReferencer) {
+			this.crossReferencer = crossReferencer;
+		}
 
 		public Boolean service1(EClassifier eObj) {
 			return Boolean.FALSE;
@@ -193,10 +228,6 @@ public class LookupEngineTest {
 		@SuppressWarnings("unused")
 		private Boolean notAService(EClassifier eObj) {
 			return Boolean.FALSE;
-		}
-
-		public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-			this.crossReferencer = crossReferencer;
 		}
 
 		@Override
@@ -265,6 +296,10 @@ public class LookupEngineTest {
 	 */
 	public static class ExtendedTestServicesProvider1 extends TestServicesProvider1 {
 
+		public ExtendedTestServicesProvider1(CrossReferenceProvider crossReferencer) {
+			super(crossReferencer);
+		}
+
 		private IService service2;
 
 		public Boolean service2(EClassifier eObj) {
@@ -295,14 +330,14 @@ public class LookupEngineTest {
 
 	@Parameters(name = "{0}")
 	public static Collection<Object[]> classes() {
-		return Arrays.asList(new Object[][] {{TestBasicLookupEngine.class, }, {
-				TestCacheLookupEngine.class, }, });
+		return Arrays.asList(new Object[][] { {TestBasicLookupEngine.class, },
+				{TestCacheLookupEngine.class, }, });
 	}
 
 	ITestLookupEngine instanciate(CrossReferenceProvider provider) {
 		try {
-			final Constructor<ITestLookupEngine> constructor = cls.getConstructor(
-					CrossReferenceProvider.class);
+			final Constructor<ITestLookupEngine> constructor = cls
+					.getConstructor(CrossReferenceProvider.class);
 			return constructor.newInstance(provider);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -322,21 +357,23 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void simpleRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void simpleRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -345,21 +382,23 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void staticRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void staticRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestStaticServices.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestStaticServices.class)) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestStaticServices.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestStaticServices.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -368,24 +407,27 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void extendedRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void extendedRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(ExtendedTestServices1.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new ExtendedTestServices1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
-		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(2, engine.getRegisteredServices().get(ExtendedTestServices1.class).size());
+		assertEquals(2, engine.getRegisteredServices().size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServices1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
-		service = (JavaMethodService)engine.lookup("service2", new Class<?>[] {EClassifier.class });
+		service = (JavaMethodService)engine.lookup("service2", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServices1.class.getMethod("service2", EClassifier.class), service
 				.getMethod());
 
@@ -397,44 +439,57 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void doubleRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void doubleRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServices1.class);
-		assertEquals(0, result.getDuplicated().size());
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
+		assertEquals(1, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(0, result.getRegistered().size());
 	}
 
 	@Test
-	public void duplicateRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void duplicateRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestDuplicateServices1.class);
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestDuplicateServices1.class)) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(1, result.getDuplicated().size());
 		final Method expectedDuplicatedMethod = TestServices1.class.getMethod("service1", EClassifier.class);
 
@@ -449,11 +504,9 @@ public class LookupEngineTest {
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(2, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
-		assertEquals(1, engine.getRegisteredServices().get(TestDuplicateServices1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestDuplicateServices1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 
@@ -463,18 +516,24 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void maskRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void maskRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestMaskServices1.class);
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestMaskServices1.class)) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(1, result.getMasked().size());
 		final Method expectedMaskMethod = TestServices1.class.getMethod("service1", EClassifier.class);
@@ -489,33 +548,41 @@ public class LookupEngineTest {
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(2, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
-		assertEquals(1, engine.getRegisteredServices().get(TestMaskServices1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), service.getMethod());
 
-		assertEquals(1, result.getRegistered().size());
-		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), ((JavaMethodService)result
+		assertEquals(2, result.getRegistered().size());
+		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
+		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), ((JavaMethodService)result
+				.getRegistered().get(1)).getMethod());
 	}
 
 	@Test
-	public void maskedByRegistration() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void maskedByRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestMaskServices1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestMaskServices1.class)) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), ((JavaMethodService)result
 				.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServices1.class);
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(1, result.getIsMaskedBy().size());
@@ -530,13 +597,12 @@ public class LookupEngineTest {
 		assertEquals(expectedIsMaskedByMethod, actualIsMaskedByMethod);
 
 		assertEquals(2, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
-		assertEquals(1, engine.getRegisteredServices().get(TestMaskServices1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
 		assertEquals(TestMaskServices1.class.getMethod("service1", EClass.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -545,26 +611,28 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void withCrossReferencerRegistration() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void withCrossReferencerRegistration() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServices1.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServices1.class).size());
-		assertTrue(((JavaMethodService)engine.getRegisteredServices().get(TestServices1.class).iterator()
-				.next()).getInstance() instanceof TestServices1);
-		TestServices1 instance = (TestServices1)((JavaMethodService)engine.getRegisteredServices().get(
-				TestServices1.class).iterator().next()).getInstance();
+		final Iterator<IService> iterator = engine.getRegisteredServices().iterator();
+		final JavaMethodService javaMethodService = (JavaMethodService)iterator.next();
+		assertTrue(javaMethodService.getInstance() instanceof TestServices1);
+		TestServices1 instance = (TestServices1)javaMethodService.getInstance();
 		assertEquals(provider, instance.crossReferencer);
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServices1.class.getMethod("service1", EClassifier.class), service.getMethod());
 
 		assertEquals(1, result.getRegistered().size());
@@ -573,21 +641,23 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void simpleRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void simpleRegistrationServiceProvider() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
 
 		assertEquals(1, result.getRegistered().size());
@@ -596,25 +666,28 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void extendedRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void extendedRegistrationServiceProvider() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(ExtendedTestServicesProvider1.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new ExtendedTestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
-		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(2, engine.getRegisteredServices().get(ExtendedTestServicesProvider1.class).size());
+		assertEquals(2, engine.getRegisteredServices().size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
-		service = (JavaMethodService)engine.lookup("service2", new Class<?>[] {EClassifier.class });
+		service = (JavaMethodService)engine.lookup("service2", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(ExtendedTestServicesProvider1.class.getMethod("service2", EClassifier.class), service
 				.getMethod());
 		assertEquals(((ExtendedTestServicesProvider1)service.getInstance()).service2, service);
@@ -627,27 +700,33 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void doubleRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void doubleRegistrationServiceProvider() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class),
 				((JavaMethodService)result.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServicesProvider1.class);
-		assertEquals(0, result.getDuplicated().size());
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
+		assertEquals(1, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
@@ -656,18 +735,25 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void duplicateRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void duplicateRegistrationServiceProvider() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class),
 				((JavaMethodService)result.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestDuplicateServicesProvider1.class);
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestDuplicateServicesProvider1.class)) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(1, result.getDuplicated().size());
 		final Method expectedDuplicatedMethod = TestServicesProvider1.class.getMethod("service1",
 				EClassifier.class);
@@ -683,11 +769,9 @@ public class LookupEngineTest {
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(2, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
-		assertEquals(1, engine.getRegisteredServices().get(TestDuplicateServicesProvider1.class).size());
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestDuplicateServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestDuplicateServicesProvider1)service.getInstance()).service1, service);
@@ -698,22 +782,29 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void maskRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void maskRegistrationServiceProvider() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class),
 				((JavaMethodService)result.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestMaskServicesProvider1.class);
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestMaskServicesProvider1.class)) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(1, result.getMasked().size());
-		final Method expectedMaskMethod = TestServicesProvider1.class.getMethod("service1",
-				EClassifier.class);
+		final Method expectedMaskMethod = TestServicesProvider1.class
+				.getMethod("service1", EClassifier.class);
 
 		final Entry<IService, List<IService>> entry = result.getMasked().entrySet().iterator().next();
 		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class),
@@ -725,17 +816,15 @@ public class LookupEngineTest {
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(2, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
-		assertEquals(1, engine.getRegisteredServices().get(TestMaskServicesProvider1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
-		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service
-				.getMethod());
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service.getMethod());
 		assertEquals(((TestMaskServicesProvider1)service.getInstance()).service1, service);
 
 		assertEquals(1, result.getRegistered().size());
@@ -744,18 +833,25 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void maskedByRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void maskedByRegistrationServiceProvider() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		ServiceRegistrationResult result = engine.registerServices(TestMaskServicesProvider1.class);
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestMaskServicesProvider1.class)) {
+			result.merge(engine.registerService(service));
+		}
 
 		assertEquals(1, result.getRegistered().size());
 		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class),
 				((JavaMethodService)result.getRegistered().get(0)).getMethod());
 
-		result = engine.registerServices(TestServicesProvider1.class);
+		result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(1, result.getIsMaskedBy().size());
@@ -771,17 +867,15 @@ public class LookupEngineTest {
 		assertEquals(expectedIsMaskedByMethod, actualIsMaskedByMethod);
 
 		assertEquals(2, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
-		assertEquals(1, engine.getRegisteredServices().get(TestMaskServicesProvider1.class).size());
 
-		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		JavaMethodService service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(
+				engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
-		service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {EClass.class });
-		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service
-				.getMethod());
+		service = (JavaMethodService)engine.lookup("service1", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+		assertEquals(TestMaskServicesProvider1.class.getMethod("service1", EClass.class), service.getMethod());
 		assertEquals(((TestMaskServicesProvider1)service.getInstance()).service1, service);
 
 		assertEquals(1, result.getRegistered().size());
@@ -790,26 +884,29 @@ public class LookupEngineTest {
 	}
 
 	@Test
-	public void withCrossReferencerRegistrationServiceProvider() throws InvalidAcceleoPackageException,
-			NoSuchMethodException, SecurityException {
+	public void withCrossReferencerRegistrationServiceProvider() throws NoSuchMethodException,
+			SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final ServiceRegistrationResult result = engine.registerServices(TestServicesProvider1.class);
+		final ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServicesProvider1(provider))) {
+			result.merge(engine.registerService(service));
+		}
 		assertEquals(0, result.getDuplicated().size());
 		assertEquals(0, result.getMasked().size());
 		assertEquals(0, result.getIsMaskedBy().size());
 
 		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getRegisteredServices().get(TestServicesProvider1.class).size());
-		assertTrue(((JavaMethodService)engine.getRegisteredServices().get(TestServicesProvider1.class)
-				.iterator().next()).getInstance() instanceof TestServicesProvider1);
-		TestServicesProvider1 instance = (TestServicesProvider1)((JavaMethodService)engine
-				.getRegisteredServices().get(TestServicesProvider1.class).iterator().next()).getInstance();
+		final Iterator<IService> iterator = engine.getRegisteredServices().iterator();
+		final JavaMethodService javaMethodService = (JavaMethodService)iterator.next();
+		assertTrue(javaMethodService.getInstance() instanceof TestServicesProvider1);
+		TestServicesProvider1 instance = (TestServicesProvider1)javaMethodService.getInstance();
 		assertEquals(provider, instance.crossReferencer);
 
-		final JavaMethodService service = (JavaMethodService)engine.lookup("service1", new Class<?>[] {
-				EClassifier.class });
+		final JavaMethodService service = (JavaMethodService)engine.lookup("service1",
+				new IType[] {new ClassType(engine.getQueryEnvironment(), EClassifier.class) });
 		assertEquals(TestServicesProvider1.class.getMethod("service1", EClassifier.class), service
 				.getMethod());
 		assertEquals(((TestServicesProvider1)service.getInstance()).service1, service);
@@ -821,109 +918,100 @@ public class LookupEngineTest {
 
 	@Test
 	public void isServiceMethodFromObject() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
 		final Method method = Object.class.getMethod("equals", Object.class);
 		assertNotNull(method);
-		assertFalse(engine.isServiceMethod(this, method));
+		assertFalse(ServiceUtils.isServiceMethod(this, method));
 	}
 
 	@Test
 	public void isServiceMethodNoParameter() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
 		final Method method = MethodHolder.class.getMethod("testNotServiceMethodNoParameter");
 		assertNotNull(method);
-		assertFalse(engine.isServiceMethod(this, method));
+		assertFalse(ServiceUtils.isServiceMethod(this, method));
 	}
 
 	@Test
 	public void isServiceMethodNotStaticNoInstance() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
 		final Method method = MethodHolder.class.getMethod("testServiceMethod", Object.class);
 		assertNotNull(method);
-		assertFalse(engine.isServiceMethod(null, method));
+		assertFalse(ServiceUtils.isServiceMethod(null, method));
 	}
 
 	@Test
 	public void isServiceMethodNotStaticInstance() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
 		final Method method = MethodHolder.class.getMethod("testServiceMethod", Object.class);
 		assertNotNull(method);
-		assertTrue(engine.isServiceMethod(this, method));
+		assertTrue(ServiceUtils.isServiceMethod(this, method));
 	}
 
 	@Test
 	public void isServiceMethodStaticNoInstance() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
 		final Method method = MethodHolder.class.getMethod("testStaticServiceMethod", Object.class);
 		assertNotNull(method);
-		assertTrue(engine.isServiceMethod(null, method));
+		assertTrue(ServiceUtils.isServiceMethod(null, method));
 	}
 
 	@Test
 	public void isServiceMethodStaticInstance() throws NoSuchMethodException, SecurityException {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
 		final Method method = MethodHolder.class.getMethod("testStaticServiceMethod", Object.class);
 		assertNotNull(method);
-		assertTrue(engine.isServiceMethod(this, method));
+		assertTrue(ServiceUtils.isServiceMethod(this, method));
 	}
 
 	@Test
-	public void isCrossReferencerMethod() throws NoSuchMethodException, SecurityException {
+	public void isRegisteredService() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		final Method isCrossReferencerMethod = LookupEngineTest.class.getMethod("isCrossReferencerMethod");
-		assertFalse(engine.isCrossReferencerMethod(isCrossReferencerMethod));
+		final Set<IService> services = ServiceUtils.getServices(engine.getQueryEnvironment(),
+				TestServices1.class);
+		for (IService service : services) {
+			engine.removeService(service);
+		}
 
-		final Method setCrossReferencer = TestServices1.class.getMethod("setCrossReferencer",
-				CrossReferenceProvider.class);
-		assertTrue(engine.isCrossReferencerMethod(setCrossReferencer));
+		for (IService service : services) {
+			assertFalse(engine.isRegisteredService(service));
+		}
+		ServiceRegistrationResult result = new ServiceRegistrationResult();
+		for (IService service : services) {
+			result.merge(engine.registerService(service));
+		}
+		for (IService service : services) {
+			assertTrue(engine.isRegisteredService(service));
+		}
 	}
 
 	@Test
-	public void isRegisteredService() throws InvalidAcceleoPackageException {
+	public void removeServiceEmpty() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		assertFalse(engine.isRegisteredService(TestServices1.class));
-		engine.registerServices(TestServices1.class);
-		assertTrue(engine.isRegisteredService(TestServices1.class));
-	}
-
-	@Test
-	public void removeServicesEmpty() {
-		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
-		final ITestLookupEngine engine = instanciate(provider);
-
-		engine.removeServices(ExtendedTestServices1.class);
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(), new TestServices1(
+				provider))) {
+			engine.removeService(service);
+		}
 
 		assertEquals(0, engine.getRegisteredServices().size());
 		assertEquals(0, engine.getServices().size());
 	}
 
 	@Test
-	public void removeServices() throws InvalidAcceleoPackageException {
+	public void removeService() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		engine.registerServices(ExtendedTestServices1.class);
+		final Set<IService> services = ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new ExtendedTestServices1(provider));
+		for (IService service : services) {
+			engine.registerService(service);
+		}
 
-		assertEquals(1, engine.getRegisteredServices().size());
-		assertEquals(1, engine.getServices().size());
+		assertEquals(2, engine.getRegisteredServices().size());
+		assertEquals(2, engine.getServices().size());
 
-		engine.removeServices(ExtendedTestServices1.class);
+		for (IService service : services) {
+			engine.removeService(service);
+		}
 
 		assertEquals(0, engine.getRegisteredServices().size());
 		assertEquals(0, engine.getServices().size());
@@ -933,28 +1021,32 @@ public class LookupEngineTest {
 	public void getServicesEmpty() {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
-		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
-		types.add(EClassifier.class);
+		final Set<IType> types = new LinkedHashSet<IType>();
+		types.add(new ClassType(engine.getQueryEnvironment(), EClassifier.class));
 
 		assertEquals(0, engine.getServices(types).size());
 	}
 
 	@Test
-	public void getServices() throws InvalidAcceleoPackageException, NoSuchMethodException,
-			SecurityException {
+	public void getServices() throws NoSuchMethodException, SecurityException {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
-		final Set<Class<?>> types = new LinkedHashSet<Class<?>>();
-		types.add(EClassifier.class);
+		final Set<IType> types = new LinkedHashSet<IType>();
+		types.add(new ClassType(engine.getQueryEnvironment(), EClassifier.class));
 
-		engine.registerServices(ExtendedTestServices1.class);
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new ExtendedTestServices1(provider))) {
+			engine.registerService(service);
+		}
 		final Set<IService> services = engine.getServices(types);
 		assertEquals(2, services.size());
-		final Iterator<IService> it = services.iterator();
-		assertEquals(ExtendedTestServices1.class.getMethod("service2", EClassifier.class),
-				((JavaMethodService)it.next()).getMethod());
-		assertEquals(ExtendedTestServices1.class.getMethod("service1", EClassifier.class),
-				((JavaMethodService)it.next()).getMethod());
+
+		final Set<Method> methods = new LinkedHashSet<Method>();
+		for (IService service : services) {
+			methods.add(((JavaMethodService)service).getMethod());
+		}
+		assertTrue(methods.contains(ExtendedTestServices1.class.getMethod("service1", EClassifier.class)));
+		assertTrue(methods.contains(ExtendedTestServices1.class.getMethod("service2", EClassifier.class)));
 	}
 
 	@Test
@@ -962,7 +1054,393 @@ public class LookupEngineTest {
 		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
 		final ITestLookupEngine engine = instanciate(provider);
 
-		assertEquals(null, engine.lookup("service", new Class<?>[] {}));
+		assertEquals(null, engine.lookup("service", new IType[] {}));
+	}
+
+	@Test
+	public void lookupLowerPriorityLowerType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(0, EClass.class, 1, EClassifier.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupLowerPriorityEqualType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(0, EClassifier.class, 1, EClassifier.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupLowerPriorityGreaterType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(0, EClassifier.class, 1, EClass.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupEqualPriorityLowerType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(0, EClass.class, 0, EClassifier.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupEqualPriorityEqualType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(0, EClassifier.class, 0, EClassifier.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(1, registrationResult.getDuplicated().size());
+		Entry<IService, List<IService>> entry = registrationResult.getDuplicated().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupEqualPriorityGreaterType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(0, EClassifier.class, 0, EClass.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(0, registrationResult.getIsMaskedBy().size());
+		assertEquals(1, registrationResult.getMasked().size());
+		Entry<IService, List<IService>> entry = registrationResult.getMasked().entrySet().iterator().next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupGreaterPriorityLowerType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(1, EClass.class, 0, EClassifier.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service2.class, service.getClass());
+	}
+
+	@Test
+	public void lookupGreaterPriorityEqualType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(1, EClassifier.class, 0, EClassifier.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupGreaterPriorityGreaterType() {
+		final ITestLookupEngine engine = instanciate(null);
+		final ServiceRegistrationResult registrationResult = new ServiceRegistrationResult();
+		for (IService service : ServiceUtils.getServices(engine.getQueryEnvironment(),
+				new TestServiceProvider(1, EClassifier.class, 0, EClass.class))) {
+			registrationResult.merge(engine.registerService(service));
+		}
+
+		assertEquals(0, registrationResult.getDuplicated().size());
+		assertEquals(1, registrationResult.getIsMaskedBy().size());
+		Entry<IService, List<IService>> entry = registrationResult.getIsMaskedBy().entrySet().iterator()
+				.next();
+		assertEquals(TestServiceProvider.Service2.class, entry.getKey().getClass());
+		assertEquals(1, entry.getValue().size());
+		assertEquals(TestServiceProvider.Service1.class, entry.getValue().get(0).getClass());
+		assertEquals(0, registrationResult.getMasked().size());
+		assertEquals(2, registrationResult.getRegistered().size());
+		assertEquals(TestServiceProvider.Service1.class, registrationResult.getRegistered().get(0).getClass());
+		assertEquals(TestServiceProvider.Service2.class, registrationResult.getRegistered().get(1).getClass());
+
+		IService service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+
+		service = engine.lookup(TestServiceProvider.SERVICE_NAME, new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClassifier.class) });
+
+		assertEquals(TestServiceProvider.Service1.class, service.getClass());
+	}
+
+	@Test
+	public void lookupPerf() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		final Map<String, IType[]> services = new LinkedHashMap<String, IType[]>();
+
+		registerServices(engine);
+		for (IService service : engine.getRegisteredServices()) {
+			services.put(service.getName(), service.getParameterTypes(engine.getQueryEnvironment()).toArray(
+					new IType[service.getNumberOfParameters()]));
+		}
+
+		for (int i = 0; i < 10000; i++) {
+			for (Entry<String, IType[]> entry : services.entrySet()) {
+				assertNotNull(engine.lookup(entry.getKey(), entry.getValue()));
+			}
+		}
+	}
+
+	@Test
+	public void lookup_492250_twoParameters() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {
+				new ClassType(engine.getQueryEnvironment(), EClass.class),
+				new ClassType(engine.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	@Test
+	public void lookup_492250_oneParameter() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {new ClassType(engine
+				.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	@Test
+	public void lookup_492250_twoThenOneParameters() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {
+				new ClassType(engine.getQueryEnvironment(), EClass.class),
+				new ClassType(engine.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+
+		service = engine.lookup("eAllContents", new IType[] {new ClassType(engine.getQueryEnvironment(),
+				EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	@Test
+	public void lookup_492250_oneThenTwoParameters() {
+		final CrossReferenceProvider provider = new TestCrossReferenceProvider();
+		final ITestLookupEngine engine = instanciate(provider);
+		registerServices(engine);
+
+		IService service = engine.lookup("eAllContents", new IType[] {new EClassifierType(engine
+				.getQueryEnvironment(), EcorePackage.eINSTANCE.getEClass()) });
+
+		assertNotNull(service);
+
+		service = engine.lookup("eAllContents", new IType[] {
+				new ClassType(engine.getQueryEnvironment(), EClass.class),
+				new ClassType(engine.getQueryEnvironment(), EClass.class) });
+
+		assertNotNull(service);
+	}
+
+	private void registerServices(ITestLookupEngine engine) {
+		final Set<IService> services = new LinkedHashSet<IService>();
+
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new AnyServices(engine
+				.getQueryEnvironment())));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new EObjectServices(engine
+				.getQueryEnvironment(), null, null)));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), new XPathServices(engine
+				.getQueryEnvironment())));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ComparableServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), NumberServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), StringServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), BooleanServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), CollectionServices.class));
+		services.addAll(ServiceUtils.getServices(engine.getQueryEnvironment(), ResourceServices.class));
+
+		for (IService service : services) {
+			engine.registerService(service);
+		}
 	}
 
 }

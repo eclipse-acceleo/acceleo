@@ -26,11 +26,9 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -95,8 +93,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 		switch (eClass.getClassifierID()) {
 			case AstPackage.VAR_REF:
 				return createVarRef();
-			case AstPackage.FEATURE_ACCESS:
-				return createFeatureAccess();
 			case AstPackage.CALL:
 				return createCall();
 			case AstPackage.LITERAL:
@@ -133,8 +129,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createErrorTypeLiteral();
 			case AstPackage.ERROR_ENUM_LITERAL:
 				return createErrorEnumLiteral();
-			case AstPackage.ERROR_FEATURE_ACCESS_OR_CALL:
-				return createErrorFeatureAccessOrCall();
 			case AstPackage.ERROR_CALL:
 				return createErrorCall();
 			case AstPackage.ERROR_VARIABLE_DECLARATION:
@@ -207,16 +201,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public VarRef createVarRef() {
 		VarRefImpl varRef = new VarRefImpl();
 		return varRef;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public FeatureAccess createFeatureAccess() {
-		FeatureAccessImpl featureAccess = new FeatureAccessImpl();
-		return featureAccess;
 	}
 
 	/**
@@ -397,16 +381,6 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public ErrorEnumLiteral createErrorEnumLiteral() {
 		ErrorEnumLiteralImpl errorEnumLiteral = new ErrorEnumLiteralImpl();
 		return errorEnumLiteral;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public ErrorFeatureAccessOrCall createErrorFeatureAccessOrCall() {
-		ErrorFeatureAccessOrCallImpl errorFeatureAccessOrCall = new ErrorFeatureAccessOrCallImpl();
-		return errorFeatureAccessOrCall;
 	}
 
 	/**

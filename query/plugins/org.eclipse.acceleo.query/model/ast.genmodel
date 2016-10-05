@@ -20,10 +20,6 @@
     <genClasses ecoreClass="ast.ecore#//VarRef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//VarRef/variableName"/>
     </genClasses>
-    <genClasses ecoreClass="ast.ecore#//FeatureAccess">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//FeatureAccess/featureName"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//FeatureAccess/target"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="ast.ecore#//Call">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/serviceName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//Call/type"/>
@@ -79,9 +75,6 @@
     <genClasses ecoreClass="ast.ecore#//ErrorEnumLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEnumLiteral/segments"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEnumLiteral/missingColon"/>
-    </genClasses>
-    <genClasses ecoreClass="ast.ecore#//ErrorFeatureAccessOrCall">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ast.ecore#//ErrorFeatureAccessOrCall/target"/>
     </genClasses>
     <genClasses ecoreClass="ast.ecore#//ErrorCall">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorCall/missingEndParenthesis"/>

@@ -45,16 +45,17 @@ import org.junit.Test;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
+@SuppressWarnings("nls")
 public class CircularArrayDequeTest {
 	/**
 	 * Tests the behavior of {@link CircularArrayDeque#add(Object)} with random elements.
 	 */
 	@Test
 	public void testAdd() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -125,6 +126,9 @@ public class CircularArrayDequeTest {
 		// Ensure we go above capacity
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.add(rand);
 			assertSame(7 + i + 1, deque.size());
 			assertEquals(integer1, deque.getFirst());
@@ -139,9 +143,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testAddAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -206,9 +210,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testAddAllRandomAccess() {
 		Collection<Object> emptyCollection = Collections.emptyList();
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		/*
 		 * we'll do this five times : one by adding at the beginning (0), one by adding at the end
@@ -353,10 +357,10 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testAddFirst() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -419,6 +423,9 @@ public class CircularArrayDequeTest {
 		// Ensure we go above capacity
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			assertSame(7 + i + 1, deque.size());
 			assertEquals(rand, deque.getFirst());
@@ -432,10 +439,10 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testAddLast() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -498,6 +505,9 @@ public class CircularArrayDequeTest {
 		// Ensure we go above capacity
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addLast(rand);
 			assertSame(7 + i + 1, deque.size());
 			assertEquals(integer1, deque.getFirst());
@@ -575,6 +585,9 @@ public class CircularArrayDequeTest {
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 		}
 		deque.offer(null);
@@ -605,6 +618,9 @@ public class CircularArrayDequeTest {
 		assertTrue(deque.contains(null));
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertTrue(deque.contains(null));
 			assertTrue(deque.contains(rand));
@@ -632,7 +648,7 @@ public class CircularArrayDequeTest {
 
 		Collection<Object> objects1 = new ArrayList<Object>();
 		objects1.add(null);
-		objects1.addAll(randomStringDeque(40));
+		objects1.addAll(randomStringDequeNotIn(40, Collections.emptySet()));
 		objects1.add(null);
 		assertSame(42, objects1.size());
 
@@ -644,7 +660,7 @@ public class CircularArrayDequeTest {
 
 		Collection<Object> objects2 = new ArrayList<Object>();
 		objects2.add(null);
-		objects2.addAll(randomStringSet(40));
+		objects2.addAll(randomStringSetNotIn(40, objects1));
 		objects2.add(null);
 		assertSame(42, objects2.size());
 
@@ -678,12 +694,18 @@ public class CircularArrayDequeTest {
 		assertSame(null, deque.element());
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertSame(null, deque.element());
 		}
 		List<Object> lastAdded = new ArrayList<Object>();
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			lastAdded.add(rand);
 			assertEquals(rand, deque.element());
@@ -716,7 +738,7 @@ public class CircularArrayDequeTest {
 
 		Collection<Object> objects1 = new ArrayList<Object>();
 		objects1.add(null);
-		objects1.addAll(randomStringDeque(40));
+		objects1.addAll(randomStringDequeNotIn(40, Collections.emptySet()));
 		objects1.add(null);
 		assertSame(42, objects1.size());
 
@@ -734,6 +756,9 @@ public class CircularArrayDequeTest {
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque1.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque1.offer(rand);
 			deque2.offer(rand);
 		}
@@ -797,6 +822,9 @@ public class CircularArrayDequeTest {
 
 		for (int i = 0; i < max; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.add(rand);
 			objects.add(rand);
 		}
@@ -839,12 +867,18 @@ public class CircularArrayDequeTest {
 		assertSame(null, deque.getFirst());
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertSame(null, deque.getFirst());
 		}
 		List<Object> lastAdded = new ArrayList<Object>();
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			lastAdded.add(rand);
 			assertEquals(rand, deque.getFirst());
@@ -886,12 +920,18 @@ public class CircularArrayDequeTest {
 		List<Object> lastAdded = new ArrayList<Object>();
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			lastAdded.add(rand);
 			assertEquals(rand, deque.getLast());
 		}
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			assertEquals(lastAdded.get(lastAdded.size() - 1), deque.getLast());
 		}
@@ -923,13 +963,13 @@ public class CircularArrayDequeTest {
 
 		Collection<Object> objects1 = new ArrayList<Object>();
 		objects1.add(null);
-		objects1.addAll(randomStringDeque(40));
+		objects1.addAll(randomStringDequeNotIn(40, Collections.emptySet()));
 		objects1.add(null);
 		assertSame(42, objects1.size());
 
 		Collection<Object> objects2 = new ArrayList<Object>();
 		objects2.add(null);
-		objects2.addAll(randomStringSet(40));
+		objects2.addAll(randomStringSetNotIn(40, objects1));
 		objects2.add(null);
 		assertSame(42, objects2.size());
 
@@ -947,6 +987,9 @@ public class CircularArrayDequeTest {
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque1.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque1.offer(rand);
 			deque2.offer(rand);
 		}
@@ -1078,9 +1121,9 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testInstantiationCopy() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>(listInt10);
 		assertFalse(deque.isEmpty());
@@ -1163,7 +1206,11 @@ public class CircularArrayDequeTest {
 		assertFalse(deque.isEmpty());
 
 		for (int i = 0; i < 100; i++) {
-			deque.offer(getRandomString());
+			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
+			deque.offer(rand);
 			assertFalse(deque.isEmpty());
 		}
 		for (int i = 0; i < 100; i++) {
@@ -1175,7 +1222,11 @@ public class CircularArrayDequeTest {
 		assertTrue(deque.isEmpty());
 
 		for (int i = 0; i < 100; i++) {
-			deque.offer(getRandomString());
+			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
+			deque.offer(rand);
 			assertFalse(deque.isEmpty());
 		}
 
@@ -1190,9 +1241,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testIsSerializable() {
 		Collection<Object> emptyCollection = Collections.emptyList();
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 		Collection<Object> duplicatesList = new ArrayList<Object>();
 		for (int i = 0; i < 40; i++) {
 			int dupe = i / 2;
@@ -1251,9 +1302,9 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testIterator() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -1366,9 +1417,9 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testIteratorRemove() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -1770,9 +1821,9 @@ public class CircularArrayDequeTest {
 		}
 		deque.clear();
 
-		List<Integer> listInt10 = randomIntegerList(10);
-		Set<String> setString20 = randomStringSet(20);
-		List<String> dequeString40 = randomStringDeque(40);
+		List<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Set<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		List<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		deque.addAll(listInt10);
 		deque.addAll(setString20);
@@ -1904,10 +1955,10 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testOffer() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -1970,6 +2021,9 @@ public class CircularArrayDequeTest {
 		// Ensure we go above capacity
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertSame(7 + i + 1, deque.size());
 			assertEquals(integer1, deque.getFirst());
@@ -1984,9 +2038,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testOfferAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -2044,10 +2098,10 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testOfferFirst() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -2110,6 +2164,9 @@ public class CircularArrayDequeTest {
 		// Ensure we go above capacity
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offerFirst(rand);
 			assertSame(7 + i + 1, deque.size());
 			assertEquals(rand, deque.getFirst());
@@ -2123,10 +2180,10 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testOfferLast() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -2189,6 +2246,9 @@ public class CircularArrayDequeTest {
 		// Ensure we go above capacity
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offerLast(rand);
 			assertSame(7 + i + 1, deque.size());
 			assertEquals(integer1, deque.getFirst());
@@ -2203,16 +2263,8 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testParameterizedToArray() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
 		Object[] array = deque.toArray(new Object[0]);
 		assertSame(0, array.length);
@@ -2281,11 +2333,17 @@ public class CircularArrayDequeTest {
 		List<Object> lastAdded = new ArrayList<Object>();
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertSame(null, deque.peek());
 		}
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			lastAdded.add(rand);
 			assertEquals(rand, deque.peek());
@@ -2320,12 +2378,18 @@ public class CircularArrayDequeTest {
 		assertSame(null, deque.peekFirst());
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertSame(null, deque.peekFirst());
 		}
 		List<Object> lastAdded = new ArrayList<Object>();
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			lastAdded.add(rand);
 			assertEquals(rand, deque.peekFirst());
@@ -2367,12 +2431,18 @@ public class CircularArrayDequeTest {
 		List<Object> lastAdded = new ArrayList<Object>();
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			lastAdded.add(rand);
 			assertEquals(rand, deque.peekLast());
 		}
 		for (int i = 0; i < 20; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.addFirst(rand);
 			assertEquals(lastAdded.get(lastAdded.size() - 1), deque.peekLast());
 		}
@@ -2400,17 +2470,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testPoll() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
 		assertFalse(deque.containsAll(objectsFirst));
 		assertFalse(deque.containsAll(objectsLast));
 
@@ -2447,17 +2509,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testPop() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
 		assertFalse(deque.containsAll(objectsFirst));
 		assertFalse(deque.containsAll(objectsLast));
 
@@ -2508,12 +2562,8 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testRemove() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objects = new ArrayList<Object>();
+		List<String> objects = randomStringListNotIn(20, Collections.emptySet());
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objects.add(rand);
-		}
 		assertFalse(deque.containsAll(objects));
 
 		for (Object o : objects) {
@@ -2549,9 +2599,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testRemoveAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -2684,17 +2734,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testRemoveFirst() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
 		assertFalse(deque.containsAll(objectsFirst));
 		assertFalse(deque.containsAll(objectsLast));
 
@@ -2745,17 +2787,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testRemoveLast() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
 		assertFalse(deque.containsAll(objectsFirst));
 		assertFalse(deque.containsAll(objectsLast));
 
@@ -2818,17 +2852,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testRemoveQueue() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
 		assertFalse(deque.containsAll(objectsFirst));
 		assertFalse(deque.containsAll(objectsLast));
 
@@ -2891,9 +2917,9 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testRetainAll() {
 		Collection<Object> emptyCollection = Collections.emptyList();
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 		deque.addAll(listInt10);
@@ -2990,10 +3016,10 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testSet() {
-		Integer integer1 = getRandomInteger();
-		Integer integer2 = getRandomInteger();
-		String string1 = getRandomString();
-		String string2 = getRandomString();
+		Integer integer1 = -1;
+		Integer integer2 = -2;
+		String string1 = "a";
+		String string2 = "b";
 		Object object1 = new Object();
 		Object object2 = new Object();
 
@@ -3086,6 +3112,9 @@ public class CircularArrayDequeTest {
 
 		for (int i = 0; i < 100; i++) {
 			String rand = getRandomString();
+			while (deque.contains(rand)) {
+				rand = getRandomString();
+			}
 			deque.offer(rand);
 			assertSame(++size, deque.size());
 		}
@@ -3102,8 +3131,8 @@ public class CircularArrayDequeTest {
 	 */
 	@Test
 	public void testSubList() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
 
 		Deque<Object> deque = new CircularArrayDeque<Object>();
 
@@ -3158,16 +3187,8 @@ public class CircularArrayDequeTest {
 	@Test
 	public void testToArray() {
 		Deque<Object> deque = new CircularArrayDeque<Object>();
-		List<Object> objectsFirst = new ArrayList<Object>();
-		List<Object> objectsLast = new ArrayList<Object>();
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsFirst.add(rand);
-		}
-		for (int i = 0; i < 20; i++) {
-			String rand = getRandomString();
-			objectsLast.add(rand);
-		}
+		List<String> objectsFirst = randomStringListNotIn(20, Collections.emptySet());
+		List<String> objectsLast = randomStringListNotIn(20, objectsFirst);
 
 		Object[] array = deque.toArray();
 		assertSame(0, array.length);
@@ -3280,18 +3301,18 @@ public class CircularArrayDequeTest {
 	}
 
 	/**
-	 * Returns a random Integer between 0 and 100000.
+	 * Returns a random Integer between 0 and 10000000.
 	 * 
-	 * @return A random Integer between 0 and 100000.
+	 * @return A random Integer between 0 and 10000000.
 	 */
 	private Integer getRandomInteger() {
-		return Integer.valueOf(Double.valueOf(Math.random() * 100000d).intValue());
+		return Integer.valueOf(Double.valueOf(Math.random() * 10000000d).intValue());
 	}
 
 	/**
-	 * Returns a random String representing an integer between 0 and 100000.
+	 * Returns a random String representing an integer between 0 and 10000000.
 	 * 
-	 * @return A random String representing an integer between 0 and 100000.
+	 * @return A random String representing an integer between 0 and 10000000.
 	 */
 	private String getRandomString() {
 		return getRandomInteger().toString();
@@ -3304,7 +3325,6 @@ public class CircularArrayDequeTest {
 	 * @param collection
 	 *            Collection to insert into the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestAddAllRandomAccessLeftRotate(List<Object> collection) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ _ a a a a a a _ _ //
@@ -3464,7 +3484,6 @@ public class CircularArrayDequeTest {
 	 * @param collection
 	 *            Collection to insert into the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestAddAllRandomAccessRightRotate(List<Object> collection) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ _ a a a a a a _ _ //
@@ -3625,7 +3644,6 @@ public class CircularArrayDequeTest {
 	 * @param element
 	 *            Element to insert into the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestAddRandomAccessLeftRotate(Object element) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ _ a a a a a a a _ //
@@ -3741,7 +3759,6 @@ public class CircularArrayDequeTest {
 	 * @param element
 	 *            Element to insert into the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestAddRandomAccessRightRotate(Object element) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ _ a a a a a a a _ //
@@ -3863,7 +3880,6 @@ public class CircularArrayDequeTest {
 	 * @param collection
 	 *            Collection to remove from the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestRemoveAllBothRotate(List<Object> collection) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ a a a ? ? a a a _ _ _ //
@@ -4104,7 +4120,6 @@ public class CircularArrayDequeTest {
 	 * @param collection
 	 *            Collection to remove from the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestRemoveAllLeftRotate(List<Object> collection) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ _ a a a a ? ? a a //
@@ -4252,7 +4267,6 @@ public class CircularArrayDequeTest {
 	 * @param collection
 	 *            Collection to remove from the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestRemoveAllRightRotate(List<Object> collection) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ a a ? ? a a a a _ _ //
@@ -4405,7 +4419,6 @@ public class CircularArrayDequeTest {
 	 * @param element
 	 *            Element to remove from the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestRemoveLeftRotate(Object element) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ _ a a a a ? a a a //
@@ -4507,7 +4520,6 @@ public class CircularArrayDequeTest {
 	 * @param element
 	 *            Element to remove from the deque.
 	 */
-	@SuppressWarnings("nls")
 	private void internalTestRemoveRightRotate(Object element) {
 		// //////////////////////////////////////////
 		// Array : _ _ _ _ _ _ _ a a a ? a a a a _ //
@@ -4613,16 +4625,39 @@ public class CircularArrayDequeTest {
 	 * 
 	 * @param size
 	 *            Size of the list to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
 	 * @return A list containing <code>size</code> random Integers.
 	 */
-	private List<Integer> randomIntegerList(int size) {
+	private List<Integer> randomIntegerListNotIn(int size, Collection<?> excluded) {
 		List<Integer> list = new ArrayList<Integer>(size);
 		for (int i = 0; i < size; i++) {
 			Integer integer = getRandomInteger();
-			while (list.contains(integer)) {
+			while (list.contains(integer) || excluded.contains(integer)) {
 				integer = getRandomInteger();
 			}
 			list.add(integer);
+		}
+		return list;
+	}
+
+	/**
+	 * Returns a list containing <code>size</code> random Strings.
+	 * 
+	 * @param size
+	 *            Size of the list to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
+	 * @return A list containing <code>size</code> random Strings.
+	 */
+	private List<String> randomStringListNotIn(int size, Collection<?> excluded) {
+		List<String> list = new ArrayList<String>(size);
+		for (int i = 0; i < size; i++) {
+			String string = getRandomString();
+			while (list.contains(string) || excluded.contains(string)) {
+				string = getRandomString();
+			}
+			list.add(string);
 		}
 		return list;
 	}
@@ -4632,13 +4667,15 @@ public class CircularArrayDequeTest {
 	 * 
 	 * @param size
 	 *            Size of the deque to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
 	 * @return A deque containing <code>size</code> random Strings.
 	 */
-	private Deque<String> randomStringDeque(int size) {
+	private Deque<String> randomStringDequeNotIn(int size, Collection<?> excluded) {
 		Deque<String> deque = new CircularArrayDeque<String>(size);
 		for (int i = 0; i < size; i++) {
 			String s = getRandomString();
-			while (deque.contains(s)) {
+			while (deque.contains(s) || excluded.contains(s)) {
 				s = getRandomString();
 			}
 			deque.add(s);
@@ -4651,13 +4688,15 @@ public class CircularArrayDequeTest {
 	 * 
 	 * @param size
 	 *            Size of the set to create.
+	 * @param excluded
+	 *            Values that cannot be in our returned list.
 	 * @return A set containing <code>size</code> random Strings.
 	 */
-	private Set<String> randomStringSet(int size) {
+	private Set<String> randomStringSetNotIn(int size, Collection<?> excluded) {
 		Set<String> set = new HashSet<String>(size);
 		for (int i = 0; i < size; i++) {
 			String s = getRandomString();
-			while (set.contains(s)) {
+			while (set.contains(s) || excluded.contains(s)) {
 				s = getRandomString();
 			}
 			set.add(s);

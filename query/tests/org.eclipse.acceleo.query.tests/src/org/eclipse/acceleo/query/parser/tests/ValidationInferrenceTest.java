@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
+import com.google.common.collect.Sets;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -20,7 +22,6 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
@@ -148,7 +149,7 @@ public class ValidationInferrenceTest {
 	}
 
 	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(ePackage);
 		engine = new QueryValidationEngine(queryEnvironment);
@@ -163,6 +164,9 @@ public class ValidationInferrenceTest {
 		final Set<IType> varCTypes = new LinkedHashSet<IType>();
 		varCTypes.add(new EClassifierType(queryEnvironment, c));
 		variableTypes.put("varC", varCTypes);
+		final Set<IType> varZTypes = new LinkedHashSet<IType>();
+		varZTypes.add(new EClassifierType(queryEnvironment, z));
+		variableTypes.put("varZ", varZTypes);
 		final Set<IType> varNothing = new LinkedHashSet<IType>();
 		varNothing.add(new NothingType("Nothing"));
 		variableTypes.put("varNothing", varNothing);
@@ -179,12 +183,60 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
-		assertNotNull(inferredWhenTrue);
+
+		assertNull(inferredWhenTrue);
+
 		assertNotNull(inferredWhenFalse);
-		assertEquals(inferredWhenTrue, inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(1, inferredWhenFalse.size());
+		Iterator<IType> it = inferredWhenFalse.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("Nothing", ((NothingType)type).getMessage());
+
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 0, 10);
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(1),
+						ValidationMessageLevel.INFO,
+						"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
+						0, 31);
+	}
+
+	@Test
+	public void oclIsKindOf_varEObject_B() {
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		String varName = "container";
+		Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
+		IType eObjectType = new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject());
+		variableTypes.put(varName, Sets.newHashSet(eObjectType));
+
+		final IValidationResult validationResult = engine.validate(varName + ".oclIsKindOf(test::B)",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		final Set<IType> inferredWhenTrue = validationResult.getInferredVariableTypes(ast, Boolean.TRUE).get(
+				varName);
+		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
+				.get(varName);
+		assertNotNull(inferredWhenTrue);
+		assertNotNull(inferredWhenFalse);
+		assertDisjointTypes(inferredWhenTrue, inferredWhenFalse);
+
+		assertEquals(1, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(1, inferredWhenFalse.size());
+		it = inferredWhenFalse.iterator();
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEObject(), ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -201,6 +253,7 @@ public class ValidationInferrenceTest {
 		assertNotNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
 		assertDisjointTypes(inferredWhenTrue, inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
@@ -212,6 +265,8 @@ public class ValidationInferrenceTest {
 		type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(a, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -227,6 +282,7 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
 		assertNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
@@ -255,6 +311,7 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
 		assertNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
@@ -283,16 +340,18 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Always false:\nNothing inferred when varC (EClassifier=C) is kind of EClassifierLiteral=O",
-				0, 25);
+
 		assertEquals(1, inferredWhenFalse.size());
 		Iterator<IType> it = inferredWhenFalse.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is kind of EClassifierLiteral=O",
+				0, 25);
 	}
 
 	@Test
@@ -306,14 +365,59 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
-		assertNotNull(inferredWhenTrue);
+		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
-		assertEquals(inferredWhenTrue, inferredWhenFalse);
-		assertEquals(1, inferredWhenTrue.size());
-		Iterator<IType> it = inferredWhenTrue.iterator();
+
+		assertEquals(1, inferredWhenFalse.size());
+		Iterator<IType> it = inferredWhenFalse.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof NothingType);
 		assertEquals("Nothing", ((NothingType)type).getMessage());
+
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "Nothing", 0, 10);
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(1),
+						ValidationMessageLevel.INFO,
+						"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is type of EClassifierLiteral=B",
+						0, 31);
+	}
+
+	@Test
+	public void oclIsTypeOf_varEObject_B() {
+		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
+		String varName = "container";
+		Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
+		IType eObjectType = new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject());
+		variableTypes.put(varName, Sets.newHashSet(eObjectType));
+
+		final IValidationResult validationResult = engine.validate(varName + ".oclIsTypeOf(test::B)",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		final Set<IType> inferredWhenTrue = validationResult.getInferredVariableTypes(ast, Boolean.TRUE).get(
+				varName);
+		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
+				.get(varName);
+		assertNotNull(inferredWhenTrue);
+		assertNotNull(inferredWhenFalse);
+		assertDisjointTypes(inferredWhenTrue, inferredWhenFalse);
+
+		assertEquals(1, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(1, inferredWhenFalse.size());
+		it = inferredWhenFalse.iterator();
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEObject(), ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -327,19 +431,22 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
-		assertNull(inferredWhenTrue);
+		assertNotNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Always false:\nNothing inferred when varA (EClassifier=A) is type of EClassifierLiteral=B",
-				0, 25);
 
-		assertEquals(1, inferredWhenFalse.size());
-		Iterator<IType> it = inferredWhenFalse.iterator();
+		assertEquals(1, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(1, inferredWhenFalse.size());
+		it = inferredWhenFalse.iterator();
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
 		assertEquals(a, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -354,19 +461,52 @@ public class ValidationInferrenceTest {
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
-		assertNull(inferredWhenFalse);
+		assertNotNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(b, ((EClassifierType)type).getType());
 
+		assertEquals(2, inferredWhenFalse.size());
+		it = inferredWhenFalse.iterator();
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(c, ((EClassifierType)type).getType());
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(y, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void oclIsTypeOf_varZ_Z() {
+		String varName = "varZ";
+		final IValidationResult validationResult = engine.validate(varName + ".oclIsTypeOf(test::Z)",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		final Set<IType> inferredWhenTrue = validationResult.getInferredVariableTypes(ast, Boolean.TRUE).get(
+				varName);
+		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
+				.get(varName);
+		assertNotNull(inferredWhenTrue);
+		assertNull(inferredWhenFalse);
+
+		assertEquals(1, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(z, ((EClassifierType)type).getType());
+
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
 						ValidationMessageLevel.INFO,
-						"Always true:\nNothing inferred when varB (EClassifier=B) is not type of EClassifierLiteral=B",
+						"Always true:\nNothing inferred when varZ (EClassifier=Z) is not type of EClassifierLiteral=Z",
 						0, 25);
 	}
 
@@ -383,17 +523,18 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=B",
-				0, 25);
 
 		assertEquals(1, inferredWhenFalse.size());
 		Iterator<IType> it = inferredWhenFalse.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=B",
+				0, 25);
 	}
 
 	@Test
@@ -409,17 +550,18 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=O",
-				0, 25);
 
 		assertEquals(1, inferredWhenFalse.size());
 		Iterator<IType> it = inferredWhenFalse.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Always false:\nNothing inferred when varC (EClassifier=C) is type of EClassifierLiteral=O",
+				0, 25);
 	}
 
 	@Test
@@ -433,13 +575,25 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
+
 		assertNotNull(inferredWhenTrue);
-		assertNotNull(inferredWhenFalse);
-		assertEquals(inferredWhenTrue, inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
-		assertEquals(1, validationResult.getMessages().size());
+		assertEquals(1, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof NothingType);
+		assertEquals("Nothing", ((NothingType)type).getMessage());
+
+		assertNull(inferredWhenFalse);
+
+		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.ERROR, "Nothing", 4, 14);
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(1),
+						ValidationMessageLevel.INFO,
+						"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is kind of EClassifierLiteral=B",
+						4, 35);
 	}
 
 	@Test
@@ -456,6 +610,7 @@ public class ValidationInferrenceTest {
 		assertNotNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
 		assertDisjointTypes(inferredWhenTrue, inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
@@ -467,6 +622,8 @@ public class ValidationInferrenceTest {
 		type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -482,6 +639,13 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
+
+		assertEquals(1, inferredWhenFalse.size());
+		Iterator<IType> it = inferredWhenFalse.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)type).getType());
+
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
@@ -489,12 +653,6 @@ public class ValidationInferrenceTest {
 						ValidationMessageLevel.INFO,
 						"Always true:\nNothing inferred when varB (EClassifier=B) is not kind of EClassifierLiteral=B",
 						4, 29);
-
-		assertEquals(1, inferredWhenFalse.size());
-		Iterator<IType> it = inferredWhenFalse.iterator();
-		IType type = it.next();
-		assertTrue(type instanceof EClassifierType);
-		assertEquals(b, ((EClassifierType)type).getType());
 	}
 
 	@Test
@@ -510,6 +668,13 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
+
+		assertEquals(1, inferredWhenFalse.size());
+		Iterator<IType> it = inferredWhenFalse.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(c, ((EClassifierType)type).getType());
+
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest
 				.assertValidationMessage(
@@ -517,12 +682,6 @@ public class ValidationInferrenceTest {
 						ValidationMessageLevel.INFO,
 						"Always true:\nNothing inferred when varC (EClassifier=C) is not kind of EClassifierLiteral=B",
 						4, 29);
-
-		assertEquals(1, inferredWhenFalse.size());
-		Iterator<IType> it = inferredWhenFalse.iterator();
-		IType type = it.next();
-		assertTrue(type instanceof EClassifierType);
-		assertEquals(c, ((EClassifierType)type).getType());
 	}
 
 	@Test
@@ -538,11 +697,13 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
 		assertNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
@@ -562,13 +723,23 @@ public class ValidationInferrenceTest {
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
-		assertNotNull(inferredWhenFalse);
-		assertEquals(inferredWhenTrue, inferredWhenFalse);
+		assertNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof NothingType);
 		assertEquals("Nothing", ((NothingType)type).getMessage());
+
+		assertEquals(2, validationResult.getMessages().size());
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.ERROR, "Nothing", 4, 14);
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(1),
+						ValidationMessageLevel.INFO,
+						"Always false:\nNothing inferred when varNothing (Nothing(Nothing)) is type of EClassifierLiteral=B",
+						4, 35);
 	}
 
 	@Test
@@ -583,18 +754,21 @@ public class ValidationInferrenceTest {
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
-		assertNull(inferredWhenFalse);
+		assertNotNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(a, ((EClassifierType)type).getType());
 
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Always false:\nNothing inferred when varA (EClassifier=A) is type of EClassifierLiteral=B",
-				4, 29);
+		assertEquals(1, inferredWhenFalse.size());
+		it = inferredWhenFalse.iterator();
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -608,21 +782,54 @@ public class ValidationInferrenceTest {
 				varName);
 		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
 				.get(varName);
+		assertNotNull(inferredWhenTrue);
+		assertNotNull(inferredWhenFalse);
+
+		assertEquals(2, inferredWhenTrue.size());
+		Iterator<IType> it = inferredWhenTrue.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(c, ((EClassifierType)type).getType());
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(y, ((EClassifierType)type).getType());
+
+		assertEquals(1, inferredWhenFalse.size());
+		it = inferredWhenFalse.iterator();
+		type = it.next();
+		assertTrue(type instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void not_oclIsTypeOf_varZ_Z() {
+		String varName = "varZ";
+		final IValidationResult validationResult = engine.validate(
+				"not " + varName + ".oclIsTypeOf(test::Z)", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		final Set<IType> inferredWhenTrue = validationResult.getInferredVariableTypes(ast, Boolean.TRUE).get(
+				varName);
+		final Set<IType> inferredWhenFalse = validationResult.getInferredVariableTypes(ast, Boolean.FALSE)
+				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNotNull(inferredWhenFalse);
-		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Always true:\nNothing inferred when varB (EClassifier=B) is not type of EClassifierLiteral=B",
-						4, 29);
 
 		assertEquals(1, inferredWhenFalse.size());
 		Iterator<IType> it = inferredWhenFalse.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
-		assertEquals(b, ((EClassifierType)type).getType());
+		assertEquals(z, ((EClassifierType)type).getType());
+
+		assertEquals(1, validationResult.getMessages().size());
+		ValidationTest
+				.assertValidationMessage(
+						validationResult.getMessages().get(0),
+						ValidationMessageLevel.INFO,
+						"Always true:\nNothing inferred when varZ (EClassifier=Z) is not type of EClassifierLiteral=Z",
+						4, 29);
 	}
 
 	@Test
@@ -638,6 +845,7 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
 		assertNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
@@ -664,11 +872,13 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNotNull(inferredWhenTrue);
 		assertNull(inferredWhenFalse);
+
 		assertEquals(1, inferredWhenTrue.size());
 		Iterator<IType> it = inferredWhenTrue.iterator();
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
 				ValidationMessageLevel.INFO,
@@ -704,6 +914,8 @@ public class ValidationInferrenceTest {
 		type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -719,6 +931,8 @@ public class ValidationInferrenceTest {
 				.get(varName);
 		assertNull(inferredWhenTrue);
 		assertNull(inferredWhenFalse);
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -746,6 +960,8 @@ public class ValidationInferrenceTest {
 		type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(b, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -763,6 +979,8 @@ public class ValidationInferrenceTest {
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -780,6 +998,8 @@ public class ValidationInferrenceTest {
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -794,6 +1014,8 @@ public class ValidationInferrenceTest {
 		IType type = it.next();
 		assertTrue(type instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)type).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -810,6 +1032,8 @@ public class ValidationInferrenceTest {
 		final IType rawType = ((SetType)type).getCollectionType();
 		assertTrue(rawType instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)rawType).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test
@@ -826,6 +1050,8 @@ public class ValidationInferrenceTest {
 		final IType rawType = ((SetType)type).getCollectionType();
 		assertTrue(rawType instanceof EClassifierType);
 		assertEquals(c, ((EClassifierType)rawType).getType());
+
+		assertEquals(0, validationResult.getMessages().size());
 	}
 
 	@Test

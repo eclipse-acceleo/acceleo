@@ -27,12 +27,14 @@ import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilder;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.acceleo.query.runtime.impl.CrossReferencerToAQL;
+import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.emf.common.notify.Notifier;
@@ -127,7 +129,7 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void setup() {
 		IQueryEnvironment environment = Query
 				.newEnvironmentWithDefaultServices(createEInverseCrossreferencer(EcorePackage.eINSTANCE));
-		evaluator = new AstEvaluator(environment);
+		evaluator = new AstEvaluator(new EvaluationServices(environment));
 	}
 
 	@Test
@@ -167,9 +169,11 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void testFeatureAccess() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		assertOKResultEquals("EClass", evaluator.eval(varDefinitions, featureAccess(varRef("self"), "name")));
-		EvaluationResult result = evaluator.eval(varDefinitions, featureAccess(varRef("self"),
-				"eAllSuperTypes"));
+		assertOKResultEquals("EClass", evaluator.eval(varDefinitions, callService(
+				AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, varRef("self"), stringLiteral("name"))));
+		EvaluationResult result = evaluator.eval(varDefinitions, callService(
+				AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, varRef("self"),
+				stringLiteral(("eAllSuperTypes"))));
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
@@ -191,7 +195,9 @@ public class AstEvaluatorTest extends AstBuilder {
 	public void testCall() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
-		final Call callService = callService("size", featureAccess(varRef("self"), "eAllSuperTypes"));
+		final Call callService = callService("size", callService(
+				AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, varRef("self"),
+				stringLiteral("eAllSuperTypes")));
 		callService.setType(CallType.COLLECTIONCALL);
 		EvaluationResult result = evaluator.eval(varDefinitions, callService);
 		assertOKResultEquals(Integer.valueOf(3), result);
@@ -334,10 +340,10 @@ public class AstEvaluatorTest extends AstBuilder {
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
-		assertTrue(message1.contains("Couldn't find the prefix variable"));
+		assertTrue(message1.contains("Couldn't find the 'prefix' variable"));
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
-		assertTrue(message2.contains("Couldn't find the concat"));
+		assertTrue(message2.contains("Couldn't find the 'concat"));
 	}
 
 	@Test
@@ -351,10 +357,10 @@ public class AstEvaluatorTest extends AstBuilder {
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
-		assertTrue(message1.contains("Couldn't find the novar variable"));
+		assertTrue(message1.contains("Couldn't find the 'novar' variable"));
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
-		assertTrue(message2.contains("Couldn't find the concat"));
+		assertTrue(message2.contains("Couldn't find the 'concat"));
 	}
 
 	@Test

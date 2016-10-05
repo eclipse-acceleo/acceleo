@@ -225,3 +225,28 @@ form.well {
   color: #468847;
   background-color: #DFF0D8;
 }
+
+code,pre {
+	color: #25587E;
+}
+
+code {
+  background-color: #fafafc !important;
+  border: none !important;
+}
+
+.label-danger {
+  background-color: #d9534f;
+}
+
+body, p, li {
+    line-height: 20px;    
+    font-size: 16px;
+    margin-bottom: 24px;
+}
+
+li {
+    line-height: 18px;    
+    font-size: 16px;
+    margin-bottom: 10px;
+}

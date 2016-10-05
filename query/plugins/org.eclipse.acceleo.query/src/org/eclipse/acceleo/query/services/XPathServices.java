@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
@@ -19,7 +18,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -40,9 +38,10 @@ import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.EClassImpl.FeatureSubsetSupplier;
 import org.eclipse.emf.ecore.resource.Resource;
 
 /**
@@ -256,10 +255,9 @@ public class XPathServices extends AbstractServiceProvider {
 					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 							followingEClass)));
 				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't have following siblings", argTypes.get(0))));
-				}
+				// for siblings root of a resource (any EObject)
+				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						EcorePackage.eINSTANCE.getEObject())));
 			} else if (argTypes.size() == 2) {
 				final Set<IType> filterTypes = Sets.newLinkedHashSet();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
@@ -281,10 +279,8 @@ public class XPathServices extends AbstractServiceProvider {
 							result.add(new SequenceType(queryEnvironment, lowerType));
 						}
 					}
-				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't be a following sibling of %s", argTypes.get(1), argTypes.get(0))));
+					// for siblings root of a resource (filtered EObject)
+					result.add(new SequenceType(queryEnvironment, services.lower(filterType, filterType)));
 				}
 			}
 
@@ -371,10 +367,9 @@ public class XPathServices extends AbstractServiceProvider {
 					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 							precedingEClass)));
 				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't have preceding siblings", argTypes.get(0))));
-				}
+				// for siblings root of a resource (any EObject)
+				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						EcorePackage.eINSTANCE.getEObject())));
 			} else if (argTypes.size() == 2) {
 				final Set<IType> filterTypes = Sets.newLinkedHashSet();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
@@ -396,10 +391,8 @@ public class XPathServices extends AbstractServiceProvider {
 							result.add(new SequenceType(queryEnvironment, lowerType));
 						}
 					}
-				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't be a preceding sibling of %s", argTypes.get(1), argTypes.get(0))));
+					// for siblings root of a resource (filtered EObject)
+					result.add(new SequenceType(queryEnvironment, services.lower(filterType, filterType)));
 				}
 			}
 
@@ -486,10 +479,9 @@ public class XPathServices extends AbstractServiceProvider {
 					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 							siblingEClass)));
 				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing("%s can't have siblings",
-							argTypes.get(0))));
-				}
+				// for siblings root of a resource (any EObject)
+				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						EcorePackage.eINSTANCE.getEObject())));
 			} else if (argTypes.size() == 2) {
 				final Set<IType> filterTypes = Sets.newLinkedHashSet();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
@@ -511,10 +503,8 @@ public class XPathServices extends AbstractServiceProvider {
 							result.add(new SequenceType(queryEnvironment, lowerType));
 						}
 					}
-				}
-				if (result.isEmpty()) {
-					result.add(new SequenceType(queryEnvironment, services.nothing(
-							"%s can't be a sibling of %s", argTypes.get(1), argTypes.get(0))));
+					// for siblings root of a resource (filtered EObject)
+					result.add(new SequenceType(queryEnvironment, services.lower(filterType, filterType)));
 				}
 			}
 
@@ -573,11 +563,16 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> ancestors(EObject self) {
-		// TODO lazy collection
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
-		filters.add(null);
+		// TODO lazy collection + predicate
+		final List<EObject> result = new ArrayList<EObject>();
 
-		return ancestors(self, filters);
+		EObject container = self.eContainer();
+		while (container != null) {
+			result.add(container);
+			container = container.eContainer();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -593,8 +588,8 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> ancestors(EObject self, EClassifier filter) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+	public List<EObject> ancestors(EObject self, EClass filter) {
+		final Set<EClass> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
 		return ancestors(self, filters);
@@ -613,17 +608,14 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> ancestors(EObject self, Set<EClassifier> filters) {
+	public List<EObject> ancestors(EObject self, Set<EClass> filters) {
 		// TODO lazy collection + predicate
 		final List<EObject> result = new ArrayList<EObject>();
 
 		EObject container = self.eContainer();
 		while (container != null) {
-			for (EClassifier filter : filters) {
-				if (filter == null || filter.isInstance(container)) {
-					result.add(container);
-					break;
-				}
+			if (eIsInstanceOf(container, filters)) {
+				result.add(container);
 			}
 			container = container.eContainer();
 		}
@@ -644,10 +636,17 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> followingSiblings(EObject self) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
-		filters.add(null);
+		// TODO lazy collection
+		final List<EObject> result;
 
-		return siblings(self, filters, false);
+		Object container = getContainer(self);
+		if (container != null) {
+			result = getContentsFrom(container, self);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -663,11 +662,11 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> followingSiblings(EObject self, EClassifier filter) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+	public List<EObject> followingSiblings(EObject self, EClass filter) {
+		final Set<EClass> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
-		return siblings(self, filters, false);
+		return followingSiblings(self, filters);
 	}
 
 	// @formatter:off
@@ -683,8 +682,81 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> followingSiblings(EObject self, Set<EClassifier> filters) {
-		return siblings(self, filters, false);
+	public List<EObject> followingSiblings(EObject eObject, Set<EClass> filters) {
+		// TODO lazy collection
+		final List<EObject> result;
+
+		Object container = getContainer(eObject);
+		if (container instanceof EObject) {
+			result = new ArrayList<EObject>();
+			final EStructuralFeature containingFeature = eObject.eContainingFeature();
+			final List<EStructuralFeature> followingFeatures = getFollowingFeatures((EObject)container,
+					containingFeature, filters);
+			boolean collect = followingFeatures.size() > 0 && followingFeatures.get(0) != containingFeature;
+			for (EStructuralFeature feature : followingFeatures) {
+				final Object value = ((EObject)container).eGet(feature);
+				if (value instanceof Collection<?>) {
+					for (Object child : (Collection<?>)value) {
+						if (child == eObject) {
+							collect = true;
+						} else if (collect && child instanceof EObject
+								&& eIsInstanceOf((EObject)child, filters)) {
+							result.add((EObject)child);
+						}
+					}
+				} else if (value == eObject) {
+					collect = true;
+				} else if (collect && value instanceof EObject && eIsInstanceOf((EObject)value, filters)) {
+					result.add((EObject)value);
+				}
+			}
+		} else if (container instanceof Resource) {
+			result = new ArrayList<EObject>();
+			for (EObject eObj : getRootsFrom((Resource)container, eObject)) {
+				if (eIsInstanceOf(eObj, filters)) {
+					result.add(eObj);
+				}
+			}
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the following {@link EStructuralFeature} for the given container and containing feature.
+	 * 
+	 * @param container
+	 *            the {@link EObject} container
+	 * @param containingFeature
+	 *            the containing {@link EStructuralFeature}
+	 * @param filters
+	 *            the {@link EClass} filters
+	 * @return the following {@link EStructuralFeature} for the given container and containing feature
+	 */
+	private List<EStructuralFeature> getFollowingFeatures(EObject container,
+			EStructuralFeature containingFeature, Set<EClass> filters) {
+		final List<EStructuralFeature> result = new ArrayList<EStructuralFeature>();
+
+		final Set<EStructuralFeature> filteredFeatures = new LinkedHashSet<EStructuralFeature>();
+		for (EClass eCls : filters) {
+			filteredFeatures.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(
+					eCls));
+		}
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container)
+				.eClass().getEAllStructuralFeatures()).containments();
+		boolean collect = false;
+		for (EStructuralFeature containmentFeature : containmentFeatures) {
+			if (containmentFeature == containingFeature) {
+				collect = true;
+			}
+			if (collect && filteredFeatures.contains(containmentFeature)) {
+				result.add(containmentFeature);
+			}
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -700,10 +772,17 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> precedingSiblings(EObject self) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
-		filters.add(null);
+		// TODO lazy collection
+		final List<EObject> result;
 
-		return siblings(self, filters, true);
+		Object container = getContainer(self);
+		if (container != null) {
+			result = getContentsUntil(container, self);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -719,11 +798,11 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> precedingSiblings(EObject self, EClassifier filter) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+	public List<EObject> precedingSiblings(EObject self, EClass filter) {
+		final Set<EClass> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
-		return siblings(self, filters, true);
+		return precedingSiblings(self, filters);
 	}
 
 	// @formatter:off
@@ -739,8 +818,78 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> precedingSiblings(EObject self, Set<EClassifier> filters) {
-		return siblings(self, filters, true);
+	public List<EObject> precedingSiblings(EObject eObject, Set<EClass> filters) {
+		// TODO lazy collection
+		final List<EObject> result;
+
+		Object container = getContainer(eObject);
+		if (container instanceof EObject) {
+			result = new ArrayList<EObject>();
+			final EStructuralFeature containingFeature = eObject.eContainingFeature();
+			final List<EStructuralFeature> precedingFeatures = getPrecedingFeatures((EObject)container,
+					containingFeature, filters);
+			finish: for (EStructuralFeature feature : precedingFeatures) {
+				final Object value = ((EObject)container).eGet(feature);
+				if (value instanceof Collection<?>) {
+					for (Object child : (Collection<?>)value) {
+						if (child == eObject) {
+							break finish;
+						} else if (child instanceof EObject && eIsInstanceOf((EObject)child, filters)) {
+							result.add((EObject)child);
+						}
+					}
+				} else if (value == eObject) {
+					break finish;
+				} else if (value instanceof EObject && eIsInstanceOf((EObject)value, filters)) {
+					result.add((EObject)value);
+				}
+			}
+		} else if (container instanceof Resource) {
+			result = new ArrayList<EObject>();
+			for (EObject eObj : getRootsUntil((Resource)container, eObject)) {
+				if (eIsInstanceOf(eObj, filters)) {
+					result.add(eObj);
+				}
+			}
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the preceding {@link EStructuralFeature} for the given container and containing feature.
+	 * 
+	 * @param container
+	 *            the {@link EObject} container
+	 * @param containingFeature
+	 *            the containing {@link EStructuralFeature}
+	 * @param filters
+	 *            the {@link EClass} filters
+	 * @return the preceding {@link EStructuralFeature} for the given container and containing feature
+	 */
+	private List<EStructuralFeature> getPrecedingFeatures(EObject container,
+			EStructuralFeature containingFeature, Set<EClass> filters) {
+		final List<EStructuralFeature> result = new ArrayList<EStructuralFeature>();
+
+		final Set<EStructuralFeature> filteredFeatures = new LinkedHashSet<EStructuralFeature>();
+		for (EClass eCls : filters) {
+			filteredFeatures.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(
+					eCls));
+		}
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container)
+				.eClass().getEAllStructuralFeatures()).containments();
+		for (EStructuralFeature containmentFeature : containmentFeatures) {
+			if (filteredFeatures.contains(containmentFeature)) {
+				result.add(containmentFeature);
+			}
+			if (containmentFeature == containingFeature) {
+				break;
+			}
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -756,10 +905,17 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> siblings(EObject self) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
-		filters.add(null);
+		// TODO lazy collection
+		final List<EObject> result;
 
-		return siblings(self, filters);
+		Object container = getContainer(self);
+		if (container != null) {
+			result = getContentsExcluding(container, self);
+		} else {
+			result = Collections.emptyList();
+		}
+
+		return result;
 	}
 
 	// @formatter:off
@@ -775,8 +931,8 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> siblings(final EObject self, final EClassifier filter) {
-		final Set<EClassifier> filters = Sets.newLinkedHashSet();
+	public List<EObject> siblings(final EObject self, final EClass filter) {
+		final Set<EClass> filters = Sets.newLinkedHashSet();
 		filters.add(filter);
 
 		return siblings(self, filters);
@@ -795,70 +951,70 @@ public class XPathServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<EObject> siblings(final EObject eObject, final Set<EClassifier> filters) {
+	public List<EObject> siblings(final EObject eObject, final Set<EClass> filters) {
 		// TODO lazy collection
 		final List<EObject> result;
 
 		Object container = getContainer(eObject);
-		if (container != null) {
-			result = Lists.newArrayList();
-			for (EObject input : getContents(container)) {
-				for (EClassifier filter : filters) {
-					if (input != eObject
-							&& (filter == null || filter.isInstance(input.eClass()) || filter.equals(input
-									.eClass()))) {
-						result.add(input);
-						break;
+		if (container instanceof EObject) {
+			result = new ArrayList<EObject>();
+			final EStructuralFeature containingFeature = eObject.eContainingFeature();
+			final List<EStructuralFeature> features = getFeatures((EObject)container, containingFeature,
+					filters);
+			for (EStructuralFeature containmentFeature : features) {
+				final Object value = ((EObject)container).eGet(containmentFeature);
+				if (value instanceof Collection<?>) {
+					for (Object child : (Collection<?>)value) {
+						if (child != eObject && child instanceof EObject
+								&& eIsInstanceOf((EObject)child, filters)) {
+							result.add((EObject)child);
+						}
 					}
+				} else if (value != eObject && value instanceof EObject
+						&& eIsInstanceOf((EObject)value, filters)) {
+					result.add((EObject)value);
+				}
+			}
+		} else if (container instanceof Resource) {
+			result = new ArrayList<EObject>();
+			for (EObject eObj : getRootsExcluding((Resource)container, eObject)) {
+				if (eIsInstanceOf(eObj, filters)) {
+					result.add(eObj);
 				}
 			}
 		} else {
-			result = Collections.<EObject> emptyList();
+			result = Collections.emptyList();
 		}
 
 		return result;
 	}
 
 	/**
-	 * Returns a Sequence containing either all preceding siblings of <code>source</code>, or all of its
-	 * following siblings.
+	 * Gets {@link EStructuralFeature} for the given container and containing feature.
 	 * 
-	 * @param eObject
-	 *            The EObject we seek the siblings of.
+	 * @param container
+	 *            the {@link EObject} container
+	 * @param containingFeature
+	 *            the containing {@link EStructuralFeature}
 	 * @param filters
-	 *            {@link Set} of types of the EObjects we seek to retrieve.
-	 * @param preceding
-	 *            If <code>true</code>, we'll return the preceding siblings of <em>source</em>. Otherwise,
-	 *            this will return its followingSiblings.
-	 * @return Sequence containing the sought set of the receiver's siblings.
+	 *            the {@link EClass} filters
+	 * @return {@link EStructuralFeature} for the given container and containing feature
 	 */
-	private List<EObject> siblings(final EObject eObject, final Set<EClassifier> filters, Boolean preceding) {
-		// TODO lazy collection
-		final List<EObject> result;
+	private List<EStructuralFeature> getFeatures(EObject container, EStructuralFeature containingFeature,
+			Set<EClass> filters) {
+		final List<EStructuralFeature> result = new ArrayList<EStructuralFeature>();
 
-		final Object container = getContainer(eObject);
-		if (container != null) {
-			final List<EObject> siblings = getContents(container);
-			int startIndex = 0;
-			int endIndex = siblings.size();
-
-			if (preceding) {
-				endIndex = siblings.indexOf(eObject);
-			} else {
-				startIndex = siblings.indexOf(eObject) + 1;
+		final Set<EStructuralFeature> filteredFeatures = new LinkedHashSet<EStructuralFeature>();
+		for (EClass eCls : filters) {
+			filteredFeatures.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(
+					eCls));
+		}
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)((EObject)container)
+				.eClass().getEAllStructuralFeatures()).containments();
+		for (EStructuralFeature containmentFeature : containmentFeatures) {
+			if (filteredFeatures.contains(containmentFeature)) {
+				result.add(containmentFeature);
 			}
-
-			result = Lists.newArrayList();
-			for (EObject input : siblings.subList(startIndex, endIndex)) {
-				for (EClassifier filter : filters) {
-					if (filter == null || filter.isInstance(input.eClass()) || filter.equals(input.eClass())) {
-						result.add(input);
-						break;
-					}
-				}
-			}
-		} else {
-			result = Collections.<EObject> emptyList();
 		}
 
 		return result;
@@ -885,22 +1041,75 @@ public class XPathServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Obtains the contents of a container, as determined by {@link #getContainer(EObject)}.
+	 * Gets the contents of the given {@link #getContainer(EObject) container} except the given
+	 * {@link EObject} to exclude.
 	 * 
 	 * @param container
 	 *            a container of objects
-	 * @return the contained objects. <b>Note</b> that, for efficiency, the resulting list may be the
-	 *         {@code container}'s actual contents list. Callers must treat the result as unmodifiable
+	 * @param toExclude
+	 *            the {@link EObject} to exclude
+	 * @return the contents of the given {@link #getContainer(EObject) container} except the given
+	 *         {@link EObject} to exclude
 	 */
-	private List<EObject> getContents(Object container) {
+	private List<EObject> getContentsExcluding(Object container, EObject toExclude) {
 		final List<EObject> contents;
 
 		if (container instanceof EObject) {
-			contents = getContents((EObject)container);
+			contents = getContentsExcluding((EObject)container, toExclude);
 		} else if (container instanceof Resource) {
-			contents = getRoots((Resource)container);
+			contents = getRootsExcluding((Resource)container, toExclude);
 		} else {
-			contents = Collections.<EObject> emptyList();
+			contents = Collections.emptyList();
+		}
+
+		return contents;
+	}
+
+	/**
+	 * Gets the contents of the given {@link #getContainer(EObject) container} until the given {@link EObject}
+	 * excluded.
+	 * 
+	 * @param container
+	 *            a container of objects
+	 * @param until
+	 *            the {@link EObject} to exclude
+	 * @return the contents of the given {@link #getContainer(EObject) container} until the given
+	 *         {@link EObject} excluded
+	 */
+	private List<EObject> getContentsUntil(Object container, EObject until) {
+		final List<EObject> contents;
+
+		if (container instanceof EObject) {
+			contents = getContentsUntil((EObject)container, until);
+		} else if (container instanceof Resource) {
+			contents = getRootsUntil((Resource)container, until);
+		} else {
+			contents = Collections.emptyList();
+		}
+
+		return contents;
+	}
+
+	/**
+	 * Gets the contents of the given {@link #getContainer(EObject) container} from the given {@link EObject}
+	 * excluded to the end.
+	 * 
+	 * @param container
+	 *            a container of objects
+	 * @param from
+	 *            the {@link EObject} to start from excluded
+	 * @return the contents of the given {@link #getContainer(EObject) container} from the given
+	 *         {@link EObject} excluded to the end
+	 */
+	private List<EObject> getContentsFrom(Object container, EObject from) {
+		final List<EObject> contents;
+
+		if (container instanceof EObject) {
+			contents = getContentsFrom((EObject)container, from);
+		} else if (container instanceof Resource) {
+			contents = getRootsFrom((Resource)container, from);
+		} else {
+			contents = Collections.emptyList();
 		}
 
 		return contents;
@@ -911,26 +1120,102 @@ public class XPathServices extends AbstractServiceProvider {
 	 * {@link EObject#eContents()}. This allows us to return the list of all contents from an EObject
 	 * <b>including</b> those references.
 	 * 
-	 * @param eObject
-	 *            The EObject we seek the content of.
-	 * @return The list of all the content of a given EObject, derived containment references included.
+	 * @param container
+	 *            the containing {@link EObject}
+	 * @param toExcluse
+	 *            the {@link EObject} to exclude
+	 * @return The list of all the content of a given EObject, derived containment references included
 	 */
-	private List<EObject> getContents(EObject eObject) {
-		final List<EObject> result = new ArrayList<EObject>(eObject.eContents());
-		for (final EReference reference : eObject.eClass().getEAllReferences()) {
-			if (reference.isContainment() && reference.isDerived()) {
-				final Object value = eObject.eGet(reference);
-				if (value instanceof Collection<?>) {
-					for (Object newValue : (Collection<?>)value) {
-						if (!result.contains(newValue) && newValue instanceof EObject) {
-							result.add((EObject)newValue);
-						}
+	private List<EObject> getContentsExcluding(EObject container, EObject toExcluse) {
+		// TODO lazy collection
+		final List<EObject> result = new ArrayList<EObject>();
+
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)container.eClass()
+				.getEAllStructuralFeatures()).containments();
+		for (final EStructuralFeature feature : containmentFeatures) {
+			final Object value = container.eGet(feature);
+			if (value instanceof Collection<?>) {
+				for (Object child : (Collection<?>)value) {
+					if (child != toExcluse && child instanceof EObject) {
+						result.add((EObject)child);
 					}
-				} else if (!result.contains(value) && value instanceof EObject) {
-					result.add((EObject)value);
 				}
+			} else if (value != toExcluse && value instanceof EObject) {
+				result.add((EObject)value);
 			}
 		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the content of the given {@link EObject} until the given contained {@link EObject}.
+	 * 
+	 * @param container
+	 *            the {@link EObject} we seek the content of
+	 * @param until
+	 *            the {@link EObject} to exclude
+	 * @return the content of the given {@link EObject} until the given contained {@link EObject}
+	 */
+	private List<EObject> getContentsUntil(EObject container, EObject until) {
+		// TODO lazy collection
+		final List<EObject> result = new ArrayList<EObject>();
+
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)container.eClass()
+				.getEAllStructuralFeatures()).containments();
+		finish: for (final EStructuralFeature feature : containmentFeatures) {
+			final Object value = container.eGet(feature);
+			if (value instanceof Collection<?>) {
+				for (Object child : (Collection<?>)value) {
+					if (child == until) {
+						break finish;
+					} else if (child instanceof EObject) {
+						result.add((EObject)child);
+					}
+				}
+			} else if (value == until) {
+				break finish;
+			} else if (value instanceof EObject) {
+				result.add((EObject)value);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the content of the given {@link EObject} from the given contained {@link EObject} until the end.
+	 * 
+	 * @param container
+	 *            the {@link EObject} we seek the content of
+	 * @param until
+	 *            the {@link EObject} start excluded
+	 * @return the content of the given {@link EObject} from the given contained {@link EObject} until the end
+	 */
+	private List<EObject> getContentsFrom(EObject container, EObject until) {
+		// TODO lazy collection
+		final List<EObject> result = new ArrayList<EObject>();
+
+		boolean collect = false;
+		final EStructuralFeature[] containmentFeatures = ((FeatureSubsetSupplier)container.eClass()
+				.getEAllStructuralFeatures()).containments();
+		for (final EStructuralFeature feature : containmentFeatures) {
+			final Object value = container.eGet(feature);
+			if (value instanceof Collection<?>) {
+				for (Object child : (Collection<?>)value) {
+					if (child == until) {
+						collect = true;
+					} else if (collect && child instanceof EObject) {
+						result.add((EObject)child);
+					}
+				}
+			} else if (value == until) {
+				collect = true;
+			} else if (collect && value instanceof EObject) {
+				result.add((EObject)value);
+			}
+		}
+
 		return result;
 	}
 
@@ -942,32 +1227,67 @@ public class XPathServices extends AbstractServiceProvider {
 	 * 
 	 * @param resource
 	 *            a resource from which to get root objects
+	 * @param toExclude
+	 *            the {@link EObject} to exclude
 	 * @return the root objects. <b>Note</b> that, for efficiency, the resulting list may be the
 	 *         {@code resource}'s actual contents list. Callers must treat the result as unmodifiable
 	 */
-	private List<EObject> getRoots(Resource resource) {
-		// optimize for the vast majority of cases in which none of the objects are cross-resource-contained
-		// (i.e., they are all roots)
-		List<EObject> result = resource.getContents();
+	private List<EObject> getRootsExcluding(Resource resource, EObject toExclude) {
+		// TODO use lazy collection
+		final List<EObject> result = new ArrayList<EObject>();
 
-		ListIterator<EObject> iter = result.listIterator();
-		while (iter.hasNext()) {
-			if (iter.next().eContainer() != null) {
-				// don't include this in the result
+		for (EObject eObj : resource.getContents()) {
+			if (eObj != toExclude && eObj.eContainer() == null) {
+				result.add(eObj);
+			}
+		}
 
-				// need to copy the result so that we don't modify the resource
-				int where = iter.previousIndex();
-				List<EObject> newResult = new ArrayList<EObject>(result.size() - 1);
-				newResult.addAll(result.subList(0, where));
-				result = newResult;
+		return result;
+	}
 
-				// continue adding roots
-				while (iter.hasNext()) {
-					EObject next = iter.next();
-					if (next.eContainer() == null) {
-						result.add(next);
-					}
-				}
+	/**
+	 * Gets the content root of the given resource until the given {@link EObject}.
+	 * 
+	 * @param resource
+	 *            a resource from which to get root objects
+	 * @param until
+	 *            the {@link EObject} to exclude
+	 * @return the content root of the given resource until the given {@link EObject}
+	 */
+	private List<EObject> getRootsUntil(Resource resource, EObject until) {
+		// TODO use lazy collection
+		final List<EObject> result = new ArrayList<EObject>();
+
+		for (EObject eObj : resource.getContents()) {
+			if (eObj == until) {
+				break;
+			} else if (eObj.eContainer() == null) {
+				result.add(eObj);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Gets the content root of the given resource from the given {@link EObject} until the end.
+	 * 
+	 * @param resource
+	 *            a resource from which to get root objects
+	 * @param from
+	 *            the {@link EObject} to start excluded
+	 * @return the content root of the given resource from the given {@link EObject} until the end
+	 */
+	private List<EObject> getRootsFrom(Resource resource, EObject from) {
+		// TODO use lazy collection
+		final List<EObject> result = new ArrayList<EObject>();
+
+		boolean collect = false;
+		for (EObject eObj : resource.getContents()) {
+			if (eObj == from) {
+				collect = true;
+			} else if (collect && eObj.eContainer() == null) {
+				result.add(eObj);
 			}
 		}
 
@@ -989,6 +1309,25 @@ public class XPathServices extends AbstractServiceProvider {
 		for (EClassifier classifier : queryEnvironment.getEPackageProvider().getTypes("ecore", "EObject")) {
 			types.add(new EClassifierType(queryEnvironment, classifier));
 		}
+	}
+
+	/**
+	 * Tells if the given {@link EObject} is an instance of one of the given {@link EClass}.
+	 * 
+	 * @param value
+	 *            the {@link EObject} to check
+	 * @param types
+	 *            the {@link Set} of {@link EClass}
+	 * @return <code>true</code> if the given {@link EObject} is an instance of one of the given
+	 *         {@link EClass}, <code>false</code> otherwise
+	 */
+	private boolean eIsInstanceOf(EObject value, Set<EClass> types) {
+		for (EClass type : types) {
+			if (type.isSuperTypeOf(((EObject)value).eClass()) || type.isInstance(value)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

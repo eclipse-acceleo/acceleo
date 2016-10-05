@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import static org.junit.Assert.assertTrue;
-
 import com.google.common.collect.Iterators;
 
 import java.util.HashMap;
@@ -22,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.QueryCompletionEngine;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
@@ -33,6 +33,8 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class CompletionCheck {
 	private UnitTestModels qmodels;
@@ -72,7 +74,9 @@ public class CompletionCheck {
 			QueryCompletionEngine completionEngine = new QueryCompletionEngine(queryEnvironment);
 
 			for (String classToImport : next.getClassesToImport()) {
-				queryEnvironment.registerServicePackage(Class.forName(classToImport));
+				final Set<IService> services = ServiceUtils.getServices(queryEnvironment, Class
+						.forName(classToImport));
+				ServiceUtils.registerServices(queryEnvironment, services);
 			}
 
 			Map<String, Set<IType>> variableTypes = new HashMap<String, Set<IType>>();

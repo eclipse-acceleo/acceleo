@@ -10,13 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.internal.ide.ui.editors.template;
 
+import com.google.common.base.Strings;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.eclipse.acceleo.common.IAcceleoConstants;
 import org.eclipse.acceleo.common.internal.utils.AcceleoPackageRegistry;
@@ -31,6 +36,7 @@ import org.eclipse.acceleo.ide.ui.AcceleoUIActivator;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.scanner.AcceleoPartitionScanner;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.AcceleoUIDocumentationUtils;
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.IAcceleoContantsImage;
+import org.eclipse.acceleo.internal.ide.ui.resource.AcceleoUIResourceSet;
 import org.eclipse.acceleo.internal.ide.ui.views.overrides.OverridesBrowser;
 import org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser;
 import org.eclipse.acceleo.internal.parser.ast.ocl.environment.AcceleoEnvironment;
@@ -61,6 +67,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EParameter;
@@ -90,6 +97,8 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:jonathan.musset@obeo.fr">Jonathan Musset</a>
  */
 public class AcceleoCompletionProcessor implements IContentAssistProcessor {
+	/** Pre-compiled pattern that'll allow us to match proposals with camel case. */
+	private static final Pattern CAMEL_CASE_PATTERN = Pattern.compile("([a-z]+|[A-Z][a-z]*)"); //$NON-NLS-1$
 
 	/** The auto activation characters for completion proposal. */
 	private static final char[] AUTO_ACTIVATION_CHARACTERS;
@@ -128,6 +137,9 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * The default type of the variables.
 	 */
 	private String defaultVariableType;
+
+	/** Tells us whether auto activation is enabled or not for this processor. */
+	private boolean disableAutoActivation;
 
 	static {
 		/*
@@ -426,7 +438,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		Set<String> duplicated = new CompactHashSet<String>();
 		for (Choice next : choices) {
 			String replacementString = next.getName();
-			if (replacementString.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(replacementString, start)) {
 				switch (next.getKind()) {
 					case OPERATION:
 						if (next.getElement() instanceof EOperation) {
@@ -474,14 +486,19 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (startPosition > offset) {
 			startPosition = offset;
 		}
-		String textOCL = text.substring(startPosition, offset);
-		Collection<Choice> choices = content.getSyntaxHelp(textOCL, offset);
+		// Do not let OCL pre-filter.
+		int oclIndex = offset;
+		while (oclIndex > 0 && Character.isJavaIdentifierPart(text.charAt(oclIndex - 1))) {
+			oclIndex--;
+		}
+		String textOCL = text.substring(startPosition, oclIndex);
+		Collection<Choice> choices = content.getSyntaxHelp(textOCL, oclIndex);
 		Set<String> duplicated = new CompactHashSet<String>();
 		for (Choice next : choices) {
 			String choiceValue = next.getName();
 			String replacement = getReplacementStringFor(choiceValue);
-			if (choiceValue.toLowerCase().startsWith(start.toLowerCase())
-					|| replacement.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(choiceValue, start)
+					|| startsWithOrMatchCamelCase(replacement, start)) {
 				switch (next.getKind()) {
 					case OPERATION:
 						addOCLOperationChoice(proposals, next, start, duplicated);
@@ -525,7 +542,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 							displayVariable = choiceValue;
 							description = ""; //$NON-NLS-1$
 						} else {
-							displayVariable = choiceValue + ":" + next.getDescription(); //$NON-NLS-1$
+							displayVariable = choiceValue + ':' + next.getDescription();
 							description = next.getDescription();
 						}
 						if (!duplicated.contains(displayVariable)) {
@@ -693,26 +710,24 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	private String getPropertyDisplay(EStructuralFeature eStructuralFeature) {
 		StringBuffer displayProperty = new StringBuffer();
 		displayProperty.append(eStructuralFeature.getName());
-		if (eStructuralFeature.getEType() != null) {
+		if (eStructuralFeature.isMany()) {
+			displayProperty.append(": "); //$NON-NLS-1$
+			if (eStructuralFeature.isUnique() && eStructuralFeature.isOrdered()) {
+				displayProperty.append("OrderedSet("); //$NON-NLS-1$
+			} else if (eStructuralFeature.isUnique()) {
+				displayProperty.append("Set("); //$NON-NLS-1$
+			} else if (eStructuralFeature.isOrdered()) {
+				displayProperty.append("Sequence("); //$NON-NLS-1$
+			} else {
+				displayProperty.append("Bag("); //$NON-NLS-1$
+			}
+			if (eStructuralFeature.getEType() != null) {
+				displayProperty.append(eStructuralFeature.getEType().getName());
+			}
+			displayProperty.append(')');
+		} else if (eStructuralFeature.getEType() != null) {
 			displayProperty.append(':');
 			displayProperty.append(eStructuralFeature.getEType().getName());
-		}
-		if (eStructuralFeature.getLowerBound() == eStructuralFeature.getUpperBound()) {
-			displayProperty.append(' ');
-			displayProperty.append('[');
-			displayProperty.append(eStructuralFeature.getLowerBound());
-			displayProperty.append(']');
-		} else {
-			displayProperty.append(' ');
-			displayProperty.append('[');
-			displayProperty.append(eStructuralFeature.getLowerBound());
-			displayProperty.append(".."); //$NON-NLS-1$
-			if (eStructuralFeature.getUpperBound() == -1) {
-				displayProperty.append("*"); //$NON-NLS-1$
-			} else {
-				displayProperty.append(eStructuralFeature.getUpperBound());
-			}
-			displayProperty.append(']');
 		}
 		return displayProperty.toString();
 	}
@@ -733,10 +748,29 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		while (dependencies.hasNext()) {
 			URI uri = dependencies.next();
 			String displayString = new Path(uri.lastSegment()).removeFileExtension().lastSegment();
-			if (displayString.toLowerCase().startsWith(start.toLowerCase())) {
+			if (Strings.isNullOrEmpty(start)) {
 				proposals.add(new AcceleoCompletionImportProposal(uri, offset - start.length(), start
 						.length(), AcceleoUIActivator.getDefault().getImage(
 						IAcceleoContantsImage.TemplateEditor.Completion.MODULE), displayString));
+			} else {
+				try {
+					EObject eObject = AcceleoUIResourceSet.getResource(uri);
+					if (eObject instanceof org.eclipse.acceleo.model.mtl.Module
+							&& ((org.eclipse.acceleo.model.mtl.Module)eObject).getNsURI() != null
+							&& ((org.eclipse.acceleo.model.mtl.Module)eObject).getNsURI().length() > 0) {
+						if (startsWithOrMatchCamelCase(((org.eclipse.acceleo.model.mtl.Module)eObject)
+								.getNsURI(), start)) {
+							proposals.add(new AcceleoCompletionImportProposal(
+									((org.eclipse.acceleo.model.mtl.Module)eObject).getNsURI(), offset
+											- start.length(), start.length(),
+									AcceleoUIActivator.getDefault().getImage(
+											IAcceleoContantsImage.TemplateEditor.Completion.MODULE),
+									displayString));
+						}
+					}
+				} catch (IOException e) {
+					// Don't show any completion for this module since we can't load it
+				}
 			}
 		}
 	}
@@ -758,7 +792,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				.iterator();
 		while (entries.hasNext()) {
 			String pURI = entries.next();
-			if (pURI.toLowerCase().startsWith(start.toLowerCase())) {
+			if (startsWithOrMatchCamelCase(pURI, start)) {
 				proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(), pURI
 						.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI, null, pURI));
 			}
@@ -779,7 +813,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 						shortName = resolved.getName();
 					}
 				}
-				if (shortName.startsWith(start.toLowerCase())) {
+				if (startsWithOrMatchCamelCase(shortName, start)) {
 					proposals.add(createCompletionProposal(pURI, offset - start.length(), start.length(),
 							pURI.length(), AcceleoUIActivator.getDefault().getImage(uriImagePath), pURI,
 							null, pURI));
@@ -791,14 +825,14 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 			computeEcoreFiles(ecoreFiles, ResourcesPlugin.getWorkspace().getRoot());
 			for (IFile ecoreFile : ecoreFiles) {
 				String ecorePath = ecoreFile.getFullPath().toString();
-				if (ecorePath.toLowerCase().startsWith(start.toLowerCase())) {
+				if (startsWithOrMatchCamelCase(ecorePath, start)) {
 					proposals.add(createCompletionProposal(ecorePath, offset - start.length(),
 							start.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
 									uriImagePath), ecorePath, null, ecorePath));
 				}
 				if (start.length() > 0) {
 					String shortName = new Path(ecorePath).removeFileExtension().lastSegment();
-					if (shortName.startsWith(start.toLowerCase())) {
+					if (startsWithOrMatchCamelCase(shortName, start)) {
 						proposals.add(createCompletionProposal(ecorePath, offset - start.length(), start
 								.length(), ecorePath.length(), AcceleoUIActivator.getDefault().getImage(
 								uriImagePath), ecorePath, null, ecorePath));
@@ -857,31 +891,86 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		if (content.getCST() == null) {
 			return;
 		}
-		int i = offset;
-		while (i > 0 && Character.isJavaIdentifierPart(text.charAt(i - 1))) {
-			i--;
+		int startOfCurrentWord = offset;
+		int startOfQualifiedName = offset;
+		while (startOfCurrentWord > 0 && Character.isJavaIdentifierPart(text.charAt(startOfCurrentWord - 1))) {
+			startOfCurrentWord--;
 		}
-		int j = i;
-		while (j > 0 && Character.isWhitespace(text.charAt(j - 1))) {
-			j--;
+		startOfQualifiedName = startOfCurrentWord;
+		while (startOfQualifiedName > 0 && !Character.isWhitespace(text.charAt(startOfQualifiedName - 1))) {
+			startOfQualifiedName--;
 		}
-		if (j > 0 && (text.charAt(j - 1) == ':' || typeIsRequiredAfterParenthesis(j))) {
-			String start = text.substring(i, offset);
+
+		// Look for the ":" separating the var name and its type if any
+		int indexOfVarTypeSeparator = startOfQualifiedName;
+		while (indexOfVarTypeSeparator > 0
+				&& Character.isWhitespace(text.charAt(indexOfVarTypeSeparator - 1))) {
+			indexOfVarTypeSeparator--;
+		}
+
+		if (indexOfVarTypeSeparator > 0
+				&& (text.charAt(indexOfVarTypeSeparator - 1) == ':' || typeIsRequiredAfterParenthesis(indexOfVarTypeSeparator))) {
+			String qualifiedNameStart = text.substring(startOfQualifiedName, startOfCurrentWord);
+			// No completion for erroneous entries
+			// We accept :
+			// <code>([A-Za-z])+(::)?)+</code> : one or more words that might be followed by "::"
+			// <code>((?<!:):)?</code> and the chain "can" end in a single ":" if and only if it's not
+			// preceded by another ":"
+			// This second part allows us to accept "ecore:" but not "ecore:::"
+			if (!qualifiedNameStart.isEmpty() && !qualifiedNameStart.matches("(([A-Za-z])+(::)?)+((?<!:):)?")) { //$NON-NLS-1$
+				return;
+			}
+
+			// Remove the last "::" since we have no package name there (rather, it's the start of the
+			// classifier name)
+			boolean endsWithSeparator = qualifiedNameStart.endsWith(":"); //$NON-NLS-1$
+			boolean endsWithSingleColon = false;
+			if (endsWithSeparator) {
+				endsWithSingleColon = true;
+				qualifiedNameStart = qualifiedNameStart.substring(0, qualifiedNameStart.length() - 1);
+			}
+			if (qualifiedNameStart.endsWith(":")) { //$NON-NLS-1$
+				endsWithSingleColon = false;
+				qualifiedNameStart = qualifiedNameStart.substring(0, qualifiedNameStart.length() - 1);
+			}
+
+			final String[] packageNames;
+			if (qualifiedNameStart.contains(IAcceleoConstants.NAMESPACE_SEPARATOR)) {
+				packageNames = qualifiedNameStart.substring(0,
+						qualifiedNameStart.lastIndexOf(IAcceleoConstants.NAMESPACE_SEPARATOR)).split(
+						IAcceleoConstants.NAMESPACE_SEPARATOR);
+			} else if (qualifiedNameStart.length() > 0) {
+				packageNames = new String[] {qualifiedNameStart, };
+			} else {
+				packageNames = new String[0];
+			}
+
+			String start = text.substring(startOfCurrentWord, offset);
 			Iterator<EClassifier> eClassifierIt = content.getTypes().iterator();
+
+			List<ICompletionProposal> classifierProposals = new ArrayList<ICompletionProposal>();
+			List<ICompletionProposal> packageProposals = new ArrayList<ICompletionProposal>();
+
+			Set<EPackage> packages = new LinkedHashSet<EPackage>();
 			while (eClassifierIt.hasNext()) {
 				EClassifier eClassifier = eClassifierIt.next();
-				if (eClassifier.getName().toLowerCase().startsWith(start.toLowerCase())) {
+				packages.add(eClassifier.getEPackage());
+				if (matchesQualifiedName(packageNames, eClassifier)
+						&& startsWithOrMatchCamelCase(eClassifier.getName(), start)) {
 					String name = eClassifier.getName();
 					if (name.endsWith(")")) { //$NON-NLS-1$
 						name = name.replaceAll("\\(", "(\\${"); //$NON-NLS-1$ //$NON-NLS-2$
 						name = name.replaceAll("\\)", "})"); //$NON-NLS-1$ //$NON-NLS-2$
-						proposals.add(createTemplateProposal(name, offset - start.length(), start.length(),
-								name.length(), AcceleoUIActivator.getDefault().getImage(
-										IAcceleoContantsImage.TemplateEditor.Completion.TYPE), eClassifier
-										.getName(), null, name));
+						classifierProposals.add(createTemplateProposal(name, offset - start.length(), start
+								.length(), name.length(), AcceleoUIActivator.getDefault().getImage(
+								IAcceleoContantsImage.TemplateEditor.Completion.TYPE), eClassifier.getName(),
+								null, name));
 					} else {
-						proposals.add(createCompletionProposal(eClassifier.getName(),
-								offset - start.length(), start.length(), eClassifier.getName().length(),
+						String prefixSeparator = computeQualifierPrefix(qualifiedNameStart,
+								endsWithSeparator, endsWithSingleColon);
+						String replacement = prefixSeparator + eClassifier.getName();
+						classifierProposals.add(createCompletionProposal(replacement,
+								offset - start.length(), start.length(), replacement.length(),
 								AcceleoUIActivator.getDefault().getImage(
 										"icons/template-editor/completion/Type.gif"), eClassifier.getName(), //$NON-NLS-1$
 								null, eClassifier.getName()));
@@ -889,7 +978,131 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 
 				}
 			}
+
+			for (EPackage pack : packages) {
+				if (matchesQualifiedName(packageNames, pack, endsWithSeparator)
+						&& startsWithOrMatchCamelCase(pack.getName(), start)) {
+					String replacement = pack.getName() + IAcceleoConstants.NAMESPACE_SEPARATOR;
+
+					packageProposals.add(createCompletionProposal(replacement, offset - start.length(), start
+							.length(), replacement.length(), AcceleoUIActivator.getDefault().getImage(
+							"icons/template-editor/completion/package.gif"), pack.getName(), //$NON-NLS-1$
+							null, pack.getName()));
+				}
+			}
+
+			proposals.addAll(packageProposals);
+			proposals.addAll(classifierProposals);
 		}
+	}
+
+	/**
+	 * Checks whether a classifier proposal will need to be prefixed by colons, and how many if so.
+	 * 
+	 * @param qualifiedNameStart
+	 *            Start of the qualified name for this classifier.
+	 * @param endsWithSeparator
+	 *            <code>true</code> if the current text ends with a colon.
+	 * @param endsWithSingleColon
+	 *            <code>true</code> if the current text ends with a <u>single</u> colon.
+	 * @return the prefix for this classifier proposal.
+	 */
+	private String computeQualifierPrefix(String qualifiedNameStart, boolean endsWithSeparator,
+			boolean endsWithSingleColon) {
+		String prefix = ""; //$NON-NLS-1$
+		if (qualifiedNameStart.length() > 0) {
+			if (endsWithSingleColon) {
+				prefix += ':';
+			} else if (!endsWithSeparator) {
+				prefix += IAcceleoConstants.NAMESPACE_SEPARATOR;
+			}
+		}
+		return prefix;
+	}
+
+	/**
+	 * Checks whether the given classifier is in a package matching the given qualified name.
+	 * <p>
+	 * Note that the qualified name may not be complete. A classifier contained in the given hierarchy :
+	 * <code>org.eclipse.acceleo.module.ClassifierName</code> will match the given qualified name :
+	 * <code>org::eclipse::</code>.
+	 * </p>
+	 * 
+	 * @param qualifiedNameParts
+	 *            parts of the qualified name for this classifier.
+	 * @param classifier
+	 *            The classifier to check.
+	 * @return <code>true</code> if the classifier is a possible match for the given qualified name;
+	 */
+	private boolean matchesQualifiedName(String[] qualifiedNameParts, EClassifier classifier) {
+		if (qualifiedNameParts.length > 0) {
+			List<EPackage> superPackages = new ArrayList<EPackage>();
+			EPackage pack = classifier.getEPackage();
+			while (pack != null) {
+				superPackages.add(pack);
+				pack = pack.getESuperPackage();
+			}
+
+			// "qualifiedNameParts" is in the descending order (org, eclipse, acceleo, module)
+			// but "superPackages" is in ascending order (module, acceleo, eclipse, org)
+			for (int i = 0; i < qualifiedNameParts.length; i++) {
+				if (!qualifiedNameParts[i].equals(superPackages.get(superPackages.size() - i - 1).getName())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Checks whether the given package is in a package matching the given qualified name.
+	 * <p>
+	 * Note that the qualified name may not be complete. A package contained in the given hierarchy :
+	 * <code>org.eclipse.acceleo.module</code> will match the given qualified name :
+	 * <code>org::eclipse::</code>.
+	 * </p>
+	 * 
+	 * @param qualifiedNameParts
+	 *            parts of the qualified name for this package.
+	 * @param pack
+	 *            The package to check.
+	 * @param endsWithSeparator
+	 *            Tells us whether to consider the last of our "parts" as a potential match for the given
+	 *            package name, or if that last part is meant to be matching the super-package instead.
+	 * @return <code>true</code> if the package is a possible match for the given qualified name;
+	 */
+	private boolean matchesQualifiedName(String[] qualifiedNameParts, EPackage pack, boolean endsWithSeparator) {
+		boolean result = true;
+		if (qualifiedNameParts.length > 0) {
+			List<EPackage> superPackages = new ArrayList<EPackage>();
+			EPackage superPack = pack.getESuperPackage();
+			while (superPack != null) {
+				superPackages.add(superPack);
+				superPack = superPack.getESuperPackage();
+			}
+
+			// if we have no super packages, then we'll only match if the qualifiedName is exactly our package
+			if (superPackages.isEmpty()) {
+				if (endsWithSeparator) {
+					// This package has no super-package, yet our string ended with a separator. This cannot
+					// be a match
+					result = false;
+				} else {
+					result = qualifiedNameParts.length == 1 && qualifiedNameParts[0].equals(pack.getName());
+				}
+			} else {
+				// "qualifiedNameParts" is in the descending order (org, eclipse, acceleo, module)
+				// but "superPackages" is in ascending order (module, acceleo, eclipse, org)
+				for (int i = 0; i < qualifiedNameParts.length; i++) {
+					if (result
+							&& !qualifiedNameParts[i].equals(superPackages.get(superPackages.size() - i - 1)
+									.getName())) {
+						result = false;
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -1050,7 +1263,7 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 				if (IAcceleoConstants.ELSE_LET.startsWith(start.toLowerCase())
 						|| ('[' + IAcceleoConstants.ELSE_LET).startsWith(start.toLowerCase())) {
 					String replacementStringBefore = '[' + IAcceleoConstants.ELSE_LET + ' ';
-					String replacementStringAfter = "${var} " + ":" + defaultStart + defaultVariableType + "} = ${self}]" + '\n' //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+					String replacementStringAfter = "${var} " + ':' + defaultStart + defaultVariableType + "} = ${self}]" + '\n' //$NON-NLS-1$ //$NON-NLS-2$ 
 							+ tab + '\t';
 					String replacementString = replacementStringBefore + replacementStringAfter;
 					proposals.add(createTemplateProposal(replacementString, offset - start.length(), start
@@ -1717,8 +1930,15 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getCompletionProposalAutoActivationCharacters()
 	 */
 	public char[] getCompletionProposalAutoActivationCharacters() {
-		// TODO JMU should return a copy of the array to avoid accidental modifications.
+		if (disableAutoActivation) {
+			return new char[0];
+		}
 		return AUTO_ACTIVATION_CHARACTERS;
+	}
+
+	/** Disables auto activation for this processor. */
+	public void disableAutoActivation() {
+		disableAutoActivation = true;
 	}
 
 	/**
@@ -1846,4 +2066,57 @@ public class AcceleoCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 
+	/**
+	 * Checks whether the given candidate starts with the given query, or if it matches said query as
+	 * camelCase.
+	 * <p>
+	 * The String "thisIsAPotentialResult" must match the given queries :
+	 * <ul>
+	 * <li>th</li>
+	 * <li>thIAPR</li>
+	 * <li>tIA</li>
+	 * <li>tIAPoR</li>
+	 * <li>thisisa</li>
+	 * <li>thisisA</li>
+	 * </ul>
+	 * However, it will not match :
+	 * <ul>
+	 * <li>tho</li>
+	 * <li>tIaP</li>
+	 * <li>tIApotential</li>
+	 * <li>TIApotential</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param candidate
+	 *            The candidate string.
+	 * @param query
+	 *            The query {@code candidate} must match.
+	 * @return <code>true</code> if {@code candidate} matches {@code query}, <code>false</code> otherwise.
+	 */
+	private static boolean startsWithOrMatchCamelCase(String candidate, String query) {
+		boolean result = false;
+		if (startsWithIgnoreCase(candidate, query)) {
+			result = true;
+		} else if (candidate != null) {
+			// transform the query into a camelCase regex
+			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+			result = candidate.matches(regex);
+		}
+		return result;
+	}
+
+	/**
+	 * Checks if the given candidate String starts with the given prefix, ignoring case.
+	 * 
+	 * @param candidate
+	 *            The candidate string.
+	 * @param prefix
+	 *            The expected prefix of {@code candidate}.
+	 * @return <code>true</code> if the given {@code candidate} starts with the given {@code prefix}, ignoring
+	 *         case.
+	 */
+	private static boolean startsWithIgnoreCase(String candidate, String prefix) {
+		return candidate != null && candidate.regionMatches(true, 0, prefix, 0, prefix.length());
+	}
 }

@@ -143,8 +143,8 @@ public class VarRefImpl extends ExpressionImpl implements VarRef {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AstPackage.VAR_REF__VARIABLE_NAME:
-				return VARIABLE_NAME_EDEFAULT == null ? variableName != null : !VARIABLE_NAME_EDEFAULT
-						.equals(variableName);
+				return VARIABLE_NAME_EDEFAULT == null ? variableName != null
+						: !VARIABLE_NAME_EDEFAULT.equals(variableName);
 		}
 		return super.eIsSet(featureID);
 	}

@@ -3,11 +3,10 @@ Bundle-ManifestVersion: 2
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.6.3.qualifier
+Bundle-Version: 3.6.5.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: org.eclipse.acceleo.engine.AcceleoEnginePlugin
 Bundle-SymbolicName: org.eclipse.acceleo.engine;singleton:=true
-Eclipse-SourceReferences: scm:git:git://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git;path="plugins/org.eclipse.acceleo.engine";tag=R3_3_0
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.acceleo.common;visibility:=reexport,

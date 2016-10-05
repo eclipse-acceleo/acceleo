@@ -33,10 +33,8 @@ import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
 import org.eclipse.acceleo.query.ast.Let;
@@ -55,6 +53,7 @@ import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
+import org.eclipse.acceleo.query.runtime.impl.ServicesValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
@@ -82,6 +81,16 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * Message used when a variable overrides an existing value.
 	 */
 	private static final String VARIABLE_OVERRIDES_AN_EXISTING_VALUE = "Variable %s overrides an existing value.";
+
+	/**
+	 * Message used when an {@link EClassifierType} is not registered.
+	 */
+	private static final String ECLASSIFIER_NOT_REGISTERED = "%s is not registered in the current environment";
+
+	/**
+	 * Message used when an empty {@link ICollectionType} is produced.
+	 */
+	private static final String EMPTY_COLLECTION = "Empty collection: %s";
 
 	/**
 	 * Should never happen message.
@@ -113,9 +122,20 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * 
 	 * @param environment
 	 *            the {@link IReadOnlyQueryEnvironment} used to validate
+	 * @deprecated use {@link #AstValidator(ValidationServices)}
 	 */
 	public AstValidator(IReadOnlyQueryEnvironment environment) {
-		this.services = new ValidationServices(environment);
+		this(new ValidationServices(environment));
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param services
+	 *            the {@link ValidationServices} used to validate
+	 */
+	public AstValidator(ValidationServices services) {
+		this.services = services;
 		this.variableTypesStack = new Stack<Map<String, Set<IType>>>();
 	}
 
@@ -133,22 +153,30 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final Set<IType> result = new LinkedHashSet<IType>();
 		final Set<IType> validationTypes = new LinkedHashSet<IType>();
 		final List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
+		final List<ValidationMessage> infoMsgs = new ArrayList<ValidationMessage>();
 		for (IType type : types) {
+			final AstResult astResult = validationResult.getAstResult();
+			final int startPostion = getStartPosition(astResult, expression);
+			final int endPosition = astResult.getEndPosition(expression);
 			if (type instanceof NothingType) {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion;
-				if (expression instanceof Call) {
-					startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
-				} else if (expression instanceof FeatureAccess) {
-					startPostion = astResult.getEndPosition(((FeatureAccess)expression).getTarget());
-				} else {
-					startPostion = astResult.getStartPosition(expression);
-				}
-				final int endPosition = astResult.getEndPosition(expression);
-
 				msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, ((NothingType)type)
 						.getMessage(), startPostion, endPosition));
+			} else if (type instanceof EClassifierType) {
+				if (services.getQueryEnvironment().getEPackageProvider().isRegistered(
+						((EClassifierType)type).getType())) {
+					result.add(type);
+				} else {
+					msgs.add(new ValidationMessage(ValidationMessageLevel.WARNING, String.format(
+							ECLASSIFIER_NOT_REGISTERED, type), startPostion, endPosition));
+				}
 			} else {
+				if (type instanceof ICollectionType
+						&& ((ICollectionType)type).getCollectionType() instanceof NothingType
+						&& !isCollectionInExtension(expression)) {
+					final NothingType nothing = (NothingType)((ICollectionType)type).getCollectionType();
+					infoMsgs.add(new ValidationMessage(ValidationMessageLevel.INFO, String.format(
+							EMPTY_COLLECTION, nothing.getMessage()), startPostion, endPosition));
+				}
 				result.add(type);
 			}
 			// Even if it's a Nothing, make the type known for validation purposes
@@ -162,9 +190,54 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		}
 
 		messages.addAll(msgs);
+		messages.addAll(infoMsgs);
 		validationResult.addTypes(expression, validationTypes);
 
 		return result;
+
+	}
+
+	/**
+	 * Tells if the given expression is either a {@link SetInExtensionLiteral} or a
+	 * {@link SetInExtensionLiteral}.
+	 * 
+	 * @param expression
+	 *            the {@link Expression} to check
+	 * @return <code>true</code> if the given expression is either a {@link SetInExtensionLiteral} or a
+	 *         {@link SetInExtensionLiteral}, <code>false</code> otherwise
+	 */
+	private boolean isCollectionInExtension(Expression expression) {
+		return expression instanceof SetInExtensionLiteral
+				|| expression instanceof SequenceInExtensionLiteral;
+	}
+
+	/**
+	 * Gets the start position for the given {@link Expression} and {@link AstResult}.
+	 * 
+	 * @param astResult
+	 *            the {@link AstResult}
+	 * @param expression
+	 *            the {@link Expression}
+	 * @return the start position for the given {@link Expression} and {@link AstResult}
+	 */
+	private int getStartPosition(final AstResult astResult, Expression expression) {
+		final int startPostion;
+		if (expression instanceof Call) {
+			final String serviceName = ((Call)expression).getServiceName();
+			if (AstBuilderListener.OPERATOR_SERVICE_NAMES.contains(serviceName)) {
+				if (AstBuilderListener.NOT_OPERATOR.equals(serviceName)
+						|| AstBuilderListener.UNARY_MIN_OPERATOR.equals(serviceName)) {
+					startPostion = astResult.getStartPosition(expression);
+				} else {
+					startPostion = astResult.getStartPosition(((Call)expression).getArguments().get(0));
+				}
+			} else {
+				startPostion = astResult.getEndPosition(((Call)expression).getArguments().get(0));
+			}
+		} else {
+			startPostion = astResult.getStartPosition(expression);
+		}
+		return startPostion;
 	}
 
 	/**
@@ -174,7 +247,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseBooleanLiteral(BooleanLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.Boolean.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Boolean.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -190,21 +266,24 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final List<Set<IType>> argTypes = inferArgTypes(call);
 
 		final String serviceName = call.getServiceName();
+		final ServicesValidationResult servicesValidationResult;
 		switch (call.getType()) {
 			case CALLSERVICE:
-				possibleTypes = services.callType(call, validationResult, serviceName, argTypes);
+				servicesValidationResult = services.callType(call, validationResult, serviceName, argTypes);
 				break;
 			case CALLORAPPLY:
-				possibleTypes = services.callOrApplyTypes(call, validationResult, serviceName, argTypes);
+				servicesValidationResult = services.callOrApplyTypes(call, validationResult, serviceName,
+						argTypes);
 				break;
 			case COLLECTIONCALL:
-				possibleTypes = services.collectionServiceCallTypes(call, validationResult, serviceName,
-						argTypes);
+				servicesValidationResult = services.collectionServiceCallTypes(call, validationResult,
+						serviceName, argTypes);
 				break;
 			default:
 				throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 		}
 
+		possibleTypes = servicesValidationResult.getResultingTypes();
 		return checkWarningsAndErrors(call, possibleTypes);
 	}
 
@@ -350,91 +429,36 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final StringBuilder messageWhenFalse = new StringBuilder("Always true:");
 
 			for (IType originalType : originalTypes) {
-				if (originalType instanceof NothingType) {
-					inferredTrueTypes.add(originalType);
-					inferredFalseTypes.add(originalType);
-				} else {
-					for (IType argType : argTypes) {
-						inferOclIsKindOfForArgType(varRef, inferredTrueTypes, inferredFalseTypes,
-								messageWhenTrue, messageWhenFalse, originalType, argType);
+				for (IType argType : argTypes) {
+					final IType lowerArgType = services.lower(argType, argType);
+					if (lowerArgType != null && lowerArgType.isAssignableFrom(originalType)) {
+						inferredTrueTypes.add(originalType);
+						messageWhenFalse.append(String.format(
+								"\nNothing inferred when %s (%s) is not kind of %s",
+								varRef.getVariableName(), originalType, argType));
+					} else if (originalType != null && originalType.isAssignableFrom(lowerArgType)) {
+						inferredTrueTypes.add(lowerArgType);
+						inferredFalseTypes.add(originalType);
+					} else {
+						final Set<IType> intersectionTypes = services
+								.intersection(originalType, lowerArgType);
+						if (intersectionTypes.isEmpty()) {
+							messageWhenTrue.append(String.format(
+									"\nNothing inferred when %s (%s) is kind of %s",
+									varRef.getVariableName(), originalType, argType));
+							inferredFalseTypes.add(originalType);
+						} else {
+							inferredTrueTypes.addAll(intersectionTypes);
+							inferredFalseTypes.add(originalType);
+						}
 					}
 				}
 			}
-			if (!inferredTrueTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
-				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenTrue.toString(), startPostion, endPosition);
-				messages.add(message);
-			}
-			if (!inferredFalseTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
-				inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenFalse.toString(), startPostion, endPosition);
-				validationResult.getMessages().add(message);
-			}
-		}
-	}
 
-	/**
-	 * Computes inferred {@link IType} for {@link AstBuilderListener#OCL_IS_KIND_OF_SERVICE_NAME} {@link Call}
-	 * for one argument {@link IType}.
-	 * 
-	 * @param varRef
-	 *            the {@link Call} {@link VarRef}
-	 * @param inferredTrueTypes
-	 *            the {@link Set} of inferred {@link IType} when {@link Boolean#TRUE}
-	 * @param inferredFalseTypes
-	 *            the {@link Set} of inferred {@link IType} when {@link Boolean#FALSE}
-	 * @param messageWhenTrue
-	 *            the message when {@link Boolean#TRUE}
-	 * @param messageWhenFalse
-	 *            the message when {@link Boolean#FALSE}
-	 * @param originalType
-	 *            the original {@link VarRef} {@link IType}
-	 * @param argType
-	 *            the argument {@link IType}
-	 */
-	private void inferOclIsKindOfForArgType(VarRef varRef, final Set<IType> inferredTrueTypes,
-			final Set<IType> inferredFalseTypes, final StringBuilder messageWhenTrue,
-			final StringBuilder messageWhenFalse, IType originalType, IType argType) {
-		final IType lowerType = services.lower(originalType, argType);
-		if (lowerType != null) {
-			inferredTrueTypes.add(lowerType);
-			if (lowerType.isAssignableFrom(argType) && !lowerType.equals(originalType)) {
-				inferredFalseTypes.add(originalType);
-			} else {
-				messageWhenFalse.append(String.format("\nNothing inferred when %s (%s) is not kind of %s",
-						varRef.getVariableName(), originalType, argType));
+			if (!argTypes.isEmpty()) {
+				registerInferredTypes(call, varRef, inferredTrueTypes, inferredFalseTypes, messageWhenTrue,
+						messageWhenFalse);
 			}
-		} else if (originalType.getType() instanceof EClass && argType.getType() instanceof EClass) {
-			Set<IType> intesectionTypes = new LinkedHashSet<IType>();
-			for (EClass eCls : services.getSubTypesTopIntersection((EClass)originalType.getType(),
-					(EClass)argType.getType())) {
-				intesectionTypes.add(new EClassifierType(services.getQueryEnvironment(), eCls));
-			}
-			if (intesectionTypes.isEmpty()) {
-				messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is kind of %s", varRef
-						.getVariableName(), originalType, argType));
-			} else {
-				inferredTrueTypes.addAll(intesectionTypes);
-			}
-			inferredFalseTypes.add(originalType);
-		} else {
-			messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is kind of %s", varRef
-					.getVariableName(), originalType, argType));
-			inferredFalseTypes.add(originalType);
 		}
 	}
 
@@ -459,51 +483,109 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			final StringBuilder messageWhenFalse = new StringBuilder("Always true:");
 
 			for (IType originalType : originalTypes) {
-				if (originalType instanceof NothingType) {
-					inferredTrueTypes.add(originalType);
-					inferredFalseTypes.add(originalType);
-				} else {
-					for (IType argType : argTypes) {
-						final IType lowerType = services.lower(argType, argType);
-						if (lowerType.equals(originalType)) {
-							inferredTrueTypes.add(lowerType);
+				for (IType argType : argTypes) {
+					final IType lowerArgType = services.lower(argType, argType);
+					final IType lowerType = services.lower(originalType, lowerArgType);
+					if (lowerArgType != null && lowerArgType.equals(originalType)) {
+						inferredTrueTypes.add(lowerArgType);
+						final Set<EClass> upperSubEClasses = getUpperSubTypes(originalType);
+						if (upperSubEClasses.isEmpty()) {
 							messageWhenFalse.append(String.format(
 									"\nNothing inferred when %s (%s) is not type of %s", varRef
 											.getVariableName(), originalType, argType));
 						} else {
-							messageWhenTrue.append(String.format(
-									"\nNothing inferred when %s (%s) is type of %s",
-									varRef.getVariableName(), originalType, argType));
-							inferredFalseTypes.add(originalType);
+							for (EClass upperSubEClasse : upperSubEClasses) {
+								inferredFalseTypes.add(new EClassifierType(services.getQueryEnvironment(),
+										upperSubEClasse));
+							}
 						}
+					} else if (lowerType != null && lowerType.isAssignableFrom(lowerArgType)) {
+						inferredTrueTypes.add(lowerArgType);
+						inferredFalseTypes.add(originalType);
+					} else {
+						messageWhenTrue.append(String.format("\nNothing inferred when %s (%s) is type of %s",
+								varRef.getVariableName(), originalType, argType));
+						inferredFalseTypes.add(originalType);
 					}
 				}
 			}
-			if (!inferredTrueTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
-				inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenTrue.toString(), startPostion, endPosition);
-				messages.add(message);
-			}
-			if (!inferredFalseTypes.isEmpty()) {
-				Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
-				inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
-				validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
-			} else {
-				final AstResult astResult = validationResult.getAstResult();
-				final int startPostion = astResult.getStartPosition(call);
-				final int endPosition = astResult.getEndPosition(call);
-				final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
-						messageWhenFalse.toString(), startPostion, endPosition);
-				validationResult.getMessages().add(message);
+
+			if (!argTypes.isEmpty()) {
+				registerInferredTypes(call, varRef, inferredTrueTypes, inferredFalseTypes, messageWhenTrue,
+						messageWhenFalse);
 			}
 		}
+	}
+
+	/**
+	 * Registers inferred {@link IType} and mesages.
+	 * 
+	 * @param call
+	 *            the {@link Call} that inferred types (oclIsKindOf, oclIsTypeOf, ...)
+	 * @param varRef
+	 *            the {@link VarRef} use in the {@link Call}
+	 * @param inferredTrueTypes
+	 *            inferred {@link IType} when <code>true</code>
+	 * @param inferredFalseTypes
+	 *            inferred {@link IType} when <code>false</code>
+	 * @param messageWhenTrue
+	 *            message when <code>true</code>
+	 * @param messageWhenFalse
+	 *            message when <code>false</code>
+	 */
+	private void registerInferredTypes(Call call, VarRef varRef, final Set<IType> inferredTrueTypes,
+			final Set<IType> inferredFalseTypes, final StringBuilder messageWhenTrue,
+			final StringBuilder messageWhenFalse) {
+		if (!inferredTrueTypes.isEmpty()) {
+			Map<String, Set<IType>> inferredTrueTypesMap = new HashMap<String, Set<IType>>();
+			inferredTrueTypesMap.put(varRef.getVariableName(), inferredTrueTypes);
+			validationResult.putInferredVariableTypes(call, Boolean.TRUE, inferredTrueTypesMap);
+		} else {
+			final AstResult astResult = validationResult.getAstResult();
+			final int startPostion = astResult.getStartPosition(call);
+			final int endPosition = astResult.getEndPosition(call);
+			final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+					messageWhenTrue.toString(), startPostion, endPosition);
+			messages.add(message);
+		}
+		if (!inferredFalseTypes.isEmpty()) {
+			Map<String, Set<IType>> inferredFalseTypesMap = new HashMap<String, Set<IType>>();
+			inferredFalseTypesMap.put(varRef.getVariableName(), inferredFalseTypes);
+			validationResult.putInferredVariableTypes(call, Boolean.FALSE, inferredFalseTypesMap);
+		} else {
+			final AstResult astResult = validationResult.getAstResult();
+			final int startPostion = astResult.getStartPosition(call);
+			final int endPosition = astResult.getEndPosition(call);
+			final ValidationMessage message = new ValidationMessage(ValidationMessageLevel.INFO,
+					messageWhenFalse.toString(), startPostion, endPosition);
+			validationResult.getMessages().add(message);
+		}
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link EClass} which {@link EClass#getESuperTypes() direct super types}
+	 * contains the {@link EClass} corresponding to the given {@link IType}.
+	 * 
+	 * @param iType
+	 *            the {@link IType}
+	 * @return the {@link Set} of {@link EClass} which {@link EClass#getESuperTypes() direct super types}
+	 *         contains the {@link EClass} corresponding to the given {@link IType}
+	 */
+	private Set<EClass> getUpperSubTypes(IType iType) {
+		final Set<EClass> result = new LinkedHashSet<EClass>();
+
+		if (iType.getType() instanceof EClass) {
+			final EClass eCls = (EClass)iType.getType();
+			final Set<EClass> subEClasses = services.getQueryEnvironment().getEPackageProvider()
+					.getAllSubTypes(eCls);
+			for (EClass subEClass : subEClasses) {
+				if (subEClass.getESuperTypes().contains(eCls)) {
+					result.add(subEClass);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -674,24 +756,14 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseFeatureAccess(org.eclipse.acceleo.query.ast.FeatureAccess)
-	 */
-	@Override
-	public Set<IType> caseFeatureAccess(FeatureAccess object) {
-		final Set<IType> reveiverTypes = doSwitch(object.getTarget());
-		final String featureName = object.getFeatureName();
-		final Set<IType> flattened = services.featureAccessTypes(reveiverTypes, featureName);
-		return checkWarningsAndErrors(object, flattened);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseIntegerLiteral(org.eclipse.acceleo.query.ast.IntegerLiteral)
 	 */
 	@Override
 	public Set<IType> caseIntegerLiteral(IntegerLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.Integer.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Integer.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -750,7 +822,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseRealLiteral(RealLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.Double.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Double.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -761,7 +836,10 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseStringLiteral(StringLiteral object) {
-		final Set<IType> possibleTypes = services.getIType(java.lang.String.class);
+		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+
+		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.String.class));
+
 		return checkWarningsAndErrors(object, possibleTypes);
 	}
 
@@ -812,7 +890,8 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			possibleTypes.add(new EClassifierLiteralType(services.getQueryEnvironment(), (EClassifier)object
 					.getValue()));
 		} else if (object.getValue() instanceof Class<?>) {
-			possibleTypes = services.getIType((Class<?>)object.getValue());
+			possibleTypes = Sets.newLinkedHashSet();
+			possibleTypes.add(new ClassType(services.getQueryEnvironment(), (Class<?>)object.getValue()));
 		} else {
 			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
 		}
@@ -864,17 +943,6 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorExpression(ErrorExpression object) {
-		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorFeatureAccessOrCall(org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall)
-	 */
-	@Override
-	public Set<IType> caseErrorFeatureAccessOrCall(ErrorFeatureAccessOrCall object) {
-		doSwitch(object.getTarget());
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
@@ -951,7 +1019,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 				}
 			}
 		} else {
-			possibleTypes.add(new SetType(services.getQueryEnvironment(), services
+			possibleTypes.add(new SequenceType(services.getQueryEnvironment(), services
 					.nothing("Empty Sequence defined in extension")));
 		}
 

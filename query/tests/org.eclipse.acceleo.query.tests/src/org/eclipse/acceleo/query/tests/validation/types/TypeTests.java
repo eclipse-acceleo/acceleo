@@ -80,7 +80,7 @@ public class TypeTests {
 
 	@Before
 	public void before() throws Exception {
-		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		queryEnvironment = Query.newEnvironment();
 
 		byteVariants = new TypeVariants(classType(byte.class), classType(Byte.class));
 		shortVariants = new TypeVariants(classType(short.class), classType(Short.class));

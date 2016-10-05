@@ -248,7 +248,13 @@ public class AcceleoConfiguration extends TextSourceViewerConfiguration {
 		AbstractAcceleoScanner[] acceleoScanners = getScanners();
 		for (int i = 0; i < acceleoScanners.length; i++) {
 			AbstractAcceleoScanner scanner = acceleoScanners[i];
-			if (!(scanner instanceof AcceleoCommentScanner)
+			if (scanner instanceof AcceleoDefaultScanner) {
+				AcceleoCompletionProcessor defaultProcessor = (AcceleoCompletionProcessor)createContentAssistProcessor(sourceViewer);
+				if (defaultProcessor != null) {
+					defaultProcessor.disableAutoActivation();
+					assistant.setContentAssistProcessor(defaultProcessor, scanner.getConfiguredContentType());
+				}
+			} else if (!(scanner instanceof AcceleoCommentScanner)
 					&& !(scanner instanceof AcceleoDocumentationScanner)) {
 				assistant.setContentAssistProcessor(processor, scanner.getConfiguredContentType());
 			}

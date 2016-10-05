@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.acceleo</groupId>
   <artifactId>org.eclipse.acceleo.maven</artifactId>
-  <version>3.5.2</version>
+  <version>3.6.4-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>org.eclipse.acceleo.maven</name>
   <description>The Acceleo maven plugin.</description>
   
   <scm>
-    <developerConnection>scm:git:ssh://git.eclipse.org/gitroot/m2t/org.eclipse.acceleo.git/maven/org.eclipse.acceleo.maven</developerConnection>
+    <developerConnection>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git/maven/org.eclipse.acceleo.maven</developerConnection>
   </scm>
   
   <repositories>
@@ -50,17 +50,17 @@
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
     	<artifactId>org.eclipse.acceleo.parser</artifactId>
-    	<version>3.5.1.201409021433</version>
+    	<version>3.6.4-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
     	<artifactId>org.eclipse.acceleo.model</artifactId>
-    	<version>3.5.1.201409021433</version>
+    	<version>3.6.4-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>
     	<artifactId>org.eclipse.acceleo.common</artifactId>
-    	<version>3.5.1.201409021433</version>
+    	<version>3.6.4-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.eclipse.acceleo</groupId>

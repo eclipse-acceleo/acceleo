@@ -24,12 +24,10 @@ import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
-import org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorVariableDeclaration;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -110,11 +108,6 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseVarRef(VarRef object) {
 			return createVarRefAdapter();
-		}
-
-		@Override
-		public Adapter caseFeatureAccess(FeatureAccess object) {
-			return createFeatureAccessAdapter();
 		}
 
 		@Override
@@ -210,11 +203,6 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseErrorEnumLiteral(ErrorEnumLiteral object) {
 			return createErrorEnumLiteralAdapter();
-		}
-
-		@Override
-		public Adapter caseErrorFeatureAccessOrCall(ErrorFeatureAccessOrCall object) {
-			return createErrorFeatureAccessOrCallAdapter();
 		}
 
 		@Override
@@ -316,20 +304,6 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createVarRefAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.FeatureAccess
-	 * <em>Feature Access</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
-	 * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.eclipse.acceleo.query.ast.FeatureAccess
-	 * @generated
-	 */
-	public Adapter createFeatureAccessAdapter() {
 		return null;
 	}
 
@@ -543,10 +517,10 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Error
-	 * <em>Error</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
-	 * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.query.ast.Error <em>Error</em>
+	 * }'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+	 * -->
 	 * 
 	 * @return the new adapter.
 	 * @see org.eclipse.acceleo.query.ast.Error
@@ -595,20 +569,6 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createErrorEnumLiteralAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall <em>Error Feature Access Or Call</em>}'.
-	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-	 * 
-	 * @return the new adapter.
-	 * @see org.eclipse.acceleo.query.ast.ErrorFeatureAccessOrCall
-	 * @generated
-	 */
-	public Adapter createErrorFeatureAccessOrCallAdapter() {
 		return null;
 	}
 

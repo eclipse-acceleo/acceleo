@@ -18,14 +18,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nooperationreflection.NoOperationReflection;
-import nooperationreflection.NooperationreflectionPackage;
-
 import org.eclipse.acceleo.query.runtime.EvaluationResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -52,6 +50,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import nooperationreflection.NoOperationReflection;
+import nooperationreflection.NooperationreflectionPackage;
+
 public class EvaluationTest {
 
 	QueryEvaluationEngine engine;
@@ -61,13 +62,14 @@ public class EvaluationTest {
 	IQueryBuilderEngine builder;
 
 	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(RootPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(NooperationreflectionPackage.eINSTANCE);
-		queryEnvironment.registerServicePackage(EObjectServices.class);
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, EObjectServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
 		engine = new QueryEvaluationEngine(queryEnvironment);
 		builder = new QueryBuilderEngine(queryEnvironment);
 	}
@@ -108,6 +110,24 @@ public class EvaluationTest {
 		Map<String, Object> variables = Maps.newHashMap();
 		variables.put("self", EcorePackage.eINSTANCE);
 		assertOKResultEquals("ecore", engine.eval(builder.build("self.name"), variables));
+	}
+
+	@Test
+	public void featureAccessNotExistingFeatureTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		variables.put("self", EcorePackage.eINSTANCE);
+
+		final EvaluationResult result = engine.eval(builder.build("self.notExistingFeature"), variables);
+
+		assertEquals(null, result.getResult());
+
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
+		assertEquals(1, result.getDiagnostic().getChildren().size());
+
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(0).getSeverity());
+		result.getDiagnostic().getChildren().get(0).getMessage().startsWith("aqlFeatureAccess");
+		result.getDiagnostic().getChildren().get(0).getMessage().endsWith(
+				"Feature notExistingFeature not found in EClass EPackage");
 	}
 
 	@Test
@@ -452,7 +472,7 @@ public class EvaluationTest {
 		assertEquals(1, result.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
 		String message = result.getDiagnostic().getChildren().get(0).getMessage();
-		assertTrue(message.contains("Couldn't find the x variable"));
+		assertTrue(message.contains("Couldn't find the 'x' variable"));
 		assertEquals("prefixsuffix", result.getResult());
 	}
 
@@ -465,10 +485,10 @@ public class EvaluationTest {
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
-		assertTrue(message1.contains("Couldn't find the x variable"));
+		assertTrue(message1.contains("Couldn't find the 'x' variable"));
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
 		String message2 = result.getDiagnostic().getChildren().get(1).getMessage();
-		assertTrue(message2.contains("Couldn't find the concat"));
+		assertTrue(message2.contains("Couldn't find the 'concat"));
 		assertEquals(null, result.getResult());
 	}
 
@@ -545,9 +565,42 @@ public class EvaluationTest {
 		assertEquals("helloworld", result.getResult());
 	}
 
+	@Test
+	public void eOperationWithNothingParameter_487245() {
+		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
+
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", pack);
+		EvaluationResult result = engine.eval(builder.build("self.eGet(notExisting)"), variables);
+
+		assertEquals(null, result.getResult());
+
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
+		assertEquals(2, result.getDiagnostic().getChildren().size());
+
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
+		assertEquals("Couldn't find the 'notExisting' variable", result.getDiagnostic().getChildren().get(0)
+				.getMessage());
+
+		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getChildren().get(1).getSeverity());
+		assertEquals(
+				"Couldn't find the 'eGet(EClassifier=EPackage,org.eclipse.acceleo.query.runtime.impl.Nothing)' service",
+				result.getDiagnostic().getChildren().get(1).getMessage());
+	}
+
 	private void assertOKResultEquals(Object expected, EvaluationResult result) {
 		assertEquals(expected, result.getResult());
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
+	}
+
+	@Test
+	public void emoji() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		EvaluationResult result = engine.eval(builder
+				.build("Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}->sep(' ')->toString()"),
+				variables);
+
+		assertEquals("\u1F61C \u1F62D \u1F63D \u1F1EB\u1F1F7", result.getResult());
 	}
 }

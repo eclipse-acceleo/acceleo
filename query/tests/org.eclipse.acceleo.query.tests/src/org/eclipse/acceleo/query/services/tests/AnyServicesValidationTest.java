@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -35,7 +36,9 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(AnyServices.class);
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
+				getQueryEnvironment()));
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test
@@ -377,7 +380,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		IType next = it.next();
 		assertTrue(next instanceof NothingType);
 		String message = ((NothingType)next).getMessage();
-		assertEquals(argTypes.get(0) + " is not compatible with " + argTypes.get(1), message);
+		assertEquals(argTypes.get(0) + " is not compatible with type " + argTypes.get(1), message);
 
 		final Map<List<IType>, Set<IType>> allTypes = new LinkedHashMap<List<IType>, Set<IType>>();
 		allTypes.put(argTypes, types);
@@ -388,7 +391,7 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertTrue(next instanceof NothingType);
 		String allTypesMesg = ((NothingType)next).getMessage();
 		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
-		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with " + argTypes.get(1)));
+		assertTrue(allTypesMesg.endsWith(argTypes.get(0) + " is not compatible with type " + argTypes.get(1)));
 	}
 
 	@Test

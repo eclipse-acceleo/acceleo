@@ -10,18 +10,19 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -29,7 +30,11 @@ import org.eclipse.acceleo.annotations.api.documentation.Example;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.StringLiteral;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
+import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
+import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -37,6 +42,8 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
@@ -71,6 +78,21 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * Can't contain directly or indirectly message.
 	 */
 	private static final String S_CAN_T_CONTAIN_DIRECTLY_OR_INDIRECTLY_S = "%s can't contain directly or indirectly %s";
+
+	/**
+	 * Log message used when accessing an unknown feature.
+	 */
+	private static final String UNKNOWN_FEATURE = "Feature %s not found in EClass %s";
+
+	/**
+	 * Log message used when accessing a feature on a JavaObject.
+	 */
+	private static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (%s) on a non ModelObject value (%s).";
+
+	/**
+	 * Illegal state message.
+	 */
+	private static final String DON_T_KNOW_WHAT_TO_DO_WITH = "don't know what to do with ";
 
 	/**
 	 * Filtered eAllContents {@link Iterator}.
@@ -139,13 +161,156 @@ public class EObjectServices extends AbstractServiceProvider {
 						result.add(childElement);
 					}
 				} else {
-					throw new IllegalStateException("don't know what to do with " + value.getClass());
+					throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + value.getClass());
 				}
 			} else if (value instanceof EObject) {
 				result.add((EObject)value);
 
 			}
 		}
+	}
+
+	private static final class EObjectFeatureAccess extends JavaMethodService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param method
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		public EObjectFeatureAccess(Method method, Object serviceInstance) {
+			super(method, serviceInstance);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.JavaMethodService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			final String featureName = ((StringLiteral)call.getArguments().get(1)).getValue();
+			final Set<IType> result = featureAccessTypes(services, queryEnvironment, argTypes.get(0),
+					featureName);
+
+			return result;
+		}
+
+		/**
+		 * Gets the type of a feature access.
+		 * 
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param receiverTypes
+		 *            the target types to gets the feature from
+		 * @param featureName
+		 *            the feature name
+		 * @return the type of a feature access
+		 */
+		public Set<IType> featureAccessTypes(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, IType receiverType, String featureName) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final Set<EClass> receiverEClasses = new LinkedHashSet<EClass>();
+			if (receiverType.getType() instanceof EClass) {
+				receiverEClasses.add((EClass)receiverType.getType());
+			} else if (receiverType.getType() instanceof Class) {
+				final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider().getEClassifiers(
+						(Class<?>)receiverType.getType());
+				if (eClassifiers != null) {
+					for (EClassifier eCls : eClassifiers) {
+						if (eCls instanceof EClass) {
+							receiverEClasses.add((EClass)eCls);
+						}
+					}
+				}
+			} else {
+				throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + receiverType.getType());
+			}
+
+			if (receiverEClasses.isEmpty()) {
+				result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType.getType()
+						.toString()));
+			} else {
+				for (EClass eClass : receiverEClasses) {
+					EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+					if (feature == null) {
+						result.add(services.nothing(UNKNOWN_FEATURE, featureName, eClass.getName()));
+					} else {
+						final EClassifierType featureBasicType = new EClassifierType(queryEnvironment,
+								feature.getEType());
+						if (feature.isMany()) {
+							result.add(new SequenceType(queryEnvironment, featureBasicType));
+						} else {
+							result.add(featureBasicType);
+						}
+					}
+				}
+			}
+
+			return result;
+			// CHECKSTYLE:OFF
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
+		 */
+		@Override
+		public Set<IType> validateAllType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final Set<IType> knownReceiverTypes = new LinkedHashSet<IType>();
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				if (knownReceiverTypes.add(entry.getKey().get(0))) {
+					result.addAll(entry.getValue());
+				}
+			}
+
+			return result;
+		}
+
+		@Override
+		public List<ICompletionProposal> getProposals(IReadOnlyQueryEnvironment queryEnvironment,
+				Set<IType> receiverTypes) {
+			return getEStructuralFeatureProposals(queryEnvironment, receiverTypes);
+		}
+
+		/**
+		 * Gets the {@link List} of {@link EFeatureCompletionProposal} for {@link EStructuralFeature}.
+		 * 
+		 * @param receiverTypes
+		 *            the receiver types.
+		 * @return the {@link List} of {@link EFeatureCompletionProposal} for {@link EStructuralFeature}
+		 */
+		public List<ICompletionProposal> getEStructuralFeatureProposals(
+				IReadOnlyQueryEnvironment queryEnvironment, Set<IType> receiverTypes) {
+			final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+			final Set<EClass> eClasses = new LinkedHashSet<EClass>();
+
+			for (IType iType : receiverTypes) {
+				if (iType.getType() instanceof EClass) {
+					eClasses.add((EClass)iType.getType());
+				}
+			}
+
+			for (EStructuralFeature feature : queryEnvironment.getEPackageProvider().getEStructuralFeatures(
+					eClasses)) {
+				result.add(new EFeatureCompletionProposal(feature));
+			}
+
+			return result;
+		}
+
 	}
 
 	/**
@@ -550,7 +715,7 @@ public class EObjectServices extends AbstractServiceProvider {
 								((EClassifierLiteralType)argTypes.get(1)).getType())));
 					}
 				} else {
-					result.addAll(getTypeForSpecificType(services, queryEnvironment, argTypes, eCls));
+					result.addAll(getTypeForSpecificType(call, services, queryEnvironment, argTypes, eCls));
 				}
 			} else {
 				result.add(new SetType(queryEnvironment, services.nothing(
@@ -564,6 +729,8 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * Gets the {@link IType} of elements returned by the service when the receiver type is not the
 		 * {@link EObject} {@link EClass}.
 		 * 
+		 * @param call
+		 *            the {@link Call}
 		 * @param services
 		 *            the {@link ValidationServices}
 		 * @param queryEnvironment
@@ -575,34 +742,94 @@ public class EObjectServices extends AbstractServiceProvider {
 		 * @return the {@link IType} of elements returned by the service when the receiver type is not the
 		 *         {@link EObject} {@link EClass}
 		 */
-		private Set<IType> getTypeForSpecificType(ValidationServices services,
+		private Set<IType> getTypeForSpecificType(Call call, ValidationServices services,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes, final EClass receiverEClass) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
 			final Set<EClass> inverseEClasses = queryEnvironment.getEPackageProvider().getInverseEClasses(
 					receiverEClass);
 			if (argTypes.size() == 1 || !(argTypes.get(1).getType() instanceof EClass)) {
-				for (EClass inverseEClass : inverseEClasses) {
+				result.addAll(getTypeForSpecificTypeNoFilterOrName(call, services, queryEnvironment,
+						argTypes, inverseEClasses));
+			} else if (argTypes.size() == 2) {
+				result.addAll(getTypeForSpecificTypeFilter(services, queryEnvironment, argTypes,
+						inverseEClasses));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Computes {@link IType} for {@link EObjectServices#eInverse(EObject) eInverse(EObject)} and
+		 * {@link EObjectServices#eInverse(EObject, String) eInverse(EObject, String)}.
+		 * 
+		 * @param call
+		 *            the {@link Call}
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param inverseEClasses
+		 *            the {@link Set} of inverse {@link EClass}
+		 * @return the {@link Set} of possible {@link IType}
+		 */
+		private Set<IType> getTypeForSpecificTypeNoFilterOrName(Call call, ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final Set<EClass> inverseEClasses) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final String featureName;
+			if (call.getArguments().size() == 2 && call.getArguments().get(1) instanceof StringLiteral) {
+				featureName = ((StringLiteral)call.getArguments().get(1)).getValue();
+			} else {
+				featureName = null;
+			}
+			for (EClass inverseEClass : inverseEClasses) {
+				if (featureName == null || inverseEClass.getEStructuralFeature(featureName) != null) {
 					result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
 							inverseEClass)));
 				}
-				if (result.isEmpty()) {
-					result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse",
-							argTypes.get(0))));
+			}
+			if (result.isEmpty()) {
+				result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse", argTypes
+						.get(0))));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Computes {@link IType} for {@link EObjectServices#eInverse(EObject, EClassifier) eInverse(EObject,
+		 * EClassifier)}.
+		 * 
+		 * @param services
+		 *            the {@link ValidationServices}
+		 * @param queryEnvironment
+		 *            the {@link IReadOnlyQueryEnvironment}
+		 * @param argTypes
+		 *            arguments {@link IType}
+		 * @param inverseEClasses
+		 *            the {@link Set} of inverse {@link EClass}
+		 * @return the {@link Set} of possible {@link IType}
+		 */
+		private Set<IType> getTypeForSpecificTypeFilter(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes,
+				final Set<EClass> inverseEClasses) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			final IType filterType = argTypes.get(1);
+			for (EClass inverseEClass : inverseEClasses) {
+				final IType lowerType = services.lower(new EClassifierType(queryEnvironment, inverseEClass),
+						filterType);
+				if (lowerType != null) {
+					result.add(new SetType(queryEnvironment, lowerType));
 				}
-			} else if (argTypes.size() == 2) {
-				final IType filterType = argTypes.get(1);
-				for (EClass inverseEClass : inverseEClasses) {
-					final IType lowerType = services.lower(new EClassifierType(queryEnvironment,
-							inverseEClass), filterType);
-					if (lowerType != null) {
-						result.add(new SetType(queryEnvironment, lowerType));
-					}
-				}
-				if (result.isEmpty()) {
-					result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse to %s",
-							argTypes.get(0), filterType)));
-				}
+			}
+			if (result.isEmpty()) {
+				result.add(new SetType(queryEnvironment, services.nothing("%s don't have inverse to %s",
+						argTypes.get(0), filterType)));
 			}
 
 			return result;
@@ -610,14 +837,69 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * A cross referencer needed to realize the service eInverse().
+	 * EGet {@link IService}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private CrossReferenceProvider crossReferencer;
+	private static final class EGetService extends JavaMethodService {
+
+		/**
+		 * Creates a new service instance given a method and an instance.
+		 * 
+		 * @param method
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		public EGetService(Method method, Object serviceInstance) {
+			super(method, serviceInstance);
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.JavaMethodService#getType(org.eclipse.acceleo.query.ast.Call,
+		 *      org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IValidationResult,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.List)
+		 */
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+
+			if (call.getArguments().get(1) instanceof StringLiteral) {
+				final String featureName = ((StringLiteral)call.getArguments().get(1)).getValue();
+				final EClass eCls = (EClass)argTypes.get(0).getType();
+				final EStructuralFeature feature = eCls.getEStructuralFeature(featureName);
+				if (feature != null) {
+					if (feature.isMany()) {
+						result.add(new SetType(queryEnvironment, new EClassifierType(queryEnvironment,
+								feature.getEType())));
+					} else {
+						result.add(new EClassifierType(queryEnvironment, feature.getEType()));
+					}
+				} else {
+					result.add(services.nothing("EStructuralFeature %s not found for %s", featureName,
+							argTypes.get(0)));
+				}
+			} else {
+				result.add(new ClassType(queryEnvironment, Object.class));
+			}
+
+			return result;
+		}
+	}
 
 	/**
-	 * A root provider needed to realize the service allInstances().
+	 * The cross referencer needed to realize the service eInverse().
 	 */
-	private IRootEObjectProvider rootProvider;
+	private final CrossReferenceProvider crossReferencer;
+
+	/**
+	 * The root provider needed to realize the service allInstances().
+	 */
+	private final IRootEObjectProvider rootProvider;
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
@@ -629,9 +911,16 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * 
 	 * @param queryEnvironment
 	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param crossReferencer
+	 *            the cross referencer needed to realize the service eInverse()
+	 * @param rootProvider
+	 *            the root provider needed to realize the service allInstances()
 	 */
-	public EObjectServices(IReadOnlyQueryEnvironment queryEnvironment) {
+	public EObjectServices(IReadOnlyQueryEnvironment queryEnvironment,
+			CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
 		this.queryEnvironment = queryEnvironment;
+		this.crossReferencer = crossReferencer;
+		this.rootProvider = rootProvider;
 	}
 
 	/**
@@ -661,6 +950,10 @@ public class EObjectServices extends AbstractServiceProvider {
 			}
 		} else if ("allInstances".equals(publicMethod.getName())) {
 			result = new AllInstancesService(publicMethod, this);
+		} else if (AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME.equals(publicMethod.getName())) {
+			result = new EObjectFeatureAccess(publicMethod, this);
+		} else if ("eGet".equals(publicMethod.getName())) {
+			result = new EGetService(publicMethod, this);
 		} else {
 			result = new JavaMethodService(publicMethod, this);
 		}
@@ -931,7 +1224,7 @@ public class EObjectServices extends AbstractServiceProvider {
 			if (child instanceof Collection<?>) {
 				eContentsVisitCollectionChild(result, (Collection<?>)child, types, features);
 			} else {
-				throw new IllegalStateException("don't know what to do with " + child.getClass());
+				throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + child.getClass());
 			}
 		} else if (child instanceof EObject) {
 			if (eIsInstanceOf((EObject)child, types)) {
@@ -1081,14 +1374,6 @@ public class EObjectServices extends AbstractServiceProvider {
 		return eObject.eContainmentFeature();
 	}
 
-	public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-		this.crossReferencer = crossReferencer;
-	}
-
-	public void setRootProvider(IRootEObjectProvider rootProvider) {
-		this.rootProvider = rootProvider;
-	}
-
 	// @formatter:off
 	@Documentation(
 		value = "Returns the set containing the inverse references.",
@@ -1186,17 +1471,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (eObject == null || featureName == null) {
 			throw new NullPointerException();
 		}
-		Optional<EStructuralFeature> feature = Iterables.tryFind(
-				eObject.eClass().getEAllStructuralFeatures(), new Predicate<EStructuralFeature>() {
-					@Override
-					public boolean apply(EStructuralFeature input) {
-						return input != null && featureName.equals(input.getName());
-					}
-				});
+		final EStructuralFeature feature = eObject.eClass().getEStructuralFeature(featureName);
 
 		Object result = null;
-		if (feature.isPresent()) {
-			result = eObject.eGet(feature.get());
+		if (feature != null) {
+			result = eObject.eGet(feature);
 		}
 
 		if (result instanceof Set<?>) {
@@ -1245,8 +1524,11 @@ public class EObjectServices extends AbstractServiceProvider {
 	public List<EObject> allInstances(Set<EClass> types) {
 		final List<EObject> result = Lists.newArrayList();
 
-		if (rootProvider != null) {
+		if (rootProvider != null && types != null) {
 			for (EObject root : rootProvider.getRoots()) {
+				if (eIsInstanceOf(root, types)) {
+					result.add(root);
+				}
 				result.addAll(eAllContents(root, types));
 			}
 		}
@@ -1266,4 +1548,37 @@ public class EObjectServices extends AbstractServiceProvider {
 	public Object eCrossReferences(EObject eObject) {
 		return Lists.newArrayList(eObject.eCrossReferences());
 	}
+
+	/**
+	 * Returns the value of the specified feature on the specified object. The object must be an
+	 * {@link EObject} or a {@link Set}, {@link List} of {@link EObject}.
+	 * 
+	 * @param context
+	 *            the object in which to read the feature.
+	 * @param featureName
+	 *            the name of the feature to read.
+	 * @param diagnostic
+	 *            The status to update in case of warnings or errors during this call.
+	 * @return the value of the specified feature in the specified object.
+	 */
+	public Object aqlFeatureAccess(EObject self, String featureName) {
+		final Object result;
+
+		if (self == null) {
+			final String message = String.format(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
+			throw new AcceleoQueryEvaluationException(message);
+		} else {
+			EClass eClass = ((EObject)self).eClass();
+			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
+			if (feature == null) {
+				final String message = String.format(UNKNOWN_FEATURE, featureName, eClass.getName());
+				throw new AcceleoQueryEvaluationException(message);
+			} else {
+				result = ((EObject)self).eGet(feature);
+			}
+		}
+
+		return result;
+	}
+
 }

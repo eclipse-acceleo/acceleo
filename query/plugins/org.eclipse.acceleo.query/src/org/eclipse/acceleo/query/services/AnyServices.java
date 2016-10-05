@@ -11,11 +11,13 @@
 package org.eclipse.acceleo.query.services;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -42,7 +44,6 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 
 //@formatter:off
 @ServiceProvider(
@@ -235,9 +236,6 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsKindOf(Object object, Object type) {
 		Boolean result;
-		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
-			checkRegistered((EClassifier)type);
-		}
 		if (object == null && type != null) {
 			// OCL considers "null" (OclVoid) to be compatible with everything.
 			// AQL considers it incompatible with anything.
@@ -285,9 +283,6 @@ public class AnyServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean oclIsTypeOf(Object object, Object type) {
 		Boolean result;
-		if (type instanceof EClassifier && !(object instanceof DynamicEObjectImpl)) {
-			checkRegistered((EClassifier)type);
-		}
 		if (object == null && type != null) {
 			// OCL considers "null" (OclVoid) to be compatible with everything.
 			// AQL considers it incompatible with anything.
@@ -316,22 +311,6 @@ public class AnyServices extends AbstractServiceProvider {
 			result = false;
 		}
 		return result;
-	}
-
-	/**
-	 * Checks if the given {@link EClassifier} is registered.
-	 * 
-	 * @param type
-	 *            the {@link EClassifier} to check
-	 * @return the registered {@link Class} if any.
-	 * @throws IllegalArgumentException
-	 *             if the type is not registered
-	 */
-	private void checkRegistered(EClassifier type) throws IllegalArgumentException {
-		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {
-			throw new IllegalArgumentException(String.format(
-					"%s is not registered in the current environment", type));
-		}
 	}
 
 	// @formatter:off
@@ -386,12 +365,32 @@ public class AnyServices extends AbstractServiceProvider {
 			result.append("\t" + ePgk.getNsURI() + LINE_SEP);
 		}
 		result.append("Services:" + LINE_SEP);
-		for (Entry<Class<?>, Set<IService>> entry : queryEnvironment.getLookupEngine()
-				.getRegisteredServices().entrySet()) {
-			result.append("\t" + entry.getKey().getCanonicalName() + LINE_SEP);
-			for (IService service : entry.getValue()) {
-				result.append("\t\t" + service.getLongSignature() + LINE_SEP);
+		final List<IService> services = new ArrayList<IService>(queryEnvironment.getLookupEngine()
+				.getRegisteredServices());
+		Collections.sort(services, new Comparator<IService>() {
+
+			/**
+			 * {@inheritDoc}
+			 *
+			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+			 */
+			@Override
+			public int compare(IService service1, IService service2) {
+				final int result;
+
+				if (service1.getPriority() < service2.getPriority()) {
+					result = -1;
+				} else if (service1.getPriority() > service2.getPriority()) {
+					result = 1;
+				} else {
+					result = service1.getName().compareTo(service2.getName());
+				}
+				return result;
 			}
+
+		});
+		for (IService service : services) {
+			result.append("\t\t" + service.getLongSignature() + LINE_SEP);
 		}
 		result.append("receiver: ");
 		result.append(toString(object) + LINE_SEP);
@@ -434,7 +433,8 @@ public class AnyServices extends AbstractServiceProvider {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							filterType));
 				} else {
-					result.add(services.nothing("%s is not compatible with %s", receiverType, filterType));
+					result.add(services
+							.nothing("%s is not compatible with type %s", receiverType, filterType));
 				}
 			}
 

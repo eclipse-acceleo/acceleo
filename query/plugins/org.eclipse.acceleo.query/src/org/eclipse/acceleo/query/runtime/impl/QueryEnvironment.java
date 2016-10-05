@@ -13,14 +13,15 @@ package org.eclipse.acceleo.query.runtime.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironmentListener;
-import org.eclipse.acceleo.query.runtime.IRootEObjectProvider;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.ServiceRegistrationResult;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
+import org.eclipse.acceleo.query.runtime.lookup.basic.CacheLookupEngine;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -48,60 +49,37 @@ public class QueryEnvironment implements IQueryEnvironment {
 	/**
 	 * Creates a new {@link QueryEvaluationEngine} instance.
 	 * 
-	 * @param crossReferencer
-	 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in services
-	 *            needed it.
-	 */
-	public QueryEnvironment(CrossReferenceProvider crossReferencer) {
-		this(crossReferencer, null);
-	}
-
-	/**
-	 * Creates a new {@link QueryEvaluationEngine} instance.
-	 * 
-	 * @param crossReferencer
-	 *            a new {@link CrossReferencer} that will be used to resolve eReference requests in services
-	 *            needed it.
-	 * @param rootProvider
-	 *            a new {@link IRootEObjectProvider} that will be used to search all instances requests in
-	 *            services needed it.
 	 * @since 4.0.0
 	 */
-	public QueryEnvironment(CrossReferenceProvider crossReferencer, IRootEObjectProvider rootProvider) {
+	public QueryEnvironment() {
 		ePackageProvider = new EPackageProvider();
-		lookupEngine = new BasicLookupEngine(this, crossReferencer, rootProvider);
+		lookupEngine = new CacheLookupEngine(this);
 	}
 
 	@Override
-	public ServiceRegistrationResult registerServicePackage(Class<?> services)
-			throws InvalidAcceleoPackageException {
-		final ServiceRegistrationResult result = lookupEngine.registerServices(services);
+	public ServiceRegistrationResult registerService(IService service) {
+		final ServiceRegistrationResult result = lookupEngine.registerService(service);
 
 		if (!result.getRegistered().isEmpty()) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.servicePackageRegistered(result, services);
+				listener.serviceRegistered(result, service);
 			}
 		}
 
 		return result;
 	}
 
-	@Override
-	public boolean isRegisteredServicePackage(Class<?> cls) {
-		return lookupEngine.isRegisteredService(cls);
-	}
-
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeServicePackage(java.lang.Class)
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeService(org.eclipse.acceleo.query.runtime.IService)
 	 */
 	@Override
-	public void removeServicePackage(Class<?> services) {
-		final Class<?> removedClass = lookupEngine.removeServices(services);
-		if (removedClass != null) {
+	public void removeService(IService service) {
+		final IService removedService = lookupEngine.removeService(service);
+		if (removedService != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
-				listener.servicePackageRemoved(removedClass);
+				listener.serviceRemoved(removedService);
 			}
 		}
 	}
@@ -118,6 +96,23 @@ public class QueryEnvironment implements IQueryEnvironment {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRegistered(ePackage);
 			}
+			final Set<IService> services = ServiceUtils.getServices(ePackage);
+			ServiceUtils.registerServices(this, services);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeEPackage(org.eclipse.emf.ecore.EPackage)
+	 */
+	@Override
+	public void removeEPackage(EPackage ePackage) {
+		final Collection<EPackage> ePackages = ePackageProvider.removePackage(ePackage);
+		for (EPackage ePkg : ePackages) {
+			for (IQueryEnvironmentListener listener : getListeners()) {
+				listener.ePackageRemoved(ePkg);
+			}
 		}
 	}
 
@@ -125,6 +120,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 * {@inheritDoc}
 	 *
 	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#removeEPackage(java.lang.String)
+	 * @deprecated
 	 */
 	@Override
 	public void removeEPackage(String name) {
@@ -205,6 +201,16 @@ public class QueryEnvironment implements IQueryEnvironment {
 		}
 
 		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.IQueryEnvironment#isRegisteredService(org.eclipse.acceleo.query.runtime.IService)
+	 */
+	@Override
+	public boolean isRegisteredService(IService service) {
+		return lookupEngine.isRegisteredService(service);
 	}
 
 }

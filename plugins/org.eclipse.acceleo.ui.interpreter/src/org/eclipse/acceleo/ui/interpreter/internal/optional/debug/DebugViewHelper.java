@@ -48,7 +48,8 @@ public final class DebugViewHelper {
 		final IDebugView debugView = getDebugView();
 		if (debugView != null) {
 			ISelection threadSelection = debugView.getViewer().getSelection();
-			if (!threadSelection.isEmpty() && threadSelection instanceof IStructuredSelection) {
+			if (!threadSelection.isEmpty() && threadSelection instanceof IStructuredSelection
+					&& ((IStructuredSelection)threadSelection).getFirstElement() instanceof IStackFrame) {
 				IStackFrame frame = (IStackFrame)((IStructuredSelection)threadSelection).getFirstElement();
 				try {
 					return convertToInterpreterVariables(frame.getVariables());

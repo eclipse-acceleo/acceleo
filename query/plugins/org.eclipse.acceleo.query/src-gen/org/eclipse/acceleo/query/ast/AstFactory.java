@@ -36,14 +36,6 @@ public interface AstFactory extends EFactory {
 	VarRef createVarRef();
 
 	/**
-	 * Returns a new object of class '<em>Feature Access</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return a new object of class '<em>Feature Access</em>'.
-	 * @generated
-	 */
-	FeatureAccess createFeatureAccess();
-
-	/**
 	 * Returns a new object of class '<em>Call</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return a new object of class '<em>Call</em>'.
@@ -194,15 +186,6 @@ public interface AstFactory extends EFactory {
 	 * @generated
 	 */
 	ErrorEnumLiteral createErrorEnumLiteral();
-
-	/**
-	 * Returns a new object of class '<em>Error Feature Access Or Call</em>'. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
-	 * 
-	 * @return a new object of class '<em>Error Feature Access Or Call</em>'.
-	 * @generated
-	 */
-	ErrorFeatureAccessOrCall createErrorFeatureAccessOrCall();
 
 	/**
 	 * Returns a new object of class '<em>Error Call</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

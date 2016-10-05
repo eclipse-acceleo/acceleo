@@ -6,16 +6,13 @@ include "../common/swtbot.tpd"
 
 with source requirements
 
-location "http://download.eclipse.org/releases/mars" {
+location "http://download.eclipse.org/eclipse/updates/4.5" {
 	org.eclipse.platform.sdk lazy
-	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.equinox.core.feature.feature.group lazy
 	org.eclipse.jdt.feature.group lazy
-	org.eclipse.pde.feature.group lazy
-	org.eclipse.uml2.feature.group lazy
-	
-	org.eclipse.sirius.runtime.feature.group lazy
-	org.eclipse.sirius.specifier.feature.group lazy
+	org.eclipse.pde.feature.group lazy	
 }
+
 
 location "http://download.eclipse.org/releases/mars" {
 	lpg.runtime.java lazy
@@ -30,4 +27,10 @@ location "http://download.eclipse.org/releases/mars" {
 	
 	org.eclipse.ocl.pivot.uml lazy
 	org.eclipse.ocl.pivot.ui lazy
+	
+	
+	org.eclipse.emf.sdk.feature.group lazy
+	org.eclipse.uml2.feature.group lazy	
+	org.eclipse.sirius.runtime.feature.group lazy
+	org.eclipse.sirius.specifier.feature.group lazy
 }

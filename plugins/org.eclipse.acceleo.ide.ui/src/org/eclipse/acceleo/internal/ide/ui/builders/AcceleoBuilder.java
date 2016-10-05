@@ -38,8 +38,6 @@ import org.eclipse.acceleo.internal.ide.ui.builders.runner.CreateRunnableAcceleo
 import org.eclipse.acceleo.internal.ide.ui.editors.template.utils.JavaServicesUtils;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoParser;
 import org.eclipse.acceleo.internal.parser.compiler.AcceleoProjectClasspathEntry;
-import org.eclipse.acceleo.internal.parser.cst.utils.FileContent;
-import org.eclipse.acceleo.internal.parser.cst.utils.Sequence;
 import org.eclipse.acceleo.parser.AcceleoParserInfo;
 import org.eclipse.acceleo.parser.AcceleoParserProblem;
 import org.eclipse.acceleo.parser.AcceleoParserWarning;
@@ -118,17 +116,7 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				"AcceleoBuilder.StartingBuild", project.getName(), Integer.valueOf(0))); //$NON-NLS-1$
 		long currentTimeMillis = System.currentTimeMillis();
 
-		// Generate all Acceleo Java Services modules
-		List<IFile> javaFiles = this.members(getProject(), "java"); //$NON-NLS-1$
-		for (IFile iFile : javaFiles) {
-			IJavaElement iJavaElement = JavaCore.create(iFile);
-			if (iJavaElement instanceof ICompilationUnit) {
-				ICompilationUnit iCompilationUnit = (ICompilationUnit)iJavaElement;
-				if (JavaServicesUtils.isAcceleoJavaServicesClass(iCompilationUnit)) {
-					JavaServicesUtils.generateAcceleoServicesModule(iCompilationUnit, monitor);
-				}
-			}
-		}
+		generateJavaServices(monitor);
 
 		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.ComputeAccessibleEcores", Long //$NON-NLS-1$
 				.valueOf(System.currentTimeMillis() - currentTimeMillis)));
@@ -183,6 +171,10 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 				// No state -> build all
 				mainFiles.addAll(buildAll(acceleoProject, project, useBinaryResources,
 						usePlatformResourcePath, trimmedPositions, monitor));
+			} else if (containsManifest(deltaMembers(getDelta(project), monitor))) {
+				// MANIFEST changed -> build all
+				mainFiles.addAll(buildAll(acceleoProject, project, useBinaryResources,
+						usePlatformResourcePath, trimmedPositions, monitor));
 			} else if (kind == IncrementalProjectBuilder.INCREMENTAL_BUILD
 					|| kind == IncrementalProjectBuilder.AUTO_BUILD) {
 				mainFiles.addAll(this.incrementalBuild(acceleoProject, project, useBinaryResources,
@@ -195,10 +187,8 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 
 		monitor.subTask(AcceleoUIMessages.getString("AcceleoBuilder.BuildFileNotCompiled", Long //$NON-NLS-1$
 				.valueOf(System.currentTimeMillis() - currentTimeMillis)));
-		// Ensure that we didn't forget to build a file out of the dependency graph of the file(s)
-		// currently
-		// built, this can occur if two files are not related at all and we force the build of only one of
-		// those files.
+		// Ensure we didn't forget to build a file out of the dependency graph of those currently built. Can
+		// occur if two files are not related at all and we force the build of only one
 		Set<File> fileNotCompiled = acceleoProject.getFileNotCompiled();
 		for (File fileToBuild : fileNotCompiled) {
 			AcceleoParser acceleoParser = new AcceleoParser(acceleoProject, useBinaryResources,
@@ -246,6 +236,45 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 		monitor.done();
 
 		return accessibleProjects.toArray(new IProject[accessibleProjects.size()]);
+	}
+
+	/**
+	 * Generate the java services for the members of this project.
+	 * 
+	 * @param monitor
+	 *            Monitor on which to report progress to the user.
+	 * @throws CoreException
+	 *             Thrown if we cannot compute the member list of the currently built project.
+	 */
+	private void generateJavaServices(IProgressMonitor monitor) throws CoreException {
+		// Generate all Acceleo Java Services modules
+		List<IFile> javaFiles = this.members(getProject(), "java"); //$NON-NLS-1$
+		for (IFile iFile : javaFiles) {
+			IJavaElement iJavaElement = JavaCore.create(iFile);
+			if (iJavaElement instanceof ICompilationUnit) {
+				ICompilationUnit iCompilationUnit = (ICompilationUnit)iJavaElement;
+				if (JavaServicesUtils.isAcceleoJavaServicesClass(iCompilationUnit)) {
+					JavaServicesUtils.generateAcceleoServicesModule(iCompilationUnit, monitor);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks whether the given list of files contains the MANIFEST.MF of a project.
+	 * 
+	 * @param files
+	 *            The list of files.
+	 * @return <code>true</code> if one of these files matches the folder/name : "META-INF/MANIFEST.MF".
+	 *         <code>false</code> otherwise.
+	 */
+	private boolean containsManifest(List<IFile> files) {
+		for (IFile file : files) {
+			if ("MANIFEST.MF".equals(file.getName()) && file.getParent() != null && "META-INF".equals(file.getParent().getName())) { //$NON-NLS-1$ //$NON-NLS-2$
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -633,139 +662,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 	}
 
 	/**
-	 * It does an incremental build.
-	 * 
-	 * @param delta
-	 *            is the resource delta
-	 * @param monitor
-	 *            is the progress monitor
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	protected void incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) throws CoreException {
-		List<IFile> deltaFilesOutput = deltaMembers(delta, monitor);
-		if (deltaFilesOutput.size() > 0) {
-			boolean containsManifest = false;
-			for (int i = 0; !containsManifest && i < deltaFilesOutput.size(); i++) {
-				containsManifest = "MANIFEST.MF".equals(deltaFilesOutput.get(i).getName()); //$NON-NLS-1$
-			}
-			if (containsManifest) {
-				deltaFilesOutput.clear();
-				for (File outputFolder : this.outputFolders) {
-					IPath path = new Path(outputFolder.getAbsolutePath());
-					AcceleoBuilderUtils.members(deltaFilesOutput, getProject(),
-							IAcceleoConstants.MTL_FILE_EXTENSION, path);
-				}
-			} else {
-				computeOtherFilesToBuild(deltaFilesOutput);
-			}
-		}
-		if (deltaFilesOutput.size() > 0) {
-			Collections.sort(deltaFilesOutput, new Comparator<IFile>() {
-				public int compare(IFile arg0, IFile arg1) {
-					long m0 = arg0.getLocation().toFile().lastModified();
-					long m1 = arg1.getLocation().toFile().lastModified();
-					if (m0 < m1) {
-						return 1;
-					}
-					return -1;
-				}
-			});
-			registerAccessibleEcoreFiles();
-			IFile[] files = deltaFilesOutput.toArray(new IFile[deltaFilesOutput.size()]);
-			AcceleoCompileOperation compileOperation = new AcceleoCompileOperation(getProject(), files, false);
-			compileOperation.run(monitor);
-			generateAcceleoBuildFile(monitor);
-		} else {
-			List<IFile> deltaRemovedFilesOutput = new ArrayList<IFile>();
-			deltaRemovedMembers(deltaRemovedFilesOutput, delta, monitor);
-			if (deltaRemovedFilesOutput.size() > 0) {
-				for (IFile removedFile : deltaRemovedFilesOutput) {
-					if ("java".equals(removedFile.getFileExtension())) { //$NON-NLS-1$
-						this.fullBuild(monitor);
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Gets also the files that depend of the templates to build.
-	 * 
-	 * @param deltaFiles
-	 *            is an output parameter to get all the templates to build
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	private void computeOtherFilesToBuild(List<IFile> deltaFiles) throws CoreException {
-		AcceleoProject acceleoProject = new AcceleoProject(getProject());
-		List<IFile> otherTemplates = new ArrayList<IFile>();
-		for (File outputFolder : this.outputFolders) {
-			IPath path = new Path(outputFolder.getAbsolutePath());
-			AcceleoBuilderUtils.members(otherTemplates, getProject(), IAcceleoConstants.MTL_FILE_EXTENSION,
-					path);
-		}
-		List<Sequence> importSequencesToSearch = new ArrayList<Sequence>();
-		for (int i = 0; i < deltaFiles.size(); i++) {
-			IFile deltaFile = deltaFiles.get(i);
-			if (IAcceleoConstants.MTL_FILE_EXTENSION.equals(deltaFile.getFileExtension())) {
-				importSequencesToSearch.addAll(AcceleoBuilderUtils.getImportSequencesToSearch(acceleoProject,
-						deltaFile));
-				otherTemplates.remove(deltaFile);
-			}
-		}
-		List<IFile> otherTemplatesToBuild = getOtherTemplatesToBuild(acceleoProject, otherTemplates,
-				importSequencesToSearch);
-		while (otherTemplatesToBuild.size() > 0) {
-			for (int i = 0; i < otherTemplatesToBuild.size(); i++) {
-				IFile otherTemplateToBuild = otherTemplatesToBuild.get(i);
-				otherTemplates.remove(otherTemplateToBuild);
-				if (!deltaFiles.contains(otherTemplateToBuild)) {
-					deltaFiles.add(otherTemplateToBuild);
-					importSequencesToSearch.addAll(AcceleoBuilderUtils.getImportSequencesToSearch(
-							acceleoProject, otherTemplateToBuild));
-				}
-			}
-			otherTemplatesToBuild = getOtherTemplatesToBuild(acceleoProject, otherTemplates,
-					importSequencesToSearch);
-		}
-	}
-
-	/**
-	 * Gets the files that import the given dependencies.
-	 * 
-	 * @param acceleoProject
-	 *            is the project
-	 * @param otherTemplates
-	 *            are the other templates that we can decide to build
-	 * @param importSequencesToSearch
-	 *            are the dependencies to detect in the "import" section of the other templates
-	 * @return the other templates to build
-	 */
-	private List<IFile> getOtherTemplatesToBuild(AcceleoProject acceleoProject, List<IFile> otherTemplates,
-			List<Sequence> importSequencesToSearch) {
-		List<IFile> result = new ArrayList<IFile>();
-		for (int i = 0; i < otherTemplates.size(); i++) {
-			IFile otherTemplate = otherTemplates.get(i);
-			IPath outputPath = acceleoProject.getOutputFilePath(otherTemplate);
-			if (outputPath != null && !getProject().getFile(outputPath.removeFirstSegments(1)).exists()) {
-				result.add(otherTemplate);
-			} else {
-				StringBuffer otherTemplateContent = FileContent.getFileContent(otherTemplate.getLocation()
-						.toFile());
-				for (int j = 0; j < importSequencesToSearch.size(); j++) {
-					Sequence importSequence = importSequencesToSearch.get(j);
-					if (importSequence.search(otherTemplateContent).b() > -1) {
-						result.add(otherTemplate);
-					}
-				}
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * 
 	 * @see org.eclipse.core.resources.IncrementalProjectBuilder#clean(org.eclipse.core.runtime.IProgressMonitor)
@@ -843,40 +739,6 @@ public class AcceleoBuilder extends IncrementalProjectBuilder {
 					|| (delta.getFlags() & IResourceDelta.REPLACED) != 0;
 		}
 		return false;
-	}
-
-	/**
-	 * Computes a list of all the removed files.
-	 * 
-	 * @param deltaFilesOutput
-	 *            an output parameter to get all the modified files
-	 * @param delta
-	 *            the resource delta represents changes in the state of a resource tree
-	 * @param monitor
-	 *            is the monitor
-	 * @throws CoreException
-	 *             contains a status object describing the cause of the exception
-	 */
-	private void deltaRemovedMembers(List<IFile> deltaFilesOutput, IResourceDelta delta,
-			IProgressMonitor monitor) throws CoreException {
-		if (delta != null) {
-			IResource resource = delta.getResource();
-			if (resource instanceof IFile) {
-				if (delta.getKind() == IResourceDelta.REMOVED) {
-					deltaFilesOutput.add((IFile)resource);
-				}
-			} else {
-				for (File outputFolder : this.outputFolders) {
-					if (outputFolder == null
-							|| !new Path(outputFolder.getAbsolutePath()).isPrefixOf(resource.getLocation())) {
-						IResourceDelta[] children = delta.getAffectedChildren();
-						for (int i = 0; i < children.length; i++) {
-							deltaRemovedMembers(deltaFilesOutput, children[i], monitor);
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**

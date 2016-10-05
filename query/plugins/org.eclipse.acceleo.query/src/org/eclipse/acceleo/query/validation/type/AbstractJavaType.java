@@ -43,8 +43,8 @@ public abstract class AbstractJavaType extends AbstractType implements IJavaType
 	public boolean isAssignableFrom(IType otherType) {
 		final boolean result;
 
-		if (otherType instanceof ClassType) {
-			result = isAssignableFrom(getType(), ((ClassType)otherType).getType());
+		if (otherType instanceof IJavaType) {
+			result = isAssignableFrom(getType(), ((IJavaType)otherType).getType());
 		} else if (otherType instanceof EClassifierType) {
 			final Class<?> otherClass = queryEnvironment.getEPackageProvider().getClass(
 					((EClassifierType)otherType).getType());

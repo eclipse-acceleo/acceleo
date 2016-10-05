@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import com.google.common.collect.ImmutableSet;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -17,8 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
 import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractLanguageServices;
+import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -42,6 +47,23 @@ import static org.junit.Assert.assertNull;
  */
 public abstract class AbstractServicesValidationTest extends AbstractServicesTest {
 
+	protected static class VariableBuilder {
+		private Map<String, Set<IType>> variables;
+
+		public VariableBuilder() {
+			variables = new LinkedHashMap<String, Set<IType>>();
+		}
+
+		public VariableBuilder addVar(String name, IType... types) {
+			variables.put(name, ImmutableSet.copyOf(types));
+			return this;
+		}
+
+		public Map<String, Set<IType>> build() {
+			return variables;
+		}
+	}
+
 	protected void assertNoService(String serviceName, IType parameterTypes[]) {
 		final IService service = serviceLookUp(serviceName, parameterTypes);
 
@@ -56,6 +78,11 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 			String serviceName, IType parameterTypes[]) {
 		final IService service = serviceLookUp(serviceName, parameterTypes);
 
+		assertValidation(service, expectedReturnTypes, expectedAllReturnTypes, parameterTypes);
+	}
+
+	protected void assertValidation(IService service, IType expectedReturnTypes[],
+			IType expectedAllReturnTypes[], IType parameterTypes[]) {
 		assertNotNull("Service not found.", service);
 
 		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(), Arrays
@@ -91,9 +118,9 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 	}
 
 	protected IService serviceLookUp(String serviceName, IType[] parameterTypes) {
-		final Class<?>[] argumentClasses = new Class<?>[parameterTypes.length];
+		final IType[] argumentClasses = new IType[parameterTypes.length];
 		for (int i = 0; i < parameterTypes.length; ++i) {
-			argumentClasses[i] = getClass(parameterTypes[i]);
+			argumentClasses[i] = new ClassType(getQueryEnvironment(), getClass(parameterTypes[i]));
 		}
 		return getLookupEngine().lookup(serviceName, argumentClasses);
 	}
@@ -159,4 +186,19 @@ public abstract class AbstractServicesValidationTest extends AbstractServicesTes
 
 		return result;
 	}
+
+	protected IValidationResult validate(String expression, Map<String, Set<IType>> vars) {
+		final Map<String, Set<IType>> variableTypes = new LinkedHashMap<String, Set<IType>>();
+		if (vars != null) {
+			variableTypes.putAll(vars);
+		}
+
+		final IQueryValidationEngine builder = new QueryValidationEngine(getQueryEnvironment());
+		return builder.validate(expression, variableTypes);
+	}
+
+	protected IValidationResult validate(String expression) {
+		return validate(expression, null);
+	}
+
 }

@@ -70,6 +70,7 @@ Acceleo Checkstyle 6 configuration.
     </module>
     <module name="ImportOrder">
       <property name="severity" value="error"/>
+      <property name="option" value="above"/>
     </module>
     <module name="RedundantImport">
       <property name="severity" value="error"/>

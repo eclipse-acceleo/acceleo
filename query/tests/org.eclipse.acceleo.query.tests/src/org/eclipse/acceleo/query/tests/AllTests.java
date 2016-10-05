@@ -12,6 +12,7 @@ package org.eclipse.acceleo.query.tests;
 
 import org.eclipse.acceleo.query.ast.test.AstBuilderTest;
 import org.eclipse.acceleo.query.ast.test.AstEvaluatorTest;
+import org.eclipse.acceleo.query.ast.test.delegates.DelegateTests;
 import org.eclipse.acceleo.query.parser.tests.BuildTest;
 import org.eclipse.acceleo.query.parser.tests.CombineIteratorTest;
 import org.eclipse.acceleo.query.parser.tests.CompletionCheck;
@@ -26,15 +27,18 @@ import org.eclipse.acceleo.query.runtime.test.EvaluationServiceStatusTests;
 import org.eclipse.acceleo.query.runtime.test.EvaluationServicesTest;
 import org.eclipse.acceleo.query.runtime.test.FilterCamelCaseTest;
 import org.eclipse.acceleo.query.runtime.test.ShortcutEvaluationTest;
+import org.eclipse.acceleo.query.services.tests.AnyServicesAstValidationTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesTest;
 import org.eclipse.acceleo.query.services.tests.AnyServicesValidationTest;
+import org.eclipse.acceleo.query.services.tests.BooleanServicesAstValidationTest;
 import org.eclipse.acceleo.query.services.tests.BooleanServicesTest;
 import org.eclipse.acceleo.query.services.tests.BooleanServicesValidationTest;
+import org.eclipse.acceleo.query.services.tests.CollectionServicesAstValidationTest;
 import org.eclipse.acceleo.query.services.tests.CollectionServicesTest;
 import org.eclipse.acceleo.query.services.tests.CollectionServicesValidationTest;
+import org.eclipse.acceleo.query.services.tests.ComparableServicesAstValidationTest;
 import org.eclipse.acceleo.query.services.tests.ComparableServicesTest;
 import org.eclipse.acceleo.query.services.tests.ComparableServicesValidationTest;
-import org.eclipse.acceleo.query.services.tests.EObjectServicesPerformanceTest;
 import org.eclipse.acceleo.query.services.tests.EObjectServicesTest;
 import org.eclipse.acceleo.query.services.tests.EObjectServicesValidationTest;
 import org.eclipse.acceleo.query.services.tests.NumberServicesTest;
@@ -77,21 +81,23 @@ import org.junit.runners.Suite.SuiteClasses;
 		CombineIteratorTest.class, CompletionTest.class, EvaluationTest.class, LexerTest.class,
 		ValidationTest.class, BasicLookupCrossReferencerTest.class, BasicLookupTest.class,
 		EvaluationServiceStatusTests.class, EvaluationServicesTest.class, AnyServicesTest.class,
-		AnyServicesValidationTest.class, BooleanServicesTest.class, BooleanServicesValidationTest.class,
+		BooleanServicesAstValidationTest.class, AnyServicesValidationTest.class,
+		AnyServicesAstValidationTest.class, BooleanServicesTest.class, BooleanServicesValidationTest.class,
 		CollectionServicesTest.class, CollectionServicesValidationTest.class, ComparableServicesTest.class,
-		ComparableServicesValidationTest.class, EObjectServicesTest.class, XPathServicesTest.class,
-		EObjectServicesValidationTest.class, XPathServicesValidationTest.class, NumberServicesTest.class,
-		NumberServicesValidationTest.class, StringServicesTest.class, StringServicesValidationTest.class,
-		AnyDSLEvaluationTests.class, AnyDSLValidationTests.class, EcoreReverseTests.class,
-		EcoreValidationTests.class, UMLEvaluationTests.class, UMLValidationTests.class,
-		LookupEngineTest.class, ShortcutEvaluationTest.class, ResourceServicesTest.class,
-		ResourceServicesValidationTest.class, JavaMethodServiceCompletionProposalTests.class,
-		EFeatureCompletionProposalTests.class, EOperationCompletionProposalTests.class,
-		TextCompletionProposalTests.class, VariableDeclarationCompletionProposalTests.class,
-		EEnumLiteralCompletionProposalTests.class, VariableCompletionProposalTests.class,
-		EClassifierCompletionProposalTests.class, ValidationInferrenceTest.class, TypeTests.class,
-		QueryEnvironmentTests.class, EPackageProviderTests.class, CompletionCheck.class,
-		FilterCamelCaseTest.class, EObjectServicesPerformanceTest.class })
+		ComparableServicesValidationTest.class, ComparableServicesAstValidationTest.class,
+		EObjectServicesTest.class, XPathServicesTest.class, EObjectServicesValidationTest.class,
+		XPathServicesValidationTest.class, NumberServicesTest.class, NumberServicesValidationTest.class,
+		StringServicesTest.class, StringServicesValidationTest.class, AnyDSLEvaluationTests.class,
+		AnyDSLValidationTests.class, EcoreReverseTests.class, EcoreValidationTests.class,
+		UMLEvaluationTests.class, UMLValidationTests.class, LookupEngineTest.class,
+		ShortcutEvaluationTest.class, ResourceServicesTest.class, ResourceServicesValidationTest.class,
+		JavaMethodServiceCompletionProposalTests.class, EFeatureCompletionProposalTests.class,
+		EOperationCompletionProposalTests.class, TextCompletionProposalTests.class,
+		VariableDeclarationCompletionProposalTests.class, EEnumLiteralCompletionProposalTests.class,
+		VariableCompletionProposalTests.class, EClassifierCompletionProposalTests.class,
+		ValidationInferrenceTest.class, TypeTests.class, QueryEnvironmentTests.class,
+		EPackageProviderTests.class, CompletionCheck.class, FilterCamelCaseTest.class,
+		CollectionServicesAstValidationTest.class, DelegateTests.class })
 public class AllTests {
 
 }

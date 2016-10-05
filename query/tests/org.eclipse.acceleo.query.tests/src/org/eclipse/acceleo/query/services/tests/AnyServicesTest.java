@@ -13,7 +13,10 @@ package org.eclipse.acceleo.query.services.tests;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
@@ -39,7 +42,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(AnyServices.class);
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), new AnyServices(
+				getQueryEnvironment()));
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 		any = new AnyServices(getQueryEnvironment());
 	}
 
@@ -195,8 +200,14 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertEquals(self, any.oclAsType(self, EcorePackage.eINSTANCE.getEClass()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void oclAsTypeEClassEClassifierUnregistered() {
+	@Test
+	public void oclAsTypeEclassToEClassEClassifierUnregistered() {
+		final Object self = EcoreFactory.eINSTANCE.createEClass();
+		assertEquals(self, any.oclAsType(self, EcorePackage.eINSTANCE.getEClass()));
+	}
+
+	@Test(expected = ClassCastException.class)
+	public void oclAsTypeObjectToEClassifierUnregistered() {
 		final Object self = new Object();
 		any.oclAsType(self, EcorePackage.eINSTANCE.getEClass());
 	}
@@ -208,7 +219,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 		any.oclAsType(self, EcorePackage.eINSTANCE.getEInt());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ClassCastException.class)
 	public void oclAsTypeObjectToEIntUnregistered() {
 		final Object self = new Object();
 		any.oclAsType(self, EcorePackage.eINSTANCE.getEInt());
@@ -227,10 +238,10 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertEquals(Integer.valueOf(1), any.oclAsType(i, EcorePackage.eINSTANCE.getEInt()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void oclAsTypeIntToEIntUnregistered() {
 		final Integer i = Integer.valueOf(1);
-		any.oclAsType(i, EcorePackage.eINSTANCE.getEInt());
+		assertEquals(Integer.valueOf(1), any.oclAsType(i, EcorePackage.eINSTANCE.getEInt()));
 	}
 
 	@Test
@@ -240,10 +251,10 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertEquals(eClass, any.oclAsType(eClass, EcorePackage.eINSTANCE.getEClass()));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void oclAsTypeCompatibleClassifiersUnregistered() {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
-		any.oclAsType(eClass, EcorePackage.eINSTANCE.getEClass());
+		assertEquals(eClass, any.oclAsType(eClass, EcorePackage.eINSTANCE.getEClass()));
 	}
 
 	@Test(expected = ClassCastException.class)
@@ -253,7 +264,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 		any.oclAsType(eClass, EcorePackage.eINSTANCE.getEPackage());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ClassCastException.class)
 	public void oclAsTypeIncompatibleTypesUnregistered() {
 		final EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 		any.oclAsType(eClass, EcorePackage.eINSTANCE.getEPackage());
@@ -324,7 +335,7 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsKindOf(null, null));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsKindOfNullEClassNotRegistered() {
 		assertFalse(any.oclIsKindOf(null, EcorePackage.eINSTANCE.getEClass()));
 	}
@@ -335,9 +346,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsKindOf(null, EcorePackage.eINSTANCE.getEClass()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsKindOfNullEEnumNotRegistered() {
-		any.oclIsKindOf(null, AnydslPackage.eINSTANCE.getCaliber());
+		assertFalse(any.oclIsKindOf(null, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
 	@Test
@@ -346,9 +357,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsKindOf(null, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsKindOfNullEDataTypeNotRegistered() {
-		any.oclIsKindOf(null, EcorePackage.eINSTANCE.getEString());
+		assertFalse(any.oclIsKindOf(null, EcorePackage.eINSTANCE.getEString()));
 	}
 
 	@Test
@@ -362,9 +373,12 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsKindOf(new Object(), null));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsKindOfObjectEClassNotRegistered() {
-		any.oclIsKindOf(new Object(), EcorePackage.eINSTANCE.getEClass());
+		assertFalse(any.oclIsKindOf(new Object(), EcorePackage.eINSTANCE.getEClass()));
+		assertTrue(any.oclIsKindOf(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE.getEClass()));
+		assertTrue(any.oclIsKindOf(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
+				.getEClassifier()));
 	}
 
 	@Test
@@ -376,14 +390,10 @@ public class AnyServicesTest extends AbstractServicesTest {
 				.getEClassifier()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void oclIsKindOfObjectEEnumNotRegistered_enumLiteral() {
-		any.oclIsKindOf(Caliber.L, AnydslPackage.eINSTANCE.getCaliber());
-	}
-
-	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void oclIsKindOfObjectEEnumNotRegistered_Object() {
-		any.oclIsKindOf(new Object(), AnydslPackage.eINSTANCE.getCaliber());
+	@Test
+	public void oclIsKindOfObjectEEnumNotRegistered() {
+		assertFalse(any.oclIsKindOf(new Object(), AnydslPackage.eINSTANCE.getCaliber()));
+		assertTrue(any.oclIsKindOf(Caliber.L, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
 	@Test
@@ -393,14 +403,10 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertTrue(any.oclIsKindOf(Caliber.L, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
-	public void oclIsKindOfObjectEDataTypeNotRegistered_String() {
-		any.oclIsKindOf("a string", EcorePackage.eINSTANCE.getEString());
-	}
-
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsKindOfObjectEDataTypeNotRegistered_Object() {
-		any.oclIsKindOf(new Object(), EcorePackage.eINSTANCE.getEString());
+		assertFalse(any.oclIsKindOf(new Object(), EcorePackage.eINSTANCE.getEString()));
+		assertTrue(any.oclIsKindOf("a string", EcorePackage.eINSTANCE.getEString()));
 	}
 
 	@Test
@@ -422,9 +428,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsTypeOf(null, null));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsTypeOfNullEClassNotRegistered() {
-		any.oclIsTypeOf(null, EcorePackage.eINSTANCE.getEClass());
+		assertFalse(any.oclIsTypeOf(null, EcorePackage.eINSTANCE.getEClass()));
 	}
 
 	@Test
@@ -433,9 +439,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsTypeOf(null, EcorePackage.eINSTANCE.getEClass()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsTypeOfNullEEnumNotRegistered() {
-		any.oclIsTypeOf(null, AnydslPackage.eINSTANCE.getCaliber());
+		assertFalse(any.oclIsTypeOf(null, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
 	@Test
@@ -444,9 +450,9 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsTypeOf(null, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsTypeOfNullEDataTypeNotRegistered() {
-		any.oclIsTypeOf(null, EcorePackage.eINSTANCE.getEString());
+		assertFalse(any.oclIsTypeOf(null, EcorePackage.eINSTANCE.getEString()));
 	}
 
 	@Test
@@ -460,9 +466,12 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertFalse(any.oclIsTypeOf(new Object(), null));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsTypeOfObjectEClassNotRegistered() {
-		any.oclIsTypeOf(new Object(), EcorePackage.eINSTANCE.getEClass());
+		assertFalse(any.oclIsTypeOf(new Object(), EcorePackage.eINSTANCE.getEClass()));
+		assertTrue(any.oclIsTypeOf(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE.getEClass()));
+		assertFalse(any.oclIsTypeOf(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
+				.getEClassifier()));
 	}
 
 	@Test
@@ -474,9 +483,10 @@ public class AnyServicesTest extends AbstractServicesTest {
 				.getEClassifier()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsTypeOfObjectEEnumNotRegistered() {
-		any.oclIsTypeOf(new Object(), AnydslPackage.eINSTANCE.getCaliber());
+		assertFalse(any.oclIsTypeOf(new Object(), AnydslPackage.eINSTANCE.getCaliber()));
+		assertTrue(any.oclIsTypeOf(Caliber.L, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
 	@Test
@@ -486,9 +496,10 @@ public class AnyServicesTest extends AbstractServicesTest {
 		assertTrue(any.oclIsTypeOf(Caliber.L, AnydslPackage.eINSTANCE.getCaliber()));
 	}
 
-	@Test(expected = java.lang.IllegalArgumentException.class)
+	@Test
 	public void oclIsTypeOfObjectEDataTypeNotRegistered() {
-		any.oclIsTypeOf(new Object(), EcorePackage.eINSTANCE.getEString());
+		assertFalse(any.oclIsTypeOf(new Object(), EcorePackage.eINSTANCE.getEString()));
+		assertTrue(any.oclIsTypeOf("a string", EcorePackage.eINSTANCE.getEString()));
 	}
 
 	@Test

@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -44,7 +49,7 @@ import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.runtime.impl.LambdaValue;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
@@ -53,6 +58,7 @@ import org.eclipse.acceleo.query.validation.type.LambdaType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.acceleo.query.validation.type.SequenceType;
 import org.eclipse.acceleo.query.validation.type.SetType;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
 
 //@formatter:off
@@ -67,6 +73,9 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * Message separator.
 	 */
 	private static final String MESSAGE_SEPARATOR = "\n ";
+
+	/** Externalized here to avoid multiple uses. */
+	private static final String SUM_ONLY_NUMERIC_ERROR = "Sum can only be used on a collection of numbers.";
 
 	/**
 	 * Exists {@link IService}.
@@ -142,12 +151,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					inferredTypes = null;
 				}
 				if (inferredTypes == null) {
-					IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
-					if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
-						lambdaEvaluatorType = new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)lambdaEvaluatorType).getType());
-					}
-					result.add(lambdaEvaluatorType);
+					result.add(((ICollectionType)argTypes.get(0)).getCollectionType());
 				} else {
 					result.addAll(inferredTypes);
 				}
@@ -163,7 +167,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class IncludingService extends JavaMethodService {
+	private static class IncludingService extends JavaMethodService {
 
 		/**
 		 * Constructor.
@@ -173,7 +177,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		 * @param serviceInstance
 		 *            the instance on which the service must be called
 		 */
-		private IncludingService(Method serviceMethod, Object serviceInstance) {
+		protected IncludingService(Method serviceMethod, Object serviceInstance) {
 			super(serviceMethod, serviceInstance);
 		}
 
@@ -181,15 +185,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-				result.add(new SequenceType(queryEnvironment, argTypes.get(1)));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-				result.add(new SetType(queryEnvironment, argTypes.get(1)));
-			}
+			result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes.get(0))
+					.getCollectionType()));
+			result.add(createReturnCollectionWithType(queryEnvironment, argTypes.get(1)));
 			return result;
 		}
 
@@ -210,9 +208,9 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				}
 			}
-
 			if (result.isEmpty()) {
-				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getName()));
+				result.add(createReturnCollectionWithType(queryEnvironment, services.nothing(
+						"Nothing left after %s:" + builder.toString(), getName())));
 			}
 
 			return result;
@@ -242,13 +240,49 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final LambdaType lambdaType = (LambdaType)argTypes.get(1);
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, lambdaType.getLambdaExpressionType()));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, lambdaType.getLambdaExpressionType()));
+			final IType receiverType = argTypes.get(0);
+			if (receiverType instanceof NothingType) {
+				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
+				result.add(receiverType);
+			} else {
+				final LambdaType lambdaType = (LambdaType)argTypes.get(1);
+				// flatten if needed
+				result.add(createReturnCollectionWithType(queryEnvironment, flatten(lambdaType
+						.getLambdaExpressionType())));
 			}
+			return result;
+		}
 
+		private IType flatten(IType type) {
+			if (type instanceof ICollectionType) {
+				return flatten(((ICollectionType)type).getCollectionType());
+			}
+			return type;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 *
+		 * @see org.eclipse.acceleo.query.runtime.impl.AbstractService#validateAllType(org.eclipse.acceleo.query.runtime.impl.ValidationServices,
+		 *      org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment, java.util.Map)
+		 */
+		@Override
+		public Set<IType> validateAllType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			for (Map.Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				for (IType type : entry.getValue()) {
+					final IType collectionType = ((ICollectionType)type).getCollectionType();
+					if (collectionType instanceof ClassType && ((ClassType)collectionType).getType() == null) {
+						// This is the null literal, which we don't want in our result
+						// and will be stripped at runtime.
+					} else {
+						result.add(type);
+					}
+				}
+			}
 			return result;
 		}
 	}
@@ -288,13 +322,89 @@ public class CollectionServices extends AbstractServiceProvider {
 
 			// FIXME need to make the closure on type as well... it's not possible for the moment because we
 			// need variable types...
-			if (lambdaExpressionType instanceof ICollectionType) {
+			final IType receiverType = argTypes.get(0);
+			if (receiverType instanceof NothingType) {
+				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
+				result.add(receiverType);
+			} else if (lambdaExpressionType instanceof ICollectionType) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)lambdaExpressionType)
 						.getCollectionType()));
 			} else {
 				result.add(new SetType(queryEnvironment, lambdaExpressionType));
 			}
 
+			return result;
+		}
+	}
+
+	/**
+	 * Sum {@link IService}.
+	 * 
+	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+	 */
+	private static final class SumService extends JavaMethodService {
+
+		/**
+		 * Constructor.
+		 * 
+		 * @param serviceMethod
+		 *            the method that realizes the service
+		 * @param serviceInstance
+		 *            the instance on which the service must be called
+		 */
+		private SumService(Method serviceMethod, Object serviceInstance) {
+			super(serviceMethod, serviceInstance);
+		}
+
+		@Override
+		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
+				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			if (!argTypes.isEmpty() && argTypes.get(0) instanceof ICollectionType) {
+				IType argType = ((ICollectionType)argTypes.get(0)).getCollectionType();
+
+				IType intType = new ClassType(queryEnvironment, Integer.class);
+				IType longType = new ClassType(queryEnvironment, Long.class);
+				IType numberType = new ClassType(queryEnvironment, Number.class);
+
+				if (intType.isAssignableFrom(argType) || longType.isAssignableFrom(argType)) {
+					result.add(longType);
+				} else if (numberType.isAssignableFrom(argType)) {
+					// any number that is not an int or long is widened to Double
+					result.add(new ClassType(queryEnvironment, Double.class));
+				} else {
+					result.add(services.nothing(SUM_ONLY_NUMERIC_ERROR));
+				}
+			}
+			return result;
+		}
+
+		@Override
+		public Set<IType> validateAllType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+			IType currentResult = null;
+
+			for (Map.Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				IType longType = new ClassType(queryEnvironment, Long.class);
+				IType doubleType = new ClassType(queryEnvironment, Double.class);
+
+				IType returnType = entry.getValue().iterator().next();
+				if (currentResult == null) {
+					currentResult = returnType;
+				} else if (currentResult.equals(doubleType) || returnType.equals(doubleType)) {
+					currentResult = doubleType;
+				} else if (returnType.equals(longType)) {
+					currentResult = longType;
+				} else {
+					currentResult = services.nothing(SUM_ONLY_NUMERIC_ERROR);
+					break;
+				}
+			}
+
+			Set<IType> result = new LinkedHashSet<IType>();
+			result.add(currentResult);
 			return result;
 		}
 	}
@@ -339,27 +449,16 @@ public class CollectionServices extends AbstractServiceProvider {
 					inferredTypes = null;
 				}
 				if (inferredTypes == null) {
-					IType lambdaEvaluatorType = lambdaType.getLambdaEvaluatorType();
-					if (lambdaEvaluatorType instanceof EClassifierLiteralType) {
-						lambdaEvaluatorType = new EClassifierType(queryEnvironment,
-								((EClassifierLiteralType)lambdaEvaluatorType).getType());
-					}
-					if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-						result.add(new SequenceType(queryEnvironment, lambdaEvaluatorType));
-					} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-						result.add(new SetType(queryEnvironment, lambdaEvaluatorType));
-					}
+					result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes
+							.get(0)).getCollectionType()));
 				} else {
 					for (IType inferredType : inferredTypes) {
-						if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-							result.add(new SequenceType(queryEnvironment, inferredType));
-						} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-							result.add(new SetType(queryEnvironment, inferredType));
-						}
+						result.add(createReturnCollectionWithType(queryEnvironment, inferredType));
 					}
 				}
 			} else {
-				result.add(services.nothing("expression in a select must return a boolean"));
+				result.add(createReturnCollectionWithType(queryEnvironment, services
+						.nothing("expression in a select must return a boolean")));
 			}
 			return result;
 		}
@@ -406,24 +505,16 @@ public class CollectionServices extends AbstractServiceProvider {
 					inferredTypes = null;
 				}
 				if (inferredTypes == null) {
-					if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-						result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-								.getCollectionType()));
-					} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-						result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-								.getCollectionType()));
-					}
+					result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes
+							.get(0)).getCollectionType()));
 				} else {
 					for (IType inferredType : inferredTypes) {
-						if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-							result.add(new SequenceType(queryEnvironment, inferredType));
-						} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-							result.add(new SetType(queryEnvironment, inferredType));
-						}
+						result.add(createReturnCollectionWithType(queryEnvironment, inferredType));
 					}
 				}
 			} else {
-				result.add(services.nothing("expression in a reject must return a boolean"));
+				result.add(createReturnCollectionWithType(queryEnvironment, services
+						.nothing("expression in a reject must return a boolean")));
 			}
 
 			return result;
@@ -486,13 +577,8 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-			}
+			result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes.get(0))
+					.getCollectionType()));
 
 			return result;
 		}
@@ -524,17 +610,29 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(1))
-						.getCollectionType()));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(1))
-						.getCollectionType()));
+			final IType arg1Type;
+			if (argTypes.get(0) instanceof ICollectionType) {
+				arg1Type = ((ICollectionType)argTypes.get(0)).getCollectionType();
+			} else if (argTypes.get(0) instanceof NothingType) {
+				arg1Type = argTypes.get(0);
+			} else {
+				arg1Type = services.nothing(
+						"%s can only be called on collections, but %s was used as its receiver.", getName(),
+						argTypes.get(0));
 			}
+			final IType arg2Type;
+			if (argTypes.get(1) instanceof ICollectionType) {
+				arg2Type = ((ICollectionType)argTypes.get(1)).getCollectionType();
+			} else if (argTypes.get(1) instanceof NothingType) {
+				arg2Type = argTypes.get(1);
+			} else {
+				arg2Type = services.nothing(
+						"%s can only be called on collections, but %s was used as its argument.", getName(),
+						argTypes.get(1));
+			}
+
+			result.add(createReturnCollectionWithType(queryEnvironment, arg1Type));
+			result.add(createReturnCollectionWithType(queryEnvironment, arg2Type));
 
 			return result;
 		}
@@ -558,7 +656,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				result.add(services.nothing("Nothing left after %s:" + builder.toString(), getName()));
+				IType nothing = services.nothing("Nothing left after %s:" + builder.toString(), getName());
+				result.add(createReturnCollectionWithType(queryEnvironment, nothing));
 			}
 
 			return result;
@@ -567,8 +666,9 @@ public class CollectionServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * A {@link Service} returning the {@link EClassifierLiteralType#getType() classifier literal type} of the
-	 * second argument in the {@link org.eclipse.acceleo.query.validation.type.ICollectionType
+	 * A {@link Service} returning the
+	 * {@link org.eclipse.acceleo.query.validation.type.EClassifierLiteralType#getType() classifier literal
+	 * type} of the second argument in the {@link org.eclipse.acceleo.query.validation.type.ICollectionType
 	 * ICollectionType} of the first argument.
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
@@ -595,7 +695,15 @@ public class CollectionServices extends AbstractServiceProvider {
 
 			final Set<EClassifierType> rawTypes = Sets.newLinkedHashSet();
 
-			if (argTypes.get(1) instanceof EClassifierType) {
+			final IType receiverType = argTypes.get(0);
+			if (receiverType instanceof NothingType) {
+				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
+				result.add(receiverType);
+			} else if (argTypes.get(1) instanceof ClassType && ((ClassType)argTypes.get(1)).getType() == null) {
+				result.add(services.nothing("EClassifier on %s cannot be null.", getName()));
+			} else if (argTypes.get(1) instanceof EClassifierType) {
 				rawTypes.add(new EClassifierType(queryEnvironment, ((EClassifierType)argTypes.get(1))
 						.getType()));
 			} else if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
@@ -604,11 +712,7 @@ public class CollectionServices extends AbstractServiceProvider {
 				}
 			}
 			for (EClassifierType rawType : rawTypes) {
-				if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-					result.add(new SequenceType(queryEnvironment, rawType));
-				} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-					result.add(new SetType(queryEnvironment, rawType));
-				}
+				result.add(createReturnCollectionWithType(queryEnvironment, rawType));
 			}
 
 			return result;
@@ -639,13 +743,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-			}
+			result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes.get(0))
+					.getCollectionType()));
 			return result;
 		}
 
@@ -656,7 +755,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	private static final class InsertAtService extends JavaMethodService {
+	private static final class InsertAtService extends IncludingService {
 
 		/**
 		 * Constructor.
@@ -674,15 +773,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SequenceType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-				result.add(new SequenceType(queryEnvironment, argTypes.get(2)));
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				result.add(new SetType(queryEnvironment, ((ICollectionType)argTypes.get(0))
-						.getCollectionType()));
-				result.add(new SetType(queryEnvironment, argTypes.get(2)));
-			}
+			result.add(createReturnCollectionWithType(queryEnvironment, ((ICollectionType)argTypes.get(0))
+					.getCollectionType()));
+			result.add(createReturnCollectionWithType(queryEnvironment, argTypes.get(2)));
 			return result;
 		}
 	}
@@ -711,21 +804,42 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			IType selfRawType = ((ICollectionType)argTypes.get(0)).getCollectionType();
-			IType otherRawType = ((ICollectionType)argTypes.get(1)).getCollectionType();
-			final Set<IType> resultRawTypes = services.intersection(selfRawType, otherRawType);
-			if (resultRawTypes.isEmpty()) {
-				resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s", argTypes
-						.get(0), argTypes.get(1)));
+			final IType arg1Type;
+			if (argTypes.get(0) instanceof ICollectionType) {
+				arg1Type = ((ICollectionType)argTypes.get(0)).getCollectionType();
+			} else if (argTypes.get(0) instanceof NothingType) {
+				arg1Type = argTypes.get(0);
+			} else {
+				arg1Type = services.nothing(
+						"%s can only be called on collections, but %s was used as its receiver.", getName(),
+						argTypes.get(0));
 			}
-			if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-				for (IType resultRawType : resultRawTypes) {
-					result.add(new SequenceType(queryEnvironment, resultRawType));
+			final IType arg2Type;
+			if (argTypes.get(1) instanceof ICollectionType) {
+				arg2Type = ((ICollectionType)argTypes.get(1)).getCollectionType();
+			} else if (argTypes.get(1) instanceof NothingType) {
+				arg2Type = argTypes.get(1);
+			} else {
+				arg2Type = services.nothing(
+						"%s can only be called on collections, but %s was used as its argument.", getName(),
+						argTypes.get(1));
+			}
+
+			final Set<IType> resultRawTypes = services.intersection(arg1Type, arg2Type);
+			if (resultRawTypes.isEmpty()) {
+				if (arg1Type instanceof NothingType) {
+					resultRawTypes.add(arg1Type);
 				}
-			} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-				for (IType resultRawType : resultRawTypes) {
-					result.add(new SetType(queryEnvironment, resultRawType));
+				if (arg2Type instanceof NothingType) {
+					resultRawTypes.add(arg2Type);
 				}
+				if (resultRawTypes.isEmpty()) {
+					resultRawTypes.add(services.nothing("Nothing left after intersection of %s and %s",
+							argTypes.get(0), argTypes.get(1)));
+				}
+			}
+			for (IType resultRawType : resultRawTypes) {
+				result.add(createReturnCollectionWithType(queryEnvironment, resultRawType));
 			}
 
 			return result;
@@ -750,13 +864,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			if (result.isEmpty()) {
-				if (List.class.isAssignableFrom(getMethod().getReturnType())) {
-					result.add(new SequenceType(queryEnvironment, services
-							.nothing("Nothing left after intersection:" + builder.toString())));
-				} else if (Set.class.isAssignableFrom(getMethod().getReturnType())) {
-					result.add(new SetType(queryEnvironment, services
-							.nothing("Nothing left after intersection:" + builder.toString())));
-				}
+				IType nothing = services.nothing("Nothing left after intersection:" + builder.toString());
+				result.add(createReturnCollectionWithType(queryEnvironment, nothing));
 			}
 
 			return result;
@@ -843,6 +952,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = new InsertAtService(publicMethod, this);
 		} else if ("intersection".equals(publicMethod.getName())) {
 			result = new IntersectionService(publicMethod, this);
+		} else if ("sum".equals(publicMethod.getName())) {
+			result = new SumService(publicMethod, this);
 		} else {
 			result = new JavaMethodService(publicMethod, this);
 		}
@@ -860,26 +971,29 @@ public class CollectionServices extends AbstractServiceProvider {
 	 *         {@link org.eclipse.emf.ecore.EDataType EDataType}, <code>false</code> otherwise
 	 */
 	private static boolean isBooleanType(IReadOnlyQueryEnvironment queryEnvironment, Object type) {
-		final boolean result;
-
+		final Class<?> typeClass;
 		if (type instanceof EClassifier) {
-			final Class<?> typeClass = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
-			result = typeClass == Boolean.class || typeClass == boolean.class;
+			typeClass = queryEnvironment.getEPackageProvider().getClass((EClassifier)type);
+		} else if (type instanceof ClassType) {
+			typeClass = ((ClassType)type).getType();
+		} else if (type instanceof Class<?>) {
+			typeClass = (Class<?>)type;
 		} else {
-			result = false;
+			return false;
 		}
 
-		return result;
+		return typeClass == Boolean.class || typeClass == boolean.class;
 	}
 
 	// @formatter:off
+	@SuppressWarnings("unchecked")
 	@Documentation(
 		value = "Returns the concatenation of the current sequence with the given collection.",
 		params = {
 			@Param(name = "sequence", value = "The first operand"),
 			@Param(name = "collection", value = "The second operand")
 		},
-		result = "The concatenation of the two specified sequences.",
+		result = "The concatenation of the two specified collections.",
 		examples = {
 			@Example(
 				expression = "Sequence{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})", result = "Sequence{'a', 'b', 'c', 'd', 'e'}",
@@ -894,16 +1008,50 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> concat(List<Object> sequence, Collection<Object> collection) {
-		final List<Object> result;
+	public <T> List<T> concat(List<? extends T> sequence, Collection<? extends T> collection) {
+		checkNotNull(sequence);
+		final List<T> result;
 
-		if (sequence.isEmpty()) {
-			result = Lists.newArrayList(collection);
-		} else if (collection.isEmpty()) {
-			result = sequence;
+		if (collection.isEmpty()) {
+			result = (List<T>)sequence;
 		} else {
-			result = Lists.newArrayList(sequence);
-			result.addAll(collection);
+			result = Lists.newArrayList(Iterables.concat(sequence, collection));
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@SuppressWarnings("unchecked")
+	@Documentation(
+		value = "Returns the concatenation of the current set with the given collection.",
+		params = {
+			@Param(name = "set", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
+		},
+		result = "The concatenation of the two specified collections.",
+		examples = {
+			@Example(
+				expression = "OrderedSet{'a', 'b', 'c'}.concat(Sequence{'d', 'e'})", result = "OrderedSet{'a', 'b', 'c', 'd', 'e'}",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3,
+						expression = "OrderedSet{'a', 'b', 'c'}.addAll(Sequence{'d', 'e'})",
+						result = "OrderedSet{'a', 'b', 'c', 'd', 'e'}"
+					)
+				}
+			)
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> concat(Set<? extends T> set, Collection<? extends T> collection) {
+		checkNotNull(set);
+		final Set<T> result;
+
+		if (collection.isEmpty()) {
+			result = (Set<T>)set;
+		} else {
+			result = Sets.newLinkedHashSet(Iterables.concat(set, collection));
 		}
 
 		return result;
@@ -942,8 +1090,35 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sequences"
 	)
 	// @formatter:on
-	public List<Object> add(List<Object> sequence, Collection<Object> collection) {
+	public <T> List<T> add(List<? extends T> sequence, Collection<? extends T> collection) {
 		return concat(sequence, collection);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the concatenation of the given collection into the current set.",
+		params = {
+			@Param(name = "set", value = "The first operand"),
+			@Param(name = "collection", value = "The second operand")
+		},
+		result = "The current set including the elements of the given collection.",
+		examples = {
+			@Example(
+				expression = "OrderedSet{'a', 'b', 'c'}.add(OrderedSet{'c', 'b', 'f'})", result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}",
+				others = {
+					@Other(
+						language = Other.ACCELEO_3,
+						expression = "OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})",
+						result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}"
+					)
+				}
+			)
+		},
+		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sets"
+	)
+	// @formatter:on
+	public <T> Set<T> add(Set<? extends T> set, Collection<? extends T> collection) {
+		return concat(set, collection);
 	}
 
 	// @formatter:off
@@ -979,11 +1154,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sequences"
 	)
 	// @formatter:on
-	public List<Object> sub(List<Object> sequence, Collection<Object> collection) {
+	public <T> List<T> sub(List<T> sequence, Collection<?> collection) {
+		checkNotNull(sequence);
 		if (collection.isEmpty()) {
 			return sequence;
 		} else {
-			List<Object> result = Lists.newArrayList(sequence);
+			List<T> result = Lists.newArrayList(sequence);
 			result.removeAll(collection);
 			return result;
 		}
@@ -1012,52 +1188,15 @@ public class CollectionServices extends AbstractServiceProvider {
 		comment = "The service removeAll has been replaced by \"sub\" in order to have access to the operator \"-\" between to sets"
 	)
 	// @formatter:on
-	public Set<Object> sub(Set<Object> set, Collection<Object> collection) {
+	public <T> Set<T> sub(Set<T> set, Collection<?> collection) {
+		checkNotNull(set);
 		if (collection.isEmpty()) {
 			return set;
 		} else {
-			Set<Object> result = Sets.newLinkedHashSet(set);
+			Set<T> result = Sets.newLinkedHashSet(set);
 			result.removeAll(collection);
 			return result;
 		}
-	}
-
-	// @formatter:off
-	@Documentation(
-		value = "Returns the concatenation of the given collection into the current set.",
-		params = {
-			@Param(name = "set", value = "The first operand"),
-			@Param(name = "collection", value = "The second operand")
-		},
-		result = "The current set including the elements of the given collection.",
-		examples = {
-			@Example(
-				expression = "OrderedSet{'a', 'b', 'c'}.add(OrderedSet{'c', 'b', 'f'})", result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}",
-				others = {
-					@Other(
-						language = Other.ACCELEO_3,
-						expression = "OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})",
-						result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}"
-					)
-				}
-			)
-		},
-		comment = "The service addAll has been replaced by \"add\" in order to have access to the operator \"+\" between to sets"
-	)
-	// @formatter:on
-	public Set<Object> add(Set<Object> set, Collection<Object> collection) {
-		final Set<Object> result;
-
-		if (set.isEmpty()) {
-			result = Sets.newLinkedHashSet(collection);
-		} else if (collection.isEmpty()) {
-			result = set;
-		} else {
-			result = Sets.newLinkedHashSet(set);
-			result.addAll(collection);
-		}
-
-		return result;
 	}
 
 	// @formatter:off
@@ -1074,23 +1213,24 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> select(List<Object> sequence, LambdaValue lambda) {
-		final List<Object> newList;
+	public <T> List<T> select(List<T> sequence, LambdaValue lambda) {
+		final List<T> newList;
 
 		if (lambda == null) {
-			newList = Collections.emptyList();
+			newList = Lists.newArrayList();
 		} else {
 			newList = Lists.newArrayList();
-			for (Object elt : sequence) {
+			for (T elt : sequence) {
 				try {
-					if (Boolean.TRUE.equals(lambda.eval(new Object[] {elt }))) {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.TRUE.equals(value)) {
 						newList.add(elt);
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1111,23 +1251,24 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> select(Set<Object> set, LambdaValue lambda) {
-		final Set<Object> newSet;
+	public <T> Set<T> select(Set<T> set, LambdaValue lambda) {
+		final Set<T> newSet;
 
 		if (lambda == null) {
-			newSet = Collections.emptySet();
+			newSet = Sets.newLinkedHashSet();
 		} else {
 			newSet = Sets.newLinkedHashSet();
-			for (Object elt : set) {
+			for (T elt : set) {
 				try {
-					if (Boolean.TRUE.equals(lambda.eval(new Object[] {elt }))) {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.TRUE.equals(value)) {
 						newSet.add(elt);
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1148,23 +1289,24 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> reject(Set<Object> set, LambdaValue lambda) {
-		final Set<Object> newSet;
+	public <T> Set<T> reject(Set<T> set, LambdaValue lambda) {
+		final Set<T> newSet;
 
 		if (lambda == null) {
-			newSet = Collections.emptySet();
+			newSet = Sets.newLinkedHashSet();
 		} else {
 			newSet = Sets.newLinkedHashSet();
-			for (Object elt : set) {
+			for (T elt : set) {
 				try {
-					if (Boolean.FALSE.equals(lambda.eval(new Object[] {elt }))) {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.FALSE.equals(value)) {
 						newSet.add(elt);
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1185,23 +1327,24 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> reject(List<Object> sequence, LambdaValue lambda) {
-		final List<Object> newList;
+	public <T> List<T> reject(List<T> sequence, LambdaValue lambda) {
+		final List<T> newList;
 
 		if (lambda == null) {
-			newList = Collections.emptyList();
+			newList = Lists.newArrayList();
 		} else {
 			newList = Lists.newArrayList();
-			for (Object elt : sequence) {
+			for (T elt : sequence) {
 				try {
-					if (Boolean.FALSE.equals(lambda.eval(new Object[] {elt }))) {
+					Object value = lambda.eval(new Object[] {elt });
+					if (Boolean.FALSE.equals(value)) {
 						newList.add(elt);
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1222,7 +1365,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> collect(Set<Object> set, LambdaValue lambda) {
+	public Set<Object> collect(Set<?> set, LambdaValue lambda) {
 		final Set<Object> result;
 
 		if (lambda == null) {
@@ -1241,7 +1384,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -1264,7 +1407,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> collect(List<Object> sequence, LambdaValue lambda) {
+	public List<Object> collect(List<?> sequence, LambdaValue lambda) {
 		final List<Object> result;
 
 		if (lambda == null) {
@@ -1283,7 +1426,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -1292,29 +1435,35 @@ public class CollectionServices extends AbstractServiceProvider {
 		return result;
 	}
 
-	public Set<Object> closure(Collection<Object> collection, LambdaValue lambda) {
+	public Set<Object> closure(Collection<?> collection, LambdaValue lambda) {
 		final Set<Object> result;
 
 		if (lambda == null) {
 			result = Collections.emptySet();
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = Sets.newLinkedHashSet(collection);
 			Set<Object> currentSet = Sets.newLinkedHashSet(collection);
 			Set<Object> added;
 			do {
 				added = Sets.newLinkedHashSet();
 				for (Object current : currentSet) {
-					final Object lambdaResult = lambda.eval(new Object[] {current });
-					if (lambdaResult instanceof Collection) {
-						for (Object child : (Collection<?>)lambdaResult) {
-							if (result.add(child)) {
-								added.add(child);
+					try {
+						final Object lambdaResult = lambda.eval(new Object[] {current });
+						if (lambdaResult instanceof Collection) {
+							for (Object child : (Collection<?>)lambdaResult) {
+								if (result.add(child)) {
+									added.add(child);
+								}
+							}
+						} else if (lambdaResult != null && !(lambdaResult instanceof Nothing)) {
+							if (result.add(lambdaResult)) {
+								added.add(lambdaResult);
 							}
 						}
-					} else if (lambdaResult != null && !(lambdaResult instanceof Nothing)) {
-						if (result.add(lambdaResult)) {
-							added.add(lambdaResult);
-						}
+						// CHECKSTYLE:OFF
+					} catch (Exception e) {
+						// CHECKSTYLE:ON
+						lambda.logException(Diagnostic.WARNING, e);
 					}
 				}
 				currentSet = added;
@@ -1326,47 +1475,80 @@ public class CollectionServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Returns a sequence containing the elements of the original collection ordered by the result of the given lamba",
+		value = "Returns a sequence containing the elements of the original sequence ordered by the result of the given lamba",
 		params = {
-			@Param(name = "collection", value = "The original collection"),
+			@Param(name = "sequence", value = "The original sequence"),
 			@Param(name = "lambda", value = "The lambda expression")
 		},
-		result = "An ordered version of the given collection",
+		result = "An ordered version of the given sequence",
 		examples = {
 			@Example(expression = "Sequence{'aa', 'bbb', 'c'}->sortedBy(str | str.size())", result = "Sequence{'c', 'aa', 'bbb'}")
 		}
 	)
 	// @formatter:on
-	public List<Object> sortedBy(Collection<Object> collection, final LambdaValue lambda) {
-		final List<Object> result;
+	public <T> List<T> sortedBy(List<T> sequence, final LambdaValue lambda) {
+		final List<T> result;
 
-		if (collection == null) {
+		if (sequence == null) {
 			result = null;
+		} else if (lambda == null) {
+			return sequence;
 		} else {
-			result = new ArrayList<Object>();
-			result.addAll(collection);
-			Collections.sort(result, new Comparator<Object>() {
-				@Override
-				public int compare(Object o1, Object o2) {
-					final int result;
+			result = Lists.newArrayList(sequence);
 
-					Object o1Result = lambda.eval(new Object[] {o1 });
-					Object o2Result = lambda.eval(new Object[] {o2 });
-					if (o1Result instanceof Comparable<?>) {
-						@SuppressWarnings("unchecked")
-						Comparable<Object> c1 = (Comparable<Object>)o1Result;
-						result = c1.compareTo(o2Result);
-					} else if (o2Result instanceof Comparable<?>) {
-						@SuppressWarnings("unchecked")
-						Comparable<Object> c2 = (Comparable<Object>)o2Result;
-						result = -c2.compareTo(o1Result);
-					} else {
-						result = 0;
-					}
-
-					return result;
+			final Map<T, Object> values = new HashMap<T, Object>();
+			for (T object : result) {
+				try {
+					values.put(object, lambda.eval(new Object[] {object }));
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-			});
+				// CHECKSTYLE:ON
+			}
+
+			Collections.sort(result, new LambdaComparator<T>(values));
+		}
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns a set containing the elements of the original set ordered by the result of the given lamba",
+		params = {
+			@Param(name = "set", value = "The original set"),
+			@Param(name = "lambda", value = "The lambda expression")
+		},
+		result = "An ordered version of the given set",
+		examples = {
+			@Example(expression = "OrderedSet{'aa', 'bbb', 'c'}->sortedBy(str | str.size())", result = "OrderedSet{'c', 'aa', 'bbb'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> sortedBy(Set<T> set, final LambdaValue lambda) {
+		final Set<T> result;
+
+		if (set == null) {
+			result = null;
+		} else if (lambda == null) {
+			return set;
+		} else {
+			List<T> sorted = Lists.newArrayList(set);
+
+			final Map<T, Object> values = new HashMap<T, Object>();
+			for (T object : sorted) {
+				try {
+					values.put(object, lambda.eval(new Object[] {object }));
+					// CHECKSTYLE:OFF
+				} catch (Exception e) {
+					lambda.logException(Diagnostic.WARNING, e);
+				}
+				// CHECKSTYLE:ON
+			}
+
+			Collections.sort(sorted, new LambdaComparator<T>(values));
+			result = Sets.newLinkedHashSet(sorted);
 		}
 
 		return result;
@@ -1385,7 +1567,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Integer size(Collection<Object> collection) {
+	public Integer size(Collection<?> collection) {
 		return collection.size();
 	}
 
@@ -1402,11 +1584,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> including(Set<Object> set, Object object) {
+	public <T> Set<T> including(Set<T> set, T object) {
 		if (set.contains(object)) {
 			return set;
 		} else {
-			Set<Object> result = Sets.newLinkedHashSet(set);
+			Set<T> result = Sets.newLinkedHashSet(set);
 			result.add(object);
 			return result;
 		}
@@ -1425,11 +1607,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> excluding(Set<Object> set, Object object) {
+	public <T> Set<T> excluding(Set<T> set, Object object) {
 		if (!set.contains(object)) {
 			return set;
 		} else {
-			Set<Object> result = Sets.newLinkedHashSet(set);
+			Set<T> result = Sets.newLinkedHashSet(set);
 			result.remove(object);
 			return result;
 		}
@@ -1442,14 +1624,14 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "sequence", value = "The source sequence"),
 			@Param(name = "object", value = "The object to add")
 		},
-		result = "A sequence containing all elements of source sequence plus the given object",
+		result = "A sequence containing all elements of the source sequence plus the given object",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->including('d')", result = "Sequence{'a', 'b', 'c', 'd'}")
 		}
 	)
 	// @formatter:on
-	public List<Object> including(List<Object> sequence, Object object) {
-		List<Object> result = Lists.newArrayList(sequence);
+	public <T> List<T> including(List<T> sequence, T object) {
+		List<T> result = Lists.newArrayList(sequence);
 		result.add(object);
 		return result;
 	}
@@ -1467,14 +1649,10 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> excluding(List<Object> sequence, Object object) {
-		if (!sequence.contains(object)) {
-			return sequence;
-		} else {
-			List<Object> result = Lists.newArrayList(sequence);
-			result.removeAll(Collections.singleton(object));
-			return result;
-		}
+	public <T> List<T> excluding(List<T> sequence, Object object) {
+		List<T> result = Lists.newArrayList(sequence);
+		result.removeAll(Collections.singleton(object));
+		return result;
 	}
 
 	// @formatter:off
@@ -1491,9 +1669,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> asSequence(Collection<Object> collection) {
+	public <T> List<T> asSequence(Collection<T> collection) {
 		if (collection instanceof List) {
-			return (List<Object>)collection;
+			return (List<T>)collection;
 		} else {
 			return Lists.newArrayList(collection);
 		}
@@ -1513,9 +1691,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> asSet(Collection<Object> collection) {
+	public <T> Set<T> asSet(Collection<T> collection) {
 		if (collection instanceof Set) {
-			return (Set<Object>)collection;
+			return (Set<T>)collection;
 		} else {
 			return Sets.newLinkedHashSet(collection);
 		}
@@ -1535,7 +1713,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> asOrderedSet(Collection<Object> collection) {
+	public <T> Set<T> asOrderedSet(Collection<T> collection) {
 		return asSet(collection);
 	}
 
@@ -1551,12 +1729,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Object first(Collection<Object> collection) {
-		Iterator<Object> iterator = collection.iterator();
-		if (iterator.hasNext()) {
-			return iterator.next();
-		}
-		return null;
+	public <T> T first(Collection<T> collection) {
+		return Iterators.getNext(collection.iterator(), null);
 	}
 
 	// @formatter:off
@@ -1571,8 +1745,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> reverse(List<Object> sequence) {
-		return Lists.reverse(sequence);
+	public <T> List<T> reverse(List<T> sequence) {
+		return Lists.newArrayList(Lists.reverse(sequence));
 	}
 
 	// @formatter:off
@@ -1587,8 +1761,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> reverse(Set<Object> set) {
-		return Sets.newLinkedHashSet(Lists.reverse(ImmutableList.copyOf(set)));
+	public <T> Set<T> reverse(Set<T> set) {
+		return Sets.newLinkedHashSet(ImmutableList.copyOf(set).reverse());
 	}
 
 	// @formatter:off
@@ -1604,7 +1778,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean isEmpty(Collection<Object> collection) {
+	public Boolean isEmpty(Collection<?> collection) {
 		return collection.isEmpty();
 	}
 
@@ -1621,7 +1795,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean notEmpty(Collection<Object> collection) {
+	public Boolean notEmpty(Collection<?> collection) {
 		return !collection.isEmpty();
 	}
 
@@ -1639,7 +1813,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Object at(List<Object> sequence, Integer position) {
+	public <T> T at(List<T> sequence, Integer position) {
 		return sequence.get(position - 1);
 	}
 
@@ -1656,8 +1830,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Example(expression = "OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "OrederedSet{anEAttribute}"),
 		}
 	)
-	public Set<Object> filter(Set<Object> set, final EClassifier eClassifier) {
-		final Set<Object> result;
+	public <T> Set<T> filter(Set<T> set, final EClassifier eClassifier) {
+		final Set<T> result;
 
 		if (set == null) {
 			result = null;
@@ -1686,8 +1860,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> filter(Set<Object> set, final Set<EClassifier> eClassifiers) {
-		final Set<Object> result;
+	public <T> Set<T> filter(Set<T> set, final Set<EClassifier> eClassifiers) {
+		final Set<T> result;
 
 		if (set == null) {
 			result = null;
@@ -1695,7 +1869,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Sets.newLinkedHashSet();
 		} else {
 			result = Sets.newLinkedHashSet();
-			for (Object object : set) {
+			for (T object : set) {
 				for (EClassifier eClassifier : eClassifiers) {
 					if (eClassifier.isInstance(object)) {
 						result.add(object);
@@ -1722,8 +1896,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> filter(List<Object> sequence, final EClassifier eClassifier) {
-		final List<Object> result;
+	public <T> List<T> filter(List<T> sequence, final EClassifier eClassifier) {
+		final List<T> result;
 
 		if (sequence == null) {
 			result = null;
@@ -1752,8 +1926,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> filter(List<Object> sequence, final Set<EClassifier> eClassifiers) {
-		final List<Object> result;
+	public <T> List<T> filter(List<T> sequence, final Set<EClassifier> eClassifiers) {
+		final List<T> result;
 
 		if (sequence == null) {
 			result = null;
@@ -1761,7 +1935,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			result = Lists.newArrayList();
 		} else {
 			result = Lists.newArrayList();
-			for (Object object : sequence) {
+			for (T object : sequence) {
 				for (EClassifier eClassifier : eClassifiers) {
 					if (eClassifier.isInstance(object)) {
 						result.add(object);
@@ -1788,7 +1962,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> sep(Collection<Object> collection, Object separator) {
+	public List<Object> sep(Collection<?> collection, Object separator) {
 		final List<Object> result;
 
 		if (collection == null) {
@@ -1796,7 +1970,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			result = Lists.newArrayList();
 
-			final Iterator<Object> it = collection.iterator();
+			final Iterator<?> it = collection.iterator();
 			if (it.hasNext()) {
 				result.add(it.next());
 				while (it.hasNext()) {
@@ -1825,7 +1999,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> sep(Collection<Object> collection, Object prefix, Object separator, Object suffix) {
+	public List<Object> sep(Collection<?> collection, Object prefix, Object separator, Object suffix) {
 		final List<Object> result = Lists.newArrayList();
 
 		result.add(prefix);
@@ -1843,18 +2017,34 @@ public class CollectionServices extends AbstractServiceProvider {
 		params = {
 			@Param(name = "sequence", value = "The sequence")
 		},
-		result = "The last element of the given sequence or null if the given sequence is null",
+		result = "The last element of the given sequence.",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->last()", result = "'c'")
 		}
 	)
 	// @formatter:on
-	public Object last(List<Object> sequence) {
-		ListIterator<Object> it = sequence.listIterator(sequence.size());
+	public <T> T last(List<T> sequence) {
+		ListIterator<T> it = sequence.listIterator(sequence.size());
 		if (it.hasPrevious()) {
 			return it.previous();
 		}
 		return null;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the last element of the given set.",
+		params = {
+			@Param(name = "set", value = "The set")
+		},
+		result = "The last element of the given set.",
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->last()", result = "'c'")
+		}
+	)
+	// @formatter:on
+	public <T> T last(Set<T> set) {
+		return Iterators.getLast(set.iterator(), null);
 	}
 
 	// @formatter:off
@@ -1871,7 +2061,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean excludes(Collection<Object> collection, Object object) {
+	public Boolean excludes(Collection<?> collection, Object object) {
 		return Boolean.valueOf(!collection.contains(object));
 	}
 
@@ -1889,7 +2079,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean includes(Collection<Object> collection, Object object) {
+	public Boolean includes(Collection<?> collection, Object object) {
 		return Boolean.valueOf(collection.contains(object));
 	}
 
@@ -1906,8 +2096,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> union(Set<Object> set1, Set<Object> set2) {
-		return add(set1, set2);
+	public <T> Set<T> union(Set<? extends T> set1, Set<? extends T> set2) {
+		return concat(set1, set2);
 	}
 
 	// @formatter:off
@@ -1923,7 +2113,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> union(List<Object> sequence1, List<Object> sequence2) {
+	public <T> List<T> union(List<? extends T> sequence1, List<? extends T> sequence2) {
 		return concat(sequence1, sequence2);
 	}
 
@@ -1941,23 +2131,24 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Object any(Collection<Object> collection, LambdaValue lambda) {
-		Object result = null;
+	public <T> T any(Collection<T> collection, LambdaValue lambda) {
+		T result = null;
 
 		if (collection != null && lambda == null) {
 			result = null;
 		} else {
-			for (Object input : collection) {
+			for (T input : collection) {
 				try {
-					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+					Object value = lambda.eval(new Object[] {input });
+					if (Boolean.TRUE.equals(value)) {
 						result = input;
 						break;
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -1978,7 +2169,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Integer count(Set<Object> set, Object object) {
+	public Integer count(Set<?> set, Object object) {
 		final Integer result;
 
 		if (set.contains(object)) {
@@ -2023,21 +2214,22 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean exists(Collection<Object> collection, LambdaValue lambda) {
+	public Boolean exists(Collection<?> collection, LambdaValue lambda) {
 		Boolean result = Boolean.FALSE;
 
 		if (collection != null && lambda != null) {
 			for (Object input : collection) {
 				try {
-					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+					Object value = lambda.eval(new Object[] {input });
+					if (Boolean.TRUE.equals(value)) {
 						result = Boolean.TRUE;
 						break;
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2059,7 +2251,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean forAll(Collection<Object> collection, LambdaValue lambda) {
+	public Boolean forAll(Collection<?> collection, LambdaValue lambda) {
 		Boolean result = Boolean.TRUE;
 
 		if (collection == null || lambda == null) {
@@ -2067,17 +2259,18 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			for (Object input : collection) {
 				try {
-					if (!Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+					Object value = lambda.eval(new Object[] {input });
+					if (!(value instanceof Boolean) || !Boolean.TRUE.equals(value)) {
 						result = Boolean.FALSE;
 						break;
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 					result = Boolean.FALSE;
 					break;
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2099,7 +2292,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean excludesAll(Collection<Object> collection1, Collection<Object> collection2) {
+	public Boolean excludesAll(Collection<?> collection1, Collection<?> collection2) {
 		return Boolean.valueOf(Collections.disjoint(collection1, collection2));
 	}
 
@@ -2118,7 +2311,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean includesAll(Collection<Object> collection1, Collection<Object> collection2) {
+	public Boolean includesAll(Collection<?> collection1, Collection<?> collection2) {
 		return Boolean.valueOf(collection1.containsAll(collection2));
 	}
 
@@ -2138,7 +2331,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean isUnique(Collection<Object> collection, LambdaValue lambda) {
+	public Boolean isUnique(Collection<?> collection, LambdaValue lambda) {
 		boolean result = true;
 		final Set<Object> evaluated = Sets.newHashSet();
 
@@ -2153,7 +2346,7 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					lambda.logException(Diagnostic.WARNING, e);
 				}
 				// CHECKSTYLE:ON
 			}
@@ -2177,7 +2370,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Boolean one(Collection<Object> self, LambdaValue lambda) {
+	public Boolean one(Collection<?> self, LambdaValue lambda) {
 		boolean result = false;
 
 		if (self != null && lambda == null) {
@@ -2185,7 +2378,8 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else {
 			for (Object input : self) {
 				try {
-					if (Boolean.TRUE.equals(lambda.eval(new Object[] {input }))) {
+					Object value = lambda.eval(new Object[] {input });
+					if (Boolean.TRUE.equals(value)) {
 						result = !result;
 						if (!result) {
 							break;
@@ -2193,9 +2387,9 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 					// CHECKSTYLE:OFF
 				} catch (Exception e) {
-					// TODO: log the exception.
+					// CHECKSTYLE:ON
+					lambda.logException(Diagnostic.WARNING, e);
 				}
-				// CHECKSTYLE:ON
 			}
 		}
 
@@ -2217,18 +2411,23 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Double sum(Collection<Object> collection) {
-		double result = 0;
+	public Number sum(Collection<?> collection) {
+		Number result = Long.valueOf(0);
 
 		for (Object input : collection) {
-			if (input instanceof Number) {
-				result += ((Number)input).doubleValue();
+			if (!(input instanceof Number)) {
+				throw new IllegalArgumentException(SUM_ONLY_NUMERIC_ERROR);
+			}
+
+			if (result instanceof Long && (input instanceof Long || input instanceof Integer)) {
+				result = result.longValue() + ((Number)input).longValue();
 			} else {
-				throw new IllegalArgumentException("Can only sum numbers.");
+				// widen anything that is not a long or int to a double
+				result = result.doubleValue() + ((Number)input).doubleValue();
 			}
 		}
 
-		return Double.valueOf(result);
+		return result;
 	}
 
 	// @formatter:off
@@ -2244,8 +2443,32 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Integer indexOf(List<Object> sequence, Object object) {
+	public Integer indexOf(List<?> sequence, Object object) {
 		return Integer.valueOf(sequence.indexOf(object) + 1);
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Returns the index of the given object in the given set ([1..size]).",
+		params = {
+			@Param(name = "set", value = "The set"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "The index of the given object",
+		examples = {
+			@Example(expression = "OrderedSet{1, 2, 3, 4}->indexOf(3)", result = "3")
+		}
+	)
+	// @formatter:on
+	public Integer indexOf(Set<?> set, Object object) {
+		int index = 1;
+		for (Object o : set) {
+			if (o == object || (o != null && o.equals(object))) {
+				return index;
+			}
+			index++;
+		}
+		return 0;
 	}
 
 	// @formatter:off
@@ -2262,16 +2485,61 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> insertAt(List<Object> sequence, Integer position, Object object) {
+	public <T> List<T> insertAt(List<T> sequence, Integer position, T object) {
 		final int initialSize = sequence.size();
-		if (position < 1 || position > initialSize) {
+		if (position < 1 || position > initialSize + 1) {
 			throw new IndexOutOfBoundsException();
 		}
-		final List<Object> result = new ArrayList<Object>(initialSize + 1);
+		final List<T> result = new ArrayList<T>(initialSize + 1);
 
 		result.addAll(sequence.subList(0, position - 1));
 		result.add(object);
 		result.addAll(sequence.subList(position - 1, initialSize));
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Inserts the given object in a copy of the given set at the given position ([1..size]). "
+				+ "If the given set already contains this object, it will be moved to the accurate position.",
+		params = {
+			@Param(name = "set", value = "The set"),
+			@Param(name = "position", value = "The position"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "A copy of the given set including the object at the given position if it didn't already contain that object.",
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->insertAt(2, 'f')", result = "Sequence{'a', 'f', 'b', 'c'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> insertAt(Set<T> set, Integer position, T object) {
+		final int initialSize = set.size();
+		if (position < 1 || position > initialSize + 1) {
+			throw new IndexOutOfBoundsException();
+		}
+		final Set<T> result = new LinkedHashSet<T>(initialSize + 1);
+
+		int current = 1;
+		Iterator<T> iterator = set.iterator();
+		while (iterator.hasNext()) {
+			if (current == position.intValue()) {
+				result.add(object);
+				current++;
+			} else {
+				T value = iterator.next();
+				if (object == value || (object != null && object.equals(value))) {
+					// Do not add our target object here, wait until we reach its demanded position
+				} else {
+					result.add(value);
+					current++;
+				}
+			}
+		}
+		if (current <= position.intValue()) {
+			result.add(object);
+		}
 
 		return result;
 	}
@@ -2283,17 +2551,40 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Param(name = "sequence", value = "The sequence"),
 			@Param(name = "object", value = "The object")
 		},
-		result = "A copy of the given sequence including the object at the given position",
+		result = "A copy of the given sequence including the object at the first position",
 		examples = {
 			@Example(expression = "Sequence{'a', 'b', 'c'}->prepend('f')", result = "Sequence{'f', 'a', 'b', 'c'}")
 		}
 	)
 	// @formatter:on
-	public List<Object> prepend(List<Object> sequence, Object object) {
-		final List<Object> result = new ArrayList<Object>(sequence.size() + 1);
+	public <T> List<T> prepend(List<T> sequence, T object) {
+		final List<T> result = new ArrayList<T>(sequence.size() + 1);
 
 		result.add(object);
 		result.addAll(sequence);
+
+		return result;
+	}
+
+	// @formatter:off
+	@Documentation(
+		value = "Inserts the given object in a copy of the given set at the first position. "
+				+ "If the set already contained the given object, it is moved to the first position.",
+		params = {
+			@Param(name = "set", value = "The sequence"),
+			@Param(name = "object", value = "The object")
+		},
+		result = "A copy of the given set including the object at the first position",
+		examples = {
+			@Example(expression = "OrderedSet{'a', 'b', 'c'}->prepend('f')", result = "OrderedSet{'f', 'a', 'b', 'c'}")
+		}
+	)
+	// @formatter:on
+	public <T> Set<T> prepend(Set<T> set, T object) {
+		final Set<T> result = new LinkedHashSet<T>(set.size() + 1);
+
+		result.add(object);
+		result.addAll(set);
 
 		return result;
 	}
@@ -2360,14 +2651,14 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public Set<Object> subOrderedSet(Set<Object> set, Integer startIndex, Integer endIndex) {
+	public <T> Set<T> subOrderedSet(Set<T> set, Integer startIndex, Integer endIndex) {
 		if (startIndex < 1 || endIndex > set.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
-		final Set<Object> result = new LinkedHashSet<Object>(endIndex - startIndex + 1);
+		final Set<T> result = new LinkedHashSet<T>(endIndex - startIndex + 1);
 
 		int index = 1;
-		for (Object input : set) {
+		for (T input : set) {
 			if (index >= startIndex) {
 				if (index <= endIndex) {
 					result.add(input);
@@ -2399,11 +2690,58 @@ public class CollectionServices extends AbstractServiceProvider {
 		}
 	)
 	// @formatter:on
-	public List<Object> subSequence(List<Object> sequence, Integer startIndex, Integer endIndex) {
+	public <T> List<T> subSequence(List<T> sequence, Integer startIndex, Integer endIndex) {
 		if (startIndex < 1 || endIndex > sequence.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
 		return Lists.newArrayList(sequence.subList(startIndex - 1, endIndex));
 	}
 
+	/**
+	 * Evaluates a lambda then uses the result as comparables.
+	 */
+	private static final class LambdaComparator<T> implements Comparator<T> {
+		/**
+		 * Pre-populated map linking the objects from the collection we're sorting with the values calculated
+		 * by this lambda.
+		 */
+		private final Map<T, Object> preComputedValues;
+
+		/**
+		 * Constructs a comparator given its lambda.
+		 * 
+		 * @param lambda
+		 *            the lambda providing our comparables.
+		 */
+		public LambdaComparator(Map<T, Object> preComputedValues) {
+			this.preComputedValues = preComputedValues;
+		}
+
+		@Override
+		public int compare(T o1, T o2) {
+			final int result;
+
+			Object o1Result = preComputedValues.get(o1);
+			Object o2Result = preComputedValues.get(o2);
+			try {
+				if (o1Result instanceof Comparable<?>) {
+					@SuppressWarnings("unchecked")
+					Comparable<Object> c1 = (Comparable<Object>)o1Result;
+					result = c1.compareTo(o2Result);
+				} else if (o2Result instanceof Comparable<?>) {
+					@SuppressWarnings("unchecked")
+					Comparable<Object> c2 = (Comparable<Object>)o2Result;
+					result = -c2.compareTo(o1Result);
+				} else {
+					result = 0;
+				}
+				// CHECKSTYLE:OFF
+			} catch (Exception e) {
+				// CHECKSTYLE:ON
+				throw new IllegalArgumentException("Cannot compare " + o1 + " with " + o2, e);
+			}
+
+			return result;
+		}
+	}
 }

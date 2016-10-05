@@ -52,7 +52,7 @@ public class QueryValidationEngine implements IQueryValidationEngine {
 	public IValidationResult validate(String expression, Map<String, Set<IType>> variableTypes) {
 		IQueryBuilderEngine builder = new QueryBuilderEngine(queryEnvironment);
 		AstResult build = builder.build(expression);
-		final AstValidator validator = new AstValidator(queryEnvironment);
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		return validator.validate(variableTypes, build);
 	}
 

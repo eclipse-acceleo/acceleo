@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.services.AnyServices;
 import org.eclipse.acceleo.query.services.BooleanServices;
@@ -20,6 +22,8 @@ import org.eclipse.acceleo.query.services.NumberServices;
 import org.eclipse.acceleo.query.services.ResourceServices;
 import org.eclipse.acceleo.query.services.StringServices;
 import org.eclipse.acceleo.query.services.XPathServices;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 
 /**
  * Static utility methods pertaining to Acceleo queries.
@@ -59,22 +63,29 @@ public final class Query {
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
-		final IQueryEnvironment env = newEnvironment(xRefProvider, rootProvider);
+		final IQueryEnvironment env = newEnvironment();
 
-		try {
-			env.registerServicePackage(AnyServices.class);
-			env.registerServicePackage(EObjectServices.class);
-			env.registerServicePackage(XPathServices.class);
-			env.registerServicePackage(ComparableServices.class);
-			env.registerServicePackage(NumberServices.class);
-			env.registerServicePackage(StringServices.class);
-			env.registerServicePackage(BooleanServices.class);
-			env.registerServicePackage(CollectionServices.class);
-			env.registerServicePackage(ResourceServices.class);
-		} catch (InvalidAcceleoPackageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Set<IService> services = ServiceUtils.getServices(env, new AnyServices(env));
+		ServiceUtils.registerServices(env, services);
+		env.registerEPackage(EcorePackage.eINSTANCE);
+		env.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
+				EStringToStringMapEntryImpl.class);
+		services = ServiceUtils.getServices(env, new EObjectServices(env, xRefProvider, rootProvider));
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, new XPathServices(env));
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, ComparableServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, NumberServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, StringServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, BooleanServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, CollectionServices.class);
+		ServiceUtils.registerServices(env, services);
+		services = ServiceUtils.getServices(env, ResourceServices.class);
+		ServiceUtils.registerServices(env, services);
 
 		return env;
 	}
@@ -82,27 +93,11 @@ public final class Query {
 	/**
 	 * Create a new {@link IQueryEnvironment} with no services configured.
 	 * 
-	 * @param xRefProvider
-	 *            an instance to inspect cross references at evaluation time
-	 * @return a new {@link IQueryEnvironment} with no services configured
-	 */
-	public static IQueryEnvironment newEnvironment(CrossReferenceProvider xRefProvider) {
-		return newEnvironment(xRefProvider, null);
-	}
-
-	/**
-	 * Create a new {@link IQueryEnvironment} with no services configured.
-	 * 
-	 * @param xRefProvider
-	 *            an instance to inspect cross references at evaluation time
-	 * @param rootProvider
-	 *            an instance to search all instances at evaluation time
 	 * @return a new {@link IQueryEnvironment} with no services configured.
-	 * @since 4.0.0
+	 * @since 5.0
 	 */
-	public static IQueryEnvironment newEnvironment(CrossReferenceProvider xRefProvider,
-			IRootEObjectProvider rootProvider) {
-		return new QueryEnvironment(xRefProvider, rootProvider);
+	public static IQueryEnvironment newEnvironment() {
+		return new QueryEnvironment();
 	}
 
 }

@@ -133,6 +133,9 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 	 */
 	private Button computeTraceability;
 
+	/** The help widget for the traceability checkbox. */
+	private ToolBar traceabilityHelp;
+
 	/**
 	 * Checkbox button that indicates if we would like to compute the profiling information.
 	 */
@@ -266,8 +269,10 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			if ("Java Application".equals(launchingStrategyCombo.getText())) { //$NON-NLS-1$
 				computeTraceability.setSelection(false);
 				computeTraceability.setVisible(false);
+				traceabilityHelp.setVisible(false);
 			} else {
 				computeTraceability.setVisible(true);
+				traceabilityHelp.setVisible(true);
 			}
 			profileModelButton.setEnabled(computeProfiling.getSelection());
 			profileModelText.setEnabled(computeProfiling.getSelection());
@@ -513,7 +518,8 @@ public class AcceleoMainTab extends org.eclipse.jdt.debug.ui.launchConfiguration
 			}
 		});
 
-		createHelpButton(comp, AcceleoUIMessages.getString("AcceleoMainTab.Help.Traceability")); //$NON-NLS-1$
+		traceabilityHelp = createHelpButton(comp, AcceleoUIMessages
+				.getString("AcceleoMainTab.Help.Traceability")); //$NON-NLS-1$
 	}
 
 	/**

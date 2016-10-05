@@ -28,7 +28,6 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.Expression;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.Implies;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.Lambda;
@@ -77,13 +76,24 @@ public class AstEvaluator extends AstSwitch<Object> {
 	private Diagnostic diagnostic;
 
 	/**
-	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
+	 * Creates a new {@link AstEvaluator} instance given an {@link IReadOnlyQueryEnvironment} instance.
 	 * 
 	 * @param queryEnv
-	 *            the environment used to evaluate.
+	 *            the environment used to evaluate
+	 * @deprecated use {@link #AstEvaluator(EvaluationServices)}
 	 */
 	public AstEvaluator(IReadOnlyQueryEnvironment queryEnv) {
-		this.services = new EvaluationServices(queryEnv);
+		this(new EvaluationServices(queryEnv));
+	}
+
+	/**
+	 * Creates a new {@link AstEvaluator} instance given an {@link EvaluationServices} instance.
+	 * 
+	 * @param services
+	 *            the {@link EvaluationServices} used to evaluate
+	 */
+	public AstEvaluator(EvaluationServices services) {
+		this.services = services;
 		variablesStack = new Stack<Map<String, Object>>();
 	}
 
@@ -153,17 +163,6 @@ public class AstEvaluator extends AstSwitch<Object> {
 	@Override
 	public Object caseTypeLiteral(TypeLiteral object) {
 		return object.getValue();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseFeatureAccess(org.eclipse.acceleo.query.ast.FeatureAccess)
-	 */
-	@Override
-	public Object caseFeatureAccess(FeatureAccess object) {
-		final Object target = doSwitch(object.getTarget());
-		return services.featureAccess(target, object.getFeatureName(), diagnostic);
 	}
 
 	/**
@@ -282,7 +281,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLambda(Lambda object) {
-		return new LambdaValue(object, new HashMap<String, Object>(variablesStack.peek()), this);
+		return new LambdaValue(object, new HashMap<String, Object>(variablesStack.peek()), this, diagnostic);
 	}
 
 	/**
@@ -394,4 +393,5 @@ public class AstEvaluator extends AstSwitch<Object> {
 
 		return result;
 	}
+
 }

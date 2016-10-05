@@ -351,7 +351,20 @@ public class AcceleoEnvironmentGalileo extends AcceleoEnvironment {
 			 * String) is preferred.
 			 */
 			final List<EOperation> result = new ArrayList<EOperation>(super.getOperations(owner));
-			if (!(owner instanceof PrimitiveType)) {
+			AcceleoNonStandardLibrary nonStandardLibrary = new AcceleoNonStandardLibrary();
+			if (owner instanceof CollectionType) {
+				result.addAll(nonStandardLibrary
+						.getExistingOperations(AcceleoNonStandardLibrary.TYPE_COLLECTION_NAME));
+			}
+
+			// we add the non standard operations of the sequence type and the ordered set type
+			if (owner instanceof SequenceType) {
+				result.addAll(nonStandardLibrary
+						.getExistingOperations(AcceleoNonStandardLibrary.TYPE_SEQUENCE_NAME));
+			} else if (owner instanceof OrderedSetType) {
+				result.addAll(nonStandardLibrary
+						.getExistingOperations(AcceleoNonStandardLibrary.TYPE_ORDEREDSET_NAME));
+			} else if (!(owner instanceof PrimitiveType) && !(owner instanceof CollectionType)) {
 				result.addAll(getUMLReflection().getOperations(EcorePackage.eINSTANCE.getEObject()));
 			}
 			return result;

@@ -63,7 +63,7 @@ public class EClassifierType extends AbstractType {
 		final boolean result;
 
 		if (!queryEnvironment.getEPackageProvider().isRegistered(type)) {
-			// TODO Should this throw an exception?
+			// This should not happen since the EClassifier must be registered for parsing
 			result = false;
 		} else if (getType() instanceof EClass && otherType.getType() instanceof EClass) {
 			result = getType() == otherType.getType()

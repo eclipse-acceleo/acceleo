@@ -15,12 +15,12 @@ import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 public class CrossReferencerClass {
 	private CrossReferenceProvider crossReferencer;
 
-	public String service0(String arg) {
-		return "service0";
+	public CrossReferencerClass(CrossReferenceProvider crossReferencer) {
+		this.crossReferencer = crossReferencer;
 	}
 
-	public void setCrossReferencer(CrossReferenceProvider crossReferencer) {
-		this.crossReferencer = crossReferencer;
+	public String service0(String arg) {
+		return "service0";
 	}
 
 	public CrossReferenceProvider getCrossReferencer() {

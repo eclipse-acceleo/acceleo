@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.engine.generation.strategy;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
@@ -137,7 +140,7 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 				writer = new AcceleoFileWriter(file, appendMode);
 			}
 			if (appendMode && fileExisted) {
-				writer.append(LINE_SEPARATOR);
+				writer.append(readLineSeparator(file));
 			}
 		} else {
 			if (charset != null) {
@@ -154,6 +157,53 @@ public class DefaultStrategy extends AbstractGenerationStrategy {
 			}
 		}
 		return writer;
+	}
+
+	/**
+	 * Tries and read the existing line separator from the given file.
+	 * <p>
+	 * If the file contains multiple line separators, this will return the first found. If we can't read the
+	 * file or it doesn't contain a line separator, this will return {@link DefaultStrategy#LINE_SEPARATOR}.
+	 * <p>
+	 * 
+	 * @param file
+	 *            The file from which to read a line separator.
+	 * @return The file's first existing line separator.
+	 * @since 3.6
+	 */
+	protected String readLineSeparator(File file) {
+		if (file.exists() && file.canRead()) {
+			Reader reader = null;
+			try {
+				String separator = null;
+				reader = new BufferedReader(new FileReader(file));
+				int read = reader.read();
+				while (read != -1 && separator == null) {
+					if (read == '\r') {
+						if (reader.read() == '\n') {
+							separator = "\r\n"; //$NON-NLS-1$
+						} else {
+							separator = "\r"; //$NON-NLS-1$
+						}
+					} else if (read == '\n') {
+						separator = "\n"; //$NON-NLS-1$
+					}
+					read = reader.read();
+				}
+				return separator;
+			} catch (IOException e) {
+				// Simply return the system separator
+			} finally {
+				if (reader != null) {
+					try {
+						reader.close();
+					} catch (IOException e) {
+						// swallowed
+					}
+				}
+			}
+		}
+		return LINE_SEPARATOR;
 	}
 
 	/**

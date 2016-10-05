@@ -10,23 +10,28 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
-import org.eclipse.acceleo.query.runtime.ILookupEngine;
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 
 public class BasicLookupTest extends AbtractServiceLookupTest {
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.runtime.servicelookup.AbtractServiceLookupTest#getQueryEnvironment()
+	 */
 	@Override
-	ILookupEngine getEngine() {
-		IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-		ILookupEngine engine = queryEnvironment.getLookupEngine();
-		try {
-			queryEnvironment.registerServicePackage(ServicesClass.class);
-		} catch (InvalidAcceleoPackageException e) {
-			throw new UnsupportedOperationException("shouldn't happen.", e);
-		}
-		return engine;
+	IQueryEnvironment getQueryEnvironment() {
+		final IQueryEnvironment queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, ServicesClass.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+
+		return queryEnvironment;
 	}
 
 }

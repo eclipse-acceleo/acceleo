@@ -18,7 +18,18 @@ import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
+import org.eclipse.acceleo.query.services.AnyServices;
+import org.eclipse.acceleo.query.services.BooleanServices;
+import org.eclipse.acceleo.query.services.CollectionServices;
+import org.eclipse.acceleo.query.services.ComparableServices;
+import org.eclipse.acceleo.query.services.EObjectServices;
+import org.eclipse.acceleo.query.services.NumberServices;
+import org.eclipse.acceleo.query.services.ResourceServices;
+import org.eclipse.acceleo.query.services.StringServices;
+import org.eclipse.acceleo.query.services.XPathServices;
+import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.junit.Before;
 
@@ -35,7 +46,28 @@ public abstract class AbstractServicesTest {
 
 	@Before
 	public void before() throws Exception {
-		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
+		queryEnvironment = Query.newEnvironment();
+		Set<IService> services = ServiceUtils
+				.getServices(queryEnvironment, new AnyServices(queryEnvironment));
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, new EObjectServices(queryEnvironment, null,
+				null));
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, new XPathServices(queryEnvironment));
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, ComparableServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, NumberServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, StringServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, BooleanServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, CollectionServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+		services = ServiceUtils.getServices(queryEnvironment, ResourceServices.class);
+		ServiceUtils.registerServices(queryEnvironment, services);
+
 		this.lookupEngine = queryEnvironment.getLookupEngine();
 		validationServices = new ValidationServices(queryEnvironment);
 	}
@@ -92,9 +124,9 @@ public abstract class AbstractServicesTest {
 	 * @return the matching service if any, <code>null</code> otherwise
 	 */
 	protected IService serviceLookUp(String serviceName, Object[] arguments) {
-		Class<?> argTypes[] = new Class<?>[arguments.length];
+		IType argTypes[] = new IType[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
-			argTypes[i] = arguments[i].getClass();
+			argTypes[i] = new ClassType(queryEnvironment, arguments[i].getClass());
 		}
 		IService service = lookupEngine.lookup(serviceName, argTypes);
 		return service;

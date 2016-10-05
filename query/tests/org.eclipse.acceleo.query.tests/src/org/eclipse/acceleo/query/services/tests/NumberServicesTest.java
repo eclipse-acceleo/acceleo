@@ -11,7 +11,10 @@
 package org.eclipse.acceleo.query.services.tests;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.NumberServices;
 import org.junit.Test;
 
@@ -26,7 +29,9 @@ public class NumberServicesTest extends AbstractServicesTest {
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(NumberServices.class);
+		final Set<IService> servicesToRegister = ServiceUtils.getServices(getQueryEnvironment(),
+				NumberServices.class);
+		ServiceUtils.registerServices(getQueryEnvironment(), servicesToRegister);
 		numServices = new NumberServices();
 	}
 

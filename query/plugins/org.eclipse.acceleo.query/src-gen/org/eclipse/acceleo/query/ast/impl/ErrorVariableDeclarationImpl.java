@@ -30,8 +30,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getType <em>Type</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getExpression <em>Expression
- * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorVariableDeclarationImpl#getExpression
+ * <em>Expression</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,8 +115,8 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AstPackage.ERROR_VARIABLE_DECLARATION__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_VARIABLE_DECLARATION__NAME,
+					oldName, name));
 	}
 
 	/**
@@ -165,8 +165,8 @@ public class ErrorVariableDeclarationImpl extends ExpressionImpl implements Erro
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AstPackage.ERROR_VARIABLE_DECLARATION__TYPE, newType, newType));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_VARIABLE_DECLARATION__TYPE,
+					newType, newType));
 	}
 
 	/**

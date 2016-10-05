@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
+import java.util.Set;
+
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.services.CollectionServices;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
@@ -24,7 +28,9 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	@Override
 	public void before() throws Exception {
 		super.before();
-		getQueryEnvironment().registerServicePackage(CollectionServices.class);
+		final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(),
+				CollectionServices.class);
+		ServiceUtils.registerServices(getQueryEnvironment(), services);
 	}
 
 	@Test
@@ -197,7 +203,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testSortedBySet() {
 		final IType[] parameterTypes = new IType[] {setType(classType(String.class)),
 				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {setType(classType(String.class)) };
 
 		assertValidation(expectedReturnTypes, "sortedBy", parameterTypes);
 	}
@@ -780,8 +786,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 					setType(classType(String.class)),
 					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
 							.getEBooleanObject())) };
-			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
-					.getEBooleanObject()) };
+			final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
@@ -798,8 +803,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 					sequenceType(classType(String.class)),
 					lambdaType("i", classType(String.class), eClassifierType(EcorePackage.eINSTANCE
 							.getEBooleanObject())) };
-			final IType[] expectedReturnTypes = new IType[] {eClassifierType(EcorePackage.eINSTANCE
-					.getEBooleanObject()) };
+			final IType[] expectedReturnTypes = new IType[] {classType(Boolean.class) };
 
 			assertValidation(expectedReturnTypes, "one", parameterTypes);
 		} finally {
@@ -821,7 +825,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testRejectNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
 				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in a reject must return a boolean") };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("expression in a reject must return a boolean")) };
 
 		assertValidation(expectedReturnTypes, "reject", parameterTypes);
 	}
@@ -864,7 +868,7 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	public void testSelectNoBooleanLambda() {
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)),
 				lambdaType("i", classType(String.class), classType(Integer.class)) };
-		final IType[] expectedReturnTypes = new IType[] {nothingType("expression in a select must return a boolean") };
+		final IType[] expectedReturnTypes = new IType[] {sequenceType(nothingType("expression in a select must return a boolean")) };
 
 		assertValidation(expectedReturnTypes, "select", parameterTypes);
 	}
@@ -996,17 +1000,49 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 	}
 
 	@Test
-	public void testSumList() {
-		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
+	public void testSumListInt() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumListReal() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(Double.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
 
 	@Test
-	public void testSumSet() {
-		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
+	public void testSumListNotNumber() {
+		final IType[] parameterTypes = new IType[] {sequenceType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType("Sum can only be used on a collection of numbers.") };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumSetInt() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)) };
+		final IType[] expectedReturnTypes = new IType[] {classType(Long.class) };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumSetReal() {
+		final IType[] parameterTypes = new IType[] {setType(classType(Double.class)) };
 		final IType[] expectedReturnTypes = new IType[] {classType(Double.class) };
+
+		assertValidation(expectedReturnTypes, "sum", parameterTypes);
+	}
+
+	@Test
+	public void testSumSetNotNumber() {
+		final IType[] parameterTypes = new IType[] {setType(classType(String.class)) };
+		final IType[] expectedReturnTypes = new IType[] {nothingType("Sum can only be used on a collection of numbers.") };
 
 		assertValidation(expectedReturnTypes, "sum", parameterTypes);
 	}
@@ -1033,7 +1069,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterList() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
@@ -1046,7 +1081,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterSet() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
@@ -1059,7 +1093,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterListEClassifierSet() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
@@ -1074,7 +1107,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterSetEClassifierSet() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier())),
@@ -1089,7 +1121,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterListEInt() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {sequenceType(classType(Integer.class)),
 				eClassifierLiteralType(EcorePackage.eINSTANCE.getEInt()) };
@@ -1101,7 +1132,6 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterSetEInt() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {setType(classType(Integer.class)),
 				eClassifierLiteralType(EcorePackage.eINSTANCE.getEInt()) };
@@ -1113,13 +1143,26 @@ public class CollectionServicesValidationTest extends AbstractServicesValidation
 
 	@Test
 	public void testFilterSetIncompatibleTypes() {
-		// FIXME test this without the registration as well to make sure it fails
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final IType[] parameterTypes = new IType[] {
 				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
 				eClassifierLiteralType(EcorePackage.eINSTANCE.getEPackage()) };
 		final IType[] expectedReturnTypes = new IType[] {setType(eClassifierType(EcorePackage.eINSTANCE
 				.getEPackage())) };
+
+		assertValidation(expectedReturnTypes, "filter", parameterTypes);
+	}
+
+	@Test
+	public void testFilterSetCompatibleAndIncompatibleTypes() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final IType[] parameterTypes = new IType[] {
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				eClassifierSetLiteralType(EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE
+						.getEPackage()) };
+		final IType[] expectedReturnTypes = new IType[] {
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
+				setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())) };
 
 		assertValidation(expectedReturnTypes, "filter", parameterTypes);
 	}

@@ -612,6 +612,49 @@ Contributors:
            </command>
         </menu>
      </menuContribution>
+     <menuContribution
+           allPopups="false"
+           locationURI="menu:org.eclipse.ui.main.menu?after=edit">
+        <menu label="Source">
+	         <command commandId="org.eclipse.acceleo.ide.ui.comment">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>
+	         <command commandId="org.eclipse.acceleo.ide.ui.createProtectedArea">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>            
+	         <command commandId="org.eclipse.acceleo.ide.ui.createForIf">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>            
+         </menu>
+         <menu label="Refactor">
+	         <command commandId="org.eclipse.acceleo.ide.ui.extractAsTemplate">
+	            <visibleWhen>
+	               <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+	            </visibleWhen>
+	         </command>
+             <command commandId="org.eclipse.acceleo.ide.ui.extractAsQuery" style="push">
+                <visibleWhen>
+                   <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+                </visibleWhen>
+             </command>
+             <command commandId="org.eclipse.acceleo.ide.ui.refactor.rename">
+                <visibleWhen>
+                   <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+                </visibleWhen>
+             </command>
+             <command commandId="org.eclipse.acceleo.ide.ui.refactor.pullup" style="push">
+                <visibleWhen>
+                   <reference definitionId="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet"/>
+                </visibleWhen>
+             </command>       
+         </menu>
+     </menuContribution>
     </extension>
     <extension point="org.eclipse.core.expressions.definitions">
       <definition id="org.eclipse.acceleo.ide.ui.editors.template.editor.inActionSet">
@@ -643,20 +686,15 @@ Contributors:
                id="org.eclipse.ui.edit.text.actionSet.presentation">
          </actionSet>
          <view
-               id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
+               id="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"
                ratio="0.5"
                relationship="right"
                relative="org.eclipse.ui.views.ProblemView">
          </view>
          <view
-               id="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser"
-               relationship="stack"
-               relative="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView">
-         </view>
-         <view
                id="org.eclipse.acceleo.ide.ui.views.proposals.ProposalsBrowser"
                relationship="stack"
-               relative="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView">
+               relative="org.eclipse.acceleo.ide.ui.views.overrides.OverridesBrowser">
          </view>
       </perspectiveExtension>
    </extension>
@@ -933,13 +971,6 @@ Contributors:
              id="org.eclipse.acceleo.ide.ui"
              name="%AcceleoCategory">
        </category>
-       <view
-             category="org.eclipse.acceleo.ide.ui"
-             class="org.eclipse.acceleo.internal.ide.ui.views.result.AcceleoResultView"
-             icon="icons/AcceleoResultView.gif"
-             id="org.eclipse.acceleo.ide.ui.views.result.AcceleoResultView"
-             name="%AcceleoResultView">
-       </view>
       <view
             category="org.eclipse.acceleo.ide.ui"
             class="org.eclipse.acceleo.internal.ide.ui.views.proposals.ProposalsBrowser"

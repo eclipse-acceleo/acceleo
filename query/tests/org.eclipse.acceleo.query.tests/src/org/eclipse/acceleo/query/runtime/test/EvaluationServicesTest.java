@@ -27,11 +27,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.tests.Setup;
@@ -77,9 +79,11 @@ public class EvaluationServicesTest {
 	}
 
 	@Before
-	public void setup() throws InvalidAcceleoPackageException {
+	public void setup() {
 		queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
-		queryEnvironment.registerServicePackage(TestServiceDefinition.class);
+		final Set<IService> servicesToRegister = ServiceUtils.getServices(queryEnvironment,
+				TestServiceDefinition.class);
+		ServiceUtils.registerServices(queryEnvironment, servicesToRegister);
 		variables = new HashMap<String, Object>();
 		variables.put("x", 1);
 		variables.put("y", 2);
@@ -126,7 +130,7 @@ public class EvaluationServicesTest {
 		Diagnostic child = status.getChildren().iterator().next();
 		assertEquals(Diagnostic.ERROR, child.getSeverity());
 		assertNull(child.getException());
-		assertTrue(child.getMessage().contains("xx variable"));
+		assertTrue(child.getMessage().contains("'xx' variable"));
 	}
 
 	/**
@@ -139,7 +143,8 @@ public class EvaluationServicesTest {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		assertEquals("attr0", services.featureAccess(attribute, "name", status));
+		assertEquals("attr0", services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				new Object[] {attribute, "name" }, status));
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertTrue(status.getChildren().isEmpty());
 	}
@@ -153,14 +158,14 @@ public class EvaluationServicesTest {
 		attribute.setName("attr0");
 
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.featureAccess(attribute, "noname", status) instanceof Nothing);
+		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				attribute, "noname" }, status) instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
 		assertEquals(Diagnostic.WARNING, child.getSeverity());
-		assertNull(child.getException());
-		assertTrue(child.getMessage().contains("Feature noname"));
+		assertTrue(child.getException().getMessage().contains("Feature noname"));
 	}
 
 	/**
@@ -169,16 +174,16 @@ public class EvaluationServicesTest {
 	@Test
 	public void testFeatureAccessOnObject() {
 		Diagnostic status = new BasicDiagnostic();
-		assertTrue(services.featureAccess(new Integer(3), "noname", status) instanceof Nothing);
+		assertTrue(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				new Integer(3), "noname" }, status) instanceof Nothing);
 		assertEquals(Diagnostic.WARNING, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
 		assertEquals(Diagnostic.WARNING, child.getSeverity());
 		assertNull(child.getException());
-		assertTrue(child.getMessage().contains("feature"));
-		assertTrue(child.getMessage().contains("noname"));
-		assertTrue(child.getMessage().contains("non ModelObject"));
+		assertEquals("Couldn't find the 'aqlFeatureAccess(java.lang.Integer,java.lang.String)' service", child
+				.getMessage());
 	}
 
 	/**
@@ -190,7 +195,8 @@ public class EvaluationServicesTest {
 		EAttribute attribute = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 
 		Diagnostic status = new BasicDiagnostic();
-		assertNull(services.featureAccess(attribute, "eType", status));
+		assertNull(services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				attribute, "eType" }, status));
 		assertEquals(Diagnostic.OK, status.getSeverity());
 		assertTrue(status.getChildren().isEmpty());
 	}
@@ -213,7 +219,8 @@ public class EvaluationServicesTest {
 		list.add(attribute1);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(list, "name", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				list, "name" }, status);
 		assertTrue(result instanceof List);
 		assertEquals("attr0", ((List<Object>)result).get(0));
 		assertEquals("attr1", ((List<Object>)result).get(1));
@@ -235,7 +242,8 @@ public class EvaluationServicesTest {
 
 		Set<Object> set = createSet(attribute0, attribute1);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(set, "name", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				set, "name" }, status);
 		assertTrue(result instanceof Set);
 		@SuppressWarnings("unchecked")
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
@@ -253,7 +261,8 @@ public class EvaluationServicesTest {
 		List<EAttribute> list = new ArrayList<EAttribute>();
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object listResult = services.featureAccess(list, "noname", status);
+		final Object listResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				new Object[] {list, "noname" }, status);
 		assertEquals(true, listResult instanceof List);
 		assertEquals(0, ((List<?>)listResult).size());
 		assertEquals(Diagnostic.OK, status.getSeverity());
@@ -268,7 +277,8 @@ public class EvaluationServicesTest {
 		Set<EAttribute> set = new LinkedHashSet<EAttribute>();
 
 		Diagnostic status = new BasicDiagnostic();
-		final Object setResult = services.featureAccess(set, "noname", status);
+		final Object setResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				new Object[] {set, "noname" }, status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -290,7 +300,8 @@ public class EvaluationServicesTest {
 		list.add(attribute0);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object listResult = services.featureAccess(list, "name", status);
+		Object listResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				new Object[] {list, "name" }, status);
 
 		assertEquals(true, listResult instanceof List);
 		assertEquals(2, ((List<?>)listResult).size());
@@ -325,7 +336,8 @@ public class EvaluationServicesTest {
 		list.add(attribute1);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object listResult = services.featureAccess(list, "name", status);
+		Object listResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				new Object[] {list, "name" }, status);
 
 		assertEquals(true, listResult instanceof List);
 		assertEquals(3, ((List<?>)listResult).size());
@@ -352,7 +364,8 @@ public class EvaluationServicesTest {
 		Set<Object> set = createSet(1);
 
 		Diagnostic status = new BasicDiagnostic();
-		Object setResult = services.featureAccess(set, "noname", status);
+		Object setResult = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				set, "noname" }, status);
 
 		assertTrue(setResult instanceof Set);
 		assertEquals(0, ((Set<?>)setResult).size());
@@ -373,7 +386,8 @@ public class EvaluationServicesTest {
 
 		List<EStructuralFeature> list = Lists.newArrayList(attr, ref);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(list, "containment", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				list, "containment" }, status);
 		assertTrue(result instanceof List);
 		assertEquals(1, ((List<Object>)result).size());
 		assertTrue((Boolean)((List<Object>)result).get(0));
@@ -395,7 +409,8 @@ public class EvaluationServicesTest {
 
 		Set<Object> set = createSet(attr, ref);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(set, "containment", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				set, "containment" }, status);
 		assertTrue(result instanceof Set);
 		assertEquals(1, ((Set<Object>)result).size());
 		Iterator<Object> iterator = ((Set<Object>)result).iterator();
@@ -419,7 +434,8 @@ public class EvaluationServicesTest {
 		List<Object> list1 = Lists.newArrayList((Object)attribute1);
 		List<Object> list0 = Lists.newArrayList(attribute0, list1);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(list0, "name", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				list0, "name" }, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -444,7 +460,8 @@ public class EvaluationServicesTest {
 		Set<Object> list1 = createSet(attribute1);
 		List<Object> list0 = Lists.newArrayList(attribute0, list1);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(list0, "name", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				list0, "name" }, status);
 		assertTrue(result instanceof List);
 		List<Object> listResult = (List<Object>)result;
 		assertEquals(2, listResult.size());
@@ -466,10 +483,10 @@ public class EvaluationServicesTest {
 		List<Object> list1 = Lists.newArrayList((Object)1);
 		List<Object> list0 = Lists.newArrayList(attribute0, list1);
 		Diagnostic status = new BasicDiagnostic();
-		Object result = services.featureAccess(list0, "name", status);
+		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
+				list0, "name" }, status);
 		assertTrue(result instanceof List);
-		@SuppressWarnings("unchecked")
-		List<Object> listResult = (List<Object>)result;
+		List<?> listResult = (List<?>)result;
 		assertEquals(1, listResult.size());
 		assertEquals("attr0", listResult.get(0));
 	}
@@ -709,12 +726,10 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.call("toString", new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
-		assertTrue(status.getChildren().get(0).getException().getCause() instanceof InvocationTargetException);
-		assertTrue(((InvocationTargetException)status.getChildren().get(0).getException().getCause())
-				.getTargetException() instanceof NullPointerException);
+		assertTrue(status.getChildren().get(0).getException().getCause() instanceof NullPointerException);
 	}
 
 	/**
@@ -725,12 +740,10 @@ public class EvaluationServicesTest {
 		Diagnostic status = new BasicDiagnostic();
 		final Object result = services.callOrApply("toString", new Object[] {null }, status);
 		assertTrue(result instanceof Nothing);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.ERROR, status.getSeverity());
 		assertEquals(1, status.getChildren().size());
 		assertTrue(status.getChildren().get(0).getException() instanceof AcceleoQueryEvaluationException);
-		assertTrue(status.getChildren().get(0).getException().getCause() instanceof InvocationTargetException);
-		assertTrue(((InvocationTargetException)status.getChildren().get(0).getException().getCause())
-				.getTargetException() instanceof NullPointerException);
+		assertTrue(status.getChildren().get(0).getException().getCause() instanceof NullPointerException);
 	}
 
 	/**
@@ -739,7 +752,8 @@ public class EvaluationServicesTest {
 	@Test
 	public void testNullArgumentFeatureAccess() {
 		Diagnostic status = new BasicDiagnostic();
-		services.featureAccess(null, "name", status);
+		services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {null, "name" },
+				status);
 	}
 
 	/**
@@ -777,7 +791,8 @@ public class EvaluationServicesTest {
 
 		result = services.collectionServiceCall("first", new Object[] {null, }, status);
 		assertNull(result);
-		assertEquals(Diagnostic.WARNING, status.getSeverity());
+		assertEquals(Diagnostic.OK, status.getSeverity());
+		assertEquals(0, status.getChildren().size());
 	}
 
 	@Test
@@ -793,7 +808,8 @@ public class EvaluationServicesTest {
 		EAnnotation annotation = (EAnnotation)((List<?>)target).get(0);
 		Entry<String, String> entry = annotation.getDetails().get(0);
 		Diagnostic status = new BasicDiagnostic();
-		assertEquals("archetype", services.featureAccess(entry, "key", status));
+		assertEquals("archetype", services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME,
+				new Object[] {entry, "key" }, status));
 	}
 
 	@Test

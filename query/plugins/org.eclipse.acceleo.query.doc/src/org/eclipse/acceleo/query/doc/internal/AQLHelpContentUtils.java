@@ -185,10 +185,9 @@ public final class AQLHelpContentUtils {
 		for (Class<?> serviceProviderClass : serviceProviders) {
 			if (serviceProviderClass.isAnnotationPresent(ServiceProvider.class)) {
 				ServiceProvider serviceProvider = serviceProviderClass.getAnnotation(ServiceProvider.class);
-				buffer.append(
-						"<topic href=\"pages/" + AQL_HREF_PREFIX
-								+ serviceProviderClass.getSimpleName().toLowerCase() + ".html\" label=\""
-								+ serviceProvider.value() + "\"></topic>").append(LS);
+				buffer.append("<topic href=\"pages/" + AQL_HREF_PREFIX + serviceProviderClass.getSimpleName()
+						.toLowerCase() + ".html\" label=\"" + serviceProvider.value() + "\"></topic>").append(
+								LS);
 			}
 		}
 		buffer.append("</toc>").append(LS);
@@ -198,11 +197,9 @@ public final class AQLHelpContentUtils {
 	/**
 	 * Produces the content of the AQL Overview page.
 	 * 
-	 * @param serviceProviders
-	 *            The list of service providers
 	 * @return The sections to display in the page
 	 */
-	public static List<StringBuffer> computeAQLOverviewSections(Class<?>... serviceProviders) {
+	public static List<StringBuffer> computeAQLOverviewSections() {
 		List<StringBuffer> buffers = new ArrayList<StringBuffer>();
 
 		// @formatter:off
@@ -226,31 +223,6 @@ public final class AQLHelpContentUtils {
 		// @formatter:on
 
 		buffers.add(introductionSection);
-
-		// @formatter:off
-		StringBuffer serviceSection = new StringBuffer();
-		serviceSection.append("  <section id=\"services\">").append(LS);
-		serviceSection.append("    <div class=\"page-header\">").append(LS);
-		serviceSection.append("      <h1>Services</h1>").append(LS);
-		serviceSection.append("    </div>").append(LS);
-		serviceSection.append("    <ul>").append(LS);
-		for (Class<?> aClass : serviceProviders) {
-			ServiceProvider serviceProvider = aClass.getAnnotation(ServiceProvider.class);
-			if (serviceProvider != null) {				
-				serviceSection.append("      <li><a href=\"./");
-				serviceSection.append(AQL_HREF_PREFIX);
-				serviceSection.append(aClass.getSimpleName().toLowerCase());
-				serviceSection.append(".html\">");
-				serviceSection.append(serviceProvider.value());
-				serviceSection.append("</a></li>").append(LS);
-			}
-		}
-		serviceSection.append("    </ul>").append(LS);
-		serviceSection.append("  </section>").append(LS);
-		serviceSection.append("  <hr />").append(LS);
-		// @formatter:on
-
-		buffers.add(serviceSection);
 
 		return buffers;
 	}

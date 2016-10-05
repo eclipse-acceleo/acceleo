@@ -19,7 +19,6 @@ import org.eclipse.acceleo.query.ast.BooleanLiteral;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
-import org.eclipse.acceleo.query.ast.FeatureAccess;
 import org.eclipse.acceleo.query.ast.IntegerLiteral;
 import org.eclipse.acceleo.query.ast.NullLiteral;
 import org.eclipse.acceleo.query.ast.RealLiteral;
@@ -28,6 +27,7 @@ import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.ast.TypeSetLiteral;
 import org.eclipse.acceleo.query.ast.VarRef;
 import org.eclipse.acceleo.query.parser.AstBuilder;
+import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -147,9 +147,11 @@ public class AstBuilderTest {
 	 */
 	@Test
 	public void testFeatureAccess() {
-		FeatureAccess access = new AstBuilder().featureAccess(new AstBuilder().varRef("var"), "feature");
-		assertEquals("var", ((VarRef)access.getTarget()).getVariableName());
-		assertEquals("feature", access.getFeatureName());
+		final AstBuilder builder = new AstBuilder();
+		Call access = builder.callService(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, builder.varRef(
+				"var"), builder.stringLiteral("feature"));
+		assertEquals("var", ((VarRef)access.getArguments().get(0)).getVariableName());
+		assertEquals("feature", ((StringLiteral)access.getArguments().get(1)).getValue());
 	}
 
 	@Test

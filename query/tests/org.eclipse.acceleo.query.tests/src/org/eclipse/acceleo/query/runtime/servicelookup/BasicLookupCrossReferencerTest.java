@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.servicelookup;
 
+import java.util.Set;
+
 import org.eclipse.acceleo.query.runtime.ILookupEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.IService;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
+import org.eclipse.acceleo.query.validation.type.ClassType;
+import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.junit.Before;
@@ -27,19 +31,18 @@ import static org.junit.Assert.assertNull;
 public class BasicLookupCrossReferencerTest extends AbstractEngineInitializationWithCrossReferencer {
 	ILookupEngine engine;
 
-	private static final Class<?>[] NO_ARG = {};
+	private static final IType[] NO_ARG = {};
 
 	@Before
 	public void setup() {
 		EClass eClass = EcoreFactory.eINSTANCE.createEClass();
 
-		IQueryEnvironment queryEnvironment = getQueryEnvironnementWithCrossReferencer(eClass);
+		setQueryEnvironnementWithCrossReferencer(eClass);
 		engine = queryEnvironment.getLookupEngine();
-		try {
-			queryEnvironment.registerServicePackage(CrossReferencerClass.class);
-		} catch (InvalidAcceleoPackageException e) {
-			throw new UnsupportedOperationException("shouldn't happen.", e);
-		}
+
+		final Set<IService> services = ServiceUtils.getServices(queryEnvironment, new CrossReferencerClass(
+				crossReferencer));
+		ServiceUtils.registerServices(queryEnvironment, services);
 	}
 
 	/**
@@ -48,11 +51,12 @@ public class BasicLookupCrossReferencerTest extends AbstractEngineInitialization
 	 */
 	@Test
 	public void detectionCrossReferencerTest() {
-		assertEquals("service0", engine.lookup("service0", new Class<?>[] {String.class }).getName());
+		assertEquals("service0", engine.lookup("service0",
+				new IType[] {new ClassType(queryEnvironment, String.class) }).getName());
 		assertNull(engine.lookup("setCrossReferencer", NO_ARG));
 
 		CrossReferencerClass crossReferencer = (CrossReferencerClass)((JavaMethodService)engine.lookup(
-				"service0", new Class<?>[] {String.class })).getInstance();
+				"service0", new IType[] {new ClassType(queryEnvironment, String.class) })).getInstance();
 		assertNotNull(crossReferencer.getCrossReferencer());
 	}
 

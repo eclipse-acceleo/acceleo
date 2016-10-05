@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ide.ui.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -38,8 +40,6 @@ import org.eclipse.swt.graphics.Image;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests {@link ProposalLabelProviderTests}.

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -26,9 +27,9 @@ public class CompactLinkedHashSetTest extends CompactHashSetTest {
 	 **/
 	@Test
 	public void testIteratorOrder() {
-		Collection<Integer> listInt10 = randomIntegerList(10);
-		Collection<String> setString20 = randomStringSet(20);
-		Collection<String> dequeString40 = randomStringDeque(40);
+		Collection<Integer> listInt10 = randomIntegerListNotIn(10, Collections.emptySet());
+		Collection<String> setString20 = randomStringSetNotIn(20, Collections.emptySet());
+		Collection<String> dequeString40 = randomStringDequeNotIn(40, setString20);
 
 		Set<Object> set = createSet();
 

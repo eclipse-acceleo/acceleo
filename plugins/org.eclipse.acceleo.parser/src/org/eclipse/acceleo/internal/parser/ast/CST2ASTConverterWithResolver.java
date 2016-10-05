@@ -640,7 +640,7 @@ public class CST2ASTConverterWithResolver extends CST2ASTConverter {
 							.notNull());
 					Iterator<org.eclipse.ocl.ecore.Variable> itParameters = Iterators.filter(otherTemplate
 							.getParameter().iterator(), Predicates.notNull());
-					while (parameterMatches && itParameters.hasNext()) {
+					while (parameterMatches && itParameters.hasNext() && itTypes.hasNext()) {
 						EClassifier eParameterType = itParameters.next().getType();
 						EClassifier type = itTypes.next();
 						// Checks if 'type' is a sub-class of 'eParameterType' EMF-wise

@@ -97,11 +97,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 *            the declaration for which we seek references
 	 */
 	public ReferencesSearchQuery(AcceleoEditor editor, EObject declaration) {
-		this.declaration = declaration;
-		this.editor = editor;
-		this.searchResult = new ReferencesSearchResult(this);
-		this.searchOutsideOfCurrentFile = true;
-		this.showInEditor = false;
+		this(editor, declaration, true, false);
 	}
 
 	/**
@@ -115,11 +111,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 	 *            Indicates if we have to search outside of the current file.
 	 */
 	public ReferencesSearchQuery(AcceleoEditor editor, EObject declaration, boolean searchOutsideCurrentFile) {
-		this.declaration = declaration;
-		this.editor = editor;
-		this.searchResult = new ReferencesSearchResult(this);
-		this.searchOutsideOfCurrentFile = searchOutsideCurrentFile;
-		this.showInEditor = false;
+		this(editor, declaration, searchOutsideCurrentFile, false);
 	}
 
 	/**
@@ -253,7 +245,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			List<Resource> resources = AcceleoUIResourceSet.getResources();
 			for (Resource resource : resources) {
 				if (resource.getContents().size() > 0 && resource.getContents().get(0) instanceof Module) {
-					if (resource.getURI() != null && resource.getURI().isPlatform()) {
+					if (resource.getURI() != null && resource.getURI().isPlatformResource()) {
 						scanModuleForDeclaration((Module)resource.getContents().get(0));
 					}
 				}
@@ -563,9 +555,7 @@ public class ReferencesSearchQuery implements ISearchQuery {
 			URI uri1 = EcoreUtil.getURI(template1);
 			URI uri2 = EcoreUtil.getURI(template2);
 			if (result && uri1 != null && uri2 != null) {
-				result = uri1.equals(uri2);
-				result = result && (template1.getStartPosition() == template2.getStartPosition())
-						&& (template1.getEndPosition() == template2.getEndPosition());
+				result = uri1.trimFragment().equals(uri2.trimFragment());
 			}
 		} else {
 			result = false;

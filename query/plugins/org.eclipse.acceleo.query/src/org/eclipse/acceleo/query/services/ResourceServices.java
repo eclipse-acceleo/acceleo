@@ -197,17 +197,12 @@ public class ResourceServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			if (argTypes.get(0).getType() == EcorePackage.eINSTANCE.getEResource()) {
-				if (argTypes.size() == 1) {
-					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-							EcorePackage.eINSTANCE.getEObject())));
-				} else if (argTypes.size() == 2) {
-					result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
-							((EClassifierLiteralType)argTypes.get(1)).getType())));
-				}
-			} else {
-				result.add(new SequenceType(queryEnvironment, services.nothing(
-						"Can only call getContents() on Resources, not on %s", argTypes.get(0))));
+			if (argTypes.size() == 1) {
+				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						EcorePackage.eINSTANCE.getEObject())));
+			} else if (argTypes.size() == 2) {
+				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
+						((EClassifierLiteralType)argTypes.get(1)).getType())));
 			}
 
 			return result;

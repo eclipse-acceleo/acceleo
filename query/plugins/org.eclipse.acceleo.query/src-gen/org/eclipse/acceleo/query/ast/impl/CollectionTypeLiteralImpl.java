@@ -25,8 +25,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl#getElementType <em>Element Type
- * </em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl#getElementType
+ * <em>Element Type</em>}</li>
  * </ul>
  * </p>
  *

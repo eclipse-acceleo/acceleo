@@ -20,17 +20,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
-import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
-import org.eclipse.acceleo.query.validation.type.IJavaType;
-import org.eclipse.acceleo.query.validation.type.IType;
-import org.eclipse.emf.ecore.EClass;
 
 /**
  * Abstract implementation of the language services.
@@ -40,34 +30,14 @@ import org.eclipse.emf.ecore.EClass;
 public abstract class AbstractLanguageServices {
 
 	/**
-	 * Log message used when accessing a feature on a JavaObject.
-	 */
-	protected static final String NON_EOBJECT_FEATURE_ACCESS = "Attempt to access feature (%s) on a non ModelObject value (%s).";
-
-	/**
 	 * Log message used when a called service was not found.
 	 */
-	protected static final String SERVICE_NOT_FOUND = "Couldn't find the %s service";
-
-	/**
-	 * Log message used when a called service or EOperation was not found.
-	 */
-	protected static final String SERVICE_EOPERATION_NOT_FOUND = "Couldn't find the %s service or EOperation";
-
-	/**
-	 * Log message used when a called EOperation can't be invoked.
-	 */
-	protected static final String COULDN_T_INVOKE_EOPERATION = "Couldn't invoke the %s EOperation (%s)";
+	protected static final String SERVICE_NOT_FOUND = "Couldn't find the '%s' service";
 
 	/**
 	 * Log message used when a requested variable was not found.
 	 */
-	protected static final String VARIABLE_NOT_FOUND = "Couldn't find the %s variable";
-
-	/**
-	 * Log message used when accessing an unknown feature.
-	 */
-	protected static final String UNKNOWN_FEATURE = "Feature %s not found in EClass %s";
+	protected static final String VARIABLE_NOT_FOUND = "Couldn't find the '%s' variable";
 
 	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
@@ -82,72 +52,6 @@ public abstract class AbstractLanguageServices {
 	 */
 	public AbstractLanguageServices(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
-	}
-
-	/**
-	 * Gets the {@link Class} argument types from the given {@link IType} argument types.
-	 * 
-	 * @param list
-	 *            the {@link IType} argument types
-	 * @return the {@link Class} argument types from the given {@link IType} argument types
-	 */
-	protected Class<?>[] getArgumentTypes(Collection<IType> list) {
-		Class<?>[] result = new Class<?>[list.size()];
-
-		final List<Class<?>> types = getClasses(list);
-		for (int i = 0; i < types.size(); ++i) {
-			result[i] = types.get(i);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Converts a {@link Collection} of {@link Class} into a {@link List} of {@link Class}.
-	 * 
-	 * @param iTypes
-	 *            a {@link List} of {@link Class}
-	 * @return a {@link List} of {@link Class}
-	 */
-	protected List<Class<?>> getClasses(Collection<IType> iTypes) {
-		final List<Class<?>> result = new ArrayList<Class<?>>(iTypes.size());
-		for (IType iType : iTypes) {
-			result.add(getClass(iType));
-		}
-		return result;
-	}
-
-	/**
-	 * Gets an {@link Class} from a {@link IType}.
-	 * 
-	 * @param iType
-	 *            the {@link IType}
-	 * @return an {@link Class} from a {@link IType}
-	 */
-	protected Class<?> getClass(IType iType) {
-		Class<?> result;
-
-		if (iType instanceof EClassifierLiteralType) {
-			result = EClass.class;
-		} else if (iType instanceof EClassifierType) {
-			result = queryEnvironment.getEPackageProvider().getClass(((EClassifierType)iType).getType());
-		} else if (iType instanceof IJavaType) {
-			result = ((IJavaType)iType).getType();
-		} else {
-			throw new AcceleoQueryValidationException(iType.getClass().getCanonicalName());
-		}
-
-		if (result != null) {
-			if ("boolean".equals(result.getName())) {
-				result = Boolean.class;
-			} else if ("int".equals(result.getName())) {
-				result = Integer.class;
-			} else if ("double".equals(result.getName())) {
-				result = Double.class;
-			}
-		}
-
-		return result;
 	}
 
 	/**

@@ -29,7 +29,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getPredicate <em>Predicate</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getTrueBranch <em>True Branch</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getFalseBranch <em>False Branch</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorConditionalImpl#getFalseBranch <em>False Branch</em>}
+ * </li>
  * </ul>
  * </p>
  *

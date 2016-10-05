@@ -11,15 +11,12 @@
 package org.eclipse.acceleo.query.runtime;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnumLiteral;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
@@ -39,30 +36,6 @@ public interface IEPackageProvider {
 	 * @since 4.1
 	 */
 	Collection<EPackage> getEPackage(String name);
-
-	/**
-	 * Lookups the {@link EOperation} with the given receiving {@link EClass}, given
-	 * {@link EOperation#getName() name} and {@link EOperation#getEParameters() parameters} type.
-	 * 
-	 * @param receiverEClass
-	 *            the receiver {@link EClass}
-	 * @param eOperationName
-	 *            the {@link EOperation#getName() EOperation's name}
-	 * @param parameterTypes
-	 *            the {@link EOperation#getEParameters() parameters} type
-	 * @return the {@link EOperation} with the given receiving {@link EClass}, given
-	 *         {@link EOperation#getName() name} and {@link EOperation#getEParameters() parameters} type
-	 */
-	EOperation lookupEOperation(EClass receiverEClass, String eOperationName, List<EParameter> parameterTypes);
-
-	/**
-	 * Gets the {@link Set} of {@link EOperation} for the given {@link Set} of receiver {@link EClass}.
-	 * 
-	 * @param receiverTypes
-	 *            the {@link Set} of receiver {@link EClass}
-	 * @return the {@link Set} of {@link EOperation} for the given {@link Set} of receiver {@link EClass}
-	 */
-	Set<EOperation> getEOperations(Set<EClass> receiverTypes);
 
 	/**
 	 * the classifier with the specified name in the package registered with the specified name.
@@ -162,8 +135,9 @@ public interface IEPackageProvider {
 	 *            the {@link Class}
 	 * @return the {@link EClassifier} represented by the given {@link Class} if any, <code>null</code>
 	 *         otherwise
+	 * @since 5.0
 	 */
-	Set<EClassifier> getEClass(Class<?> cls);
+	Set<EClassifier> getEClassifiers(Class<?> cls);
 
 	/**
 	 * Gets the {@link Class} of instance of the given {@link EClassifier}.

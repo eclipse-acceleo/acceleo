@@ -22,11 +22,13 @@ import org.eclipse.acceleo.query.parser.AstEvaluator;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
-import org.eclipse.acceleo.query.runtime.InvalidAcceleoPackageException;
+import org.eclipse.acceleo.query.runtime.ServiceUtils;
+import org.eclipse.acceleo.query.runtime.impl.EvaluationServices;
 import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.services.tests.AbstractEngineInitializationWithCrossReferencer;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.qmodel.EObjectVariable;
@@ -43,12 +45,11 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EStringToStringMapEntryImpl;
 import org.eclipse.uml2.types.TypesPackage;
 import org.eclipse.uml2.uml.UMLPackage;
 
 public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCrossReferencer implements InterpreterUnderTest {
-
-	private IQueryEnvironment queryEnvironment;
 
 	private Logger logger = Logger.getLogger("AcceleoQueryInterpreter");
 
@@ -91,18 +92,20 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public AcceleoQueryInterpreter(Query q) {
 		expressionToEvaluate = stripQuery(q.getExpression());
 		startingPoint = q.getStartingPoint().getTarget();
-		queryEnvironment = getQueryEnvironnementWithCrossReferencer(startingPoint);
+		setQueryEnvironnementWithCrossReferencer(startingPoint);
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		queryEnvironment.registerEPackage(AnydslPackage.eINSTANCE);
+		queryEnvironment.registerCustomClassMapping(EcorePackage.eINSTANCE.getEStringToStringMapEntry(),
+				EStringToStringMapEntryImpl.class);
 		queryEnvironment.registerEPackage(UMLPackage.eINSTANCE);
 		queryEnvironment.registerEPackage(TypesPackage.eINSTANCE);
 
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				queryEnvironment.registerServicePackage(Class.forName(classToImport));
+				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+						.forName(classToImport));
+				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
-				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
-			} catch (InvalidAcceleoPackageException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
 			}
 		}
@@ -139,7 +142,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 
 	@Override
 	public QueryEvaluationResult computeQuery(Query query) {
-		AstEvaluator evaluator = new AstEvaluator(queryEnvironment);
+		AstEvaluator evaluator = new AstEvaluator(new EvaluationServices(queryEnvironment));
 		Object result = evaluator.eval(variables, astResult.getAst());
 		QueryEvaluationResultFactory factory = new QueryEvaluationResultFactory();
 
@@ -150,10 +153,10 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 	public QueryValidationResult validateQuery(Query q) {
 		for (String classToImport : q.getClassesToImport()) {
 			try {
-				queryEnvironment.registerServicePackage(Class.forName(classToImport));
+				final Set<IService> services = ServiceUtils.getServices(getQueryEnvironment(), Class
+						.forName(classToImport));
+				ServiceUtils.registerServices(queryEnvironment, services);
 			} catch (ClassNotFoundException e) {
-				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
-			} catch (InvalidAcceleoPackageException e) {
 				logger.log(Level.WARNING, "couldn't register class " + classToImport, e);
 			}
 		}
@@ -164,7 +167,7 @@ public class AcceleoQueryInterpreter extends AbstractEngineInitializationWithCro
 		for (Variable var : q.getVariables()) {
 			variableTypes.put(var.getName(), varTypeSwitch.doSwitch(var));
 		}
-		final AstValidator validator = new AstValidator(queryEnvironment);
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 
 		return transformResult(q, validator.validate(variableTypes, astResult));
 	}
