@@ -186,6 +186,214 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void flattenSequenceNothingFeatureNotExistingAccessTest() {
+		final IValidationResult validationResult = engine.validate("self->asSequence().notExisting",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, possibleTypes.size());
+		final IType type = possibleTypes.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals("Feature notExisting not found in EClass EClass", ((NothingType)((SequenceType)type)
+				.getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+				"Empty collection: Feature notExisting not found in EClass EClass", 18, 30);
+	}
+
+	@Test
+	public void flattenSetNothingFeatureNotExistingAccessTest() {
+		final IValidationResult validationResult = engine
+				.validate("self->asSet().notExisting", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, possibleTypes.size());
+		final IType type = possibleTypes.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals("Feature notExisting not found in EClass EClass", ((NothingType)((SetType)type)
+				.getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+				"Empty collection: Feature notExisting not found in EClass EClass", 13, 25);
+	}
+
+	@Test
+	public void flattenSequenceNothingOclAsTypeTest() {
+		final IValidationResult validationResult = engine.validate(
+				"self->asSequence().oclAsType(ecore::EPackage)", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, possibleTypes.size());
+		final IType type = possibleTypes.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(
+				"Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
+				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
+				18, 45);
+	}
+
+	@Test
+	public void flattenSetNothingOclAsTypeTest() {
+		final IValidationResult validationResult = engine.validate(
+				"self->asSequence().oclAsType(ecore::EPackage)", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, possibleTypes.size());
+		final IType type = possibleTypes.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(
+				"Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
+				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing will be left after calling oclAsType:\nEClassifier=EClass is not compatible with type EClassifierLiteral=EPackage",
+				18, 45);
+	}
+
+	@Test
+	public void flattenSequenceNothingMultipleTypesNotExistingOnAnyAccessTest() {
+		final Set<IType> selfTypes = new LinkedHashSet<IType>();
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
+		variableTypes.put("multiType", selfTypes);
+
+		final IValidationResult validationResult = engine.validate("multiType->asSequence().notExisting",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, possibleTypes.size());
+		final IType type = possibleTypes.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(
+				"Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
+				((NothingType)((SequenceType)type).getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
+				23, 35);
+	}
+
+	@Test
+	public void flattenSetNothingMultipleTypesNotExistingOnAnyAccessTest() {
+		final Set<IType> selfTypes = new LinkedHashSet<IType>();
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
+		variableTypes.put("multiType", selfTypes);
+
+		final IValidationResult validationResult = engine.validate("multiType->asSet().notExisting",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(1, possibleTypes.size());
+		final IType type = possibleTypes.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(
+				"Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
+				((NothingType)((SetType)type).getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Feature notExisting not found in EClass EClass\nFeature notExisting not found in EClass EPackage",
+				18, 30);
+	}
+
+	@Test
+	public void flattenSequenceNothingMultipleTypesNotExistingOnOneAccessTest() {
+		final Set<IType> selfTypes = new LinkedHashSet<IType>();
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
+		variableTypes.put("multiType", selfTypes);
+
+		final IValidationResult validationResult = engine.validate("multiType->asSequence().eClassifiers",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), ((EClassifierType)((SequenceType)type)
+				.getCollectionType()).getType());
+		type = it.next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals("Feature eClassifiers not found in EClass EClass", ((NothingType)((SequenceType)type)
+				.getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+				"Empty collection: Feature eClassifiers not found in EClass EClass", 23, 36);
+	}
+
+	@Test
+	public void flattenSetNothingMultipleTypesNotExistingOnOneAccessTest() {
+		final Set<IType> selfTypes = new LinkedHashSet<IType>();
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEClass()));
+		selfTypes.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEPackage()));
+		variableTypes.put("multiType", selfTypes);
+
+		final IValidationResult validationResult = engine.validate("multiType->asSet().eClassifiers",
+				variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+
+		Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+		assertEquals(0, stripNothingTypes(possibleTypes).size());
+		assertEquals(2, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType type = it.next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClassifier(), ((EClassifierType)((SetType)type)
+				.getCollectionType()).getType());
+		type = it.next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals("Feature eClassifiers not found in EClass EClass", ((NothingType)((SetType)type)
+				.getCollectionType()).getMessage());
+
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
+				"Empty collection: Feature eClassifiers not found in EClass EClass", 18, 31);
+	}
+
+	@Test
 	public void intliteralTest() {
 		final IValidationResult validationResult = engine.validate("2", variableTypes);
 		final Expression ast = validationResult.getAstResult().getAst();
