@@ -48,6 +48,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import nooperationreflection.NoOperationReflection;
@@ -362,6 +363,20 @@ public class EvaluationTest {
 		Map<String, Object> variables = Maps.newHashMap();
 		assertOKResultEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getInstance(), engine
 				.eval(builder.build("anydsl::Part::Other"), variables));
+	}
+
+	@Test
+	public void enumLiteralNotExisting() {
+		Map<String, Object> variables = Maps.newHashMap();
+
+		final EvaluationResult result = engine.eval(builder.build("anydsl::Part::NotExisting"), variables);
+
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
+		assertEquals(1, result.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
+		String message = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertEquals("Invalid enum literal.", message);
+		assertNull(result.getResult());
 	}
 
 	@Test

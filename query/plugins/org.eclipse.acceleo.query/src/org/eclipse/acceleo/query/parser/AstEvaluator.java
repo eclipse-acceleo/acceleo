@@ -301,7 +301,19 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseEnumLiteral(EnumLiteral object) {
-		return object.getLiteral().getInstance();
+		final Object result;
+
+		if (object.getLiteral() != null) {
+			result = object.getLiteral().getInstance();
+		} else {
+			final Nothing nothing = new Nothing("Invalid enum literal.");
+			Diagnostic diag = new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0, nothing
+					.getMessage(), new Object[] {object });
+			((BasicDiagnostic)diagnostic).add(diag);
+			result = nothing;
+		}
+
+		return result;
 	}
 
 	/**
