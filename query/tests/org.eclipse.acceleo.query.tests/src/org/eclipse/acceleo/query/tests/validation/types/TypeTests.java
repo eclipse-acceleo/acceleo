@@ -189,54 +189,6 @@ public class TypeTests {
 	}
 
 	@Test
-	public void testWideningConversions() {
-		for (Map.Entry<TypeVariants, Set<TypeVariants>> entry : wideningConversions.entrySet()) {
-			for (IType fromType : entry.getKey().getVariants()) {
-				assertFalse(entry.getValue().isEmpty());
-				for (TypeVariants toVariant : entry.getValue()) {
-					assertFalse(toVariant.getVariants().isEmpty());
-					for (IType toType : toVariant.getVariants()) {
-						assertTrue(toType.getType() + " should have been assignable from "
-								+ fromType.getType(), toType.isAssignableFrom(fromType));
-					}
-				}
-			}
-		}
-	}
-
-	@Test
-	public void testWideningConversionsWithEcore() {
-		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		addEcoreDataTypesAndClassifiersToVariants();
-
-		testWideningConversions();
-	}
-
-	@Test
-	public void testWideningConversionsWithUnregisteredEcore() {
-		addEcoreDataTypesAndClassifiersToVariants();
-
-		for (Map.Entry<TypeVariants, Set<TypeVariants>> entry : wideningConversions.entrySet()) {
-			for (IType fromType : entry.getKey().getVariants()) {
-				assertFalse(entry.getValue().isEmpty());
-				for (TypeVariants toVariant : entry.getValue()) {
-					assertFalse(toVariant.getVariants().isEmpty());
-					for (IType toType : toVariant.getVariants()) {
-						if (toType instanceof EClassifierType || fromType instanceof EClassifierType) {
-							assertFalse(toType.getType() + " should not have been assignable from "
-									+ fromType.getType() + " as ecore is not registered in the environment.",
-									toType.isAssignableFrom(fromType));
-						} else {
-							assertTrue(toType.getType() + " should have been assignable from "
-									+ fromType.getType(), toType.isAssignableFrom(fromType));
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Test
 	public void testNarrowingConversions() {
 		for (Map.Entry<TypeVariants, Set<TypeVariants>> entry : narrowingConversions.entrySet()) {
 			for (IType fromType : entry.getKey().getVariants()) {
