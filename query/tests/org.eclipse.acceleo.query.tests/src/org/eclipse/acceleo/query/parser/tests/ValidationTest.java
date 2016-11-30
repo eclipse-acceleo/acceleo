@@ -33,6 +33,7 @@ import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.QueryValidationEngine;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
+import org.eclipse.acceleo.query.tests.services.ReceiverServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierLiteralType;
 import org.eclipse.acceleo.query.validation.type.EClassifierSetLiteralType;
@@ -1397,6 +1398,46 @@ public class ValidationTest {
 		assertTrue(possibleType instanceof EClassifierType);
 		assertEquals(EcorePackage.eINSTANCE.getEString(), possibleType.getType());
 
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void javaMethodReceiverServiceNoArg() {
+		Set<IType> selfTypes = new LinkedHashSet<IType>();
+		selfTypes.add(new ClassType(queryEnvironment, ReceiverServices.class));
+		variableTypes.put("self", selfTypes);
+		ServiceUtils.registerServices(queryEnvironment, ServiceUtils.getReceiverServices(queryEnvironment,
+				ReceiverServices.class));
+
+		final IValidationResult validationResult = engine.validate("self.noArg()", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(String.class, possibleType.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void javaMethodReceiverServiceArg() {
+		Set<IType> selfTypes = new LinkedHashSet<IType>();
+		selfTypes.add(new ClassType(queryEnvironment, ReceiverServices.class));
+		variableTypes.put("self", selfTypes);
+		ServiceUtils.registerServices(queryEnvironment, ServiceUtils.getReceiverServices(queryEnvironment,
+				ReceiverServices.class));
+
+		final IValidationResult validationResult = engine.validate("self.arg('arg')", variableTypes);
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		final Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof ClassType);
+		assertEquals(String.class, possibleType.getType());
 		assertEquals(0, validationResult.getMessages().size());
 	}
 

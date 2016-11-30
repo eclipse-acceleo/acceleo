@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Gra
 import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childFactory;
 import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
+import org.eclipse.acceleo.query.tests.services.ReceiverServices;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -641,4 +642,27 @@ public class EvaluationTest {
 
 		assertEquals("\u1F61C \u1F62D \u1F63D \u1F1EB\u1F1F7", result.getResult());
 	}
+
+	@Test
+	public void javaMethodReceiverServiceNoArg() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", new ReceiverServices());
+		ServiceUtils.registerServices(queryEnvironment, ServiceUtils.getReceiverServices(queryEnvironment,
+				ReceiverServices.class));
+		EvaluationResult result = engine.eval(builder.build("self.noArg()"), variables);
+
+		assertEquals("noArgResult", result.getResult());
+	}
+
+	@Test
+	public void javaMethodReceiverServiceArg() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", new ReceiverServices());
+		ServiceUtils.registerServices(queryEnvironment, ServiceUtils.getReceiverServices(queryEnvironment,
+				ReceiverServices.class));
+		EvaluationResult result = engine.eval(builder.build("self.arg('arg')"), variables);
+
+		assertEquals("argResultarg", result.getResult());
+	}
+
 }
