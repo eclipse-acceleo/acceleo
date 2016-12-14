@@ -59,12 +59,30 @@ public final class Query {
 	 *            an instance to search all instances at evaluation time
 	 * @return a new {@link IQueryEnvironment} configured with the services provided by default with Acceleo
 	 *         Query
-	 * @since 4.0.0
+	 * @since 4.0
 	 */
 	public static IQueryEnvironment newEnvironmentWithDefaultServices(CrossReferenceProvider xRefProvider,
 			IRootEObjectProvider rootProvider) {
 		final IQueryEnvironment env = newEnvironment();
 
+		configureEnvironment(env, xRefProvider, rootProvider);
+
+		return env;
+	}
+
+	/**
+	 * Configures an environment with all the default services provided by AQL.
+	 * 
+	 * @param env
+	 *            The environment in which to register all default services.
+	 * @param xRefProvider
+	 *            an instance to inspect cross references at evaluation time
+	 * @param rootProvider
+	 *            an instance to search all instances at evaluation time
+	 * @since 5.0
+	 */
+	public static void configureEnvironment(IQueryEnvironment env, CrossReferenceProvider xRefProvider,
+			IRootEObjectProvider rootProvider) {
 		Set<IService> services = ServiceUtils.getServices(env, new AnyServices(env));
 		ServiceUtils.registerServices(env, services);
 		env.registerEPackage(EcorePackage.eINSTANCE);
@@ -86,8 +104,6 @@ public final class Query {
 		ServiceUtils.registerServices(env, services);
 		services = ServiceUtils.getServices(env, ResourceServices.class);
 		ServiceUtils.registerServices(env, services);
-
-		return env;
 	}
 
 	/**

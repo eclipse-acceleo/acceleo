@@ -227,6 +227,12 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 		}
 	}
 
+	/**
+	 * Returns the AQL environment that needs to be used when evaluating AQL expressions from within this
+	 * Acceleo context.
+	 * 
+	 * @return The AQL environment configured with this Acceleo context.
+	 */
 	@Override
 	public IQueryEnvironment getQueryEnvironment() {
 		return aqlEnvironment;

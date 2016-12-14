@@ -1,0 +1,24 @@
+[module m2('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::aql::tests::evaluation::m1/]
+[import org::eclipse::acceleo::aql::tests::evaluation::m4/]
+
+[template public t21(param1 : ecore::EPackage)]
+generated from m2.t21(EPackage)
+[param1.eClassifiers->first().t11()/]
+[/template]
+
+[template public overrideMe(param1 : ecore::EClass)]
+generated from m2.overrideMe(EClass)
+[/template]
+
+[template private privateInBoth(param1 : ecore::EClass)]
+generated from m2.privateInBoth(EClass)
+[/template]
+
+[template public toImportsAndBack(param1 : ecore::EClass)]
+[param1.t41()/]
+[param1.overrideMe()/]
+[/template]
+
+[template public toImportsExtends(param1 : ecore::EClass)]
+[param1.t31()/]
+[/template]

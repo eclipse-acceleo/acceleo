@@ -58,7 +58,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 
 	@Override
 	public ServiceRegistrationResult registerService(IService service) {
-		final ServiceRegistrationResult result = lookupEngine.registerService(service);
+		final ServiceRegistrationResult result = getLookupEngine().registerService(service);
 
 		if (!result.getRegistered().isEmpty()) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
@@ -76,7 +76,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void removeService(IService service) {
-		final IService removedService = lookupEngine.removeService(service);
+		final IService removedService = getLookupEngine().removeService(service);
 		if (removedService != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.serviceRemoved(removedService);
@@ -91,7 +91,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void registerEPackage(EPackage ePackage) {
-		final EPackage registeredEPackage = ePackageProvider.registerPackage(ePackage);
+		final EPackage registeredEPackage = getEPackageProvider().registerPackage(ePackage);
 		if (registeredEPackage != null) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRegistered(ePackage);
@@ -108,7 +108,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void removeEPackage(EPackage ePackage) {
-		final Collection<EPackage> ePackages = ePackageProvider.removePackage(ePackage);
+		final Collection<EPackage> ePackages = getEPackageProvider().removePackage(ePackage);
 		for (EPackage ePkg : ePackages) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRemoved(ePkg);
@@ -124,7 +124,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void removeEPackage(String name) {
-		final Collection<EPackage> ePackages = ePackageProvider.removePackage(name);
+		final Collection<EPackage> ePackages = getEPackageProvider().removePackage(name);
 		for (EPackage ePackage : ePackages) {
 			for (IQueryEnvironmentListener listener : getListeners()) {
 				listener.ePackageRemoved(ePackage);
@@ -140,7 +140,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public void registerCustomClassMapping(EClassifier eClassifier, Class<?> cls) {
-		ePackageProvider.registerCustomClassMapping(eClassifier, cls);
+		getEPackageProvider().registerCustomClassMapping(eClassifier, cls);
 		for (IQueryEnvironmentListener listener : getListeners()) {
 			listener.customClassMappingRegistered(eClassifier, cls);
 		}
@@ -210,7 +210,7 @@ public class QueryEnvironment implements IQueryEnvironment {
 	 */
 	@Override
 	public boolean isRegisteredService(IService service) {
-		return lookupEngine.isRegisteredService(service);
+		return getLookupEngine().isRegisteredService(service);
 	}
 
 }

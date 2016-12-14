@@ -1,0 +1,10 @@
+[module m3('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[template public t31(param1 : ecore::EClass)]
+generated from m3.t31(EClass)
+[param1.overrideMe()/]
+[/template]
+
+[template public overrideMe(param1 : ecore::EClass)]
+generated from m3.overrideMe(EClass)
+[/template]

@@ -823,6 +823,7 @@ public class AcceleoParser {
 			if (moduleElement != null) {
 				res.add(moduleElement);
 			}
+			skipSpaces();
 		} while (moduleElement != null);
 
 		return res;

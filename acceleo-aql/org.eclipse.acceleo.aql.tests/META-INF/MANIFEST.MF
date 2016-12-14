@@ -10,3 +10,4 @@ Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.emf.ecore.xmi,
  org.eclipse.acceleo.aql
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: com.google.common.io;version="15.0.0"
