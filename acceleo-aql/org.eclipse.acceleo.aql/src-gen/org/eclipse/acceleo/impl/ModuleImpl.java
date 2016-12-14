@@ -1,0 +1,602 @@
+/**
+ * Copyright (c) 2008, 2016 Obeo.
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *      Obeo - initial API and implementation
+ */
+package org.eclipse.acceleo.impl;
+
+import java.util.Collection;
+
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.Metamodel;
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Module</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getDocumentation <em>Documentation</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#isDeprecated <em>Deprecated</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getMetamodels <em>Metamodels</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getExtends <em>Extends</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getImports <em>Imports</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getModuleElements <em>Module Elements</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @generated
+ */
+public class ModuleImpl extends NamedElementImpl implements Module {
+	/**
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocumentation()
+	 * @generated
+	 * @ordered
+	 */
+	protected Documentation documentation;
+
+	/**
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEPRECATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean deprecated = DEPRECATED_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getMetamodels() <em>Metamodels</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMetamodels()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Metamodel> metamodels;
+
+	/**
+	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExtends()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> extends_;
+
+	/**
+	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getImports()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> imports;
+
+	/**
+	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getModuleElements()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ModuleElement> moduleElements;
+
+	/**
+	 * The default value of the '{@link #getStartHeaderPosition() <em>Start Header Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartHeaderPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int START_HEADER_POSITION_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getStartHeaderPosition() <em>Start Header Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartHeaderPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected int startHeaderPosition = START_HEADER_POSITION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEndHeaderPosition() <em>End Header Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndHeaderPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int END_HEADER_POSITION_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getEndHeaderPosition() <em>End Header Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndHeaderPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected int endHeaderPosition = END_HEADER_POSITION_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ModuleImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return AcceleoPackage.Literals.MODULE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation getDocumentation() {
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDocumentation(
+			Documentation newDocumentation, NotificationChain msgs) {
+		Documentation oldDocumentation = documentation;
+		documentation = newDocumentation;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this,
+					Notification.SET, AcceleoPackage.MODULE__DOCUMENTATION,
+					oldDocumentation, newDocumentation);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDocumentation(Documentation newDocumentation) {
+		if (newDocumentation != documentation) {
+			NotificationChain msgs = null;
+			if (documentation != null)
+				msgs = ((InternalEObject) documentation).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
+						Documentation.class, msgs);
+			if (newDocumentation != null)
+				msgs = ((InternalEObject) newDocumentation).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
+						Documentation.class, msgs);
+			msgs = basicSetDocumentation(newDocumentation, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE__DOCUMENTATION, newDocumentation,
+					newDocumentation));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isDeprecated() {
+		return deprecated;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDeprecated(boolean newDeprecated) {
+		boolean oldDeprecated = deprecated;
+		deprecated = newDeprecated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE__DEPRECATED, oldDeprecated,
+					deprecated));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Metamodel> getMetamodels() {
+		if (metamodels == null) {
+			metamodels = new EObjectResolvingEList<Metamodel>(Metamodel.class,
+					this, AcceleoPackage.MODULE__METAMODELS);
+		}
+		return metamodels;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<String> getExtends() {
+		if (extends_ == null) {
+			extends_ = new EDataTypeUniqueEList<String>(String.class, this,
+					AcceleoPackage.MODULE__EXTENDS);
+		}
+		return extends_;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<String> getImports() {
+		if (imports == null) {
+			imports = new EDataTypeUniqueEList<String>(String.class, this,
+					AcceleoPackage.MODULE__IMPORTS);
+		}
+		return imports;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<ModuleElement> getModuleElements() {
+		if (moduleElements == null) {
+			moduleElements = new EObjectContainmentEList<ModuleElement>(
+					ModuleElement.class, this,
+					AcceleoPackage.MODULE__MODULE_ELEMENTS);
+		}
+		return moduleElements;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getStartHeaderPosition() {
+		return startHeaderPosition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setStartHeaderPosition(int newStartHeaderPosition) {
+		int oldStartHeaderPosition = startHeaderPosition;
+		startHeaderPosition = newStartHeaderPosition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE__START_HEADER_POSITION,
+					oldStartHeaderPosition, startHeaderPosition));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getEndHeaderPosition() {
+		return endHeaderPosition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setEndHeaderPosition(int newEndHeaderPosition) {
+		int oldEndHeaderPosition = endHeaderPosition;
+		endHeaderPosition = newEndHeaderPosition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE__END_HEADER_POSITION,
+					oldEndHeaderPosition, endHeaderPosition));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd,
+			int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case AcceleoPackage.MODULE__DOCUMENTATION:
+			if (documentation != null)
+				msgs = ((InternalEObject) documentation).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE
+								- AcceleoPackage.MODULE__DOCUMENTATION, null,
+						msgs);
+			return basicSetDocumentation((Documentation) otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd,
+			int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case AcceleoPackage.MODULE__DOCUMENTATION:
+			return basicSetDocumentation(null, msgs);
+		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+			return ((InternalEList<?>) getModuleElements()).basicRemove(
+					otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+		case AcceleoPackage.MODULE__DOCUMENTATION:
+			return getDocumentation();
+		case AcceleoPackage.MODULE__DEPRECATED:
+			return isDeprecated();
+		case AcceleoPackage.MODULE__METAMODELS:
+			return getMetamodels();
+		case AcceleoPackage.MODULE__EXTENDS:
+			return getExtends();
+		case AcceleoPackage.MODULE__IMPORTS:
+			return getImports();
+		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+			return getModuleElements();
+		case AcceleoPackage.MODULE__START_HEADER_POSITION:
+			return getStartHeaderPosition();
+		case AcceleoPackage.MODULE__END_HEADER_POSITION:
+			return getEndHeaderPosition();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+		case AcceleoPackage.MODULE__DOCUMENTATION:
+			setDocumentation((Documentation) newValue);
+			return;
+		case AcceleoPackage.MODULE__DEPRECATED:
+			setDeprecated((Boolean) newValue);
+			return;
+		case AcceleoPackage.MODULE__METAMODELS:
+			getMetamodels().clear();
+			getMetamodels().addAll((Collection<? extends Metamodel>) newValue);
+			return;
+		case AcceleoPackage.MODULE__EXTENDS:
+			getExtends().clear();
+			getExtends().addAll((Collection<? extends String>) newValue);
+			return;
+		case AcceleoPackage.MODULE__IMPORTS:
+			getImports().clear();
+			getImports().addAll((Collection<? extends String>) newValue);
+			return;
+		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+			getModuleElements().clear();
+			getModuleElements().addAll(
+					(Collection<? extends ModuleElement>) newValue);
+			return;
+		case AcceleoPackage.MODULE__START_HEADER_POSITION:
+			setStartHeaderPosition((Integer) newValue);
+			return;
+		case AcceleoPackage.MODULE__END_HEADER_POSITION:
+			setEndHeaderPosition((Integer) newValue);
+			return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+		case AcceleoPackage.MODULE__DOCUMENTATION:
+			setDocumentation((Documentation) null);
+			return;
+		case AcceleoPackage.MODULE__DEPRECATED:
+			setDeprecated(DEPRECATED_EDEFAULT);
+			return;
+		case AcceleoPackage.MODULE__METAMODELS:
+			getMetamodels().clear();
+			return;
+		case AcceleoPackage.MODULE__EXTENDS:
+			getExtends().clear();
+			return;
+		case AcceleoPackage.MODULE__IMPORTS:
+			getImports().clear();
+			return;
+		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+			getModuleElements().clear();
+			return;
+		case AcceleoPackage.MODULE__START_HEADER_POSITION:
+			setStartHeaderPosition(START_HEADER_POSITION_EDEFAULT);
+			return;
+		case AcceleoPackage.MODULE__END_HEADER_POSITION:
+			setEndHeaderPosition(END_HEADER_POSITION_EDEFAULT);
+			return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+		case AcceleoPackage.MODULE__DOCUMENTATION:
+			return documentation != null;
+		case AcceleoPackage.MODULE__DEPRECATED:
+			return deprecated != DEPRECATED_EDEFAULT;
+		case AcceleoPackage.MODULE__METAMODELS:
+			return metamodels != null && !metamodels.isEmpty();
+		case AcceleoPackage.MODULE__EXTENDS:
+			return extends_ != null && !extends_.isEmpty();
+		case AcceleoPackage.MODULE__IMPORTS:
+			return imports != null && !imports.isEmpty();
+		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+			return moduleElements != null && !moduleElements.isEmpty();
+		case AcceleoPackage.MODULE__START_HEADER_POSITION:
+			return startHeaderPosition != START_HEADER_POSITION_EDEFAULT;
+		case AcceleoPackage.MODULE__END_HEADER_POSITION:
+			return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == DocumentedElement.class) {
+			switch (derivedFeatureID) {
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+			case AcceleoPackage.MODULE__DEPRECATED:
+				return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+			default:
+				return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == DocumentedElement.class) {
+			switch (baseFeatureID) {
+			case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+				return AcceleoPackage.MODULE__DOCUMENTATION;
+			case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+				return AcceleoPackage.MODULE__DEPRECATED;
+			default:
+				return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (deprecated: "); //$NON-NLS-1$
+		result.append(deprecated);
+		result.append(", extends: "); //$NON-NLS-1$
+		result.append(extends_);
+		result.append(", imports: "); //$NON-NLS-1$
+		result.append(imports);
+		result.append(", startHeaderPosition: "); //$NON-NLS-1$
+		result.append(startHeaderPosition);
+		result.append(", endHeaderPosition: "); //$NON-NLS-1$
+		result.append(endHeaderPosition);
+		result.append(')');
+		return result.toString();
+	}
+
+} //ModuleImpl

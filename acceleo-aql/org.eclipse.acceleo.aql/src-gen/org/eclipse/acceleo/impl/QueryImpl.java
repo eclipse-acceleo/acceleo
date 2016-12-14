@@ -1,0 +1,650 @@
+/**
+ * Copyright (c) 2008, 2016 Obeo.
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *      Obeo - initial API and implementation
+ */
+package org.eclipse.acceleo.impl;
+
+import java.util.Collection;
+
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.Expression;
+import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.TypedElement;
+import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.VisibilityKind;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Query</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getDocumentation <em>Documentation</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#isDeprecated <em>Deprecated</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getVisibility <em>Visibility</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.QueryImpl#getBody <em>Body</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @generated
+ */
+public class QueryImpl extends ModuleElementImpl implements Query {
+	/**
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocumentation()
+	 * @generated
+	 * @ordered
+	 */
+	protected Documentation documentation;
+
+	/**
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEPRECATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean deprecated = DEPRECATED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected EClassifier type;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Variable> parameters;
+
+	/**
+	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVisibility()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PRIVATE;
+
+	/**
+	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVisibility()
+	 * @generated
+	 * @ordered
+	 */
+	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression body;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected QueryImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return AcceleoPackage.Literals.QUERY;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation getDocumentation() {
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDocumentation(
+			Documentation newDocumentation, NotificationChain msgs) {
+		Documentation oldDocumentation = documentation;
+		documentation = newDocumentation;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this,
+					Notification.SET, AcceleoPackage.QUERY__DOCUMENTATION,
+					oldDocumentation, newDocumentation);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDocumentation(Documentation newDocumentation) {
+		if (newDocumentation != documentation) {
+			NotificationChain msgs = null;
+			if (documentation != null)
+				msgs = ((InternalEObject) documentation).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
+						Documentation.class, msgs);
+			if (newDocumentation != null)
+				msgs = ((InternalEObject) newDocumentation).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
+						Documentation.class, msgs);
+			msgs = basicSetDocumentation(newDocumentation, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__DOCUMENTATION, newDocumentation,
+					newDocumentation));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isDeprecated() {
+		return deprecated;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDeprecated(boolean newDeprecated) {
+		boolean oldDeprecated = deprecated;
+		deprecated = newDeprecated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__DEPRECATED, oldDeprecated, deprecated));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClassifier getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject) type;
+			type = (EClassifier) eResolveProxy(oldType);
+			if (type != oldType) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.QUERY__TYPE, oldType, type));
+			}
+		}
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClassifier basicGetType() {
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setType(EClassifier newType) {
+		EClassifier oldType = type;
+		type = newType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__TYPE, oldType, type));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Variable> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectContainmentEList<Variable>(Variable.class,
+					this, AcceleoPackage.QUERY__PARAMETERS);
+		}
+		return parameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public VisibilityKind getVisibility() {
+		return visibility;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setVisibility(VisibilityKind newVisibility) {
+		VisibilityKind oldVisibility = visibility;
+		visibility = newVisibility == null ? VISIBILITY_EDEFAULT
+				: newVisibility;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__VISIBILITY, oldVisibility, visibility));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Expression getBody() {
+		if (body != null && body.eIsProxy()) {
+			InternalEObject oldBody = (InternalEObject) body;
+			body = (Expression) eResolveProxy(oldBody);
+			if (body != oldBody) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							AcceleoPackage.QUERY__BODY, oldBody, body));
+			}
+		}
+		return body;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Expression basicGetBody() {
+		return body;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setBody(Expression newBody) {
+		Expression oldBody = body;
+		body = newBody;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__BODY, oldBody, body));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd,
+			int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case AcceleoPackage.QUERY__DOCUMENTATION:
+			if (documentation != null)
+				msgs = ((InternalEObject) documentation).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE
+								- AcceleoPackage.QUERY__DOCUMENTATION, null,
+						msgs);
+			return basicSetDocumentation((Documentation) otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd,
+			int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case AcceleoPackage.QUERY__DOCUMENTATION:
+			return basicSetDocumentation(null, msgs);
+		case AcceleoPackage.QUERY__PARAMETERS:
+			return ((InternalEList<?>) getParameters()).basicRemove(otherEnd,
+					msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+		case AcceleoPackage.QUERY__DOCUMENTATION:
+			return getDocumentation();
+		case AcceleoPackage.QUERY__DEPRECATED:
+			return isDeprecated();
+		case AcceleoPackage.QUERY__NAME:
+			return getName();
+		case AcceleoPackage.QUERY__TYPE:
+			if (resolve)
+				return getType();
+			return basicGetType();
+		case AcceleoPackage.QUERY__PARAMETERS:
+			return getParameters();
+		case AcceleoPackage.QUERY__VISIBILITY:
+			return getVisibility();
+		case AcceleoPackage.QUERY__BODY:
+			if (resolve)
+				return getBody();
+			return basicGetBody();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+		case AcceleoPackage.QUERY__DOCUMENTATION:
+			setDocumentation((Documentation) newValue);
+			return;
+		case AcceleoPackage.QUERY__DEPRECATED:
+			setDeprecated((Boolean) newValue);
+			return;
+		case AcceleoPackage.QUERY__NAME:
+			setName((String) newValue);
+			return;
+		case AcceleoPackage.QUERY__TYPE:
+			setType((EClassifier) newValue);
+			return;
+		case AcceleoPackage.QUERY__PARAMETERS:
+			getParameters().clear();
+			getParameters().addAll((Collection<? extends Variable>) newValue);
+			return;
+		case AcceleoPackage.QUERY__VISIBILITY:
+			setVisibility((VisibilityKind) newValue);
+			return;
+		case AcceleoPackage.QUERY__BODY:
+			setBody((Expression) newValue);
+			return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+		case AcceleoPackage.QUERY__DOCUMENTATION:
+			setDocumentation((Documentation) null);
+			return;
+		case AcceleoPackage.QUERY__DEPRECATED:
+			setDeprecated(DEPRECATED_EDEFAULT);
+			return;
+		case AcceleoPackage.QUERY__NAME:
+			setName(NAME_EDEFAULT);
+			return;
+		case AcceleoPackage.QUERY__TYPE:
+			setType((EClassifier) null);
+			return;
+		case AcceleoPackage.QUERY__PARAMETERS:
+			getParameters().clear();
+			return;
+		case AcceleoPackage.QUERY__VISIBILITY:
+			setVisibility(VISIBILITY_EDEFAULT);
+			return;
+		case AcceleoPackage.QUERY__BODY:
+			setBody((Expression) null);
+			return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+		case AcceleoPackage.QUERY__DOCUMENTATION:
+			return documentation != null;
+		case AcceleoPackage.QUERY__DEPRECATED:
+			return deprecated != DEPRECATED_EDEFAULT;
+		case AcceleoPackage.QUERY__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT
+					.equals(name);
+		case AcceleoPackage.QUERY__TYPE:
+			return type != null;
+		case AcceleoPackage.QUERY__PARAMETERS:
+			return parameters != null && !parameters.isEmpty();
+		case AcceleoPackage.QUERY__VISIBILITY:
+			return visibility != VISIBILITY_EDEFAULT;
+		case AcceleoPackage.QUERY__BODY:
+			return body != null;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == DocumentedElement.class) {
+			switch (derivedFeatureID) {
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+			case AcceleoPackage.QUERY__DEPRECATED:
+				return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+			default:
+				return -1;
+			}
+		}
+		if (baseClass == NamedElement.class) {
+			switch (derivedFeatureID) {
+			case AcceleoPackage.QUERY__NAME:
+				return AcceleoPackage.NAMED_ELEMENT__NAME;
+			default:
+				return -1;
+			}
+		}
+		if (baseClass == TypedElement.class) {
+			switch (derivedFeatureID) {
+			case AcceleoPackage.QUERY__TYPE:
+				return AcceleoPackage.TYPED_ELEMENT__TYPE;
+			default:
+				return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == DocumentedElement.class) {
+			switch (baseFeatureID) {
+			case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+				return AcceleoPackage.QUERY__DOCUMENTATION;
+			case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+				return AcceleoPackage.QUERY__DEPRECATED;
+			default:
+				return -1;
+			}
+		}
+		if (baseClass == NamedElement.class) {
+			switch (baseFeatureID) {
+			case AcceleoPackage.NAMED_ELEMENT__NAME:
+				return AcceleoPackage.QUERY__NAME;
+			default:
+				return -1;
+			}
+		}
+		if (baseClass == TypedElement.class) {
+			switch (baseFeatureID) {
+			case AcceleoPackage.TYPED_ELEMENT__TYPE:
+				return AcceleoPackage.QUERY__TYPE;
+			default:
+				return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (deprecated: "); //$NON-NLS-1$
+		result.append(deprecated);
+		result.append(", name: "); //$NON-NLS-1$
+		result.append(name);
+		result.append(", visibility: "); //$NON-NLS-1$
+		result.append(visibility);
+		result.append(')');
+		return result.toString();
+	}
+
+} //QueryImpl
