@@ -1,7 +1,7 @@
 [module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
 
 [template public myTemplate(myParam : ecore::EPackage)]
-  [if (myParam.eClassifiers->size() = 0)]
+  [file (myParam.name + '\'.txt', overwrite)]
     some static text.
-  [/if]
+  [/file]
 [/template]

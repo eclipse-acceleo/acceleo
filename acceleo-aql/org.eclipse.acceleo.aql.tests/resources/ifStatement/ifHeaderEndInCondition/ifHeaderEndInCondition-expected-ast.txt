@@ -6,10 +6,10 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
+    [if .equals(.add(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), ''), ']') (124..163)
       
     some static text.
-   (158..183) (158..183)
-    [/if] (119..188)
+   (165..190) (165..190)
+    [/if] (119..195)
     
- (188..189) (116..189)[/template] (61..200)
+ (195..196) (116..196)[/template] (61..207)

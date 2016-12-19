@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -156,6 +157,7 @@ public abstract class AbstractTemplatesTestSuite {
 	 * Tests the validation by comparing the validated template.
 	 */
 	@Test
+	@Ignore
 	public void validation() {
 		// TODO
 		fail("not implemented yet.");
@@ -165,6 +167,7 @@ public abstract class AbstractTemplatesTestSuite {
 	 * Tests the generation by comparing the result of the generation.
 	 */
 	@Test
+	@Ignore
 	public void generation() {
 		// TODO
 		fail("not implemented yet.");

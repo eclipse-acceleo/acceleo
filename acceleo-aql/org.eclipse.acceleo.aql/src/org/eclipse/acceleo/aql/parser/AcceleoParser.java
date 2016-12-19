@@ -630,7 +630,7 @@ public class AcceleoParser {
 				// TODO missing EQUAL
 			}
 			skipSpaces();
-			final int expressionEndLimit = text.indexOf(QUERY_END, currentPosition);
+			final int expressionEndLimit = getAqlExpressionEndLimit(QUERY_END, QUERY_END);
 			final Expression body = parseExpression(expressionEndLimit);
 			res.setBody(body);
 			skipSpaces();
@@ -738,8 +738,8 @@ public class AcceleoParser {
 			}
 			skipSpaces();
 			if (text.startsWith(TEMPLATE_POST, currentPosition)) {
-				final int expressionEndLimit = text.lastIndexOf(CLOSE_PARENTHESIS, text.indexOf(
-						TEMPLATE_HEADER_END, currentPosition));
+				final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
+						TEMPLATE_HEADER_END);
 				final Expression postExpression = parseExpression(expressionEndLimit);
 				res.setPost(postExpression);
 				if (!readString(CLOSE_PARENTHESIS)) {
@@ -858,8 +858,7 @@ public class AcceleoParser {
 				// TODO missing OPEN_PARENTHESIS
 			}
 			skipSpaces();
-			final int expressionEndLimit = text.lastIndexOf(CLOSE_PARENTHESIS, text.indexOf(IF_HEADER_END,
-					currentPosition));
+			final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, IF_HEADER_END);
 			final Expression condition = parseExpression(expressionEndLimit);
 			res.setCondition(condition);
 			skipSpaces();
@@ -908,8 +907,7 @@ public class AcceleoParser {
 			if (!readString(OPEN_PARENTHESIS)) {
 				// TODO missing OPEN_PARENTHESIS
 			}
-			final int bindingEndLimit = text.lastIndexOf(CLOSE_PARENTHESIS, text.indexOf(FOR_HEADER_END,
-					currentPosition));
+			final int bindingEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, FOR_HEADER_END);
 			final Binding binding = parseBinding(PIPE, bindingEndLimit);
 			res.setBinding(binding);
 			skipSpaces();
@@ -950,8 +948,7 @@ public class AcceleoParser {
 				// TODO missing OPEN_PARENTHESIS
 			}
 			skipSpaces();
-			final int expressionEndLimit = text.lastIndexOf(COMMA, text.indexOf(FILE_HEADER_END,
-					currentPosition));
+			final int expressionEndLimit = getAqlExpressionEndLimit(COMMA, FILE_HEADER_END);
 			final Expression url = parseExpression(expressionEndLimit);
 			res.setUrl(url);
 			skipSpaces();
@@ -987,12 +984,13 @@ public class AcceleoParser {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
 			res.setStartPosition(currentPosition);
 			currentPosition += LET_HEADER_START.length();
-			final int bindingEndLimit = text.indexOf(LET_HEADER_END, currentPosition);
+			int bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
 			Binding binding = parseBinding(EQUAL, bindingEndLimit);
 			res.getVariables().add(binding);
 			skipSpaces();
 			while (readString(COMMA)) {
 				skipSpaces();
+				bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
 				binding = parseBinding(EQUAL, bindingEndLimit);
 				res.getVariables().add(binding);
 				skipSpaces();
@@ -1124,8 +1122,8 @@ public class AcceleoParser {
 				// TODO missing OPEN_PARENTHESIS
 			}
 			skipSpaces();
-			final int expressionEndLimit = text.lastIndexOf(CLOSE_PARENTHESIS, text.indexOf(
-					PROTECTED_AREA_HEADER_END, currentPosition));
+			final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
+					PROTECTED_AREA_HEADER_END);
 			final Expression id = parseExpression(expressionEndLimit);
 			res.setId(id);
 			skipSpaces();
@@ -1161,7 +1159,8 @@ public class AcceleoParser {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
 			res.setStartPosition(currentPosition);
 			currentPosition += EXPRESSION_STATEMENT_START.length();
-			final int expressionEndLimit = text.indexOf(EXPRESSION_STATEMENT_END, currentPosition);
+			final int expressionEndLimit = getAqlExpressionEndLimit(EXPRESSION_STATEMENT_END,
+					EXPRESSION_STATEMENT_END);
 			final Expression expression = parseExpression(expressionEndLimit);
 			res.setExpression(expression);
 			if (!readString(EXPRESSION_STATEMENT_END)) {
@@ -1314,4 +1313,64 @@ public class AcceleoParser {
 		return result;
 	}
 
+	/**
+	 * Gets the end AQL expression limit according to the given end delimiter and the given end tag.
+	 * 
+	 * @param endDelimiter
+	 *            the end delimiter
+	 * @param endTag
+	 *            the end tag
+	 * @return the end AQL expression limit according to the given end delimiter and the given end tag if any
+	 *         found, <code>-1</code> otherwise
+	 */
+	protected int getAqlExpressionEndLimit(String endDelimiter, String endTag) {
+		int res = currentPosition;
+
+		int parenthesisDepth = 0;
+		while (currentPosition < text.length()) {
+			switch (text.charAt(res)) {
+				case '\'':
+					// skip string literal
+					boolean isEscaped = false;
+					res++;
+					endStrinLiteral: while (currentPosition < text.length()) {
+						switch (text.charAt(res)) {
+							case '\\':
+								isEscaped = !isEscaped;
+								res++;
+								break;
+							case '\'':
+								if (!isEscaped) {
+									res++;
+									break endStrinLiteral;
+								}
+								res++;
+								isEscaped = false;
+								break;
+							default:
+								res++;
+								isEscaped = false;
+								break;
+						}
+					}
+					break;
+				case '(':
+					parenthesisDepth++;
+					res++;
+					break;
+				case ')':
+					parenthesisDepth--;
+					res++;
+					break;
+				default:
+					res++;
+					break;
+			}
+			if (text.startsWith(endTag, res) || parenthesisDepth == 0 && text.startsWith(endDelimiter, res)) {
+				break;
+			}
+		}
+
+		return res;
+	}
 }

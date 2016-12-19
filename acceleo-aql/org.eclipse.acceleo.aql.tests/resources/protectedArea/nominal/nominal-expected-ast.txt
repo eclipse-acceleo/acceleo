@@ -6,7 +6,7 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [protected .aqlFeatureAccess(mtParam, 'name') (131..143)
+    [protected .aqlFeatureAccess(myParam, 'name') (131..143)
       
     some static text.
    (145..170) (145..170)
