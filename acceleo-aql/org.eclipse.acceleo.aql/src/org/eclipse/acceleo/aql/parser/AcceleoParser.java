@@ -277,6 +277,11 @@ public class AcceleoParser {
 	private static final String IMPORT_END = SLASH_END;
 
 	/**
+	 * Extends key work.
+	 */
+	private static final String EXTENDS = "extends ";
+
+	/**
 	 * The {@link IQueryEnvironment}.
 	 */
 	private final IQueryEnvironment queryEnvironment;
@@ -462,6 +467,24 @@ public class AcceleoParser {
 				// TODO missing CLOSE_PARENTHESIS
 			}
 			skipSpaces();
+			if (readString(EXTENDS)) {
+				skipSpaces();
+				ModuleReference extended = parseModuleReference();
+				if (extended == null) {
+					// missing ModuleReference
+				}
+				res.getExtends().add(extended);
+				skipSpaces();
+				while (readString(COMMA)) {
+					skipSpaces();
+					extended = parseModuleReference();
+					if (extended == null) {
+						// missing ModuleReference
+					}
+					res.getExtends().add(extended);
+					skipSpaces();
+				}
+			}
 			if (!readString(MODULE_HEADER_END)) {
 				// TODO missing MODULE_HEADER_END
 			}
@@ -490,21 +513,38 @@ public class AcceleoParser {
 		final ModuleReference res;
 
 		if (text.startsWith(IMPORT_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleReference();
 			currentPosition += IMPORT_START.length();
 			skipSpaces();
-			final String moduleQualifiedName = parseModuleQualifiedName();
-			if (moduleQualifiedName == null) {
-				// TODO missing moduleQualifiedName
-			}
-			res.setUrl(moduleQualifiedName);
+			res = parseModuleReference();
 			skipSpaces();
 			if (!readString(IMPORT_END)) {
 				// TODO missing IMPORT_END
 			}
-			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Parses a {@link ModuleReference}.
+	 * 
+	 * @return the recognized {@link ModuleReference} if any, <code>null</code> otherwise
+	 */
+	protected ModuleReference parseModuleReference() {
+		final ModuleReference res;
+
+		final int startPosition = currentPosition;
+		final String moduleQualifiedName = parseModuleQualifiedName();
+		if (moduleQualifiedName == null) {
+			// TODO missing moduleQualifiedName
+			res = null;
+		} else {
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleReference();
+			res.setStartPosition(startPosition);
+			res.setUrl(moduleQualifiedName);
+			res.setEndPosition(currentPosition);
 		}
 
 		return res;
