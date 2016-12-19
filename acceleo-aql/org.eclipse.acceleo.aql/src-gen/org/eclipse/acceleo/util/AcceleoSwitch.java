@@ -75,305 +75,314 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-		case AcceleoPackage.MODULE: {
-			Module module = (Module) theEObject;
-			T result = caseModule(module);
-			if (result == null)
-				result = caseNamedElement(module);
-			if (result == null)
-				result = caseDocumentedElement(module);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.METAMODEL: {
-			Metamodel metamodel = (Metamodel) theEObject;
-			T result = caseMetamodel(metamodel);
-			if (result == null)
-				result = caseASTNode(metamodel);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.MODULE_ELEMENT: {
-			ModuleElement moduleElement = (ModuleElement) theEObject;
-			T result = caseModuleElement(moduleElement);
-			if (result == null)
-				result = caseASTNode(moduleElement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.COMMENT: {
-			Comment comment = (Comment) theEObject;
-			T result = caseComment(comment);
-			if (result == null)
-				result = caseModuleElement(comment);
-			if (result == null)
-				result = caseASTNode(comment);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.COMMENT_BODY: {
-			CommentBody commentBody = (CommentBody) theEObject;
-			T result = caseCommentBody(commentBody);
-			if (result == null)
-				result = caseASTNode(commentBody);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.DOCUMENTATION: {
-			Documentation documentation = (Documentation) theEObject;
-			T result = caseDocumentation(documentation);
-			if (result == null)
-				result = caseComment(documentation);
-			if (result == null)
-				result = caseModuleElement(documentation);
-			if (result == null)
-				result = caseASTNode(documentation);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.MODULE_DOCUMENTATION: {
-			ModuleDocumentation moduleDocumentation = (ModuleDocumentation) theEObject;
-			T result = caseModuleDocumentation(moduleDocumentation);
-			if (result == null)
-				result = caseDocumentation(moduleDocumentation);
-			if (result == null)
-				result = caseComment(moduleDocumentation);
-			if (result == null)
-				result = caseModuleElement(moduleDocumentation);
-			if (result == null)
-				result = caseASTNode(moduleDocumentation);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION: {
-			ModuleElementDocumentation moduleElementDocumentation = (ModuleElementDocumentation) theEObject;
-			T result = caseModuleElementDocumentation(moduleElementDocumentation);
-			if (result == null)
-				result = caseDocumentation(moduleElementDocumentation);
-			if (result == null)
-				result = caseComment(moduleElementDocumentation);
-			if (result == null)
-				result = caseModuleElement(moduleElementDocumentation);
-			if (result == null)
-				result = caseASTNode(moduleElementDocumentation);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.PARAMETER_DOCUMENTATION: {
-			ParameterDocumentation parameterDocumentation = (ParameterDocumentation) theEObject;
-			T result = caseParameterDocumentation(parameterDocumentation);
-			if (result == null)
-				result = caseComment(parameterDocumentation);
-			if (result == null)
-				result = caseModuleElement(parameterDocumentation);
-			if (result == null)
-				result = caseASTNode(parameterDocumentation);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.DOCUMENTED_ELEMENT: {
-			DocumentedElement documentedElement = (DocumentedElement) theEObject;
-			T result = caseDocumentedElement(documentedElement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.NAMED_ELEMENT: {
-			NamedElement namedElement = (NamedElement) theEObject;
-			T result = caseNamedElement(namedElement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.AST_NODE: {
-			ASTNode astNode = (ASTNode) theEObject;
-			T result = caseASTNode(astNode);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.BLOCK: {
-			Block block = (Block) theEObject;
-			T result = caseBlock(block);
-			if (result == null)
-				result = caseASTNode(block);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.TYPED_ELEMENT: {
-			TypedElement typedElement = (TypedElement) theEObject;
-			T result = caseTypedElement(typedElement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.TEMPLATE: {
-			Template template = (Template) theEObject;
-			T result = caseTemplate(template);
-			if (result == null)
-				result = caseModuleElement(template);
-			if (result == null)
-				result = caseDocumentedElement(template);
-			if (result == null)
-				result = caseNamedElement(template);
-			if (result == null)
-				result = caseASTNode(template);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.QUERY: {
-			Query query = (Query) theEObject;
-			T result = caseQuery(query);
-			if (result == null)
-				result = caseModuleElement(query);
-			if (result == null)
-				result = caseDocumentedElement(query);
-			if (result == null)
-				result = caseNamedElement(query);
-			if (result == null)
-				result = caseTypedElement(query);
-			if (result == null)
-				result = caseASTNode(query);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.EXPRESSION: {
-			Expression expression = (Expression) theEObject;
-			T result = caseExpression(expression);
-			if (result == null)
-				result = caseASTNode(expression);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.VARIABLE: {
-			Variable variable = (Variable) theEObject;
-			T result = caseVariable(variable);
-			if (result == null)
-				result = caseTypedElement(variable);
-			if (result == null)
-				result = caseNamedElement(variable);
-			if (result == null)
-				result = caseASTNode(variable);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.BINDING: {
-			Binding binding = (Binding) theEObject;
-			T result = caseBinding(binding);
-			if (result == null)
-				result = caseVariable(binding);
-			if (result == null)
-				result = caseTypedElement(binding);
-			if (result == null)
-				result = caseNamedElement(binding);
-			if (result == null)
-				result = caseASTNode(binding);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.STATEMENT: {
-			Statement statement = (Statement) theEObject;
-			T result = caseStatement(statement);
-			if (result == null)
-				result = caseASTNode(statement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.EXPRESSION_STATEMENT: {
-			ExpressionStatement expressionStatement = (ExpressionStatement) theEObject;
-			T result = caseExpressionStatement(expressionStatement);
-			if (result == null)
-				result = caseStatement(expressionStatement);
-			if (result == null)
-				result = caseASTNode(expressionStatement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.PROTECTED_AREA: {
-			ProtectedArea protectedArea = (ProtectedArea) theEObject;
-			T result = caseProtectedArea(protectedArea);
-			if (result == null)
-				result = caseStatement(protectedArea);
-			if (result == null)
-				result = caseASTNode(protectedArea);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.FOR_STATEMENT: {
-			ForStatement forStatement = (ForStatement) theEObject;
-			T result = caseForStatement(forStatement);
-			if (result == null)
-				result = caseStatement(forStatement);
-			if (result == null)
-				result = caseASTNode(forStatement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.IF_STATEMENT: {
-			IfStatement ifStatement = (IfStatement) theEObject;
-			T result = caseIfStatement(ifStatement);
-			if (result == null)
-				result = caseStatement(ifStatement);
-			if (result == null)
-				result = caseASTNode(ifStatement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.LET_STATEMENT: {
-			LetStatement letStatement = (LetStatement) theEObject;
-			T result = caseLetStatement(letStatement);
-			if (result == null)
-				result = caseStatement(letStatement);
-			if (result == null)
-				result = caseASTNode(letStatement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.FILE_STATEMENT: {
-			FileStatement fileStatement = (FileStatement) theEObject;
-			T result = caseFileStatement(fileStatement);
-			if (result == null)
-				result = caseStatement(fileStatement);
-			if (result == null)
-				result = caseASTNode(fileStatement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		case AcceleoPackage.TEXT_STATEMENT: {
-			TextStatement textStatement = (TextStatement) theEObject;
-			T result = caseTextStatement(textStatement);
-			if (result == null)
-				result = caseStatement(textStatement);
-			if (result == null)
-				result = caseASTNode(textStatement);
-			if (result == null)
-				result = defaultCase(theEObject);
-			return result;
-		}
-		default:
-			return defaultCase(theEObject);
+			case AcceleoPackage.MODULE: {
+				Module module = (Module)theEObject;
+				T result = caseModule(module);
+				if (result == null)
+					result = caseNamedElement(module);
+				if (result == null)
+					result = caseDocumentedElement(module);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.METAMODEL: {
+				Metamodel metamodel = (Metamodel)theEObject;
+				T result = caseMetamodel(metamodel);
+				if (result == null)
+					result = caseASTNode(metamodel);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.MODULE_REFERENCE: {
+				ModuleReference moduleReference = (ModuleReference)theEObject;
+				T result = caseModuleReference(moduleReference);
+				if (result == null)
+					result = caseASTNode(moduleReference);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.MODULE_ELEMENT: {
+				ModuleElement moduleElement = (ModuleElement)theEObject;
+				T result = caseModuleElement(moduleElement);
+				if (result == null)
+					result = caseASTNode(moduleElement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.COMMENT: {
+				Comment comment = (Comment)theEObject;
+				T result = caseComment(comment);
+				if (result == null)
+					result = caseModuleElement(comment);
+				if (result == null)
+					result = caseASTNode(comment);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.COMMENT_BODY: {
+				CommentBody commentBody = (CommentBody)theEObject;
+				T result = caseCommentBody(commentBody);
+				if (result == null)
+					result = caseASTNode(commentBody);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.DOCUMENTATION: {
+				Documentation documentation = (Documentation)theEObject;
+				T result = caseDocumentation(documentation);
+				if (result == null)
+					result = caseComment(documentation);
+				if (result == null)
+					result = caseModuleElement(documentation);
+				if (result == null)
+					result = caseASTNode(documentation);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.MODULE_DOCUMENTATION: {
+				ModuleDocumentation moduleDocumentation = (ModuleDocumentation)theEObject;
+				T result = caseModuleDocumentation(moduleDocumentation);
+				if (result == null)
+					result = caseDocumentation(moduleDocumentation);
+				if (result == null)
+					result = caseComment(moduleDocumentation);
+				if (result == null)
+					result = caseModuleElement(moduleDocumentation);
+				if (result == null)
+					result = caseASTNode(moduleDocumentation);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION: {
+				ModuleElementDocumentation moduleElementDocumentation = (ModuleElementDocumentation)theEObject;
+				T result = caseModuleElementDocumentation(moduleElementDocumentation);
+				if (result == null)
+					result = caseDocumentation(moduleElementDocumentation);
+				if (result == null)
+					result = caseComment(moduleElementDocumentation);
+				if (result == null)
+					result = caseModuleElement(moduleElementDocumentation);
+				if (result == null)
+					result = caseASTNode(moduleElementDocumentation);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.PARAMETER_DOCUMENTATION: {
+				ParameterDocumentation parameterDocumentation = (ParameterDocumentation)theEObject;
+				T result = caseParameterDocumentation(parameterDocumentation);
+				if (result == null)
+					result = caseComment(parameterDocumentation);
+				if (result == null)
+					result = caseModuleElement(parameterDocumentation);
+				if (result == null)
+					result = caseASTNode(parameterDocumentation);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.DOCUMENTED_ELEMENT: {
+				DocumentedElement documentedElement = (DocumentedElement)theEObject;
+				T result = caseDocumentedElement(documentedElement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.NAMED_ELEMENT: {
+				NamedElement namedElement = (NamedElement)theEObject;
+				T result = caseNamedElement(namedElement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.AST_NODE: {
+				ASTNode astNode = (ASTNode)theEObject;
+				T result = caseASTNode(astNode);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.BLOCK: {
+				Block block = (Block)theEObject;
+				T result = caseBlock(block);
+				if (result == null)
+					result = caseASTNode(block);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.TYPED_ELEMENT: {
+				TypedElement typedElement = (TypedElement)theEObject;
+				T result = caseTypedElement(typedElement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.TEMPLATE: {
+				Template template = (Template)theEObject;
+				T result = caseTemplate(template);
+				if (result == null)
+					result = caseModuleElement(template);
+				if (result == null)
+					result = caseDocumentedElement(template);
+				if (result == null)
+					result = caseNamedElement(template);
+				if (result == null)
+					result = caseASTNode(template);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.QUERY: {
+				Query query = (Query)theEObject;
+				T result = caseQuery(query);
+				if (result == null)
+					result = caseModuleElement(query);
+				if (result == null)
+					result = caseDocumentedElement(query);
+				if (result == null)
+					result = caseNamedElement(query);
+				if (result == null)
+					result = caseTypedElement(query);
+				if (result == null)
+					result = caseASTNode(query);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.EXPRESSION: {
+				Expression expression = (Expression)theEObject;
+				T result = caseExpression(expression);
+				if (result == null)
+					result = caseASTNode(expression);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.VARIABLE: {
+				Variable variable = (Variable)theEObject;
+				T result = caseVariable(variable);
+				if (result == null)
+					result = caseTypedElement(variable);
+				if (result == null)
+					result = caseNamedElement(variable);
+				if (result == null)
+					result = caseASTNode(variable);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.BINDING: {
+				Binding binding = (Binding)theEObject;
+				T result = caseBinding(binding);
+				if (result == null)
+					result = caseVariable(binding);
+				if (result == null)
+					result = caseTypedElement(binding);
+				if (result == null)
+					result = caseNamedElement(binding);
+				if (result == null)
+					result = caseASTNode(binding);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.STATEMENT: {
+				Statement statement = (Statement)theEObject;
+				T result = caseStatement(statement);
+				if (result == null)
+					result = caseASTNode(statement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.EXPRESSION_STATEMENT: {
+				ExpressionStatement expressionStatement = (ExpressionStatement)theEObject;
+				T result = caseExpressionStatement(expressionStatement);
+				if (result == null)
+					result = caseStatement(expressionStatement);
+				if (result == null)
+					result = caseASTNode(expressionStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.PROTECTED_AREA: {
+				ProtectedArea protectedArea = (ProtectedArea)theEObject;
+				T result = caseProtectedArea(protectedArea);
+				if (result == null)
+					result = caseStatement(protectedArea);
+				if (result == null)
+					result = caseASTNode(protectedArea);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.FOR_STATEMENT: {
+				ForStatement forStatement = (ForStatement)theEObject;
+				T result = caseForStatement(forStatement);
+				if (result == null)
+					result = caseStatement(forStatement);
+				if (result == null)
+					result = caseASTNode(forStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.IF_STATEMENT: {
+				IfStatement ifStatement = (IfStatement)theEObject;
+				T result = caseIfStatement(ifStatement);
+				if (result == null)
+					result = caseStatement(ifStatement);
+				if (result == null)
+					result = caseASTNode(ifStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.LET_STATEMENT: {
+				LetStatement letStatement = (LetStatement)theEObject;
+				T result = caseLetStatement(letStatement);
+				if (result == null)
+					result = caseStatement(letStatement);
+				if (result == null)
+					result = caseASTNode(letStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.FILE_STATEMENT: {
+				FileStatement fileStatement = (FileStatement)theEObject;
+				T result = caseFileStatement(fileStatement);
+				if (result == null)
+					result = caseStatement(fileStatement);
+				if (result == null)
+					result = caseASTNode(fileStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.TEXT_STATEMENT: {
+				TextStatement textStatement = (TextStatement)theEObject;
+				T result = caseTextStatement(textStatement);
+				if (result == null)
+					result = caseStatement(textStatement);
+				if (result == null)
+					result = caseASTNode(textStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			default:
+				return defaultCase(theEObject);
 		}
 	}
 
@@ -404,6 +413,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMetamodel(Metamodel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Module Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Module Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModuleReference(ModuleReference object) {
 		return null;
 	}
 

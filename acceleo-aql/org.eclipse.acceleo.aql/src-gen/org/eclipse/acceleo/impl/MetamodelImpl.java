@@ -38,8 +38,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class MetamodelImpl extends MinimalEObjectImpl.Container implements
-		Metamodel {
+public class MetamodelImpl extends MinimalEObjectImpl.Container implements Metamodel {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -127,9 +126,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.METAMODEL__START_POSITION, oldStartPosition,
-					startPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.METAMODEL__START_POSITION,
+					oldStartPosition, startPosition));
 	}
 
 	/**
@@ -150,9 +148,8 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.METAMODEL__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.METAMODEL__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -162,13 +159,13 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 	 */
 	public EPackage getReferencedPackage() {
 		if (referencedPackage != null && referencedPackage.eIsProxy()) {
-			InternalEObject oldReferencedPackage = (InternalEObject) referencedPackage;
-			referencedPackage = (EPackage) eResolveProxy(oldReferencedPackage);
+			InternalEObject oldReferencedPackage = (InternalEObject)referencedPackage;
+			referencedPackage = (EPackage)eResolveProxy(oldReferencedPackage);
 			if (referencedPackage != oldReferencedPackage) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.METAMODEL__REFERENCED_PACKAGE,
-							oldReferencedPackage, referencedPackage));
+							AcceleoPackage.METAMODEL__REFERENCED_PACKAGE, oldReferencedPackage,
+							referencedPackage));
 			}
 		}
 		return referencedPackage;
@@ -193,8 +190,7 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 		referencedPackage = newReferencedPackage;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.METAMODEL__REFERENCED_PACKAGE,
-					oldReferencedPackage, referencedPackage));
+					AcceleoPackage.METAMODEL__REFERENCED_PACKAGE, oldReferencedPackage, referencedPackage));
 	}
 
 	/**
@@ -205,14 +201,14 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.METAMODEL__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.METAMODEL__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-			if (resolve)
-				return getReferencedPackage();
-			return basicGetReferencedPackage();
+			case AcceleoPackage.METAMODEL__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.METAMODEL__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
+				if (resolve)
+					return getReferencedPackage();
+				return basicGetReferencedPackage();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -225,15 +221,15 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.METAMODEL__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.METAMODEL__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-			setReferencedPackage((EPackage) newValue);
-			return;
+			case AcceleoPackage.METAMODEL__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.METAMODEL__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
+				setReferencedPackage((EPackage)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -246,15 +242,15 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.METAMODEL__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.METAMODEL__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-			setReferencedPackage((EPackage) null);
-			return;
+			case AcceleoPackage.METAMODEL__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.METAMODEL__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
+				setReferencedPackage((EPackage)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -267,12 +263,12 @@ public class MetamodelImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.METAMODEL__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.METAMODEL__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
-			return referencedPackage != null;
+			case AcceleoPackage.METAMODEL__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.METAMODEL__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:
+				return referencedPackage != null;
 		}
 		return super.eIsSet(featureID);
 	}

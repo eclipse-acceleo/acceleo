@@ -32,8 +32,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -47,7 +45,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getDocumentation <em>Documentation</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#isDeprecated <em>Deprecated</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getOverrides <em>Overrides</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getGuard <em>Guard</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.TemplateImpl#getPost <em>Post</em>}</li>
@@ -109,16 +106,6 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getOverrides() <em>Overrides</em>}' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getOverrides()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<String> overrides;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
@@ -233,14 +220,12 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetDocumentation(
-			Documentation newDocumentation, NotificationChain msgs) {
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
 		Documentation oldDocumentation = documentation;
 		documentation = newDocumentation;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.TEMPLATE__DOCUMENTATION,
-					oldDocumentation, newDocumentation);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.TEMPLATE__DOCUMENTATION, oldDocumentation, newDocumentation);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -258,20 +243,17 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
 			if (documentation != null)
-				msgs = ((InternalEObject) documentation).eInverseRemove(this,
-						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-						Documentation.class, msgs);
+				msgs = ((InternalEObject)documentation).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 			if (newDocumentation != null)
-				msgs = ((InternalEObject) newDocumentation).eInverseAdd(this,
-						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-						Documentation.class, msgs);
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 			msgs = basicSetDocumentation(newDocumentation, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__DOCUMENTATION, newDocumentation,
-					newDocumentation));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__DOCUMENTATION,
+					newDocumentation, newDocumentation));
 	}
 
 	/**
@@ -292,9 +274,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__DEPRECATED, oldDeprecated,
-					deprecated));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__DEPRECATED,
+					oldDeprecated, deprecated));
 	}
 
 	/**
@@ -315,21 +296,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<String> getOverrides() {
-		if (overrides == null) {
-			overrides = new EDataTypeUniqueEList<String>(String.class, this,
-					AcceleoPackage.TEMPLATE__OVERRIDES);
-		}
-		return overrides;
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__NAME, oldName,
+					name));
 	}
 
 	/**
@@ -339,8 +307,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 */
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
-			parameters = new EObjectContainmentEList<Variable>(Variable.class,
-					this, AcceleoPackage.TEMPLATE__PARAMETERS);
+			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
+					AcceleoPackage.TEMPLATE__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -359,14 +327,12 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetGuard(Expression newGuard,
-			NotificationChain msgs) {
+	public NotificationChain basicSetGuard(Expression newGuard, NotificationChain msgs) {
 		Expression oldGuard = guard;
 		guard = newGuard;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.TEMPLATE__GUARD, oldGuard,
-					newGuard);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.TEMPLATE__GUARD, oldGuard, newGuard);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -384,19 +350,17 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		if (newGuard != guard) {
 			NotificationChain msgs = null;
 			if (guard != null)
-				msgs = ((InternalEObject) guard)
-						.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.TEMPLATE__GUARD, null, msgs);
+				msgs = ((InternalEObject)guard).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.TEMPLATE__GUARD, null, msgs);
 			if (newGuard != null)
-				msgs = ((InternalEObject) newGuard)
-						.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.TEMPLATE__GUARD, null, msgs);
+				msgs = ((InternalEObject)newGuard).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.TEMPLATE__GUARD, null, msgs);
 			msgs = basicSetGuard(newGuard, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__GUARD, newGuard, newGuard));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__GUARD, newGuard,
+					newGuard));
 	}
 
 	/**
@@ -413,14 +377,12 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPost(Expression newPost,
-			NotificationChain msgs) {
+	public NotificationChain basicSetPost(Expression newPost, NotificationChain msgs) {
 		Expression oldPost = post;
 		post = newPost;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.TEMPLATE__POST, oldPost,
-					newPost);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.TEMPLATE__POST, oldPost, newPost);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -438,19 +400,17 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		if (newPost != post) {
 			NotificationChain msgs = null;
 			if (post != null)
-				msgs = ((InternalEObject) post).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - AcceleoPackage.TEMPLATE__POST,
-						null, msgs);
+				msgs = ((InternalEObject)post).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.TEMPLATE__POST, null, msgs);
 			if (newPost != null)
-				msgs = ((InternalEObject) newPost).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - AcceleoPackage.TEMPLATE__POST,
-						null, msgs);
+				msgs = ((InternalEObject)newPost).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.TEMPLATE__POST, null, msgs);
 			msgs = basicSetPost(newPost, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__POST, newPost, newPost));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__POST, newPost,
+					newPost));
 	}
 
 	/**
@@ -471,8 +431,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		boolean oldMain = main;
 		main = newMain;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__MAIN, oldMain, main));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__MAIN, oldMain,
+					main));
 	}
 
 	/**
@@ -491,12 +451,10 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 */
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
-		visibility = newVisibility == null ? VISIBILITY_EDEFAULT
-				: newVisibility;
+		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__VISIBILITY, oldVisibility,
-					visibility));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__VISIBILITY,
+					oldVisibility, visibility));
 	}
 
 	/**
@@ -517,9 +475,8 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		Block oldBody = body;
 		body = newBody;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.TEMPLATE__BODY, oldBody,
-					newBody);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.TEMPLATE__BODY, oldBody, newBody);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -537,19 +494,17 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		if (newBody != body) {
 			NotificationChain msgs = null;
 			if (body != null)
-				msgs = ((InternalEObject) body).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - AcceleoPackage.TEMPLATE__BODY,
-						null, msgs);
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.TEMPLATE__BODY, null, msgs);
 			if (newBody != null)
-				msgs = ((InternalEObject) newBody).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - AcceleoPackage.TEMPLATE__BODY,
-						null, msgs);
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.TEMPLATE__BODY, null, msgs);
 			msgs = basicSetBody(newBody, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.TEMPLATE__BODY, newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TEMPLATE__BODY, newBody,
+					newBody));
 	}
 
 	/**
@@ -558,16 +513,13 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-			if (documentation != null)
-				msgs = ((InternalEObject) documentation).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.TEMPLATE__DOCUMENTATION, null,
-						msgs);
-			return basicSetDocumentation((Documentation) otherEnd, msgs);
+			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+				if (documentation != null)
+					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+							- AcceleoPackage.TEMPLATE__DOCUMENTATION, null, msgs);
+				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -578,20 +530,18 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-			return basicSetDocumentation(null, msgs);
-		case AcceleoPackage.TEMPLATE__PARAMETERS:
-			return ((InternalEList<?>) getParameters()).basicRemove(otherEnd,
-					msgs);
-		case AcceleoPackage.TEMPLATE__GUARD:
-			return basicSetGuard(null, msgs);
-		case AcceleoPackage.TEMPLATE__POST:
-			return basicSetPost(null, msgs);
-		case AcceleoPackage.TEMPLATE__BODY:
-			return basicSetBody(null, msgs);
+			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
+			case AcceleoPackage.TEMPLATE__PARAMETERS:
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.TEMPLATE__GUARD:
+				return basicSetGuard(null, msgs);
+			case AcceleoPackage.TEMPLATE__POST:
+				return basicSetPost(null, msgs);
+			case AcceleoPackage.TEMPLATE__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -604,26 +554,24 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-			return getDocumentation();
-		case AcceleoPackage.TEMPLATE__DEPRECATED:
-			return isDeprecated();
-		case AcceleoPackage.TEMPLATE__NAME:
-			return getName();
-		case AcceleoPackage.TEMPLATE__OVERRIDES:
-			return getOverrides();
-		case AcceleoPackage.TEMPLATE__PARAMETERS:
-			return getParameters();
-		case AcceleoPackage.TEMPLATE__GUARD:
-			return getGuard();
-		case AcceleoPackage.TEMPLATE__POST:
-			return getPost();
-		case AcceleoPackage.TEMPLATE__MAIN:
-			return isMain();
-		case AcceleoPackage.TEMPLATE__VISIBILITY:
-			return getVisibility();
-		case AcceleoPackage.TEMPLATE__BODY:
-			return getBody();
+			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+				return getDocumentation();
+			case AcceleoPackage.TEMPLATE__DEPRECATED:
+				return isDeprecated();
+			case AcceleoPackage.TEMPLATE__NAME:
+				return getName();
+			case AcceleoPackage.TEMPLATE__PARAMETERS:
+				return getParameters();
+			case AcceleoPackage.TEMPLATE__GUARD:
+				return getGuard();
+			case AcceleoPackage.TEMPLATE__POST:
+				return getPost();
+			case AcceleoPackage.TEMPLATE__MAIN:
+				return isMain();
+			case AcceleoPackage.TEMPLATE__VISIBILITY:
+				return getVisibility();
+			case AcceleoPackage.TEMPLATE__BODY:
+				return getBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -637,38 +585,34 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-			setDocumentation((Documentation) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__DEPRECATED:
-			setDeprecated((Boolean) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__NAME:
-			setName((String) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__OVERRIDES:
-			getOverrides().clear();
-			getOverrides().addAll((Collection<? extends String>) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__PARAMETERS:
-			getParameters().clear();
-			getParameters().addAll((Collection<? extends Variable>) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__GUARD:
-			setGuard((Expression) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__POST:
-			setPost((Expression) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__MAIN:
-			setMain((Boolean) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__VISIBILITY:
-			setVisibility((VisibilityKind) newValue);
-			return;
-		case AcceleoPackage.TEMPLATE__BODY:
-			setBody((Block) newValue);
-			return;
+			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__DEPRECATED:
+				setDeprecated((Boolean)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__NAME:
+				setName((String)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Variable>)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__GUARD:
+				setGuard((Expression)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__POST:
+				setPost((Expression)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__MAIN:
+				setMain((Boolean)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__VISIBILITY:
+				setVisibility((VisibilityKind)newValue);
+				return;
+			case AcceleoPackage.TEMPLATE__BODY:
+				setBody((Block)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -681,36 +625,33 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-			setDocumentation((Documentation) null);
-			return;
-		case AcceleoPackage.TEMPLATE__DEPRECATED:
-			setDeprecated(DEPRECATED_EDEFAULT);
-			return;
-		case AcceleoPackage.TEMPLATE__NAME:
-			setName(NAME_EDEFAULT);
-			return;
-		case AcceleoPackage.TEMPLATE__OVERRIDES:
-			getOverrides().clear();
-			return;
-		case AcceleoPackage.TEMPLATE__PARAMETERS:
-			getParameters().clear();
-			return;
-		case AcceleoPackage.TEMPLATE__GUARD:
-			setGuard((Expression) null);
-			return;
-		case AcceleoPackage.TEMPLATE__POST:
-			setPost((Expression) null);
-			return;
-		case AcceleoPackage.TEMPLATE__MAIN:
-			setMain(MAIN_EDEFAULT);
-			return;
-		case AcceleoPackage.TEMPLATE__VISIBILITY:
-			setVisibility(VISIBILITY_EDEFAULT);
-			return;
-		case AcceleoPackage.TEMPLATE__BODY:
-			setBody((Block) null);
-			return;
+			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
+			case AcceleoPackage.TEMPLATE__DEPRECATED:
+				setDeprecated(DEPRECATED_EDEFAULT);
+				return;
+			case AcceleoPackage.TEMPLATE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case AcceleoPackage.TEMPLATE__PARAMETERS:
+				getParameters().clear();
+				return;
+			case AcceleoPackage.TEMPLATE__GUARD:
+				setGuard((Expression)null);
+				return;
+			case AcceleoPackage.TEMPLATE__POST:
+				setPost((Expression)null);
+				return;
+			case AcceleoPackage.TEMPLATE__MAIN:
+				setMain(MAIN_EDEFAULT);
+				return;
+			case AcceleoPackage.TEMPLATE__VISIBILITY:
+				setVisibility(VISIBILITY_EDEFAULT);
+				return;
+			case AcceleoPackage.TEMPLATE__BODY:
+				setBody((Block)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -723,27 +664,24 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-			return documentation != null;
-		case AcceleoPackage.TEMPLATE__DEPRECATED:
-			return deprecated != DEPRECATED_EDEFAULT;
-		case AcceleoPackage.TEMPLATE__NAME:
-			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT
-					.equals(name);
-		case AcceleoPackage.TEMPLATE__OVERRIDES:
-			return overrides != null && !overrides.isEmpty();
-		case AcceleoPackage.TEMPLATE__PARAMETERS:
-			return parameters != null && !parameters.isEmpty();
-		case AcceleoPackage.TEMPLATE__GUARD:
-			return guard != null;
-		case AcceleoPackage.TEMPLATE__POST:
-			return post != null;
-		case AcceleoPackage.TEMPLATE__MAIN:
-			return main != MAIN_EDEFAULT;
-		case AcceleoPackage.TEMPLATE__VISIBILITY:
-			return visibility != VISIBILITY_EDEFAULT;
-		case AcceleoPackage.TEMPLATE__BODY:
-			return body != null;
+			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+				return documentation != null;
+			case AcceleoPackage.TEMPLATE__DEPRECATED:
+				return deprecated != DEPRECATED_EDEFAULT;
+			case AcceleoPackage.TEMPLATE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case AcceleoPackage.TEMPLATE__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case AcceleoPackage.TEMPLATE__GUARD:
+				return guard != null;
+			case AcceleoPackage.TEMPLATE__POST:
+				return post != null;
+			case AcceleoPackage.TEMPLATE__MAIN:
+				return main != MAIN_EDEFAULT;
+			case AcceleoPackage.TEMPLATE__VISIBILITY:
+				return visibility != VISIBILITY_EDEFAULT;
+			case AcceleoPackage.TEMPLATE__BODY:
+				return body != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -757,20 +695,20 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == DocumentedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.TEMPLATE__DOCUMENTATION:
-				return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
-			case AcceleoPackage.TEMPLATE__DEPRECATED:
-				return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
-			default:
-				return -1;
+				case AcceleoPackage.TEMPLATE__DOCUMENTATION:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+				case AcceleoPackage.TEMPLATE__DEPRECATED:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == NamedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.TEMPLATE__NAME:
-				return AcceleoPackage.NAMED_ELEMENT__NAME;
-			default:
-				return -1;
+				case AcceleoPackage.TEMPLATE__NAME:
+					return AcceleoPackage.NAMED_ELEMENT__NAME;
+				default:
+					return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -785,20 +723,20 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == DocumentedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
-				return AcceleoPackage.TEMPLATE__DOCUMENTATION;
-			case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
-				return AcceleoPackage.TEMPLATE__DEPRECATED;
-			default:
-				return -1;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+					return AcceleoPackage.TEMPLATE__DOCUMENTATION;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+					return AcceleoPackage.TEMPLATE__DEPRECATED;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == NamedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.NAMED_ELEMENT__NAME:
-				return AcceleoPackage.TEMPLATE__NAME;
-			default:
-				return -1;
+				case AcceleoPackage.NAMED_ELEMENT__NAME:
+					return AcceleoPackage.TEMPLATE__NAME;
+				default:
+					return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -819,8 +757,6 @@ public class TemplateImpl extends ModuleElementImpl implements Template {
 		result.append(deprecated);
 		result.append(", name: "); //$NON-NLS-1$
 		result.append(name);
-		result.append(", overrides: "); //$NON-NLS-1$
-		result.append(overrides);
 		result.append(", main: "); //$NON-NLS-1$
 		result.append(main);
 		result.append(", visibility: "); //$NON-NLS-1$

@@ -35,7 +35,7 @@ public enum OpenModeKind implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	OVERWRITE(0, "Overwrite", "Overwrite"), //$NON-NLS-1$ //$NON-NLS-2$
+	OVERWRITE(0, "overwrite", "overwrite"), //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Append</b></em>' literal object.
@@ -45,7 +45,7 @@ public enum OpenModeKind implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	APPEND(1, "Append", "Append"), //$NON-NLS-1$ //$NON-NLS-2$
+	APPEND(1, "append", "append"), //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Create</b></em>' literal object.
@@ -55,7 +55,7 @@ public enum OpenModeKind implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	CREATE(2, "Create", "Create"); //$NON-NLS-1$ //$NON-NLS-2$
+	CREATE(2, "create", "create"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Overwrite</b></em>' literal value.
@@ -66,7 +66,7 @@ public enum OpenModeKind implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #OVERWRITE
-	 * @model name="Overwrite"
+	 * @model name="overwrite"
 	 * @generated
 	 * @ordered
 	 */
@@ -81,7 +81,7 @@ public enum OpenModeKind implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #APPEND
-	 * @model name="Append"
+	 * @model name="append"
 	 * @generated
 	 * @ordered
 	 */
@@ -96,7 +96,7 @@ public enum OpenModeKind implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #CREATE
-	 * @model name="Create"
+	 * @model name="create"
 	 * @generated
 	 * @ordered
 	 */
@@ -108,8 +108,7 @@ public enum OpenModeKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final OpenModeKind[] VALUES_ARRAY = new OpenModeKind[] {
-			OVERWRITE, APPEND, CREATE, };
+	private static final OpenModeKind[] VALUES_ARRAY = new OpenModeKind[] {OVERWRITE, APPEND, CREATE, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Open Mode Kind</b></em>' enumerators.
@@ -117,8 +116,7 @@ public enum OpenModeKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<OpenModeKind> VALUES = Collections
-			.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<OpenModeKind> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Open Mode Kind</b></em>' literal with the specified literal value.
@@ -160,12 +158,12 @@ public enum OpenModeKind implements Enumerator {
 	 */
 	public static OpenModeKind get(int value) {
 		switch (value) {
-		case OVERWRITE_VALUE:
-			return OVERWRITE;
-		case APPEND_VALUE:
-			return APPEND;
-		case CREATE_VALUE:
-			return CREATE;
+			case OVERWRITE_VALUE:
+				return OVERWRITE;
+			case APPEND_VALUE:
+				return APPEND;
+			case CREATE_VALUE:
+				return CREATE;
 		}
 		return null;
 	}

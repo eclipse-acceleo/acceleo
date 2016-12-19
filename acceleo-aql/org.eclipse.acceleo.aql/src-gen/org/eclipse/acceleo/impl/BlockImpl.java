@@ -134,9 +134,8 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.BLOCK__START_POSITION, oldStartPosition,
-					startPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.BLOCK__START_POSITION,
+					oldStartPosition, startPosition));
 	}
 
 	/**
@@ -157,9 +156,8 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.BLOCK__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.BLOCK__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -169,8 +167,8 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 	 */
 	public EList<Statement> getStatements() {
 		if (statements == null) {
-			statements = new EObjectContainmentEList<Statement>(
-					Statement.class, this, AcceleoPackage.BLOCK__STATEMENTS);
+			statements = new EObjectContainmentEList<Statement>(Statement.class, this,
+					AcceleoPackage.BLOCK__STATEMENTS);
 		}
 		return statements;
 	}
@@ -181,12 +179,10 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.BLOCK__STATEMENTS:
-			return ((InternalEList<?>) getStatements()).basicRemove(otherEnd,
-					msgs);
+			case AcceleoPackage.BLOCK__STATEMENTS:
+				return ((InternalEList<?>)getStatements()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -199,12 +195,12 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.BLOCK__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.BLOCK__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.BLOCK__STATEMENTS:
-			return getStatements();
+			case AcceleoPackage.BLOCK__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.BLOCK__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.BLOCK__STATEMENTS:
+				return getStatements();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -218,16 +214,16 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.BLOCK__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.BLOCK__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.BLOCK__STATEMENTS:
-			getStatements().clear();
-			getStatements().addAll((Collection<? extends Statement>) newValue);
-			return;
+			case AcceleoPackage.BLOCK__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.BLOCK__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.BLOCK__STATEMENTS:
+				getStatements().clear();
+				getStatements().addAll((Collection<? extends Statement>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -240,15 +236,15 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.BLOCK__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.BLOCK__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.BLOCK__STATEMENTS:
-			getStatements().clear();
-			return;
+			case AcceleoPackage.BLOCK__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.BLOCK__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.BLOCK__STATEMENTS:
+				getStatements().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -261,12 +257,12 @@ public class BlockImpl extends MinimalEObjectImpl.Container implements Block {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.BLOCK__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.BLOCK__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.BLOCK__STATEMENTS:
-			return statements != null && !statements.isEmpty();
+			case AcceleoPackage.BLOCK__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.BLOCK__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.BLOCK__STATEMENTS:
+				return statements != null && !statements.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

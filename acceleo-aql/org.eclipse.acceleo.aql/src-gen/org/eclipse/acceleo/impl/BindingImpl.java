@@ -80,14 +80,12 @@ public class BindingImpl extends VariableImpl implements Binding {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInitExpression(
-			Expression newInitExpression, NotificationChain msgs) {
+	public NotificationChain basicSetInitExpression(Expression newInitExpression, NotificationChain msgs) {
 		Expression oldInitExpression = initExpression;
 		initExpression = newInitExpression;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.BINDING__INIT_EXPRESSION,
-					oldInitExpression, newInitExpression);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.BINDING__INIT_EXPRESSION, oldInitExpression, newInitExpression);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -105,22 +103,17 @@ public class BindingImpl extends VariableImpl implements Binding {
 		if (newInitExpression != initExpression) {
 			NotificationChain msgs = null;
 			if (initExpression != null)
-				msgs = ((InternalEObject) initExpression).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.BINDING__INIT_EXPRESSION,
-						null, msgs);
+				msgs = ((InternalEObject)initExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.BINDING__INIT_EXPRESSION, null, msgs);
 			if (newInitExpression != null)
-				msgs = ((InternalEObject) newInitExpression).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.BINDING__INIT_EXPRESSION,
-						null, msgs);
+				msgs = ((InternalEObject)newInitExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.BINDING__INIT_EXPRESSION, null, msgs);
 			msgs = basicSetInitExpression(newInitExpression, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.BINDING__INIT_EXPRESSION, newInitExpression,
-					newInitExpression));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.BINDING__INIT_EXPRESSION,
+					newInitExpression, newInitExpression));
 	}
 
 	/**
@@ -129,11 +122,10 @@ public class BindingImpl extends VariableImpl implements Binding {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.BINDING__INIT_EXPRESSION:
-			return basicSetInitExpression(null, msgs);
+			case AcceleoPackage.BINDING__INIT_EXPRESSION:
+				return basicSetInitExpression(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -146,8 +138,8 @@ public class BindingImpl extends VariableImpl implements Binding {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.BINDING__INIT_EXPRESSION:
-			return getInitExpression();
+			case AcceleoPackage.BINDING__INIT_EXPRESSION:
+				return getInitExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -160,9 +152,9 @@ public class BindingImpl extends VariableImpl implements Binding {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.BINDING__INIT_EXPRESSION:
-			setInitExpression((Expression) newValue);
-			return;
+			case AcceleoPackage.BINDING__INIT_EXPRESSION:
+				setInitExpression((Expression)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -175,9 +167,9 @@ public class BindingImpl extends VariableImpl implements Binding {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.BINDING__INIT_EXPRESSION:
-			setInitExpression((Expression) null);
-			return;
+			case AcceleoPackage.BINDING__INIT_EXPRESSION:
+				setInitExpression((Expression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -190,8 +182,8 @@ public class BindingImpl extends VariableImpl implements Binding {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.BINDING__INIT_EXPRESSION:
-			return initExpression != null;
+			case AcceleoPackage.BINDING__INIT_EXPRESSION:
+				return initExpression != null;
 		}
 		return super.eIsSet(featureID);
 	}

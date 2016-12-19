@@ -42,8 +42,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class IfStatementImpl extends MinimalEObjectImpl.Container implements
-		IfStatement {
+public class IfStatementImpl extends MinimalEObjectImpl.Container implements IfStatement {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -152,8 +151,7 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.IF_STATEMENT__START_POSITION,
-					oldStartPosition, startPosition));
+					AcceleoPackage.IF_STATEMENT__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -174,9 +172,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.IF_STATEMENT__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.IF_STATEMENT__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -193,14 +190,12 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCondition(Expression newCondition,
-			NotificationChain msgs) {
+	public NotificationChain basicSetCondition(Expression newCondition, NotificationChain msgs) {
 		Expression oldCondition = condition;
 		condition = newCondition;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.IF_STATEMENT__CONDITION,
-					oldCondition, newCondition);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.IF_STATEMENT__CONDITION, oldCondition, newCondition);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -218,22 +213,17 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newCondition != condition) {
 			NotificationChain msgs = null;
 			if (condition != null)
-				msgs = ((InternalEObject) condition).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.IF_STATEMENT__CONDITION, null,
-						msgs);
+				msgs = ((InternalEObject)condition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.IF_STATEMENT__CONDITION, null, msgs);
 			if (newCondition != null)
-				msgs = ((InternalEObject) newCondition).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.IF_STATEMENT__CONDITION, null,
-						msgs);
+				msgs = ((InternalEObject)newCondition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.IF_STATEMENT__CONDITION, null, msgs);
 			msgs = basicSetCondition(newCondition, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.IF_STATEMENT__CONDITION, newCondition,
-					newCondition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.IF_STATEMENT__CONDITION,
+					newCondition, newCondition));
 	}
 
 	/**
@@ -254,9 +244,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		Block oldThen = then;
 		then = newThen;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.IF_STATEMENT__THEN,
-					oldThen, newThen);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.IF_STATEMENT__THEN, oldThen, newThen);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -274,19 +263,17 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newThen != then) {
 			NotificationChain msgs = null;
 			if (then != null)
-				msgs = ((InternalEObject) then)
-						.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.IF_STATEMENT__THEN, null, msgs);
+				msgs = ((InternalEObject)then).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.IF_STATEMENT__THEN, null, msgs);
 			if (newThen != null)
-				msgs = ((InternalEObject) newThen)
-						.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.IF_STATEMENT__THEN, null, msgs);
+				msgs = ((InternalEObject)newThen).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.IF_STATEMENT__THEN, null, msgs);
 			msgs = basicSetThen(newThen, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.IF_STATEMENT__THEN, newThen, newThen));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.IF_STATEMENT__THEN, newThen,
+					newThen));
 	}
 
 	/**
@@ -307,9 +294,8 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		Block oldElse = else_;
 		else_ = newElse;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.IF_STATEMENT__ELSE,
-					oldElse, newElse);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.IF_STATEMENT__ELSE, oldElse, newElse);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -327,19 +313,17 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newElse != else_) {
 			NotificationChain msgs = null;
 			if (else_ != null)
-				msgs = ((InternalEObject) else_)
-						.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.IF_STATEMENT__ELSE, null, msgs);
+				msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.IF_STATEMENT__ELSE, null, msgs);
 			if (newElse != null)
-				msgs = ((InternalEObject) newElse)
-						.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.IF_STATEMENT__ELSE, null, msgs);
+				msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.IF_STATEMENT__ELSE, null, msgs);
 			msgs = basicSetElse(newElse, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.IF_STATEMENT__ELSE, newElse, newElse));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.IF_STATEMENT__ELSE, newElse,
+					newElse));
 	}
 
 	/**
@@ -348,15 +332,14 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.IF_STATEMENT__CONDITION:
-			return basicSetCondition(null, msgs);
-		case AcceleoPackage.IF_STATEMENT__THEN:
-			return basicSetThen(null, msgs);
-		case AcceleoPackage.IF_STATEMENT__ELSE:
-			return basicSetElse(null, msgs);
+			case AcceleoPackage.IF_STATEMENT__CONDITION:
+				return basicSetCondition(null, msgs);
+			case AcceleoPackage.IF_STATEMENT__THEN:
+				return basicSetThen(null, msgs);
+			case AcceleoPackage.IF_STATEMENT__ELSE:
+				return basicSetElse(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -369,16 +352,16 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.IF_STATEMENT__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.IF_STATEMENT__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.IF_STATEMENT__CONDITION:
-			return getCondition();
-		case AcceleoPackage.IF_STATEMENT__THEN:
-			return getThen();
-		case AcceleoPackage.IF_STATEMENT__ELSE:
-			return getElse();
+			case AcceleoPackage.IF_STATEMENT__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.IF_STATEMENT__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.IF_STATEMENT__CONDITION:
+				return getCondition();
+			case AcceleoPackage.IF_STATEMENT__THEN:
+				return getThen();
+			case AcceleoPackage.IF_STATEMENT__ELSE:
+				return getElse();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -391,21 +374,21 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.IF_STATEMENT__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.IF_STATEMENT__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.IF_STATEMENT__CONDITION:
-			setCondition((Expression) newValue);
-			return;
-		case AcceleoPackage.IF_STATEMENT__THEN:
-			setThen((Block) newValue);
-			return;
-		case AcceleoPackage.IF_STATEMENT__ELSE:
-			setElse((Block) newValue);
-			return;
+			case AcceleoPackage.IF_STATEMENT__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.IF_STATEMENT__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.IF_STATEMENT__CONDITION:
+				setCondition((Expression)newValue);
+				return;
+			case AcceleoPackage.IF_STATEMENT__THEN:
+				setThen((Block)newValue);
+				return;
+			case AcceleoPackage.IF_STATEMENT__ELSE:
+				setElse((Block)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -418,21 +401,21 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.IF_STATEMENT__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.IF_STATEMENT__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.IF_STATEMENT__CONDITION:
-			setCondition((Expression) null);
-			return;
-		case AcceleoPackage.IF_STATEMENT__THEN:
-			setThen((Block) null);
-			return;
-		case AcceleoPackage.IF_STATEMENT__ELSE:
-			setElse((Block) null);
-			return;
+			case AcceleoPackage.IF_STATEMENT__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.IF_STATEMENT__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.IF_STATEMENT__CONDITION:
+				setCondition((Expression)null);
+				return;
+			case AcceleoPackage.IF_STATEMENT__THEN:
+				setThen((Block)null);
+				return;
+			case AcceleoPackage.IF_STATEMENT__ELSE:
+				setElse((Block)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -445,16 +428,16 @@ public class IfStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.IF_STATEMENT__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.IF_STATEMENT__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.IF_STATEMENT__CONDITION:
-			return condition != null;
-		case AcceleoPackage.IF_STATEMENT__THEN:
-			return then != null;
-		case AcceleoPackage.IF_STATEMENT__ELSE:
-			return else_ != null;
+			case AcceleoPackage.IF_STATEMENT__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.IF_STATEMENT__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.IF_STATEMENT__CONDITION:
+				return condition != null;
+			case AcceleoPackage.IF_STATEMENT__THEN:
+				return then != null;
+			case AcceleoPackage.IF_STATEMENT__ELSE:
+				return else_ != null;
 		}
 		return super.eIsSet(featureID);
 	}

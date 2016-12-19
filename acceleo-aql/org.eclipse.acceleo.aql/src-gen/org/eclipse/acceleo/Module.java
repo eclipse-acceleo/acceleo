@@ -52,36 +52,36 @@ public interface Module extends NamedElement, DocumentedElement {
 	EList<Metamodel> getMetamodels();
 
 	/**
-	 * Returns the value of the '<em><b>Extends</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
+	 * Returns the value of the '<em><b>Extends</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.acceleo.ModuleReference}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Extends</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Extends</em>' attribute list.
+	 * @return the value of the '<em>Extends</em>' containment reference list.
 	 * @see org.eclipse.acceleo.AcceleoPackage#getModule_Extends()
-	 * @model dataType="org.eclipse.acceleo.ModuleQualifiedName"
+	 * @model containment="true"
 	 * @generated
 	 */
-	EList<String> getExtends();
+	EList<ModuleReference> getExtends();
 
 	/**
-	 * Returns the value of the '<em><b>Imports</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
+	 * Returns the value of the '<em><b>Imports</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.acceleo.ModuleReference}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Imports</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Imports</em>' attribute list.
+	 * @return the value of the '<em>Imports</em>' containment reference list.
 	 * @see org.eclipse.acceleo.AcceleoPackage#getModule_Imports()
-	 * @model dataType="org.eclipse.acceleo.ModuleQualifiedName"
+	 * @model containment="true"
 	 * @generated
 	 */
-	EList<String> getImports();
+	EList<ModuleReference> getImports();
 
 	/**
 	 * Returns the value of the '<em><b>Module Elements</b></em>' containment reference list.

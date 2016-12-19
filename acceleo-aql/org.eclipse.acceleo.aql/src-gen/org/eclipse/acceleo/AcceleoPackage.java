@@ -65,8 +65,7 @@ public interface AcceleoPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	AcceleoPackage eINSTANCE = org.eclipse.acceleo.impl.AcceleoPackageImpl
-			.init();
+	AcceleoPackage eINSTANCE = org.eclipse.acceleo.impl.AcceleoPackageImpl.init();
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.NamedElementImpl <em>Named Element</em>}' class.
@@ -76,7 +75,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getNamedElement()
 	 * @generated
 	 */
-	int NAMED_ELEMENT = 10;
+	int NAMED_ELEMENT = 11;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -152,7 +151,7 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__METAMODELS = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Extends</b></em>' attribute list.
+	 * The feature id for the '<em><b>Extends</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -161,7 +160,7 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__EXTENDS = NAMED_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Imports</b></em>' attribute list.
+	 * The feature id for the '<em><b>Imports</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -222,7 +221,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTNode()
 	 * @generated
 	 */
-	int AST_NODE = 11;
+	int AST_NODE = 12;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -316,6 +315,61 @@ public interface AcceleoPackage extends EPackage {
 	int METAMODEL_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ModuleReferenceImpl <em>Module Reference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.impl.ModuleReferenceImpl
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleReference()
+	 * @generated
+	 */
+	int MODULE_REFERENCE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_REFERENCE__START_POSITION = AST_NODE__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_REFERENCE__END_POSITION = AST_NODE__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_REFERENCE__URL = AST_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Module Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_REFERENCE_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Module Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE_REFERENCE_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ModuleElementImpl <em>Module Element</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -323,7 +377,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleElement()
 	 * @generated
 	 */
-	int MODULE_ELEMENT = 2;
+	int MODULE_ELEMENT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -369,7 +423,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getComment()
 	 * @generated
 	 */
-	int COMMENT = 3;
+	int COMMENT = 4;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -424,7 +478,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getCommentBody()
 	 * @generated
 	 */
-	int COMMENT_BODY = 4;
+	int COMMENT_BODY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -479,7 +533,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getDocumentation()
 	 * @generated
 	 */
-	int DOCUMENTATION = 5;
+	int DOCUMENTATION = 6;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -543,7 +597,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleDocumentation()
 	 * @generated
 	 */
-	int MODULE_DOCUMENTATION = 6;
+	int MODULE_DOCUMENTATION = 7;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -634,7 +688,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleElementDocumentation()
 	 * @generated
 	 */
-	int MODULE_ELEMENT_DOCUMENTATION = 7;
+	int MODULE_ELEMENT_DOCUMENTATION = 8;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -707,7 +761,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getParameterDocumentation()
 	 * @generated
 	 */
-	int PARAMETER_DOCUMENTATION = 8;
+	int PARAMETER_DOCUMENTATION = 9;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -762,7 +816,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getDocumentedElement()
 	 * @generated
 	 */
-	int DOCUMENTED_ELEMENT = 9;
+	int DOCUMENTED_ELEMENT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -808,7 +862,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBlock()
 	 * @generated
 	 */
-	int BLOCK = 12;
+	int BLOCK = 13;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -863,7 +917,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTypedElement()
 	 * @generated
 	 */
-	int TYPED_ELEMENT = 13;
+	int TYPED_ELEMENT = 14;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -900,7 +954,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTemplate()
 	 * @generated
 	 */
-	int TEMPLATE = 14;
+	int TEMPLATE = 15;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -948,22 +1002,13 @@ public interface AcceleoPackage extends EPackage {
 	int TEMPLATE__NAME = MODULE_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Overrides</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TEMPLATE__OVERRIDES = MODULE_ELEMENT_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__PARAMETERS = MODULE_ELEMENT_FEATURE_COUNT + 4;
+	int TEMPLATE__PARAMETERS = MODULE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Guard</b></em>' containment reference.
@@ -972,7 +1017,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__GUARD = MODULE_ELEMENT_FEATURE_COUNT + 5;
+	int TEMPLATE__GUARD = MODULE_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Post</b></em>' containment reference.
@@ -981,7 +1026,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__POST = MODULE_ELEMENT_FEATURE_COUNT + 6;
+	int TEMPLATE__POST = MODULE_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Main</b></em>' attribute.
@@ -990,7 +1035,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__MAIN = MODULE_ELEMENT_FEATURE_COUNT + 7;
+	int TEMPLATE__MAIN = MODULE_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -999,7 +1044,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__VISIBILITY = MODULE_ELEMENT_FEATURE_COUNT + 8;
+	int TEMPLATE__VISIBILITY = MODULE_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1008,7 +1053,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE__BODY = MODULE_ELEMENT_FEATURE_COUNT + 9;
+	int TEMPLATE__BODY = MODULE_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of structural features of the '<em>Template</em>' class.
@@ -1017,7 +1062,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TEMPLATE_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 10;
+	int TEMPLATE_FEATURE_COUNT = MODULE_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of operations of the '<em>Template</em>' class.
@@ -1036,7 +1081,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getQuery()
 	 * @generated
 	 */
-	int QUERY = 15;
+	int QUERY = 16;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1145,7 +1190,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getExpression()
 	 * @generated
 	 */
-	int EXPRESSION = 16;
+	int EXPRESSION = 17;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1200,7 +1245,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVariable()
 	 * @generated
 	 */
-	int VARIABLE = 17;
+	int VARIABLE = 18;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1264,7 +1309,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 18;
+	int BINDING = 19;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1337,7 +1382,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getStatement()
 	 * @generated
 	 */
-	int STATEMENT = 19;
+	int STATEMENT = 20;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1383,7 +1428,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getExpressionStatement()
 	 * @generated
 	 */
-	int EXPRESSION_STATEMENT = 20;
+	int EXPRESSION_STATEMENT = 21;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1438,7 +1483,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getProtectedArea()
 	 * @generated
 	 */
-	int PROTECTED_AREA = 21;
+	int PROTECTED_AREA = 22;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1502,7 +1547,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getForStatement()
 	 * @generated
 	 */
-	int FOR_STATEMENT = 22;
+	int FOR_STATEMENT = 23;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1523,49 +1568,13 @@ public interface AcceleoPackage extends EPackage {
 	int FOR_STATEMENT__END_POSITION = STATEMENT__END_POSITION;
 
 	/**
-	 * The feature id for the '<em><b>Variable</b></em>' containment reference.
+	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FOR_STATEMENT__VARIABLE = STATEMENT_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Values</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOR_STATEMENT__VALUES = STATEMENT_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Before</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOR_STATEMENT__BEFORE = STATEMENT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Each</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOR_STATEMENT__EACH = STATEMENT_FEATURE_COUNT + 3;
-
-	/**
-	 * The feature id for the '<em><b>After</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FOR_STATEMENT__AFTER = STATEMENT_FEATURE_COUNT + 4;
+	int FOR_STATEMENT__BINDING = STATEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1574,7 +1583,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOR_STATEMENT__BODY = STATEMENT_FEATURE_COUNT + 5;
+	int FOR_STATEMENT__BODY = STATEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>For Statement</em>' class.
@@ -1583,7 +1592,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FOR_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 6;
+	int FOR_STATEMENT_FEATURE_COUNT = STATEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>For Statement</em>' class.
@@ -1602,7 +1611,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getIfStatement()
 	 * @generated
 	 */
-	int IF_STATEMENT = 23;
+	int IF_STATEMENT = 24;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1675,7 +1684,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLetStatement()
 	 * @generated
 	 */
-	int LET_STATEMENT = 24;
+	int LET_STATEMENT = 25;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1739,7 +1748,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getFileStatement()
 	 * @generated
 	 */
-	int FILE_STATEMENT = 25;
+	int FILE_STATEMENT = 26;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1821,7 +1830,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTextStatement()
 	 * @generated
 	 */
-	int TEXT_STATEMENT = 26;
+	int TEXT_STATEMENT = 27;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -1876,7 +1885,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 27;
+	int VISIBILITY_KIND = 28;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.OpenModeKind <em>Open Mode Kind</em>}' enum.
@@ -1886,7 +1895,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 28;
+	int OPEN_MODE_KIND = 29;
 
 	/**
 	 * The meta object id for the '<em>AST Result</em>' data type.
@@ -1896,7 +1905,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
-	int AST_RESULT = 29;
+	int AST_RESULT = 30;
 
 	/**
 	 * The meta object id for the '<em>Module Qualified Name</em>' data type.
@@ -1906,17 +1915,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleQualifiedName()
 	 * @generated
 	 */
-	int MODULE_QUALIFIED_NAME = 30;
-
-	/**
-	 * The meta object id for the '<em>Template Qualified Name</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see java.lang.String
-	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTemplateQualifiedName()
-	 * @generated
-	 */
-	int TEMPLATE_QUALIFIED_NAME = 31;
+	int MODULE_QUALIFIED_NAME = 31;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'.
@@ -1940,26 +1939,26 @@ public interface AcceleoPackage extends EPackage {
 	EReference getModule_Metamodels();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.Module#getExtends <em>Extends</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.Module#getExtends <em>Extends</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Extends</em>'.
+	 * @return the meta object for the containment reference list '<em>Extends</em>'.
 	 * @see org.eclipse.acceleo.Module#getExtends()
 	 * @see #getModule()
 	 * @generated
 	 */
-	EAttribute getModule_Extends();
+	EReference getModule_Extends();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.Module#getImports <em>Imports</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.Module#getImports <em>Imports</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Imports</em>'.
+	 * @return the meta object for the containment reference list '<em>Imports</em>'.
 	 * @see org.eclipse.acceleo.Module#getImports()
 	 * @see #getModule()
 	 * @generated
 	 */
-	EAttribute getModule_Imports();
+	EReference getModule_Imports();
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.Module#getModuleElements <em>Module Elements</em>}'.
@@ -2014,6 +2013,27 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getMetamodel_ReferencedPackage();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.ModuleReference <em>Module Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Module Reference</em>'.
+	 * @see org.eclipse.acceleo.ModuleReference
+	 * @generated
+	 */
+	EClass getModuleReference();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ModuleReference#getUrl <em>Url</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Url</em>'.
+	 * @see org.eclipse.acceleo.ModuleReference#getUrl()
+	 * @see #getModuleReference()
+	 * @generated
+	 */
+	EAttribute getModuleReference_Url();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ModuleElement <em>Module Element</em>}'.
@@ -2300,17 +2320,6 @@ public interface AcceleoPackage extends EPackage {
 	EClass getTemplate();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.acceleo.Template#getOverrides <em>Overrides</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Overrides</em>'.
-	 * @see org.eclipse.acceleo.Template#getOverrides()
-	 * @see #getTemplate()
-	 * @generated
-	 */
-	EAttribute getTemplate_Overrides();
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.Template#getParameters <em>Parameters</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2545,59 +2554,15 @@ public interface AcceleoPackage extends EPackage {
 	EClass getForStatement();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getVariable <em>Variable</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getBinding <em>Binding</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Variable</em>'.
-	 * @see org.eclipse.acceleo.ForStatement#getVariable()
+	 * @return the meta object for the containment reference '<em>Binding</em>'.
+	 * @see org.eclipse.acceleo.ForStatement#getBinding()
 	 * @see #getForStatement()
 	 * @generated
 	 */
-	EReference getForStatement_Variable();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getValues <em>Values</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Values</em>'.
-	 * @see org.eclipse.acceleo.ForStatement#getValues()
-	 * @see #getForStatement()
-	 * @generated
-	 */
-	EReference getForStatement_Values();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getBefore <em>Before</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Before</em>'.
-	 * @see org.eclipse.acceleo.ForStatement#getBefore()
-	 * @see #getForStatement()
-	 * @generated
-	 */
-	EReference getForStatement_Before();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getEach <em>Each</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Each</em>'.
-	 * @see org.eclipse.acceleo.ForStatement#getEach()
-	 * @see #getForStatement()
-	 * @generated
-	 */
-	EReference getForStatement_Each();
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getAfter <em>After</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>After</em>'.
-	 * @see org.eclipse.acceleo.ForStatement#getAfter()
-	 * @see #getForStatement()
-	 * @generated
-	 */
-	EReference getForStatement_After();
+	EReference getForStatement_Binding();
 
 	/**
 	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.ForStatement#getBody <em>Body</em>}'.
@@ -2803,17 +2768,6 @@ public interface AcceleoPackage extends EPackage {
 	EDataType getModuleQualifiedName();
 
 	/**
-	 * Returns the meta object for data type '{@link java.lang.String <em>Template Qualified Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Template Qualified Name</em>'.
-	 * @see java.lang.String
-	 * @model instanceClass="java.lang.String"
-	 * @generated
-	 */
-	EDataType getTemplateQualifiedName();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2855,20 +2809,20 @@ public interface AcceleoPackage extends EPackage {
 		EReference MODULE__METAMODELS = eINSTANCE.getModule_Metamodels();
 
 		/**
-		 * The meta object literal for the '<em><b>Extends</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>Extends</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE__EXTENDS = eINSTANCE.getModule_Extends();
+		EReference MODULE__EXTENDS = eINSTANCE.getModule_Extends();
 
 		/**
-		 * The meta object literal for the '<em><b>Imports</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>Imports</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE__IMPORTS = eINSTANCE.getModule_Imports();
+		EReference MODULE__IMPORTS = eINSTANCE.getModule_Imports();
 
 		/**
 		 * The meta object literal for the '<em><b>Module Elements</b></em>' containment reference list feature.
@@ -2876,8 +2830,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference MODULE__MODULE_ELEMENTS = eINSTANCE
-				.getModule_ModuleElements();
+		EReference MODULE__MODULE_ELEMENTS = eINSTANCE.getModule_ModuleElements();
 
 		/**
 		 * The meta object literal for the '<em><b>Start Header Position</b></em>' attribute feature.
@@ -2885,8 +2838,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE__START_HEADER_POSITION = eINSTANCE
-				.getModule_StartHeaderPosition();
+		EAttribute MODULE__START_HEADER_POSITION = eINSTANCE.getModule_StartHeaderPosition();
 
 		/**
 		 * The meta object literal for the '<em><b>End Header Position</b></em>' attribute feature.
@@ -2894,8 +2846,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE__END_HEADER_POSITION = eINSTANCE
-				.getModule_EndHeaderPosition();
+		EAttribute MODULE__END_HEADER_POSITION = eINSTANCE.getModule_EndHeaderPosition();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.MetamodelImpl <em>Metamodel</em>}' class.
@@ -2913,8 +2864,25 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference METAMODEL__REFERENCED_PACKAGE = eINSTANCE
-				.getMetamodel_ReferencedPackage();
+		EReference METAMODEL__REFERENCED_PACKAGE = eINSTANCE.getMetamodel_ReferencedPackage();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ModuleReferenceImpl <em>Module Reference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.impl.ModuleReferenceImpl
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleReference()
+		 * @generated
+		 */
+		EClass MODULE_REFERENCE = eINSTANCE.getModuleReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Url</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODULE_REFERENCE__URL = eINSTANCE.getModuleReference_Url();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ModuleElementImpl <em>Module Element</em>}' class.
@@ -2978,8 +2946,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DOCUMENTATION__DOCUMENTED_ELEMENT = eINSTANCE
-				.getDocumentation_DocumentedElement();
+		EReference DOCUMENTATION__DOCUMENTED_ELEMENT = eINSTANCE.getDocumentation_DocumentedElement();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ModuleDocumentationImpl <em>Module Documentation</em>}' class.
@@ -2997,8 +2964,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE_DOCUMENTATION__AUTHOR = eINSTANCE
-				.getModuleDocumentation_Author();
+		EAttribute MODULE_DOCUMENTATION__AUTHOR = eINSTANCE.getModuleDocumentation_Author();
 
 		/**
 		 * The meta object literal for the '<em><b>Version</b></em>' attribute feature.
@@ -3006,8 +2972,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE_DOCUMENTATION__VERSION = eINSTANCE
-				.getModuleDocumentation_Version();
+		EAttribute MODULE_DOCUMENTATION__VERSION = eINSTANCE.getModuleDocumentation_Version();
 
 		/**
 		 * The meta object literal for the '<em><b>Since</b></em>' attribute feature.
@@ -3015,8 +2980,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE_DOCUMENTATION__SINCE = eINSTANCE
-				.getModuleDocumentation_Since();
+		EAttribute MODULE_DOCUMENTATION__SINCE = eINSTANCE.getModuleDocumentation_Since();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ModuleElementDocumentationImpl <em>Module Element Documentation</em>}' class.
@@ -3026,8 +2990,7 @@ public interface AcceleoPackage extends EPackage {
 		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleElementDocumentation()
 		 * @generated
 		 */
-		EClass MODULE_ELEMENT_DOCUMENTATION = eINSTANCE
-				.getModuleElementDocumentation();
+		EClass MODULE_ELEMENT_DOCUMENTATION = eINSTANCE.getModuleElementDocumentation();
 
 		/**
 		 * The meta object literal for the '<em><b>Parameter Documentation</b></em>' containment reference list feature.
@@ -3064,8 +3027,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference DOCUMENTED_ELEMENT__DOCUMENTATION = eINSTANCE
-				.getDocumentedElement_Documentation();
+		EReference DOCUMENTED_ELEMENT__DOCUMENTATION = eINSTANCE.getDocumentedElement_Documentation();
 
 		/**
 		 * The meta object literal for the '<em><b>Deprecated</b></em>' attribute feature.
@@ -3073,8 +3035,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute DOCUMENTED_ELEMENT__DEPRECATED = eINSTANCE
-				.getDocumentedElement_Deprecated();
+		EAttribute DOCUMENTED_ELEMENT__DEPRECATED = eINSTANCE.getDocumentedElement_Deprecated();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.NamedElementImpl <em>Named Element</em>}' class.
@@ -3110,8 +3071,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute AST_NODE__START_POSITION = eINSTANCE
-				.getASTNode_StartPosition();
+		EAttribute AST_NODE__START_POSITION = eINSTANCE.getASTNode_StartPosition();
 
 		/**
 		 * The meta object literal for the '<em><b>End Position</b></em>' attribute feature.
@@ -3166,14 +3126,6 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass TEMPLATE = eINSTANCE.getTemplate();
-
-		/**
-		 * The meta object literal for the '<em><b>Overrides</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TEMPLATE__OVERRIDES = eINSTANCE.getTemplate_Overrides();
 
 		/**
 		 * The meta object literal for the '<em><b>Parameters</b></em>' containment reference list feature.
@@ -3301,8 +3253,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference BINDING__INIT_EXPRESSION = eINSTANCE
-				.getBinding_InitExpression();
+		EReference BINDING__INIT_EXPRESSION = eINSTANCE.getBinding_InitExpression();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.Statement <em>Statement</em>}' class.
@@ -3330,8 +3281,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference EXPRESSION_STATEMENT__EXPRESSION = eINSTANCE
-				.getExpressionStatement_Expression();
+		EReference EXPRESSION_STATEMENT__EXPRESSION = eINSTANCE.getExpressionStatement_Expression();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ProtectedAreaImpl <em>Protected Area</em>}' class.
@@ -3370,45 +3320,12 @@ public interface AcceleoPackage extends EPackage {
 		EClass FOR_STATEMENT = eINSTANCE.getForStatement();
 
 		/**
-		 * The meta object literal for the '<em><b>Variable</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Binding</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FOR_STATEMENT__VARIABLE = eINSTANCE
-				.getForStatement_Variable();
-
-		/**
-		 * The meta object literal for the '<em><b>Values</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FOR_STATEMENT__VALUES = eINSTANCE.getForStatement_Values();
-
-		/**
-		 * The meta object literal for the '<em><b>Before</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FOR_STATEMENT__BEFORE = eINSTANCE.getForStatement_Before();
-
-		/**
-		 * The meta object literal for the '<em><b>Each</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FOR_STATEMENT__EACH = eINSTANCE.getForStatement_Each();
-
-		/**
-		 * The meta object literal for the '<em><b>After</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference FOR_STATEMENT__AFTER = eINSTANCE.getForStatement_After();
+		EReference FOR_STATEMENT__BINDING = eINSTANCE.getForStatement_Binding();
 
 		/**
 		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
@@ -3434,8 +3351,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference IF_STATEMENT__CONDITION = eINSTANCE
-				.getIfStatement_Condition();
+		EReference IF_STATEMENT__CONDITION = eINSTANCE.getIfStatement_Condition();
 
 		/**
 		 * The meta object literal for the '<em><b>Then</b></em>' containment reference feature.
@@ -3469,8 +3385,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference LET_STATEMENT__VARIABLES = eINSTANCE
-				.getLetStatement_Variables();
+		EReference LET_STATEMENT__VARIABLES = eINSTANCE.getLetStatement_Variables();
 
 		/**
 		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
@@ -3512,8 +3427,7 @@ public interface AcceleoPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference FILE_STATEMENT__CHARSET = eINSTANCE
-				.getFileStatement_Charset();
+		EReference FILE_STATEMENT__CHARSET = eINSTANCE.getFileStatement_Charset();
 
 		/**
 		 * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
@@ -3580,17 +3494,6 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType MODULE_QUALIFIED_NAME = eINSTANCE.getModuleQualifiedName();
-
-		/**
-		 * The meta object literal for the '<em>Template Qualified Name</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see java.lang.String
-		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTemplateQualifiedName()
-		 * @generated
-		 */
-		EDataType TEMPLATE_QUALIFIED_NAME = eINSTANCE
-				.getTemplateQualifiedName();
 
 	}
 

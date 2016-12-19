@@ -66,7 +66,7 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	public DocumentedElement getDocumentedElement() {
 		if (eContainerFeatureID() != AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT)
 			return null;
-		return (DocumentedElement) eInternalContainer();
+		return (DocumentedElement)eInternalContainer();
 	}
 
 	/**
@@ -74,9 +74,9 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetDocumentedElement(
-			DocumentedElement newDocumentedElement, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject) newDocumentedElement,
+	public NotificationChain basicSetDocumentedElement(DocumentedElement newDocumentedElement,
+			NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newDocumentedElement,
 				AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, msgs);
 		return msgs;
 	}
@@ -90,22 +90,20 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 		if (newDocumentedElement != eInternalContainer()
 				|| (eContainerFeatureID() != AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT && newDocumentedElement != null)) {
 			if (EcoreUtil.isAncestor(this, newDocumentedElement))
-				throw new IllegalArgumentException(
-						"Recursive containment not allowed for " + toString()); //$NON-NLS-1$
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString()); //$NON-NLS-1$
 			NotificationChain msgs = null;
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newDocumentedElement != null)
-				msgs = ((InternalEObject) newDocumentedElement).eInverseAdd(
-						this, AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION,
-						DocumentedElement.class, msgs);
+				msgs = ((InternalEObject)newDocumentedElement).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION, DocumentedElement.class, msgs);
 			msgs = basicSetDocumentedElement(newDocumentedElement, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-					newDocumentedElement, newDocumentedElement));
+					AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, newDocumentedElement,
+					newDocumentedElement));
 	}
 
 	/**
@@ -114,13 +112,12 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			if (eInternalContainer() != null)
-				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetDocumentedElement((DocumentedElement) otherEnd, msgs);
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetDocumentedElement((DocumentedElement)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -131,11 +128,10 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			return basicSetDocumentedElement(null, msgs);
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				return basicSetDocumentedElement(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -146,13 +142,11 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eBasicRemoveFromContainerFeature(
-			NotificationChain msgs) {
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			return eInternalContainer().eInverseRemove(this,
-					AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION,
-					DocumentedElement.class, msgs);
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				return eInternalContainer().eInverseRemove(this,
+						AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION, DocumentedElement.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -165,8 +159,8 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			return getDocumentedElement();
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				return getDocumentedElement();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -179,9 +173,9 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			setDocumentedElement((DocumentedElement) newValue);
-			return;
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				setDocumentedElement((DocumentedElement)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -194,9 +188,9 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			setDocumentedElement((DocumentedElement) null);
-			return;
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				setDocumentedElement((DocumentedElement)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -209,8 +203,8 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-			return getDocumentedElement() != null;
+			case AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
+				return getDocumentedElement() != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -15,28 +15,30 @@
   <genPackages prefix="Acceleo" basePackage="org.eclipse" resource="XML" disposableProviderFactory="true"
       ecorePackage="acceleo.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="acceleo.ecore#//VisibilityKind">
-      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//VisibilityKind/Private"/>
-      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//VisibilityKind/Protected"/>
-      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//VisibilityKind/Public"/>
+      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//VisibilityKind/private"/>
+      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//VisibilityKind/protected"/>
+      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//VisibilityKind/public"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="acceleo.ecore#//OpenModeKind">
-      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//OpenModeKind/Overwrite"/>
-      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//OpenModeKind/Append"/>
-      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//OpenModeKind/Create"/>
+      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//OpenModeKind/overwrite"/>
+      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//OpenModeKind/append"/>
+      <genEnumLiterals ecoreEnumLiteral="acceleo.ecore#//OpenModeKind/create"/>
     </genEnums>
     <genDataTypes ecoreDataType="acceleo.ecore#//ASTResult"/>
     <genDataTypes ecoreDataType="acceleo.ecore#//ModuleQualifiedName"/>
-    <genDataTypes ecoreDataType="acceleo.ecore#//TemplateQualifiedName"/>
     <genClasses ecoreClass="acceleo.ecore#//Module">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//Module/metamodels"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/extends"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/imports"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference acceleo.ecore#//Module/extends"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference acceleo.ecore#//Module/imports"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Module/moduleElements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/startHeaderPosition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Module/endHeaderPosition"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Metamodel">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//Metamodel/referencedPackage"/>
+    </genClasses>
+    <genClasses ecoreClass="acceleo.ecore#//ModuleReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ModuleReference/url"/>
     </genClasses>
     <genClasses image="false" ecoreClass="acceleo.ecore#//ModuleElement"/>
     <genClasses ecoreClass="acceleo.ecore#//Comment">
@@ -75,7 +77,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//TypedElement/type"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Template">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Template/overrides"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Template/parameters"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Template/guard"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Template/post"/>
@@ -104,11 +105,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ProtectedArea/body"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ForStatement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/variable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/values"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/before"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/each"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/after"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/binding"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//ForStatement/body"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//IfStatement">

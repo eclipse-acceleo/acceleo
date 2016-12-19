@@ -44,8 +44,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class FileStatementImpl extends MinimalEObjectImpl.Container implements
-		FileStatement {
+public class FileStatementImpl extends MinimalEObjectImpl.Container implements FileStatement {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -174,8 +173,7 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.FILE_STATEMENT__START_POSITION,
-					oldStartPosition, startPosition));
+					AcceleoPackage.FILE_STATEMENT__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -197,8 +195,7 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.FILE_STATEMENT__END_POSITION,
-					oldEndPosition, endPosition));
+					AcceleoPackage.FILE_STATEMENT__END_POSITION, oldEndPosition, endPosition));
 	}
 
 	/**
@@ -219,8 +216,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		OpenModeKind oldMode = mode;
 		mode = newMode == null ? MODE_EDEFAULT : newMode;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.FILE_STATEMENT__MODE, oldMode, mode));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FILE_STATEMENT__MODE,
+					oldMode, mode));
 	}
 
 	/**
@@ -237,14 +234,12 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetUrl(Expression newUrl,
-			NotificationChain msgs) {
+	public NotificationChain basicSetUrl(Expression newUrl, NotificationChain msgs) {
 		Expression oldUrl = url;
 		url = newUrl;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.FILE_STATEMENT__URL,
-					oldUrl, newUrl);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.FILE_STATEMENT__URL, oldUrl, newUrl);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -262,21 +257,17 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newUrl != url) {
 			NotificationChain msgs = null;
 			if (url != null)
-				msgs = ((InternalEObject) url).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.FILE_STATEMENT__URL, null,
-						msgs);
+				msgs = ((InternalEObject)url).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FILE_STATEMENT__URL, null, msgs);
 			if (newUrl != null)
-				msgs = ((InternalEObject) newUrl).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.FILE_STATEMENT__URL, null,
-						msgs);
+				msgs = ((InternalEObject)newUrl).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FILE_STATEMENT__URL, null, msgs);
 			msgs = basicSetUrl(newUrl, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.FILE_STATEMENT__URL, newUrl, newUrl));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FILE_STATEMENT__URL, newUrl,
+					newUrl));
 	}
 
 	/**
@@ -293,14 +284,12 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCharset(Expression newCharset,
-			NotificationChain msgs) {
+	public NotificationChain basicSetCharset(Expression newCharset, NotificationChain msgs) {
 		Expression oldCharset = charset;
 		charset = newCharset;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.FILE_STATEMENT__CHARSET,
-					oldCharset, newCharset);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.FILE_STATEMENT__CHARSET, oldCharset, newCharset);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -318,22 +307,17 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newCharset != charset) {
 			NotificationChain msgs = null;
 			if (charset != null)
-				msgs = ((InternalEObject) charset).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.FILE_STATEMENT__CHARSET, null,
-						msgs);
+				msgs = ((InternalEObject)charset).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FILE_STATEMENT__CHARSET, null, msgs);
 			if (newCharset != null)
-				msgs = ((InternalEObject) newCharset).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.FILE_STATEMENT__CHARSET, null,
-						msgs);
+				msgs = ((InternalEObject)newCharset).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FILE_STATEMENT__CHARSET, null, msgs);
 			msgs = basicSetCharset(newCharset, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.FILE_STATEMENT__CHARSET, newCharset,
-					newCharset));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FILE_STATEMENT__CHARSET,
+					newCharset, newCharset));
 	}
 
 	/**
@@ -354,9 +338,8 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		Block oldBody = body;
 		body = newBody;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.FILE_STATEMENT__BODY,
-					oldBody, newBody);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.FILE_STATEMENT__BODY, oldBody, newBody);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -374,21 +357,17 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newBody != body) {
 			NotificationChain msgs = null;
 			if (body != null)
-				msgs = ((InternalEObject) body).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.FILE_STATEMENT__BODY, null,
-						msgs);
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FILE_STATEMENT__BODY, null, msgs);
 			if (newBody != null)
-				msgs = ((InternalEObject) newBody).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.FILE_STATEMENT__BODY, null,
-						msgs);
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.FILE_STATEMENT__BODY, null, msgs);
 			msgs = basicSetBody(newBody, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.FILE_STATEMENT__BODY, newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.FILE_STATEMENT__BODY,
+					newBody, newBody));
 	}
 
 	/**
@@ -397,15 +376,14 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.FILE_STATEMENT__URL:
-			return basicSetUrl(null, msgs);
-		case AcceleoPackage.FILE_STATEMENT__CHARSET:
-			return basicSetCharset(null, msgs);
-		case AcceleoPackage.FILE_STATEMENT__BODY:
-			return basicSetBody(null, msgs);
+			case AcceleoPackage.FILE_STATEMENT__URL:
+				return basicSetUrl(null, msgs);
+			case AcceleoPackage.FILE_STATEMENT__CHARSET:
+				return basicSetCharset(null, msgs);
+			case AcceleoPackage.FILE_STATEMENT__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -418,18 +396,18 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.FILE_STATEMENT__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.FILE_STATEMENT__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.FILE_STATEMENT__MODE:
-			return getMode();
-		case AcceleoPackage.FILE_STATEMENT__URL:
-			return getUrl();
-		case AcceleoPackage.FILE_STATEMENT__CHARSET:
-			return getCharset();
-		case AcceleoPackage.FILE_STATEMENT__BODY:
-			return getBody();
+			case AcceleoPackage.FILE_STATEMENT__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.FILE_STATEMENT__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.FILE_STATEMENT__MODE:
+				return getMode();
+			case AcceleoPackage.FILE_STATEMENT__URL:
+				return getUrl();
+			case AcceleoPackage.FILE_STATEMENT__CHARSET:
+				return getCharset();
+			case AcceleoPackage.FILE_STATEMENT__BODY:
+				return getBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -442,24 +420,24 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.FILE_STATEMENT__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__MODE:
-			setMode((OpenModeKind) newValue);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__URL:
-			setUrl((Expression) newValue);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__CHARSET:
-			setCharset((Expression) newValue);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__BODY:
-			setBody((Block) newValue);
-			return;
+			case AcceleoPackage.FILE_STATEMENT__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__MODE:
+				setMode((OpenModeKind)newValue);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__URL:
+				setUrl((Expression)newValue);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__CHARSET:
+				setCharset((Expression)newValue);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__BODY:
+				setBody((Block)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -472,24 +450,24 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.FILE_STATEMENT__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__MODE:
-			setMode(MODE_EDEFAULT);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__URL:
-			setUrl((Expression) null);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__CHARSET:
-			setCharset((Expression) null);
-			return;
-		case AcceleoPackage.FILE_STATEMENT__BODY:
-			setBody((Block) null);
-			return;
+			case AcceleoPackage.FILE_STATEMENT__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__MODE:
+				setMode(MODE_EDEFAULT);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__URL:
+				setUrl((Expression)null);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__CHARSET:
+				setCharset((Expression)null);
+				return;
+			case AcceleoPackage.FILE_STATEMENT__BODY:
+				setBody((Block)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -502,18 +480,18 @@ public class FileStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.FILE_STATEMENT__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.FILE_STATEMENT__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.FILE_STATEMENT__MODE:
-			return mode != MODE_EDEFAULT;
-		case AcceleoPackage.FILE_STATEMENT__URL:
-			return url != null;
-		case AcceleoPackage.FILE_STATEMENT__CHARSET:
-			return charset != null;
-		case AcceleoPackage.FILE_STATEMENT__BODY:
-			return body != null;
+			case AcceleoPackage.FILE_STATEMENT__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.FILE_STATEMENT__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.FILE_STATEMENT__MODE:
+				return mode != MODE_EDEFAULT;
+			case AcceleoPackage.FILE_STATEMENT__URL:
+				return url != null;
+			case AcceleoPackage.FILE_STATEMENT__CHARSET:
+				return charset != null;
+			case AcceleoPackage.FILE_STATEMENT__BODY:
+				return body != null;
 		}
 		return super.eIsSet(featureID);
 	}

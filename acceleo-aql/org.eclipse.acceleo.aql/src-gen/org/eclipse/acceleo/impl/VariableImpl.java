@@ -135,8 +135,8 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.VARIABLE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.VARIABLE__NAME, oldName,
+					name));
 	}
 
 	/**
@@ -157,9 +157,8 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.VARIABLE__START_POSITION, oldStartPosition,
-					startPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.VARIABLE__START_POSITION,
+					oldStartPosition, startPosition));
 	}
 
 	/**
@@ -180,9 +179,8 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.VARIABLE__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.VARIABLE__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -193,12 +191,12 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.VARIABLE__NAME:
-			return getName();
-		case AcceleoPackage.VARIABLE__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.VARIABLE__END_POSITION:
-			return getEndPosition();
+			case AcceleoPackage.VARIABLE__NAME:
+				return getName();
+			case AcceleoPackage.VARIABLE__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.VARIABLE__END_POSITION:
+				return getEndPosition();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -211,15 +209,15 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.VARIABLE__NAME:
-			setName((String) newValue);
-			return;
-		case AcceleoPackage.VARIABLE__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.VARIABLE__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
+			case AcceleoPackage.VARIABLE__NAME:
+				setName((String)newValue);
+				return;
+			case AcceleoPackage.VARIABLE__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.VARIABLE__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -232,15 +230,15 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.VARIABLE__NAME:
-			setName(NAME_EDEFAULT);
-			return;
-		case AcceleoPackage.VARIABLE__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.VARIABLE__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
+			case AcceleoPackage.VARIABLE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case AcceleoPackage.VARIABLE__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.VARIABLE__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -253,13 +251,12 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.VARIABLE__NAME:
-			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT
-					.equals(name);
-		case AcceleoPackage.VARIABLE__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.VARIABLE__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.VARIABLE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case AcceleoPackage.VARIABLE__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.VARIABLE__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -273,20 +270,20 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == NamedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.VARIABLE__NAME:
-				return AcceleoPackage.NAMED_ELEMENT__NAME;
-			default:
-				return -1;
+				case AcceleoPackage.VARIABLE__NAME:
+					return AcceleoPackage.NAMED_ELEMENT__NAME;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == ASTNode.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.VARIABLE__START_POSITION:
-				return AcceleoPackage.AST_NODE__START_POSITION;
-			case AcceleoPackage.VARIABLE__END_POSITION:
-				return AcceleoPackage.AST_NODE__END_POSITION;
-			default:
-				return -1;
+				case AcceleoPackage.VARIABLE__START_POSITION:
+					return AcceleoPackage.AST_NODE__START_POSITION;
+				case AcceleoPackage.VARIABLE__END_POSITION:
+					return AcceleoPackage.AST_NODE__END_POSITION;
+				default:
+					return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -301,20 +298,20 @@ public class VariableImpl extends TypedElementImpl implements Variable {
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == NamedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.NAMED_ELEMENT__NAME:
-				return AcceleoPackage.VARIABLE__NAME;
-			default:
-				return -1;
+				case AcceleoPackage.NAMED_ELEMENT__NAME:
+					return AcceleoPackage.VARIABLE__NAME;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == ASTNode.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.AST_NODE__START_POSITION:
-				return AcceleoPackage.VARIABLE__START_POSITION;
-			case AcceleoPackage.AST_NODE__END_POSITION:
-				return AcceleoPackage.VARIABLE__END_POSITION;
-			default:
-				return -1;
+				case AcceleoPackage.AST_NODE__START_POSITION:
+					return AcceleoPackage.VARIABLE__START_POSITION;
+				case AcceleoPackage.AST_NODE__END_POSITION:
+					return AcceleoPackage.VARIABLE__END_POSITION;
+				default:
+					return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

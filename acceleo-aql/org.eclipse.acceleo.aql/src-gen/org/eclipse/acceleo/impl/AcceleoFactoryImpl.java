@@ -39,7 +39,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 */
 	public static AcceleoFactory init() {
 		try {
-			AcceleoFactory theAcceleoFactory = (AcceleoFactory) EPackage.Registry.INSTANCE
+			AcceleoFactory theAcceleoFactory = (AcceleoFactory)EPackage.Registry.INSTANCE
 					.getEFactory(AcceleoPackage.eNS_URI);
 			if (theAcceleoFactory != null) {
 				return theAcceleoFactory;
@@ -68,53 +68,55 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-		case AcceleoPackage.MODULE:
-			return createModule();
-		case AcceleoPackage.METAMODEL:
-			return createMetamodel();
-		case AcceleoPackage.COMMENT:
-			return createComment();
-		case AcceleoPackage.COMMENT_BODY:
-			return createCommentBody();
-		case AcceleoPackage.DOCUMENTATION:
-			return createDocumentation();
-		case AcceleoPackage.MODULE_DOCUMENTATION:
-			return createModuleDocumentation();
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION:
-			return createModuleElementDocumentation();
-		case AcceleoPackage.PARAMETER_DOCUMENTATION:
-			return createParameterDocumentation();
-		case AcceleoPackage.BLOCK:
-			return createBlock();
-		case AcceleoPackage.TYPED_ELEMENT:
-			return createTypedElement();
-		case AcceleoPackage.TEMPLATE:
-			return createTemplate();
-		case AcceleoPackage.QUERY:
-			return createQuery();
-		case AcceleoPackage.EXPRESSION:
-			return createExpression();
-		case AcceleoPackage.VARIABLE:
-			return createVariable();
-		case AcceleoPackage.BINDING:
-			return createBinding();
-		case AcceleoPackage.EXPRESSION_STATEMENT:
-			return createExpressionStatement();
-		case AcceleoPackage.PROTECTED_AREA:
-			return createProtectedArea();
-		case AcceleoPackage.FOR_STATEMENT:
-			return createForStatement();
-		case AcceleoPackage.IF_STATEMENT:
-			return createIfStatement();
-		case AcceleoPackage.LET_STATEMENT:
-			return createLetStatement();
-		case AcceleoPackage.FILE_STATEMENT:
-			return createFileStatement();
-		case AcceleoPackage.TEXT_STATEMENT:
-			return createTextStatement();
-		default:
-			throw new IllegalArgumentException(
-					"The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+			case AcceleoPackage.MODULE:
+				return createModule();
+			case AcceleoPackage.METAMODEL:
+				return createMetamodel();
+			case AcceleoPackage.MODULE_REFERENCE:
+				return createModuleReference();
+			case AcceleoPackage.COMMENT:
+				return createComment();
+			case AcceleoPackage.COMMENT_BODY:
+				return createCommentBody();
+			case AcceleoPackage.DOCUMENTATION:
+				return createDocumentation();
+			case AcceleoPackage.MODULE_DOCUMENTATION:
+				return createModuleDocumentation();
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION:
+				return createModuleElementDocumentation();
+			case AcceleoPackage.PARAMETER_DOCUMENTATION:
+				return createParameterDocumentation();
+			case AcceleoPackage.BLOCK:
+				return createBlock();
+			case AcceleoPackage.TYPED_ELEMENT:
+				return createTypedElement();
+			case AcceleoPackage.TEMPLATE:
+				return createTemplate();
+			case AcceleoPackage.QUERY:
+				return createQuery();
+			case AcceleoPackage.EXPRESSION:
+				return createExpression();
+			case AcceleoPackage.VARIABLE:
+				return createVariable();
+			case AcceleoPackage.BINDING:
+				return createBinding();
+			case AcceleoPackage.EXPRESSION_STATEMENT:
+				return createExpressionStatement();
+			case AcceleoPackage.PROTECTED_AREA:
+				return createProtectedArea();
+			case AcceleoPackage.FOR_STATEMENT:
+				return createForStatement();
+			case AcceleoPackage.IF_STATEMENT:
+				return createIfStatement();
+			case AcceleoPackage.LET_STATEMENT:
+				return createLetStatement();
+			case AcceleoPackage.FILE_STATEMENT:
+				return createFileStatement();
+			case AcceleoPackage.TEXT_STATEMENT:
+				return createTextStatement();
+			default:
+				throw new IllegalArgumentException(
+						"The class '" + eClass.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -126,20 +128,17 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-		case AcceleoPackage.VISIBILITY_KIND:
-			return createVisibilityKindFromString(eDataType, initialValue);
-		case AcceleoPackage.OPEN_MODE_KIND:
-			return createOpenModeKindFromString(eDataType, initialValue);
-		case AcceleoPackage.AST_RESULT:
-			return createASTResultFromString(eDataType, initialValue);
-		case AcceleoPackage.MODULE_QUALIFIED_NAME:
-			return createModuleQualifiedNameFromString(eDataType, initialValue);
-		case AcceleoPackage.TEMPLATE_QUALIFIED_NAME:
-			return createTemplateQualifiedNameFromString(eDataType,
-					initialValue);
-		default:
-			throw new IllegalArgumentException(
-					"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+			case AcceleoPackage.VISIBILITY_KIND:
+				return createVisibilityKindFromString(eDataType, initialValue);
+			case AcceleoPackage.OPEN_MODE_KIND:
+				return createOpenModeKindFromString(eDataType, initialValue);
+			case AcceleoPackage.AST_RESULT:
+				return createASTResultFromString(eDataType, initialValue);
+			case AcceleoPackage.MODULE_QUALIFIED_NAME:
+				return createModuleQualifiedNameFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException(
+						"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -151,20 +150,17 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-		case AcceleoPackage.VISIBILITY_KIND:
-			return convertVisibilityKindToString(eDataType, instanceValue);
-		case AcceleoPackage.OPEN_MODE_KIND:
-			return convertOpenModeKindToString(eDataType, instanceValue);
-		case AcceleoPackage.AST_RESULT:
-			return convertASTResultToString(eDataType, instanceValue);
-		case AcceleoPackage.MODULE_QUALIFIED_NAME:
-			return convertModuleQualifiedNameToString(eDataType, instanceValue);
-		case AcceleoPackage.TEMPLATE_QUALIFIED_NAME:
-			return convertTemplateQualifiedNameToString(eDataType,
-					instanceValue);
-		default:
-			throw new IllegalArgumentException(
-					"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
+			case AcceleoPackage.VISIBILITY_KIND:
+				return convertVisibilityKindToString(eDataType, instanceValue);
+			case AcceleoPackage.OPEN_MODE_KIND:
+				return convertOpenModeKindToString(eDataType, instanceValue);
+			case AcceleoPackage.AST_RESULT:
+				return convertASTResultToString(eDataType, instanceValue);
+			case AcceleoPackage.MODULE_QUALIFIED_NAME:
+				return convertModuleQualifiedNameToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException(
+						"The datatype '" + eDataType.getName() + "' is not a valid classifier"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -186,6 +182,16 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public Metamodel createMetamodel() {
 		MetamodelImpl metamodel = new MetamodelImpl();
 		return metamodel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ModuleReference createModuleReference() {
+		ModuleReferenceImpl moduleReference = new ModuleReferenceImpl();
+		return moduleReference;
 	}
 
 	/**
@@ -393,8 +399,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VisibilityKind createVisibilityKindFromString(EDataType eDataType,
-			String initialValue) {
+	public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
 		VisibilityKind result = VisibilityKind.get(initialValue);
 		if (result == null)
 			throw new IllegalArgumentException(
@@ -407,8 +412,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertVisibilityKindToString(EDataType eDataType,
-			Object instanceValue) {
+	public String convertVisibilityKindToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -417,8 +421,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OpenModeKind createOpenModeKindFromString(EDataType eDataType,
-			String initialValue) {
+	public OpenModeKind createOpenModeKindFromString(EDataType eDataType, String initialValue) {
 		OpenModeKind result = OpenModeKind.get(initialValue);
 		if (result == null)
 			throw new IllegalArgumentException(
@@ -431,8 +434,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertOpenModeKindToString(EDataType eDataType,
-			Object instanceValue) {
+	public String convertOpenModeKindToString(EDataType eDataType, Object instanceValue) {
 		return instanceValue == null ? null : instanceValue.toString();
 	}
 
@@ -441,9 +443,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AstResult createASTResultFromString(EDataType eDataType,
-			String initialValue) {
-		return (AstResult) super.createFromString(eDataType, initialValue);
+	public AstResult createASTResultFromString(EDataType eDataType, String initialValue) {
+		return (AstResult)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -451,8 +452,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertASTResultToString(EDataType eDataType,
-			Object instanceValue) {
+	public String convertASTResultToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -461,9 +461,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String createModuleQualifiedNameFromString(EDataType eDataType,
-			String initialValue) {
-		return (String) super.createFromString(eDataType, initialValue);
+	public String createModuleQualifiedNameFromString(EDataType eDataType, String initialValue) {
+		return (String)super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -471,28 +470,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String convertModuleQualifiedNameToString(EDataType eDataType,
-			Object instanceValue) {
-		return super.convertToString(eDataType, instanceValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String createTemplateQualifiedNameFromString(EDataType eDataType,
-			String initialValue) {
-		return (String) super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertTemplateQualifiedNameToString(EDataType eDataType,
-			Object instanceValue) {
+	public String convertModuleQualifiedNameToString(EDataType eDataType, Object instanceValue) {
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -502,7 +480,7 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * @generated
 	 */
 	public AcceleoPackage getAcceleoPackage() {
-		return (AcceleoPackage) getEPackage();
+		return (AcceleoPackage)getEPackage();
 	}
 
 	/**

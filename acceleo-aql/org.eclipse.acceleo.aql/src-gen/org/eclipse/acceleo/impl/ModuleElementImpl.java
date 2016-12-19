@@ -35,8 +35,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
-		implements ModuleElement {
+public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container implements ModuleElement {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -115,8 +114,7 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE_ELEMENT__START_POSITION,
-					oldStartPosition, startPosition));
+					AcceleoPackage.MODULE_ELEMENT__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -138,8 +136,7 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE_ELEMENT__END_POSITION,
-					oldEndPosition, endPosition));
+					AcceleoPackage.MODULE_ELEMENT__END_POSITION, oldEndPosition, endPosition));
 	}
 
 	/**
@@ -150,10 +147,10 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
-			return getEndPosition();
+			case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
+				return getEndPosition();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -166,12 +163,12 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
+			case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -184,12 +181,12 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
+			case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -202,10 +199,10 @@ public abstract class ModuleElementImpl extends MinimalEObjectImpl.Container
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.MODULE_ELEMENT__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.MODULE_ELEMENT__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -41,8 +41,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
-		ProtectedArea {
+public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements ProtectedArea {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -141,8 +140,7 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.PROTECTED_AREA__START_POSITION,
-					oldStartPosition, startPosition));
+					AcceleoPackage.PROTECTED_AREA__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -164,8 +162,7 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.PROTECTED_AREA__END_POSITION,
-					oldEndPosition, endPosition));
+					AcceleoPackage.PROTECTED_AREA__END_POSITION, oldEndPosition, endPosition));
 	}
 
 	/**
@@ -186,9 +183,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 		Expression oldId = id;
 		id = newId;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.PROTECTED_AREA__ID, oldId,
-					newId);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.PROTECTED_AREA__ID, oldId, newId);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -206,19 +202,17 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 		if (newId != id) {
 			NotificationChain msgs = null;
 			if (id != null)
-				msgs = ((InternalEObject) id)
-						.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.PROTECTED_AREA__ID, null, msgs);
+				msgs = ((InternalEObject)id).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.PROTECTED_AREA__ID, null, msgs);
 			if (newId != null)
-				msgs = ((InternalEObject) newId)
-						.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.PROTECTED_AREA__ID, null, msgs);
+				msgs = ((InternalEObject)newId).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.PROTECTED_AREA__ID, null, msgs);
 			msgs = basicSetId(newId, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.PROTECTED_AREA__ID, newId, newId));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.PROTECTED_AREA__ID, newId,
+					newId));
 	}
 
 	/**
@@ -239,9 +233,8 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 		Block oldBody = body;
 		body = newBody;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.PROTECTED_AREA__BODY,
-					oldBody, newBody);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.PROTECTED_AREA__BODY, oldBody, newBody);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -259,21 +252,17 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 		if (newBody != body) {
 			NotificationChain msgs = null;
 			if (body != null)
-				msgs = ((InternalEObject) body).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.PROTECTED_AREA__BODY, null,
-						msgs);
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.PROTECTED_AREA__BODY, null, msgs);
 			if (newBody != null)
-				msgs = ((InternalEObject) newBody).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.PROTECTED_AREA__BODY, null,
-						msgs);
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.PROTECTED_AREA__BODY, null, msgs);
 			msgs = basicSetBody(newBody, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.PROTECTED_AREA__BODY, newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.PROTECTED_AREA__BODY,
+					newBody, newBody));
 	}
 
 	/**
@@ -282,13 +271,12 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.PROTECTED_AREA__ID:
-			return basicSetId(null, msgs);
-		case AcceleoPackage.PROTECTED_AREA__BODY:
-			return basicSetBody(null, msgs);
+			case AcceleoPackage.PROTECTED_AREA__ID:
+				return basicSetId(null, msgs);
+			case AcceleoPackage.PROTECTED_AREA__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -301,14 +289,14 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.PROTECTED_AREA__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.PROTECTED_AREA__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.PROTECTED_AREA__ID:
-			return getId();
-		case AcceleoPackage.PROTECTED_AREA__BODY:
-			return getBody();
+			case AcceleoPackage.PROTECTED_AREA__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.PROTECTED_AREA__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.PROTECTED_AREA__ID:
+				return getId();
+			case AcceleoPackage.PROTECTED_AREA__BODY:
+				return getBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -321,18 +309,18 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.PROTECTED_AREA__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.PROTECTED_AREA__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.PROTECTED_AREA__ID:
-			setId((Expression) newValue);
-			return;
-		case AcceleoPackage.PROTECTED_AREA__BODY:
-			setBody((Block) newValue);
-			return;
+			case AcceleoPackage.PROTECTED_AREA__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.PROTECTED_AREA__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.PROTECTED_AREA__ID:
+				setId((Expression)newValue);
+				return;
+			case AcceleoPackage.PROTECTED_AREA__BODY:
+				setBody((Block)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -345,18 +333,18 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.PROTECTED_AREA__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.PROTECTED_AREA__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.PROTECTED_AREA__ID:
-			setId((Expression) null);
-			return;
-		case AcceleoPackage.PROTECTED_AREA__BODY:
-			setBody((Block) null);
-			return;
+			case AcceleoPackage.PROTECTED_AREA__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.PROTECTED_AREA__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.PROTECTED_AREA__ID:
+				setId((Expression)null);
+				return;
+			case AcceleoPackage.PROTECTED_AREA__BODY:
+				setBody((Block)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -369,14 +357,14 @@ public class ProtectedAreaImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.PROTECTED_AREA__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.PROTECTED_AREA__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.PROTECTED_AREA__ID:
-			return id != null;
-		case AcceleoPackage.PROTECTED_AREA__BODY:
-			return body != null;
+			case AcceleoPackage.PROTECTED_AREA__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.PROTECTED_AREA__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.PROTECTED_AREA__ID:
+				return id != null;
+			case AcceleoPackage.PROTECTED_AREA__BODY:
+				return body != null;
 		}
 		return super.eIsSet(featureID);
 	}

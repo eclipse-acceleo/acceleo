@@ -31,8 +31,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Query extends ModuleElement, DocumentedElement, NamedElement,
-		TypedElement {
+public interface Query extends ModuleElement, DocumentedElement, NamedElement, TypedElement {
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.acceleo.Variable}.
@@ -44,7 +43,7 @@ public interface Query extends ModuleElement, DocumentedElement, NamedElement,
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parameters</em>' containment reference list.
 	 * @see org.eclipse.acceleo.AcceleoPackage#getQuery_Parameters()
-	 * @model containment="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<Variable> getParameters();

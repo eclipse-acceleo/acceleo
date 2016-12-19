@@ -190,14 +190,12 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetDocumentation(
-			Documentation newDocumentation, NotificationChain msgs) {
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
 		Documentation oldDocumentation = documentation;
 		documentation = newDocumentation;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.QUERY__DOCUMENTATION,
-					oldDocumentation, newDocumentation);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.QUERY__DOCUMENTATION, oldDocumentation, newDocumentation);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -215,20 +213,17 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
 			if (documentation != null)
-				msgs = ((InternalEObject) documentation).eInverseRemove(this,
-						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-						Documentation.class, msgs);
+				msgs = ((InternalEObject)documentation).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 			if (newDocumentation != null)
-				msgs = ((InternalEObject) newDocumentation).eInverseAdd(this,
-						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-						Documentation.class, msgs);
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 			msgs = basicSetDocumentation(newDocumentation, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.QUERY__DOCUMENTATION, newDocumentation,
-					newDocumentation));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__DOCUMENTATION,
+					newDocumentation, newDocumentation));
 	}
 
 	/**
@@ -249,8 +244,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.QUERY__DEPRECATED, oldDeprecated, deprecated));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__DEPRECATED,
+					oldDeprecated, deprecated));
 	}
 
 	/**
@@ -271,8 +266,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.QUERY__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__NAME, oldName, name));
 	}
 
 	/**
@@ -282,12 +276,12 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	public EClassifier getType() {
 		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject) type;
-			type = (EClassifier) eResolveProxy(oldType);
+			InternalEObject oldType = (InternalEObject)type;
+			type = (EClassifier)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.QUERY__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, AcceleoPackage.QUERY__TYPE,
+							oldType, type));
 			}
 		}
 		return type;
@@ -311,8 +305,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		EClassifier oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.QUERY__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__TYPE, oldType, type));
 	}
 
 	/**
@@ -322,8 +315,8 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	public EList<Variable> getParameters() {
 		if (parameters == null) {
-			parameters = new EObjectContainmentEList<Variable>(Variable.class,
-					this, AcceleoPackage.QUERY__PARAMETERS);
+			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
+					AcceleoPackage.QUERY__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -344,11 +337,10 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	public void setVisibility(VisibilityKind newVisibility) {
 		VisibilityKind oldVisibility = visibility;
-		visibility = newVisibility == null ? VISIBILITY_EDEFAULT
-				: newVisibility;
+		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.QUERY__VISIBILITY, oldVisibility, visibility));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__VISIBILITY,
+					oldVisibility, visibility));
 	}
 
 	/**
@@ -358,12 +350,12 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 */
 	public Expression getBody() {
 		if (body != null && body.eIsProxy()) {
-			InternalEObject oldBody = (InternalEObject) body;
-			body = (Expression) eResolveProxy(oldBody);
+			InternalEObject oldBody = (InternalEObject)body;
+			body = (Expression)eResolveProxy(oldBody);
 			if (body != oldBody) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.QUERY__BODY, oldBody, body));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, AcceleoPackage.QUERY__BODY,
+							oldBody, body));
 			}
 		}
 		return body;
@@ -387,8 +379,7 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 		Expression oldBody = body;
 		body = newBody;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.QUERY__BODY, oldBody, body));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.QUERY__BODY, oldBody, body));
 	}
 
 	/**
@@ -397,16 +388,13 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.QUERY__DOCUMENTATION:
-			if (documentation != null)
-				msgs = ((InternalEObject) documentation).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.QUERY__DOCUMENTATION, null,
-						msgs);
-			return basicSetDocumentation((Documentation) otherEnd, msgs);
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				if (documentation != null)
+					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+							- AcceleoPackage.QUERY__DOCUMENTATION, null, msgs);
+				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -417,14 +405,12 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.QUERY__DOCUMENTATION:
-			return basicSetDocumentation(null, msgs);
-		case AcceleoPackage.QUERY__PARAMETERS:
-			return ((InternalEList<?>) getParameters()).basicRemove(otherEnd,
-					msgs);
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
+			case AcceleoPackage.QUERY__PARAMETERS:
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -437,24 +423,24 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.QUERY__DOCUMENTATION:
-			return getDocumentation();
-		case AcceleoPackage.QUERY__DEPRECATED:
-			return isDeprecated();
-		case AcceleoPackage.QUERY__NAME:
-			return getName();
-		case AcceleoPackage.QUERY__TYPE:
-			if (resolve)
-				return getType();
-			return basicGetType();
-		case AcceleoPackage.QUERY__PARAMETERS:
-			return getParameters();
-		case AcceleoPackage.QUERY__VISIBILITY:
-			return getVisibility();
-		case AcceleoPackage.QUERY__BODY:
-			if (resolve)
-				return getBody();
-			return basicGetBody();
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				return getDocumentation();
+			case AcceleoPackage.QUERY__DEPRECATED:
+				return isDeprecated();
+			case AcceleoPackage.QUERY__NAME:
+				return getName();
+			case AcceleoPackage.QUERY__TYPE:
+				if (resolve)
+					return getType();
+				return basicGetType();
+			case AcceleoPackage.QUERY__PARAMETERS:
+				return getParameters();
+			case AcceleoPackage.QUERY__VISIBILITY:
+				return getVisibility();
+			case AcceleoPackage.QUERY__BODY:
+				if (resolve)
+					return getBody();
+				return basicGetBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -468,28 +454,28 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.QUERY__DOCUMENTATION:
-			setDocumentation((Documentation) newValue);
-			return;
-		case AcceleoPackage.QUERY__DEPRECATED:
-			setDeprecated((Boolean) newValue);
-			return;
-		case AcceleoPackage.QUERY__NAME:
-			setName((String) newValue);
-			return;
-		case AcceleoPackage.QUERY__TYPE:
-			setType((EClassifier) newValue);
-			return;
-		case AcceleoPackage.QUERY__PARAMETERS:
-			getParameters().clear();
-			getParameters().addAll((Collection<? extends Variable>) newValue);
-			return;
-		case AcceleoPackage.QUERY__VISIBILITY:
-			setVisibility((VisibilityKind) newValue);
-			return;
-		case AcceleoPackage.QUERY__BODY:
-			setBody((Expression) newValue);
-			return;
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
+			case AcceleoPackage.QUERY__DEPRECATED:
+				setDeprecated((Boolean)newValue);
+				return;
+			case AcceleoPackage.QUERY__NAME:
+				setName((String)newValue);
+				return;
+			case AcceleoPackage.QUERY__TYPE:
+				setType((EClassifier)newValue);
+				return;
+			case AcceleoPackage.QUERY__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Variable>)newValue);
+				return;
+			case AcceleoPackage.QUERY__VISIBILITY:
+				setVisibility((VisibilityKind)newValue);
+				return;
+			case AcceleoPackage.QUERY__BODY:
+				setBody((Expression)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -502,27 +488,27 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.QUERY__DOCUMENTATION:
-			setDocumentation((Documentation) null);
-			return;
-		case AcceleoPackage.QUERY__DEPRECATED:
-			setDeprecated(DEPRECATED_EDEFAULT);
-			return;
-		case AcceleoPackage.QUERY__NAME:
-			setName(NAME_EDEFAULT);
-			return;
-		case AcceleoPackage.QUERY__TYPE:
-			setType((EClassifier) null);
-			return;
-		case AcceleoPackage.QUERY__PARAMETERS:
-			getParameters().clear();
-			return;
-		case AcceleoPackage.QUERY__VISIBILITY:
-			setVisibility(VISIBILITY_EDEFAULT);
-			return;
-		case AcceleoPackage.QUERY__BODY:
-			setBody((Expression) null);
-			return;
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
+			case AcceleoPackage.QUERY__DEPRECATED:
+				setDeprecated(DEPRECATED_EDEFAULT);
+				return;
+			case AcceleoPackage.QUERY__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case AcceleoPackage.QUERY__TYPE:
+				setType((EClassifier)null);
+				return;
+			case AcceleoPackage.QUERY__PARAMETERS:
+				getParameters().clear();
+				return;
+			case AcceleoPackage.QUERY__VISIBILITY:
+				setVisibility(VISIBILITY_EDEFAULT);
+				return;
+			case AcceleoPackage.QUERY__BODY:
+				setBody((Expression)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -535,21 +521,20 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.QUERY__DOCUMENTATION:
-			return documentation != null;
-		case AcceleoPackage.QUERY__DEPRECATED:
-			return deprecated != DEPRECATED_EDEFAULT;
-		case AcceleoPackage.QUERY__NAME:
-			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT
-					.equals(name);
-		case AcceleoPackage.QUERY__TYPE:
-			return type != null;
-		case AcceleoPackage.QUERY__PARAMETERS:
-			return parameters != null && !parameters.isEmpty();
-		case AcceleoPackage.QUERY__VISIBILITY:
-			return visibility != VISIBILITY_EDEFAULT;
-		case AcceleoPackage.QUERY__BODY:
-			return body != null;
+			case AcceleoPackage.QUERY__DOCUMENTATION:
+				return documentation != null;
+			case AcceleoPackage.QUERY__DEPRECATED:
+				return deprecated != DEPRECATED_EDEFAULT;
+			case AcceleoPackage.QUERY__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case AcceleoPackage.QUERY__TYPE:
+				return type != null;
+			case AcceleoPackage.QUERY__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case AcceleoPackage.QUERY__VISIBILITY:
+				return visibility != VISIBILITY_EDEFAULT;
+			case AcceleoPackage.QUERY__BODY:
+				return body != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -563,28 +548,28 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == DocumentedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.QUERY__DOCUMENTATION:
-				return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
-			case AcceleoPackage.QUERY__DEPRECATED:
-				return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
-			default:
-				return -1;
+				case AcceleoPackage.QUERY__DOCUMENTATION:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+				case AcceleoPackage.QUERY__DEPRECATED:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == NamedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.QUERY__NAME:
-				return AcceleoPackage.NAMED_ELEMENT__NAME;
-			default:
-				return -1;
+				case AcceleoPackage.QUERY__NAME:
+					return AcceleoPackage.NAMED_ELEMENT__NAME;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == TypedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.QUERY__TYPE:
-				return AcceleoPackage.TYPED_ELEMENT__TYPE;
-			default:
-				return -1;
+				case AcceleoPackage.QUERY__TYPE:
+					return AcceleoPackage.TYPED_ELEMENT__TYPE;
+				default:
+					return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -599,28 +584,28 @@ public class QueryImpl extends ModuleElementImpl implements Query {
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == DocumentedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
-				return AcceleoPackage.QUERY__DOCUMENTATION;
-			case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
-				return AcceleoPackage.QUERY__DEPRECATED;
-			default:
-				return -1;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+					return AcceleoPackage.QUERY__DOCUMENTATION;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+					return AcceleoPackage.QUERY__DEPRECATED;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == NamedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.NAMED_ELEMENT__NAME:
-				return AcceleoPackage.QUERY__NAME;
-			default:
-				return -1;
+				case AcceleoPackage.NAMED_ELEMENT__NAME:
+					return AcceleoPackage.QUERY__NAME;
+				default:
+					return -1;
 			}
 		}
 		if (baseClass == TypedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.TYPED_ELEMENT__TYPE:
-				return AcceleoPackage.QUERY__TYPE;
-			default:
-				return -1;
+				case AcceleoPackage.TYPED_ELEMENT__TYPE:
+					return AcceleoPackage.QUERY__TYPE;
+				default:
+					return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);

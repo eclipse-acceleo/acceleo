@@ -1,0 +1,642 @@
+/*******************************************************************************
+ *  Copyright (c) 2016 Obeo. 
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *   
+ *   Contributors:
+ *       Obeo - initial API and implementation
+ *  
+ *******************************************************************************/
+package org.eclipse.acceleo.tests;
+
+import java.util.List;
+import java.util.Set;
+
+import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.CommentBody;
+import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.FileStatement;
+import org.eclipse.acceleo.ForStatement;
+import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.Metamodel;
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleDocumentation;
+import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.ModuleElementDocumentation;
+import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.ParameterDocumentation;
+import org.eclipse.acceleo.ProtectedArea;
+import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.Statement;
+import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.query.ast.Binding;
+import org.eclipse.acceleo.query.ast.BooleanLiteral;
+import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.ast.CallType;
+import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
+import org.eclipse.acceleo.query.ast.Conditional;
+import org.eclipse.acceleo.query.ast.EnumLiteral;
+import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.ast.Expression;
+import org.eclipse.acceleo.query.ast.IntegerLiteral;
+import org.eclipse.acceleo.query.ast.Lambda;
+import org.eclipse.acceleo.query.ast.Let;
+import org.eclipse.acceleo.query.ast.NullLiteral;
+import org.eclipse.acceleo.query.ast.RealLiteral;
+import org.eclipse.acceleo.query.ast.SequenceInExtensionLiteral;
+import org.eclipse.acceleo.query.ast.SetInExtensionLiteral;
+import org.eclipse.acceleo.query.ast.StringLiteral;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
+import org.eclipse.acceleo.query.ast.TypeSetLiteral;
+import org.eclipse.acceleo.query.ast.VarRef;
+import org.eclipse.acceleo.query.ast.VariableDeclaration;
+import org.eclipse.acceleo.query.ast.util.AstSwitch;
+import org.eclipse.acceleo.util.AcceleoSwitch;
+
+/**
+ * Serialize a {@link Template}.
+ * 
+ * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+ */
+public class ModuleAstSerializer extends AcceleoSwitch<Void> {
+
+	/**
+	 * Serialize a {@link Expression}.
+	 * 
+	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
+	 */
+	private final class QueryAstSerializer extends AstSwitch<Void> {
+
+		/**
+		 * The {@link StringBuilder} used to serialize.
+		 */
+		private StringBuilder builder;
+
+		/**
+		 * Serializes the given {@link Expression}.
+		 * 
+		 * @param expression
+		 *            the {@link Expression}
+		 * @return the serialized {@link Expression}
+		 */
+		public String serialize(Expression expression) {
+			builder = new StringBuilder();
+
+			doSwitch(expression);
+
+			return builder.toString();
+		}
+
+		@Override
+		public Void caseBinding(Binding binding) {
+			builder.append(binding.getName());
+			if (binding.getType() != null) {
+				builder.append(" : ");
+				builder.append(doSwitch(binding.getType()));
+			}
+			builder.append(" = ");
+			builder.append(doSwitch(binding.getValue()));
+			return null;
+		}
+
+		@Override
+		public Void caseBooleanLiteral(BooleanLiteral booleanLiteral) {
+			builder.append(booleanLiteral.isValue());
+			return null;
+		}
+
+		@Override
+		public Void caseCall(Call call) {
+			if (call.getType() == CallType.COLLECTIONCALL) {
+				builder.append("->");
+			} else {
+				builder.append(".");
+			}
+			builder.append(call.getServiceName());
+			builder.append("(");
+			final StringBuilder previousBuilder = builder;
+			builder = new StringBuilder();
+			for (Expression argument : call.getArguments()) {
+				doSwitch(argument);
+				builder.append(", ");
+			}
+			if (builder.length() > 0) {
+				previousBuilder.append(builder.substring(0, builder.length() - 2));
+			}
+			builder = previousBuilder;
+			builder.append(")");
+			return null;
+		}
+
+		@Override
+		public Void caseCollectionTypeLiteral(CollectionTypeLiteral collectionTypeLiteral) {
+			if (collectionTypeLiteral.getValue() == List.class) {
+				builder.append("Sequence(");
+			} else if (collectionTypeLiteral.getValue() == Set.class) {
+				builder.append("OrderedSet(");
+			} else {
+				builder.append("***invalid type of collection ***(");
+			}
+			doSwitch(collectionTypeLiteral.getElementType());
+			builder.append("");
+			return null;
+		}
+
+		@Override
+		public Void caseConditional(Conditional conditional) {
+			builder.append("if (");
+			doSwitch(conditional.getPredicate());
+			builder.append(") then ");
+			doSwitch(conditional.getTrueBranch());
+			builder.append(" else ");
+			doSwitch(conditional.getFalseBranch());
+			builder.append(" endif ");
+			return null;
+		}
+
+		@Override
+		public Void caseEnumLiteral(EnumLiteral enumLiteral) {
+			builder.append(enumLiteral.getLiteral().getEEnum().getEPackage().getName());
+			builder.append("::");
+			builder.append(enumLiteral.getLiteral().getEEnum().getName());
+			builder.append("::");
+			builder.append(enumLiteral.getLiteral().getName());
+			return null;
+		}
+
+		@Override
+		public Void caseError(Error error) {
+			builder.append("***ERROR***");
+			return null;
+		}
+
+		@Override
+		public Void caseIntegerLiteral(IntegerLiteral object) {
+			builder.append(object.getValue());
+			return null;
+		}
+
+		@Override
+		public Void caseLambda(Lambda lambda) {
+			doSwitch(lambda.getParameters().get(0));
+			builder.append(" | ");
+			doSwitch(lambda.getExpression());
+			return null;
+		}
+
+		@Override
+		public Void caseLet(Let let) {
+			builder.append("let ");
+			final StringBuilder previousBuilder = builder;
+			builder = new StringBuilder();
+			for (Binding binding : let.getBindings()) {
+				doSwitch(binding);
+				builder.append(", ");
+			}
+			previousBuilder.append(builder.substring(0, builder.length() - 2));
+			builder.append(" in ");
+			doSwitch(let.getBody());
+			return super.caseLet(let);
+		}
+
+		@Override
+		public Void caseNullLiteral(NullLiteral nullLiteral) {
+			builder.append("null");
+			return null;
+		}
+
+		@Override
+		public Void caseSequenceInExtensionLiteral(SequenceInExtensionLiteral sequenceInExtensionLiteral) {
+			builder.append("Sequence{");
+			final StringBuilder previousBuilder = builder;
+			builder = new StringBuilder();
+			for (Expression value : sequenceInExtensionLiteral.getValues()) {
+				doSwitch(value);
+				builder.append(", ");
+			}
+			previousBuilder.append(builder.substring(0, builder.length() - 2));
+			builder.append("}");
+			return null;
+		}
+
+		@Override
+		public Void caseRealLiteral(RealLiteral realLiteral) {
+			builder.append(realLiteral.getValue());
+			return null;
+		}
+
+		@Override
+		public Void caseSetInExtensionLiteral(SetInExtensionLiteral setInExtensionLiteral) {
+			builder.append("OrderedSet{");
+			final StringBuilder previousBuilder = builder;
+			builder = new StringBuilder();
+			for (Expression value : setInExtensionLiteral.getValues()) {
+				doSwitch(value);
+				builder.append(", ");
+			}
+			previousBuilder.append(builder.substring(0, builder.length() - 2));
+			builder.append("}");
+			return null;
+		}
+
+		@Override
+		public Void caseStringLiteral(StringLiteral stringLiteral) {
+			builder.append("'");
+			builder.append(stringLiteral.getValue());
+			builder.append("'");
+			return null;
+		}
+
+		@Override
+		public Void caseTypeSetLiteral(TypeSetLiteral typeSetLiteral) {
+			builder.append("{");
+			final StringBuilder previousBuilder = builder;
+			builder = new StringBuilder();
+			for (TypeLiteral type : typeSetLiteral.getTypes()) {
+				doSwitch(type);
+				builder.append(" | ");
+			}
+			previousBuilder.append(builder.substring(0, builder.length() - 3));
+			builder.append("}");
+			return null;
+		}
+
+		@Override
+		public Void caseVariableDeclaration(VariableDeclaration variableDeclaration) {
+			builder.append(variableDeclaration.getName());
+			if (variableDeclaration.getType() != null) {
+				builder.append(" : ");
+				doSwitch(variableDeclaration.getType());
+			}
+			builder.append(" = ");
+			doSwitch(variableDeclaration.getExpression());
+			return null;
+		}
+
+		@Override
+		public Void caseVarRef(VarRef varRef) {
+			builder.append(varRef.getVariableName());
+			return null;
+		}
+
+	}
+
+	/**
+	 * The {@link StringBuilder} used to serialize.
+	 */
+	private StringBuilder builder;
+
+	/**
+	 * The {@link QueryAstSerializer}.
+	 */
+	private QueryAstSerializer querySerializer = new QueryAstSerializer();
+
+	/**
+	 * Current indentation.
+	 */
+	private String indentation;
+
+	/**
+	 * Increases indentation.
+	 */
+	protected void indent() {
+		indentation = indentation + "  ";
+	}
+
+	/**
+	 * Decreases indentation.
+	 */
+	protected void deindent() {
+		indentation = indentation.substring(0, indentation.length() - 2);
+	}
+
+	/**
+	 * Serializes the given {@link Module}.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the serialized {@link Module}
+	 */
+	public String serialize(Module module) {
+		builder = new StringBuilder();
+		indentation = "";
+
+		doSwitch(module);
+
+		return builder.toString();
+	}
+
+	/**
+	 * Creates a new line with the right indentation.
+	 */
+	protected void newLine() {
+		builder.append("\n" + indentation);
+	}
+
+	@Override
+	public Void caseModule(Module module) {
+		if (module.getDocumentation() != null) {
+			doSwitch(module.getDocumentation());
+		}
+		newLine();
+		builder.append("header position " + module.getStartHeaderPosition());
+		builder.append("..");
+		builder.append(module.getEndHeaderPosition());
+		newLine();
+		builder.append("module " + module.getName());
+		indent();
+		for (Metamodel metamodel : module.getMetamodels()) {
+			newLine();
+			doSwitch(metamodel);
+		}
+		for (ModuleReference extended : module.getExtends()) {
+			newLine();
+			builder.append("extends ");
+			doSwitch(extended);
+		}
+		for (ModuleReference imported : module.getImports()) {
+			newLine();
+			builder.append("imports ");
+			doSwitch(imported);
+		}
+		for (ModuleElement element : module.getModuleElements()) {
+			newLine();
+			doSwitch(element);
+		}
+		deindent();
+
+		return null;
+	}
+
+	@Override
+	public Void caseModuleReference(ModuleReference moduleReference) {
+		builder.append(moduleReference.getUrl());
+
+		return null;
+	}
+
+	@Override
+	public Void caseMetamodel(Metamodel metamodel) {
+		builder.append("metamodel " + metamodel.getReferencedPackage().getNsURI());
+		return null;
+	}
+
+	@Override
+	public Void caseTemplate(Template template) {
+		if (template.getDocumentation() != null) {
+			doSwitch(template.getDocumentation());
+		}
+		newLine();
+		builder.append(template.getVisibility().getName());
+		builder.append(" template " + template.getName() + "(");
+		final StringBuilder previousBuilder = builder;
+		builder = new StringBuilder();
+		for (Variable variable : template.getParameters()) {
+			doSwitch(variable);
+			builder.append(", ");
+		}
+		if (builder.length() >= 2) {
+			previousBuilder.append(builder.substring(0, builder.length() - 2));
+		}
+		builder = previousBuilder;
+		builder.append(")");
+		if (template.getGuard() != null) {
+			newLine();
+			builder.append(") guard ");
+			doSwitch(template.getGuard());
+		}
+		if (template.getPost() != null) {
+			newLine();
+			builder.append("post ");
+			doSwitch(template.getPost());
+		}
+		doSwitch(template.getBody());
+		builder.append("[/template]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseBlock(Block block) {
+		indent();
+		for (Statement statement : block.getStatements()) {
+			newLine();
+			doSwitch(statement);
+		}
+		deindent();
+
+		return null;
+	}
+
+	@Override
+	public Void caseBinding(org.eclipse.acceleo.Binding binding) {
+		builder.append(binding.getName());
+		if (binding.getType() != null) {
+			builder.append(" : " + binding.getType().getName());
+		}
+		builder.append(" = ");
+		doSwitch(binding.getInitExpression());
+
+		return null;
+	}
+
+	@Override
+	public Void caseComment(Comment comment) {
+		builder.append("[comment ");
+		doSwitch(comment.getBody());
+		builder.append(" /]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseCommentBody(CommentBody commentBody) {
+		builder.append(commentBody.getValue());
+
+		return null;
+	}
+
+	@Override
+	public Void caseDocumentation(Documentation documentation) {
+		doSwitch(documentation.getDocumentedElement());
+		doSwitch(documentation.getBody());
+
+		return null;
+	}
+
+	@Override
+	public Void caseExpression(org.eclipse.acceleo.Expression expression) {
+		builder.append(querySerializer.serialize(expression.getAst().getAst()));
+
+		return null;
+	}
+
+	@Override
+	public Void caseFileStatement(FileStatement file) {
+		builder.append("[file url ");
+		doSwitch(file.getUrl());
+		builder.append(" mode ");
+		builder.append(file.getMode().getValue());
+		doSwitch(file.getBody());
+		newLine();
+		builder.append("[/file]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseForStatement(ForStatement forStatement) {
+		builder.append("[for ");
+		doSwitch(forStatement.getBinding());
+		doSwitch(forStatement.getBody());
+		newLine();
+		builder.append("[/for]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseIfStatement(IfStatement ifStatement) {
+		builder.append("[if ");
+		doSwitch(ifStatement.getCondition());
+		doSwitch(ifStatement.getThen());
+		if (ifStatement.getElse() != null) {
+			newLine();
+			builder.append("[else]");
+			doSwitch(ifStatement.getElse());
+		}
+		newLine();
+		builder.append("[/if]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseLetStatement(org.eclipse.acceleo.LetStatement let) {
+		builder.append("[let ");
+		for (Variable variable : let.getVariables()) {
+			newLine();
+			doSwitch(variable);
+		}
+
+		doSwitch(let.getBody());
+		builder.append("[/let]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseQuery(Query query) {
+		if (query.getDocumentation() != null) {
+			doSwitch(query.getDocumentation());
+		}
+		builder.append(query.getVisibility().getName());
+		builder.append(" query " + query.getName() + "(");
+		final StringBuilder previousBuilder = builder;
+		builder = new StringBuilder();
+		for (Variable variable : query.getParameters()) {
+			doSwitch(variable);
+			builder.append(", ");
+		}
+		previousBuilder.append(builder.substring(0, builder.length() - 2));
+		builder = previousBuilder;
+		builder.append(") ");
+		builder.append(") : ");
+		builder.append(query.getType().getName());
+		builder.append(" ");
+		doSwitch(query.getBody());
+		newLine();
+		builder.append("/]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseTextStatement(TextStatement text) {
+		builder.append(text.getValue().replaceAll("\r\n", "\n" + indentation).replaceAll("\r",
+				"\n" + indentation));
+
+		return null;
+	}
+
+	@Override
+	public Void caseExpressionStatement(ExpressionStatement expressionStatement) {
+		builder.append("[");
+		doSwitch(expressionStatement.getExpression());
+		builder.append("/]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseVariable(Variable variable) {
+		if (variable.eClass() == AcceleoPackage.eINSTANCE.getVariable()) {
+			builder.append(variable.getName());
+			if (variable.getType() != null) {
+				builder.append(" : ");
+				builder.append(variable.getType().getName());
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public Void caseProtectedArea(ProtectedArea protectedArea) {
+		builder.append("[protected ");
+		doSwitch(protectedArea.getId());
+		doSwitch(protectedArea.getBody());
+		newLine();
+		builder.append("[/protected]");
+
+		return null;
+	}
+
+	@Override
+	public Void caseModuleDocumentation(ModuleDocumentation modueDocumentation) {
+		builder.append("author: " + modueDocumentation.getAuthor());
+		newLine();
+		builder.append("version: " + modueDocumentation.getVersion());
+		newLine();
+		builder.append("since: " + modueDocumentation.getSince());
+		newLine();
+		doSwitch(modueDocumentation.getBody());
+
+		return null;
+	}
+
+	@Override
+	public Void caseModuleElementDocumentation(ModuleElementDocumentation moduleElementDocumentation) {
+		for (ParameterDocumentation documentation : moduleElementDocumentation.getParameterDocumentation()) {
+			newLine();
+			doSwitch(documentation);
+		}
+		doSwitch(moduleElementDocumentation.getBody());
+
+		return null;
+	}
+
+	@Override
+	public Void caseParameterDocumentation(ParameterDocumentation parameterDocumentation) {
+		doSwitch(parameterDocumentation.getBody());
+
+		return null;
+	}
+
+	@Override
+	public Void caseASTNode(ASTNode node) {
+		builder.append(" (" + node.getStartPosition());
+		builder.append("..");
+		builder.append(node.getEndPosition() + ")");
+		return null;
+	}
+
+}

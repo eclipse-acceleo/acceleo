@@ -21,7 +21,6 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.Template#getOverrides <em>Overrides</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Template#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Template#getGuard <em>Guard</em>}</li>
  *   <li>{@link org.eclipse.acceleo.Template#getPost <em>Post</em>}</li>
@@ -35,24 +34,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Template extends ModuleElement, DocumentedElement,
-		NamedElement {
-	/**
-	 * Returns the value of the '<em><b>Overrides</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Overrides</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Overrides</em>' attribute list.
-	 * @see org.eclipse.acceleo.AcceleoPackage#getTemplate_Overrides()
-	 * @model dataType="org.eclipse.acceleo.TemplateQualifiedName"
-	 * @generated
-	 */
-	EList<String> getOverrides();
-
+public interface Template extends ModuleElement, DocumentedElement, NamedElement {
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.acceleo.Variable}.
@@ -64,7 +46,7 @@ public interface Template extends ModuleElement, DocumentedElement,
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Parameters</em>' containment reference list.
 	 * @see org.eclipse.acceleo.AcceleoPackage#getTemplate_Parameters()
-	 * @model containment="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<Variable> getParameters();

@@ -20,6 +20,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 
+import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -29,8 +30,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -97,24 +96,24 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	protected EList<Metamodel> metamodels;
 
 	/**
-	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' attribute list.
+	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getExtends()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<String> extends_;
+	protected EList<ModuleReference> extends_;
 
 	/**
-	 * The cached value of the '{@link #getImports() <em>Imports</em>}' attribute list.
+	 * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getImports()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<String> imports;
+	protected EList<ModuleReference> imports;
 
 	/**
 	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference list.
@@ -199,14 +198,12 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetDocumentation(
-			Documentation newDocumentation, NotificationChain msgs) {
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
 		Documentation oldDocumentation = documentation;
 		documentation = newDocumentation;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.MODULE__DOCUMENTATION,
-					oldDocumentation, newDocumentation);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE__DOCUMENTATION, oldDocumentation, newDocumentation);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -224,20 +221,17 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		if (newDocumentation != documentation) {
 			NotificationChain msgs = null;
 			if (documentation != null)
-				msgs = ((InternalEObject) documentation).eInverseRemove(this,
-						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-						Documentation.class, msgs);
+				msgs = ((InternalEObject)documentation).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 			if (newDocumentation != null)
-				msgs = ((InternalEObject) newDocumentation).eInverseAdd(this,
-						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT,
-						Documentation.class, msgs);
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
 			msgs = basicSetDocumentation(newDocumentation, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE__DOCUMENTATION, newDocumentation,
-					newDocumentation));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__DOCUMENTATION,
+					newDocumentation, newDocumentation));
 	}
 
 	/**
@@ -258,9 +252,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		boolean oldDeprecated = deprecated;
 		deprecated = newDeprecated;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE__DEPRECATED, oldDeprecated,
-					deprecated));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__DEPRECATED,
+					oldDeprecated, deprecated));
 	}
 
 	/**
@@ -270,8 +263,8 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 */
 	public EList<Metamodel> getMetamodels() {
 		if (metamodels == null) {
-			metamodels = new EObjectResolvingEList<Metamodel>(Metamodel.class,
-					this, AcceleoPackage.MODULE__METAMODELS);
+			metamodels = new EObjectResolvingEList<Metamodel>(Metamodel.class, this,
+					AcceleoPackage.MODULE__METAMODELS);
 		}
 		return metamodels;
 	}
@@ -281,9 +274,9 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<String> getExtends() {
+	public EList<ModuleReference> getExtends() {
 		if (extends_ == null) {
-			extends_ = new EDataTypeUniqueEList<String>(String.class, this,
+			extends_ = new EObjectContainmentEList<ModuleReference>(ModuleReference.class, this,
 					AcceleoPackage.MODULE__EXTENDS);
 		}
 		return extends_;
@@ -294,9 +287,9 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<String> getImports() {
+	public EList<ModuleReference> getImports() {
 		if (imports == null) {
-			imports = new EDataTypeUniqueEList<String>(String.class, this,
+			imports = new EObjectContainmentEList<ModuleReference>(ModuleReference.class, this,
 					AcceleoPackage.MODULE__IMPORTS);
 		}
 		return imports;
@@ -309,8 +302,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 */
 	public EList<ModuleElement> getModuleElements() {
 		if (moduleElements == null) {
-			moduleElements = new EObjectContainmentEList<ModuleElement>(
-					ModuleElement.class, this,
+			moduleElements = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this,
 					AcceleoPackage.MODULE__MODULE_ELEMENTS);
 		}
 		return moduleElements;
@@ -335,8 +327,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		startHeaderPosition = newStartHeaderPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE__START_HEADER_POSITION,
-					oldStartHeaderPosition, startHeaderPosition));
+					AcceleoPackage.MODULE__START_HEADER_POSITION, oldStartHeaderPosition, startHeaderPosition));
 	}
 
 	/**
@@ -357,8 +348,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		int oldEndHeaderPosition = endHeaderPosition;
 		endHeaderPosition = newEndHeaderPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE__END_HEADER_POSITION,
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__END_HEADER_POSITION,
 					oldEndHeaderPosition, endHeaderPosition));
 	}
 
@@ -368,16 +358,13 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE__DOCUMENTATION:
-			if (documentation != null)
-				msgs = ((InternalEObject) documentation).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.MODULE__DOCUMENTATION, null,
-						msgs);
-			return basicSetDocumentation((Documentation) otherEnd, msgs);
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				if (documentation != null)
+					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+							- AcceleoPackage.MODULE__DOCUMENTATION, null, msgs);
+				return basicSetDocumentation((Documentation)otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -388,14 +375,16 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE__DOCUMENTATION:
-			return basicSetDocumentation(null, msgs);
-		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
-			return ((InternalEList<?>) getModuleElements()).basicRemove(
-					otherEnd, msgs);
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
+			case AcceleoPackage.MODULE__EXTENDS:
+				return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.MODULE__IMPORTS:
+				return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+				return ((InternalEList<?>)getModuleElements()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -408,22 +397,22 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE__DOCUMENTATION:
-			return getDocumentation();
-		case AcceleoPackage.MODULE__DEPRECATED:
-			return isDeprecated();
-		case AcceleoPackage.MODULE__METAMODELS:
-			return getMetamodels();
-		case AcceleoPackage.MODULE__EXTENDS:
-			return getExtends();
-		case AcceleoPackage.MODULE__IMPORTS:
-			return getImports();
-		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
-			return getModuleElements();
-		case AcceleoPackage.MODULE__START_HEADER_POSITION:
-			return getStartHeaderPosition();
-		case AcceleoPackage.MODULE__END_HEADER_POSITION:
-			return getEndHeaderPosition();
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				return getDocumentation();
+			case AcceleoPackage.MODULE__DEPRECATED:
+				return isDeprecated();
+			case AcceleoPackage.MODULE__METAMODELS:
+				return getMetamodels();
+			case AcceleoPackage.MODULE__EXTENDS:
+				return getExtends();
+			case AcceleoPackage.MODULE__IMPORTS:
+				return getImports();
+			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+				return getModuleElements();
+			case AcceleoPackage.MODULE__START_HEADER_POSITION:
+				return getStartHeaderPosition();
+			case AcceleoPackage.MODULE__END_HEADER_POSITION:
+				return getEndHeaderPosition();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -437,35 +426,34 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE__DOCUMENTATION:
-			setDocumentation((Documentation) newValue);
-			return;
-		case AcceleoPackage.MODULE__DEPRECATED:
-			setDeprecated((Boolean) newValue);
-			return;
-		case AcceleoPackage.MODULE__METAMODELS:
-			getMetamodels().clear();
-			getMetamodels().addAll((Collection<? extends Metamodel>) newValue);
-			return;
-		case AcceleoPackage.MODULE__EXTENDS:
-			getExtends().clear();
-			getExtends().addAll((Collection<? extends String>) newValue);
-			return;
-		case AcceleoPackage.MODULE__IMPORTS:
-			getImports().clear();
-			getImports().addAll((Collection<? extends String>) newValue);
-			return;
-		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
-			getModuleElements().clear();
-			getModuleElements().addAll(
-					(Collection<? extends ModuleElement>) newValue);
-			return;
-		case AcceleoPackage.MODULE__START_HEADER_POSITION:
-			setStartHeaderPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.MODULE__END_HEADER_POSITION:
-			setEndHeaderPosition((Integer) newValue);
-			return;
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
+			case AcceleoPackage.MODULE__DEPRECATED:
+				setDeprecated((Boolean)newValue);
+				return;
+			case AcceleoPackage.MODULE__METAMODELS:
+				getMetamodels().clear();
+				getMetamodels().addAll((Collection<? extends Metamodel>)newValue);
+				return;
+			case AcceleoPackage.MODULE__EXTENDS:
+				getExtends().clear();
+				getExtends().addAll((Collection<? extends ModuleReference>)newValue);
+				return;
+			case AcceleoPackage.MODULE__IMPORTS:
+				getImports().clear();
+				getImports().addAll((Collection<? extends ModuleReference>)newValue);
+				return;
+			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+				getModuleElements().clear();
+				getModuleElements().addAll((Collection<? extends ModuleElement>)newValue);
+				return;
+			case AcceleoPackage.MODULE__START_HEADER_POSITION:
+				setStartHeaderPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.MODULE__END_HEADER_POSITION:
+				setEndHeaderPosition((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -478,30 +466,30 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE__DOCUMENTATION:
-			setDocumentation((Documentation) null);
-			return;
-		case AcceleoPackage.MODULE__DEPRECATED:
-			setDeprecated(DEPRECATED_EDEFAULT);
-			return;
-		case AcceleoPackage.MODULE__METAMODELS:
-			getMetamodels().clear();
-			return;
-		case AcceleoPackage.MODULE__EXTENDS:
-			getExtends().clear();
-			return;
-		case AcceleoPackage.MODULE__IMPORTS:
-			getImports().clear();
-			return;
-		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
-			getModuleElements().clear();
-			return;
-		case AcceleoPackage.MODULE__START_HEADER_POSITION:
-			setStartHeaderPosition(START_HEADER_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.MODULE__END_HEADER_POSITION:
-			setEndHeaderPosition(END_HEADER_POSITION_EDEFAULT);
-			return;
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
+			case AcceleoPackage.MODULE__DEPRECATED:
+				setDeprecated(DEPRECATED_EDEFAULT);
+				return;
+			case AcceleoPackage.MODULE__METAMODELS:
+				getMetamodels().clear();
+				return;
+			case AcceleoPackage.MODULE__EXTENDS:
+				getExtends().clear();
+				return;
+			case AcceleoPackage.MODULE__IMPORTS:
+				getImports().clear();
+				return;
+			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+				getModuleElements().clear();
+				return;
+			case AcceleoPackage.MODULE__START_HEADER_POSITION:
+				setStartHeaderPosition(START_HEADER_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.MODULE__END_HEADER_POSITION:
+				setEndHeaderPosition(END_HEADER_POSITION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -514,22 +502,22 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE__DOCUMENTATION:
-			return documentation != null;
-		case AcceleoPackage.MODULE__DEPRECATED:
-			return deprecated != DEPRECATED_EDEFAULT;
-		case AcceleoPackage.MODULE__METAMODELS:
-			return metamodels != null && !metamodels.isEmpty();
-		case AcceleoPackage.MODULE__EXTENDS:
-			return extends_ != null && !extends_.isEmpty();
-		case AcceleoPackage.MODULE__IMPORTS:
-			return imports != null && !imports.isEmpty();
-		case AcceleoPackage.MODULE__MODULE_ELEMENTS:
-			return moduleElements != null && !moduleElements.isEmpty();
-		case AcceleoPackage.MODULE__START_HEADER_POSITION:
-			return startHeaderPosition != START_HEADER_POSITION_EDEFAULT;
-		case AcceleoPackage.MODULE__END_HEADER_POSITION:
-			return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
+			case AcceleoPackage.MODULE__DOCUMENTATION:
+				return documentation != null;
+			case AcceleoPackage.MODULE__DEPRECATED:
+				return deprecated != DEPRECATED_EDEFAULT;
+			case AcceleoPackage.MODULE__METAMODELS:
+				return metamodels != null && !metamodels.isEmpty();
+			case AcceleoPackage.MODULE__EXTENDS:
+				return extends_ != null && !extends_.isEmpty();
+			case AcceleoPackage.MODULE__IMPORTS:
+				return imports != null && !imports.isEmpty();
+			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
+				return moduleElements != null && !moduleElements.isEmpty();
+			case AcceleoPackage.MODULE__START_HEADER_POSITION:
+				return startHeaderPosition != START_HEADER_POSITION_EDEFAULT;
+			case AcceleoPackage.MODULE__END_HEADER_POSITION:
+				return endHeaderPosition != END_HEADER_POSITION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -543,12 +531,12 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == DocumentedElement.class) {
 			switch (derivedFeatureID) {
-			case AcceleoPackage.MODULE__DOCUMENTATION:
-				return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
-			case AcceleoPackage.MODULE__DEPRECATED:
-				return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
-			default:
-				return -1;
+				case AcceleoPackage.MODULE__DOCUMENTATION:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+				case AcceleoPackage.MODULE__DEPRECATED:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+				default:
+					return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -563,12 +551,12 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == DocumentedElement.class) {
 			switch (baseFeatureID) {
-			case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
-				return AcceleoPackage.MODULE__DOCUMENTATION;
-			case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
-				return AcceleoPackage.MODULE__DEPRECATED;
-			default:
-				return -1;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+					return AcceleoPackage.MODULE__DOCUMENTATION;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+					return AcceleoPackage.MODULE__DEPRECATED;
+				default:
+					return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -587,10 +575,6 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (deprecated: "); //$NON-NLS-1$
 		result.append(deprecated);
-		result.append(", extends: "); //$NON-NLS-1$
-		result.append(extends_);
-		result.append(", imports: "); //$NON-NLS-1$
-		result.append(imports);
 		result.append(", startHeaderPosition: "); //$NON-NLS-1$
 		result.append(startHeaderPosition);
 		result.append(", endHeaderPosition: "); //$NON-NLS-1$

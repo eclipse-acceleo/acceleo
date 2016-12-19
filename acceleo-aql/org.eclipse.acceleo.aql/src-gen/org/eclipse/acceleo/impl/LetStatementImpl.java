@@ -48,8 +48,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class LetStatementImpl extends MinimalEObjectImpl.Container implements
-		LetStatement {
+public class LetStatementImpl extends MinimalEObjectImpl.Container implements LetStatement {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -148,8 +147,7 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.LET_STATEMENT__START_POSITION,
-					oldStartPosition, startPosition));
+					AcceleoPackage.LET_STATEMENT__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -170,9 +168,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.LET_STATEMENT__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LET_STATEMENT__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -182,8 +179,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 	 */
 	public EList<Binding> getVariables() {
 		if (variables == null) {
-			variables = new EObjectContainmentEList<Binding>(Binding.class,
-					this, AcceleoPackage.LET_STATEMENT__VARIABLES);
+			variables = new EObjectContainmentEList<Binding>(Binding.class, this,
+					AcceleoPackage.LET_STATEMENT__VARIABLES);
 		}
 		return variables;
 	}
@@ -206,9 +203,8 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 		Block oldBody = body;
 		body = newBody;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.LET_STATEMENT__BODY,
-					oldBody, newBody);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.LET_STATEMENT__BODY, oldBody, newBody);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -226,21 +222,17 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 		if (newBody != body) {
 			NotificationChain msgs = null;
 			if (body != null)
-				msgs = ((InternalEObject) body).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.LET_STATEMENT__BODY, null,
-						msgs);
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.LET_STATEMENT__BODY, null, msgs);
 			if (newBody != null)
-				msgs = ((InternalEObject) newBody).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE
-								- AcceleoPackage.LET_STATEMENT__BODY, null,
-						msgs);
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.LET_STATEMENT__BODY, null, msgs);
 			msgs = basicSetBody(newBody, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.LET_STATEMENT__BODY, newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.LET_STATEMENT__BODY,
+					newBody, newBody));
 	}
 
 	/**
@@ -249,14 +241,12 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.LET_STATEMENT__VARIABLES:
-			return ((InternalEList<?>) getVariables()).basicRemove(otherEnd,
-					msgs);
-		case AcceleoPackage.LET_STATEMENT__BODY:
-			return basicSetBody(null, msgs);
+			case AcceleoPackage.LET_STATEMENT__VARIABLES:
+				return ((InternalEList<?>)getVariables()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.LET_STATEMENT__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -269,14 +259,14 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.LET_STATEMENT__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.LET_STATEMENT__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.LET_STATEMENT__VARIABLES:
-			return getVariables();
-		case AcceleoPackage.LET_STATEMENT__BODY:
-			return getBody();
+			case AcceleoPackage.LET_STATEMENT__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.LET_STATEMENT__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.LET_STATEMENT__VARIABLES:
+				return getVariables();
+			case AcceleoPackage.LET_STATEMENT__BODY:
+				return getBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -290,19 +280,19 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.LET_STATEMENT__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.LET_STATEMENT__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.LET_STATEMENT__VARIABLES:
-			getVariables().clear();
-			getVariables().addAll((Collection<? extends Binding>) newValue);
-			return;
-		case AcceleoPackage.LET_STATEMENT__BODY:
-			setBody((Block) newValue);
-			return;
+			case AcceleoPackage.LET_STATEMENT__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.LET_STATEMENT__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.LET_STATEMENT__VARIABLES:
+				getVariables().clear();
+				getVariables().addAll((Collection<? extends Binding>)newValue);
+				return;
+			case AcceleoPackage.LET_STATEMENT__BODY:
+				setBody((Block)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -315,18 +305,18 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.LET_STATEMENT__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.LET_STATEMENT__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.LET_STATEMENT__VARIABLES:
-			getVariables().clear();
-			return;
-		case AcceleoPackage.LET_STATEMENT__BODY:
-			setBody((Block) null);
-			return;
+			case AcceleoPackage.LET_STATEMENT__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.LET_STATEMENT__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.LET_STATEMENT__VARIABLES:
+				getVariables().clear();
+				return;
+			case AcceleoPackage.LET_STATEMENT__BODY:
+				setBody((Block)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -339,14 +329,14 @@ public class LetStatementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.LET_STATEMENT__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.LET_STATEMENT__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.LET_STATEMENT__VARIABLES:
-			return variables != null && !variables.isEmpty();
-		case AcceleoPackage.LET_STATEMENT__BODY:
-			return body != null;
+			case AcceleoPackage.LET_STATEMENT__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.LET_STATEMENT__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.LET_STATEMENT__VARIABLES:
+				return variables != null && !variables.isEmpty();
+			case AcceleoPackage.LET_STATEMENT__BODY:
+				return body != null;
 		}
 		return super.eIsSet(featureID);
 	}

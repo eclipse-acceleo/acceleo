@@ -38,8 +38,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class ExpressionImpl extends MinimalEObjectImpl.Container implements
-		Expression {
+public class ExpressionImpl extends MinimalEObjectImpl.Container implements Expression {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -137,8 +136,7 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 		int oldStartPosition = startPosition;
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.EXPRESSION__START_POSITION,
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.EXPRESSION__START_POSITION,
 					oldStartPosition, startPosition));
 	}
 
@@ -160,9 +158,8 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.EXPRESSION__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.EXPRESSION__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -183,8 +180,7 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 		AstResult oldAst = ast;
 		ast = newAst;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.EXPRESSION__AST, oldAst, ast));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.EXPRESSION__AST, oldAst, ast));
 	}
 
 	/**
@@ -195,12 +191,12 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.EXPRESSION__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.EXPRESSION__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.EXPRESSION__AST:
-			return getAst();
+			case AcceleoPackage.EXPRESSION__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.EXPRESSION__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.EXPRESSION__AST:
+				return getAst();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -213,15 +209,15 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.EXPRESSION__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.EXPRESSION__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.EXPRESSION__AST:
-			setAst((AstResult) newValue);
-			return;
+			case AcceleoPackage.EXPRESSION__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.EXPRESSION__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.EXPRESSION__AST:
+				setAst((AstResult)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -234,15 +230,15 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.EXPRESSION__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.EXPRESSION__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.EXPRESSION__AST:
-			setAst(AST_EDEFAULT);
-			return;
+			case AcceleoPackage.EXPRESSION__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.EXPRESSION__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.EXPRESSION__AST:
+				setAst(AST_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -255,13 +251,12 @@ public class ExpressionImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.EXPRESSION__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.EXPRESSION__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.EXPRESSION__AST:
-			return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT
-					.equals(ast);
+			case AcceleoPackage.EXPRESSION__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.EXPRESSION__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.EXPRESSION__AST:
+				return AST_EDEFAULT == null ? ast != null : !AST_EDEFAULT.equals(ast);
 		}
 		return super.eIsSet(featureID);
 	}

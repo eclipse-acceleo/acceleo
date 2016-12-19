@@ -36,8 +36,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *
  * @generated
  */
-public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
-		CommentBody {
+public class CommentBodyImpl extends MinimalEObjectImpl.Container implements CommentBody {
 	/**
 	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -136,8 +135,7 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 		startPosition = newStartPosition;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.COMMENT_BODY__START_POSITION,
-					oldStartPosition, startPosition));
+					AcceleoPackage.COMMENT_BODY__START_POSITION, oldStartPosition, startPosition));
 	}
 
 	/**
@@ -158,9 +156,8 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 		int oldEndPosition = endPosition;
 		endPosition = newEndPosition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.COMMENT_BODY__END_POSITION, oldEndPosition,
-					endPosition));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.COMMENT_BODY__END_POSITION,
+					oldEndPosition, endPosition));
 	}
 
 	/**
@@ -181,8 +178,8 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 		String oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.COMMENT_BODY__VALUE, oldValue, value));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.COMMENT_BODY__VALUE,
+					oldValue, value));
 	}
 
 	/**
@@ -193,12 +190,12 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT_BODY__START_POSITION:
-			return getStartPosition();
-		case AcceleoPackage.COMMENT_BODY__END_POSITION:
-			return getEndPosition();
-		case AcceleoPackage.COMMENT_BODY__VALUE:
-			return getValue();
+			case AcceleoPackage.COMMENT_BODY__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.COMMENT_BODY__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.COMMENT_BODY__VALUE:
+				return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -211,15 +208,15 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT_BODY__START_POSITION:
-			setStartPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.COMMENT_BODY__END_POSITION:
-			setEndPosition((Integer) newValue);
-			return;
-		case AcceleoPackage.COMMENT_BODY__VALUE:
-			setValue((String) newValue);
-			return;
+			case AcceleoPackage.COMMENT_BODY__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.COMMENT_BODY__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.COMMENT_BODY__VALUE:
+				setValue((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -232,15 +229,15 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT_BODY__START_POSITION:
-			setStartPosition(START_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.COMMENT_BODY__END_POSITION:
-			setEndPosition(END_POSITION_EDEFAULT);
-			return;
-		case AcceleoPackage.COMMENT_BODY__VALUE:
-			setValue(VALUE_EDEFAULT);
-			return;
+			case AcceleoPackage.COMMENT_BODY__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.COMMENT_BODY__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.COMMENT_BODY__VALUE:
+				setValue(VALUE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -253,13 +250,12 @@ public class CommentBodyImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT_BODY__START_POSITION:
-			return startPosition != START_POSITION_EDEFAULT;
-		case AcceleoPackage.COMMENT_BODY__END_POSITION:
-			return endPosition != END_POSITION_EDEFAULT;
-		case AcceleoPackage.COMMENT_BODY__VALUE:
-			return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT
-					.equals(value);
+			case AcceleoPackage.COMMENT_BODY__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.COMMENT_BODY__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.COMMENT_BODY__VALUE:
+				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);
 	}

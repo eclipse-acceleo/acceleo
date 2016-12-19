@@ -25,8 +25,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ParameterDocumentationImpl extends CommentImpl implements
-		ParameterDocumentation {
+public class ParameterDocumentationImpl extends CommentImpl implements ParameterDocumentation {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

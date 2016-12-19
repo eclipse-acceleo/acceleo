@@ -31,6 +31,7 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
+import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.NamedElement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ParameterDocumentation;
@@ -75,6 +76,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass metamodelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass moduleReferenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -280,13 +288,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	private EDataType moduleQualifiedNameEDataType = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType templateQualifiedNameEDataType = null;
-
-	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -326,13 +327,12 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public static AcceleoPackage init() {
 		if (isInited)
-			return (AcceleoPackage) EPackage.Registry.INSTANCE
-					.getEPackage(AcceleoPackage.eNS_URI);
+			return (AcceleoPackage)EPackage.Registry.INSTANCE.getEPackage(AcceleoPackage.eNS_URI);
 
 		// Obtain or create and register package
-		AcceleoPackageImpl theAcceleoPackage = (AcceleoPackageImpl) (EPackage.Registry.INSTANCE
-				.get(eNS_URI) instanceof AcceleoPackageImpl ? EPackage.Registry.INSTANCE
-				.get(eNS_URI) : new AcceleoPackageImpl());
+		AcceleoPackageImpl theAcceleoPackage = (AcceleoPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof AcceleoPackageImpl ? EPackage.Registry.INSTANCE
+				.get(eNS_URI)
+				: new AcceleoPackageImpl());
 
 		isInited = true;
 
@@ -349,8 +349,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		theAcceleoPackage.freeze();
 
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(AcceleoPackage.eNS_URI,
-				theAcceleoPackage);
+		EPackage.Registry.INSTANCE.put(AcceleoPackage.eNS_URI, theAcceleoPackage);
 		return theAcceleoPackage;
 	}
 
@@ -369,7 +368,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getModule_Metamodels() {
-		return (EReference) moduleEClass.getEStructuralFeatures().get(0);
+		return (EReference)moduleEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -377,8 +376,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getModule_Extends() {
-		return (EAttribute) moduleEClass.getEStructuralFeatures().get(1);
+	public EReference getModule_Extends() {
+		return (EReference)moduleEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -386,8 +385,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getModule_Imports() {
-		return (EAttribute) moduleEClass.getEStructuralFeatures().get(2);
+	public EReference getModule_Imports() {
+		return (EReference)moduleEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -396,7 +395,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getModule_ModuleElements() {
-		return (EReference) moduleEClass.getEStructuralFeatures().get(3);
+		return (EReference)moduleEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -405,7 +404,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getModule_StartHeaderPosition() {
-		return (EAttribute) moduleEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -414,7 +413,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getModule_EndHeaderPosition() {
-		return (EAttribute) moduleEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)moduleEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -432,7 +431,25 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getMetamodel_ReferencedPackage() {
-		return (EReference) metamodelEClass.getEStructuralFeatures().get(0);
+		return (EReference)metamodelEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getModuleReference() {
+		return moduleReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getModuleReference_Url() {
+		return (EAttribute)moduleReferenceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -459,7 +476,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getComment_Body() {
-		return (EReference) commentEClass.getEStructuralFeatures().get(0);
+		return (EReference)commentEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -477,7 +494,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getCommentBody_Value() {
-		return (EAttribute) commentBodyEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)commentBodyEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -495,7 +512,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getDocumentation_DocumentedElement() {
-		return (EReference) documentationEClass.getEStructuralFeatures().get(0);
+		return (EReference)documentationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -513,8 +530,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getModuleDocumentation_Author() {
-		return (EAttribute) moduleDocumentationEClass.getEStructuralFeatures()
-				.get(0);
+		return (EAttribute)moduleDocumentationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -523,8 +539,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getModuleDocumentation_Version() {
-		return (EAttribute) moduleDocumentationEClass.getEStructuralFeatures()
-				.get(1);
+		return (EAttribute)moduleDocumentationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -533,8 +548,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getModuleDocumentation_Since() {
-		return (EAttribute) moduleDocumentationEClass.getEStructuralFeatures()
-				.get(2);
+		return (EAttribute)moduleDocumentationEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -552,8 +566,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getModuleElementDocumentation_ParameterDocumentation() {
-		return (EReference) moduleElementDocumentationEClass
-				.getEStructuralFeatures().get(0);
+		return (EReference)moduleElementDocumentationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -580,8 +593,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getDocumentedElement_Documentation() {
-		return (EReference) documentedElementEClass.getEStructuralFeatures()
-				.get(0);
+		return (EReference)documentedElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -590,8 +602,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getDocumentedElement_Deprecated() {
-		return (EAttribute) documentedElementEClass.getEStructuralFeatures()
-				.get(1);
+		return (EAttribute)documentedElementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -609,7 +620,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getNamedElement_Name() {
-		return (EAttribute) namedElementEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)namedElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -627,7 +638,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getASTNode_StartPosition() {
-		return (EAttribute) astNodeEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)astNodeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -636,7 +647,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getASTNode_EndPosition() {
-		return (EAttribute) astNodeEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)astNodeEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -654,7 +665,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getBlock_Statements() {
-		return (EReference) blockEClass.getEStructuralFeatures().get(0);
+		return (EReference)blockEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -672,7 +683,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getTypedElement_Type() {
-		return (EReference) typedElementEClass.getEStructuralFeatures().get(0);
+		return (EReference)typedElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -689,17 +700,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getTemplate_Overrides() {
-		return (EAttribute) templateEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EReference getTemplate_Parameters() {
-		return (EReference) templateEClass.getEStructuralFeatures().get(1);
+		return (EReference)templateEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -708,7 +710,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getTemplate_Guard() {
-		return (EReference) templateEClass.getEStructuralFeatures().get(2);
+		return (EReference)templateEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -717,7 +719,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getTemplate_Post() {
-		return (EReference) templateEClass.getEStructuralFeatures().get(3);
+		return (EReference)templateEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -726,7 +728,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getTemplate_Main() {
-		return (EAttribute) templateEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)templateEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -735,7 +737,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getTemplate_Visibility() {
-		return (EAttribute) templateEClass.getEStructuralFeatures().get(5);
+		return (EAttribute)templateEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -744,7 +746,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getTemplate_Body() {
-		return (EReference) templateEClass.getEStructuralFeatures().get(6);
+		return (EReference)templateEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -762,7 +764,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getQuery_Parameters() {
-		return (EReference) queryEClass.getEStructuralFeatures().get(0);
+		return (EReference)queryEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -771,7 +773,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getQuery_Visibility() {
-		return (EAttribute) queryEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)queryEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -780,7 +782,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getQuery_Body() {
-		return (EReference) queryEClass.getEStructuralFeatures().get(2);
+		return (EReference)queryEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -798,7 +800,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getExpression_Ast() {
-		return (EAttribute) expressionEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)expressionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -825,7 +827,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getBinding_InitExpression() {
-		return (EReference) bindingEClass.getEStructuralFeatures().get(0);
+		return (EReference)bindingEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -852,8 +854,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getExpressionStatement_Expression() {
-		return (EReference) expressionStatementEClass.getEStructuralFeatures()
-				.get(0);
+		return (EReference)expressionStatementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -871,7 +872,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getProtectedArea_Id() {
-		return (EReference) protectedAreaEClass.getEStructuralFeatures().get(0);
+		return (EReference)protectedAreaEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -880,7 +881,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getProtectedArea_Body() {
-		return (EReference) protectedAreaEClass.getEStructuralFeatures().get(1);
+		return (EReference)protectedAreaEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -897,44 +898,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getForStatement_Variable() {
-		return (EReference) forStatementEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getForStatement_Values() {
-		return (EReference) forStatementEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getForStatement_Before() {
-		return (EReference) forStatementEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getForStatement_Each() {
-		return (EReference) forStatementEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getForStatement_After() {
-		return (EReference) forStatementEClass.getEStructuralFeatures().get(4);
+	public EReference getForStatement_Binding() {
+		return (EReference)forStatementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -943,7 +908,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getForStatement_Body() {
-		return (EReference) forStatementEClass.getEStructuralFeatures().get(5);
+		return (EReference)forStatementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -961,7 +926,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getIfStatement_Condition() {
-		return (EReference) ifStatementEClass.getEStructuralFeatures().get(0);
+		return (EReference)ifStatementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -970,7 +935,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getIfStatement_Then() {
-		return (EReference) ifStatementEClass.getEStructuralFeatures().get(1);
+		return (EReference)ifStatementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -979,7 +944,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getIfStatement_Else() {
-		return (EReference) ifStatementEClass.getEStructuralFeatures().get(2);
+		return (EReference)ifStatementEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -997,7 +962,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getLetStatement_Variables() {
-		return (EReference) letStatementEClass.getEStructuralFeatures().get(0);
+		return (EReference)letStatementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1006,7 +971,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getLetStatement_Body() {
-		return (EReference) letStatementEClass.getEStructuralFeatures().get(1);
+		return (EReference)letStatementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1024,7 +989,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getFileStatement_Mode() {
-		return (EAttribute) fileStatementEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)fileStatementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1033,7 +998,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getFileStatement_Url() {
-		return (EReference) fileStatementEClass.getEStructuralFeatures().get(1);
+		return (EReference)fileStatementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1042,7 +1007,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getFileStatement_Charset() {
-		return (EReference) fileStatementEClass.getEStructuralFeatures().get(2);
+		return (EReference)fileStatementEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -1051,7 +1016,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EReference getFileStatement_Body() {
-		return (EReference) fileStatementEClass.getEStructuralFeatures().get(3);
+		return (EReference)fileStatementEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -1069,7 +1034,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	public EAttribute getTextStatement_Value() {
-		return (EAttribute) textStatementEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)textStatementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -1113,17 +1078,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getTemplateQualifiedName() {
-		return templateQualifiedNameEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public AcceleoFactory getAcceleoFactory() {
-		return (AcceleoFactory) getEFactoryInstance();
+		return (AcceleoFactory)getEFactoryInstance();
 	}
 
 	/**
@@ -1148,14 +1104,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Create classes and their features
 		moduleEClass = createEClass(MODULE);
 		createEReference(moduleEClass, MODULE__METAMODELS);
-		createEAttribute(moduleEClass, MODULE__EXTENDS);
-		createEAttribute(moduleEClass, MODULE__IMPORTS);
+		createEReference(moduleEClass, MODULE__EXTENDS);
+		createEReference(moduleEClass, MODULE__IMPORTS);
 		createEReference(moduleEClass, MODULE__MODULE_ELEMENTS);
 		createEAttribute(moduleEClass, MODULE__START_HEADER_POSITION);
 		createEAttribute(moduleEClass, MODULE__END_HEADER_POSITION);
 
 		metamodelEClass = createEClass(METAMODEL);
 		createEReference(metamodelEClass, METAMODEL__REFERENCED_PACKAGE);
+
+		moduleReferenceEClass = createEClass(MODULE_REFERENCE);
+		createEAttribute(moduleReferenceEClass, MODULE_REFERENCE__URL);
 
 		moduleElementEClass = createEClass(MODULE_ELEMENT);
 
@@ -1169,10 +1128,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(documentationEClass, DOCUMENTATION__DOCUMENTED_ELEMENT);
 
 		moduleDocumentationEClass = createEClass(MODULE_DOCUMENTATION);
-		createEAttribute(moduleDocumentationEClass,
-				MODULE_DOCUMENTATION__AUTHOR);
-		createEAttribute(moduleDocumentationEClass,
-				MODULE_DOCUMENTATION__VERSION);
+		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__AUTHOR);
+		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__VERSION);
 		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__SINCE);
 
 		moduleElementDocumentationEClass = createEClass(MODULE_ELEMENT_DOCUMENTATION);
@@ -1182,10 +1139,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		parameterDocumentationEClass = createEClass(PARAMETER_DOCUMENTATION);
 
 		documentedElementEClass = createEClass(DOCUMENTED_ELEMENT);
-		createEReference(documentedElementEClass,
-				DOCUMENTED_ELEMENT__DOCUMENTATION);
-		createEAttribute(documentedElementEClass,
-				DOCUMENTED_ELEMENT__DEPRECATED);
+		createEReference(documentedElementEClass, DOCUMENTED_ELEMENT__DOCUMENTATION);
+		createEAttribute(documentedElementEClass, DOCUMENTED_ELEMENT__DEPRECATED);
 
 		namedElementEClass = createEClass(NAMED_ELEMENT);
 		createEAttribute(namedElementEClass, NAMED_ELEMENT__NAME);
@@ -1201,7 +1156,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(typedElementEClass, TYPED_ELEMENT__TYPE);
 
 		templateEClass = createEClass(TEMPLATE);
-		createEAttribute(templateEClass, TEMPLATE__OVERRIDES);
 		createEReference(templateEClass, TEMPLATE__PARAMETERS);
 		createEReference(templateEClass, TEMPLATE__GUARD);
 		createEReference(templateEClass, TEMPLATE__POST);
@@ -1225,19 +1179,14 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		statementEClass = createEClass(STATEMENT);
 
 		expressionStatementEClass = createEClass(EXPRESSION_STATEMENT);
-		createEReference(expressionStatementEClass,
-				EXPRESSION_STATEMENT__EXPRESSION);
+		createEReference(expressionStatementEClass, EXPRESSION_STATEMENT__EXPRESSION);
 
 		protectedAreaEClass = createEClass(PROTECTED_AREA);
 		createEReference(protectedAreaEClass, PROTECTED_AREA__ID);
 		createEReference(protectedAreaEClass, PROTECTED_AREA__BODY);
 
 		forStatementEClass = createEClass(FOR_STATEMENT);
-		createEReference(forStatementEClass, FOR_STATEMENT__VARIABLE);
-		createEReference(forStatementEClass, FOR_STATEMENT__VALUES);
-		createEReference(forStatementEClass, FOR_STATEMENT__BEFORE);
-		createEReference(forStatementEClass, FOR_STATEMENT__EACH);
-		createEReference(forStatementEClass, FOR_STATEMENT__AFTER);
+		createEReference(forStatementEClass, FOR_STATEMENT__BINDING);
 		createEReference(forStatementEClass, FOR_STATEMENT__BODY);
 
 		ifStatementEClass = createEClass(IF_STATEMENT);
@@ -1265,7 +1214,6 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Create data types
 		astResultEDataType = createEDataType(AST_RESULT);
 		moduleQualifiedNameEDataType = createEDataType(MODULE_QUALIFIED_NAME);
-		templateQualifiedNameEDataType = createEDataType(TEMPLATE_QUALIFIED_NAME);
 	}
 
 	/**
@@ -1293,7 +1241,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE
 				.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
@@ -1304,13 +1252,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		moduleEClass.getESuperTypes().add(this.getNamedElement());
 		moduleEClass.getESuperTypes().add(this.getDocumentedElement());
 		metamodelEClass.getESuperTypes().add(this.getASTNode());
+		moduleReferenceEClass.getESuperTypes().add(this.getASTNode());
 		moduleElementEClass.getESuperTypes().add(this.getASTNode());
 		commentEClass.getESuperTypes().add(this.getModuleElement());
 		commentBodyEClass.getESuperTypes().add(this.getASTNode());
 		documentationEClass.getESuperTypes().add(this.getComment());
 		moduleDocumentationEClass.getESuperTypes().add(this.getDocumentation());
-		moduleElementDocumentationEClass.getESuperTypes().add(
-				this.getDocumentation());
+		moduleElementDocumentationEClass.getESuperTypes().add(this.getDocumentation());
 		parameterDocumentationEClass.getESuperTypes().add(this.getComment());
 		blockEClass.getESuperTypes().add(this.getASTNode());
 		templateEClass.getESuperTypes().add(this.getModuleElement());
@@ -1335,23 +1283,23 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		textStatementEClass.getESuperTypes().add(this.getStatement());
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(
-				moduleEClass,
-				Module.class,
+		initEClass(moduleEClass, Module.class,
 				"Module", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getModule_Metamodels(),
 				this.getMetamodel(),
 				null,
 				"metamodels", null, 1, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
+		initEReference(
 				getModule_Extends(),
-				this.getModuleQualifiedName(),
-				"extends", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEAttribute(
+				this.getModuleReference(),
+				null,
+				"extends", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEReference(
 				getModule_Imports(),
-				this.getModuleQualifiedName(),
-				"imports", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+				this.getModuleReference(),
+				null,
+				"imports", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(
 				getModule_ModuleElements(),
 				this.getModuleElement(),
@@ -1366,9 +1314,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				theEcorePackage.getEInt(),
 				"endHeaderPosition", null, 1, 1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				metamodelEClass,
-				Metamodel.class,
+		initEClass(metamodelEClass, Metamodel.class,
 				"Metamodel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getMetamodel_ReferencedPackage(),
@@ -1376,14 +1322,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"referencedPackage", null, 1, 1, Metamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				moduleElementEClass,
-				ModuleElement.class,
+		initEClass(moduleReferenceEClass, ModuleReference.class,
+				"ModuleReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getModuleReference_Url(),
+				this.getModuleQualifiedName(),
+				"url", null, 0, 1, ModuleReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(moduleElementEClass, ModuleElement.class,
 				"ModuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-		initEClass(
-				commentEClass,
-				Comment.class,
+		initEClass(commentEClass, Comment.class,
 				"Comment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getComment_Body(),
@@ -1391,18 +1340,14 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 0, 1, Comment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				commentBodyEClass,
-				CommentBody.class,
+		initEClass(commentBodyEClass, CommentBody.class,
 				"CommentBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getCommentBody_Value(),
 				theEcorePackage.getEString(),
 				"value", null, 0, 1, CommentBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				documentationEClass,
-				Documentation.class,
+		initEClass(documentationEClass, Documentation.class,
 				"Documentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getDocumentation_DocumentedElement(),
@@ -1410,9 +1355,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getDocumentedElement_Documentation(),
 				"documentedElement", null, 0, 1, Documentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				moduleDocumentationEClass,
-				ModuleDocumentation.class,
+		initEClass(moduleDocumentationEClass, ModuleDocumentation.class,
 				"ModuleDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getModuleDocumentation_Author(),
@@ -1427,9 +1370,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				theEcorePackage.getEString(),
 				"since", null, 0, 1, ModuleDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				moduleElementDocumentationEClass,
-				ModuleElementDocumentation.class,
+		initEClass(moduleElementDocumentationEClass, ModuleElementDocumentation.class,
 				"ModuleElementDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getModuleElementDocumentation_ParameterDocumentation(),
@@ -1437,14 +1378,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"parameterDocumentation", null, 0, -1, ModuleElementDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				parameterDocumentationEClass,
-				ParameterDocumentation.class,
+		initEClass(parameterDocumentationEClass, ParameterDocumentation.class,
 				"ParameterDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-		initEClass(
-				documentedElementEClass,
-				DocumentedElement.class,
+		initEClass(documentedElementEClass, DocumentedElement.class,
 				"DocumentedElement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getDocumentedElement_Documentation(),
@@ -1456,18 +1393,14 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				theEcorePackage.getEBoolean(),
 				"deprecated", "false", 1, 1, DocumentedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 
-		initEClass(
-				namedElementEClass,
-				NamedElement.class,
+		initEClass(namedElementEClass, NamedElement.class,
 				"NamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getNamedElement_Name(),
 				theEcorePackage.getEString(),
 				"name", null, 1, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				astNodeEClass,
-				ASTNode.class,
+		initEClass(astNodeEClass, ASTNode.class,
 				"ASTNode", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getASTNode_StartPosition(),
@@ -1478,9 +1411,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				theEcorePackage.getEInt(),
 				"endPosition", null, 0, 1, ASTNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				blockEClass,
-				Block.class,
+		initEClass(blockEClass, Block.class,
 				"Block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getBlock_Statements(),
@@ -1488,9 +1419,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"statements", null, 0, -1, Block.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				typedElementEClass,
-				TypedElement.class,
+		initEClass(typedElementEClass, TypedElement.class,
 				"TypedElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getTypedElement_Type(),
@@ -1498,19 +1427,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"type", null, 1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				templateEClass,
-				Template.class,
+		initEClass(templateEClass, Template.class,
 				"Template", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEAttribute(
-				getTemplate_Overrides(),
-				this.getTemplateQualifiedName(),
-				"overrides", null, 0, -1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(
 				getTemplate_Parameters(),
 				this.getVariable(),
 				null,
-				"parameters", null, 0, -1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+				"parameters", null, 1, -1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(
 				getTemplate_Guard(),
 				this.getExpression(),
@@ -1535,15 +1458,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				queryEClass,
-				Query.class,
+		initEClass(queryEClass, Query.class,
 				"Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getQuery_Parameters(),
 				this.getVariable(),
 				null,
-				"parameters", null, 0, -1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+				"parameters", null, 1, -1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEAttribute(
 				getQuery_Visibility(),
 				this.getVisibilityKind(),
@@ -1554,23 +1475,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				expressionEClass,
-				Expression.class,
+		initEClass(expressionEClass, Expression.class,
 				"Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getExpression_Ast(),
 				this.getASTResult(),
 				"ast", null, 0, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				variableEClass,
-				Variable.class,
+		initEClass(variableEClass, Variable.class,
 				"Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-		initEClass(
-				bindingEClass,
-				Binding.class,
+		initEClass(bindingEClass, Binding.class,
 				"Binding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getBinding_InitExpression(),
@@ -1578,14 +1493,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"initExpression", null, 1, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				statementEClass,
-				Statement.class,
+		initEClass(statementEClass, Statement.class,
 				"Statement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
-		initEClass(
-				expressionStatementEClass,
-				ExpressionStatement.class,
+		initEClass(expressionStatementEClass, ExpressionStatement.class,
 				"ExpressionStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getExpressionStatement_Expression(),
@@ -1593,9 +1504,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"expression", null, 1, 1, ExpressionStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				protectedAreaEClass,
-				ProtectedArea.class,
+		initEClass(protectedAreaEClass, ProtectedArea.class,
 				"ProtectedArea", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getProtectedArea_Id(),
@@ -1608,44 +1517,20 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, ProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				forStatementEClass,
-				ForStatement.class,
+		initEClass(forStatementEClass, ForStatement.class,
 				"ForStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
-				getForStatement_Variable(),
-				this.getVariable(),
+				getForStatement_Binding(),
+				this.getBinding(),
 				null,
-				"variable", null, 1, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getForStatement_Values(),
-				this.getExpression(),
-				null,
-				"values", null, 1, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getForStatement_Before(),
-				this.getExpression(),
-				null,
-				"before", null, 0, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getForStatement_Each(),
-				this.getExpression(),
-				null,
-				"each", null, 0, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
-		initEReference(
-				getForStatement_After(),
-				this.getExpression(),
-				null,
-				"after", null, 0, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+				"binding", null, 1, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(
 				getForStatement_Body(),
 				this.getBlock(),
 				null,
 				"body", null, 1, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				ifStatementEClass,
-				IfStatement.class,
+		initEClass(ifStatementEClass, IfStatement.class,
 				"IfStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getIfStatement_Condition(),
@@ -1663,9 +1548,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"else", null, 0, 1, IfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				letStatementEClass,
-				LetStatement.class,
+		initEClass(letStatementEClass, LetStatement.class,
 				"LetStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getLetStatement_Variables(),
@@ -1678,9 +1561,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, LetStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				fileStatementEClass,
-				FileStatement.class,
+		initEClass(fileStatementEClass, FileStatement.class,
 				"FileStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getFileStatement_Mode(),
@@ -1702,9 +1583,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, FileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
-		initEClass(
-				textStatementEClass,
-				TextStatement.class,
+		initEClass(textStatementEClass, TextStatement.class,
 				"TextStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getTextStatement_Value(),
@@ -1725,14 +1604,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Initialize data types
 		initEDataType(astResultEDataType, AstResult.class,
 				"ASTResult", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEDataType(
-				moduleQualifiedNameEDataType,
-				String.class,
+		initEDataType(moduleQualifiedNameEDataType, String.class,
 				"ModuleQualifiedName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEDataType(
-				templateQualifiedNameEDataType,
-				String.class,
-				"TemplateQualifiedName", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
 		// Create resource
 		createResource(eNS_URI);

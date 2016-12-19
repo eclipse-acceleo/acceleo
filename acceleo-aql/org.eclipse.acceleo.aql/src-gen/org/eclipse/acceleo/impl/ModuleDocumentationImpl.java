@@ -35,8 +35,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class ModuleDocumentationImpl extends DocumentationImpl implements
-		ModuleDocumentation {
+public class ModuleDocumentationImpl extends DocumentationImpl implements ModuleDocumentation {
 	/**
 	 * The default value of the '{@link #getAuthor() <em>Author</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -135,8 +134,7 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 		author = newAuthor;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR, oldAuthor,
-					author));
+					AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR, oldAuthor, author));
 	}
 
 	/**
@@ -158,8 +156,7 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 		version = newVersion;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE_DOCUMENTATION__VERSION, oldVersion,
-					version));
+					AcceleoPackage.MODULE_DOCUMENTATION__VERSION, oldVersion, version));
 	}
 
 	/**
@@ -180,8 +177,8 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 		String oldSince = since;
 		since = newSince;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.MODULE_DOCUMENTATION__SINCE, oldSince, since));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE_DOCUMENTATION__SINCE,
+					oldSince, since));
 	}
 
 	/**
@@ -192,12 +189,12 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
-			return getAuthor();
-		case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
-			return getVersion();
-		case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
-			return getSince();
+			case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
+				return getAuthor();
+			case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
+				return getVersion();
+			case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
+				return getSince();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -210,15 +207,15 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
-			setAuthor((String) newValue);
-			return;
-		case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
-			setVersion((String) newValue);
-			return;
-		case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
-			setSince((String) newValue);
-			return;
+			case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
+				setAuthor((String)newValue);
+				return;
+			case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
+				setVersion((String)newValue);
+				return;
+			case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
+				setSince((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -231,15 +228,15 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
-			setAuthor(AUTHOR_EDEFAULT);
-			return;
-		case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
-			setVersion(VERSION_EDEFAULT);
-			return;
-		case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
-			setSince(SINCE_EDEFAULT);
-			return;
+			case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
+				setAuthor(AUTHOR_EDEFAULT);
+				return;
+			case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
+				setVersion(VERSION_EDEFAULT);
+				return;
+			case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
+				setSince(SINCE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -252,15 +249,12 @@ public class ModuleDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
-			return AUTHOR_EDEFAULT == null ? author != null : !AUTHOR_EDEFAULT
-					.equals(author);
-		case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
-			return VERSION_EDEFAULT == null ? version != null
-					: !VERSION_EDEFAULT.equals(version);
-		case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
-			return SINCE_EDEFAULT == null ? since != null : !SINCE_EDEFAULT
-					.equals(since);
+			case AcceleoPackage.MODULE_DOCUMENTATION__AUTHOR:
+				return AUTHOR_EDEFAULT == null ? author != null : !AUTHOR_EDEFAULT.equals(author);
+			case AcceleoPackage.MODULE_DOCUMENTATION__VERSION:
+				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
+			case AcceleoPackage.MODULE_DOCUMENTATION__SINCE:
+				return SINCE_EDEFAULT == null ? since != null : !SINCE_EDEFAULT.equals(since);
 		}
 		return super.eIsSet(featureID);
 	}

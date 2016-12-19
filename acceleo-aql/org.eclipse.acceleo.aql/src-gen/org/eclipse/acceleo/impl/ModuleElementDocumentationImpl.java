@@ -40,8 +40,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class ModuleElementDocumentationImpl extends DocumentationImpl implements
-		ModuleElementDocumentation {
+public class ModuleElementDocumentationImpl extends DocumentationImpl implements ModuleElementDocumentation {
 	/**
 	 * The cached value of the '{@link #getParameterDocumentation() <em>Parameter Documentation</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -79,8 +78,7 @@ public class ModuleElementDocumentationImpl extends DocumentationImpl implements
 	public EList<ParameterDocumentation> getParameterDocumentation() {
 		if (parameterDocumentation == null) {
 			parameterDocumentation = new EObjectContainmentEList<ParameterDocumentation>(
-					ParameterDocumentation.class,
-					this,
+					ParameterDocumentation.class, this,
 					AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION);
 		}
 		return parameterDocumentation;
@@ -92,12 +90,10 @@ public class ModuleElementDocumentationImpl extends DocumentationImpl implements
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
-			return ((InternalEList<?>) getParameterDocumentation())
-					.basicRemove(otherEnd, msgs);
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
+				return ((InternalEList<?>)getParameterDocumentation()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -110,8 +106,8 @@ public class ModuleElementDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
-			return getParameterDocumentation();
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
+				return getParameterDocumentation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -125,11 +121,10 @@ public class ModuleElementDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
-			getParameterDocumentation().clear();
-			getParameterDocumentation().addAll(
-					(Collection<? extends ParameterDocumentation>) newValue);
-			return;
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
+				getParameterDocumentation().clear();
+				getParameterDocumentation().addAll((Collection<? extends ParameterDocumentation>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -142,9 +137,9 @@ public class ModuleElementDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
-			getParameterDocumentation().clear();
-			return;
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
+				getParameterDocumentation().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -157,9 +152,8 @@ public class ModuleElementDocumentationImpl extends DocumentationImpl implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
-			return parameterDocumentation != null
-					&& !parameterDocumentation.isEmpty();
+			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
+				return parameterDocumentation != null && !parameterDocumentation.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

@@ -63,7 +63,7 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 			return true;
 		}
 		if (object instanceof EObject) {
-			return ((EObject) object).eClass().getEPackage() == modelPackage;
+			return ((EObject)object).eClass().getEPackage() == modelPackage;
 		}
 		return false;
 	}
@@ -83,6 +83,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseMetamodel(Metamodel object) {
 			return createMetamodelAdapter();
+		}
+
+		@Override
+		public Adapter caseModuleReference(ModuleReference object) {
+			return createModuleReferenceAdapter();
 		}
 
 		@Override
@@ -111,8 +116,7 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
-		public Adapter caseModuleElementDocumentation(
-				ModuleElementDocumentation object) {
+		public Adapter caseModuleElementDocumentation(ModuleElementDocumentation object) {
 			return createModuleElementDocumentationAdapter();
 		}
 
@@ -227,7 +231,7 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 */
 	@Override
 	public Adapter createAdapter(Notifier target) {
-		return modelSwitch.doSwitch((EObject) target);
+		return modelSwitch.doSwitch((EObject)target);
 	}
 
 	/**
@@ -255,6 +259,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMetamodelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ModuleReference <em>Module Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ModuleReference
+	 * @generated
+	 */
+	public Adapter createModuleReferenceAdapter() {
 		return null;
 	}
 

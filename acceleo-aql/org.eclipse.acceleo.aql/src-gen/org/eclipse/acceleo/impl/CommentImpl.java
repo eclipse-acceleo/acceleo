@@ -80,14 +80,12 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetBody(CommentBody newBody,
-			NotificationChain msgs) {
+	public NotificationChain basicSetBody(CommentBody newBody, NotificationChain msgs) {
 		CommentBody oldBody = body;
 		body = newBody;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this,
-					Notification.SET, AcceleoPackage.COMMENT__BODY, oldBody,
-					newBody);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.COMMENT__BODY, oldBody, newBody);
 			if (msgs == null)
 				msgs = notification;
 			else
@@ -105,19 +103,17 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 		if (newBody != body) {
 			NotificationChain msgs = null;
 			if (body != null)
-				msgs = ((InternalEObject) body).eInverseRemove(this,
-						EOPPOSITE_FEATURE_BASE - AcceleoPackage.COMMENT__BODY,
-						null, msgs);
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.COMMENT__BODY, null, msgs);
 			if (newBody != null)
-				msgs = ((InternalEObject) newBody).eInverseAdd(this,
-						EOPPOSITE_FEATURE_BASE - AcceleoPackage.COMMENT__BODY,
-						null, msgs);
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.COMMENT__BODY, null, msgs);
 			msgs = basicSetBody(newBody, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					AcceleoPackage.COMMENT__BODY, newBody, newBody));
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.COMMENT__BODY, newBody,
+					newBody));
 	}
 
 	/**
@@ -126,11 +122,10 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	 * @generated
 	 */
 	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd,
-			int featureID, NotificationChain msgs) {
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT__BODY:
-			return basicSetBody(null, msgs);
+			case AcceleoPackage.COMMENT__BODY:
+				return basicSetBody(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -143,8 +138,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT__BODY:
-			return getBody();
+			case AcceleoPackage.COMMENT__BODY:
+				return getBody();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -157,9 +152,9 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT__BODY:
-			setBody((CommentBody) newValue);
-			return;
+			case AcceleoPackage.COMMENT__BODY:
+				setBody((CommentBody)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -172,9 +167,9 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT__BODY:
-			setBody((CommentBody) null);
-			return;
+			case AcceleoPackage.COMMENT__BODY:
+				setBody((CommentBody)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -187,8 +182,8 @@ public class CommentImpl extends ModuleElementImpl implements Comment {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-		case AcceleoPackage.COMMENT__BODY:
-			return body != null;
+			case AcceleoPackage.COMMENT__BODY:
+				return body != null;
 		}
 		return super.eIsSet(featureID);
 	}

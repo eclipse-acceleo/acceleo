@@ -35,7 +35,7 @@ public enum VisibilityKind implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	PRIVATE(0, "Private", "Private"), //$NON-NLS-1$ //$NON-NLS-2$
+	PRIVATE(0, "private", "private"), //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Protected</b></em>' literal object.
@@ -45,7 +45,7 @@ public enum VisibilityKind implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	PROTECTED(1, "Protected", "Protected"), //$NON-NLS-1$ //$NON-NLS-2$
+	PROTECTED(1, "protected", "protected"), //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Public</b></em>' literal object.
@@ -55,7 +55,7 @@ public enum VisibilityKind implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	PUBLIC(2, "Public", "Public"); //$NON-NLS-1$ //$NON-NLS-2$
+	PUBLIC(2, "public", "public"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * The '<em><b>Private</b></em>' literal value.
@@ -66,7 +66,7 @@ public enum VisibilityKind implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #PRIVATE
-	 * @model name="Private"
+	 * @model name="private"
 	 * @generated
 	 * @ordered
 	 */
@@ -81,7 +81,7 @@ public enum VisibilityKind implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #PROTECTED
-	 * @model name="Protected"
+	 * @model name="protected"
 	 * @generated
 	 * @ordered
 	 */
@@ -96,7 +96,7 @@ public enum VisibilityKind implements Enumerator {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @see #PUBLIC
-	 * @model name="Public"
+	 * @model name="public"
 	 * @generated
 	 * @ordered
 	 */
@@ -108,8 +108,7 @@ public enum VisibilityKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final VisibilityKind[] VALUES_ARRAY = new VisibilityKind[] {
-			PRIVATE, PROTECTED, PUBLIC, };
+	private static final VisibilityKind[] VALUES_ARRAY = new VisibilityKind[] {PRIVATE, PROTECTED, PUBLIC, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Visibility Kind</b></em>' enumerators.
@@ -117,8 +116,8 @@ public enum VisibilityKind implements Enumerator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final List<VisibilityKind> VALUES = Collections
-			.unmodifiableList(Arrays.asList(VALUES_ARRAY));
+	public static final List<VisibilityKind> VALUES = Collections.unmodifiableList(Arrays
+			.asList(VALUES_ARRAY));
 
 	/**
 	 * Returns the '<em><b>Visibility Kind</b></em>' literal with the specified literal value.
@@ -160,12 +159,12 @@ public enum VisibilityKind implements Enumerator {
 	 */
 	public static VisibilityKind get(int value) {
 		switch (value) {
-		case PRIVATE_VALUE:
-			return PRIVATE;
-		case PROTECTED_VALUE:
-			return PROTECTED;
-		case PUBLIC_VALUE:
-			return PUBLIC;
+			case PRIVATE_VALUE:
+				return PRIVATE;
+			case PROTECTED_VALUE:
+				return PROTECTED;
+			case PUBLIC_VALUE:
+				return PUBLIC;
 		}
 		return null;
 	}

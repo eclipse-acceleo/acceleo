@@ -8,11 +8,13 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.acceleo,
+ org.eclipse.acceleo.aql.parser,
  org.eclipse.acceleo.impl,
- org.eclipse.acceleo.evaluation,
+ org.eclipse.acceleo.impl.spec,
  org.eclipse.acceleo.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.eclipse.acceleo.query;bundle-version="6.0.0"
+ org.eclipse.acceleo.query;bundle-version="6.0.0",
+ org.antlr.runtime;bundle-version="4.3.0"
 Bundle-ActivationPolicy: lazy

@@ -4,10 +4,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//NamedElement #//DocumentedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="metamodels" lowerBound="1"
         upperBound="-1" eType="#//Metamodel"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="extends" upperBound="-1"
-        eType="#//ModuleQualifiedName"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imports" upperBound="-1"
-        eType="#//ModuleQualifiedName"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" upperBound="-1"
+        eType="#//ModuleReference" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
+        eType="#//ModuleReference" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="moduleElements" lowerBound="1"
         upperBound="-1" eType="#//ModuleElement" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startHeaderPosition" lowerBound="1"
@@ -18,6 +18,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="Metamodel" eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="referencedPackage" lowerBound="1"
         eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EPackage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModuleReference" eSuperTypes="#//ASTNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" eType="#//ModuleQualifiedName"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ModuleElement" abstract="true" eSuperTypes="#//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//ModuleElement">
@@ -63,15 +66,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EClassifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="VisibilityKind">
-    <eLiterals name="Private"/>
-    <eLiterals name="Protected" value="1"/>
-    <eLiterals name="Public" value="2"/>
+    <eLiterals name="private"/>
+    <eLiterals name="protected" value="1"/>
+    <eLiterals name="public" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Template" eSuperTypes="#//ModuleElement #//DocumentedElement #//NamedElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="overrides" upperBound="-1"
-        eType="#//TemplateQualifiedName"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="#//Variable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" lowerBound="1"
+        upperBound="-1" eType="#//Variable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="#//Expression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="post" eType="#//Expression"
@@ -84,8 +85,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//ModuleElement #//DocumentedElement #//NamedElement #//TypedElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="#//Variable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" lowerBound="1"
+        upperBound="-1" eType="#//Variable" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" lowerBound="1"
         eType="#//VisibilityKind"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Expression"/>
@@ -111,16 +112,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ForStatement" eSuperTypes="#//Statement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
-        eType="#//Variable" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1"
-        eType="#//Expression" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="before" eType="#//Expression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="each" eType="#//Expression"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="after" eType="#//Expression"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" lowerBound="1"
+        eType="#//Binding" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//Block"
         containment="true"/>
   </eClassifiers>
@@ -148,14 +141,13 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="OpenModeKind">
-    <eLiterals name="Overwrite"/>
-    <eLiterals name="Append" value="1"/>
-    <eLiterals name="Create" value="2"/>
+    <eLiterals name="overwrite"/>
+    <eLiterals name="append" value="1"/>
+    <eLiterals name="create" value="2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextStatement" eSuperTypes="#//Statement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="ASTResult" instanceClassName="org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ModuleQualifiedName" instanceClassName="java.lang.String"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="TemplateQualifiedName" instanceClassName="java.lang.String"/>
 </ecore:EPackage>

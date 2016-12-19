@@ -28,8 +28,7 @@ public interface AcceleoFactory extends EFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	AcceleoFactory eINSTANCE = org.eclipse.acceleo.impl.AcceleoFactoryImpl
-			.init();
+	AcceleoFactory eINSTANCE = org.eclipse.acceleo.impl.AcceleoFactoryImpl.init();
 
 	/**
 	 * Returns a new object of class '<em>Module</em>'.
@@ -48,6 +47,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	Metamodel createMetamodel();
+
+	/**
+	 * Returns a new object of class '<em>Module Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Module Reference</em>'.
+	 * @generated
+	 */
+	ModuleReference createModuleReference();
 
 	/**
 	 * Returns a new object of class '<em>Comment</em>'.
