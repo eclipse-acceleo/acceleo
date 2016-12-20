@@ -78,8 +78,6 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createComment();
 			case AcceleoPackage.COMMENT_BODY:
 				return createCommentBody();
-			case AcceleoPackage.DOCUMENTATION:
-				return createDocumentation();
 			case AcceleoPackage.MODULE_DOCUMENTATION:
 				return createModuleDocumentation();
 			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION:
@@ -212,16 +210,6 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public CommentBody createCommentBody() {
 		CommentBodyImpl commentBody = new CommentBodyImpl();
 		return commentBody;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Documentation createDocumentation() {
-		DocumentationImpl documentation = new DocumentationImpl();
-		return documentation;
 	}
 
 	/**

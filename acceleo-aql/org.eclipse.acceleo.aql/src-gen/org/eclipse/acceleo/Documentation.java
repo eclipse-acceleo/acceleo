@@ -24,7 +24,7 @@ package org.eclipse.acceleo;
  * </p>
  *
  * @see org.eclipse.acceleo.AcceleoPackage#getDocumentation()
- * @model
+ * @model interface="true" abstract="true"
  * @generated
  */
 public interface Documentation extends Comment {

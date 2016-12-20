@@ -1,0 +1,6 @@
+[**	
+ * My module has a nice comment.
+ * @author Yvan Lussaud
+ * @version 0.1.0
+*/]
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]

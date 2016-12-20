@@ -23,14 +23,15 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" eType="#//ModuleQualifiedName"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ModuleElement" abstract="true" eSuperTypes="#//ASTNode"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//ModuleElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Comment" eSuperTypes="#//ModuleElement #//Statement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//CommentBody"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CommentBody" eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Documentation" eSuperTypes="#//Comment">
+  <eClassifiers xsi:type="ecore:EClass" name="Documentation" abstract="true" interface="true"
+      eSuperTypes="#//Comment">
     <eStructuralFeatures xsi:type="ecore:EReference" name="documentedElement" eType="#//DocumentedElement"
         eOpposite="#//DocumentedElement/documentation"/>
   </eClassifiers>

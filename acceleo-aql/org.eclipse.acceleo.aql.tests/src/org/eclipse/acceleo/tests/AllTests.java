@@ -22,7 +22,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses(value = {ModuleTests.class, FileStatementTests.class, TemplateTests.class, QueryTests.class,
 		TextStatementTests.class, ForStatementTests.class, IfStatementTests.class,
-		ExpressionStatementTests.class, ProtectedAreaTests.class, LetStatementTests.class, })
+		ExpressionStatementTests.class, ProtectedAreaTests.class, LetStatementTests.class,
+		ModuleDocumentationTests.class, ModuleElementDocumentationTests.class, CommentTests.class, })
 public class AllTests {
 
 }

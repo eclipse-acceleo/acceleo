@@ -27,7 +27,7 @@ package org.eclipse.acceleo;
  * @model
  * @generated
  */
-public interface Comment extends ModuleElement {
+public interface Comment extends ModuleElement, Statement {
 	/**
 	 * Returns the value of the '<em><b>Body</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

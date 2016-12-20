@@ -1255,6 +1255,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		moduleReferenceEClass.getESuperTypes().add(this.getASTNode());
 		moduleElementEClass.getESuperTypes().add(this.getASTNode());
 		commentEClass.getESuperTypes().add(this.getModuleElement());
+		commentEClass.getESuperTypes().add(this.getStatement());
 		commentBodyEClass.getESuperTypes().add(this.getASTNode());
 		documentationEClass.getESuperTypes().add(this.getComment());
 		moduleDocumentationEClass.getESuperTypes().add(this.getDocumentation());
@@ -1348,7 +1349,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				"value", null, 0, 1, CommentBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(documentationEClass, Documentation.class,
-				"Documentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+				"Documentation", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
 				getDocumentation_DocumentedElement(),
 				this.getDocumentedElement(),

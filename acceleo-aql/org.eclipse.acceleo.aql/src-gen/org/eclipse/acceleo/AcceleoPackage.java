@@ -526,10 +526,10 @@ public interface AcceleoPackage extends EPackage {
 	int COMMENT_BODY_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.impl.DocumentationImpl <em>Documentation</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.acceleo.Documentation <em>Documentation</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.acceleo.impl.DocumentationImpl
+	 * @see org.eclipse.acceleo.Documentation
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getDocumentation()
 	 * @generated
 	 */
@@ -2931,10 +2931,10 @@ public interface AcceleoPackage extends EPackage {
 		EAttribute COMMENT_BODY__VALUE = eINSTANCE.getCommentBody_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.DocumentationImpl <em>Documentation</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.acceleo.Documentation <em>Documentation</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.acceleo.impl.DocumentationImpl
+		 * @see org.eclipse.acceleo.Documentation
 		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getDocumentation()
 		 * @generated
 		 */

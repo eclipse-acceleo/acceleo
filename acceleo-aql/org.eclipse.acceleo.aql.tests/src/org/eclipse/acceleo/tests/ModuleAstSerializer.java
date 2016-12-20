@@ -19,7 +19,6 @@ import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
-import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
@@ -465,14 +464,6 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	}
 
 	@Override
-	public Void caseDocumentation(Documentation documentation) {
-		doSwitch(documentation.getDocumentedElement());
-		doSwitch(documentation.getBody());
-
-		return null;
-	}
-
-	@Override
 	public Void caseExpression(org.eclipse.acceleo.Expression expression) {
 		builder.append(querySerializer.serialize(expression.getAst().getAst()));
 
@@ -602,24 +593,25 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	@Override
 	public Void caseModuleDocumentation(ModuleDocumentation modueDocumentation) {
+		doSwitch(modueDocumentation.getBody());
+		newLine();
 		builder.append("author: " + modueDocumentation.getAuthor());
 		newLine();
 		builder.append("version: " + modueDocumentation.getVersion());
 		newLine();
 		builder.append("since: " + modueDocumentation.getSince());
 		newLine();
-		doSwitch(modueDocumentation.getBody());
 
 		return null;
 	}
 
 	@Override
 	public Void caseModuleElementDocumentation(ModuleElementDocumentation moduleElementDocumentation) {
+		doSwitch(moduleElementDocumentation.getBody());
 		for (ParameterDocumentation documentation : moduleElementDocumentation.getParameterDocumentation()) {
 			newLine();
 			doSwitch(documentation);
 		}
-		doSwitch(moduleElementDocumentation.getBody());
 
 		return null;
 	}

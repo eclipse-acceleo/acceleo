@@ -76,15 +76,6 @@ public interface AcceleoFactory extends EFactory {
 	CommentBody createCommentBody();
 
 	/**
-	 * Returns a new object of class '<em>Documentation</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Documentation</em>'.
-	 * @generated
-	 */
-	Documentation createDocumentation();
-
-	/**
 	 * Returns a new object of class '<em>Module Documentation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

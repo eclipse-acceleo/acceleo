@@ -36,8 +36,11 @@ import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
@@ -65,6 +68,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class AcceleoParser {
+
+	/**
+	 * New line.
+	 */
+	private static final String NEW_LINE = "\n";
 
 	/**
 	 * In line end delimiter.
@@ -277,6 +285,36 @@ public class AcceleoParser {
 	private static final String IMPORT_END = SLASH_END;
 
 	/**
+	 * Start of {@link Documentation}.
+	 */
+	private static final String DOCUMENTATION_START = "[**";
+
+	/**
+	 * End of {@link Documentation}.
+	 */
+	private static final String DOCUMENTATION_END = SLASH_END;
+
+	/**
+	 * Author tag.
+	 */
+	private static final String AUTHOR_TAG = "@author ";
+
+	/**
+	 * Version tag.
+	 */
+	private static final String VERSION_TAG = "@version ";
+
+	/**
+	 * Since tag.
+	 */
+	private static final String SINCE_TAG = "@since ";
+
+	/**
+	 * Param tag.
+	 */
+	private static final String PARAM_TAG = "@param ";
+
+	/**
 	 * Extends key work.
 	 */
 	private static final String EXTENDS = "extends ";
@@ -316,24 +354,30 @@ public class AcceleoParser {
 	public Module parse(String source) {
 		this.text = source;
 
-		final List<Comment> comments = parseComments();
+		final List<Comment> comments = parseCommentsOrModuleDocumentations();
 
 		return parseModule(comments);
 	}
 
 	/**
-	 * Parses a {@link List} of {@link Comment}.
+	 * Parses a {@link List} of {@link Comment} and {@link ModuleDocumentation}.
 	 * 
-	 * @return the created {@link List} of {@link Comment}
+	 * @return the created {@link List} of {@link Comment} and {@link ModuleDocumentation}
 	 */
-	protected List<Comment> parseComments() {
+	protected List<Comment> parseCommentsOrModuleDocumentations() {
 		final List<Comment> comments = new ArrayList<Comment>();
-		skipSpaces();
 		Comment comment = parseComment();
-		while (comment != null) {
-			comments.add(comment);
+		ModuleDocumentation documentation = parseModuleDocumentation();
+		while (comment != null || documentation != null) {
+			if (comment != null) {
+				comments.add(comment);
+			}
+			if (documentation != null) {
+				comments.add(documentation);
+			}
 			skipSpaces();
 			comment = parseComment();
+			documentation = parseModuleDocumentation();
 		}
 		return comments;
 	}
@@ -413,6 +457,114 @@ public class AcceleoParser {
 			currentPosition = endOfComment + COMMENT_END.length();
 		} else {
 			// TODO Documentation
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Parses a {@link ModuleDocumentation}.
+	 * 
+	 * @return the created {@link ModuleDocumentation} if any recognized, <code>null</code> otherwise
+	 */
+	protected ModuleDocumentation parseModuleDocumentation() {
+		final ModuleDocumentation res;
+
+		if (text.startsWith(DOCUMENTATION_START, currentPosition)) {
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleDocumentation();
+			res.setStartPosition(currentPosition);
+			currentPosition += DOCUMENTATION_START.length();
+			final int startPosition = currentPosition;
+			int endPosition = text.indexOf(DOCUMENTATION_END, currentPosition);
+			if (endPosition < 0) {
+				endPosition = text.length();
+				currentPosition = endPosition;
+			} else {
+				currentPosition = endPosition + DOCUMENTATION_END.length();
+			}
+			final String docString = text.substring(startPosition, endPosition);
+			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
+			commentBody.setStartPosition(startPosition);
+			commentBody.setEndPosition(endPosition);
+			commentBody.setValue(docString);
+			res.setBody(commentBody);
+			final int authorPosition = docString.indexOf(AUTHOR_TAG);
+			if (authorPosition >= 0) {
+				final int authorStart = authorPosition + AUTHOR_TAG.length();
+				int authorEnd = docString.indexOf(NEW_LINE, authorStart);
+				res.setAuthor(docString.substring(authorStart, authorEnd));
+			}
+			final int versionPosition = docString.indexOf(VERSION_TAG);
+			if (versionPosition >= 0) {
+				final int versionStart = versionPosition + VERSION_TAG.length();
+				int versionEnd = docString.indexOf(NEW_LINE, versionStart);
+				res.setVersion(docString.substring(versionStart, versionEnd));
+			}
+			final int sincePosition = docString.indexOf(SINCE_TAG);
+			if (sincePosition >= 0) {
+				final int sinceStart = sincePosition + SINCE_TAG.length();
+				int sinceEnd = docString.indexOf(NEW_LINE, sinceStart);
+				res.setSince(docString.substring(sinceStart, sinceEnd));
+			}
+			res.setEndPosition(currentPosition);
+		} else {
+			res = null;
+		}
+
+		return res;
+	}
+
+	/**
+	 * Parses a {@link ModuleElementDocumentation}.
+	 * 
+	 * @return the created {@link ModuleElementDocumentation} if any recognized, <code>null</code> otherwise
+	 */
+	protected ModuleElementDocumentation parseModuleElementDocumentation() {
+		final ModuleElementDocumentation res;
+
+		if (text.startsWith(DOCUMENTATION_START, currentPosition)) {
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleElementDocumentation();
+			res.setStartPosition(currentPosition);
+			currentPosition += DOCUMENTATION_START.length();
+			final int startPosition = currentPosition;
+			int endPosition = text.indexOf(DOCUMENTATION_END, currentPosition);
+			if (endPosition < 0) {
+				endPosition = text.length();
+				currentPosition = endPosition;
+			} else {
+				currentPosition = endPosition + DOCUMENTATION_END.length();
+			}
+			final String docString = text.substring(startPosition, endPosition);
+			final CommentBody commentBody = AcceleoPackage.eINSTANCE.getAcceleoFactory().createCommentBody();
+			commentBody.setStartPosition(currentPosition);
+			commentBody.setEndPosition(endPosition);
+			commentBody.setValue(docString);
+			res.setBody(commentBody);
+			int paramPosition = docString.indexOf(PARAM_TAG);
+			while (paramPosition >= 0) {
+				final ParameterDocumentation paramDoc = AcceleoPackage.eINSTANCE.getAcceleoFactory()
+						.createParameterDocumentation();
+				final int paramStart = paramPosition + PARAM_TAG.length();
+				int paramEnd = docString.indexOf(PARAM_TAG, paramStart);
+				if (paramEnd < 0) {
+					paramPosition = -1;
+					paramEnd = docString.length();
+				} else {
+					paramPosition = paramEnd;
+				}
+				paramDoc.setStartPosition(paramStart + startPosition);
+				paramDoc.setEndPosition(endPosition + startPosition);
+				final CommentBody paramBody = AcceleoPackage.eINSTANCE.getAcceleoFactory()
+						.createCommentBody();
+				paramBody.setValue(docString.substring(paramStart, paramEnd));
+				paramBody.setStartPosition(paramStart + startPosition);
+				paramBody.setEndPosition(paramEnd + startPosition);
+				paramDoc.setBody(paramBody);
+				res.getParameterDocumentation().add(paramDoc);
+			}
+			res.setEndPosition(currentPosition);
+		} else {
 			res = null;
 		}
 
@@ -607,7 +759,7 @@ public class AcceleoParser {
 
 		ModuleElement moduleElement;
 		do {
-			final List<Comment> comments = parseComments();
+			final List<Comment> comments = parseCommentsOrModuleElementDocumentations();
 			res.addAll(comments);
 			final Documentation documentation = getLastDocumentation(comments);
 			final Template template = parseTemplate(documentation);
@@ -622,6 +774,29 @@ public class AcceleoParser {
 		} while (moduleElement != null);
 
 		return res;
+	}
+
+	/**
+	 * Parses a {@link List} of {@link Comment} and {@link ModuleElementDocumentation}.
+	 * 
+	 * @return the created {@link List} of {@link Comment} and {@link ModuleElementDocumentation}
+	 */
+	protected List<Comment> parseCommentsOrModuleElementDocumentations() {
+		final List<Comment> comments = new ArrayList<Comment>();
+		Comment comment = parseComment();
+		ModuleElementDocumentation documentation = parseModuleElementDocumentation();
+		while (comment != null || documentation != null) {
+			if (comment != null) {
+				comments.add(comment);
+			}
+			if (documentation != null) {
+				comments.add(documentation);
+			}
+			skipSpaces();
+			comment = parseComment();
+			documentation = parseModuleElementDocumentation();
+		}
+		return comments;
 	}
 
 	/**
@@ -858,15 +1033,20 @@ public class AcceleoParser {
 						if (protectedArea != null) {
 							res = protectedArea;
 						} else {
-							final ExpressionStatement expressionStatement = parseExpressionStatement();
-							if (expressionStatement != null) {
-								res = expressionStatement;
+							final Comment comment = parseComment();
+							if (comment != null) {
+								res = comment;
 							} else {
-								final TextStatement text = parseTextStatement();
-								if (text != null) {
-									res = text;
+								final ExpressionStatement expressionStatement = parseExpressionStatement();
+								if (expressionStatement != null) {
+									res = expressionStatement;
 								} else {
-									res = null;
+									final TextStatement text = parseTextStatement();
+									if (text != null) {
+										res = text;
+									} else {
+										res = null;
+									}
 								}
 							}
 						}

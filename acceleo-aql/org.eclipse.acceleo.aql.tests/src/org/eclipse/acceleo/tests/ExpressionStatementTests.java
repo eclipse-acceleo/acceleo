@@ -17,7 +17,7 @@ import java.util.Collection;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Tests {@link org.eclipse.acceleo.Module Module}.
+ * Tests {@link org.eclipse.acceleo.ExpressionStatement ExpressionStatement}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
