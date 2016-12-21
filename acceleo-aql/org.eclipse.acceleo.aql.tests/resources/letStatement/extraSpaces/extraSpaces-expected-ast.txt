@@ -6,10 +6,10 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [file url .add(.aqlFeatureAccess(myParam, 'name'), '].txt') (126..148) mode overwrite
+    [let 
+    myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (161..190) (127..190)
       
     some static text.
-   (161..186) (161..186)
-    [/file] (119..193)
+   (194..219) (194..219)[/let] (119..225)
     
- (193..194) (116..194)[/template] (61..205)
+ (225..226) (116..226)[/template] (61..237)

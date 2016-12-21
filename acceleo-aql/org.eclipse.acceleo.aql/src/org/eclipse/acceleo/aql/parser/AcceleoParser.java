@@ -40,6 +40,7 @@ import org.eclipse.acceleo.ModuleDocumentation;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleElementDocumentation;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.ParameterDocumentation;
 import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
@@ -824,6 +825,7 @@ public class AcceleoParser {
 			if (!readString(OPEN_PARENTHESIS)) {
 				// TODO missing OPEN_PARENTHESIS
 			}
+			skipSpaces();
 			final List<Variable> parameters = parseVariables();
 			res.getParameters().addAll(parameters);
 			skipSpaces();
@@ -1127,6 +1129,7 @@ public class AcceleoParser {
 			if (!readString(OPEN_PARENTHESIS)) {
 				// TODO missing OPEN_PARENTHESIS
 			}
+			skipSpaces();
 			final int bindingEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, FOR_HEADER_END);
 			final Binding binding = parseBinding(PIPE, bindingEndLimit);
 			res.setBinding(binding);
@@ -1172,6 +1175,13 @@ public class AcceleoParser {
 			final Expression url = parseExpression(expressionEndLimit);
 			res.setUrl(url);
 			skipSpaces();
+			if (!readString(COMMA)) {
+				// TODO missing CLOSE_PARENTHESIS
+			}
+			skipSpaces();
+			final OpenModeKind openMode = parseOpenModeKind();
+			res.setMode(openMode);
+			skipSpaces();
 			if (!readString(CLOSE_PARENTHESIS)) {
 				// TODO missing CLOSE_PARENTHESIS
 			}
@@ -1193,6 +1203,25 @@ public class AcceleoParser {
 	}
 
 	/**
+	 * Parses {@link OpenModeKind}.
+	 * 
+	 * @return the {@link OpenModeKind} if any is recognized, <code>null</code> otherwise
+	 */
+	protected OpenModeKind parseOpenModeKind() {
+		OpenModeKind res = null;
+
+		for (OpenModeKind openMode : OpenModeKind.VALUES) {
+			if (text.startsWith(openMode.getName(), currentPosition)) {
+				res = openMode;
+				currentPosition += openMode.getName().length();
+				break;
+			}
+		}
+
+		return res;
+	}
+
+	/**
 	 * Parses a {@link LetStatement}.
 	 * 
 	 * @return the created {@link LetStatement} if any is recognized, <code>null</code> otherwise
@@ -1204,6 +1233,7 @@ public class AcceleoParser {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
 			res.setStartPosition(currentPosition);
 			currentPosition += LET_HEADER_START.length();
+			skipSpaces();
 			int bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
 			Binding binding = parseBinding(EQUAL, bindingEndLimit);
 			res.getVariables().add(binding);
@@ -1379,10 +1409,12 @@ public class AcceleoParser {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
 			res.setStartPosition(currentPosition);
 			currentPosition += EXPRESSION_STATEMENT_START.length();
+			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(EXPRESSION_STATEMENT_END,
 					EXPRESSION_STATEMENT_END);
 			final Expression expression = parseExpression(expressionEndLimit);
 			res.setExpression(expression);
+			skipSpaces();
 			if (!readString(EXPRESSION_STATEMENT_END)) {
 				// TODO missing EXPRESSION_STATEMENT_END
 			}
