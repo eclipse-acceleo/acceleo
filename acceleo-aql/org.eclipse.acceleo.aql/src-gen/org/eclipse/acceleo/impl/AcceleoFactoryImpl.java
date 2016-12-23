@@ -11,7 +11,50 @@
  */
 package org.eclipse.acceleo.impl;
 
-import org.eclipse.acceleo.*;
+import org.eclipse.acceleo.AcceleoFactory;
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Binding;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.CommentBody;
+import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpressionStatement;
+import org.eclipse.acceleo.ErrorFileStatement;
+import org.eclipse.acceleo.ErrorForStatement;
+import org.eclipse.acceleo.ErrorIfStatement;
+import org.eclipse.acceleo.ErrorImport;
+import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMetamodel;
+import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleDocumentation;
+import org.eclipse.acceleo.ErrorModuleElementDocumentation;
+import org.eclipse.acceleo.ErrorModuleReference;
+import org.eclipse.acceleo.ErrorProtectedArea;
+import org.eclipse.acceleo.ErrorQuery;
+import org.eclipse.acceleo.ErrorTemplate;
+import org.eclipse.acceleo.ErrorVariable;
+import org.eclipse.acceleo.Expression;
+import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.FileStatement;
+import org.eclipse.acceleo.ForStatement;
+import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LetStatement;
+import org.eclipse.acceleo.Metamodel;
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleDocumentation;
+import org.eclipse.acceleo.ModuleElementDocumentation;
+import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.ParameterDocumentation;
+import org.eclipse.acceleo.ProtectedArea;
+import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.TypedElement;
+import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.VisibilityKind;
 
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 
@@ -70,18 +113,34 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 		switch (eClass.getClassifierID()) {
 			case AcceleoPackage.MODULE:
 				return createModule();
+			case AcceleoPackage.ERROR_MODULE:
+				return createErrorModule();
 			case AcceleoPackage.METAMODEL:
 				return createMetamodel();
+			case AcceleoPackage.ERROR_METAMODEL:
+				return createErrorMetamodel();
+			case AcceleoPackage.IMPORT:
+				return createImport();
+			case AcceleoPackage.ERROR_IMPORT:
+				return createErrorImport();
 			case AcceleoPackage.MODULE_REFERENCE:
 				return createModuleReference();
+			case AcceleoPackage.ERROR_MODULE_REFERENCE:
+				return createErrorModuleReference();
 			case AcceleoPackage.COMMENT:
 				return createComment();
+			case AcceleoPackage.ERROR_COMMENT:
+				return createErrorComment();
 			case AcceleoPackage.COMMENT_BODY:
 				return createCommentBody();
 			case AcceleoPackage.MODULE_DOCUMENTATION:
 				return createModuleDocumentation();
+			case AcceleoPackage.ERROR_MODULE_DOCUMENTATION:
+				return createErrorModuleDocumentation();
 			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION:
 				return createModuleElementDocumentation();
+			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION:
+				return createErrorModuleElementDocumentation();
 			case AcceleoPackage.PARAMETER_DOCUMENTATION:
 				return createParameterDocumentation();
 			case AcceleoPackage.BLOCK:
@@ -90,26 +149,46 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createTypedElement();
 			case AcceleoPackage.TEMPLATE:
 				return createTemplate();
+			case AcceleoPackage.ERROR_TEMPLATE:
+				return createErrorTemplate();
 			case AcceleoPackage.QUERY:
 				return createQuery();
+			case AcceleoPackage.ERROR_QUERY:
+				return createErrorQuery();
 			case AcceleoPackage.EXPRESSION:
 				return createExpression();
 			case AcceleoPackage.VARIABLE:
 				return createVariable();
+			case AcceleoPackage.ERROR_VARIABLE:
+				return createErrorVariable();
 			case AcceleoPackage.BINDING:
 				return createBinding();
+			case AcceleoPackage.ERROR_BINDING:
+				return createErrorBinding();
 			case AcceleoPackage.EXPRESSION_STATEMENT:
 				return createExpressionStatement();
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT:
+				return createErrorExpressionStatement();
 			case AcceleoPackage.PROTECTED_AREA:
 				return createProtectedArea();
+			case AcceleoPackage.ERROR_PROTECTED_AREA:
+				return createErrorProtectedArea();
 			case AcceleoPackage.FOR_STATEMENT:
 				return createForStatement();
+			case AcceleoPackage.ERROR_FOR_STATEMENT:
+				return createErrorForStatement();
 			case AcceleoPackage.IF_STATEMENT:
 				return createIfStatement();
+			case AcceleoPackage.ERROR_IF_STATEMENT:
+				return createErrorIfStatement();
 			case AcceleoPackage.LET_STATEMENT:
 				return createLetStatement();
+			case AcceleoPackage.ERROR_LET_STATEMENT:
+				return createErrorLetStatement();
 			case AcceleoPackage.FILE_STATEMENT:
 				return createFileStatement();
+			case AcceleoPackage.ERROR_FILE_STATEMENT:
+				return createErrorFileStatement();
 			case AcceleoPackage.TEXT_STATEMENT:
 				return createTextStatement();
 			default:
@@ -177,9 +256,49 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorModule createErrorModule() {
+		ErrorModuleImpl errorModule = new ErrorModuleImpl();
+		return errorModule;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Metamodel createMetamodel() {
 		MetamodelImpl metamodel = new MetamodelImpl();
 		return metamodel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorMetamodel createErrorMetamodel() {
+		ErrorMetamodelImpl errorMetamodel = new ErrorMetamodelImpl();
+		return errorMetamodel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Import createImport() {
+		ImportImpl import_ = new ImportImpl();
+		return import_;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorImport createErrorImport() {
+		ErrorImportImpl errorImport = new ErrorImportImpl();
+		return errorImport;
 	}
 
 	/**
@@ -197,9 +316,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorModuleReference createErrorModuleReference() {
+		ErrorModuleReferenceImpl errorModuleReference = new ErrorModuleReferenceImpl();
+		return errorModuleReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Comment createComment() {
 		CommentImpl comment = new CommentImpl();
 		return comment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorComment createErrorComment() {
+		ErrorCommentImpl errorComment = new ErrorCommentImpl();
+		return errorComment;
 	}
 
 	/**
@@ -227,9 +366,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorModuleDocumentation createErrorModuleDocumentation() {
+		ErrorModuleDocumentationImpl errorModuleDocumentation = new ErrorModuleDocumentationImpl();
+		return errorModuleDocumentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ModuleElementDocumentation createModuleElementDocumentation() {
 		ModuleElementDocumentationImpl moduleElementDocumentation = new ModuleElementDocumentationImpl();
 		return moduleElementDocumentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorModuleElementDocumentation createErrorModuleElementDocumentation() {
+		ErrorModuleElementDocumentationImpl errorModuleElementDocumentation = new ErrorModuleElementDocumentationImpl();
+		return errorModuleElementDocumentation;
 	}
 
 	/**
@@ -277,9 +436,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorTemplate createErrorTemplate() {
+		ErrorTemplateImpl errorTemplate = new ErrorTemplateImpl();
+		return errorTemplate;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Query createQuery() {
 		QueryImpl query = new QueryImpl();
 		return query;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorQuery createErrorQuery() {
+		ErrorQueryImpl errorQuery = new ErrorQueryImpl();
+		return errorQuery;
 	}
 
 	/**
@@ -307,9 +486,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorVariable createErrorVariable() {
+		ErrorVariableImpl errorVariable = new ErrorVariableImpl();
+		return errorVariable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public Binding createBinding() {
 		BindingImpl binding = new BindingImpl();
 		return binding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorBinding createErrorBinding() {
+		ErrorBindingImpl errorBinding = new ErrorBindingImpl();
+		return errorBinding;
 	}
 
 	/**
@@ -327,9 +526,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorExpressionStatement createErrorExpressionStatement() {
+		ErrorExpressionStatementImpl errorExpressionStatement = new ErrorExpressionStatementImpl();
+		return errorExpressionStatement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ProtectedArea createProtectedArea() {
 		ProtectedAreaImpl protectedArea = new ProtectedAreaImpl();
 		return protectedArea;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorProtectedArea createErrorProtectedArea() {
+		ErrorProtectedAreaImpl errorProtectedArea = new ErrorProtectedAreaImpl();
+		return errorProtectedArea;
 	}
 
 	/**
@@ -347,9 +566,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorForStatement createErrorForStatement() {
+		ErrorForStatementImpl errorForStatement = new ErrorForStatementImpl();
+		return errorForStatement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public IfStatement createIfStatement() {
 		IfStatementImpl ifStatement = new IfStatementImpl();
 		return ifStatement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorIfStatement createErrorIfStatement() {
+		ErrorIfStatementImpl errorIfStatement = new ErrorIfStatementImpl();
+		return errorIfStatement;
 	}
 
 	/**
@@ -367,9 +606,29 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ErrorLetStatement createErrorLetStatement() {
+		ErrorLetStatementImpl errorLetStatement = new ErrorLetStatementImpl();
+		return errorLetStatement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public FileStatement createFileStatement() {
 		FileStatementImpl fileStatement = new FileStatementImpl();
 		return fileStatement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorFileStatement createErrorFileStatement() {
+		ErrorFileStatementImpl errorFileStatement = new ErrorFileStatementImpl();
+		return errorFileStatement;
 	}
 
 	/**

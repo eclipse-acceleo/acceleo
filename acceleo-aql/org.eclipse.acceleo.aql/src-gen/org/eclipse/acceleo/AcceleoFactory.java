@@ -40,6 +40,15 @@ public interface AcceleoFactory extends EFactory {
 	Module createModule();
 
 	/**
+	 * Returns a new object of class '<em>Error Module</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Module</em>'.
+	 * @generated
+	 */
+	ErrorModule createErrorModule();
+
+	/**
 	 * Returns a new object of class '<em>Metamodel</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -47,6 +56,33 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	Metamodel createMetamodel();
+
+	/**
+	 * Returns a new object of class '<em>Error Metamodel</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Metamodel</em>'.
+	 * @generated
+	 */
+	ErrorMetamodel createErrorMetamodel();
+
+	/**
+	 * Returns a new object of class '<em>Import</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Import</em>'.
+	 * @generated
+	 */
+	Import createImport();
+
+	/**
+	 * Returns a new object of class '<em>Error Import</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Import</em>'.
+	 * @generated
+	 */
+	ErrorImport createErrorImport();
 
 	/**
 	 * Returns a new object of class '<em>Module Reference</em>'.
@@ -58,6 +94,15 @@ public interface AcceleoFactory extends EFactory {
 	ModuleReference createModuleReference();
 
 	/**
+	 * Returns a new object of class '<em>Error Module Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Module Reference</em>'.
+	 * @generated
+	 */
+	ErrorModuleReference createErrorModuleReference();
+
+	/**
 	 * Returns a new object of class '<em>Comment</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -65,6 +110,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	Comment createComment();
+
+	/**
+	 * Returns a new object of class '<em>Error Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Comment</em>'.
+	 * @generated
+	 */
+	ErrorComment createErrorComment();
 
 	/**
 	 * Returns a new object of class '<em>Comment Body</em>'.
@@ -85,6 +139,15 @@ public interface AcceleoFactory extends EFactory {
 	ModuleDocumentation createModuleDocumentation();
 
 	/**
+	 * Returns a new object of class '<em>Error Module Documentation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Module Documentation</em>'.
+	 * @generated
+	 */
+	ErrorModuleDocumentation createErrorModuleDocumentation();
+
+	/**
 	 * Returns a new object of class '<em>Module Element Documentation</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -92,6 +155,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	ModuleElementDocumentation createModuleElementDocumentation();
+
+	/**
+	 * Returns a new object of class '<em>Error Module Element Documentation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Module Element Documentation</em>'.
+	 * @generated
+	 */
+	ErrorModuleElementDocumentation createErrorModuleElementDocumentation();
 
 	/**
 	 * Returns a new object of class '<em>Parameter Documentation</em>'.
@@ -130,6 +202,15 @@ public interface AcceleoFactory extends EFactory {
 	Template createTemplate();
 
 	/**
+	 * Returns a new object of class '<em>Error Template</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Template</em>'.
+	 * @generated
+	 */
+	ErrorTemplate createErrorTemplate();
+
+	/**
 	 * Returns a new object of class '<em>Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -137,6 +218,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	Query createQuery();
+
+	/**
+	 * Returns a new object of class '<em>Error Query</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Query</em>'.
+	 * @generated
+	 */
+	ErrorQuery createErrorQuery();
 
 	/**
 	 * Returns a new object of class '<em>Expression</em>'.
@@ -157,6 +247,15 @@ public interface AcceleoFactory extends EFactory {
 	Variable createVariable();
 
 	/**
+	 * Returns a new object of class '<em>Error Variable</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Variable</em>'.
+	 * @generated
+	 */
+	ErrorVariable createErrorVariable();
+
+	/**
 	 * Returns a new object of class '<em>Binding</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -164,6 +263,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	Binding createBinding();
+
+	/**
+	 * Returns a new object of class '<em>Error Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Binding</em>'.
+	 * @generated
+	 */
+	ErrorBinding createErrorBinding();
 
 	/**
 	 * Returns a new object of class '<em>Expression Statement</em>'.
@@ -175,6 +283,15 @@ public interface AcceleoFactory extends EFactory {
 	ExpressionStatement createExpressionStatement();
 
 	/**
+	 * Returns a new object of class '<em>Error Expression Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Expression Statement</em>'.
+	 * @generated
+	 */
+	ErrorExpressionStatement createErrorExpressionStatement();
+
+	/**
 	 * Returns a new object of class '<em>Protected Area</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -182,6 +299,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	ProtectedArea createProtectedArea();
+
+	/**
+	 * Returns a new object of class '<em>Error Protected Area</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Protected Area</em>'.
+	 * @generated
+	 */
+	ErrorProtectedArea createErrorProtectedArea();
 
 	/**
 	 * Returns a new object of class '<em>For Statement</em>'.
@@ -193,6 +319,15 @@ public interface AcceleoFactory extends EFactory {
 	ForStatement createForStatement();
 
 	/**
+	 * Returns a new object of class '<em>Error For Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error For Statement</em>'.
+	 * @generated
+	 */
+	ErrorForStatement createErrorForStatement();
+
+	/**
 	 * Returns a new object of class '<em>If Statement</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -200,6 +335,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	IfStatement createIfStatement();
+
+	/**
+	 * Returns a new object of class '<em>Error If Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error If Statement</em>'.
+	 * @generated
+	 */
+	ErrorIfStatement createErrorIfStatement();
 
 	/**
 	 * Returns a new object of class '<em>Let Statement</em>'.
@@ -211,6 +355,15 @@ public interface AcceleoFactory extends EFactory {
 	LetStatement createLetStatement();
 
 	/**
+	 * Returns a new object of class '<em>Error Let Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error Let Statement</em>'.
+	 * @generated
+	 */
+	ErrorLetStatement createErrorLetStatement();
+
+	/**
 	 * Returns a new object of class '<em>File Statement</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -218,6 +371,15 @@ public interface AcceleoFactory extends EFactory {
 	 * @generated
 	 */
 	FileStatement createFileStatement();
+
+	/**
+	 * Returns a new object of class '<em>Error File Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Error File Statement</em>'.
+	 * @generated
+	 */
+	ErrorFileStatement createErrorFileStatement();
 
 	/**
 	 * Returns a new object of class '<em>Text Statement</em>'.

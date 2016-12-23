@@ -1,0 +1,13 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  *** error query ***
+  missing visibility: false
+  missing open parenthesis: true
+  missing close parenthesis: false
+  missing colon: false
+  missing equal: false
+  missing end: false
+  public query myQuery(myParam : EPackage (83..108)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (133..162)
+  /] (61..164)

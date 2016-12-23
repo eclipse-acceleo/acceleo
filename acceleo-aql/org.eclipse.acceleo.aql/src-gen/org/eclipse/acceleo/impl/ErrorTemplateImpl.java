@@ -1,0 +1,1285 @@
+/**
+ * Copyright (c) 2008, 2016 Obeo.
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *      Obeo - initial API and implementation
+ */
+package org.eclipse.acceleo.impl;
+
+import java.util.Collection;
+
+import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.ErrorTemplate;
+import org.eclipse.acceleo.Expression;
+import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.Variable;
+import org.eclipse.acceleo.VisibilityKind;
+
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Error Template</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getStartPosition <em>Start Position</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getEndPosition <em>End Position</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getDocumentation <em>Documentation</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isDeprecated <em>Deprecated</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getGuard <em>Guard</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getPost <em>Post</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMain <em>Main</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getVisibility <em>Visibility</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMissingVisibility <em>Missing Visibility</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorTemplateImpl#isMissingEnd <em>Missing End</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @generated
+ */
+public class ErrorTemplateImpl extends MinimalEObjectImpl.Container implements ErrorTemplate {
+	/**
+	 * The default value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int START_POSITION_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getStartPosition() <em>Start Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStartPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected int startPosition = START_POSITION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int END_POSITION_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getEndPosition() <em>End Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEndPosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected int endPosition = END_POSITION_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getDocumentation() <em>Documentation</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDocumentation()
+	 * @generated
+	 * @ordered
+	 */
+	protected Documentation documentation;
+
+	/**
+	 * The default value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean DEPRECATED_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isDeprecated() <em>Deprecated</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isDeprecated()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean deprecated = DEPRECATED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Variable> parameters;
+
+	/**
+	 * The cached value of the '{@link #getGuard() <em>Guard</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGuard()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression guard;
+
+	/**
+	 * The cached value of the '{@link #getPost() <em>Post</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPost()
+	 * @generated
+	 * @ordered
+	 */
+	protected Expression post;
+
+	/**
+	 * The default value of the '{@link #isMain() <em>Main</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMain()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MAIN_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMain() <em>Main</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMain()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean main = MAIN_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVisibility()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PRIVATE;
+
+	/**
+	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVisibility()
+	 * @generated
+	 * @ordered
+	 */
+	protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
+	protected Block body;
+
+	/**
+	 * The default value of the '{@link #isMissingVisibility() <em>Missing Visibility</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingVisibility()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_VISIBILITY_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingVisibility() <em>Missing Visibility</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingVisibility()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingVisibility = MISSING_VISIBILITY_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingOpenParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_OPEN_PARENTHESIS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingOpenParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_CLOSE_PARENTHESIS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isMissingPostCloseParenthesis() <em>Missing Post Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingPostCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_POST_CLOSE_PARENTHESIS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingPostCloseParenthesis() <em>Missing Post Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingPostCloseParenthesis()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingPostCloseParenthesis = MISSING_POST_CLOSE_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingEndHeader()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_END_HEADER_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingEndHeader()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingEndHeader = MISSING_END_HEADER_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingEnd()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean MISSING_END_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isMissingEnd()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean missingEnd = MISSING_END_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ErrorTemplateImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return AcceleoPackage.Literals.ERROR_TEMPLATE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getStartPosition() {
+		return startPosition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setStartPosition(int newStartPosition) {
+		int oldStartPosition = startPosition;
+		startPosition = newStartPosition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__START_POSITION, oldStartPosition, startPosition));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getEndPosition() {
+		return endPosition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setEndPosition(int newEndPosition) {
+		int oldEndPosition = endPosition;
+		endPosition = newEndPosition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__END_POSITION, oldEndPosition, endPosition));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Documentation getDocumentation() {
+		return documentation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetDocumentation(Documentation newDocumentation, NotificationChain msgs) {
+		Documentation oldDocumentation = documentation;
+		documentation = newDocumentation;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION, oldDocumentation, newDocumentation);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDocumentation(Documentation newDocumentation) {
+		if (newDocumentation != documentation) {
+			NotificationChain msgs = null;
+			if (documentation != null)
+				msgs = ((InternalEObject)documentation).eInverseRemove(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
+			if (newDocumentation != null)
+				msgs = ((InternalEObject)newDocumentation).eInverseAdd(this,
+						AcceleoPackage.DOCUMENTATION__DOCUMENTED_ELEMENT, Documentation.class, msgs);
+			msgs = basicSetDocumentation(newDocumentation, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION, newDocumentation, newDocumentation));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isDeprecated() {
+		return deprecated;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDeprecated(boolean newDeprecated) {
+		boolean oldDeprecated = deprecated;
+		deprecated = newDeprecated;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__DEPRECATED,
+					oldDeprecated, deprecated));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__NAME,
+					oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Variable> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectContainmentEList<Variable>(Variable.class, this,
+					AcceleoPackage.ERROR_TEMPLATE__PARAMETERS);
+		}
+		return parameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Expression getGuard() {
+		return guard;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetGuard(Expression newGuard, NotificationChain msgs) {
+		Expression oldGuard = guard;
+		guard = newGuard;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__GUARD, oldGuard, newGuard);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setGuard(Expression newGuard) {
+		if (newGuard != guard) {
+			NotificationChain msgs = null;
+			if (guard != null)
+				msgs = ((InternalEObject)guard).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_TEMPLATE__GUARD, null, msgs);
+			if (newGuard != null)
+				msgs = ((InternalEObject)newGuard).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_TEMPLATE__GUARD, null, msgs);
+			msgs = basicSetGuard(newGuard, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__GUARD,
+					newGuard, newGuard));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Expression getPost() {
+		return post;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetPost(Expression newPost, NotificationChain msgs) {
+		Expression oldPost = post;
+		post = newPost;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__POST, oldPost, newPost);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPost(Expression newPost) {
+		if (newPost != post) {
+			NotificationChain msgs = null;
+			if (post != null)
+				msgs = ((InternalEObject)post).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_TEMPLATE__POST, null, msgs);
+			if (newPost != null)
+				msgs = ((InternalEObject)newPost).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_TEMPLATE__POST, null, msgs);
+			msgs = basicSetPost(newPost, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__POST,
+					newPost, newPost));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMain() {
+		return main;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMain(boolean newMain) {
+		boolean oldMain = main;
+		main = newMain;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__MAIN,
+					oldMain, main));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public VisibilityKind getVisibility() {
+		return visibility;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setVisibility(VisibilityKind newVisibility) {
+		VisibilityKind oldVisibility = visibility;
+		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__VISIBILITY,
+					oldVisibility, visibility));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Block getBody() {
+		return body;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetBody(Block newBody, NotificationChain msgs) {
+		Block oldBody = body;
+		body = newBody;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__BODY, oldBody, newBody);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setBody(Block newBody) {
+		if (newBody != body) {
+			NotificationChain msgs = null;
+			if (body != null)
+				msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_TEMPLATE__BODY, null, msgs);
+			if (newBody != null)
+				msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_TEMPLATE__BODY, null, msgs);
+			msgs = basicSetBody(newBody, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__BODY,
+					newBody, newBody));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMissingVisibility() {
+		return missingVisibility;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingVisibility(boolean newMissingVisibility) {
+		boolean oldMissingVisibility = missingVisibility;
+		missingVisibility = newMissingVisibility;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__MISSING_VISIBILITY, oldMissingVisibility,
+					missingVisibility));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMissingOpenParenthesis() {
+		return missingOpenParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingOpenParenthesis(boolean newMissingOpenParenthesis) {
+		boolean oldMissingOpenParenthesis = missingOpenParenthesis;
+		missingOpenParenthesis = newMissingOpenParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS, oldMissingOpenParenthesis,
+					missingOpenParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMissingCloseParenthesis() {
+		return missingCloseParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingCloseParenthesis(boolean newMissingCloseParenthesis) {
+		boolean oldMissingCloseParenthesis = missingCloseParenthesis;
+		missingCloseParenthesis = newMissingCloseParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS, oldMissingCloseParenthesis,
+					missingCloseParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMissingPostCloseParenthesis() {
+		return missingPostCloseParenthesis;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingPostCloseParenthesis(boolean newMissingPostCloseParenthesis) {
+		boolean oldMissingPostCloseParenthesis = missingPostCloseParenthesis;
+		missingPostCloseParenthesis = newMissingPostCloseParenthesis;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS,
+					oldMissingPostCloseParenthesis, missingPostCloseParenthesis));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMissingEndHeader() {
+		return missingEndHeader;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingEndHeader(boolean newMissingEndHeader) {
+		boolean oldMissingEndHeader = missingEndHeader;
+		missingEndHeader = newMissingEndHeader;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER, oldMissingEndHeader, missingEndHeader));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isMissingEnd() {
+		return missingEnd;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingEnd(boolean newMissingEnd) {
+		boolean oldMissingEnd = missingEnd;
+		missingEnd = newMissingEnd;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_TEMPLATE__MISSING_END,
+					oldMissingEnd, missingEnd));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+				if (documentation != null)
+					msgs = ((InternalEObject)documentation).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+							- AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION, null, msgs);
+				return basicSetDocumentation((Documentation)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+				return basicSetDocumentation(null, msgs);
+			case AcceleoPackage.ERROR_TEMPLATE__PARAMETERS:
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+			case AcceleoPackage.ERROR_TEMPLATE__GUARD:
+				return basicSetGuard(null, msgs);
+			case AcceleoPackage.ERROR_TEMPLATE__POST:
+				return basicSetPost(null, msgs);
+			case AcceleoPackage.ERROR_TEMPLATE__BODY:
+				return basicSetBody(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_TEMPLATE__START_POSITION:
+				return getStartPosition();
+			case AcceleoPackage.ERROR_TEMPLATE__END_POSITION:
+				return getEndPosition();
+			case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+				return getDocumentation();
+			case AcceleoPackage.ERROR_TEMPLATE__DEPRECATED:
+				return isDeprecated();
+			case AcceleoPackage.ERROR_TEMPLATE__NAME:
+				return getName();
+			case AcceleoPackage.ERROR_TEMPLATE__PARAMETERS:
+				return getParameters();
+			case AcceleoPackage.ERROR_TEMPLATE__GUARD:
+				return getGuard();
+			case AcceleoPackage.ERROR_TEMPLATE__POST:
+				return getPost();
+			case AcceleoPackage.ERROR_TEMPLATE__MAIN:
+				return isMain();
+			case AcceleoPackage.ERROR_TEMPLATE__VISIBILITY:
+				return getVisibility();
+			case AcceleoPackage.ERROR_TEMPLATE__BODY:
+				return getBody();
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_VISIBILITY:
+				return isMissingVisibility();
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS:
+				return isMissingOpenParenthesis();
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS:
+				return isMissingCloseParenthesis();
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS:
+				return isMissingPostCloseParenthesis();
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER:
+				return isMissingEndHeader();
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END:
+				return isMissingEnd();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_TEMPLATE__START_POSITION:
+				setStartPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__END_POSITION:
+				setEndPosition((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+				setDocumentation((Documentation)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__DEPRECATED:
+				setDeprecated((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__NAME:
+				setName((String)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Variable>)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__GUARD:
+				setGuard((Expression)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__POST:
+				setPost((Expression)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MAIN:
+				setMain((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__VISIBILITY:
+				setVisibility((VisibilityKind)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__BODY:
+				setBody((Block)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_VISIBILITY:
+				setMissingVisibility((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS:
+				setMissingOpenParenthesis((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS:
+				setMissingCloseParenthesis((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS:
+				setMissingPostCloseParenthesis((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER:
+				setMissingEndHeader((Boolean)newValue);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END:
+				setMissingEnd((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_TEMPLATE__START_POSITION:
+				setStartPosition(START_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__END_POSITION:
+				setEndPosition(END_POSITION_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+				setDocumentation((Documentation)null);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__DEPRECATED:
+				setDeprecated(DEPRECATED_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__PARAMETERS:
+				getParameters().clear();
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__GUARD:
+				setGuard((Expression)null);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__POST:
+				setPost((Expression)null);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MAIN:
+				setMain(MAIN_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__VISIBILITY:
+				setVisibility(VISIBILITY_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__BODY:
+				setBody((Block)null);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_VISIBILITY:
+				setMissingVisibility(MISSING_VISIBILITY_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS:
+				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS:
+				setMissingCloseParenthesis(MISSING_CLOSE_PARENTHESIS_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS:
+				setMissingPostCloseParenthesis(MISSING_POST_CLOSE_PARENTHESIS_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER:
+				setMissingEndHeader(MISSING_END_HEADER_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END:
+				setMissingEnd(MISSING_END_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case AcceleoPackage.ERROR_TEMPLATE__START_POSITION:
+				return startPosition != START_POSITION_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__END_POSITION:
+				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+				return documentation != null;
+			case AcceleoPackage.ERROR_TEMPLATE__DEPRECATED:
+				return deprecated != DEPRECATED_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case AcceleoPackage.ERROR_TEMPLATE__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case AcceleoPackage.ERROR_TEMPLATE__GUARD:
+				return guard != null;
+			case AcceleoPackage.ERROR_TEMPLATE__POST:
+				return post != null;
+			case AcceleoPackage.ERROR_TEMPLATE__MAIN:
+				return main != MAIN_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__VISIBILITY:
+				return visibility != VISIBILITY_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__BODY:
+				return body != null;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_VISIBILITY:
+				return missingVisibility != MISSING_VISIBILITY_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS:
+				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS:
+				return missingCloseParenthesis != MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS:
+				return missingPostCloseParenthesis != MISSING_POST_CLOSE_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END_HEADER:
+				return missingEndHeader != MISSING_END_HEADER_EDEFAULT;
+			case AcceleoPackage.ERROR_TEMPLATE__MISSING_END:
+				return missingEnd != MISSING_END_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == ASTNode.class) {
+			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_TEMPLATE__START_POSITION:
+					return AcceleoPackage.AST_NODE__START_POSITION;
+				case AcceleoPackage.ERROR_TEMPLATE__END_POSITION:
+					return AcceleoPackage.AST_NODE__END_POSITION;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == ModuleElement.class) {
+			switch (derivedFeatureID) {
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == DocumentedElement.class) {
+			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION;
+				case AcceleoPackage.ERROR_TEMPLATE__DEPRECATED:
+					return AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == NamedElement.class) {
+			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_TEMPLATE__NAME:
+					return AcceleoPackage.NAMED_ELEMENT__NAME;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == Template.class) {
+			switch (derivedFeatureID) {
+				case AcceleoPackage.ERROR_TEMPLATE__PARAMETERS:
+					return AcceleoPackage.TEMPLATE__PARAMETERS;
+				case AcceleoPackage.ERROR_TEMPLATE__GUARD:
+					return AcceleoPackage.TEMPLATE__GUARD;
+				case AcceleoPackage.ERROR_TEMPLATE__POST:
+					return AcceleoPackage.TEMPLATE__POST;
+				case AcceleoPackage.ERROR_TEMPLATE__MAIN:
+					return AcceleoPackage.TEMPLATE__MAIN;
+				case AcceleoPackage.ERROR_TEMPLATE__VISIBILITY:
+					return AcceleoPackage.TEMPLATE__VISIBILITY;
+				case AcceleoPackage.ERROR_TEMPLATE__BODY:
+					return AcceleoPackage.TEMPLATE__BODY;
+				default:
+					return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == ASTNode.class) {
+			switch (baseFeatureID) {
+				case AcceleoPackage.AST_NODE__START_POSITION:
+					return AcceleoPackage.ERROR_TEMPLATE__START_POSITION;
+				case AcceleoPackage.AST_NODE__END_POSITION:
+					return AcceleoPackage.ERROR_TEMPLATE__END_POSITION;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == ModuleElement.class) {
+			switch (baseFeatureID) {
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == DocumentedElement.class) {
+			switch (baseFeatureID) {
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DOCUMENTATION:
+					return AcceleoPackage.ERROR_TEMPLATE__DOCUMENTATION;
+				case AcceleoPackage.DOCUMENTED_ELEMENT__DEPRECATED:
+					return AcceleoPackage.ERROR_TEMPLATE__DEPRECATED;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == NamedElement.class) {
+			switch (baseFeatureID) {
+				case AcceleoPackage.NAMED_ELEMENT__NAME:
+					return AcceleoPackage.ERROR_TEMPLATE__NAME;
+				default:
+					return -1;
+			}
+		}
+		if (baseClass == Template.class) {
+			switch (baseFeatureID) {
+				case AcceleoPackage.TEMPLATE__PARAMETERS:
+					return AcceleoPackage.ERROR_TEMPLATE__PARAMETERS;
+				case AcceleoPackage.TEMPLATE__GUARD:
+					return AcceleoPackage.ERROR_TEMPLATE__GUARD;
+				case AcceleoPackage.TEMPLATE__POST:
+					return AcceleoPackage.ERROR_TEMPLATE__POST;
+				case AcceleoPackage.TEMPLATE__MAIN:
+					return AcceleoPackage.ERROR_TEMPLATE__MAIN;
+				case AcceleoPackage.TEMPLATE__VISIBILITY:
+					return AcceleoPackage.ERROR_TEMPLATE__VISIBILITY;
+				case AcceleoPackage.TEMPLATE__BODY:
+					return AcceleoPackage.ERROR_TEMPLATE__BODY;
+				default:
+					return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (startPosition: "); //$NON-NLS-1$
+		result.append(startPosition);
+		result.append(", endPosition: "); //$NON-NLS-1$
+		result.append(endPosition);
+		result.append(", deprecated: "); //$NON-NLS-1$
+		result.append(deprecated);
+		result.append(", name: "); //$NON-NLS-1$
+		result.append(name);
+		result.append(", main: "); //$NON-NLS-1$
+		result.append(main);
+		result.append(", visibility: "); //$NON-NLS-1$
+		result.append(visibility);
+		result.append(", missingVisibility: "); //$NON-NLS-1$
+		result.append(missingVisibility);
+		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
+		result.append(missingOpenParenthesis);
+		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
+		result.append(missingCloseParenthesis);
+		result.append(", missingPostCloseParenthesis: "); //$NON-NLS-1$
+		result.append(missingPostCloseParenthesis);
+		result.append(", missingEndHeader: "); //$NON-NLS-1$
+		result.append(missingEndHeader);
+		result.append(", missingEnd: "); //$NON-NLS-1$
+		result.append(missingEnd);
+		result.append(')');
+		return result.toString();
+	}
+
+} //ErrorTemplateImpl

@@ -1,0 +1,9 @@
+*** error module ***
+missing open parenthesis: false
+missing EPackage: false
+missing close parenthesis: true
+missing end header: false
+
+header position 0..58
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)

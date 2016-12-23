@@ -1,0 +1,22 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    
+   (116..119)
+    *** error file statement ***
+    missing open mode: true
+    missing open parenthesis: false
+    missing comma: true
+    missing close parenthesis: true
+    missing end header: true
+    missing end: false
+    [file url .add('.txt', ***ERROR***) (126..141) mode overwrite
+      '.txt' overwrite)]
+    some static text.
+   (141..184) (141..184)
+    [/file] (119..191)
+    
+ (191..192) (116..192)[/template] (61..203)

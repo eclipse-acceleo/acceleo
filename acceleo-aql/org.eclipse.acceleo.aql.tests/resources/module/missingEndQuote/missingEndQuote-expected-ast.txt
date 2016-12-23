@@ -1,0 +1,11 @@
+*** error module ***
+missing open parenthesis: false
+missing EPackage: false
+missing close parenthesis: true
+missing end header: true
+
+header position 0..58
+module myModule
+  *** error metamodel ***
+  missing end quote: true
+  metamodel null (18..58)

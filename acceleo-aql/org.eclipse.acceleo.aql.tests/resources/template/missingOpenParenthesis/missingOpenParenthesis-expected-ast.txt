@@ -1,0 +1,16 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  *** error template ***
+  missing visibility: false
+  missing open parenthesis: true
+  missing close parenthesis: false
+  missing post close parenthesis: false
+  missing post end header: false
+  missing post end: false
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    
+ some static text.
+ (116..136) (116..136)[/template] (61..147)

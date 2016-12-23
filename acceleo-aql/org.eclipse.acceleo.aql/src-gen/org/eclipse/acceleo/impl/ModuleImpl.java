@@ -16,11 +16,12 @@ import java.util.Collection;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
-
 import org.eclipse.acceleo.ModuleReference;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -113,7 +115,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ModuleReference> imports;
+	protected EList<Import> imports;
 
 	/**
 	 * The cached value of the '{@link #getModuleElements() <em>Module Elements</em>}' containment reference list.
@@ -287,10 +289,9 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<ModuleReference> getImports() {
+	public EList<Import> getImports() {
 		if (imports == null) {
-			imports = new EObjectContainmentEList<ModuleReference>(ModuleReference.class, this,
-					AcceleoPackage.MODULE__IMPORTS);
+			imports = new EObjectContainmentEList<Import>(Import.class, this, AcceleoPackage.MODULE__IMPORTS);
 		}
 		return imports;
 	}
@@ -442,7 +443,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 				return;
 			case AcceleoPackage.MODULE__IMPORTS:
 				getImports().clear();
-				getImports().addAll((Collection<? extends ModuleReference>)newValue);
+				getImports().addAll((Collection<? extends Import>)newValue);
 				return;
 			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
 				getModuleElements().clear();

@@ -11,7 +11,53 @@
  */
 package org.eclipse.acceleo.util;
 
-import org.eclipse.acceleo.*;
+import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Binding;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.CommentBody;
+import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpressionStatement;
+import org.eclipse.acceleo.ErrorFileStatement;
+import org.eclipse.acceleo.ErrorForStatement;
+import org.eclipse.acceleo.ErrorIfStatement;
+import org.eclipse.acceleo.ErrorImport;
+import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMetamodel;
+import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleDocumentation;
+import org.eclipse.acceleo.ErrorModuleElementDocumentation;
+import org.eclipse.acceleo.ErrorModuleReference;
+import org.eclipse.acceleo.ErrorProtectedArea;
+import org.eclipse.acceleo.ErrorQuery;
+import org.eclipse.acceleo.ErrorTemplate;
+import org.eclipse.acceleo.ErrorVariable;
+import org.eclipse.acceleo.Expression;
+import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.FileStatement;
+import org.eclipse.acceleo.ForStatement;
+import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LetStatement;
+import org.eclipse.acceleo.Metamodel;
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleDocumentation;
+import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.ModuleElementDocumentation;
+import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.ParameterDocumentation;
+import org.eclipse.acceleo.ProtectedArea;
+import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.Statement;
+import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.TypedElement;
+import org.eclipse.acceleo.Variable;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -86,6 +132,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_MODULE: {
+				ErrorModule errorModule = (ErrorModule)theEObject;
+				T result = caseErrorModule(errorModule);
+				if (result == null)
+					result = caseError(errorModule);
+				if (result == null)
+					result = caseModule(errorModule);
+				if (result == null)
+					result = caseNamedElement(errorModule);
+				if (result == null)
+					result = caseDocumentedElement(errorModule);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.METAMODEL: {
 				Metamodel metamodel = (Metamodel)theEObject;
 				T result = caseMetamodel(metamodel);
@@ -95,11 +156,59 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_METAMODEL: {
+				ErrorMetamodel errorMetamodel = (ErrorMetamodel)theEObject;
+				T result = caseErrorMetamodel(errorMetamodel);
+				if (result == null)
+					result = caseError(errorMetamodel);
+				if (result == null)
+					result = caseMetamodel(errorMetamodel);
+				if (result == null)
+					result = caseASTNode(errorMetamodel);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.IMPORT: {
+				Import import_ = (Import)theEObject;
+				T result = caseImport(import_);
+				if (result == null)
+					result = caseASTNode(import_);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_IMPORT: {
+				ErrorImport errorImport = (ErrorImport)theEObject;
+				T result = caseErrorImport(errorImport);
+				if (result == null)
+					result = caseError(errorImport);
+				if (result == null)
+					result = caseImport(errorImport);
+				if (result == null)
+					result = caseASTNode(errorImport);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.MODULE_REFERENCE: {
 				ModuleReference moduleReference = (ModuleReference)theEObject;
 				T result = caseModuleReference(moduleReference);
 				if (result == null)
 					result = caseASTNode(moduleReference);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_MODULE_REFERENCE: {
+				ErrorModuleReference errorModuleReference = (ErrorModuleReference)theEObject;
+				T result = caseErrorModuleReference(errorModuleReference);
+				if (result == null)
+					result = caseError(errorModuleReference);
+				if (result == null)
+					result = caseModuleReference(errorModuleReference);
+				if (result == null)
+					result = caseASTNode(errorModuleReference);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -122,6 +231,23 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseStatement(comment);
 				if (result == null)
 					result = caseASTNode(comment);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_COMMENT: {
+				ErrorComment errorComment = (ErrorComment)theEObject;
+				T result = caseErrorComment(errorComment);
+				if (result == null)
+					result = caseError(errorComment);
+				if (result == null)
+					result = caseComment(errorComment);
+				if (result == null)
+					result = caseModuleElement(errorComment);
+				if (result == null)
+					result = caseStatement(errorComment);
+				if (result == null)
+					result = caseASTNode(errorComment);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -167,6 +293,27 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_MODULE_DOCUMENTATION: {
+				ErrorModuleDocumentation errorModuleDocumentation = (ErrorModuleDocumentation)theEObject;
+				T result = caseErrorModuleDocumentation(errorModuleDocumentation);
+				if (result == null)
+					result = caseError(errorModuleDocumentation);
+				if (result == null)
+					result = caseModuleDocumentation(errorModuleDocumentation);
+				if (result == null)
+					result = caseDocumentation(errorModuleDocumentation);
+				if (result == null)
+					result = caseComment(errorModuleDocumentation);
+				if (result == null)
+					result = caseModuleElement(errorModuleDocumentation);
+				if (result == null)
+					result = caseStatement(errorModuleDocumentation);
+				if (result == null)
+					result = caseASTNode(errorModuleDocumentation);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.MODULE_ELEMENT_DOCUMENTATION: {
 				ModuleElementDocumentation moduleElementDocumentation = (ModuleElementDocumentation)theEObject;
 				T result = caseModuleElementDocumentation(moduleElementDocumentation);
@@ -180,6 +327,27 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseStatement(moduleElementDocumentation);
 				if (result == null)
 					result = caseASTNode(moduleElementDocumentation);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION: {
+				ErrorModuleElementDocumentation errorModuleElementDocumentation = (ErrorModuleElementDocumentation)theEObject;
+				T result = caseErrorModuleElementDocumentation(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseError(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseModuleElementDocumentation(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseDocumentation(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseComment(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseModuleElement(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseStatement(errorModuleElementDocumentation);
+				if (result == null)
+					result = caseASTNode(errorModuleElementDocumentation);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -220,6 +388,13 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR: {
+				org.eclipse.acceleo.Error error = (org.eclipse.acceleo.Error)theEObject;
+				T result = caseError(error);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.BLOCK: {
 				Block block = (Block)theEObject;
 				T result = caseBlock(block);
@@ -251,6 +426,25 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_TEMPLATE: {
+				ErrorTemplate errorTemplate = (ErrorTemplate)theEObject;
+				T result = caseErrorTemplate(errorTemplate);
+				if (result == null)
+					result = caseError(errorTemplate);
+				if (result == null)
+					result = caseTemplate(errorTemplate);
+				if (result == null)
+					result = caseModuleElement(errorTemplate);
+				if (result == null)
+					result = caseDocumentedElement(errorTemplate);
+				if (result == null)
+					result = caseNamedElement(errorTemplate);
+				if (result == null)
+					result = caseASTNode(errorTemplate);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.QUERY: {
 				Query query = (Query)theEObject;
 				T result = caseQuery(query);
@@ -264,6 +458,27 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseTypedElement(query);
 				if (result == null)
 					result = caseASTNode(query);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_QUERY: {
+				ErrorQuery errorQuery = (ErrorQuery)theEObject;
+				T result = caseErrorQuery(errorQuery);
+				if (result == null)
+					result = caseError(errorQuery);
+				if (result == null)
+					result = caseQuery(errorQuery);
+				if (result == null)
+					result = caseModuleElement(errorQuery);
+				if (result == null)
+					result = caseDocumentedElement(errorQuery);
+				if (result == null)
+					result = caseNamedElement(errorQuery);
+				if (result == null)
+					result = caseTypedElement(errorQuery);
+				if (result == null)
+					result = caseASTNode(errorQuery);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -290,6 +505,23 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_VARIABLE: {
+				ErrorVariable errorVariable = (ErrorVariable)theEObject;
+				T result = caseErrorVariable(errorVariable);
+				if (result == null)
+					result = caseError(errorVariable);
+				if (result == null)
+					result = caseVariable(errorVariable);
+				if (result == null)
+					result = caseTypedElement(errorVariable);
+				if (result == null)
+					result = caseNamedElement(errorVariable);
+				if (result == null)
+					result = caseASTNode(errorVariable);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.BINDING: {
 				Binding binding = (Binding)theEObject;
 				T result = caseBinding(binding);
@@ -301,6 +533,25 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseNamedElement(binding);
 				if (result == null)
 					result = caseASTNode(binding);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_BINDING: {
+				ErrorBinding errorBinding = (ErrorBinding)theEObject;
+				T result = caseErrorBinding(errorBinding);
+				if (result == null)
+					result = caseError(errorBinding);
+				if (result == null)
+					result = caseBinding(errorBinding);
+				if (result == null)
+					result = caseVariable(errorBinding);
+				if (result == null)
+					result = caseTypedElement(errorBinding);
+				if (result == null)
+					result = caseNamedElement(errorBinding);
+				if (result == null)
+					result = caseASTNode(errorBinding);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -325,6 +576,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_EXPRESSION_STATEMENT: {
+				ErrorExpressionStatement errorExpressionStatement = (ErrorExpressionStatement)theEObject;
+				T result = caseErrorExpressionStatement(errorExpressionStatement);
+				if (result == null)
+					result = caseError(errorExpressionStatement);
+				if (result == null)
+					result = caseExpressionStatement(errorExpressionStatement);
+				if (result == null)
+					result = caseStatement(errorExpressionStatement);
+				if (result == null)
+					result = caseASTNode(errorExpressionStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.PROTECTED_AREA: {
 				ProtectedArea protectedArea = (ProtectedArea)theEObject;
 				T result = caseProtectedArea(protectedArea);
@@ -332,6 +598,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseStatement(protectedArea);
 				if (result == null)
 					result = caseASTNode(protectedArea);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_PROTECTED_AREA: {
+				ErrorProtectedArea errorProtectedArea = (ErrorProtectedArea)theEObject;
+				T result = caseErrorProtectedArea(errorProtectedArea);
+				if (result == null)
+					result = caseError(errorProtectedArea);
+				if (result == null)
+					result = caseProtectedArea(errorProtectedArea);
+				if (result == null)
+					result = caseStatement(errorProtectedArea);
+				if (result == null)
+					result = caseASTNode(errorProtectedArea);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -347,6 +628,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_FOR_STATEMENT: {
+				ErrorForStatement errorForStatement = (ErrorForStatement)theEObject;
+				T result = caseErrorForStatement(errorForStatement);
+				if (result == null)
+					result = caseError(errorForStatement);
+				if (result == null)
+					result = caseForStatement(errorForStatement);
+				if (result == null)
+					result = caseStatement(errorForStatement);
+				if (result == null)
+					result = caseASTNode(errorForStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.IF_STATEMENT: {
 				IfStatement ifStatement = (IfStatement)theEObject;
 				T result = caseIfStatement(ifStatement);
@@ -354,6 +650,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseStatement(ifStatement);
 				if (result == null)
 					result = caseASTNode(ifStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_IF_STATEMENT: {
+				ErrorIfStatement errorIfStatement = (ErrorIfStatement)theEObject;
+				T result = caseErrorIfStatement(errorIfStatement);
+				if (result == null)
+					result = caseError(errorIfStatement);
+				if (result == null)
+					result = caseIfStatement(errorIfStatement);
+				if (result == null)
+					result = caseStatement(errorIfStatement);
+				if (result == null)
+					result = caseASTNode(errorIfStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -369,6 +680,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = defaultCase(theEObject);
 				return result;
 			}
+			case AcceleoPackage.ERROR_LET_STATEMENT: {
+				ErrorLetStatement errorLetStatement = (ErrorLetStatement)theEObject;
+				T result = caseErrorLetStatement(errorLetStatement);
+				if (result == null)
+					result = caseError(errorLetStatement);
+				if (result == null)
+					result = caseLetStatement(errorLetStatement);
+				if (result == null)
+					result = caseStatement(errorLetStatement);
+				if (result == null)
+					result = caseASTNode(errorLetStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
 			case AcceleoPackage.FILE_STATEMENT: {
 				FileStatement fileStatement = (FileStatement)theEObject;
 				T result = caseFileStatement(fileStatement);
@@ -376,6 +702,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseStatement(fileStatement);
 				if (result == null)
 					result = caseASTNode(fileStatement);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_FILE_STATEMENT: {
+				ErrorFileStatement errorFileStatement = (ErrorFileStatement)theEObject;
+				T result = caseErrorFileStatement(errorFileStatement);
+				if (result == null)
+					result = caseError(errorFileStatement);
+				if (result == null)
+					result = caseFileStatement(errorFileStatement);
+				if (result == null)
+					result = caseStatement(errorFileStatement);
+				if (result == null)
+					result = caseASTNode(errorFileStatement);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -412,6 +753,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Module</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorModule(ErrorModule object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Metamodel</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -427,6 +783,51 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Metamodel</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Metamodel</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorMetamodel(ErrorMetamodel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Import</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Import</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseImport(Import object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Import</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Import</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorImport(ErrorImport object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Module Reference</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -438,6 +839,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModuleReference(ModuleReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Module Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorModuleReference(ErrorModuleReference object) {
 		return null;
 	}
 
@@ -468,6 +884,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseComment(Comment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Comment</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Comment</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorComment(ErrorComment object) {
 		return null;
 	}
 
@@ -517,6 +948,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module Documentation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Module Documentation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorModuleDocumentation(ErrorModuleDocumentation object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Module Element Documentation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -528,6 +974,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseModuleElementDocumentation(ModuleElementDocumentation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Module Element Documentation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Module Element Documentation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorModuleElementDocumentation(ErrorModuleElementDocumentation object) {
 		return null;
 	}
 
@@ -592,6 +1053,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseError(org.eclipse.acceleo.Error object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Block</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -637,6 +1113,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Template</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Template</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorTemplate(ErrorTemplate object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Query</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -648,6 +1139,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseQuery(Query object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Query</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Query</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorQuery(ErrorQuery object) {
 		return null;
 	}
 
@@ -682,6 +1188,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Variable</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Variable</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorVariable(ErrorVariable object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Binding</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -693,6 +1214,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseBinding(Binding object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Binding</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Binding</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorBinding(ErrorBinding object) {
 		return null;
 	}
 
@@ -727,6 +1263,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Expression Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Expression Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorExpressionStatement(ErrorExpressionStatement object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Protected Area</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -738,6 +1289,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseProtectedArea(ProtectedArea object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Protected Area</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Protected Area</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorProtectedArea(ErrorProtectedArea object) {
 		return null;
 	}
 
@@ -757,6 +1323,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error For Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error For Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorForStatement(ErrorForStatement object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>If Statement</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -768,6 +1349,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseIfStatement(IfStatement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error If Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error If Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorIfStatement(ErrorIfStatement object) {
 		return null;
 	}
 
@@ -787,6 +1383,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Let Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Let Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorLetStatement(ErrorLetStatement object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>File Statement</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -798,6 +1409,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseFileStatement(FileStatement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error File Statement</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error File Statement</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorFileStatement(ErrorFileStatement object) {
 		return null;
 	}
 

@@ -20,11 +20,29 @@ import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpressionStatement;
+import org.eclipse.acceleo.ErrorFileStatement;
+import org.eclipse.acceleo.ErrorForStatement;
+import org.eclipse.acceleo.ErrorIfStatement;
+import org.eclipse.acceleo.ErrorImport;
+import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMetamodel;
+import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleDocumentation;
+import org.eclipse.acceleo.ErrorModuleElementDocumentation;
+import org.eclipse.acceleo.ErrorModuleReference;
+import org.eclipse.acceleo.ErrorProtectedArea;
+import org.eclipse.acceleo.ErrorQuery;
+import org.eclipse.acceleo.ErrorTemplate;
+import org.eclipse.acceleo.ErrorVariable;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
@@ -75,6 +93,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorModuleEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass metamodelEClass = null;
 
 	/**
@@ -82,7 +107,35 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorMetamodelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass importEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorImportEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass moduleReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorModuleReferenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -97,6 +150,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass commentEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorCommentEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -124,7 +184,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorModuleDocumentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass moduleElementDocumentationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorModuleElementDocumentationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -159,6 +233,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass blockEClass = null;
 
 	/**
@@ -180,7 +261,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorTemplateEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass queryEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorQueryEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -201,7 +296,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorVariableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass bindingEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorBindingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -222,7 +331,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorExpressionStatementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass protectedAreaEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorProtectedAreaEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -236,7 +359,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorForStatementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass ifStatementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorIfStatementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -250,7 +387,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass errorLetStatementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass fileStatementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorFileStatementEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -421,6 +572,51 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorModule() {
+		return errorModuleEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorModule_MissingOpenParenthesis() {
+		return (EAttribute)errorModuleEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorModule_MissingEPackage() {
+		return (EAttribute)errorModuleEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorModule_MissingCloseParenthesis() {
+		return (EAttribute)errorModuleEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorModule_MissingEndHeader() {
+		return (EAttribute)errorModuleEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getMetamodel() {
 		return metamodelEClass;
 	}
@@ -439,6 +635,60 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorMetamodel() {
+		return errorMetamodelEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorMetamodel_MissingEndQuote() {
+		return (EAttribute)errorMetamodelEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getImport() {
+		return importEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getImport_Module() {
+		return (EReference)importEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorImport() {
+		return errorImportEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorImport_MissingEnd() {
+		return (EAttribute)errorImportEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getModuleReference() {
 		return moduleReferenceEClass;
 	}
@@ -450,6 +700,15 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EAttribute getModuleReference_Url() {
 		return (EAttribute)moduleReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorModuleReference() {
+		return errorModuleReferenceEClass;
 	}
 
 	/**
@@ -477,6 +736,24 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EReference getComment_Body() {
 		return (EReference)commentEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorComment() {
+		return errorCommentEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorComment_MissingEndHeader() {
+		return (EAttribute)errorCommentEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -556,6 +833,24 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorModuleDocumentation() {
+		return errorModuleDocumentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorModuleDocumentation_MissingEndHeader() {
+		return (EAttribute)errorModuleDocumentationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getModuleElementDocumentation() {
 		return moduleElementDocumentationEClass;
 	}
@@ -567,6 +862,24 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EReference getModuleElementDocumentation_ParameterDocumentation() {
 		return (EReference)moduleElementDocumentationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorModuleElementDocumentation() {
+		return errorModuleElementDocumentationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorModuleElementDocumentation_MissingEndHeader() {
+		return (EAttribute)errorModuleElementDocumentationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -648,6 +961,15 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EAttribute getASTNode_EndPosition() {
 		return (EAttribute)astNodeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getError() {
+		return errorEClass;
 	}
 
 	/**
@@ -754,6 +1076,69 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorTemplate() {
+		return errorTemplateEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingVisibility() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingOpenParenthesis() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingCloseParenthesis() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingPostCloseParenthesis() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingEndHeader() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingEnd() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getQuery() {
 		return queryEClass;
 	}
@@ -790,6 +1175,69 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorQuery() {
+		return errorQueryEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingVisibility() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingOpenParenthesis() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingCloseParenthesis() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingColon() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingEqual() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingEnd() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getExpression() {
 		return expressionEClass;
 	}
@@ -817,6 +1265,24 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorVariable() {
+		return errorVariableEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorVariable_MissingColon() {
+		return (EAttribute)errorVariableEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getBinding() {
 		return bindingEClass;
 	}
@@ -828,6 +1294,42 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EReference getBinding_InitExpression() {
 		return (EReference)bindingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorBinding() {
+		return errorBindingEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorBinding_MissingColon() {
+		return (EAttribute)errorBindingEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorBinding_MissingType() {
+		return (EAttribute)errorBindingEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorBinding_MissingAffectationSymbole() {
+		return (EAttribute)errorBindingEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -862,6 +1364,24 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorExpressionStatement() {
+		return errorExpressionStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorExpressionStatement_MissingEndHeader() {
+		return (EAttribute)errorExpressionStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getProtectedArea() {
 		return protectedAreaEClass;
 	}
@@ -889,6 +1409,51 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorProtectedArea() {
+		return errorProtectedAreaEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorProtectedArea_MissingOpenParenthesis() {
+		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorProtectedArea_MissingCloseParenthesis() {
+		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorProtectedArea_MissingEndHeader() {
+		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorProtectedArea_MissingEnd() {
+		return (EAttribute)errorProtectedAreaEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getForStatement() {
 		return forStatementEClass;
 	}
@@ -909,6 +1474,51 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EReference getForStatement_Body() {
 		return (EReference)forStatementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorForStatement() {
+		return errorForStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorForStatement_MissingOpenParenthesis() {
+		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorForStatement_MissingCloseParenthesis() {
+		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorForStatement_MissingEndHeader() {
+		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorForStatement_MissingEnd() {
+		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -952,6 +1562,51 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorIfStatement() {
+		return errorIfStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorIfStatement_MissingOpenParenthesis() {
+		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorIfStatement_MissingCloseParenthesis() {
+		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorIfStatement_MissingEndHeader() {
+		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorIfStatement_MissingEnd() {
+		return (EAttribute)errorIfStatementEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getLetStatement() {
 		return letStatementEClass;
 	}
@@ -972,6 +1627,33 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EReference getLetStatement_Body() {
 		return (EReference)letStatementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorLetStatement() {
+		return errorLetStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorLetStatement_MissingEndHeader() {
+		return (EAttribute)errorLetStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorLetStatement_MissingEnd() {
+		return (EAttribute)errorLetStatementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -1017,6 +1699,69 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 */
 	public EReference getFileStatement_Body() {
 		return (EReference)fileStatementEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getErrorFileStatement() {
+		return errorFileStatementEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorFileStatement_MissingOpenParenthesis() {
+		return (EAttribute)errorFileStatementEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorFileStatement_MissingComma() {
+		return (EAttribute)errorFileStatementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorFileStatement_MissingOpenMode() {
+		return (EAttribute)errorFileStatementEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorFileStatement_MissingCloseParenthesis() {
+		return (EAttribute)errorFileStatementEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorFileStatement_MissingEndHeader() {
+		return (EAttribute)errorFileStatementEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorFileStatement_MissingEnd() {
+		return (EAttribute)errorFileStatementEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
@@ -1110,16 +1855,36 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(moduleEClass, MODULE__START_HEADER_POSITION);
 		createEAttribute(moduleEClass, MODULE__END_HEADER_POSITION);
 
+		errorModuleEClass = createEClass(ERROR_MODULE);
+		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_EPACKAGE);
+		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorModuleEClass, ERROR_MODULE__MISSING_END_HEADER);
+
 		metamodelEClass = createEClass(METAMODEL);
 		createEReference(metamodelEClass, METAMODEL__REFERENCED_PACKAGE);
 
+		errorMetamodelEClass = createEClass(ERROR_METAMODEL);
+		createEAttribute(errorMetamodelEClass, ERROR_METAMODEL__MISSING_END_QUOTE);
+
+		importEClass = createEClass(IMPORT);
+		createEReference(importEClass, IMPORT__MODULE);
+
+		errorImportEClass = createEClass(ERROR_IMPORT);
+		createEAttribute(errorImportEClass, ERROR_IMPORT__MISSING_END);
+
 		moduleReferenceEClass = createEClass(MODULE_REFERENCE);
 		createEAttribute(moduleReferenceEClass, MODULE_REFERENCE__URL);
+
+		errorModuleReferenceEClass = createEClass(ERROR_MODULE_REFERENCE);
 
 		moduleElementEClass = createEClass(MODULE_ELEMENT);
 
 		commentEClass = createEClass(COMMENT);
 		createEReference(commentEClass, COMMENT__BODY);
+
+		errorCommentEClass = createEClass(ERROR_COMMENT);
+		createEAttribute(errorCommentEClass, ERROR_COMMENT__MISSING_END_HEADER);
 
 		commentBodyEClass = createEClass(COMMENT_BODY);
 		createEAttribute(commentBodyEClass, COMMENT_BODY__VALUE);
@@ -1132,9 +1897,16 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__VERSION);
 		createEAttribute(moduleDocumentationEClass, MODULE_DOCUMENTATION__SINCE);
 
+		errorModuleDocumentationEClass = createEClass(ERROR_MODULE_DOCUMENTATION);
+		createEAttribute(errorModuleDocumentationEClass, ERROR_MODULE_DOCUMENTATION__MISSING_END_HEADER);
+
 		moduleElementDocumentationEClass = createEClass(MODULE_ELEMENT_DOCUMENTATION);
 		createEReference(moduleElementDocumentationEClass,
 				MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION);
+
+		errorModuleElementDocumentationEClass = createEClass(ERROR_MODULE_ELEMENT_DOCUMENTATION);
+		createEAttribute(errorModuleElementDocumentationEClass,
+				ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER);
 
 		parameterDocumentationEClass = createEClass(PARAMETER_DOCUMENTATION);
 
@@ -1148,6 +1920,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		astNodeEClass = createEClass(AST_NODE);
 		createEAttribute(astNodeEClass, AST_NODE__START_POSITION);
 		createEAttribute(astNodeEClass, AST_NODE__END_POSITION);
+
+		errorEClass = createEClass(ERROR);
 
 		blockEClass = createEClass(BLOCK);
 		createEReference(blockEClass, BLOCK__STATEMENTS);
@@ -1163,46 +1937,103 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(templateEClass, TEMPLATE__VISIBILITY);
 		createEReference(templateEClass, TEMPLATE__BODY);
 
+		errorTemplateEClass = createEClass(ERROR_TEMPLATE);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_VISIBILITY);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_END_HEADER);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_END);
+
 		queryEClass = createEClass(QUERY);
 		createEReference(queryEClass, QUERY__PARAMETERS);
 		createEAttribute(queryEClass, QUERY__VISIBILITY);
 		createEReference(queryEClass, QUERY__BODY);
+
+		errorQueryEClass = createEClass(ERROR_QUERY);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_VISIBILITY);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_COLON);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_EQUAL);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_END);
 
 		expressionEClass = createEClass(EXPRESSION);
 		createEAttribute(expressionEClass, EXPRESSION__AST);
 
 		variableEClass = createEClass(VARIABLE);
 
+		errorVariableEClass = createEClass(ERROR_VARIABLE);
+		createEAttribute(errorVariableEClass, ERROR_VARIABLE__MISSING_COLON);
+
 		bindingEClass = createEClass(BINDING);
 		createEReference(bindingEClass, BINDING__INIT_EXPRESSION);
+
+		errorBindingEClass = createEClass(ERROR_BINDING);
+		createEAttribute(errorBindingEClass, ERROR_BINDING__MISSING_COLON);
+		createEAttribute(errorBindingEClass, ERROR_BINDING__MISSING_TYPE);
+		createEAttribute(errorBindingEClass, ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE);
 
 		statementEClass = createEClass(STATEMENT);
 
 		expressionStatementEClass = createEClass(EXPRESSION_STATEMENT);
 		createEReference(expressionStatementEClass, EXPRESSION_STATEMENT__EXPRESSION);
 
+		errorExpressionStatementEClass = createEClass(ERROR_EXPRESSION_STATEMENT);
+		createEAttribute(errorExpressionStatementEClass, ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER);
+
 		protectedAreaEClass = createEClass(PROTECTED_AREA);
 		createEReference(protectedAreaEClass, PROTECTED_AREA__ID);
 		createEReference(protectedAreaEClass, PROTECTED_AREA__BODY);
 
+		errorProtectedAreaEClass = createEClass(ERROR_PROTECTED_AREA);
+		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_END_HEADER);
+		createEAttribute(errorProtectedAreaEClass, ERROR_PROTECTED_AREA__MISSING_END);
+
 		forStatementEClass = createEClass(FOR_STATEMENT);
 		createEReference(forStatementEClass, FOR_STATEMENT__BINDING);
 		createEReference(forStatementEClass, FOR_STATEMENT__BODY);
+
+		errorForStatementEClass = createEClass(ERROR_FOR_STATEMENT);
+		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_END_HEADER);
+		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_END);
 
 		ifStatementEClass = createEClass(IF_STATEMENT);
 		createEReference(ifStatementEClass, IF_STATEMENT__CONDITION);
 		createEReference(ifStatementEClass, IF_STATEMENT__THEN);
 		createEReference(ifStatementEClass, IF_STATEMENT__ELSE);
 
+		errorIfStatementEClass = createEClass(ERROR_IF_STATEMENT);
+		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_END_HEADER);
+		createEAttribute(errorIfStatementEClass, ERROR_IF_STATEMENT__MISSING_END);
+
 		letStatementEClass = createEClass(LET_STATEMENT);
 		createEReference(letStatementEClass, LET_STATEMENT__VARIABLES);
 		createEReference(letStatementEClass, LET_STATEMENT__BODY);
+
+		errorLetStatementEClass = createEClass(ERROR_LET_STATEMENT);
+		createEAttribute(errorLetStatementEClass, ERROR_LET_STATEMENT__MISSING_END_HEADER);
+		createEAttribute(errorLetStatementEClass, ERROR_LET_STATEMENT__MISSING_END);
 
 		fileStatementEClass = createEClass(FILE_STATEMENT);
 		createEAttribute(fileStatementEClass, FILE_STATEMENT__MODE);
 		createEReference(fileStatementEClass, FILE_STATEMENT__URL);
 		createEReference(fileStatementEClass, FILE_STATEMENT__CHARSET);
 		createEReference(fileStatementEClass, FILE_STATEMENT__BODY);
+
+		errorFileStatementEClass = createEClass(ERROR_FILE_STATEMENT);
+		createEAttribute(errorFileStatementEClass, ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorFileStatementEClass, ERROR_FILE_STATEMENT__MISSING_COMMA);
+		createEAttribute(errorFileStatementEClass, ERROR_FILE_STATEMENT__MISSING_OPEN_MODE);
+		createEAttribute(errorFileStatementEClass, ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS);
+		createEAttribute(errorFileStatementEClass, ERROR_FILE_STATEMENT__MISSING_END_HEADER);
+		createEAttribute(errorFileStatementEClass, ERROR_FILE_STATEMENT__MISSING_END);
 
 		textStatementEClass = createEClass(TEXT_STATEMENT);
 		createEAttribute(textStatementEClass, TEXT_STATEMENT__VALUE);
@@ -1251,36 +2082,71 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Add supertypes to classes
 		moduleEClass.getESuperTypes().add(this.getNamedElement());
 		moduleEClass.getESuperTypes().add(this.getDocumentedElement());
+		errorModuleEClass.getESuperTypes().add(this.getError());
+		errorModuleEClass.getESuperTypes().add(this.getModule());
 		metamodelEClass.getESuperTypes().add(this.getASTNode());
+		errorMetamodelEClass.getESuperTypes().add(this.getError());
+		errorMetamodelEClass.getESuperTypes().add(this.getMetamodel());
+		importEClass.getESuperTypes().add(this.getASTNode());
+		errorImportEClass.getESuperTypes().add(this.getError());
+		errorImportEClass.getESuperTypes().add(this.getImport());
 		moduleReferenceEClass.getESuperTypes().add(this.getASTNode());
+		errorModuleReferenceEClass.getESuperTypes().add(this.getError());
+		errorModuleReferenceEClass.getESuperTypes().add(this.getModuleReference());
 		moduleElementEClass.getESuperTypes().add(this.getASTNode());
 		commentEClass.getESuperTypes().add(this.getModuleElement());
 		commentEClass.getESuperTypes().add(this.getStatement());
+		errorCommentEClass.getESuperTypes().add(this.getError());
+		errorCommentEClass.getESuperTypes().add(this.getComment());
 		commentBodyEClass.getESuperTypes().add(this.getASTNode());
 		documentationEClass.getESuperTypes().add(this.getComment());
 		moduleDocumentationEClass.getESuperTypes().add(this.getDocumentation());
+		errorModuleDocumentationEClass.getESuperTypes().add(this.getError());
+		errorModuleDocumentationEClass.getESuperTypes().add(this.getModuleDocumentation());
 		moduleElementDocumentationEClass.getESuperTypes().add(this.getDocumentation());
+		errorModuleElementDocumentationEClass.getESuperTypes().add(this.getError());
+		errorModuleElementDocumentationEClass.getESuperTypes().add(this.getModuleElementDocumentation());
 		parameterDocumentationEClass.getESuperTypes().add(this.getComment());
 		blockEClass.getESuperTypes().add(this.getASTNode());
 		templateEClass.getESuperTypes().add(this.getModuleElement());
 		templateEClass.getESuperTypes().add(this.getDocumentedElement());
 		templateEClass.getESuperTypes().add(this.getNamedElement());
+		errorTemplateEClass.getESuperTypes().add(this.getError());
+		errorTemplateEClass.getESuperTypes().add(this.getTemplate());
 		queryEClass.getESuperTypes().add(this.getModuleElement());
 		queryEClass.getESuperTypes().add(this.getDocumentedElement());
 		queryEClass.getESuperTypes().add(this.getNamedElement());
 		queryEClass.getESuperTypes().add(this.getTypedElement());
+		errorQueryEClass.getESuperTypes().add(this.getError());
+		errorQueryEClass.getESuperTypes().add(this.getQuery());
 		expressionEClass.getESuperTypes().add(this.getASTNode());
 		variableEClass.getESuperTypes().add(this.getTypedElement());
 		variableEClass.getESuperTypes().add(this.getNamedElement());
 		variableEClass.getESuperTypes().add(this.getASTNode());
+		errorVariableEClass.getESuperTypes().add(this.getError());
+		errorVariableEClass.getESuperTypes().add(this.getVariable());
 		bindingEClass.getESuperTypes().add(this.getVariable());
+		errorBindingEClass.getESuperTypes().add(this.getError());
+		errorBindingEClass.getESuperTypes().add(this.getBinding());
 		statementEClass.getESuperTypes().add(this.getASTNode());
 		expressionStatementEClass.getESuperTypes().add(this.getStatement());
+		errorExpressionStatementEClass.getESuperTypes().add(this.getError());
+		errorExpressionStatementEClass.getESuperTypes().add(this.getExpressionStatement());
 		protectedAreaEClass.getESuperTypes().add(this.getStatement());
+		errorProtectedAreaEClass.getESuperTypes().add(this.getError());
+		errorProtectedAreaEClass.getESuperTypes().add(this.getProtectedArea());
 		forStatementEClass.getESuperTypes().add(this.getStatement());
+		errorForStatementEClass.getESuperTypes().add(this.getError());
+		errorForStatementEClass.getESuperTypes().add(this.getForStatement());
 		ifStatementEClass.getESuperTypes().add(this.getStatement());
+		errorIfStatementEClass.getESuperTypes().add(this.getError());
+		errorIfStatementEClass.getESuperTypes().add(this.getIfStatement());
 		letStatementEClass.getESuperTypes().add(this.getStatement());
+		errorLetStatementEClass.getESuperTypes().add(this.getError());
+		errorLetStatementEClass.getESuperTypes().add(this.getLetStatement());
 		fileStatementEClass.getESuperTypes().add(this.getStatement());
+		errorFileStatementEClass.getESuperTypes().add(this.getError());
+		errorFileStatementEClass.getESuperTypes().add(this.getFileStatement());
 		textStatementEClass.getESuperTypes().add(this.getStatement());
 
 		// Initialize classes, features, and operations; add parameters
@@ -1298,7 +2164,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				"extends", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(
 				getModule_Imports(),
-				this.getModuleReference(),
+				this.getImport(),
 				null,
 				"imports", null, 0, -1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 		initEReference(
@@ -1315,6 +2181,25 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				theEcorePackage.getEInt(),
 				"endHeaderPosition", null, 1, 1, Module.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorModuleEClass, ErrorModule.class,
+				"ErrorModule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorModule_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorModule_MissingEPackage(),
+				theEcorePackage.getEBoolean(),
+				"missingEPackage", null, 1, 1, ErrorModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorModule_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorModule_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(metamodelEClass, Metamodel.class,
 				"Metamodel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
@@ -1323,12 +2208,37 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"referencedPackage", null, 1, 1, Metamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorMetamodelEClass, ErrorMetamodel.class,
+				"ErrorMetamodel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorMetamodel_MissingEndQuote(),
+				theEcorePackage.getEBoolean(),
+				"missingEndQuote", null, 1, 1, ErrorMetamodel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(importEClass, Import.class,
+				"Import", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEReference(
+				getImport_Module(),
+				this.getModuleReference(),
+				null,
+				"module", null, 1, 1, Import.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorImportEClass, ErrorImport.class,
+				"ErrorImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorImport_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(moduleReferenceEClass, ModuleReference.class,
 				"ModuleReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getModuleReference_Url(),
 				this.getModuleQualifiedName(),
 				"url", null, 0, 1, ModuleReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorModuleReferenceEClass, ErrorModuleReference.class,
+				"ErrorModuleReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
 		initEClass(moduleElementEClass, ModuleElement.class,
 				"ModuleElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1340,6 +2250,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getCommentBody(),
 				null,
 				"body", null, 0, 1, Comment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorCommentEClass, ErrorComment.class,
+				"ErrorComment", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorComment_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorComment.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(commentBodyEClass, CommentBody.class,
 				"CommentBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1371,6 +2288,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				theEcorePackage.getEString(),
 				"since", null, 0, 1, ModuleDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorModuleDocumentationEClass, ErrorModuleDocumentation.class,
+				"ErrorModuleDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorModuleDocumentation_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorModuleDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(moduleElementDocumentationEClass, ModuleElementDocumentation.class,
 				"ModuleElementDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
@@ -1378,6 +2302,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getParameterDocumentation(),
 				null,
 				"parameterDocumentation", null, 0, -1, ModuleElementDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorModuleElementDocumentationEClass, ErrorModuleElementDocumentation.class,
+				"ErrorModuleElementDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorModuleElementDocumentation_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorModuleElementDocumentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(parameterDocumentationEClass, ParameterDocumentation.class,
 				"ParameterDocumentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1411,6 +2342,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				getASTNode_EndPosition(),
 				theEcorePackage.getEInt(),
 				"endPosition", null, 0, 1, ASTNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorEClass, org.eclipse.acceleo.Error.class,
+				"Error", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
 		initEClass(blockEClass, Block.class,
 				"Block", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1459,6 +2393,33 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, Template.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorTemplateEClass, ErrorTemplate.class,
+				"ErrorTemplate", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorTemplate_MissingVisibility(),
+				theEcorePackage.getEBoolean(),
+				"missingVisibility", null, 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorTemplate_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorTemplate_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorTemplate_MissingPostCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingPostCloseParenthesis", null, 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorTemplate_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorTemplate_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(queryEClass, Query.class,
 				"Query", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
@@ -1476,15 +2437,49 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorQueryEClass, ErrorQuery.class,
+				"ErrorQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorQuery_MissingVisibility(),
+				theEcorePackage.getEBoolean(),
+				"missingVisibility", null, 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorQuery_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorQuery_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorQuery_MissingColon(),
+				theEcorePackage.getEBoolean(),
+				"missingColon", null, 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorQuery_MissingEqual(),
+				theEcorePackage.getEBoolean(),
+				"missingEqual", null, 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorQuery_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(expressionEClass, Expression.class,
 				"Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEAttribute(
 				getExpression_Ast(),
 				this.getASTResult(),
-				"ast", null, 0, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+				"ast", null, 1, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(variableEClass, Variable.class,
 				"Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+
+		initEClass(errorVariableEClass, ErrorVariable.class,
+				"ErrorVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorVariable_MissingColon(),
+				theEcorePackage.getEBoolean(),
+				"missingColon", null, 1, 1, ErrorVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(bindingEClass, Binding.class,
 				"Binding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1493,6 +2488,21 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getExpression(),
 				null,
 				"initExpression", null, 1, 1, Binding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorBindingEClass, ErrorBinding.class,
+				"ErrorBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorBinding_MissingColon(),
+				theEcorePackage.getEBoolean(),
+				"missingColon", null, 1, 1, ErrorBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorBinding_MissingType(),
+				theEcorePackage.getEBoolean(),
+				"missingType", null, 1, 1, ErrorBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorBinding_MissingAffectationSymbole(),
+				theEcorePackage.getEString(),
+				"missingAffectationSymbole", null, 0, 1, ErrorBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(statementEClass, Statement.class,
 				"Statement", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1504,6 +2514,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getExpression(),
 				null,
 				"expression", null, 1, 1, ExpressionStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorExpressionStatementEClass, ErrorExpressionStatement.class,
+				"ErrorExpressionStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorExpressionStatement_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorExpressionStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(protectedAreaEClass, ProtectedArea.class,
 				"ProtectedArea", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1518,6 +2535,25 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"body", null, 1, 1, ProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorProtectedAreaEClass, ErrorProtectedArea.class,
+				"ErrorProtectedArea", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorProtectedArea_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorProtectedArea_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorProtectedArea_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorProtectedArea_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorProtectedArea.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(forStatementEClass, ForStatement.class,
 				"ForStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
@@ -1530,6 +2566,25 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getBlock(),
 				null,
 				"body", null, 1, 1, ForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorForStatementEClass, ErrorForStatement.class,
+				"ErrorForStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorForStatement_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorForStatement_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorForStatement_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorForStatement_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(ifStatementEClass, IfStatement.class,
 				"IfStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1549,6 +2604,25 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				null,
 				"else", null, 0, 1, IfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
+		initEClass(errorIfStatementEClass, ErrorIfStatement.class,
+				"ErrorIfStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorIfStatement_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorIfStatement_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorIfStatement_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorIfStatement_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
 		initEClass(letStatementEClass, LetStatement.class,
 				"LetStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 		initEReference(
@@ -1561,6 +2635,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getBlock(),
 				null,
 				"body", null, 1, 1, LetStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorLetStatementEClass, ErrorLetStatement.class,
+				"ErrorLetStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorLetStatement_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorLetStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorLetStatement_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorLetStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(fileStatementEClass, FileStatement.class,
 				"FileStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
@@ -1583,6 +2668,33 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				this.getBlock(),
 				null,
 				"body", null, 1, 1, FileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorFileStatementEClass, ErrorFileStatement.class,
+				"ErrorFileStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorFileStatement_MissingOpenParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenParenthesis", null, 1, 1, ErrorFileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorFileStatement_MissingComma(),
+				theEcorePackage.getEBoolean(),
+				"missingComma", null, 1, 1, ErrorFileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorFileStatement_MissingOpenMode(),
+				theEcorePackage.getEBoolean(),
+				"missingOpenMode", null, 1, 1, ErrorFileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorFileStatement_MissingCloseParenthesis(),
+				theEcorePackage.getEBoolean(),
+				"missingCloseParenthesis", null, 1, 1, ErrorFileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorFileStatement_MissingEndHeader(),
+				theEcorePackage.getEBoolean(),
+				"missingEndHeader", null, 1, 1, ErrorFileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+		initEAttribute(
+				getErrorFileStatement_MissingEnd(),
+				theEcorePackage.getEBoolean(),
+				"missingEnd", null, 1, 1, ErrorFileStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(textStatementEClass, TextStatement.class,
 				"TextStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

@@ -56,7 +56,7 @@ public interface Module extends NamedElement, DocumentedElement {
 	 * The list contents are of type {@link org.eclipse.acceleo.ModuleReference}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Extends</em>' attribute list isn't clear,
+	 * If the meaning of the '<em>Extends</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -69,10 +69,10 @@ public interface Module extends NamedElement, DocumentedElement {
 
 	/**
 	 * Returns the value of the '<em><b>Imports</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.acceleo.ModuleReference}.
+	 * The list contents are of type {@link org.eclipse.acceleo.Import}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Imports</em>' attribute list isn't clear,
+	 * If the meaning of the '<em>Imports</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -81,7 +81,7 @@ public interface Module extends NamedElement, DocumentedElement {
 	 * @model containment="true"
 	 * @generated
 	 */
-	EList<ModuleReference> getImports();
+	EList<Import> getImports();
 
 	/**
 	 * Returns the value of the '<em><b>Module Elements</b></em>' containment reference list.

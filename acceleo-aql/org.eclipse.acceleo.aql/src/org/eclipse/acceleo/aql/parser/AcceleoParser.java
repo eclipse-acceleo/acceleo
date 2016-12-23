@@ -28,11 +28,25 @@ import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorExpressionStatement;
+import org.eclipse.acceleo.ErrorFileStatement;
+import org.eclipse.acceleo.ErrorForStatement;
+import org.eclipse.acceleo.ErrorIfStatement;
+import org.eclipse.acceleo.ErrorImport;
+import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMetamodel;
+import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorProtectedArea;
+import org.eclipse.acceleo.ErrorQuery;
+import org.eclipse.acceleo.ErrorTemplate;
+import org.eclipse.acceleo.ErrorVariable;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.FileStatement;
 import org.eclipse.acceleo.ForStatement;
 import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
@@ -126,9 +140,9 @@ public class AcceleoParser {
 	private static final String COMMA = ",";
 
 	/**
-	 * A semicolon.
+	 * A colon.
 	 */
-	private static final String SEMICOLON = ":";
+	private static final String COLON = ":";
 
 	/**
 	 * A qualifier separator.
@@ -166,9 +180,14 @@ public class AcceleoParser {
 	private static final String TEMPLATE_POST = "post(";
 
 	/**
+	 * End block prefix.
+	 */
+	private static final String END_BLOCK_PREFIX = "[/";
+
+	/**
 	 * End of {@link Template}.
 	 */
-	private static final String TEMPLATE_END = "[/template]";
+	private static final String TEMPLATE_END = END_BLOCK_PREFIX + "template]";
 
 	/**
 	 * Start of {@link ExpressionStatement}.
@@ -193,7 +212,7 @@ public class AcceleoParser {
 	/**
 	 * End of {@link ProtectedArea}.
 	 */
-	private static final String PROTECTED_AREA_END = "[/protected]";
+	private static final String PROTECTED_AREA_END = END_BLOCK_PREFIX + "protected]";
 
 	/**
 	 * Start of {@link FileStatement} header.
@@ -208,7 +227,7 @@ public class AcceleoParser {
 	/**
 	 * End of {@link FileStatement}.
 	 */
-	private static final String FILE_END = "[/file]";
+	private static final String FILE_END = END_BLOCK_PREFIX + "file]";
 
 	/**
 	 * Start of {@link LetStatement} header.
@@ -223,7 +242,7 @@ public class AcceleoParser {
 	/**
 	 * End of {@link LetStatement}.
 	 */
-	private static final String LET_END = "[/let]";
+	private static final String LET_END = END_BLOCK_PREFIX + "let]";
 
 	/**
 	 * Start of {@link ForStatement} header.
@@ -238,7 +257,7 @@ public class AcceleoParser {
 	/**
 	 * End of {@link ForStatement}.
 	 */
-	private static final String FOR_END = "[/for]";
+	private static final String FOR_END = END_BLOCK_PREFIX + "for]";
 
 	/**
 	 * Start of {@link IfStatement} header.
@@ -263,7 +282,7 @@ public class AcceleoParser {
 	/**
 	 * End of {@link IfStatement}.
 	 */
-	private static final String IF_END = "[/if]";
+	private static final String IF_END = END_BLOCK_PREFIX + "if]";
 
 	/**
 	 * Start of {@link Query}.
@@ -457,7 +476,6 @@ public class AcceleoParser {
 			res.setBody(commentBody);
 			currentPosition = endOfComment + COMMENT_END.length();
 		} else {
-			// TODO Documentation
 			res = null;
 		}
 
@@ -583,72 +601,72 @@ public class AcceleoParser {
 		final Module res;
 
 		if (text.startsWith(MODULE_HEADER_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModule();
-			res.getModuleElements().addAll(comments);
-			res.setDocumentation(getLastDocumentation(comments));
-			res.setStartHeaderPosition(currentPosition);
+			final int startHeaderPosition = currentPosition;
 			currentPosition += MODULE_HEADER_START.length();
 			skipSpaces();
 
 			final String name = parseIdentifier();
-			if (name == null) {
-				// TODO missing identifier
-			} else {
-				res.setName(name);
-			}
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
+			final List<Metamodel> metamodels = new ArrayList<Metamodel>();
 			Metamodel metamodel = parseMetamodel();
+			boolean missingEPackage = false;
 			while (metamodel != null) {
-				res.getMetamodels().add(metamodel);
+				metamodels.add(metamodel);
 				skipSpaces();
 				if (readString(COMMA)) {
 					skipSpaces();
 					metamodel = parseMetamodel();
-					if (metamodel == null) {
-						// TODO missing EPackage
-					}
+					missingEPackage = metamodel == null;
 				} else {
 					break;
 				}
 			}
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
+			final List<ModuleReference> extendedModules = new ArrayList<ModuleReference>();
 			if (readString(EXTENDS)) {
 				skipSpaces();
 				ModuleReference extended = parseModuleReference();
-				if (extended == null) {
-					// missing ModuleReference
-				}
-				res.getExtends().add(extended);
+				extendedModules.add(extended);
 				skipSpaces();
 				while (readString(COMMA)) {
 					skipSpaces();
 					extended = parseModuleReference();
-					if (extended == null) {
-						// missing ModuleReference
-					}
-					res.getExtends().add(extended);
+					extendedModules.add(extended);
 					skipSpaces();
 				}
 			}
-			if (!readString(MODULE_HEADER_END)) {
-				// TODO missing MODULE_HEADER_END
-			}
-			res.setEndHeaderPosition(currentPosition);
+			final boolean missingEndHeader = !readString(MODULE_HEADER_END);
+			final int endHeaderPosition = currentPosition;
 			skipSpaces();
-			ModuleReference imported = parseImport();
+			final List<Import> imports = new ArrayList<Import>();
+			Import imported = parseImport();
 			while (imported != null) {
-				res.getImports().add(imported);
+				imports.add(imported);
 				imported = parseImport();
 			}
 			final List<ModuleElement> moduleElements = parseModuleElements();
+			final boolean missingParenthesis = missingOpenParenthesis || missingCloseParenthesis;
+			if (missingParenthesis || missingEPackage || missingEndHeader) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModule();
+				((ErrorModule)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorModule)res).setMissingEPackage(missingEPackage);
+				((ErrorModule)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorModule)res).setMissingEndHeader(missingEndHeader);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModule();
+			}
+			res.setStartHeaderPosition(startHeaderPosition);
+			res.setEndHeaderPosition(endHeaderPosition);
+			res.getModuleElements().addAll(comments);
+			res.setDocumentation(getLastDocumentation(comments));
+			res.setName(name);
+			res.getMetamodels().addAll(metamodels);
+			res.getImports().addAll(imports);
+			res.getExtends().addAll(extendedModules);
 			res.getModuleElements().addAll(moduleElements);
 		} else {
 			res = null;
@@ -662,17 +680,25 @@ public class AcceleoParser {
 	 * 
 	 * @return the create {@link ModuleReference} if any is recognized, <code>null</code> otherwise
 	 */
-	protected ModuleReference parseImport() {
-		final ModuleReference res;
+	protected Import parseImport() {
+		final Import res;
 
 		if (text.startsWith(IMPORT_START, currentPosition)) {
+			final int startPosition = currentPosition;
 			currentPosition += IMPORT_START.length();
 			skipSpaces();
-			res = parseModuleReference();
+			final ModuleReference moduleReference = parseModuleReference();
 			skipSpaces();
-			if (!readString(IMPORT_END)) {
-				// TODO missing IMPORT_END
+			final boolean missingEnd = !readString(IMPORT_END);
+			if (missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorImport();
+				((ErrorImport)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createImport();
 			}
+			res.setStartPosition(startPosition);
+			res.setModule(moduleReference);
+			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
 		}
@@ -691,14 +717,13 @@ public class AcceleoParser {
 		final int startPosition = currentPosition;
 		final String moduleQualifiedName = parseModuleQualifiedName();
 		if (moduleQualifiedName == null) {
-			// TODO missing moduleQualifiedName
-			res = null;
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModuleReference();
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleReference();
-			res.setStartPosition(startPosition);
-			res.setUrl(moduleQualifiedName);
-			res.setEndPosition(currentPosition);
 		}
+		res.setStartPosition(startPosition);
+		res.setUrl(moduleQualifiedName);
+		res.setEndPosition(currentPosition);
 
 		return res;
 	}
@@ -811,49 +836,52 @@ public class AcceleoParser {
 		final Query res;
 
 		if (text.startsWith(QUERY_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createQuery();
-			res.setStartPosition(currentPosition);
+			final int startPosition = currentPosition;
 			currentPosition += QUERY_START.length();
-			res.setDocumentation(documentation);
 			skipSpaces();
 			final VisibilityKind visibility = parseVisibility();
-			res.setVisibility(visibility);
+			final boolean missingVisibility = visibility == null;
 			skipSpaces();
 			final String name = parseIdentifier();
-			res.setName(name);
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Variable> parameters = parseVariables();
-			res.getParameters().addAll(parameters);
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			if (!readString(SEMICOLON)) {
-				// TODO missing SEMICOLON
-			}
+			final boolean missingColon = !readString(COLON);
 			skipSpaces();
 			final EClassifier type = parseEClassifier();
-			if (type == null) {
-				// TODO missing type
-			}
-			res.setType(type);
 			skipSpaces();
-			if (!readString(EQUAL)) {
-				// TODO missing EQUAL
-			}
+			final boolean missingEqual = !readString(EQUAL);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(QUERY_END, QUERY_END);
 			final Expression body = parseExpression(expressionEndLimit);
-			res.setBody(body);
 			skipSpaces();
-			if (!readString(QUERY_END)) {
-				// TODO missing QUERY_END
+			final boolean missingEnd = !readString(QUERY_END);
+			final boolean missingValue = visibility == null || name == null || type == null
+					|| parameters.isEmpty();
+			final boolean missingParenthesis = missingOpenParenthesis || missingCloseParenthesis;
+			final boolean missingSymbols = missingColon || missingEqual || missingEnd;
+			if (missingVisibility || missingValue || missingParenthesis || missingSymbols) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorQuery();
+				((ErrorQuery)res).setMissingVisibility(missingVisibility);
+				((ErrorQuery)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorQuery)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorQuery)res).setMissingColon(missingColon);
+				((ErrorQuery)res).setMissingEqual(missingEqual);
+				((ErrorQuery)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createQuery();
 			}
+			res.setStartPosition(startPosition);
+			res.setDocumentation(documentation);
+			res.setVisibility(visibility);
+			res.setName(name);
+			res.getParameters().addAll(parameters);
+			res.setType(type);
+			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -895,28 +923,21 @@ public class AcceleoParser {
 
 		final int startPosition = currentPosition;
 		final String name = parseIdentifier();
-		if (name == null) {
-			// TODO missing identifier
-		}
 		skipSpaces();
-		if (!readString(SEMICOLON)) {
-			// TODO missing SEMICOLON
-		}
+		final boolean missingColon = !readString(COLON);
 		skipSpaces();
 		final EClassifier type = parseEClassifier();
-		if (type == null) {
-			// TODO missing type
-		}
 
-		if (name != null && type != null) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
-			res.setStartPosition(startPosition);
-			res.setName(name);
-			res.setType(type);
-			res.setEndPosition(currentPosition);
+		if (name == null || type == null || missingColon) {
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorVariable();
+			((ErrorVariable)res).setMissingColon(missingColon);
 		} else {
-			res = null;
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
 		}
+		res.setStartPosition(startPosition);
+		res.setName(name);
+		res.setType(type);
+		res.setEndPosition(currentPosition);
 
 		return res;
 	}
@@ -932,46 +953,56 @@ public class AcceleoParser {
 		final Template res;
 
 		if (text.startsWith(TEMPLATE_HEADER_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
-			res.setStartPosition(currentPosition);
+			final int startPosition = currentPosition;
 			currentPosition += TEMPLATE_HEADER_START.length();
-			res.setDocumentation(documentation);
 			skipSpaces();
 			final VisibilityKind visibility = parseVisibility();
-			res.setVisibility(visibility);
+			final boolean missingVisibility = visibility == null;
 			skipSpaces();
 			final String name = parseIdentifier();
-			res.setName(name);
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Variable> parameters = parseVariables();
-			res.getParameters().addAll(parameters);
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
+			final boolean missingPostCloseParenthesis;
+			final Expression postExpression;
 			if (text.startsWith(TEMPLATE_POST, currentPosition)) {
 				final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
 						TEMPLATE_HEADER_END);
-				final Expression postExpression = parseExpression(expressionEndLimit);
-				res.setPost(postExpression);
-				if (!readString(CLOSE_PARENTHESIS)) {
-					// TODO missing CLOSE_PARENTHESIS
-				}
+				postExpression = parseExpression(expressionEndLimit);
+				missingPostCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 				skipSpaces();
+			} else {
+				missingPostCloseParenthesis = false;
+				postExpression = null;
 			}
-			if (!readString(TEMPLATE_HEADER_END)) {
-				// TODO missing TEMPLATE_HEADER_END
-			}
+			final boolean missingEndHeader = !readString(TEMPLATE_HEADER_END);
 			final Block body = parseBlock(TEMPLATE_END);
-			res.setBody(body);
-			if (!readString(TEMPLATE_END)) {
-				// TODO missing TEMPLATE_END
+			final boolean missingEnd = !readString(TEMPLATE_END);
+			final boolean missingValue = missingVisibility || name == null || parameters.isEmpty();
+			final boolean missingParenthesis = missingOpenParenthesis || missingCloseParenthesis
+					|| missingPostCloseParenthesis;
+			if (missingValue || missingParenthesis || missingEndHeader || missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorTemplate();
+				((ErrorTemplate)res).setMissingVisibility(missingVisibility);
+				((ErrorTemplate)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorTemplate)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorTemplate)res).setMissingPostCloseParenthesis(missingPostCloseParenthesis);
+				((ErrorTemplate)res).setMissingEndHeader(missingEndHeader);
+				((ErrorTemplate)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
 			}
+			res.setStartPosition(startPosition);
+			res.setDocumentation(documentation);
+			res.setVisibility(visibility);
+			res.setName(name);
+			res.getParameters().addAll(parameters);
+			res.setPost(postExpression);
+			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1072,39 +1103,43 @@ public class AcceleoParser {
 		final IfStatement res;
 
 		if (text.startsWith(startTag, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createIfStatement();
-			res.setStartPosition(currentPosition);
+			final int startPosition = currentPosition;
 			currentPosition += startTag.length();
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, IF_HEADER_END);
 			final Expression condition = parseExpression(expressionEndLimit);
-			res.setCondition(condition);
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			if (!readString(IF_HEADER_END)) {
-				// TODO missing IF_HEADER_END
-			}
+			final boolean missingEndHeader = !readString(IF_HEADER_END);
 			final Block thenblock = parseBlock(IF_END, IF_ELSEIF, IF_ELSE);
-			res.setThen(thenblock);
 			final IfStatement elseIf = parseIfStatement(IF_ELSEIF);
+			final boolean parseEndIf = elseIf == null;
+			final Block elseBlock;
 			if (elseIf != null) {
-				final Block elseBlock = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
+				elseBlock = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBlock();
 				elseBlock.getStatements().add(elseIf);
-				res.setElse(elseBlock);
 			} else if (readString(IF_ELSE)) {
-				final Block elseBlock = parseBlock(IF_END);
-				res.setElse(elseBlock);
+				elseBlock = parseBlock(IF_END);
+			} else {
+				elseBlock = null;
 			}
-			if (!readString(IF_END)) {
-				// TODO missing IF_END
+			final boolean missingEnd = parseEndIf && !readString(IF_END);
+			if (missingOpenParenthesis || missingCloseParenthesis || missingEndHeader || missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorIfStatement();
+				((ErrorIfStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorIfStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorIfStatement)res).setMissingEndHeader(missingEndHeader);
+				((ErrorIfStatement)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createIfStatement();
 			}
+			res.setStartPosition(startPosition);
+			res.setCondition(condition);
+			res.setThen(thenblock);
+			res.setElse(elseBlock);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1122,30 +1157,31 @@ public class AcceleoParser {
 		final ForStatement res;
 
 		if (text.startsWith(FOR_HEADER_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createForStatement();
-			res.setStartPosition(currentPosition);
+			final int startPostion = currentPosition;
 			currentPosition += FOR_HEADER_START.length();
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int bindingEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, FOR_HEADER_END);
 			final Binding binding = parseBinding(PIPE, bindingEndLimit);
-			res.setBinding(binding);
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			if (!readString(FOR_HEADER_END)) {
-				// TODO missing FOR_HEADER_END
-			}
+			final boolean missingEndHeader = !readString(FOR_HEADER_END);
 			final Block body = parseBlock(FOR_END);
-			res.setBody(body);
-			if (!readString(FOR_END)) {
-				// TODO missing FOR_END
+			final boolean missingEnd = !readString(FOR_END);
+			if (missingOpenParenthesis || missingCloseParenthesis || missingEndHeader || missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorForStatement();
+				((ErrorForStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorForStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorForStatement)res).setMissingEndHeader(missingEndHeader);
+				((ErrorForStatement)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createForStatement();
 			}
+			res.setStartPosition(startPostion);
+			res.setBinding(binding);
+			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1163,37 +1199,40 @@ public class AcceleoParser {
 		final FileStatement res;
 
 		if (text.startsWith(FILE_HEADER_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createFileStatement();
-			res.setStartPosition(currentPosition);
+			final int startPostion = currentPosition;
 			currentPosition += FILE_HEADER_START.length();
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(COMMA, FILE_HEADER_END);
 			final Expression url = parseExpression(expressionEndLimit);
-			res.setUrl(url);
 			skipSpaces();
-			if (!readString(COMMA)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingComma = !readString(COMMA);
 			skipSpaces();
 			final OpenModeKind openMode = parseOpenModeKind();
-			res.setMode(openMode);
+			final boolean missingOpenMode = openMode == null;
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			if (!readString(FILE_HEADER_END)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingEndHeader = !readString(FILE_HEADER_END);
 			final Block body = parseBlock(FILE_END);
-			res.setBody(body);
-			if (!readString(FILE_END)) {
-				// TODO missing FILE_END
+			final boolean missingEnd = !readString(FILE_END);
+			final boolean missingSymbole = missingOpenParenthesis || missingCloseParenthesis || missingComma;
+			if (missingOpenMode || missingSymbole || missingEndHeader || missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorFileStatement();
+				((ErrorFileStatement)res).setMissingOpenMode(missingOpenMode);
+				((ErrorFileStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorFileStatement)res).setMissingComma(missingComma);
+				((ErrorFileStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorFileStatement)res).setMissingEndHeader(missingEndHeader);
+				((ErrorFileStatement)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createFileStatement();
 			}
+			res.setStartPosition(startPostion);
+			res.setUrl(url);
+			res.setMode(openMode);
+			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1230,30 +1269,35 @@ public class AcceleoParser {
 		final LetStatement res;
 
 		if (text.startsWith(LET_HEADER_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
-			res.setStartPosition(currentPosition);
+			final int startPosition = currentPosition;
 			currentPosition += LET_HEADER_START.length();
 			skipSpaces();
 			int bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
+			final List<Binding> bindings = new ArrayList<Binding>();
 			Binding binding = parseBinding(EQUAL, bindingEndLimit);
-			res.getVariables().add(binding);
+			bindings.add(binding);
 			skipSpaces();
 			while (readString(COMMA)) {
 				skipSpaces();
 				bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
 				binding = parseBinding(EQUAL, bindingEndLimit);
-				res.getVariables().add(binding);
+				bindings.add(binding);
 				skipSpaces();
 			}
 			skipSpaces();
-			if (!readString(LET_HEADER_END)) {
-				// TODO missing LET_HEADER_END
-			}
+			final boolean missingEndHeader = !readString(LET_HEADER_END);
 			final Block body = parseBlock(LET_END);
-			res.setBody(body);
-			if (!readString(LET_END)) {
-				// TODO missing LET_END
+			final boolean missingEnd = !readString(LET_END);
+			if (missingEndHeader || missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorLetStatement();
+				((ErrorLetStatement)res).setMissingEndHeader(missingEndHeader);
+				((ErrorLetStatement)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
 			}
+			res.setStartPosition(startPosition);
+			res.getVariables().addAll(bindings);
+			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1272,26 +1316,47 @@ public class AcceleoParser {
 	 * @return the created {@link Binding} if any is recognized, <code>null</code> otherwise
 	 */
 	protected Binding parseBinding(String affectationSymbol, int endLimit) {
-		final Binding res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
+		final Binding res;
 
-		res.setStartPosition(currentPosition);
+		final int startPosition = currentPosition;
 		final String name = parseIdentifier();
-		if (name == null) {
-			// TODO missing name
-		}
-		res.setName(name);
 		skipSpaces();
-		if (readString(SEMICOLON)) {
+		boolean missingType;
+		EClassifier type;
+		boolean missingColon = true;
+		if (readString(COLON)) {
 			skipSpaces();
-			final EClassifier type = parseEClassifier();
-			res.setType(type);
+			type = parseEClassifier();
+			missingType = type == null;
+			missingColon = false;
+		} else {
+			type = null;
+			missingType = false;
 		}
 		skipSpaces();
-		if (!readString(affectationSymbol)) {
-			// TODO missing affectationSymbol
+		boolean missingAffectationSymbol = !readString(affectationSymbol);
+		missingColon = missingColon && missingAffectationSymbol;
+		if (missingColon) {
+			type = parseEClassifier();
+			missingType = type == null;
+			skipSpaces();
+			missingAffectationSymbol = !readString(affectationSymbol);
 		}
 		skipSpaces();
 		final Expression expression = parseExpression(endLimit);
+		if (missingColon || missingType || missingAffectationSymbol) {
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorBinding();
+			((ErrorBinding)res).setMissingColon(missingColon);
+			((ErrorBinding)res).setMissingType(missingType);
+			if (missingAffectationSymbol) {
+				((ErrorBinding)res).setMissingAffectationSymbole(affectationSymbol);
+			}
+		} else {
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
+		}
+		res.setStartPosition(startPosition);
+		res.setName(name);
+		res.setType(type);
 		res.setInitExpression(expression);
 		res.setEndPosition(currentPosition);
 
@@ -1307,15 +1372,16 @@ public class AcceleoParser {
 		final EClassifier res;
 
 		final String ePackageName = parseIdentifier();
-		if (!readString(QUALIFIER_SEPARATOR)) {
-			// TODO missing QUALIFIER_SEPARATOR
-		}
-		final String eClassifierName = parseIdentifier();
+		if (readString(QUALIFIER_SEPARATOR)) {
+			final String eClassifierName = parseIdentifier();
 
-		if (ePackageName != null && eClassifierName != null) {
-			final EPackage ePkg = getEPackage(ePackageName);
-			if (ePkg != null) {
-				res = ePkg.getEClassifier(eClassifierName);
+			if (ePackageName != null && eClassifierName != null) {
+				final EPackage ePkg = getEPackage(ePackageName);
+				if (ePkg != null) {
+					res = ePkg.getEClassifier(eClassifierName);
+				} else {
+					res = null;
+				}
 			} else {
 				res = null;
 			}
@@ -1364,31 +1430,32 @@ public class AcceleoParser {
 		final ProtectedArea res;
 
 		if (text.startsWith(PROTECTED_AREA_HEADER_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createProtectedArea();
-			res.setStartPosition(currentPosition);
+			final int startPosition = currentPosition;
 			currentPosition += PROTECTED_AREA_HEADER_START.length();
 			skipSpaces();
-			if (!readString(OPEN_PARENTHESIS)) {
-				// TODO missing OPEN_PARENTHESIS
-			}
+			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
 					PROTECTED_AREA_HEADER_END);
 			final Expression id = parseExpression(expressionEndLimit);
-			res.setId(id);
 			skipSpaces();
-			if (!readString(CLOSE_PARENTHESIS)) {
-				// TODO missing CLOSE_PARENTHESIS
-			}
+			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			if (!readString(PROTECTED_AREA_HEADER_END)) {
-				// TODO missing PROTECTED_AREA_HEADER_END
-			}
+			final boolean missingEndHeader = !readString(PROTECTED_AREA_HEADER_END);
 			final Block body = parseBlock(PROTECTED_AREA_END);
-			res.setBody(body);
-			if (!readString(PROTECTED_AREA_END)) {
-				// TODO missing PROTECTED_AREA_END
+			final boolean missingEnd = !readString(PROTECTED_AREA_END);
+			if (missingOpenParenthesis || missingCloseParenthesis || missingEndHeader || missingEnd) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorProtectedArea();
+				((ErrorProtectedArea)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorProtectedArea)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorProtectedArea)res).setMissingEndHeader(missingEndHeader);
+				((ErrorProtectedArea)res).setMissingEnd(missingEnd);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createProtectedArea();
 			}
+			res.setStartPosition(startPosition);
+			res.setId(id);
+			res.setBody(body);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1405,19 +1472,24 @@ public class AcceleoParser {
 	protected ExpressionStatement parseExpressionStatement() {
 		final ExpressionStatement res;
 
-		if (text.startsWith(EXPRESSION_STATEMENT_START, currentPosition)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
-			res.setStartPosition(currentPosition);
+		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition)
+				&& text.startsWith(EXPRESSION_STATEMENT_START, currentPosition)) {
+			final int startPosition = currentPosition;
 			currentPosition += EXPRESSION_STATEMENT_START.length();
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(EXPRESSION_STATEMENT_END,
 					EXPRESSION_STATEMENT_END);
 			final Expression expression = parseExpression(expressionEndLimit);
-			res.setExpression(expression);
 			skipSpaces();
-			if (!readString(EXPRESSION_STATEMENT_END)) {
-				// TODO missing EXPRESSION_STATEMENT_END
+			final boolean missingEndHeader = !readString(EXPRESSION_STATEMENT_END);
+			if (missingEndHeader) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorExpressionStatement();
+				((ErrorExpressionStatement)res).setMissingEndHeader(missingEndHeader);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
 			}
+			res.setStartPosition(startPosition);
+			res.setExpression(expression);
 			res.setEndPosition(currentPosition);
 		} else {
 			res = null;
@@ -1474,8 +1546,7 @@ public class AcceleoParser {
 		final Metamodel res;
 
 		if (readString(QUOTE)) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
-			res.setStartPosition(currentPosition);
+			final int startPosition = currentPosition;
 			int nextQuote = text.indexOf(QUOTE, currentPosition);
 			if (nextQuote < 0) {
 				nextQuote = text.length();
@@ -1483,13 +1554,17 @@ public class AcceleoParser {
 			final String nsURI = text.substring(currentPosition, nextQuote);
 			currentPosition = nextQuote;
 			final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-			res.setReferencedPackage(ePackage);
-			if (!readString(QUOTE)) {
-				// TODO missing QUOTE
+			boolean missingEndQuote = !readString(QUOTE);
+			if (ePackage == null || missingEndQuote) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMetamodel();
+				((ErrorMetamodel)res).setMissingEndQuote(missingEndQuote);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
 			}
+			res.setStartPosition(startPosition);
+			res.setReferencedPackage(ePackage);
 			res.setEndPosition(currentPosition);
 		} else {
-			// TODO missing QUOTE
 			res = null;
 		}
 
@@ -1579,7 +1654,7 @@ public class AcceleoParser {
 		int res = currentPosition;
 
 		int parenthesisDepth = 0;
-		while (currentPosition < text.length()) {
+		while (res < text.length()) {
 			switch (text.charAt(res)) {
 				case '\'':
 					// skip string literal
@@ -1618,7 +1693,8 @@ public class AcceleoParser {
 					res++;
 					break;
 			}
-			if (text.startsWith(endTag, res) || parenthesisDepth == 0 && text.startsWith(endDelimiter, res)) {
+			if (text.startsWith(endTag, res) || parenthesisDepth == 0
+					&& (text.startsWith(endDelimiter, res) || text.startsWith(TEXT_END, res))) {
 				break;
 			}
 		}

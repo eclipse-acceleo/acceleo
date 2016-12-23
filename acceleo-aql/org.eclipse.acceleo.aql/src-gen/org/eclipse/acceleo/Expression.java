@@ -41,7 +41,7 @@ public interface Expression extends ASTNode {
 	 * @return the value of the '<em>Ast</em>' attribute.
 	 * @see #setAst(AstResult)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getExpression_Ast()
-	 * @model dataType="org.eclipse.acceleo.ASTResult"
+	 * @model dataType="org.eclipse.acceleo.ASTResult" required="true"
 	 * @generated
 	 */
 	AstResult getAst();

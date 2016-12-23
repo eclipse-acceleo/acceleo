@@ -11,7 +11,53 @@
  */
 package org.eclipse.acceleo.util;
 
-import org.eclipse.acceleo.*;
+import org.eclipse.acceleo.ASTNode;
+import org.eclipse.acceleo.AcceleoPackage;
+import org.eclipse.acceleo.Binding;
+import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.CommentBody;
+import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.DocumentedElement;
+import org.eclipse.acceleo.ErrorBinding;
+import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpressionStatement;
+import org.eclipse.acceleo.ErrorFileStatement;
+import org.eclipse.acceleo.ErrorForStatement;
+import org.eclipse.acceleo.ErrorIfStatement;
+import org.eclipse.acceleo.ErrorImport;
+import org.eclipse.acceleo.ErrorLetStatement;
+import org.eclipse.acceleo.ErrorMetamodel;
+import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleDocumentation;
+import org.eclipse.acceleo.ErrorModuleElementDocumentation;
+import org.eclipse.acceleo.ErrorModuleReference;
+import org.eclipse.acceleo.ErrorProtectedArea;
+import org.eclipse.acceleo.ErrorQuery;
+import org.eclipse.acceleo.ErrorTemplate;
+import org.eclipse.acceleo.ErrorVariable;
+import org.eclipse.acceleo.Expression;
+import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.FileStatement;
+import org.eclipse.acceleo.ForStatement;
+import org.eclipse.acceleo.IfStatement;
+import org.eclipse.acceleo.Import;
+import org.eclipse.acceleo.LetStatement;
+import org.eclipse.acceleo.Metamodel;
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleDocumentation;
+import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.ModuleElementDocumentation;
+import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.NamedElement;
+import org.eclipse.acceleo.ParameterDocumentation;
+import org.eclipse.acceleo.ProtectedArea;
+import org.eclipse.acceleo.Query;
+import org.eclipse.acceleo.Statement;
+import org.eclipse.acceleo.Template;
+import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.TypedElement;
+import org.eclipse.acceleo.Variable;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -81,13 +127,38 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorModule(ErrorModule object) {
+			return createErrorModuleAdapter();
+		}
+
+		@Override
 		public Adapter caseMetamodel(Metamodel object) {
 			return createMetamodelAdapter();
 		}
 
 		@Override
+		public Adapter caseErrorMetamodel(ErrorMetamodel object) {
+			return createErrorMetamodelAdapter();
+		}
+
+		@Override
+		public Adapter caseImport(Import object) {
+			return createImportAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorImport(ErrorImport object) {
+			return createErrorImportAdapter();
+		}
+
+		@Override
 		public Adapter caseModuleReference(ModuleReference object) {
 			return createModuleReferenceAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorModuleReference(ErrorModuleReference object) {
+			return createErrorModuleReferenceAdapter();
 		}
 
 		@Override
@@ -98,6 +169,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseComment(Comment object) {
 			return createCommentAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorComment(ErrorComment object) {
+			return createErrorCommentAdapter();
 		}
 
 		@Override
@@ -116,8 +192,18 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorModuleDocumentation(ErrorModuleDocumentation object) {
+			return createErrorModuleDocumentationAdapter();
+		}
+
+		@Override
 		public Adapter caseModuleElementDocumentation(ModuleElementDocumentation object) {
 			return createModuleElementDocumentationAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorModuleElementDocumentation(ErrorModuleElementDocumentation object) {
+			return createErrorModuleElementDocumentationAdapter();
 		}
 
 		@Override
@@ -141,6 +227,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseError(org.eclipse.acceleo.Error object) {
+			return createErrorAdapter();
+		}
+
+		@Override
 		public Adapter caseBlock(Block object) {
 			return createBlockAdapter();
 		}
@@ -156,8 +247,18 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorTemplate(ErrorTemplate object) {
+			return createErrorTemplateAdapter();
+		}
+
+		@Override
 		public Adapter caseQuery(Query object) {
 			return createQueryAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorQuery(ErrorQuery object) {
+			return createErrorQueryAdapter();
 		}
 
 		@Override
@@ -171,8 +272,18 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorVariable(ErrorVariable object) {
+			return createErrorVariableAdapter();
+		}
+
+		@Override
 		public Adapter caseBinding(Binding object) {
 			return createBindingAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorBinding(ErrorBinding object) {
+			return createErrorBindingAdapter();
 		}
 
 		@Override
@@ -186,8 +297,18 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorExpressionStatement(ErrorExpressionStatement object) {
+			return createErrorExpressionStatementAdapter();
+		}
+
+		@Override
 		public Adapter caseProtectedArea(ProtectedArea object) {
 			return createProtectedAreaAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorProtectedArea(ErrorProtectedArea object) {
+			return createErrorProtectedAreaAdapter();
 		}
 
 		@Override
@@ -196,8 +317,18 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorForStatement(ErrorForStatement object) {
+			return createErrorForStatementAdapter();
+		}
+
+		@Override
 		public Adapter caseIfStatement(IfStatement object) {
 			return createIfStatementAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorIfStatement(ErrorIfStatement object) {
+			return createErrorIfStatementAdapter();
 		}
 
 		@Override
@@ -206,8 +337,18 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseErrorLetStatement(ErrorLetStatement object) {
+			return createErrorLetStatementAdapter();
+		}
+
+		@Override
 		public Adapter caseFileStatement(FileStatement object) {
 			return createFileStatementAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorFileStatement(ErrorFileStatement object) {
+			return createErrorFileStatementAdapter();
 		}
 
 		@Override
@@ -249,6 +390,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorModule <em>Error Module</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorModule
+	 * @generated
+	 */
+	public Adapter createErrorModuleAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.Metamodel <em>Metamodel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -263,6 +418,48 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorMetamodel <em>Error Metamodel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorMetamodel
+	 * @generated
+	 */
+	public Adapter createErrorMetamodelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.Import <em>Import</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.Import
+	 * @generated
+	 */
+	public Adapter createImportAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorImport <em>Error Import</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorImport
+	 * @generated
+	 */
+	public Adapter createErrorImportAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ModuleReference <em>Module Reference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -273,6 +470,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createModuleReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorModuleReference <em>Error Module Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorModuleReference
+	 * @generated
+	 */
+	public Adapter createErrorModuleReferenceAdapter() {
 		return null;
 	}
 
@@ -301,6 +512,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createCommentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorComment <em>Error Comment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorComment
+	 * @generated
+	 */
+	public Adapter createErrorCommentAdapter() {
 		return null;
 	}
 
@@ -347,6 +572,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorModuleDocumentation <em>Error Module Documentation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorModuleDocumentation
+	 * @generated
+	 */
+	public Adapter createErrorModuleDocumentationAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ModuleElementDocumentation <em>Module Element Documentation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -357,6 +596,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createModuleElementDocumentationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorModuleElementDocumentation <em>Error Module Element Documentation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorModuleElementDocumentation
+	 * @generated
+	 */
+	public Adapter createErrorModuleElementDocumentationAdapter() {
 		return null;
 	}
 
@@ -417,6 +670,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.Error <em>Error</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.Error
+	 * @generated
+	 */
+	public Adapter createErrorAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.Block <em>Block</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -459,6 +726,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorTemplate <em>Error Template</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorTemplate
+	 * @generated
+	 */
+	public Adapter createErrorTemplateAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.Query <em>Query</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -469,6 +750,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createQueryAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorQuery <em>Error Query</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorQuery
+	 * @generated
+	 */
+	public Adapter createErrorQueryAdapter() {
 		return null;
 	}
 
@@ -501,6 +796,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorVariable <em>Error Variable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorVariable
+	 * @generated
+	 */
+	public Adapter createErrorVariableAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.Binding <em>Binding</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -511,6 +820,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createBindingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorBinding <em>Error Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorBinding
+	 * @generated
+	 */
+	public Adapter createErrorBindingAdapter() {
 		return null;
 	}
 
@@ -543,6 +866,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorExpressionStatement <em>Error Expression Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorExpressionStatement
+	 * @generated
+	 */
+	public Adapter createErrorExpressionStatementAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ProtectedArea <em>Protected Area</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -553,6 +890,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createProtectedAreaAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorProtectedArea <em>Error Protected Area</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorProtectedArea
+	 * @generated
+	 */
+	public Adapter createErrorProtectedAreaAdapter() {
 		return null;
 	}
 
@@ -571,6 +922,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorForStatement <em>Error For Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorForStatement
+	 * @generated
+	 */
+	public Adapter createErrorForStatementAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.IfStatement <em>If Statement</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -581,6 +946,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIfStatementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorIfStatement <em>Error If Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorIfStatement
+	 * @generated
+	 */
+	public Adapter createErrorIfStatementAdapter() {
 		return null;
 	}
 
@@ -599,6 +978,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorLetStatement <em>Error Let Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorLetStatement
+	 * @generated
+	 */
+	public Adapter createErrorLetStatementAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.FileStatement <em>File Statement</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -609,6 +1002,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createFileStatementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorFileStatement <em>Error File Statement</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorFileStatement
+	 * @generated
+	 */
+	public Adapter createErrorFileStatementAdapter() {
 		return null;
 	}
 
