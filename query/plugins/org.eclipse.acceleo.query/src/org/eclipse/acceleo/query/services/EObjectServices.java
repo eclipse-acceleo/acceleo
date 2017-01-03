@@ -32,7 +32,6 @@ import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
-import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -41,6 +40,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -1063,7 +1063,6 @@ public class EObjectServices extends AbstractServiceProvider {
 			throw new NullPointerException();
 		}
 		if (!features.isEmpty()) {
-
 			final AbstractTreeIterator<EObject> treeIterator = new FilteredContentIterator(eObject, false,
 					features);
 			while (treeIterator.hasNext()) {
@@ -1072,7 +1071,6 @@ public class EObjectServices extends AbstractServiceProvider {
 					allChildrens.add(child);
 				}
 			}
-
 		}
 
 		return allChildrens;
@@ -1553,13 +1551,13 @@ public class EObjectServices extends AbstractServiceProvider {
 	}
 
 	/**
-	 * Returns the value of the specified feature on the specified object. The object must be an
-	 * {@link EObject} or a {@link Set}, {@link List} of {@link EObject}.
+	 * Gets the value of the given {@link EStructuralFeature#getName() feature name} on the given
+	 * {@link EObject}.
 	 * 
-	 * @param context
-	 *            the object in which to read the feature.
+	 * @param self
+	 *            the {@link EObject}
 	 * @param featureName
-	 *            the name of the feature to read.
+	 *            the {@link EStructuralFeature#getName() feature name}
 	 * @param diagnostic
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return the value of the specified feature in the specified object.
@@ -1569,13 +1567,13 @@ public class EObjectServices extends AbstractServiceProvider {
 
 		if (self == null) {
 			final String message = String.format(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
-			throw new AcceleoQueryEvaluationException(message);
+			result = new Nothing(message);
 		} else {
 			EClass eClass = ((EObject)self).eClass();
 			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
 			if (feature == null) {
 				final String message = String.format(UNKNOWN_FEATURE, featureName, eClass.getName());
-				throw new AcceleoQueryEvaluationException(message);
+				result = new Nothing(message);
 			} else {
 				result = ((EObject)self).eGet(feature);
 			}

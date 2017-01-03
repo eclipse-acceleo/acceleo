@@ -165,7 +165,7 @@ public class EvaluationServicesTest {
 
 		Diagnostic child = status.getChildren().iterator().next();
 		assertEquals(Diagnostic.WARNING, child.getSeverity());
-		assertTrue(child.getException().getMessage().contains("Feature noname"));
+		assertTrue(child.getMessage().contains("Feature noname"));
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class EvaluationServicesTest {
 		Diagnostic child = status.getChildren().iterator().next();
 		assertEquals(Diagnostic.WARNING, child.getSeverity());
 		assertNull(child.getException());
-		assertEquals("Couldn't find the 'aqlFeatureAccess(java.lang.Integer,java.lang.String)' service", child
-				.getMessage());
+		assertEquals("Couldn't find the 'aqlFeatureAccess(java.lang.Integer,java.lang.String)' service",
+				child.getMessage());
 	}
 
 	/**

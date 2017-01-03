@@ -103,10 +103,11 @@ public class EObjectServicesPerformanceTest {
 				+ "ms /  self.eAllContents()->select(c | not c.abstract) : "
 				+ error.elapsed(TimeUnit.MILLISECONDS) + "ms");
 
-		final long noErrorElapsed = noError.elapsed(TimeUnit.MILLISECONDS);
-		final long errorElapsed = error.elapsed(TimeUnit.MILLISECONDS);
-		assertTrue("We expect a maximum overhead of 30% and we had:" + (errorElapsed / noErrorElapsed) * 100
-				+ "%", errorElapsed / noErrorElapsed < 1.3);
+		final double noErrorElapsed = noError.elapsed(TimeUnit.MILLISECONDS);
+		final double errorElapsed = error.elapsed(TimeUnit.MILLISECONDS);
+
+		assertTrue("We expect a maximum overhead of 1600% (9 time more calls) and we had:"
+				+ (errorElapsed / noErrorElapsed) * 100 + "%", errorElapsed / noErrorElapsed < 16.0);
 	}
 
 	/**

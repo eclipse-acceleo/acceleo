@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.RootEObjectProvider;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
@@ -981,36 +981,51 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 		assertEquals(0, result.size());
 	}
 
-	@Test(expected = AcceleoQueryEvaluationException.class)
+	@Test
 	public void aqlFeatureAccessNullNull() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		eObjectServices.aqlFeatureAccess(null, null);
+		final Object result = eObjectServices.aqlFeatureAccess(null, null);
+
+		assertTrue(result instanceof Nothing);
+		assertEquals("Attempt to access feature (null) on a non ModelObject value (null).", ((Nothing)result)
+				.getMessage());
 	}
 
-	@Test(expected = AcceleoQueryEvaluationException.class)
+	@Test
 	public void aqlFeatureAccessNullName() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		eObjectServices.aqlFeatureAccess(null, "feature");
+		final Object result = eObjectServices.aqlFeatureAccess(null, "feature");
+
+		assertTrue(result instanceof Nothing);
+		assertEquals("Attempt to access feature (feature) on a non ModelObject value (null).",
+				((Nothing)result).getMessage());
 	}
 
-	@Test(expected = AcceleoQueryEvaluationException.class)
+	@Test
 	public void aqlFeatureAccessEObjectNull() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, null);
+		final Object result = eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, null);
+
+		assertTrue(result instanceof Nothing);
+		assertEquals("Feature null not found in EClass EPackage", ((Nothing)result).getMessage());
 	}
 
-	@Test(expected = AcceleoQueryEvaluationException.class)
+	@Test
 	public void aqlFeatureAccessEObjectNotExistingFeature() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
 		final EObjectServices eObjectServices = new EObjectServices(getQueryEnvironment(), null, null);
 
-		eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, "notExistingFeature");
+		final Object result = eObjectServices.aqlFeatureAccess(EcorePackage.eINSTANCE, "notExistingFeature");
+
+		assertTrue(result instanceof Nothing);
+		assertEquals("Feature notExistingFeature not found in EClass EPackage", ((Nothing)result)
+				.getMessage());
 	}
 
 	@Test
