@@ -25,7 +25,9 @@ import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.query.validation.type.NothingType;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -304,6 +306,50 @@ public class AnyServicesValidationTest extends AbstractServicesValidationTest {
 		assertTrue(allTypesMesg.startsWith("Nothing will be left after calling oclAsType:"));
 		assertTrue(allTypesMesg.contains("EInt"));
 		assertTrue(allTypesMesg.endsWith("is not registered within the current environment."));
+	}
+
+	@Test
+	public void oclAsTypeCommonSubTypes() {
+		// A X
+		// ^ ^
+		// B
+		final EPackage ePackage = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
+		ePackage.setName("test");
+		ePackage.setNsURI("test");
+		ePackage.setNsPrefix("test");
+		final EClass a = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		a.setName("A");
+		final EClass x = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		x.setName("X");
+		final EClass b = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
+		b.setName("B");
+		b.getESuperTypes().add(a);
+		b.getESuperTypes().add(x);
+
+		ePackage.getEClassifiers().add(a);
+		ePackage.getEClassifiers().add(x);
+		ePackage.getEClassifiers().add(b);
+
+		getQueryEnvironment().registerEPackage(ePackage);
+
+		final IService service = serviceLookUp("oclAsType", new Object[] {EcoreUtil.create(a), x });
+		assertTrue(service != null);
+		final List<IType> argTypes = new ArrayList<IType>();
+		argTypes.add(new EClassifierType(getQueryEnvironment(), a));
+		argTypes.add(new EClassifierType(getQueryEnvironment(), x));
+
+		Set<IType> types = service.getType(null, getValidationServices(), null, getQueryEnvironment(),
+				argTypes);
+		assertEquals(2, types.size());
+		Iterator<IType> it = types.iterator();
+		IType next = it.next();
+		assertTrue(next instanceof NothingType);
+		assertEquals("EClassifier=A is not compatible with type EClassifier=X", ((NothingType)next)
+				.getMessage());
+
+		next = it.next();
+		assertTrue(next instanceof EClassifierType);
+		assertEquals(b, ((EClassifierType)next).getType());
 	}
 
 	@Test

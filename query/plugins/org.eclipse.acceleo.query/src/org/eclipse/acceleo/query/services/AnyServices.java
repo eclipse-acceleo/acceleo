@@ -442,6 +442,7 @@ public class AnyServices extends AbstractServiceProvider {
 				} else {
 					result.add(services
 							.nothing("%s is not compatible with type %s", receiverType, filterType));
+					result.addAll(services.intersection(receiverType, filterType));
 				}
 			}
 
