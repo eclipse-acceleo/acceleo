@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2017 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -243,8 +243,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			final IType receiverType = argTypes.get(0);
 			if (receiverType instanceof NothingType) {
 				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
-			} else if (receiverType instanceof ICollectionType && ((ICollectionType)receiverType)
-					.getCollectionType() instanceof NothingType) {
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
 				result.add(receiverType);
 			} else {
 				final LambdaType lambdaType = (LambdaType)argTypes.get(1);
@@ -275,8 +275,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			for (Map.Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
 				for (IType type : entry.getValue()) {
 					final IType collectionType = ((ICollectionType)type).getCollectionType();
-					if (collectionType instanceof ClassType && ((ClassType)collectionType)
-							.getType() == null) {
+					if (collectionType instanceof ClassType && ((ClassType)collectionType).getType() == null) {
 						// This is the null literal, which we don't want in our result
 						// and will be stripped at runtime.
 					} else {
@@ -326,8 +325,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			final IType receiverType = argTypes.get(0);
 			if (receiverType instanceof NothingType) {
 				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
-			} else if (receiverType instanceof ICollectionType && ((ICollectionType)receiverType)
-					.getCollectionType() instanceof NothingType) {
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
 				result.add(receiverType);
 			} else if (lambdaExpressionType instanceof ICollectionType) {
 				result.add(new SetType(queryEnvironment, ((ICollectionType)lambdaExpressionType)
@@ -458,8 +457,8 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				}
 			} else {
-				result.add(createReturnCollectionWithType(queryEnvironment, services.nothing(
-						"expression in a select must return a boolean")));
+				result.add(createReturnCollectionWithType(queryEnvironment, services
+						.nothing("expression in a select must return a boolean")));
 			}
 			return result;
 		}
@@ -514,8 +513,8 @@ public class CollectionServices extends AbstractServiceProvider {
 					}
 				}
 			} else {
-				result.add(createReturnCollectionWithType(queryEnvironment, services.nothing(
-						"expression in a reject must return a boolean")));
+				result.add(createReturnCollectionWithType(queryEnvironment, services
+						.nothing("expression in a reject must return a boolean")));
 			}
 
 			return result;
@@ -699,11 +698,10 @@ public class CollectionServices extends AbstractServiceProvider {
 			final IType receiverType = argTypes.get(0);
 			if (receiverType instanceof NothingType) {
 				result.add(createReturnCollectionWithType(queryEnvironment, receiverType));
-			} else if (receiverType instanceof ICollectionType && ((ICollectionType)receiverType)
-					.getCollectionType() instanceof NothingType) {
+			} else if (receiverType instanceof ICollectionType
+					&& ((ICollectionType)receiverType).getCollectionType() instanceof NothingType) {
 				result.add(receiverType);
-			} else if (argTypes.get(1) instanceof ClassType && ((ClassType)argTypes.get(1))
-					.getType() == null) {
+			} else if (argTypes.get(1) instanceof ClassType && ((ClassType)argTypes.get(1)).getType() == null) {
 				result.add(services.nothing("EClassifier on %s cannot be null.", getName()));
 			} else if (argTypes.get(1) instanceof EClassifierType) {
 				rawTypes.add(new EClassifierType(queryEnvironment, ((EClassifierType)argTypes.get(1))
@@ -880,17 +878,17 @@ public class CollectionServices extends AbstractServiceProvider {
 
 		if ("filter".equals(publicMethod.getName())) {
 			result = new SecondArgumentTypeInFirstArgumentCollectionType(publicMethod, this);
-		} else if ("add".equals(publicMethod.getName()) || "concat".equals(publicMethod.getName()) || "union"
-				.equals(publicMethod.getName())) {
+		} else if ("add".equals(publicMethod.getName()) || "concat".equals(publicMethod.getName())
+				|| "union".equals(publicMethod.getName())) {
 			result = new ReturnCollectionTypeWithFirstAndSecondArgumentRawCollectionType(publicMethod, this);
 		} else if ("asSequence".equals(publicMethod.getName()) || "asSet".equals(publicMethod.getName())
 				|| "asOrderedSet".equals(publicMethod.getName())) {
 			result = new ReturnCollectionTypeWithFirstArgumentRawCollectionType(publicMethod, this);
-		} else if ("subOrderedSet".equals(publicMethod.getName()) || "subSequence".equals(publicMethod
-				.getName())) {
+		} else if ("subOrderedSet".equals(publicMethod.getName())
+				|| "subSequence".equals(publicMethod.getName())) {
 			result = new FirstCollectionTypeService(publicMethod, this);
-		} else if ("first".equals(publicMethod.getName()) || "at".equals(publicMethod.getName()) || "last"
-				.equals(publicMethod.getName())) {
+		} else if ("first".equals(publicMethod.getName()) || "at".equals(publicMethod.getName())
+				|| "last".equals(publicMethod.getName())) {
 			result = new FirstArgumentRawCollectionType(publicMethod, this);
 		} else if ("excluding".equals(publicMethod.getName()) || "sub".equals(publicMethod.getName())
 				|| "reverse".equals(publicMethod.getName())) {
@@ -947,8 +945,8 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 		} else if ("any".equals(publicMethod.getName())) {
 			result = new AnyService(publicMethod, this);
-		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName()) || "one"
-				.equals(publicMethod.getName())) {
+		} else if ("exists".equals(publicMethod.getName()) || "forAll".equals(publicMethod.getName())
+				|| "one".equals(publicMethod.getName())) {
 			result = new BooleanLambdaService(publicMethod, this);
 		} else if ("insertAt".equals(publicMethod.getName())) {
 			result = new InsertAtService(publicMethod, this);
@@ -1437,6 +1435,19 @@ public class CollectionServices extends AbstractServiceProvider {
 		return result;
 	}
 
+	// @formatter:off
+	@Documentation(
+		value = "Returns a set containing the result of applying \"lambda\" recursivly.",
+		params = {
+			@Param(name = "collection", value = "The original collection"),
+			@Param(name = "lambda", value = "The lambda expression")
+		},
+		result = "a set containing the result of applying \"lambda\" recursivly",
+		examples = {
+			@Example(expression = "Sequence{eCls}->closure(e | e.eContainer())", result = "Sequence{subEPkg, ePkg, rootEPkg}")
+		}
+	)
+	// @formatter:on
 	public Set<Object> closure(Collection<?> collection, LambdaValue lambda) {
 		final Set<Object> result;
 
