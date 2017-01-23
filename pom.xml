@@ -96,6 +96,7 @@
     <module>features/org.eclipse.acceleo.examples-feature</module>
     <module>features/org.eclipse.acceleo.runtime-feature</module>
     <module>features/org.eclipse.acceleo.ui.capabilities-feature</module>
+    <module>features/org.eclipse.acceleo.ui.interpreter-feature</module>
     <module>features/org.eclipse.acceleo-feature</module>
     <module>features/org.eclipse.acceleo.equinox.launcher-feature</module>
     <module>features/org.eclipse.acceleo.sdk-feature</module>

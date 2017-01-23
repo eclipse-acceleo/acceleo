@@ -27,6 +27,12 @@
    <feature id="org.eclipse.acceleo.ui.capabilities" version="0.0.0">
       <category name="org.eclipse.acceleo"/>
    </feature>
+   <feature id="org.eclipse.acceleo.ui.interpreter" version="0.0.0">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
+   <feature id="org.eclipse.acceleo.ui.interpreter.source" version="0.0.0">
+      <category name="org.eclipse.acceleo"/>
+   </feature>
    <feature id="org.eclipse.acceleo.ui.interpreter.ocl" version="0.0.0">
       <category name="org.eclipse.acceleo.interpreters"/>
    </feature>
