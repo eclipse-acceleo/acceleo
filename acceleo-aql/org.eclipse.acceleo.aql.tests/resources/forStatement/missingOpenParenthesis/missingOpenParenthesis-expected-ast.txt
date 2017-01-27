@@ -7,10 +7,10 @@ module myModule
     
    (116..119)
     *** error for statement ***
-    missing open parenthesis: true
-    missing close parenthesis: false
-    missing end header: false
-    missing end: false
+    missing open parenthesis: 124
+    missing close parenthesis: -1
+    missing end header: -1
+    missing end: -1
     [for myVariable : EClassifier = .aqlFeatureAccess(myTemplate, 'eClassifiers') (158..181) (124..181)
       
     some static text.

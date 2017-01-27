@@ -1,3 +1,0 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
-
-[query public myQuery(myParam : ecore::EPackage) :  = myParam.eClassifiers->first()/]

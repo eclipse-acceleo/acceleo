@@ -1,0 +1,5 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[import org::eclipse::acceleo::MyModule/]
+[import org::eclipse::acceleo::MyModule1/]
+[import org::eclipse::acceleo::MyModule2/]

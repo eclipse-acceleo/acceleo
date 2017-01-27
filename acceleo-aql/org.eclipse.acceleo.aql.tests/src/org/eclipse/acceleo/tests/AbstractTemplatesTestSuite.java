@@ -19,16 +19,23 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
+import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.aql.validation.AcceleoValidator;
+import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -46,6 +53,11 @@ import org.junit.runners.Parameterized;
  */
 @RunWith(Parameterized.class)
 public abstract class AbstractTemplatesTestSuite {
+
+	/**
+	 * UTF-8 content.
+	 */
+	private static final String UTF_8 = "UTF-8";
 
 	/**
 	 * The {@link ModuleAstSerializer}.
@@ -68,9 +80,10 @@ public abstract class AbstractTemplatesTestSuite {
 	private final Resource model;
 
 	/**
-	 * The {@link IQueryEnvironment}.
+	 * The {@link IAcceleoEnvironment}.
 	 */
-	private final IQueryEnvironment queryEnvironment;
+	private final IAcceleoEnvironment environment = new AcceleoEnvironment(Query
+			.newEnvironmentWithDefaultServices(null));
 
 	/**
 	 * Constructor.
@@ -82,16 +95,16 @@ public abstract class AbstractTemplatesTestSuite {
 	 */
 	public AbstractTemplatesTestSuite(String testFolder) throws IOException {
 		this.testFolderPath = testFolder;
-		final File genconfFile = getModelFile(new File(testFolderPath));
-		final ResourceSet rs = getResourceSet();
+		// TODO
+		// final File genconfFile = getModelFile(new File(testFolderPath));
+		// final ResourceSet rs = getResourceSet();
 		// model = getModel(genconfFile, rs);
 		model = null;
-		queryEnvironment = Query.newEnvironment();
 		final File moduleFile = getModuleFile(new File(testFolderPath));
-		final AcceleoParser parser = new AcceleoParser(queryEnvironment);
+		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
-			module = parser.parse(getContent(stream, "UTF-8"));
+			module = parser.parse(getContent(stream, UTF_8));
 		}
 	}
 
@@ -141,12 +154,17 @@ public abstract class AbstractTemplatesTestSuite {
 	@Test
 	public void parsing() throws FileNotFoundException, IOException {
 		final File expectedASTFile = getExpectedASTFile(new File(testFolderPath));
+		final String actualAst = moduleAstSerializer.serialize(module);
 		if (!expectedASTFile.exists()) {
-			expectedASTFile.createNewFile();
+			final File actualASTFile = getActualASTFile(new File(testFolderPath));
+			if (!actualASTFile.exists()) {
+				actualASTFile.createNewFile();
+			}
+			setContent(new FileOutputStream(actualASTFile), UTF_8, actualAst);
+			fail("file doesn't exist.");
 		}
 		try (FileInputStream stream = new FileInputStream(expectedASTFile)) {
-			final String expectedAst = getContent(stream, "UTF-8");
-			String actualAst = moduleAstSerializer.serialize(module);
+			final String expectedAst = getContent(stream, UTF_8);
 			assertEquals(expectedAst, actualAst);
 			stream.close();
 		}
@@ -154,10 +172,66 @@ public abstract class AbstractTemplatesTestSuite {
 
 	/**
 	 * Tests the validation by comparing the validated template.
+	 * 
+	 * @throws FileNotFoundException
+	 *             if the file can't be found
+	 * @throws IOException
+	 *             if the given stream can't be written to
 	 */
-	public void validation() {
-		// TODO
-		fail("not implemented yet.");
+	@Test
+	public void validation() throws FileNotFoundException, IOException {
+		AcceleoValidator validator = new AcceleoValidator(environment);
+		final List<IValidationMessage> messages = validator.validate(module);
+		final String actualContent = getValidationContent(messages);
+		final File expectedFile = getExpectedValidatedFile(new File(testFolderPath));
+		final File actualFile = getActualValidatedFile(new File(testFolderPath));
+
+		if (!expectedFile.exists()) {
+			if (!actualFile.exists() && !expectedFile.exists()) {
+				actualFile.createNewFile();
+			}
+			try (final FileOutputStream stream = new FileOutputStream(actualFile);) {
+				setContent(stream, UTF_8, actualContent);
+			}
+			fail("file doesn't exist.");
+		} else {
+			String expectedContent = "";
+			try (final FileInputStream stream = new FileInputStream(expectedFile);) {
+				expectedContent = getContent(stream, UTF_8);
+			}
+			assertEquals(expectedContent, actualContent);
+		}
+	}
+
+	/**
+	 * Serializes the given {@link List} of {@link IValidationMessage}.
+	 * 
+	 * @param messages
+	 *            the {@link List} of {@link IValidationMessage}
+	 * @return the string representation of the given {@link List} of {@link IValidationMessage
+
+	 */
+	private String getValidationContent(List<IValidationMessage> messages) {
+		final String res;
+
+		if (!messages.isEmpty()) {
+			final StringBuilder builder = new StringBuilder();
+			for (IValidationMessage message : messages) {
+				builder.append(message.getLevel());
+				builder.append(" ");
+				builder.append(message.getMessage());
+				builder.append(" - ");
+				builder.append(message.getStartPosition());
+				builder.append(" ");
+				builder.append(message.getEndPosition());
+				builder.append("\n");
+			}
+			res = builder.substring(0, builder.length() - 1);
+		} else {
+			res = "";
+		}
+
+		return res;
 	}
 
 	/**
@@ -169,11 +243,11 @@ public abstract class AbstractTemplatesTestSuite {
 	}
 
 	/**
-	 * Gets the template file from the test folder path.
+	 * Gets the module file from the test folder path.
 	 * 
 	 * @param testFolder
 	 *            the test folder path
-	 * @return the template file from the test folder path
+	 * @return the module file from the test folder path
 	 */
 	protected final File getModuleFile(File testFolder) {
 		return getTemplateFileInternal(testFolder);
@@ -184,10 +258,21 @@ public abstract class AbstractTemplatesTestSuite {
 	 * 
 	 * @param testFolder
 	 *            the test folder path
-	 * @return the template file from the test folder path
+	 * @return the expected AST file from the test folder path
 	 */
 	protected File getExpectedASTFile(File testFolder) {
 		return new File(testFolder + File.separator + testFolder.getName() + "-expected-ast.txt");
+	}
+
+	/**
+	 * Gets the actual AST file from the test folder path.
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual AST file from the test folder path
+	 */
+	protected File getActualASTFile(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName() + "-actual-ast.txt");
 	}
 
 	/**
@@ -285,7 +370,7 @@ public abstract class AbstractTemplatesTestSuite {
 		});
 		Arrays.sort(children);
 		for (File child : children) {
-			parameters.add(new Object[] {child.getAbsolutePath() });
+			parameters.add(new Object[] {child.getPath() });
 		}
 
 		return parameters;
@@ -318,4 +403,25 @@ public abstract class AbstractTemplatesTestSuite {
 		}
 		return res.toString();
 	}
+
+	/**
+	 * Sets the given content to the given {@link OutputStream}.
+	 * 
+	 * @param stream
+	 *            the {@link OutputStream}
+	 * @param charsetName
+	 *            the charset name
+	 * @param content
+	 *            the content to write
+	 * @throws UnsupportedEncodingException
+	 *             if the given charset is not supported
+	 * @throws IOException
+	 *             if the given stream can't be written to
+	 */
+	public static void setContent(OutputStream stream, String charsetName, String content)
+			throws UnsupportedEncodingException, IOException {
+		stream.write(content.getBytes(charsetName));
+		stream.flush();
+	}
+
 }

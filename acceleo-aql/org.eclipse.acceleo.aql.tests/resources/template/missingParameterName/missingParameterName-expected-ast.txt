@@ -4,7 +4,9 @@ module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   
   public template myTemplate(*** error variable ***
-  missing colon: false
+  missing name: 90
+  missing colon: -1
+  missing type: -1
    (90..107))
     
  some static text.

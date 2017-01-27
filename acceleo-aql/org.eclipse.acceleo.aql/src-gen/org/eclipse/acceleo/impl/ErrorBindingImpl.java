@@ -42,9 +42,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getInitExpression <em>Init Expression</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#isMissingColon <em>Missing Colon</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#isMissingType <em>Missing Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingType <em>Missing Type</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbole <em>Missing Affectation Symbole</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorBindingImpl#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}</li>
  * </ul>
  * </p>
  *
@@ -132,44 +134,64 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected Expression initExpression;
 
 	/**
-	 * The default value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute.
+	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingColon()
+	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_COLON_EDEFAULT = false;
+	protected static final int MISSING_NAME_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute.
+	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingColon()
+	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingColon = MISSING_COLON_EDEFAULT;
+	protected int missingName = MISSING_NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingType() <em>Missing Type</em>}' attribute.
+	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingType()
+	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_TYPE_EDEFAULT = false;
+	protected static final int MISSING_COLON_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingType() <em>Missing Type</em>}' attribute.
+	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingType()
+	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingType = MISSING_TYPE_EDEFAULT;
+	protected int missingColon = MISSING_COLON_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_TYPE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingType()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingType = MISSING_TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingAffectationSymbole() <em>Missing Affectation Symbole</em>}' attribute.
@@ -190,6 +212,26 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * @ordered
 	 */
 	protected String missingAffectationSymbole = MISSING_AFFECTATION_SYMBOLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingAffectationSymbolePosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_AFFECTATION_SYMBOLE_POSITION_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingAffectationSymbolePosition() <em>Missing Affectation Symbole Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingAffectationSymbolePosition()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingAffectationSymbolePosition = MISSING_AFFECTATION_SYMBOLE_POSITION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -371,7 +413,29 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingColon() {
+	public int getMissingName() {
+		return missingName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingName(int newMissingName) {
+		int oldMissingName = missingName;
+		missingName = newMissingName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__MISSING_NAME,
+					oldMissingName, missingName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingColon() {
 		return missingColon;
 	}
 
@@ -380,8 +444,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingColon(boolean newMissingColon) {
-		boolean oldMissingColon = missingColon;
+	public void setMissingColon(int newMissingColon) {
+		int oldMissingColon = missingColon;
 		missingColon = newMissingColon;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -393,7 +457,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingType() {
+	public int getMissingType() {
 		return missingType;
 	}
 
@@ -402,8 +466,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingType(boolean newMissingType) {
-		boolean oldMissingType = missingType;
+	public void setMissingType(int newMissingType) {
+		int oldMissingType = missingType;
 		missingType = newMissingType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__MISSING_TYPE,
@@ -431,6 +495,29 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE, oldMissingAffectationSymbole,
 					missingAffectationSymbole));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingAffectationSymbolePosition() {
+		return missingAffectationSymbolePosition;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingAffectationSymbolePosition(int newMissingAffectationSymbolePosition) {
+		int oldMissingAffectationSymbolePosition = missingAffectationSymbolePosition;
+		missingAffectationSymbolePosition = newMissingAffectationSymbolePosition;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION,
+					oldMissingAffectationSymbolePosition, missingAffectationSymbolePosition));
 	}
 
 	/**
@@ -467,12 +554,16 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 				return getEndPosition();
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
 				return getInitExpression();
+			case AcceleoPackage.ERROR_BINDING__MISSING_NAME:
+				return getMissingName();
 			case AcceleoPackage.ERROR_BINDING__MISSING_COLON:
-				return isMissingColon();
+				return getMissingColon();
 			case AcceleoPackage.ERROR_BINDING__MISSING_TYPE:
-				return isMissingType();
+				return getMissingType();
 			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE:
 				return getMissingAffectationSymbole();
+			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION:
+				return getMissingAffectationSymbolePosition();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -500,14 +591,20 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
 				setInitExpression((Expression)newValue);
 				return;
+			case AcceleoPackage.ERROR_BINDING__MISSING_NAME:
+				setMissingName((Integer)newValue);
+				return;
 			case AcceleoPackage.ERROR_BINDING__MISSING_COLON:
-				setMissingColon((Boolean)newValue);
+				setMissingColon((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_BINDING__MISSING_TYPE:
-				setMissingType((Boolean)newValue);
+				setMissingType((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE:
 				setMissingAffectationSymbole((String)newValue);
+				return;
+			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION:
+				setMissingAffectationSymbolePosition((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -536,6 +633,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
 				setInitExpression((Expression)null);
 				return;
+			case AcceleoPackage.ERROR_BINDING__MISSING_NAME:
+				setMissingName(MISSING_NAME_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_BINDING__MISSING_COLON:
 				setMissingColon(MISSING_COLON_EDEFAULT);
 				return;
@@ -544,6 +644,9 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 				return;
 			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE:
 				setMissingAffectationSymbole(MISSING_AFFECTATION_SYMBOLE_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION:
+				setMissingAffectationSymbolePosition(MISSING_AFFECTATION_SYMBOLE_POSITION_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -567,6 +670,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
 				return initExpression != null;
+			case AcceleoPackage.ERROR_BINDING__MISSING_NAME:
+				return missingName != MISSING_NAME_EDEFAULT;
 			case AcceleoPackage.ERROR_BINDING__MISSING_COLON:
 				return missingColon != MISSING_COLON_EDEFAULT;
 			case AcceleoPackage.ERROR_BINDING__MISSING_TYPE:
@@ -574,6 +679,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE:
 				return MISSING_AFFECTATION_SYMBOLE_EDEFAULT == null ? missingAffectationSymbole != null
 						: !MISSING_AFFECTATION_SYMBOLE_EDEFAULT.equals(missingAffectationSymbole);
+			case AcceleoPackage.ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION:
+				return missingAffectationSymbolePosition != MISSING_AFFECTATION_SYMBOLE_POSITION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -695,12 +802,16 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
 		result.append(endPosition);
+		result.append(", missingName: "); //$NON-NLS-1$
+		result.append(missingName);
 		result.append(", missingColon: "); //$NON-NLS-1$
 		result.append(missingColon);
 		result.append(", missingType: "); //$NON-NLS-1$
 		result.append(missingType);
 		result.append(", missingAffectationSymbole: "); //$NON-NLS-1$
 		result.append(missingAffectationSymbole);
+		result.append(", missingAffectationSymbolePosition: "); //$NON-NLS-1$
+		result.append(missingAffectationSymbolePosition);
 		result.append(')');
 		return result.toString();
 	}

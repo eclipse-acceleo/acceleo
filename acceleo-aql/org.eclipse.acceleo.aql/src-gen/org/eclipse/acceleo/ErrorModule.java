@@ -19,10 +19,10 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorModule#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorModule#isMissingEPackage <em>Missing EPackage</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorModule#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorModule#isMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingEPackage <em>Missing EPackage</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorModule#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
  * </p>
  *
@@ -33,6 +33,7 @@ package org.eclipse.acceleo;
 public interface ErrorModule extends org.eclipse.acceleo.Error, Module {
 	/**
 	 * Returns the value of the '<em><b>Missing Open Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Open Parenthesis</em>' attribute isn't clear,
@@ -40,25 +41,26 @@ public interface ErrorModule extends org.eclipse.acceleo.Error, Module {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #setMissingOpenParenthesis(boolean)
+	 * @see #setMissingOpenParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorModule_MissingOpenParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingOpenParenthesis();
+	int getMissingOpenParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 */
-	void setMissingOpenParenthesis(boolean value);
+	void setMissingOpenParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing EPackage</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing EPackage</em>' attribute isn't clear,
@@ -66,25 +68,26 @@ public interface ErrorModule extends org.eclipse.acceleo.Error, Module {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing EPackage</em>' attribute.
-	 * @see #setMissingEPackage(boolean)
+	 * @see #setMissingEPackage(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorModule_MissingEPackage()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEPackage();
+	int getMissingEPackage();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#isMissingEPackage <em>Missing EPackage</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#getMissingEPackage <em>Missing EPackage</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing EPackage</em>' attribute.
-	 * @see #isMissingEPackage()
+	 * @see #getMissingEPackage()
 	 * @generated
 	 */
-	void setMissingEPackage(boolean value);
+	void setMissingEPackage(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Close Parenthesis</em>' attribute isn't clear,
@@ -92,25 +95,26 @@ public interface ErrorModule extends org.eclipse.acceleo.Error, Module {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #setMissingCloseParenthesis(boolean)
+	 * @see #setMissingCloseParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorModule_MissingCloseParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingCloseParenthesis();
+	int getMissingCloseParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 */
-	void setMissingCloseParenthesis(boolean value);
+	void setMissingCloseParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End Header</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End Header</em>' attribute isn't clear,
@@ -118,21 +122,21 @@ public interface ErrorModule extends org.eclipse.acceleo.Error, Module {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End Header</em>' attribute.
-	 * @see #setMissingEndHeader(boolean)
+	 * @see #setMissingEndHeader(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorModule_MissingEndHeader()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEndHeader();
+	int getMissingEndHeader();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#isMissingEndHeader <em>Missing End Header</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModule#getMissingEndHeader <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End Header</em>' attribute.
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 */
-	void setMissingEndHeader(boolean value);
+	void setMissingEndHeader(int value);
 
 } // ErrorModule

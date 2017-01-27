@@ -19,9 +19,11 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorBinding#isMissingColon <em>Missing Colon</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorBinding#isMissingType <em>Missing Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingType <em>Missing Type</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbole <em>Missing Affectation Symbole</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}</li>
  * </ul>
  * </p>
  *
@@ -31,7 +33,35 @@ package org.eclipse.acceleo;
  */
 public interface ErrorBinding extends org.eclipse.acceleo.Error, Binding {
 	/**
+	 * Returns the value of the '<em><b>Missing Name</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Name</em>' attribute.
+	 * @see #setMissingName(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorBinding_MissingName()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorBinding#getMissingName <em>Missing Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Name</em>' attribute.
+	 * @see #getMissingName()
+	 * @generated
+	 */
+	void setMissingName(int value);
+
+	/**
 	 * Returns the value of the '<em><b>Missing Colon</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Colon</em>' attribute isn't clear,
@@ -39,25 +69,26 @@ public interface ErrorBinding extends org.eclipse.acceleo.Error, Binding {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Colon</em>' attribute.
-	 * @see #setMissingColon(boolean)
+	 * @see #setMissingColon(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorBinding_MissingColon()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingColon();
+	int getMissingColon();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorBinding#isMissingColon <em>Missing Colon</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorBinding#getMissingColon <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Colon</em>' attribute.
-	 * @see #isMissingColon()
+	 * @see #getMissingColon()
 	 * @generated
 	 */
-	void setMissingColon(boolean value);
+	void setMissingColon(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Type</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Type</em>' attribute isn't clear,
@@ -65,22 +96,22 @@ public interface ErrorBinding extends org.eclipse.acceleo.Error, Binding {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Type</em>' attribute.
-	 * @see #setMissingType(boolean)
+	 * @see #setMissingType(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorBinding_MissingType()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingType();
+	int getMissingType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorBinding#isMissingType <em>Missing Type</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorBinding#getMissingType <em>Missing Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Type</em>' attribute.
-	 * @see #isMissingType()
+	 * @see #getMissingType()
 	 * @generated
 	 */
-	void setMissingType(boolean value);
+	void setMissingType(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Affectation Symbole</b></em>' attribute.
@@ -107,5 +138,32 @@ public interface ErrorBinding extends org.eclipse.acceleo.Error, Binding {
 	 * @generated
 	 */
 	void setMissingAffectationSymbole(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Affectation Symbole Position</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Affectation Symbole Position</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Affectation Symbole Position</em>' attribute.
+	 * @see #setMissingAffectationSymbolePosition(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorBinding_MissingAffectationSymbolePosition()
+	 * @model default="-1"
+	 * @generated
+	 */
+	int getMissingAffectationSymbolePosition();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Affectation Symbole Position</em>' attribute.
+	 * @see #getMissingAffectationSymbolePosition()
+	 * @generated
+	 */
+	void setMissingAffectationSymbolePosition(int value);
 
 } // ErrorBinding

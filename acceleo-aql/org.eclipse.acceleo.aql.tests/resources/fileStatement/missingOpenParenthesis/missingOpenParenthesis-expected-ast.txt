@@ -7,12 +7,12 @@ module myModule
     
    (116..119)
     *** error file statement ***
-    missing open mode: false
-    missing open parenthesis: true
-    missing comma: false
-    missing close parenthesis: false
-    missing end header: false
-    missing end: false
+    missing open mode: -1
+    missing open parenthesis: 125
+    missing comma: -1
+    missing close parenthesis: -1
+    missing end header: -1
+    missing end: -1
     [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (125..146) mode overwrite
       
     some static text.

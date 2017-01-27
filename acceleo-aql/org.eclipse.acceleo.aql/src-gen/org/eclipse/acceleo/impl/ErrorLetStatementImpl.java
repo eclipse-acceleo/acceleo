@@ -46,8 +46,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#isMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -115,44 +115,44 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	protected Block body;
 
 	/**
-	 * The default value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_HEADER_EDEFAULT = false;
+	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEndHeader = MISSING_END_HEADER_EDEFAULT;
+	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_EDEFAULT = false;
+	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEnd = MISSING_END_EDEFAULT;
+	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -285,7 +285,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEndHeader() {
+	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
 
@@ -294,8 +294,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEndHeader(boolean newMissingEndHeader) {
-		boolean oldMissingEndHeader = missingEndHeader;
+	public void setMissingEndHeader(int newMissingEndHeader) {
+		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -308,7 +308,7 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEnd() {
+	public int getMissingEnd() {
 		return missingEnd;
 	}
 
@@ -317,8 +317,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEnd(boolean newMissingEnd) {
-		boolean oldMissingEnd = missingEnd;
+	public void setMissingEnd(int newMissingEnd) {
+		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -358,9 +358,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 			case AcceleoPackage.ERROR_LET_STATEMENT__BODY:
 				return getBody();
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
-				return isMissingEndHeader();
+				return getMissingEndHeader();
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END:
-				return isMissingEnd();
+				return getMissingEnd();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -388,10 +388,10 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 				setBody((Block)newValue);
 				return;
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
-				setMissingEndHeader((Boolean)newValue);
+				setMissingEndHeader((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END:
-				setMissingEnd((Boolean)newValue);
+				setMissingEnd((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

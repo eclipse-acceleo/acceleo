@@ -9,8 +9,7 @@
     testsDirectory="/org.eclipse.acceleo.aql.tests/src-gen" testSuiteClass="org.eclipse.acceleo.tests.AcceleoAllTests"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
     editPluginID="org.eclipse.acceleo.aql.edit" editorPluginID="org.eclipse.acceleo.aql.editor"
-    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore" operationReflection="true"
-    importOrganizing="true">
+    operationReflection="true" importOrganizing="true">
   <foreignModel>acceleo.ecore</foreignModel>
   <genPackages prefix="Acceleo" basePackage="org.eclipse" resource="XML" disposableProviderFactory="true"
       ecorePackage="acceleo.ecore#/">
@@ -44,6 +43,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//Metamodel/referencedPackage"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorMetamodel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorMetamodel/fragment"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorMetamodel/missingEndQuote"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Import">
@@ -53,7 +53,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorImport/missingEnd"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ModuleReference">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ModuleReference/url"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ModuleReference/qualifiedName"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorModuleReference"/>
     <genClasses image="false" ecoreClass="acceleo.ecore#//ModuleElement"/>
@@ -112,8 +112,11 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorTemplate">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingVisibility"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingOpenParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingCloseParenthesis"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingGuardOpenParenthesis"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingGuardCloseParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingPostCloseParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingEndHeader"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorTemplate/missingEnd"/>
@@ -125,9 +128,11 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorQuery">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingVisibility"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingOpenParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingCloseParenthesis"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingColon"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingEqual"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorQuery/missingEnd"/>
     </genClasses>
@@ -136,15 +141,19 @@
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Variable"/>
     <genClasses ecoreClass="acceleo.ecore#//ErrorVariable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorVariable/missingName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorVariable/missingColon"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorVariable/missingType"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Binding">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Binding/initExpression"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//ErrorBinding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorBinding/missingName"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorBinding/missingColon"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorBinding/missingType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorBinding/missingAffectationSymbole"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorBinding/missingAffectationSymbolePosition"/>
     </genClasses>
     <genClasses image="false" ecoreClass="acceleo.ecore#//Statement"/>
     <genClasses ecoreClass="acceleo.ecore#//ExpressionStatement">

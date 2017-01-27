@@ -57,12 +57,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getParameters <em>Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getVisibility <em>Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isMissingVisibility <em>Missing Visibility</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isMissingColon <em>Missing Colon</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isMissingEqual <em>Missing Equal</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingVisibility <em>Missing Visibility</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingType <em>Missing Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingEqual <em>Missing Equal</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -210,124 +212,164 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected Expression body;
 
 	/**
-	 * The default value of the '{@link #isMissingVisibility() <em>Missing Visibility</em>}' attribute.
+	 * The default value of the '{@link #getMissingVisibility() <em>Missing Visibility</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingVisibility()
+	 * @see #getMissingVisibility()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_VISIBILITY_EDEFAULT = false;
+	protected static final int MISSING_VISIBILITY_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingVisibility() <em>Missing Visibility</em>}' attribute.
+	 * The cached value of the '{@link #getMissingVisibility() <em>Missing Visibility</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingVisibility()
+	 * @see #getMissingVisibility()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingVisibility = MISSING_VISIBILITY_EDEFAULT;
+	protected int missingVisibility = MISSING_VISIBILITY_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_OPEN_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_NAME_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+	protected int missingName = MISSING_NAME_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_CLOSE_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute.
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingColon()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_COLON_EDEFAULT = false;
+	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute.
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingColon()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingColon = MISSING_COLON_EDEFAULT;
+	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEqual() <em>Missing Equal</em>}' attribute.
+	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEqual()
+	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_EQUAL_EDEFAULT = false;
+	protected static final int MISSING_COLON_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEqual() <em>Missing Equal</em>}' attribute.
+	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEqual()
+	 * @see #getMissingColon()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEqual = MISSING_EQUAL_EDEFAULT;
+	protected int missingColon = MISSING_COLON_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_EDEFAULT = false;
+	protected static final int MISSING_TYPE_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingType()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEnd = MISSING_END_EDEFAULT;
+	protected int missingType = MISSING_TYPE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingEqual() <em>Missing Equal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingEqual()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_EQUAL_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingEqual() <em>Missing Equal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingEqual()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingEqual = MISSING_EQUAL_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingEnd()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_END_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingEnd()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -606,7 +648,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingVisibility() {
+	public int getMissingVisibility() {
 		return missingVisibility;
 	}
 
@@ -615,8 +657,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingVisibility(boolean newMissingVisibility) {
-		boolean oldMissingVisibility = missingVisibility;
+	public void setMissingVisibility(int newMissingVisibility) {
+		int oldMissingVisibility = missingVisibility;
 		missingVisibility = newMissingVisibility;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -628,7 +670,29 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingOpenParenthesis() {
+	public int getMissingName() {
+		return missingName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingName(int newMissingName) {
+		int oldMissingName = missingName;
+		missingName = newMissingName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__MISSING_NAME,
+					oldMissingName, missingName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
 
@@ -637,8 +701,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingOpenParenthesis(boolean newMissingOpenParenthesis) {
-		boolean oldMissingOpenParenthesis = missingOpenParenthesis;
+	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
+		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -651,7 +715,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingCloseParenthesis() {
+	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
 
@@ -660,8 +724,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingCloseParenthesis(boolean newMissingCloseParenthesis) {
-		boolean oldMissingCloseParenthesis = missingCloseParenthesis;
+	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
+		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -674,7 +738,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingColon() {
+	public int getMissingColon() {
 		return missingColon;
 	}
 
@@ -683,8 +747,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingColon(boolean newMissingColon) {
-		boolean oldMissingColon = missingColon;
+	public void setMissingColon(int newMissingColon) {
+		int oldMissingColon = missingColon;
 		missingColon = newMissingColon;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__MISSING_COLON,
@@ -696,7 +760,29 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEqual() {
+	public int getMissingType() {
+		return missingType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingType(int newMissingType) {
+		int oldMissingType = missingType;
+		missingType = newMissingType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__MISSING_TYPE,
+					oldMissingType, missingType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingEqual() {
 		return missingEqual;
 	}
 
@@ -705,8 +791,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEqual(boolean newMissingEqual) {
-		boolean oldMissingEqual = missingEqual;
+	public void setMissingEqual(int newMissingEqual) {
+		int oldMissingEqual = missingEqual;
 		missingEqual = newMissingEqual;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__MISSING_EQUAL,
@@ -718,7 +804,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEnd() {
+	public int getMissingEnd() {
 		return missingEnd;
 	}
 
@@ -727,8 +813,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEnd(boolean newMissingEnd) {
-		boolean oldMissingEnd = missingEnd;
+	public void setMissingEnd(int newMissingEnd) {
+		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__MISSING_END,
@@ -799,17 +885,21 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 					return getBody();
 				return basicGetBody();
 			case AcceleoPackage.ERROR_QUERY__MISSING_VISIBILITY:
-				return isMissingVisibility();
+				return getMissingVisibility();
+			case AcceleoPackage.ERROR_QUERY__MISSING_NAME:
+				return getMissingName();
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
-				return isMissingOpenParenthesis();
+				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
-				return isMissingCloseParenthesis();
+				return getMissingCloseParenthesis();
 			case AcceleoPackage.ERROR_QUERY__MISSING_COLON:
-				return isMissingColon();
+				return getMissingColon();
+			case AcceleoPackage.ERROR_QUERY__MISSING_TYPE:
+				return getMissingType();
 			case AcceleoPackage.ERROR_QUERY__MISSING_EQUAL:
-				return isMissingEqual();
+				return getMissingEqual();
 			case AcceleoPackage.ERROR_QUERY__MISSING_END:
-				return isMissingEnd();
+				return getMissingEnd();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -852,22 +942,28 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				setBody((Expression)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_VISIBILITY:
-				setMissingVisibility((Boolean)newValue);
+				setMissingVisibility((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_QUERY__MISSING_NAME:
+				setMissingName((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
-				setMissingOpenParenthesis((Boolean)newValue);
+				setMissingOpenParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
-				setMissingCloseParenthesis((Boolean)newValue);
+				setMissingCloseParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_COLON:
-				setMissingColon((Boolean)newValue);
+				setMissingColon((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_QUERY__MISSING_TYPE:
+				setMissingType((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_EQUAL:
-				setMissingEqual((Boolean)newValue);
+				setMissingEqual((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_END:
-				setMissingEnd((Boolean)newValue);
+				setMissingEnd((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -911,6 +1007,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			case AcceleoPackage.ERROR_QUERY__MISSING_VISIBILITY:
 				setMissingVisibility(MISSING_VISIBILITY_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_QUERY__MISSING_NAME:
+				setMissingName(MISSING_NAME_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
@@ -919,6 +1018,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_COLON:
 				setMissingColon(MISSING_COLON_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_QUERY__MISSING_TYPE:
+				setMissingType(MISSING_TYPE_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_EQUAL:
 				setMissingEqual(MISSING_EQUAL_EDEFAULT);
@@ -958,12 +1060,16 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return body != null;
 			case AcceleoPackage.ERROR_QUERY__MISSING_VISIBILITY:
 				return missingVisibility != MISSING_VISIBILITY_EDEFAULT;
+			case AcceleoPackage.ERROR_QUERY__MISSING_NAME:
+				return missingName != MISSING_NAME_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
 				return missingCloseParenthesis != MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_COLON:
 				return missingColon != MISSING_COLON_EDEFAULT;
+			case AcceleoPackage.ERROR_QUERY__MISSING_TYPE:
+				return missingType != MISSING_TYPE_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_EQUAL:
 				return missingEqual != MISSING_EQUAL_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_END:
@@ -1123,12 +1229,16 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		result.append(visibility);
 		result.append(", missingVisibility: "); //$NON-NLS-1$
 		result.append(missingVisibility);
+		result.append(", missingName: "); //$NON-NLS-1$
+		result.append(missingName);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);
 		result.append(", missingColon: "); //$NON-NLS-1$
 		result.append(missingColon);
+		result.append(", missingType: "); //$NON-NLS-1$
+		result.append(missingType);
 		result.append(", missingEqual: "); //$NON-NLS-1$
 		result.append(missingEqual);
 		result.append(", missingEnd: "); //$NON-NLS-1$

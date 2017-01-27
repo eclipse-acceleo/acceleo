@@ -19,7 +19,7 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorModuleDocumentation#isMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorModuleDocumentation#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,6 +30,7 @@ package org.eclipse.acceleo;
 public interface ErrorModuleDocumentation extends org.eclipse.acceleo.Error, ModuleDocumentation {
 	/**
 	 * Returns the value of the '<em><b>Missing End Header</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End Header</em>' attribute isn't clear,
@@ -37,21 +38,21 @@ public interface ErrorModuleDocumentation extends org.eclipse.acceleo.Error, Mod
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End Header</em>' attribute.
-	 * @see #setMissingEndHeader(boolean)
+	 * @see #setMissingEndHeader(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorModuleDocumentation_MissingEndHeader()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEndHeader();
+	int getMissingEndHeader();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModuleDocumentation#isMissingEndHeader <em>Missing End Header</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorModuleDocumentation#getMissingEndHeader <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End Header</em>' attribute.
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 */
-	void setMissingEndHeader(boolean value);
+	void setMissingEndHeader(int value);
 
 } // ErrorModuleDocumentation

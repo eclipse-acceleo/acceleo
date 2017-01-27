@@ -42,12 +42,12 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getUrl <em>Url</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getCharset <em>Charset</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getBody <em>Body</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMissingComma <em>Missing Comma</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMissingOpenMode <em>Missing Open Mode</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMissingComma <em>Missing Comma</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMissingOpenMode <em>Missing Open Mode</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorFileStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -145,124 +145,124 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	protected Block body;
 
 	/**
-	 * The default value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_OPEN_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingComma() <em>Missing Comma</em>}' attribute.
+	 * The default value of the '{@link #getMissingComma() <em>Missing Comma</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingComma()
+	 * @see #getMissingComma()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_COMMA_EDEFAULT = false;
+	protected static final int MISSING_COMMA_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingComma() <em>Missing Comma</em>}' attribute.
+	 * The cached value of the '{@link #getMissingComma() <em>Missing Comma</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingComma()
+	 * @see #getMissingComma()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingComma = MISSING_COMMA_EDEFAULT;
+	protected int missingComma = MISSING_COMMA_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingOpenMode() <em>Missing Open Mode</em>}' attribute.
+	 * The default value of the '{@link #getMissingOpenMode() <em>Missing Open Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenMode()
+	 * @see #getMissingOpenMode()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_OPEN_MODE_EDEFAULT = false;
+	protected static final int MISSING_OPEN_MODE_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingOpenMode() <em>Missing Open Mode</em>}' attribute.
+	 * The cached value of the '{@link #getMissingOpenMode() <em>Missing Open Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenMode()
+	 * @see #getMissingOpenMode()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingOpenMode = MISSING_OPEN_MODE_EDEFAULT;
+	protected int missingOpenMode = MISSING_OPEN_MODE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_CLOSE_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_HEADER_EDEFAULT = false;
+	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEndHeader = MISSING_END_HEADER_EDEFAULT;
+	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_EDEFAULT = false;
+	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEnd = MISSING_END_EDEFAULT;
+	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -504,7 +504,7 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingOpenParenthesis() {
+	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
 
@@ -513,8 +513,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingOpenParenthesis(boolean newMissingOpenParenthesis) {
-		boolean oldMissingOpenParenthesis = missingOpenParenthesis;
+	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
+		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -527,7 +527,7 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingComma() {
+	public int getMissingComma() {
 		return missingComma;
 	}
 
@@ -536,8 +536,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingComma(boolean newMissingComma) {
-		boolean oldMissingComma = missingComma;
+	public void setMissingComma(int newMissingComma) {
+		int oldMissingComma = missingComma;
 		missingComma = newMissingComma;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -549,7 +549,7 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingOpenMode() {
+	public int getMissingOpenMode() {
 		return missingOpenMode;
 	}
 
@@ -558,8 +558,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingOpenMode(boolean newMissingOpenMode) {
-		boolean oldMissingOpenMode = missingOpenMode;
+	public void setMissingOpenMode(int newMissingOpenMode) {
+		int oldMissingOpenMode = missingOpenMode;
 		missingOpenMode = newMissingOpenMode;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -572,7 +572,7 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingCloseParenthesis() {
+	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
 
@@ -581,8 +581,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingCloseParenthesis(boolean newMissingCloseParenthesis) {
-		boolean oldMissingCloseParenthesis = missingCloseParenthesis;
+	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
+		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -595,7 +595,7 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEndHeader() {
+	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
 
@@ -604,8 +604,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEndHeader(boolean newMissingEndHeader) {
-		boolean oldMissingEndHeader = missingEndHeader;
+	public void setMissingEndHeader(int newMissingEndHeader) {
+		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -618,7 +618,7 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEnd() {
+	public int getMissingEnd() {
 		return missingEnd;
 	}
 
@@ -627,8 +627,8 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEnd(boolean newMissingEnd) {
-		boolean oldMissingEnd = missingEnd;
+	public void setMissingEnd(int newMissingEnd) {
+		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -674,17 +674,17 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 			case AcceleoPackage.ERROR_FILE_STATEMENT__BODY:
 				return getBody();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS:
-				return isMissingOpenParenthesis();
+				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_COMMA:
-				return isMissingComma();
+				return getMissingComma();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_OPEN_MODE:
-				return isMissingOpenMode();
+				return getMissingOpenMode();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS:
-				return isMissingCloseParenthesis();
+				return getMissingCloseParenthesis();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_END_HEADER:
-				return isMissingEndHeader();
+				return getMissingEndHeader();
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_END:
-				return isMissingEnd();
+				return getMissingEnd();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -716,22 +716,22 @@ public class ErrorFileStatementImpl extends MinimalEObjectImpl.Container impleme
 				setBody((Block)newValue);
 				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS:
-				setMissingOpenParenthesis((Boolean)newValue);
+				setMissingOpenParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_COMMA:
-				setMissingComma((Boolean)newValue);
+				setMissingComma((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_OPEN_MODE:
-				setMissingOpenMode((Boolean)newValue);
+				setMissingOpenMode((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS:
-				setMissingCloseParenthesis((Boolean)newValue);
+				setMissingCloseParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_END_HEADER:
-				setMissingEndHeader((Boolean)newValue);
+				setMissingEndHeader((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FILE_STATEMENT__MISSING_END:
-				setMissingEnd((Boolean)newValue);
+				setMissingEnd((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

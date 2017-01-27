@@ -19,7 +19,7 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorImport#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorImport#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,6 +30,7 @@ package org.eclipse.acceleo;
 public interface ErrorImport extends org.eclipse.acceleo.Error, Import {
 	/**
 	 * Returns the value of the '<em><b>Missing End</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End</em>' attribute isn't clear,
@@ -37,21 +38,21 @@ public interface ErrorImport extends org.eclipse.acceleo.Error, Import {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End</em>' attribute.
-	 * @see #setMissingEnd(boolean)
+	 * @see #setMissingEnd(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorImport_MissingEnd()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEnd();
+	int getMissingEnd();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorImport#isMissingEnd <em>Missing End</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorImport#getMissingEnd <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End</em>' attribute.
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 */
-	void setMissingEnd(boolean value);
+	void setMissingEnd(int value);
 
 } // ErrorImport

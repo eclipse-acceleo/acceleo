@@ -7,6 +7,12 @@ module myModule
     
    (116..119)
     [let 
+    *** error binding ***
+    missing name: 125
+    missing colon: -1
+    missing type: -1
+    missing affectation symbol: null
+    missing affectation symbol position: -1
     null : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (148..177) (125..177)
       
     some static text.

@@ -3,12 +3,15 @@ header position 0..59
 module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
   *** error template ***
-  missing visibility: true
-  missing open parenthesis: false
-  missing close parenthesis: false
-  missing post close parenthesis: false
-  missing post end header: false
-  missing post end: false
+  missing visibility: 72
+  missing name: -1
+  missing open parenthesis: -1
+  missing close parenthesis: -1
+  missing guard open parenthesis: -1
+  missing guard close parenthesis: -1
+  missing post close parenthesis: -1
+  missing post end header: -1
+  missing post end: -1
   
   private template myTemplate(myParam : EPackage (83..108))
     

@@ -19,12 +19,15 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorTemplate#isMissingVisibility <em>Missing Visibility</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorTemplate#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorTemplate#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorTemplate#isMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorTemplate#isMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorTemplate#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingVisibility <em>Missing Visibility</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardOpenParenthesis <em>Missing Guard Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardCloseParenthesis <em>Missing Guard Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -35,6 +38,7 @@ package org.eclipse.acceleo;
 public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	/**
 	 * Returns the value of the '<em><b>Missing Visibility</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Visibility</em>' attribute isn't clear,
@@ -42,25 +46,53 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Visibility</em>' attribute.
-	 * @see #setMissingVisibility(boolean)
+	 * @see #setMissingVisibility(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingVisibility()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingVisibility();
+	int getMissingVisibility();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#isMissingVisibility <em>Missing Visibility</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingVisibility <em>Missing Visibility</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Visibility</em>' attribute.
-	 * @see #isMissingVisibility()
+	 * @see #getMissingVisibility()
 	 * @generated
 	 */
-	void setMissingVisibility(boolean value);
+	void setMissingVisibility(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Name</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Name</em>' attribute.
+	 * @see #setMissingName(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingName()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingName <em>Missing Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Name</em>' attribute.
+	 * @see #getMissingName()
+	 * @generated
+	 */
+	void setMissingName(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Open Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Open Parenthesis</em>' attribute isn't clear,
@@ -68,25 +100,26 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #setMissingOpenParenthesis(boolean)
+	 * @see #setMissingOpenParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingOpenParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingOpenParenthesis();
+	int getMissingOpenParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 */
-	void setMissingOpenParenthesis(boolean value);
+	void setMissingOpenParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Close Parenthesis</em>' attribute isn't clear,
@@ -94,25 +127,80 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #setMissingCloseParenthesis(boolean)
+	 * @see #setMissingCloseParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingCloseParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingCloseParenthesis();
+	int getMissingCloseParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 */
-	void setMissingCloseParenthesis(boolean value);
+	void setMissingCloseParenthesis(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Guard Open Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Guard Open Parenthesis</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Guard Open Parenthesis</em>' attribute.
+	 * @see #setMissingGuardOpenParenthesis(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingGuardOpenParenthesis()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingGuardOpenParenthesis();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardOpenParenthesis <em>Missing Guard Open Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Guard Open Parenthesis</em>' attribute.
+	 * @see #getMissingGuardOpenParenthesis()
+	 * @generated
+	 */
+	void setMissingGuardOpenParenthesis(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Guard Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Guard Close Parenthesis</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Guard Close Parenthesis</em>' attribute.
+	 * @see #setMissingGuardCloseParenthesis(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingGuardCloseParenthesis()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingGuardCloseParenthesis();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardCloseParenthesis <em>Missing Guard Close Parenthesis</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Guard Close Parenthesis</em>' attribute.
+	 * @see #getMissingGuardCloseParenthesis()
+	 * @generated
+	 */
+	void setMissingGuardCloseParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Post Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Post Close Parenthesis</em>' attribute isn't clear,
@@ -120,25 +208,26 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Post Close Parenthesis</em>' attribute.
-	 * @see #setMissingPostCloseParenthesis(boolean)
+	 * @see #setMissingPostCloseParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingPostCloseParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingPostCloseParenthesis();
+	int getMissingPostCloseParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#isMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Post Close Parenthesis</em>' attribute.
-	 * @see #isMissingPostCloseParenthesis()
+	 * @see #getMissingPostCloseParenthesis()
 	 * @generated
 	 */
-	void setMissingPostCloseParenthesis(boolean value);
+	void setMissingPostCloseParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End Header</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End Header</em>' attribute isn't clear,
@@ -146,25 +235,26 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End Header</em>' attribute.
-	 * @see #setMissingEndHeader(boolean)
+	 * @see #setMissingEndHeader(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingEndHeader()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEndHeader();
+	int getMissingEndHeader();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#isMissingEndHeader <em>Missing End Header</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingEndHeader <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End Header</em>' attribute.
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 */
-	void setMissingEndHeader(boolean value);
+	void setMissingEndHeader(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End</em>' attribute isn't clear,
@@ -172,21 +262,21 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End</em>' attribute.
-	 * @see #setMissingEnd(boolean)
+	 * @see #setMissingEnd(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingEnd()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEnd();
+	int getMissingEnd();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#isMissingEnd <em>Missing End</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingEnd <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End</em>' attribute.
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 */
-	void setMissingEnd(boolean value);
+	void setMissingEnd(int value);
 
 } // ErrorTemplate

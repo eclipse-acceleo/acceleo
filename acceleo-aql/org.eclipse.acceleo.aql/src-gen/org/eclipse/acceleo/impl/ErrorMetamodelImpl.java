@@ -35,7 +35,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getReferencedPackage <em>Referenced Package</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#isMissingEndQuote <em>Missing End Quote</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getFragment <em>Fragment</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorMetamodelImpl#getMissingEndQuote <em>Missing End Quote</em>}</li>
  * </ul>
  * </p>
  *
@@ -93,24 +94,44 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	protected EPackage referencedPackage;
 
 	/**
-	 * The default value of the '{@link #isMissingEndQuote() <em>Missing End Quote</em>}' attribute.
+	 * The default value of the '{@link #getFragment() <em>Fragment</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndQuote()
+	 * @see #getFragment()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_QUOTE_EDEFAULT = false;
+	protected static final String FRAGMENT_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isMissingEndQuote() <em>Missing End Quote</em>}' attribute.
+	 * The cached value of the '{@link #getFragment() <em>Fragment</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndQuote()
+	 * @see #getFragment()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEndQuote = MISSING_END_QUOTE_EDEFAULT;
+	protected String fragment = FRAGMENT_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingEndQuote() <em>Missing End Quote</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingEndQuote()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_END_QUOTE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingEndQuote() <em>Missing End Quote</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingEndQuote()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingEndQuote = MISSING_END_QUOTE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -222,7 +243,29 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEndQuote() {
+	public String getFragment() {
+		return fragment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFragment(String newFragment) {
+		String oldFragment = fragment;
+		fragment = newFragment;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_METAMODEL__FRAGMENT,
+					oldFragment, fragment));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingEndQuote() {
 		return missingEndQuote;
 	}
 
@@ -231,8 +274,8 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEndQuote(boolean newMissingEndQuote) {
-		boolean oldMissingEndQuote = missingEndQuote;
+	public void setMissingEndQuote(int newMissingEndQuote) {
+		int oldMissingEndQuote = missingEndQuote;
 		missingEndQuote = newMissingEndQuote;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -255,8 +298,10 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 				if (resolve)
 					return getReferencedPackage();
 				return basicGetReferencedPackage();
+			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
+				return getFragment();
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
-				return isMissingEndQuote();
+				return getMissingEndQuote();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -278,8 +323,11 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
 				setReferencedPackage((EPackage)newValue);
 				return;
+			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
+				setFragment((String)newValue);
+				return;
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
-				setMissingEndQuote((Boolean)newValue);
+				setMissingEndQuote((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -302,6 +350,9 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
 				setReferencedPackage((EPackage)null);
 				return;
+			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
+				setFragment(FRAGMENT_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 				setMissingEndQuote(MISSING_END_QUOTE_EDEFAULT);
 				return;
@@ -323,6 +374,8 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
 				return referencedPackage != null;
+			case AcceleoPackage.ERROR_METAMODEL__FRAGMENT:
+				return FRAGMENT_EDEFAULT == null ? fragment != null : !FRAGMENT_EDEFAULT.equals(fragment);
 			case AcceleoPackage.ERROR_METAMODEL__MISSING_END_QUOTE:
 				return missingEndQuote != MISSING_END_QUOTE_EDEFAULT;
 		}
@@ -400,6 +453,8 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
 		result.append(endPosition);
+		result.append(", fragment: "); //$NON-NLS-1$
+		result.append(fragment);
 		result.append(", missingEndQuote: "); //$NON-NLS-1$
 		result.append(missingEndQuote);
 		result.append(')');

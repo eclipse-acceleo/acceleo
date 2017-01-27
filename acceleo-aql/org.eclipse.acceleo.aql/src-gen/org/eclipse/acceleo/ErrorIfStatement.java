@@ -19,10 +19,10 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#isMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorIfStatement#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -33,6 +33,7 @@ package org.eclipse.acceleo;
 public interface ErrorIfStatement extends org.eclipse.acceleo.Error, IfStatement {
 	/**
 	 * Returns the value of the '<em><b>Missing Open Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Open Parenthesis</em>' attribute isn't clear,
@@ -40,25 +41,26 @@ public interface ErrorIfStatement extends org.eclipse.acceleo.Error, IfStatement
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #setMissingOpenParenthesis(boolean)
+	 * @see #setMissingOpenParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorIfStatement_MissingOpenParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingOpenParenthesis();
+	int getMissingOpenParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 */
-	void setMissingOpenParenthesis(boolean value);
+	void setMissingOpenParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Close Parenthesis</em>' attribute isn't clear,
@@ -66,25 +68,26 @@ public interface ErrorIfStatement extends org.eclipse.acceleo.Error, IfStatement
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #setMissingCloseParenthesis(boolean)
+	 * @see #setMissingCloseParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorIfStatement_MissingCloseParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingCloseParenthesis();
+	int getMissingCloseParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 */
-	void setMissingCloseParenthesis(boolean value);
+	void setMissingCloseParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End Header</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End Header</em>' attribute isn't clear,
@@ -92,25 +95,26 @@ public interface ErrorIfStatement extends org.eclipse.acceleo.Error, IfStatement
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End Header</em>' attribute.
-	 * @see #setMissingEndHeader(boolean)
+	 * @see #setMissingEndHeader(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorIfStatement_MissingEndHeader()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEndHeader();
+	int getMissingEndHeader();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingEndHeader <em>Missing End Header</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingEndHeader <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End Header</em>' attribute.
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 */
-	void setMissingEndHeader(boolean value);
+	void setMissingEndHeader(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End</em>' attribute isn't clear,
@@ -118,21 +122,21 @@ public interface ErrorIfStatement extends org.eclipse.acceleo.Error, IfStatement
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End</em>' attribute.
-	 * @see #setMissingEnd(boolean)
+	 * @see #setMissingEnd(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorIfStatement_MissingEnd()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEnd();
+	int getMissingEnd();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingEnd <em>Missing End</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingEnd <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End</em>' attribute.
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 */
-	void setMissingEnd(boolean value);
+	void setMissingEnd(int value);
 
 } // ErrorIfStatement

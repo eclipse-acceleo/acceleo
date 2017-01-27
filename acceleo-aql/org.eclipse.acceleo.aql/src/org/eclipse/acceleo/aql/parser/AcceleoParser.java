@@ -87,257 +87,262 @@ public class AcceleoParser {
 	/**
 	 * New line.
 	 */
-	private static final String NEW_LINE = "\n";
+	public static final String NEW_LINE = "\n";
 
 	/**
 	 * In line end delimiter.
 	 */
-	private static final String NO_SLASH_END = "]";
+	public static final String NO_SLASH_END = "]";
 
 	/**
 	 * In line end delimiter.
 	 */
-	private static final String SLASH_END = "/]";
+	public static final String SLASH_END = "/]";
 
 	/**
 	 * End of {@link TextStatement}.
 	 */
-	private static final String TEXT_END = "[";
+	public static final String TEXT_END = "[";
 
 	/**
 	 * Start of {@link Comment}.
 	 */
-	private static final String COMMENT_START = "[comment ";
+	public static final String COMMENT_START = "[comment ";
 
 	/**
 	 * End of {@link Comment}.
 	 */
-	private static final String COMMENT_END = NO_SLASH_END;
+	public static final String COMMENT_END = NO_SLASH_END;
 
 	/**
 	 * Start of {@link Module} header.
 	 */
-	private static final String MODULE_HEADER_START = "[module ";
+	public static final String MODULE_HEADER_START = "[module ";
 
 	/**
 	 * End of {@link Module} header.
 	 */
-	private static final String MODULE_HEADER_END = SLASH_END;
+	public static final String MODULE_HEADER_END = SLASH_END;
 
 	/**
 	 * Open parenthesis.
 	 */
-	private static final String OPEN_PARENTHESIS = "(";
+	public static final String OPEN_PARENTHESIS = "(";
 
 	/**
 	 * Close parenthesis.
 	 */
-	private static final String CLOSE_PARENTHESIS = ")";
+	public static final String CLOSE_PARENTHESIS = ")";
 
 	/**
 	 * A comma.
 	 */
-	private static final String COMMA = ",";
+	public static final String COMMA = ",";
 
 	/**
 	 * A colon.
 	 */
-	private static final String COLON = ":";
+	public static final String COLON = ":";
 
 	/**
 	 * A qualifier separator.
 	 */
-	private static final String QUALIFIER_SEPARATOR = "::";
+	public static final String QUALIFIER_SEPARATOR = "::";
 
 	/**
 	 * An equal.
 	 */
-	private static final String EQUAL = "=";
+	public static final String EQUAL = "=";
 
 	/**
 	 * A pipe.
 	 */
-	private static final String PIPE = "|";
+	public static final String PIPE = "|";
 
 	/**
 	 * A quote.
 	 */
-	private static final String QUOTE = "'";
+	public static final String QUOTE = "'";
 
 	/**
 	 * Start of {@link Template} header.
 	 */
-	private static final String TEMPLATE_HEADER_START = "[template ";
+	public static final String TEMPLATE_HEADER_START = "[template ";
 
 	/**
 	 * Start of {@link Template} header.
 	 */
-	private static final String TEMPLATE_HEADER_END = NO_SLASH_END;
+	public static final String TEMPLATE_HEADER_END = NO_SLASH_END;
+
+	/**
+	 * Guard of {@link Template}.
+	 */
+	public static final String TEMPLATE_GUARD = "?";
 
 	/**
 	 * Post of {@link Template}.
 	 */
-	private static final String TEMPLATE_POST = "post(";
+	public static final String TEMPLATE_POST = "post(";
 
 	/**
 	 * End block prefix.
 	 */
-	private static final String END_BLOCK_PREFIX = "[/";
+	public static final String END_BLOCK_PREFIX = "[/";
 
 	/**
 	 * End of {@link Template}.
 	 */
-	private static final String TEMPLATE_END = END_BLOCK_PREFIX + "template]";
+	public static final String TEMPLATE_END = END_BLOCK_PREFIX + "template]";
 
 	/**
 	 * Start of {@link ExpressionStatement}.
 	 */
-	private static final String EXPRESSION_STATEMENT_START = "[";
+	public static final String EXPRESSION_STATEMENT_START = "[";
 
 	/**
 	 * End of {@link ExpressionStatement}.
 	 */
-	private static final String EXPRESSION_STATEMENT_END = SLASH_END;
+	public static final String EXPRESSION_STATEMENT_END = SLASH_END;
 
 	/**
 	 * Start of {@link ProtectedArea} header.
 	 */
-	private static final String PROTECTED_AREA_HEADER_START = "[protected ";
+	public static final String PROTECTED_AREA_HEADER_START = "[protected ";
 
 	/**
 	 * End of {@link ProtectedArea} header.
 	 */
-	private static final String PROTECTED_AREA_HEADER_END = NO_SLASH_END;
+	public static final String PROTECTED_AREA_HEADER_END = NO_SLASH_END;
 
 	/**
 	 * End of {@link ProtectedArea}.
 	 */
-	private static final String PROTECTED_AREA_END = END_BLOCK_PREFIX + "protected]";
+	public static final String PROTECTED_AREA_END = END_BLOCK_PREFIX + "protected]";
 
 	/**
 	 * Start of {@link FileStatement} header.
 	 */
-	private static final String FILE_HEADER_START = "[file ";
+	public static final String FILE_HEADER_START = "[file ";
 
 	/**
 	 * End of {@link FileStatement} header.
 	 */
-	private static final String FILE_HEADER_END = NO_SLASH_END;
+	public static final String FILE_HEADER_END = NO_SLASH_END;
 
 	/**
 	 * End of {@link FileStatement}.
 	 */
-	private static final String FILE_END = END_BLOCK_PREFIX + "file]";
+	public static final String FILE_END = END_BLOCK_PREFIX + "file]";
 
 	/**
 	 * Start of {@link LetStatement} header.
 	 */
-	private static final String LET_HEADER_START = "[let ";
+	public static final String LET_HEADER_START = "[let ";
 
 	/**
 	 * End of {@link LetStatement} header.
 	 */
-	private static final String LET_HEADER_END = NO_SLASH_END;
+	public static final String LET_HEADER_END = NO_SLASH_END;
 
 	/**
 	 * End of {@link LetStatement}.
 	 */
-	private static final String LET_END = END_BLOCK_PREFIX + "let]";
+	public static final String LET_END = END_BLOCK_PREFIX + "let]";
 
 	/**
 	 * Start of {@link ForStatement} header.
 	 */
-	private static final String FOR_HEADER_START = "[for ";
+	public static final String FOR_HEADER_START = "[for ";
 
 	/**
 	 * End of {@link ForStatement} header.
 	 */
-	private static final String FOR_HEADER_END = NO_SLASH_END;
+	public static final String FOR_HEADER_END = NO_SLASH_END;
 
 	/**
 	 * End of {@link ForStatement}.
 	 */
-	private static final String FOR_END = END_BLOCK_PREFIX + "for]";
+	public static final String FOR_END = END_BLOCK_PREFIX + "for]";
 
 	/**
 	 * Start of {@link IfStatement} header.
 	 */
-	private static final String IF_HEADER_START = "[if ";
+	public static final String IF_HEADER_START = "[if ";
 
 	/**
 	 * End of {@link IfStatement} header.
 	 */
-	private static final String IF_HEADER_END = NO_SLASH_END;
+	public static final String IF_HEADER_END = NO_SLASH_END;
 
 	/**
 	 * End of {@link IfStatement}.
 	 */
-	private static final String IF_ELSEIF = "[elseif ";
+	public static final String IF_ELSEIF = "[elseif ";
 
 	/**
 	 * End of {@link IfStatement}.
 	 */
-	private static final String IF_ELSE = "[else]";
+	public static final String IF_ELSE = "[else]";
 
 	/**
 	 * End of {@link IfStatement}.
 	 */
-	private static final String IF_END = END_BLOCK_PREFIX + "if]";
+	public static final String IF_END = END_BLOCK_PREFIX + "if]";
 
 	/**
 	 * Start of {@link Query}.
 	 */
-	private static final String QUERY_START = "[query ";
+	public static final String QUERY_START = "[query ";
 
 	/**
 	 * End of {@link Query}.
 	 */
-	private static final String QUERY_END = SLASH_END;
+	public static final String QUERY_END = SLASH_END;
 
 	/**
 	 * Start of {@link Query}.
 	 */
-	private static final String IMPORT_START = "[import ";
+	public static final String IMPORT_START = "[import ";
 
 	/**
 	 * End of {@link Query}.
 	 */
-	private static final String IMPORT_END = SLASH_END;
+	public static final String IMPORT_END = SLASH_END;
 
 	/**
 	 * Start of {@link Documentation}.
 	 */
-	private static final String DOCUMENTATION_START = "[**";
+	public static final String DOCUMENTATION_START = "[**";
 
 	/**
 	 * End of {@link Documentation}.
 	 */
-	private static final String DOCUMENTATION_END = SLASH_END;
+	public static final String DOCUMENTATION_END = SLASH_END;
 
 	/**
 	 * Author tag.
 	 */
-	private static final String AUTHOR_TAG = "@author ";
+	public static final String AUTHOR_TAG = "@author ";
 
 	/**
 	 * Version tag.
 	 */
-	private static final String VERSION_TAG = "@version ";
+	public static final String VERSION_TAG = "@version ";
 
 	/**
 	 * Since tag.
 	 */
-	private static final String SINCE_TAG = "@since ";
+	public static final String SINCE_TAG = "@since ";
 
 	/**
 	 * Param tag.
 	 */
-	private static final String PARAM_TAG = "@param ";
+	public static final String PARAM_TAG = "@param ";
 
 	/**
 	 * Extends key work.
 	 */
-	private static final String EXTENDS = "extends ";
+	public static final String EXTENDS = "extends ";
 
 	/**
 	 * The {@link IQueryEnvironment}.
@@ -424,6 +429,26 @@ public class AcceleoParser {
 
 		if (res) {
 			currentPosition += str.length();
+		}
+
+		return res;
+	}
+
+	/**
+	 * {@link AcceleoParser#readString(String) Reads} the given {@link String}.
+	 * 
+	 * @param str
+	 *            the {@link String} to read
+	 * @return <code>-1</code> if {@link AcceleoParser#readString(String) read} the given {@link String}
+	 *         succeed, the current position otherwise
+	 */
+	protected int readMissingString(String str) {
+		final int res;
+
+		if (readString(str)) {
+			res = -1;
+		} else {
+			res = currentPosition;
 		}
 
 		return res;
@@ -607,50 +632,51 @@ public class AcceleoParser {
 
 			final String name = parseIdentifier();
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Metamodel> metamodels = new ArrayList<Metamodel>();
 			Metamodel metamodel = parseMetamodel();
-			boolean missingEPackage = false;
+			int missingEPackage = -1;
 			while (metamodel != null) {
 				metamodels.add(metamodel);
 				skipSpaces();
 				if (readString(COMMA)) {
 					skipSpaces();
 					metamodel = parseMetamodel();
-					missingEPackage = metamodel == null;
+					if (metamodel == null) {
+						missingEPackage = currentPosition;
+					} else {
+						missingEPackage = -1;
+					}
 				} else {
 					break;
 				}
 			}
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final List<ModuleReference> extendedModules = new ArrayList<ModuleReference>();
+			final ModuleReference extendedModule;
 			if (readString(EXTENDS)) {
 				skipSpaces();
-				ModuleReference extended = parseModuleReference();
-				extendedModules.add(extended);
+				extendedModule = parseModuleReference();
 				skipSpaces();
-				while (readString(COMMA)) {
-					skipSpaces();
-					extended = parseModuleReference();
-					extendedModules.add(extended);
-					skipSpaces();
-				}
+			} else {
+				extendedModule = null;
 			}
-			final boolean missingEndHeader = !readString(MODULE_HEADER_END);
+			final int missingEndHeader = readMissingString(MODULE_HEADER_END);
 			final int endHeaderPosition = currentPosition;
 			skipSpaces();
 			final List<Import> imports = new ArrayList<Import>();
 			Import imported = parseImport();
+			skipSpaces();
 			while (imported != null) {
 				imports.add(imported);
 				imported = parseImport();
+				skipSpaces();
 			}
 			final List<ModuleElement> moduleElements = parseModuleElements();
-			final boolean missingParenthesis = missingOpenParenthesis || missingCloseParenthesis;
-			if (missingParenthesis || missingEPackage || missingEndHeader) {
+			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1;
+			if (missingParenthesis || missingEPackage != -1 || missingEndHeader != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModule();
 				((ErrorModule)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorModule)res).setMissingEPackage(missingEPackage);
@@ -666,7 +692,7 @@ public class AcceleoParser {
 			res.setName(name);
 			res.getMetamodels().addAll(metamodels);
 			res.getImports().addAll(imports);
-			res.getExtends().addAll(extendedModules);
+			res.setExtends(extendedModule);
 			res.getModuleElements().addAll(moduleElements);
 		} else {
 			res = null;
@@ -689,8 +715,8 @@ public class AcceleoParser {
 			skipSpaces();
 			final ModuleReference moduleReference = parseModuleReference();
 			skipSpaces();
-			final boolean missingEnd = !readString(IMPORT_END);
-			if (missingEnd) {
+			final int missingEnd = readMissingString(IMPORT_END);
+			if (missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorImport();
 				((ErrorImport)res).setMissingEnd(missingEnd);
 			} else {
@@ -722,7 +748,7 @@ public class AcceleoParser {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleReference();
 		}
 		res.setStartPosition(startPosition);
-		res.setUrl(moduleQualifiedName);
+		res.setQualifiedName(moduleQualifiedName);
 		res.setEndPosition(currentPosition);
 
 		return res;
@@ -840,36 +866,55 @@ public class AcceleoParser {
 			currentPosition += QUERY_START.length();
 			skipSpaces();
 			final VisibilityKind visibility = parseVisibility();
-			final boolean missingVisibility = visibility == null;
+			final int missingVisibility;
+			if (visibility == null) {
+				missingVisibility = currentPosition;
+			} else {
+				missingVisibility = -1;
+			}
 			skipSpaces();
 			final String name = parseIdentifier();
+			final int missingName;
+			if (name == null) {
+				missingName = currentPosition;
+			} else {
+				missingName = -1;
+			}
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Variable> parameters = parseVariables();
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final boolean missingColon = !readString(COLON);
+			final int missingColon = readMissingString(COLON);
 			skipSpaces();
 			final EClassifier type = parseEClassifier();
+			final int missingType;
+			if (type == null) {
+				missingType = currentPosition;
+			} else {
+				missingType = -1;
+			}
 			skipSpaces();
-			final boolean missingEqual = !readString(EQUAL);
+			final int missingEqual = readMissingString(EQUAL);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(QUERY_END, QUERY_END);
 			final Expression body = parseExpression(expressionEndLimit);
 			skipSpaces();
-			final boolean missingEnd = !readString(QUERY_END);
-			final boolean missingValue = visibility == null || name == null || type == null
+			final int missingEnd = readMissingString(QUERY_END);
+			final boolean missingValue = missingVisibility != -1 || missingName != -1 || missingType != -1
 					|| parameters.isEmpty();
-			final boolean missingParenthesis = missingOpenParenthesis || missingCloseParenthesis;
-			final boolean missingSymbols = missingColon || missingEqual || missingEnd;
-			if (missingVisibility || missingValue || missingParenthesis || missingSymbols) {
+			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1;
+			final boolean missingSymbols = missingColon != -1 || missingEqual != -1 || missingEnd != -1;
+			if (missingVisibility != -1 || missingValue || missingParenthesis || missingSymbols) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorQuery();
 				((ErrorQuery)res).setMissingVisibility(missingVisibility);
+				((ErrorQuery)res).setMissingName(missingName);
 				((ErrorQuery)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorQuery)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorQuery)res).setMissingColon(missingColon);
+				((ErrorQuery)res).setMissingType(missingType);
 				((ErrorQuery)res).setMissingEqual(missingEqual);
 				((ErrorQuery)res).setMissingEnd(missingEnd);
 			} else {
@@ -905,6 +950,7 @@ public class AcceleoParser {
 			if (readString(COMMA)) {
 				skipSpaces();
 				variable = parseVariable();
+				skipSpaces();
 			} else {
 				break;
 			}
@@ -923,14 +969,28 @@ public class AcceleoParser {
 
 		final int startPosition = currentPosition;
 		final String name = parseIdentifier();
+		final int missingName;
+		if (name == null) {
+			missingName = currentPosition;
+		} else {
+			missingName = -1;
+		}
 		skipSpaces();
-		final boolean missingColon = !readString(COLON);
+		final int missingColon = readMissingString(COLON);
 		skipSpaces();
 		final EClassifier type = parseEClassifier();
+		final int missingType;
+		if (type == null) {
+			missingType = currentPosition;
+		} else {
+			missingType = -1;
+		}
 
-		if (name == null || type == null || missingColon) {
+		if (missingName != -1 || missingType != -1 || missingColon != -1) {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorVariable();
+			((ErrorVariable)res).setMissingName(missingName);
 			((ErrorVariable)res).setMissingColon(missingColon);
+			((ErrorVariable)res).setMissingType(missingType);
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
 		}
@@ -957,39 +1017,77 @@ public class AcceleoParser {
 			currentPosition += TEMPLATE_HEADER_START.length();
 			skipSpaces();
 			final VisibilityKind visibility = parseVisibility();
-			final boolean missingVisibility = visibility == null;
+			final int missingVisibility;
+			if (visibility == null) {
+				missingVisibility = currentPosition;
+			} else {
+				missingVisibility = -1;
+			}
 			skipSpaces();
 			final String name = parseIdentifier();
+			final int missingName;
+			if (name == null) {
+				missingName = currentPosition;
+			} else {
+				missingName = -1;
+			}
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Variable> parameters = parseVariables();
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final boolean missingPostCloseParenthesis;
+			final int missingGuardOpenParenthesis;
+			final int missingGuardCloseParenthesis;
+			final Expression guardExpression;
+			if (text.startsWith(TEMPLATE_GUARD, currentPosition)) {
+				currentPosition += TEMPLATE_GUARD.length();
+				skipSpaces();
+				missingGuardOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
+				skipSpaces();
+				final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
+						TEMPLATE_HEADER_END);
+				guardExpression = parseExpression(expressionEndLimit);
+				skipSpaces();
+				missingGuardCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
+				skipSpaces();
+			} else {
+				guardExpression = null;
+				missingGuardOpenParenthesis = -1;
+				missingGuardCloseParenthesis = -1;
+			}
+			final int missingPostCloseParenthesis;
 			final Expression postExpression;
 			if (text.startsWith(TEMPLATE_POST, currentPosition)) {
+				currentPosition += TEMPLATE_POST.length();
+				skipSpaces();
 				final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
 						TEMPLATE_HEADER_END);
 				postExpression = parseExpression(expressionEndLimit);
-				missingPostCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+				skipSpaces();
+				missingPostCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 				skipSpaces();
 			} else {
-				missingPostCloseParenthesis = false;
+				missingPostCloseParenthesis = -1;
 				postExpression = null;
 			}
-			final boolean missingEndHeader = !readString(TEMPLATE_HEADER_END);
+			final int missingEndHeader = readMissingString(TEMPLATE_HEADER_END);
 			final Block body = parseBlock(TEMPLATE_END);
-			final boolean missingEnd = !readString(TEMPLATE_END);
-			final boolean missingValue = missingVisibility || name == null || parameters.isEmpty();
-			final boolean missingParenthesis = missingOpenParenthesis || missingCloseParenthesis
-					|| missingPostCloseParenthesis;
-			if (missingValue || missingParenthesis || missingEndHeader || missingEnd) {
+			final int missingEnd = readMissingString(TEMPLATE_END);
+			final boolean missingValue = missingVisibility != -1 || missingName != -1 || parameters.isEmpty();
+			final boolean missingGuardParenthesis = missingGuardOpenParenthesis != -1
+					|| missingGuardCloseParenthesis != -1;
+			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1
+					|| missingGuardParenthesis || missingPostCloseParenthesis != -1;
+			if (missingValue || missingParenthesis || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorTemplate();
 				((ErrorTemplate)res).setMissingVisibility(missingVisibility);
+				((ErrorTemplate)res).setMissingName(missingName);
 				((ErrorTemplate)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorTemplate)res).setMissingCloseParenthesis(missingCloseParenthesis);
+				((ErrorTemplate)res).setMissingGuardOpenParenthesis(missingGuardOpenParenthesis);
+				((ErrorTemplate)res).setMissingGuardCloseParenthesis(missingGuardCloseParenthesis);
 				((ErrorTemplate)res).setMissingPostCloseParenthesis(missingPostCloseParenthesis);
 				((ErrorTemplate)res).setMissingEndHeader(missingEndHeader);
 				((ErrorTemplate)res).setMissingEnd(missingEnd);
@@ -1001,6 +1099,7 @@ public class AcceleoParser {
 			res.setVisibility(visibility);
 			res.setName(name);
 			res.getParameters().addAll(parameters);
+			res.setGuard(guardExpression);
 			res.setPost(postExpression);
 			res.setBody(body);
 			res.setEndPosition(currentPosition);
@@ -1106,14 +1205,14 @@ public class AcceleoParser {
 			final int startPosition = currentPosition;
 			currentPosition += startTag.length();
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, IF_HEADER_END);
 			final Expression condition = parseExpression(expressionEndLimit);
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final boolean missingEndHeader = !readString(IF_HEADER_END);
+			final int missingEndHeader = readMissingString(IF_HEADER_END);
 			final Block thenblock = parseBlock(IF_END, IF_ELSEIF, IF_ELSE);
 			final IfStatement elseIf = parseIfStatement(IF_ELSEIF);
 			final boolean parseEndIf = elseIf == null;
@@ -1126,8 +1225,14 @@ public class AcceleoParser {
 			} else {
 				elseBlock = null;
 			}
-			final boolean missingEnd = parseEndIf && !readString(IF_END);
-			if (missingOpenParenthesis || missingCloseParenthesis || missingEndHeader || missingEnd) {
+			final int missingEnd;
+			if (parseEndIf) {
+				missingEnd = readMissingString(IF_END);
+			} else {
+				missingEnd = -1;
+			}
+			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
+					|| missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorIfStatement();
 				((ErrorIfStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorIfStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
@@ -1160,17 +1265,18 @@ public class AcceleoParser {
 			final int startPostion = currentPosition;
 			currentPosition += FOR_HEADER_START.length();
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int bindingEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, FOR_HEADER_END);
 			final Binding binding = parseBinding(PIPE, bindingEndLimit);
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final boolean missingEndHeader = !readString(FOR_HEADER_END);
+			final int missingEndHeader = readMissingString(FOR_HEADER_END);
 			final Block body = parseBlock(FOR_END);
-			final boolean missingEnd = !readString(FOR_END);
-			if (missingOpenParenthesis || missingCloseParenthesis || missingEndHeader || missingEnd) {
+			final int missingEnd = readMissingString(FOR_END);
+			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
+					|| missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorForStatement();
 				((ErrorForStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorForStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
@@ -1202,23 +1308,29 @@ public class AcceleoParser {
 			final int startPostion = currentPosition;
 			currentPosition += FILE_HEADER_START.length();
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(COMMA, FILE_HEADER_END);
 			final Expression url = parseExpression(expressionEndLimit);
 			skipSpaces();
-			final boolean missingComma = !readString(COMMA);
+			final int missingComma = readMissingString(COMMA);
 			skipSpaces();
 			final OpenModeKind openMode = parseOpenModeKind();
-			final boolean missingOpenMode = openMode == null;
+			final int missingOpenMode;
+			if (openMode == null) {
+				missingOpenMode = currentPosition;
+			} else {
+				missingOpenMode = -1;
+			}
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final boolean missingEndHeader = !readString(FILE_HEADER_END);
+			final int missingEndHeader = readMissingString(FILE_HEADER_END);
 			final Block body = parseBlock(FILE_END);
-			final boolean missingEnd = !readString(FILE_END);
-			final boolean missingSymbole = missingOpenParenthesis || missingCloseParenthesis || missingComma;
-			if (missingOpenMode || missingSymbole || missingEndHeader || missingEnd) {
+			final int missingEnd = readMissingString(FILE_END);
+			final boolean missingSymbole = missingOpenParenthesis != -1 || missingCloseParenthesis != -1
+					|| missingComma != -1;
+			if (missingOpenMode != -1 || missingSymbole || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorFileStatement();
 				((ErrorFileStatement)res).setMissingOpenMode(missingOpenMode);
 				((ErrorFileStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
@@ -1285,10 +1397,10 @@ public class AcceleoParser {
 				skipSpaces();
 			}
 			skipSpaces();
-			final boolean missingEndHeader = !readString(LET_HEADER_END);
+			final int missingEndHeader = readMissingString(LET_HEADER_END);
 			final Block body = parseBlock(LET_END);
-			final boolean missingEnd = !readString(LET_END);
-			if (missingEndHeader || missingEnd) {
+			final int missingEnd = readMissingString(LET_END);
+			if (missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorLetStatement();
 				((ErrorLetStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorLetStatement)res).setMissingEnd(missingEnd);
@@ -1320,36 +1432,51 @@ public class AcceleoParser {
 
 		final int startPosition = currentPosition;
 		final String name = parseIdentifier();
+		final int missingName;
+		if (name == null) {
+			missingName = currentPosition;
+		} else {
+			missingName = -1;
+		}
 		skipSpaces();
-		boolean missingType;
+		int missingType;
 		EClassifier type;
-		boolean missingColon = true;
+		int missingColon = currentPosition;
 		if (readString(COLON)) {
 			skipSpaces();
 			type = parseEClassifier();
-			missingType = type == null;
-			missingColon = false;
+			if (type == null) {
+				missingType = currentPosition;
+			} else {
+				missingType = -1;
+			}
+			missingColon = -1;
 		} else {
 			type = null;
-			missingType = false;
+			missingType = -1;
 		}
 		skipSpaces();
-		boolean missingAffectationSymbol = !readString(affectationSymbol);
-		missingColon = missingColon && missingAffectationSymbol;
-		if (missingColon) {
+		int missingAffectationSymbol = readMissingString(affectationSymbol);
+		if (missingColon != -1 && missingAffectationSymbol != -1) {
 			type = parseEClassifier();
-			missingType = type == null;
+			if (type == null) {
+				missingType = currentPosition;
+			} else {
+				missingType = -1;
+			}
 			skipSpaces();
-			missingAffectationSymbol = !readString(affectationSymbol);
+			missingAffectationSymbol = readMissingString(affectationSymbol);
 		}
 		skipSpaces();
 		final Expression expression = parseExpression(endLimit);
-		if (missingColon || missingType || missingAffectationSymbol) {
+		if (missingName != -1 || missingColon != -1 || missingType != -1 || missingAffectationSymbol != -1) {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorBinding();
+			((ErrorBinding)res).setMissingName(missingName);
 			((ErrorBinding)res).setMissingColon(missingColon);
 			((ErrorBinding)res).setMissingType(missingType);
-			if (missingAffectationSymbol) {
+			if (missingAffectationSymbol != -1) {
 				((ErrorBinding)res).setMissingAffectationSymbole(affectationSymbol);
+				((ErrorBinding)res).setMissingAffectationSymbolePosition(missingAffectationSymbol);
 			}
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
@@ -1433,18 +1560,19 @@ public class AcceleoParser {
 			final int startPosition = currentPosition;
 			currentPosition += PROTECTED_AREA_HEADER_START.length();
 			skipSpaces();
-			final boolean missingOpenParenthesis = !readString(OPEN_PARENTHESIS);
+			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final int expressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
 					PROTECTED_AREA_HEADER_END);
 			final Expression id = parseExpression(expressionEndLimit);
 			skipSpaces();
-			final boolean missingCloseParenthesis = !readString(CLOSE_PARENTHESIS);
+			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
-			final boolean missingEndHeader = !readString(PROTECTED_AREA_HEADER_END);
+			final int missingEndHeader = readMissingString(PROTECTED_AREA_HEADER_END);
 			final Block body = parseBlock(PROTECTED_AREA_END);
-			final boolean missingEnd = !readString(PROTECTED_AREA_END);
-			if (missingOpenParenthesis || missingCloseParenthesis || missingEndHeader || missingEnd) {
+			final int missingEnd = readMissingString(PROTECTED_AREA_END);
+			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
+					|| missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorProtectedArea();
 				((ErrorProtectedArea)res).setMissingOpenParenthesis(missingOpenParenthesis);
 				((ErrorProtectedArea)res).setMissingCloseParenthesis(missingCloseParenthesis);
@@ -1481,8 +1609,8 @@ public class AcceleoParser {
 					EXPRESSION_STATEMENT_END);
 			final Expression expression = parseExpression(expressionEndLimit);
 			skipSpaces();
-			final boolean missingEndHeader = !readString(EXPRESSION_STATEMENT_END);
-			if (missingEndHeader) {
+			final int missingEndHeader = readMissingString(EXPRESSION_STATEMENT_END);
+			if (missingEndHeader != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorExpressionStatement();
 				((ErrorExpressionStatement)res).setMissingEndHeader(missingEndHeader);
 			} else {
@@ -1554,8 +1682,8 @@ public class AcceleoParser {
 			final String nsURI = text.substring(currentPosition, nextQuote);
 			currentPosition = nextQuote;
 			final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
-			boolean missingEndQuote = !readString(QUOTE);
-			if (ePackage == null || missingEndQuote) {
+			final int missingEndQuote = readMissingString(QUOTE);
+			if (ePackage == null || missingEndQuote != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMetamodel();
 				((ErrorMetamodel)res).setMissingEndQuote(missingEndQuote);
 			} else {

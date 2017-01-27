@@ -7,10 +7,10 @@ module myModule
     
    (116..119)
     *** error if statement ***
-    missing open parenthesis: false
-    missing close parenthesis: true
-    missing end header: false
-    missing end: false
+    missing open parenthesis: -1
+    missing close parenthesis: 156
+    missing end header: -1
+    missing end: -1
     [if .equals(->size(.aqlFeatureAccess(myParam, 'eClassifiers')), 0) (124..156)
       
     some static text.

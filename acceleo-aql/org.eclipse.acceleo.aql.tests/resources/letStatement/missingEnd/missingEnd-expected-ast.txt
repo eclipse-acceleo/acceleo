@@ -7,8 +7,8 @@ module myModule
     
    (116..119)
     *** error let statement ***
-    missing end header: false
-    missing end: true
+    missing end header: -1
+    missing end: 211
     [let 
     myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (158..187) (124..187)
       

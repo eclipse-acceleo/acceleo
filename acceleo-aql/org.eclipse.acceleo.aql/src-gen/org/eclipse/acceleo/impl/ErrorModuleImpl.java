@@ -55,10 +55,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getModuleElements <em>Module Elements</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getStartHeaderPosition <em>Start Header Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getEndHeaderPosition <em>End Header Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#isMissingEPackage <em>Missing EPackage</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#isMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingEPackage <em>Missing EPackage</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
  * </p>
  *
@@ -126,14 +126,14 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	protected EList<Metamodel> metamodels;
 
 	/**
-	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.
+	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getExtends()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ModuleReference> extends_;
+	protected ModuleReference extends_;
 
 	/**
 	 * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list.
@@ -196,84 +196,84 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	protected int endHeaderPosition = END_HEADER_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_OPEN_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEPackage() <em>Missing EPackage</em>}' attribute.
+	 * The default value of the '{@link #getMissingEPackage() <em>Missing EPackage</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEPackage()
+	 * @see #getMissingEPackage()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_EPACKAGE_EDEFAULT = false;
+	protected static final int MISSING_EPACKAGE_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEPackage() <em>Missing EPackage</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEPackage() <em>Missing EPackage</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEPackage()
+	 * @see #getMissingEPackage()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEPackage = MISSING_EPACKAGE_EDEFAULT;
+	protected int missingEPackage = MISSING_EPACKAGE_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_CLOSE_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_HEADER_EDEFAULT = false;
+	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEndHeader = MISSING_END_HEADER_EDEFAULT;
+	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -406,12 +406,49 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<ModuleReference> getExtends() {
-		if (extends_ == null) {
-			extends_ = new EObjectContainmentEList<ModuleReference>(ModuleReference.class, this,
-					AcceleoPackage.ERROR_MODULE__EXTENDS);
-		}
+	public ModuleReference getExtends() {
 		return extends_;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetExtends(ModuleReference newExtends, NotificationChain msgs) {
+		ModuleReference oldExtends = extends_;
+		extends_ = newExtends;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_MODULE__EXTENDS, oldExtends, newExtends);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setExtends(ModuleReference newExtends) {
+		if (newExtends != extends_) {
+			NotificationChain msgs = null;
+			if (extends_ != null)
+				msgs = ((InternalEObject)extends_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_MODULE__EXTENDS, null, msgs);
+			if (newExtends != null)
+				msgs = ((InternalEObject)newExtends).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.ERROR_MODULE__EXTENDS, null, msgs);
+			msgs = basicSetExtends(newExtends, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_MODULE__EXTENDS,
+					newExtends, newExtends));
 	}
 
 	/**
@@ -490,7 +527,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingOpenParenthesis() {
+	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
 
@@ -499,8 +536,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingOpenParenthesis(boolean newMissingOpenParenthesis) {
-		boolean oldMissingOpenParenthesis = missingOpenParenthesis;
+	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
+		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -513,7 +550,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEPackage() {
+	public int getMissingEPackage() {
 		return missingEPackage;
 	}
 
@@ -522,8 +559,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEPackage(boolean newMissingEPackage) {
-		boolean oldMissingEPackage = missingEPackage;
+	public void setMissingEPackage(int newMissingEPackage) {
+		int oldMissingEPackage = missingEPackage;
 		missingEPackage = newMissingEPackage;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -535,7 +572,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingCloseParenthesis() {
+	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
 
@@ -544,8 +581,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingCloseParenthesis(boolean newMissingCloseParenthesis) {
-		boolean oldMissingCloseParenthesis = missingCloseParenthesis;
+	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
+		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -558,7 +595,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEndHeader() {
+	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
 
@@ -567,8 +604,8 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEndHeader(boolean newMissingEndHeader) {
-		boolean oldMissingEndHeader = missingEndHeader;
+	public void setMissingEndHeader(int newMissingEndHeader) {
+		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -603,7 +640,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__DOCUMENTATION:
 				return basicSetDocumentation(null, msgs);
 			case AcceleoPackage.ERROR_MODULE__EXTENDS:
-				return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
+				return basicSetExtends(null, msgs);
 			case AcceleoPackage.ERROR_MODULE__IMPORTS:
 				return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
 			case AcceleoPackage.ERROR_MODULE__MODULE_ELEMENTS:
@@ -639,13 +676,13 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__END_HEADER_POSITION:
 				return getEndHeaderPosition();
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
-				return isMissingOpenParenthesis();
+				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
-				return isMissingEPackage();
+				return getMissingEPackage();
 			case AcceleoPackage.ERROR_MODULE__MISSING_CLOSE_PARENTHESIS:
-				return isMissingCloseParenthesis();
+				return getMissingCloseParenthesis();
 			case AcceleoPackage.ERROR_MODULE__MISSING_END_HEADER:
-				return isMissingEndHeader();
+				return getMissingEndHeader();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -673,8 +710,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				getMetamodels().addAll((Collection<? extends Metamodel>)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__EXTENDS:
-				getExtends().clear();
-				getExtends().addAll((Collection<? extends ModuleReference>)newValue);
+				setExtends((ModuleReference)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__IMPORTS:
 				getImports().clear();
@@ -691,16 +727,16 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				setEndHeaderPosition((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_OPEN_PARENTHESIS:
-				setMissingOpenParenthesis((Boolean)newValue);
+				setMissingOpenParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_EPACKAGE:
-				setMissingEPackage((Boolean)newValue);
+				setMissingEPackage((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_CLOSE_PARENTHESIS:
-				setMissingCloseParenthesis((Boolean)newValue);
+				setMissingCloseParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE__MISSING_END_HEADER:
-				setMissingEndHeader((Boolean)newValue);
+				setMissingEndHeader((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -727,7 +763,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 				getMetamodels().clear();
 				return;
 			case AcceleoPackage.ERROR_MODULE__EXTENDS:
-				getExtends().clear();
+				setExtends((ModuleReference)null);
 				return;
 			case AcceleoPackage.ERROR_MODULE__IMPORTS:
 				getImports().clear();
@@ -774,7 +810,7 @@ public class ErrorModuleImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_MODULE__METAMODELS:
 				return metamodels != null && !metamodels.isEmpty();
 			case AcceleoPackage.ERROR_MODULE__EXTENDS:
-				return extends_ != null && !extends_.isEmpty();
+				return extends_ != null;
 			case AcceleoPackage.ERROR_MODULE__IMPORTS:
 				return imports != null && !imports.isEmpty();
 			case AcceleoPackage.ERROR_MODULE__MODULE_ELEMENTS:

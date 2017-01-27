@@ -52,7 +52,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getBody <em>Body</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getParameterDocumentation <em>Parameter Documentation</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#isMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorModuleElementDocumentationImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  * </ul>
  * </p>
  *
@@ -120,24 +120,24 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	protected EList<ParameterDocumentation> parameterDocumentation;
 
 	/**
-	 * The default value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_HEADER_EDEFAULT = false;
+	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEndHeader = MISSING_END_HEADER_EDEFAULT;
+	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -321,7 +321,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEndHeader() {
+	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
 
@@ -330,8 +330,8 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEndHeader(boolean newMissingEndHeader) {
-		boolean oldMissingEndHeader = missingEndHeader;
+	public void setMissingEndHeader(int newMissingEndHeader) {
+		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -407,7 +407,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION:
 				return getParameterDocumentation();
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER:
-				return isMissingEndHeader();
+				return getMissingEndHeader();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -438,7 +438,7 @@ public class ErrorModuleElementDocumentationImpl extends MinimalEObjectImpl.Cont
 				getParameterDocumentation().addAll((Collection<? extends ParameterDocumentation>)newValue);
 				return;
 			case AcceleoPackage.ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER:
-				setMissingEndHeader((Boolean)newValue);
+				setMissingEndHeader((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

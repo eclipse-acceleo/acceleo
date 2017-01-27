@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getModule <em>Module</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorImportImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -94,24 +94,24 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	protected ModuleReference module;
 
 	/**
-	 * The default value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_EDEFAULT = false;
+	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEnd = MISSING_END_EDEFAULT;
+	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -231,7 +231,7 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEnd() {
+	public int getMissingEnd() {
 		return missingEnd;
 	}
 
@@ -240,8 +240,8 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEnd(boolean newMissingEnd) {
-		boolean oldMissingEnd = missingEnd;
+	public void setMissingEnd(int newMissingEnd) {
+		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_IMPORT__MISSING_END,
@@ -277,7 +277,7 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 			case AcceleoPackage.ERROR_IMPORT__MODULE:
 				return getModule();
 			case AcceleoPackage.ERROR_IMPORT__MISSING_END:
-				return isMissingEnd();
+				return getMissingEnd();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -300,7 +300,7 @@ public class ErrorImportImpl extends MinimalEObjectImpl.Container implements Err
 				setModule((ModuleReference)newValue);
 				return;
 			case AcceleoPackage.ERROR_IMPORT__MISSING_END:
-				setMissingEnd((Boolean)newValue);
+				setMissingEnd((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

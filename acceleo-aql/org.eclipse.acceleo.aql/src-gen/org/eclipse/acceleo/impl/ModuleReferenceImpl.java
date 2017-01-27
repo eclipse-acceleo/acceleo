@@ -30,7 +30,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleReferenceImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ModuleReferenceImpl#getEndPosition <em>End Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ModuleReferenceImpl#getUrl <em>Url</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ModuleReferenceImpl#getQualifiedName <em>Qualified Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -78,24 +78,24 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	protected int endPosition = END_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getUrl() <em>Url</em>}' attribute.
+	 * The default value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getUrl()
+	 * @see #getQualifiedName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String URL_EDEFAULT = null;
+	protected static final String QUALIFIED_NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getUrl() <em>Url</em>}' attribute.
+	 * The cached value of the '{@link #getQualifiedName() <em>Qualified Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getUrl()
+	 * @see #getQualifiedName()
 	 * @generated
 	 * @ordered
 	 */
-	protected String url = URL_EDEFAULT;
+	protected String qualifiedName = QUALIFIED_NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -165,8 +165,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getUrl() {
-		return url;
+	public String getQualifiedName() {
+		return qualifiedName;
 	}
 
 	/**
@@ -174,12 +174,12 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setUrl(String newUrl) {
-		String oldUrl = url;
-		url = newUrl;
+	public void setQualifiedName(String newQualifiedName) {
+		String oldQualifiedName = qualifiedName;
+		qualifiedName = newQualifiedName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE_REFERENCE__URL,
-					oldUrl, url));
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE_REFERENCE__QUALIFIED_NAME, oldQualifiedName, qualifiedName));
 	}
 
 	/**
@@ -194,8 +194,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 				return getStartPosition();
 			case AcceleoPackage.MODULE_REFERENCE__END_POSITION:
 				return getEndPosition();
-			case AcceleoPackage.MODULE_REFERENCE__URL:
-				return getUrl();
+			case AcceleoPackage.MODULE_REFERENCE__QUALIFIED_NAME:
+				return getQualifiedName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -214,8 +214,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 			case AcceleoPackage.MODULE_REFERENCE__END_POSITION:
 				setEndPosition((Integer)newValue);
 				return;
-			case AcceleoPackage.MODULE_REFERENCE__URL:
-				setUrl((String)newValue);
+			case AcceleoPackage.MODULE_REFERENCE__QUALIFIED_NAME:
+				setQualifiedName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -235,8 +235,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 			case AcceleoPackage.MODULE_REFERENCE__END_POSITION:
 				setEndPosition(END_POSITION_EDEFAULT);
 				return;
-			case AcceleoPackage.MODULE_REFERENCE__URL:
-				setUrl(URL_EDEFAULT);
+			case AcceleoPackage.MODULE_REFERENCE__QUALIFIED_NAME:
+				setQualifiedName(QUALIFIED_NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -254,8 +254,9 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 				return startPosition != START_POSITION_EDEFAULT;
 			case AcceleoPackage.MODULE_REFERENCE__END_POSITION:
 				return endPosition != END_POSITION_EDEFAULT;
-			case AcceleoPackage.MODULE_REFERENCE__URL:
-				return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT.equals(url);
+			case AcceleoPackage.MODULE_REFERENCE__QUALIFIED_NAME:
+				return QUALIFIED_NAME_EDEFAULT == null ? qualifiedName != null : !QUALIFIED_NAME_EDEFAULT
+						.equals(qualifiedName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -275,8 +276,8 @@ public class ModuleReferenceImpl extends MinimalEObjectImpl.Container implements
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
 		result.append(endPosition);
-		result.append(", url: "); //$NON-NLS-1$
-		result.append(url);
+		result.append(", qualifiedName: "); //$NON-NLS-1$
+		result.append(qualifiedName);
 		result.append(')');
 		return result.toString();
 	}

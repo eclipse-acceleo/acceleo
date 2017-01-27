@@ -6,10 +6,10 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [for myVariable : EClassifier = .aqlFeatureAccess(myTemplate, 'eClassifiers') (159..182) (125..182)
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (159..179) (125..179)
       
     some static text.
-   (184..209) (184..209)
-    [/for] (119..215)
+   (181..206) (181..206)
+    [/for] (119..212)
     
- (215..216) (116..216)[/template] (61..227)
+ (212..213) (116..213)[/template] (61..224)

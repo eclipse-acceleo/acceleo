@@ -1,1 +1,0 @@
-[module myModule('http://www.eclipse.org/emf/2002/Ecore') extends org::eclipse::acceleo::MyModule,org::eclipse::acceleo::MyModule1,org::eclipse::acceleo::MyModule2/]

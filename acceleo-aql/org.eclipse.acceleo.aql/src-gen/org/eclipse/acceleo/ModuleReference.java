@@ -19,7 +19,7 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ModuleReference#getUrl <em>Url</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -29,29 +29,29 @@ package org.eclipse.acceleo;
  */
 public interface ModuleReference extends ASTNode {
 	/**
-	 * Returns the value of the '<em><b>Url</b></em>' attribute.
+	 * Returns the value of the '<em><b>Qualified Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Url</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Qualified Name</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Url</em>' attribute.
-	 * @see #setUrl(String)
-	 * @see org.eclipse.acceleo.AcceleoPackage#getModuleReference_Url()
+	 * @return the value of the '<em>Qualified Name</em>' attribute.
+	 * @see #setQualifiedName(String)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getModuleReference_QualifiedName()
 	 * @model dataType="org.eclipse.acceleo.ModuleQualifiedName"
 	 * @generated
 	 */
-	String getUrl();
+	String getQualifiedName();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ModuleReference#getUrl <em>Url</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Url</em>' attribute.
-	 * @see #getUrl()
+	 * @param value the new value of the '<em>Qualified Name</em>' attribute.
+	 * @see #getQualifiedName()
 	 * @generated
 	 */
-	void setUrl(String value);
+	void setQualifiedName(String value);
 
 } // ModuleReference

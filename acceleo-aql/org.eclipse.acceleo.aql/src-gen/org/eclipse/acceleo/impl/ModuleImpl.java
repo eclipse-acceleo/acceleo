@@ -98,14 +98,14 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	protected EList<Metamodel> metamodels;
 
 	/**
-	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference list.
+	 * The cached value of the '{@link #getExtends() <em>Extends</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getExtends()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ModuleReference> extends_;
+	protected ModuleReference extends_;
 
 	/**
 	 * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list.
@@ -276,12 +276,49 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<ModuleReference> getExtends() {
-		if (extends_ == null) {
-			extends_ = new EObjectContainmentEList<ModuleReference>(ModuleReference.class, this,
-					AcceleoPackage.MODULE__EXTENDS);
-		}
+	public ModuleReference getExtends() {
 		return extends_;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetExtends(ModuleReference newExtends, NotificationChain msgs) {
+		ModuleReference oldExtends = extends_;
+		extends_ = newExtends;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.MODULE__EXTENDS, oldExtends, newExtends);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setExtends(ModuleReference newExtends) {
+		if (newExtends != extends_) {
+			NotificationChain msgs = null;
+			if (extends_ != null)
+				msgs = ((InternalEObject)extends_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.MODULE__EXTENDS, null, msgs);
+			if (newExtends != null)
+				msgs = ((InternalEObject)newExtends).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- AcceleoPackage.MODULE__EXTENDS, null, msgs);
+			msgs = basicSetExtends(newExtends, msgs);
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.MODULE__EXTENDS, newExtends,
+					newExtends));
 	}
 
 	/**
@@ -381,7 +418,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 			case AcceleoPackage.MODULE__DOCUMENTATION:
 				return basicSetDocumentation(null, msgs);
 			case AcceleoPackage.MODULE__EXTENDS:
-				return ((InternalEList<?>)getExtends()).basicRemove(otherEnd, msgs);
+				return basicSetExtends(null, msgs);
 			case AcceleoPackage.MODULE__IMPORTS:
 				return ((InternalEList<?>)getImports()).basicRemove(otherEnd, msgs);
 			case AcceleoPackage.MODULE__MODULE_ELEMENTS:
@@ -438,8 +475,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 				getMetamodels().addAll((Collection<? extends Metamodel>)newValue);
 				return;
 			case AcceleoPackage.MODULE__EXTENDS:
-				getExtends().clear();
-				getExtends().addAll((Collection<? extends ModuleReference>)newValue);
+				setExtends((ModuleReference)newValue);
 				return;
 			case AcceleoPackage.MODULE__IMPORTS:
 				getImports().clear();
@@ -477,7 +513,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 				getMetamodels().clear();
 				return;
 			case AcceleoPackage.MODULE__EXTENDS:
-				getExtends().clear();
+				setExtends((ModuleReference)null);
 				return;
 			case AcceleoPackage.MODULE__IMPORTS:
 				getImports().clear();
@@ -510,7 +546,7 @@ public class ModuleImpl extends NamedElementImpl implements Module {
 			case AcceleoPackage.MODULE__METAMODELS:
 				return metamodels != null && !metamodels.isEmpty();
 			case AcceleoPackage.MODULE__EXTENDS:
-				return extends_ != null && !extends_.isEmpty();
+				return extends_ != null;
 			case AcceleoPackage.MODULE__IMPORTS:
 				return imports != null && !imports.isEmpty();
 			case AcceleoPackage.MODULE__MODULE_ELEMENTS:

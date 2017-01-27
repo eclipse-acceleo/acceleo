@@ -19,7 +19,9 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorVariable#isMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorVariable#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorVariable#getMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorVariable#getMissingType <em>Missing Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -29,7 +31,35 @@ package org.eclipse.acceleo;
  */
 public interface ErrorVariable extends org.eclipse.acceleo.Error, Variable {
 	/**
+	 * Returns the value of the '<em><b>Missing Name</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Name</em>' attribute.
+	 * @see #setMissingName(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorVariable_MissingName()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorVariable#getMissingName <em>Missing Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Name</em>' attribute.
+	 * @see #getMissingName()
+	 * @generated
+	 */
+	void setMissingName(int value);
+
+	/**
 	 * Returns the value of the '<em><b>Missing Colon</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Colon</em>' attribute isn't clear,
@@ -37,21 +67,48 @@ public interface ErrorVariable extends org.eclipse.acceleo.Error, Variable {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Colon</em>' attribute.
-	 * @see #setMissingColon(boolean)
+	 * @see #setMissingColon(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorVariable_MissingColon()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingColon();
+	int getMissingColon();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorVariable#isMissingColon <em>Missing Colon</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorVariable#getMissingColon <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Colon</em>' attribute.
-	 * @see #isMissingColon()
+	 * @see #getMissingColon()
 	 * @generated
 	 */
-	void setMissingColon(boolean value);
+	void setMissingColon(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Type</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Type</em>' attribute.
+	 * @see #setMissingType(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorVariable_MissingType()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingType();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorVariable#getMissingType <em>Missing Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Type</em>' attribute.
+	 * @see #getMissingType()
+	 * @generated
+	 */
+	void setMissingType(int value);
 
 } // ErrorVariable

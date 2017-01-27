@@ -40,10 +40,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getCondition <em>Condition</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getThen <em>Then</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getElse <em>Else</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#isMissingEndHeader <em>Missing End Header</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorIfStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -121,84 +121,84 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	protected Block else_;
 
 	/**
-	 * The default value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_OPEN_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_OPEN_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingOpenParenthesis() <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_CLOSE_PARENTHESIS_EDEFAULT = false;
+	protected static final int MISSING_CLOSE_PARENTHESIS_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
+	 * The cached value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
+	protected int missingCloseParenthesis = MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_HEADER_EDEFAULT = false;
+	protected static final int MISSING_END_HEADER_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEndHeader() <em>Missing End Header</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEndHeader()
+	 * @see #getMissingEndHeader()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEndHeader = MISSING_END_HEADER_EDEFAULT;
+	protected int missingEndHeader = MISSING_END_HEADER_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The default value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_END_EDEFAULT = false;
+	protected static final int MISSING_END_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingEnd() <em>Missing End</em>}' attribute.
+	 * The cached value of the '{@link #getMissingEnd() <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingEnd = MISSING_END_EDEFAULT;
+	protected int missingEnd = MISSING_END_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -418,7 +418,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingOpenParenthesis() {
+	public int getMissingOpenParenthesis() {
 		return missingOpenParenthesis;
 	}
 
@@ -427,8 +427,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingOpenParenthesis(boolean newMissingOpenParenthesis) {
-		boolean oldMissingOpenParenthesis = missingOpenParenthesis;
+	public void setMissingOpenParenthesis(int newMissingOpenParenthesis) {
+		int oldMissingOpenParenthesis = missingOpenParenthesis;
 		missingOpenParenthesis = newMissingOpenParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -441,7 +441,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingCloseParenthesis() {
+	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
 
@@ -450,8 +450,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingCloseParenthesis(boolean newMissingCloseParenthesis) {
-		boolean oldMissingCloseParenthesis = missingCloseParenthesis;
+	public void setMissingCloseParenthesis(int newMissingCloseParenthesis) {
+		int oldMissingCloseParenthesis = missingCloseParenthesis;
 		missingCloseParenthesis = newMissingCloseParenthesis;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -464,7 +464,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEndHeader() {
+	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
 
@@ -473,8 +473,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEndHeader(boolean newMissingEndHeader) {
-		boolean oldMissingEndHeader = missingEndHeader;
+	public void setMissingEndHeader(int newMissingEndHeader) {
+		int oldMissingEndHeader = missingEndHeader;
 		missingEndHeader = newMissingEndHeader;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -487,7 +487,7 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingEnd() {
+	public int getMissingEnd() {
 		return missingEnd;
 	}
 
@@ -496,8 +496,8 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingEnd(boolean newMissingEnd) {
-		boolean oldMissingEnd = missingEnd;
+	public void setMissingEnd(int newMissingEnd) {
+		int oldMissingEnd = missingEnd;
 		missingEnd = newMissingEnd;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
@@ -541,13 +541,13 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 			case AcceleoPackage.ERROR_IF_STATEMENT__ELSE:
 				return getElse();
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
-				return isMissingOpenParenthesis();
+				return getMissingOpenParenthesis();
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS:
-				return isMissingCloseParenthesis();
+				return getMissingCloseParenthesis();
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_END_HEADER:
-				return isMissingEndHeader();
+				return getMissingEndHeader();
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_END:
-				return isMissingEnd();
+				return getMissingEnd();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -576,16 +576,16 @@ public class ErrorIfStatementImpl extends MinimalEObjectImpl.Container implement
 				setElse((Block)newValue);
 				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS:
-				setMissingOpenParenthesis((Boolean)newValue);
+				setMissingOpenParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS:
-				setMissingCloseParenthesis((Boolean)newValue);
+				setMissingCloseParenthesis((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_END_HEADER:
-				setMissingEndHeader((Boolean)newValue);
+				setMissingEndHeader((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_IF_STATEMENT__MISSING_END:
-				setMissingEnd((Boolean)newValue);
+				setMissingEnd((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

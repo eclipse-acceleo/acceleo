@@ -19,12 +19,14 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorQuery#isMissingVisibility <em>Missing Visibility</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorQuery#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorQuery#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorQuery#isMissingColon <em>Missing Colon</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorQuery#isMissingEqual <em>Missing Equal</em>}</li>
- *   <li>{@link org.eclipse.acceleo.ErrorQuery#isMissingEnd <em>Missing End</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingVisibility <em>Missing Visibility</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingType <em>Missing Type</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingEqual <em>Missing Equal</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
  * </p>
  *
@@ -35,6 +37,7 @@ package org.eclipse.acceleo;
 public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	/**
 	 * Returns the value of the '<em><b>Missing Visibility</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Visibility</em>' attribute isn't clear,
@@ -42,25 +45,53 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Visibility</em>' attribute.
-	 * @see #setMissingVisibility(boolean)
+	 * @see #setMissingVisibility(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingVisibility()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingVisibility();
+	int getMissingVisibility();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#isMissingVisibility <em>Missing Visibility</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingVisibility <em>Missing Visibility</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Visibility</em>' attribute.
-	 * @see #isMissingVisibility()
+	 * @see #getMissingVisibility()
 	 * @generated
 	 */
-	void setMissingVisibility(boolean value);
+	void setMissingVisibility(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Name</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Name</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Name</em>' attribute.
+	 * @see #setMissingName(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingName()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingName();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingName <em>Missing Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Name</em>' attribute.
+	 * @see #getMissingName()
+	 * @generated
+	 */
+	void setMissingName(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Open Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Open Parenthesis</em>' attribute isn't clear,
@@ -68,25 +99,26 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #setMissingOpenParenthesis(boolean)
+	 * @see #setMissingOpenParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingOpenParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingOpenParenthesis();
+	int getMissingOpenParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Open Parenthesis</em>' attribute.
-	 * @see #isMissingOpenParenthesis()
+	 * @see #getMissingOpenParenthesis()
 	 * @generated
 	 */
-	void setMissingOpenParenthesis(boolean value);
+	void setMissingOpenParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Close Parenthesis</em>' attribute isn't clear,
@@ -94,25 +126,26 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #setMissingCloseParenthesis(boolean)
+	 * @see #setMissingCloseParenthesis(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingCloseParenthesis()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingCloseParenthesis();
+	int getMissingCloseParenthesis();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Close Parenthesis</em>' attribute.
-	 * @see #isMissingCloseParenthesis()
+	 * @see #getMissingCloseParenthesis()
 	 * @generated
 	 */
-	void setMissingCloseParenthesis(boolean value);
+	void setMissingCloseParenthesis(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Colon</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Colon</em>' attribute isn't clear,
@@ -120,25 +153,53 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Colon</em>' attribute.
-	 * @see #setMissingColon(boolean)
+	 * @see #setMissingColon(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingColon()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingColon();
+	int getMissingColon();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#isMissingColon <em>Missing Colon</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingColon <em>Missing Colon</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Colon</em>' attribute.
-	 * @see #isMissingColon()
+	 * @see #getMissingColon()
 	 * @generated
 	 */
-	void setMissingColon(boolean value);
+	void setMissingColon(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Type</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Type</em>' attribute.
+	 * @see #setMissingType(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingType()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingType();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingType <em>Missing Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Type</em>' attribute.
+	 * @see #getMissingType()
+	 * @generated
+	 */
+	void setMissingType(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Equal</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing Equal</em>' attribute isn't clear,
@@ -146,25 +207,26 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing Equal</em>' attribute.
-	 * @see #setMissingEqual(boolean)
+	 * @see #setMissingEqual(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingEqual()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEqual();
+	int getMissingEqual();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#isMissingEqual <em>Missing Equal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingEqual <em>Missing Equal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing Equal</em>' attribute.
-	 * @see #isMissingEqual()
+	 * @see #getMissingEqual()
 	 * @generated
 	 */
-	void setMissingEqual(boolean value);
+	void setMissingEqual(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing End</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End</em>' attribute isn't clear,
@@ -172,21 +234,21 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End</em>' attribute.
-	 * @see #setMissingEnd(boolean)
+	 * @see #setMissingEnd(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingEnd()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEnd();
+	int getMissingEnd();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#isMissingEnd <em>Missing End</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingEnd <em>Missing End</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End</em>' attribute.
-	 * @see #isMissingEnd()
+	 * @see #getMissingEnd()
 	 * @generated
 	 */
-	void setMissingEnd(boolean value);
+	void setMissingEnd(int value);
 
 } // ErrorQuery

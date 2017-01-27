@@ -7,10 +7,10 @@ module myModule
     
    (116..119)
     *** error protected area ***
-    missing open parenthesis: false
-    missing close parenthesis: false
-    missing end header: false
-    missing end: true
+    missing open parenthesis: -1
+    missing close parenthesis: -1
+    missing end header: -1
+    missing end: 168
     [protected .aqlFeatureAccess(myParam, 'name') (131..143)
       
     some static text.

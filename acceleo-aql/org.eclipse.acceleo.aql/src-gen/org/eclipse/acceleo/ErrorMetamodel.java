@@ -19,7 +19,8 @@ package org.eclipse.acceleo;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.acceleo.ErrorMetamodel#isMissingEndQuote <em>Missing End Quote</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorMetamodel#getFragment <em>Fragment</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote <em>Missing End Quote</em>}</li>
  * </ul>
  * </p>
  *
@@ -29,7 +30,34 @@ package org.eclipse.acceleo;
  */
 public interface ErrorMetamodel extends org.eclipse.acceleo.Error, Metamodel {
 	/**
+	 * Returns the value of the '<em><b>Fragment</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Fragment</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Fragment</em>' attribute.
+	 * @see #setFragment(String)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorMetamodel_Fragment()
+	 * @model
+	 * @generated
+	 */
+	String getFragment();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorMetamodel#getFragment <em>Fragment</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Fragment</em>' attribute.
+	 * @see #getFragment()
+	 * @generated
+	 */
+	void setFragment(String value);
+
+	/**
 	 * Returns the value of the '<em><b>Missing End Quote</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Missing End Quote</em>' attribute isn't clear,
@@ -37,21 +65,21 @@ public interface ErrorMetamodel extends org.eclipse.acceleo.Error, Metamodel {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Missing End Quote</em>' attribute.
-	 * @see #setMissingEndQuote(boolean)
+	 * @see #setMissingEndQuote(int)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorMetamodel_MissingEndQuote()
-	 * @model required="true"
+	 * @model default="-1" required="true"
 	 * @generated
 	 */
-	boolean isMissingEndQuote();
+	int getMissingEndQuote();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorMetamodel#isMissingEndQuote <em>Missing End Quote</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote <em>Missing End Quote</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Missing End Quote</em>' attribute.
-	 * @see #isMissingEndQuote()
+	 * @see #getMissingEndQuote()
 	 * @generated
 	 */
-	void setMissingEndQuote(boolean value);
+	void setMissingEndQuote(int value);
 
 } // ErrorMetamodel

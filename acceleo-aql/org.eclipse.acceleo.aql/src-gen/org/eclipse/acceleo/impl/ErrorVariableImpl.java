@@ -38,7 +38,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getStartPosition <em>Start Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getEndPosition <em>End Position</em>}</li>
- *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#isMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingName <em>Missing Name</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingColon <em>Missing Colon</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorVariableImpl#getMissingType <em>Missing Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -116,24 +118,64 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	protected int endPosition = END_POSITION_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute.
+	 * The default value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingColon()
+	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean MISSING_COLON_EDEFAULT = false;
+	protected static final int MISSING_NAME_EDEFAULT = -1;
 
 	/**
-	 * The cached value of the '{@link #isMissingColon() <em>Missing Colon</em>}' attribute.
+	 * The cached value of the '{@link #getMissingName() <em>Missing Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isMissingColon()
+	 * @see #getMissingName()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean missingColon = MISSING_COLON_EDEFAULT;
+	protected int missingName = MISSING_NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingColon()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_COLON_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingColon() <em>Missing Colon</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingColon()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingColon = MISSING_COLON_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_TYPE_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingType() <em>Missing Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingType()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingType = MISSING_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -265,7 +307,29 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isMissingColon() {
+	public int getMissingName() {
+		return missingName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingName(int newMissingName) {
+		int oldMissingName = missingName;
+		missingName = newMissingName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_VARIABLE__MISSING_NAME, oldMissingName, missingName));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingColon() {
 		return missingColon;
 	}
 
@@ -274,12 +338,34 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMissingColon(boolean newMissingColon) {
-		boolean oldMissingColon = missingColon;
+	public void setMissingColon(int newMissingColon) {
+		int oldMissingColon = missingColon;
 		missingColon = newMissingColon;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					AcceleoPackage.ERROR_VARIABLE__MISSING_COLON, oldMissingColon, missingColon));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public int getMissingType() {
+		return missingType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingType(int newMissingType) {
+		int oldMissingType = missingType;
+		missingType = newMissingType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE, oldMissingType, missingType));
 	}
 
 	/**
@@ -300,8 +386,12 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 				return getStartPosition();
 			case AcceleoPackage.ERROR_VARIABLE__END_POSITION:
 				return getEndPosition();
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_NAME:
+				return getMissingName();
 			case AcceleoPackage.ERROR_VARIABLE__MISSING_COLON:
-				return isMissingColon();
+				return getMissingColon();
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE:
+				return getMissingType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -326,8 +416,14 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 			case AcceleoPackage.ERROR_VARIABLE__END_POSITION:
 				setEndPosition((Integer)newValue);
 				return;
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_NAME:
+				setMissingName((Integer)newValue);
+				return;
 			case AcceleoPackage.ERROR_VARIABLE__MISSING_COLON:
-				setMissingColon((Boolean)newValue);
+				setMissingColon((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE:
+				setMissingType((Integer)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -353,8 +449,14 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 			case AcceleoPackage.ERROR_VARIABLE__END_POSITION:
 				setEndPosition(END_POSITION_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_NAME:
+				setMissingName(MISSING_NAME_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_VARIABLE__MISSING_COLON:
 				setMissingColon(MISSING_COLON_EDEFAULT);
+				return;
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE:
+				setMissingType(MISSING_TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -376,8 +478,12 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 				return startPosition != START_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_VARIABLE__END_POSITION:
 				return endPosition != END_POSITION_EDEFAULT;
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_NAME:
+				return missingName != MISSING_NAME_EDEFAULT;
 			case AcceleoPackage.ERROR_VARIABLE__MISSING_COLON:
 				return missingColon != MISSING_COLON_EDEFAULT;
+			case AcceleoPackage.ERROR_VARIABLE__MISSING_TYPE:
+				return missingType != MISSING_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -483,8 +589,12 @@ public class ErrorVariableImpl extends MinimalEObjectImpl.Container implements E
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
 		result.append(endPosition);
+		result.append(", missingName: "); //$NON-NLS-1$
+		result.append(missingName);
 		result.append(", missingColon: "); //$NON-NLS-1$
 		result.append(missingColon);
+		result.append(", missingType: "); //$NON-NLS-1$
+		result.append(missingType);
 		result.append(')');
 		return result.toString();
 	}

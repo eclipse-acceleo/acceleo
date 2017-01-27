@@ -151,7 +151,7 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__METAMODELS = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -288,7 +288,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE__METAMODELS = ERROR_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Extends</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -525,13 +525,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_METAMODEL__REFERENCED_PACKAGE = ERROR_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Fragment</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_METAMODEL__FRAGMENT = ERROR_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Missing End Quote</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__MISSING_END_QUOTE = ERROR_FEATURE_COUNT + 3;
+	int ERROR_METAMODEL__MISSING_END_QUOTE = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Error Metamodel</em>' class.
@@ -540,7 +549,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_METAMODEL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Error Metamodel</em>' class.
@@ -699,13 +708,13 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE_REFERENCE__END_POSITION = AST_NODE__END_POSITION;
 
 	/**
-	 * The feature id for the '<em><b>Url</b></em>' attribute.
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_REFERENCE__URL = AST_NODE_FEATURE_COUNT + 0;
+	int MODULE_REFERENCE__QUALIFIED_NAME = AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Module Reference</em>' class.
@@ -754,13 +763,13 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_REFERENCE__END_POSITION = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Url</b></em>' attribute.
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_REFERENCE__URL = ERROR_FEATURE_COUNT + 2;
+	int ERROR_MODULE_REFERENCE__QUALIFIED_NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Error Module Reference</em>' class.
@@ -1849,13 +1858,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_TEMPLATE__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 11;
 
 	/**
+	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_TEMPLATE__MISSING_NAME = ERROR_FEATURE_COUNT + 12;
+
+	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
+	int ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -1864,7 +1882,25 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
+	int ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Missing Guard Open Parenthesis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 15;
+
+	/**
+	 * The feature id for the '<em><b>Missing Guard Close Parenthesis</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Missing Post Close Parenthesis</b></em>' attribute.
@@ -1873,7 +1909,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 14;
+	int ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 17;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -1882,7 +1918,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 15;
+	int ERROR_TEMPLATE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 18;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -1891,7 +1927,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_END = ERROR_FEATURE_COUNT + 16;
+	int ERROR_TEMPLATE__MISSING_END = ERROR_FEATURE_COUNT + 19;
 
 	/**
 	 * The number of structural features of the '<em>Error Template</em>' class.
@@ -1900,7 +1936,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 17;
+	int ERROR_TEMPLATE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 20;
 
 	/**
 	 * The number of operations of the '<em>Error Template</em>' class.
@@ -2121,13 +2157,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_QUERY__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_QUERY__MISSING_NAME = ERROR_FEATURE_COUNT + 10;
+
+	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 10;
+	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -2136,7 +2181,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
+	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2145,7 +2190,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 12;
+	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 13;
+
+	/**
+	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Missing Equal</b></em>' attribute.
@@ -2154,7 +2208,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 13;
+	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -2163,7 +2217,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 14;
+	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 16;
 
 	/**
 	 * The number of structural features of the '<em>Error Query</em>' class.
@@ -2172,7 +2226,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 15;
+	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 17;
 
 	/**
 	 * The number of operations of the '<em>Error Query</em>' class.
@@ -2349,13 +2403,31 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_VARIABLE__END_POSITION = ERROR_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE__MISSING_NAME = ERROR_FEATURE_COUNT + 4;
+
+	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_COLON = ERROR_FEATURE_COUNT + 4;
+	int ERROR_VARIABLE__MISSING_COLON = ERROR_FEATURE_COUNT + 5;
+
+	/**
+	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE__MISSING_TYPE = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Error Variable</em>' class.
@@ -2364,7 +2436,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
+	int ERROR_VARIABLE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Error Variable</em>' class.
@@ -2504,13 +2576,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_BINDING__INIT_EXPRESSION = ERROR_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__MISSING_NAME = ERROR_FEATURE_COUNT + 5;
+
+	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_COLON = ERROR_FEATURE_COUNT + 5;
+	int ERROR_BINDING__MISSING_COLON = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2519,7 +2600,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_TYPE = ERROR_FEATURE_COUNT + 6;
+	int ERROR_BINDING__MISSING_TYPE = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing Affectation Symbole</b></em>' attribute.
@@ -2528,7 +2609,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = ERROR_FEATURE_COUNT + 7;
+	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = ERROR_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Missing Affectation Symbole Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Error Binding</em>' class.
@@ -2537,7 +2627,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
+	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Error Binding</em>' class.
@@ -3704,10 +3794,10 @@ public interface AcceleoPackage extends EPackage {
 	EReference getModule_Metamodels();
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.acceleo.Module#getExtends <em>Extends</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.Module#getExtends <em>Extends</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Extends</em>'.
+	 * @return the meta object for the containment reference '<em>Extends</em>'.
 	 * @see org.eclipse.acceleo.Module#getExtends()
 	 * @see #getModule()
 	 * @generated
@@ -3769,44 +3859,44 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorModule();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorModule#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorModule#getMissingOpenParenthesis()
 	 * @see #getErrorModule()
 	 * @generated
 	 */
 	EAttribute getErrorModule_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#isMissingEPackage <em>Missing EPackage</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#getMissingEPackage <em>Missing EPackage</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing EPackage</em>'.
-	 * @see org.eclipse.acceleo.ErrorModule#isMissingEPackage()
+	 * @see org.eclipse.acceleo.ErrorModule#getMissingEPackage()
 	 * @see #getErrorModule()
 	 * @generated
 	 */
 	EAttribute getErrorModule_MissingEPackage();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorModule#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorModule#getMissingCloseParenthesis()
 	 * @see #getErrorModule()
 	 * @generated
 	 */
 	EAttribute getErrorModule_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModule#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorModule#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorModule#getMissingEndHeader()
 	 * @see #getErrorModule()
 	 * @generated
 	 */
@@ -3844,11 +3934,22 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorMetamodel();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorMetamodel#isMissingEndQuote <em>Missing End Quote</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorMetamodel#getFragment <em>Fragment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Fragment</em>'.
+	 * @see org.eclipse.acceleo.ErrorMetamodel#getFragment()
+	 * @see #getErrorMetamodel()
+	 * @generated
+	 */
+	EAttribute getErrorMetamodel_Fragment();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote <em>Missing End Quote</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Quote</em>'.
-	 * @see org.eclipse.acceleo.ErrorMetamodel#isMissingEndQuote()
+	 * @see org.eclipse.acceleo.ErrorMetamodel#getMissingEndQuote()
 	 * @see #getErrorMetamodel()
 	 * @generated
 	 */
@@ -3886,11 +3987,11 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorImport();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorImport#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorImport#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorImport#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorImport#getMissingEnd()
 	 * @see #getErrorImport()
 	 * @generated
 	 */
@@ -3907,15 +4008,15 @@ public interface AcceleoPackage extends EPackage {
 	EClass getModuleReference();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ModuleReference#getUrl <em>Url</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ModuleReference#getQualifiedName <em>Qualified Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Url</em>'.
-	 * @see org.eclipse.acceleo.ModuleReference#getUrl()
+	 * @return the meta object for the attribute '<em>Qualified Name</em>'.
+	 * @see org.eclipse.acceleo.ModuleReference#getQualifiedName()
 	 * @see #getModuleReference()
 	 * @generated
 	 */
-	EAttribute getModuleReference_Url();
+	EAttribute getModuleReference_QualifiedName();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorModuleReference <em>Error Module Reference</em>}'.
@@ -3969,11 +4070,11 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorComment();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorComment#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorComment#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorComment#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorComment#getMissingEndHeader()
 	 * @see #getErrorComment()
 	 * @generated
 	 */
@@ -4075,11 +4176,11 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorModuleDocumentation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModuleDocumentation#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModuleDocumentation#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorModuleDocumentation#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorModuleDocumentation#getMissingEndHeader()
 	 * @see #getErrorModuleDocumentation()
 	 * @generated
 	 */
@@ -4117,11 +4218,11 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorModuleElementDocumentation();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModuleElementDocumentation#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorModuleElementDocumentation#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorModuleElementDocumentation#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorModuleElementDocumentation#getMissingEndHeader()
 	 * @see #getErrorModuleElementDocumentation()
 	 * @generated
 	 */
@@ -4361,66 +4462,99 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorTemplate();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#isMissingVisibility <em>Missing Visibility</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingVisibility <em>Missing Visibility</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Visibility</em>'.
-	 * @see org.eclipse.acceleo.ErrorTemplate#isMissingVisibility()
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingVisibility()
 	 * @see #getErrorTemplate()
 	 * @generated
 	 */
 	EAttribute getErrorTemplate_MissingVisibility();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingName <em>Missing Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Name</em>'.
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingName()
+	 * @see #getErrorTemplate()
+	 * @generated
+	 */
+	EAttribute getErrorTemplate_MissingName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorTemplate#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingOpenParenthesis()
 	 * @see #getErrorTemplate()
 	 * @generated
 	 */
 	EAttribute getErrorTemplate_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorTemplate#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingCloseParenthesis()
 	 * @see #getErrorTemplate()
 	 * @generated
 	 */
 	EAttribute getErrorTemplate_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#isMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardOpenParenthesis <em>Missing Guard Open Parenthesis</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Guard Open Parenthesis</em>'.
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingGuardOpenParenthesis()
+	 * @see #getErrorTemplate()
+	 * @generated
+	 */
+	EAttribute getErrorTemplate_MissingGuardOpenParenthesis();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardCloseParenthesis <em>Missing Guard Close Parenthesis</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Guard Close Parenthesis</em>'.
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingGuardCloseParenthesis()
+	 * @see #getErrorTemplate()
+	 * @generated
+	 */
+	EAttribute getErrorTemplate_MissingGuardCloseParenthesis();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingPostCloseParenthesis <em>Missing Post Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Post Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorTemplate#isMissingPostCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingPostCloseParenthesis()
 	 * @see #getErrorTemplate()
 	 * @generated
 	 */
 	EAttribute getErrorTemplate_MissingPostCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorTemplate#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingEndHeader()
 	 * @see #getErrorTemplate()
 	 * @generated
 	 */
 	EAttribute getErrorTemplate_MissingEndHeader();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorTemplate#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingEnd()
 	 * @see #getErrorTemplate()
 	 * @generated
 	 */
@@ -4480,66 +4614,88 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorQuery();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#isMissingVisibility <em>Missing Visibility</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingVisibility <em>Missing Visibility</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Visibility</em>'.
-	 * @see org.eclipse.acceleo.ErrorQuery#isMissingVisibility()
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingVisibility()
 	 * @see #getErrorQuery()
 	 * @generated
 	 */
 	EAttribute getErrorQuery_MissingVisibility();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingName <em>Missing Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Name</em>'.
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingName()
+	 * @see #getErrorQuery()
+	 * @generated
+	 */
+	EAttribute getErrorQuery_MissingName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorQuery#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingOpenParenthesis()
 	 * @see #getErrorQuery()
 	 * @generated
 	 */
 	EAttribute getErrorQuery_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorQuery#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingCloseParenthesis()
 	 * @see #getErrorQuery()
 	 * @generated
 	 */
 	EAttribute getErrorQuery_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#isMissingColon <em>Missing Colon</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingColon <em>Missing Colon</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Colon</em>'.
-	 * @see org.eclipse.acceleo.ErrorQuery#isMissingColon()
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingColon()
 	 * @see #getErrorQuery()
 	 * @generated
 	 */
 	EAttribute getErrorQuery_MissingColon();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#isMissingEqual <em>Missing Equal</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingType <em>Missing Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Type</em>'.
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingType()
+	 * @see #getErrorQuery()
+	 * @generated
+	 */
+	EAttribute getErrorQuery_MissingType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingEqual <em>Missing Equal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Equal</em>'.
-	 * @see org.eclipse.acceleo.ErrorQuery#isMissingEqual()
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingEqual()
 	 * @see #getErrorQuery()
 	 * @generated
 	 */
 	EAttribute getErrorQuery_MissingEqual();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorQuery#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingEnd()
 	 * @see #getErrorQuery()
 	 * @generated
 	 */
@@ -4587,15 +4743,37 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorVariable();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorVariable#isMissingColon <em>Missing Colon</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorVariable#getMissingName <em>Missing Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Name</em>'.
+	 * @see org.eclipse.acceleo.ErrorVariable#getMissingName()
+	 * @see #getErrorVariable()
+	 * @generated
+	 */
+	EAttribute getErrorVariable_MissingName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorVariable#getMissingColon <em>Missing Colon</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Colon</em>'.
-	 * @see org.eclipse.acceleo.ErrorVariable#isMissingColon()
+	 * @see org.eclipse.acceleo.ErrorVariable#getMissingColon()
 	 * @see #getErrorVariable()
 	 * @generated
 	 */
 	EAttribute getErrorVariable_MissingColon();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorVariable#getMissingType <em>Missing Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Type</em>'.
+	 * @see org.eclipse.acceleo.ErrorVariable#getMissingType()
+	 * @see #getErrorVariable()
+	 * @generated
+	 */
+	EAttribute getErrorVariable_MissingType();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Binding <em>Binding</em>}'.
@@ -4629,22 +4807,33 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorBinding();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorBinding#isMissingColon <em>Missing Colon</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorBinding#getMissingName <em>Missing Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Name</em>'.
+	 * @see org.eclipse.acceleo.ErrorBinding#getMissingName()
+	 * @see #getErrorBinding()
+	 * @generated
+	 */
+	EAttribute getErrorBinding_MissingName();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorBinding#getMissingColon <em>Missing Colon</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Colon</em>'.
-	 * @see org.eclipse.acceleo.ErrorBinding#isMissingColon()
+	 * @see org.eclipse.acceleo.ErrorBinding#getMissingColon()
 	 * @see #getErrorBinding()
 	 * @generated
 	 */
 	EAttribute getErrorBinding_MissingColon();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorBinding#isMissingType <em>Missing Type</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorBinding#getMissingType <em>Missing Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Type</em>'.
-	 * @see org.eclipse.acceleo.ErrorBinding#isMissingType()
+	 * @see org.eclipse.acceleo.ErrorBinding#getMissingType()
 	 * @see #getErrorBinding()
 	 * @generated
 	 */
@@ -4660,6 +4849,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorBinding_MissingAffectationSymbole();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbolePosition <em>Missing Affectation Symbole Position</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Affectation Symbole Position</em>'.
+	 * @see org.eclipse.acceleo.ErrorBinding#getMissingAffectationSymbolePosition()
+	 * @see #getErrorBinding()
+	 * @generated
+	 */
+	EAttribute getErrorBinding_MissingAffectationSymbolePosition();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Statement <em>Statement</em>}'.
@@ -4703,11 +4903,11 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorExpressionStatement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorExpressionStatement#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorExpressionStatement#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorExpressionStatement#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorExpressionStatement#getMissingEndHeader()
 	 * @see #getErrorExpressionStatement()
 	 * @generated
 	 */
@@ -4756,44 +4956,44 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorProtectedArea();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorProtectedArea#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorProtectedArea#getMissingOpenParenthesis()
 	 * @see #getErrorProtectedArea()
 	 * @generated
 	 */
 	EAttribute getErrorProtectedArea_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorProtectedArea#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorProtectedArea#getMissingCloseParenthesis()
 	 * @see #getErrorProtectedArea()
 	 * @generated
 	 */
 	EAttribute getErrorProtectedArea_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorProtectedArea#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorProtectedArea#getMissingEndHeader()
 	 * @see #getErrorProtectedArea()
 	 * @generated
 	 */
 	EAttribute getErrorProtectedArea_MissingEndHeader();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorProtectedArea#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorProtectedArea#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorProtectedArea#getMissingEnd()
 	 * @see #getErrorProtectedArea()
 	 * @generated
 	 */
@@ -4842,44 +5042,44 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorForStatement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorForStatement#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorForStatement#getMissingOpenParenthesis()
 	 * @see #getErrorForStatement()
 	 * @generated
 	 */
 	EAttribute getErrorForStatement_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorForStatement#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorForStatement#getMissingCloseParenthesis()
 	 * @see #getErrorForStatement()
 	 * @generated
 	 */
 	EAttribute getErrorForStatement_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorForStatement#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorForStatement#getMissingEndHeader()
 	 * @see #getErrorForStatement()
 	 * @generated
 	 */
 	EAttribute getErrorForStatement_MissingEndHeader();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorForStatement#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorForStatement#getMissingEnd()
 	 * @see #getErrorForStatement()
 	 * @generated
 	 */
@@ -4939,44 +5139,44 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorIfStatement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorIfStatement#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorIfStatement#getMissingOpenParenthesis()
 	 * @see #getErrorIfStatement()
 	 * @generated
 	 */
 	EAttribute getErrorIfStatement_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorIfStatement#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorIfStatement#getMissingCloseParenthesis()
 	 * @see #getErrorIfStatement()
 	 * @generated
 	 */
 	EAttribute getErrorIfStatement_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorIfStatement#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorIfStatement#getMissingEndHeader()
 	 * @see #getErrorIfStatement()
 	 * @generated
 	 */
 	EAttribute getErrorIfStatement_MissingEndHeader();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorIfStatement#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorIfStatement#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorIfStatement#getMissingEnd()
 	 * @see #getErrorIfStatement()
 	 * @generated
 	 */
@@ -5025,22 +5225,22 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorLetStatement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorLetStatement#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorLetStatement#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorLetStatement#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorLetStatement#getMissingEndHeader()
 	 * @see #getErrorLetStatement()
 	 * @generated
 	 */
 	EAttribute getErrorLetStatement_MissingEndHeader();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorLetStatement#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorLetStatement#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorLetStatement#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorLetStatement#getMissingEnd()
 	 * @see #getErrorLetStatement()
 	 * @generated
 	 */
@@ -5111,66 +5311,66 @@ public interface AcceleoPackage extends EPackage {
 	EClass getErrorFileStatement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#isMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorFileStatement#isMissingOpenParenthesis()
+	 * @see org.eclipse.acceleo.ErrorFileStatement#getMissingOpenParenthesis()
 	 * @see #getErrorFileStatement()
 	 * @generated
 	 */
 	EAttribute getErrorFileStatement_MissingOpenParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#isMissingComma <em>Missing Comma</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#getMissingComma <em>Missing Comma</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Comma</em>'.
-	 * @see org.eclipse.acceleo.ErrorFileStatement#isMissingComma()
+	 * @see org.eclipse.acceleo.ErrorFileStatement#getMissingComma()
 	 * @see #getErrorFileStatement()
 	 * @generated
 	 */
 	EAttribute getErrorFileStatement_MissingComma();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#isMissingOpenMode <em>Missing Open Mode</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#getMissingOpenMode <em>Missing Open Mode</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Open Mode</em>'.
-	 * @see org.eclipse.acceleo.ErrorFileStatement#isMissingOpenMode()
+	 * @see org.eclipse.acceleo.ErrorFileStatement#getMissingOpenMode()
 	 * @see #getErrorFileStatement()
 	 * @generated
 	 */
 	EAttribute getErrorFileStatement_MissingOpenMode();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#isMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing Close Parenthesis</em>'.
-	 * @see org.eclipse.acceleo.ErrorFileStatement#isMissingCloseParenthesis()
+	 * @see org.eclipse.acceleo.ErrorFileStatement#getMissingCloseParenthesis()
 	 * @see #getErrorFileStatement()
 	 * @generated
 	 */
 	EAttribute getErrorFileStatement_MissingCloseParenthesis();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#isMissingEndHeader <em>Missing End Header</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#getMissingEndHeader <em>Missing End Header</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End Header</em>'.
-	 * @see org.eclipse.acceleo.ErrorFileStatement#isMissingEndHeader()
+	 * @see org.eclipse.acceleo.ErrorFileStatement#getMissingEndHeader()
 	 * @see #getErrorFileStatement()
 	 * @generated
 	 */
 	EAttribute getErrorFileStatement_MissingEndHeader();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#isMissingEnd <em>Missing End</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorFileStatement#getMissingEnd <em>Missing End</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Missing End</em>'.
-	 * @see org.eclipse.acceleo.ErrorFileStatement#isMissingEnd()
+	 * @see org.eclipse.acceleo.ErrorFileStatement#getMissingEnd()
 	 * @see #getErrorFileStatement()
 	 * @generated
 	 */
@@ -5281,7 +5481,7 @@ public interface AcceleoPackage extends EPackage {
 		EReference MODULE__METAMODELS = eINSTANCE.getModule_Metamodels();
 
 		/**
-		 * The meta object literal for the '<em><b>Extends</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Extends</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -5392,6 +5592,14 @@ public interface AcceleoPackage extends EPackage {
 		EClass ERROR_METAMODEL = eINSTANCE.getErrorMetamodel();
 
 		/**
+		 * The meta object literal for the '<em><b>Fragment</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_METAMODEL__FRAGMENT = eINSTANCE.getErrorMetamodel_Fragment();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing End Quote</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5446,12 +5654,12 @@ public interface AcceleoPackage extends EPackage {
 		EClass MODULE_REFERENCE = eINSTANCE.getModuleReference();
 
 		/**
-		 * The meta object literal for the '<em><b>Url</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Qualified Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute MODULE_REFERENCE__URL = eINSTANCE.getModuleReference_Url();
+		EAttribute MODULE_REFERENCE__QUALIFIED_NAME = eINSTANCE.getModuleReference_QualifiedName();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorModuleReferenceImpl <em>Error Module Reference</em>}' class.
@@ -5839,6 +6047,14 @@ public interface AcceleoPackage extends EPackage {
 		EAttribute ERROR_TEMPLATE__MISSING_VISIBILITY = eINSTANCE.getErrorTemplate_MissingVisibility();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_TEMPLATE__MISSING_NAME = eINSTANCE.getErrorTemplate_MissingName();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing Open Parenthesis</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5855,6 +6071,24 @@ public interface AcceleoPackage extends EPackage {
 		 */
 		EAttribute ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = eINSTANCE
 				.getErrorTemplate_MissingCloseParenthesis();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Guard Open Parenthesis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS = eINSTANCE
+				.getErrorTemplate_MissingGuardOpenParenthesis();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Guard Close Parenthesis</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS = eINSTANCE
+				.getErrorTemplate_MissingGuardCloseParenthesis();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing Post Close Parenthesis</b></em>' attribute feature.
@@ -5934,6 +6168,14 @@ public interface AcceleoPackage extends EPackage {
 		EAttribute ERROR_QUERY__MISSING_VISIBILITY = eINSTANCE.getErrorQuery_MissingVisibility();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_QUERY__MISSING_NAME = eINSTANCE.getErrorQuery_MissingName();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing Open Parenthesis</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5956,6 +6198,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ERROR_QUERY__MISSING_COLON = eINSTANCE.getErrorQuery_MissingColon();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_QUERY__MISSING_TYPE = eINSTANCE.getErrorQuery_MissingType();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing Equal</b></em>' attribute feature.
@@ -6012,12 +6262,28 @@ public interface AcceleoPackage extends EPackage {
 		EClass ERROR_VARIABLE = eINSTANCE.getErrorVariable();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_VARIABLE__MISSING_NAME = eINSTANCE.getErrorVariable_MissingName();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing Colon</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute ERROR_VARIABLE__MISSING_COLON = eINSTANCE.getErrorVariable_MissingColon();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_VARIABLE__MISSING_TYPE = eINSTANCE.getErrorVariable_MissingType();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.BindingImpl <em>Binding</em>}' class.
@@ -6048,6 +6314,14 @@ public interface AcceleoPackage extends EPackage {
 		EClass ERROR_BINDING = eINSTANCE.getErrorBinding();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_BINDING__MISSING_NAME = eINSTANCE.getErrorBinding_MissingName();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing Colon</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6071,6 +6345,15 @@ public interface AcceleoPackage extends EPackage {
 		 */
 		EAttribute ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = eINSTANCE
 				.getErrorBinding_MissingAffectationSymbole();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Affectation Symbole Position</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION = eINSTANCE
+				.getErrorBinding_MissingAffectationSymbolePosition();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.Statement <em>Statement</em>}' class.

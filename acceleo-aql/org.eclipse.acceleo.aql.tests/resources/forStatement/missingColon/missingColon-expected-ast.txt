@@ -7,9 +7,11 @@ module myModule
     
    (116..119)
     [for *** error binding ***
-    missing colon: true
-    missing type: false
+    missing name: -1
+    missing colon: 137
+    missing type: -1
     missing affectation symbol: null
+    missing affectation symbol position: -1
     myVariable : EClassifier = .aqlFeatureAccess(myTemplate, 'eClassifiers') (158..181) (125..181)
       
     some static text.
