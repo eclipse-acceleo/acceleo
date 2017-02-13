@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.acceleo.aql.ide;singleton:=true
+Bundle-Version: 4.0.0.qualifier
+Bundle-Vendor: %providerName
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.acceleo.aql;bundle-version="4.0.0"
+Bundle-Activator: org.eclipse.acceleo.aql.ide.Activator$Implementation
+Export-Package: org.eclipse.acceleo.aql.ide

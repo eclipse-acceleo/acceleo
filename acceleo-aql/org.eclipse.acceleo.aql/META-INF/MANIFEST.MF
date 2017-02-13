@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.eclipse.acceleo.aql;singleton:=true
+Bundle-SymbolicName: org.eclipse.acceleo.aql
 Bundle-Version: 4.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
@@ -14,11 +14,9 @@ Export-Package: org.eclipse.acceleo,
  org.eclipse.acceleo.aql.validation,
  org.eclipse.acceleo.impl,
  org.eclipse.acceleo.util
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
+Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
- org.eclipse.acceleo.query;bundle-version="6.0.0",
+ org.eclipse.acceleo.query;bundle-version="[6.0.0,7.0.0)",
  org.antlr.runtime;bundle-version="4.3.0"
-Bundle-ActivationPolicy: lazy
 Import-Package: com.google.common.base;version="15.0.0",
  com.google.common.collect;version="15.0.0"
