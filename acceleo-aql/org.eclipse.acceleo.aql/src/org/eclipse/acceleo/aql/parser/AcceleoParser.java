@@ -1009,6 +1009,7 @@ public class AcceleoParser {
 	 *            the {@link Documentation} for the {@link Template} if any, <code>null</code> otherwise
 	 * @return the created {@link Template} if any recognized, <code>null</code> otherwise
 	 */
+	// CHECKSTYLE:OFF
 	protected Template parseTemplate(Documentation documentation) {
 		final Template res;
 
@@ -1109,6 +1110,8 @@ public class AcceleoParser {
 
 		return res;
 	}
+
+	// CHECKSTYLE:ON
 
 	/**
 	 * Parses a {@link Block} .
@@ -1675,10 +1678,7 @@ public class AcceleoParser {
 
 		if (readString(QUOTE)) {
 			final int startPosition = currentPosition;
-			int nextQuote = text.indexOf(QUOTE, currentPosition);
-			if (nextQuote < 0) {
-				nextQuote = text.length();
-			}
+			final int nextQuote = getMetamodelEndQuotePosition();
 			final String nsURI = text.substring(currentPosition, nextQuote);
 			currentPosition = nextQuote;
 			final EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(nsURI);
@@ -1697,6 +1697,25 @@ public class AcceleoParser {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Gets the {@link Metamodel} end quote position.
+	 * 
+	 * @return the {@link Metamodel} end quote position
+	 */
+	protected int getMetamodelEndQuotePosition() {
+		int nextQuote = text.indexOf(QUOTE, currentPosition);
+		if (nextQuote < 0) {
+			nextQuote = text.indexOf(CLOSE_PARENTHESIS, currentPosition);
+			if (nextQuote < 0) {
+				nextQuote = text.indexOf(MODULE_HEADER_END, currentPosition);
+				if (nextQuote < 0) {
+					nextQuote = text.length();
+				}
+			}
+		}
+		return nextQuote;
 	}
 
 	/**

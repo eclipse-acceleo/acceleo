@@ -79,6 +79,11 @@ import org.eclipse.emf.ecore.EPackage;
 public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 
 	/**
+	 * Missing name message.
+	 */
+	private static final String MISSING_NAME = "Missing name";
+
+	/**
 	 * The {@link IAcceleoEnvironment}.
 	 */
 	private final IAcceleoEnvironment environment;
@@ -319,7 +324,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing visibility", errorTemplate
 					.getMissingVisibility(), errorTemplate.getMissingVisibility()));
 		} else if (errorTemplate.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing name", errorTemplate
+			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorTemplate
 					.getMissingName(), errorTemplate.getMissingName()));
 		} else if (errorTemplate.getMissingOpenParenthesis() != -1) {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
@@ -389,7 +394,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing visibility", errorQuery
 					.getMissingVisibility(), errorQuery.getMissingVisibility()));
 		} else if (errorQuery.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing name", errorQuery
+			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorQuery
 					.getMissingName(), errorQuery.getMissingName()));
 		} else if (errorQuery.getMissingOpenParenthesis() != -1) {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
@@ -439,7 +444,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
 		if (errorVariable.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing name", errorVariable
+			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorVariable
 					.getMissingName(), errorVariable.getMissingName()));
 		} else if (errorVariable.getMissingColon() != -1) {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
@@ -473,17 +478,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			for (IType possibleType : possibleTypes) {
 				if (!iType.isAssignableFrom(possibleType)) {
 					if (forceCollectionBinding) {
-						if (possibleType instanceof ICollectionType) {
-							if (!iType.isAssignableFrom(((ICollectionType)possibleType).getCollectionType())) {
-								res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-										+ " is incompatible with " + possibleType,
-										binding.getStartPosition(), binding.getEndPosition()));
-							}
-						} else {
-							res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-									"Must be a Collection not " + possibleType, binding.getStartPosition(),
-									binding.getEndPosition()));
-						}
+						res.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
 					} else {
 						res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
 								+ " is incompatible with " + possibleType, binding.getStartPosition(),
@@ -515,12 +510,43 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 		return res;
 	}
 
+	/**
+	 * Validates the given {@link Binding} type.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @param res
+	 * @param iType
+	 *            the {@link IType} corresponding to the given {@link Binding#getType() binding type}
+	 * @param possibleType
+	 *            the possible {@link IType} of the given {@link Binding#getInitExpression() binding
+	 *            expression}
+	 * @return the {@link List} of {@link IValidationMessage} is something doesn't validate
+	 */
+	protected List<IValidationMessage> validateBindingTypeForceCollection(Binding binding,
+			final EClassifierType iType, IType possibleType) {
+		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
+
+		if (possibleType instanceof ICollectionType) {
+			if (!iType.isAssignableFrom(((ICollectionType)possibleType).getCollectionType())) {
+				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
+						+ " is incompatible with " + possibleType, binding.getStartPosition(), binding
+						.getEndPosition()));
+			}
+		} else {
+			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Must be a Collection not "
+					+ possibleType, binding.getStartPosition(), binding.getEndPosition()));
+		}
+
+		return res;
+	}
+
 	@Override
 	public List<IValidationMessage> caseErrorBinding(ErrorBinding errorBinding) {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
 		if (errorBinding.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing name", errorBinding
+			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorBinding
 					.getMissingName(), errorBinding.getMissingName()));
 		} else if (errorBinding.getMissingColon() != -1) {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
