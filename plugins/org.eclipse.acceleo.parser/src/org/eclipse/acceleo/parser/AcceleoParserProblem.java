@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
+import com.google.common.base.Objects;
+
 /**
  * One syntax problem of the parsing.
  * 
@@ -115,8 +117,9 @@ public class AcceleoParserProblem implements AcceleoParserMessage {
 
 		final AcceleoParserProblem other = (AcceleoParserProblem)obj;
 		return this == other
-				|| (this.line == other.line && this.message.equals(other.message)
-						&& this.posBegin == other.posBegin && this.posEnd == other.posEnd);
+				|| (Objects.equal(this.line, other.line) && Objects.equal(this.message, other.message)
+						&& Objects.equal(this.posBegin, other.posBegin) && Objects.equal(this.posEnd,
+						other.posEnd));
 	}
 
 	/**

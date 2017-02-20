@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.parser;
 
+import com.google.common.base.Objects;
+
 /**
  * One syntax warning of the parsing.
  * 
@@ -116,8 +118,9 @@ public class AcceleoParserWarning implements AcceleoParserMessage {
 
 		final AcceleoParserWarning other = (AcceleoParserWarning)obj;
 		return this == other
-				|| (this.line == other.line && this.message.equals(other.message)
-						&& this.posBegin == other.posBegin && this.posEnd == other.posEnd);
+				|| (Objects.equal(this.line, other.line) && Objects.equal(this.message, other.message)
+						&& Objects.equal(this.posBegin, other.posBegin) && Objects.equal(this.posEnd,
+						other.posEnd));
 	}
 
 	/**
