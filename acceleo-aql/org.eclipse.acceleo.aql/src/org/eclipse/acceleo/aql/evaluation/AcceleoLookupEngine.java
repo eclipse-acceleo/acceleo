@@ -16,13 +16,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -75,7 +73,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 */
 	@Override
 	public IService lookup(String name, IType[] argumentTypes) {
-		Deque<ModuleElement> currentStack = acceleoEnvironment.getCurrentStack();
+		AcceleoCallStack currentStack = acceleoEnvironment.getCurrentStack();
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
 		Module last = (Module)currentStack.peekLast().eContainer();
@@ -87,7 +85,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		 * hierarchy (first of the stack)
 		 */
 		if (result == null) {
-			Module start = (Module)currentStack.peekFirst().eContainer();
+			Module start = currentStack.getStartingModule();
 			result = lookupExtendedService(start, name, argumentTypes, VisibilityKind.PROTECTED,
 					VisibilityKind.PUBLIC);
 		}
@@ -96,10 +94,12 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		 * We couldn't find a template or query matching that in our current extends hierarchy, try the
 		 * imports of our current (last of the stack) module for a PUBLIC matching module element.
 		 */
-		boolean serviceFromImports = false;
+		ImportLookupResult importService = null;
 		if (result == null) {
-			result = lookupImportedService(last, name, argumentTypes);
-			serviceFromImports = result != null;
+			importService = lookupImportedService(last, name, argumentTypes);
+			if (importService != null) {
+				result = importService.getResult();
+			}
 		}
 
 		/* There is no module element matching our target, fall back to regular services. */
@@ -108,11 +108,11 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		}
 
 		if (result instanceof AbstractModuleElementService) {
-			if (serviceFromImports) {
-				acceleoEnvironment.pushStack(((AbstractModuleElementService)result).getModuleElement(), true);
+			if (importService != null) {
+				acceleoEnvironment.pushStack(((AbstractModuleElementService)result).getModuleElement(),
+						importService.getImportedModule());
 			} else {
-				acceleoEnvironment
-						.pushStack(((AbstractModuleElementService)result).getModuleElement(), false);
+				acceleoEnvironment.pushStack(((AbstractModuleElementService)result).getModuleElement());
 			}
 		}
 
@@ -158,13 +158,17 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            Type of the arguments accepted by the service we're looking for.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private IService lookupImportedService(Module start, String name, IType[] argumentTypes) {
-		IService result = null;
+	private ImportLookupResult lookupImportedService(Module start, String name, IType[] argumentTypes) {
+		ImportLookupResult result = null;
 		Iterator<Import> importedIterator = start.getImports().iterator();
 		while (importedIterator.hasNext() && result == null) {
 			Import imported = importedIterator.next();
 			Module importedModule = acceleoEnvironment.getModule(imported.getModule().getQualifiedName());
-			result = lookupExtendedService(importedModule, name, argumentTypes, VisibilityKind.PUBLIC);
+			IService matchingService = lookupExtendedService(importedModule, name, argumentTypes,
+					VisibilityKind.PUBLIC);
+			if (matchingService != null) {
+				result = new ImportLookupResult(importedModule, matchingService);
+			}
 		}
 		return result;
 	}
@@ -226,5 +230,37 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 				return input != null && Arrays.asList(candidateVisibilities).contains(input.getVisibility());
 			}
 		};
+	}
+
+	/**
+	 * Result of a lookup within the imports of a module.
+	 */
+	private static class ImportLookupResult {
+		/** The module that was the starting point of our lookup. */
+		private Module importedModule;
+
+		/** The actual result of this lookup. */
+		private IService result;
+
+		/**
+		 * Creates a result object given the module and service found.
+		 * 
+		 * @param imported
+		 *            The module that was the starting point of our lookup.
+		 * @param result
+		 *            The result of this lookup.
+		 */
+		public ImportLookupResult(Module imported, IService result) {
+			this.importedModule = imported;
+			this.result = result;
+		}
+
+		public Module getImportedModule() {
+			return importedModule;
+		}
+
+		public IService getResult() {
+			return result;
+		}
 	}
 }

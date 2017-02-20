@@ -31,12 +31,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluationEnvironment;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
-import org.eclipse.acceleo.query.runtime.Query;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -82,8 +81,7 @@ public abstract class AbstractTemplatesTestSuite {
 	/**
 	 * The {@link IAcceleoEnvironment}.
 	 */
-	private final IAcceleoEnvironment environment = new AcceleoEnvironment(Query
-			.newEnvironmentWithDefaultServices(null));
+	private final IAcceleoEnvironment environment = new AcceleoEvaluationEnvironment();
 
 	/**
 	 * Constructor.
@@ -105,6 +103,7 @@ public abstract class AbstractTemplatesTestSuite {
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
 			module = parser.parse(getContent(stream, UTF_8));
+			environment.registerModule("org::eclipse::acceleo::tests::" + module.getName(), module);
 		}
 	}
 

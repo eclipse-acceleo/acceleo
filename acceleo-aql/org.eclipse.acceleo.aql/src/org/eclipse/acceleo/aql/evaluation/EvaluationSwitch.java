@@ -94,12 +94,17 @@ public class EvaluationSwitch extends AcceleoSwitch<Object> {
 	 */
 	@Override
 	public Object caseTemplate(Template template) {
-		StringBuilder builder = new StringBuilder();
-		Block body = template.getBody();
-		for (Statement stmt : body.getStatements()) {
-			builder.append(doSwitch(stmt));
+		final StringBuilder builder = new StringBuilder();
+
+		try {
+			Block body = template.getBody();
+			for (Statement stmt : body.getStatements()) {
+				builder.append(doSwitch(stmt));
+			}
+		} finally {
+			environment.popStack(template);
 		}
-		environment.popStack(template);
+
 		return builder.toString();
 	}
 

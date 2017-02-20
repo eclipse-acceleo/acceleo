@@ -81,6 +81,29 @@ import org.eclipse.emf.ecore.EClassifier;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class ModuleAstSerializer extends AcceleoSwitch<Void> {
+	/** Prefix we'll use for the error messages on missing names. */
+	private static final String MISSING_NAME_MESSAGE_PREFIX = "missing name: ";
+
+	/** Prefix we'll use for the error messages on a missing open parenthesis. */
+	private static final String MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX = "missing open parenthesis: ";
+
+	/** Prefix we'll use for the error messages on a missing closing parenthesis. */
+	private static final String MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX = "missing close parenthesis: ";
+
+	/** Prefix we'll use for the error messages on a missing header ending. */
+	private static final String MISSING_END_HEADER_MESSAGE_PREFIX = "missing end header: ";
+
+	/** Prefix we'll use for the error messages on a missing block ending. */
+	private static final String MISSING_END_MESSAGE_PREFIX = "missing end: ";
+
+	/** Prefix we'll use for the error messages on a missing colon. */
+	private static final String MISSING_COLON_MESSAGE_PREFIX = "missing colon: ";
+
+	/** Prefix we'll use for the error messages on a missing type. */
+	private static final String MISSING_TYPE_MESSAGE_PREFIX = "missing type: ";
+
+	/** The string we'll use as a placeholder for null objects. */
+	private static final String NULL_STRING = "null";
 
 	/**
 	 * Serialize a {@link Expression}.
@@ -113,10 +136,10 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		public Void caseBinding(Binding binding) {
 			builder.append(binding.getName());
 			if (binding.getType() != null) {
-				builder.append(" : ");
+				builder.append(' ').append(':').append(' ');
 				builder.append(doSwitch(binding.getType()));
 			}
-			builder.append(" = ");
+			builder.append(' ').append('=').append(' ');
 			builder.append(doSwitch(binding.getValue()));
 			return null;
 		}
@@ -132,21 +155,21 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			if (call.getType() == CallType.COLLECTIONCALL) {
 				builder.append("->");
 			} else {
-				builder.append(".");
+				builder.append('.');
 			}
 			builder.append(call.getServiceName());
-			builder.append("(");
+			builder.append('(');
 			final StringBuilder previousBuilder = builder;
 			builder = new StringBuilder();
 			for (Expression argument : call.getArguments()) {
 				doSwitch(argument);
-				builder.append(", ");
+				builder.append(',').append(' ');
 			}
 			if (builder.length() > 0) {
 				previousBuilder.append(builder.substring(0, builder.length() - 2));
 			}
 			builder = previousBuilder;
-			builder.append(")");
+			builder.append(')');
 			return null;
 		}
 
@@ -213,7 +236,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			builder = new StringBuilder();
 			for (Binding binding : let.getBindings()) {
 				doSwitch(binding);
-				builder.append(", ");
+				builder.append(',').append(' ');
 			}
 			previousBuilder.append(builder.substring(0, builder.length() - 2));
 			builder.append(" in ");
@@ -223,7 +246,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 		@Override
 		public Void caseNullLiteral(NullLiteral nullLiteral) {
-			builder.append("null");
+			builder.append(NULL_STRING);
 			return null;
 		}
 
@@ -234,10 +257,10 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			builder = new StringBuilder();
 			for (Expression value : sequenceInExtensionLiteral.getValues()) {
 				doSwitch(value);
-				builder.append(", ");
+				builder.append(',').append(' ');
 			}
 			previousBuilder.append(builder.substring(0, builder.length() - 2));
-			builder.append("}");
+			builder.append('}');
 			return null;
 		}
 
@@ -254,24 +277,24 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			builder = new StringBuilder();
 			for (Expression value : setInExtensionLiteral.getValues()) {
 				doSwitch(value);
-				builder.append(", ");
+				builder.append(',').append(' ');
 			}
 			previousBuilder.append(builder.substring(0, builder.length() - 2));
-			builder.append("}");
+			builder.append('}');
 			return null;
 		}
 
 		@Override
 		public Void caseStringLiteral(StringLiteral stringLiteral) {
-			builder.append("'");
+			builder.append('\'');
 			builder.append(stringLiteral.getValue());
-			builder.append("'");
+			builder.append('\'');
 			return null;
 		}
 
 		@Override
 		public Void caseTypeSetLiteral(TypeSetLiteral typeSetLiteral) {
-			builder.append("{");
+			builder.append('{');
 			final StringBuilder previousBuilder = builder;
 			builder = new StringBuilder();
 			for (TypeLiteral type : typeSetLiteral.getTypes()) {
@@ -279,7 +302,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 				builder.append(" | ");
 			}
 			previousBuilder.append(builder.substring(0, builder.length() - 3));
-			builder.append("}");
+			builder.append('}');
 			return null;
 		}
 
@@ -297,10 +320,10 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		public Void caseVariableDeclaration(VariableDeclaration variableDeclaration) {
 			builder.append(variableDeclaration.getName());
 			if (variableDeclaration.getType() != null) {
-				builder.append(" : ");
+				builder.append(' ').append(':').append(' ');
 				doSwitch(variableDeclaration.getType());
 			}
-			builder.append(" = ");
+			builder.append(' ').append('=').append(' ');
 			doSwitch(variableDeclaration.getExpression());
 			return null;
 		}
@@ -362,7 +385,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	 * Creates a new line with the right indentation.
 	 */
 	protected void newLine() {
-		builder.append("\n" + indentation);
+		builder.append('\n' + indentation);
 	}
 
 	@Override
@@ -403,13 +426,13 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorModule(ErrorModule errorModule) {
 		builder.append("*** error module ***");
 		newLine();
-		builder.append("missing open parenthesis: " + errorModule.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX + errorModule.getMissingOpenParenthesis());
 		newLine();
 		builder.append("missing EPackage: " + errorModule.getMissingEPackage());
 		newLine();
-		builder.append("missing close parenthesis: " + errorModule.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorModule.getMissingCloseParenthesis());
 		newLine();
-		builder.append("missing end header: " + errorModule.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorModule.getMissingEndHeader());
 		newLine();
 
 		return null;
@@ -427,7 +450,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorImport(ErrorImport errorImport) {
 		builder.append("*** error import ***");
 		newLine();
-		builder.append("missing end: " + errorImport.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorImport.getMissingEnd());
 		newLine();
 
 		return null;
@@ -467,7 +490,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		}
 		newLine();
 		builder.append(template.getVisibility().getName());
-		builder.append(" template " + template.getName() + "(");
+		builder.append(" template " + template.getName() + '(');
 		final StringBuilder previousBuilder = builder;
 		builder = new StringBuilder();
 		for (Variable variable : template.getParameters()) {
@@ -478,7 +501,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			previousBuilder.append(builder.substring(0, builder.length() - 2));
 		}
 		builder = previousBuilder;
-		builder.append(")");
+		builder.append(')');
 		if (template.getGuard() != null) {
 			newLine();
 			builder.append("guard ");
@@ -501,11 +524,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		newLine();
 		builder.append("missing visibility: " + errorTemplate.getMissingVisibility());
 		newLine();
-		builder.append("missing name: " + errorTemplate.getMissingName());
+		builder.append(MISSING_NAME_MESSAGE_PREFIX + errorTemplate.getMissingName());
 		newLine();
-		builder.append("missing open parenthesis: " + errorTemplate.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX + errorTemplate.getMissingOpenParenthesis());
 		newLine();
-		builder.append("missing close parenthesis: " + errorTemplate.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorTemplate.getMissingCloseParenthesis());
 		newLine();
 		builder.append("missing guard open parenthesis: " + errorTemplate.getMissingGuardOpenParenthesis());
 		newLine();
@@ -540,7 +563,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		if (binding.getType() != null) {
 			builder.append(binding.getType().getName());
 		} else {
-			builder.append("null");
+			builder.append(NULL_STRING);
 		}
 		builder.append(" = ");
 		doSwitch(binding.getInitExpression());
@@ -552,11 +575,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorBinding(ErrorBinding errorBinding) {
 		builder.append("*** error binding ***");
 		newLine();
-		builder.append("missing name: " + errorBinding.getMissingName());
+		builder.append(MISSING_NAME_MESSAGE_PREFIX + errorBinding.getMissingName());
 		newLine();
-		builder.append("missing colon: " + errorBinding.getMissingColon());
+		builder.append(MISSING_COLON_MESSAGE_PREFIX + errorBinding.getMissingColon());
 		newLine();
-		builder.append("missing type: " + errorBinding.getMissingType());
+		builder.append(MISSING_TYPE_MESSAGE_PREFIX + errorBinding.getMissingType());
 		newLine();
 		builder.append("missing affectation symbol: " + errorBinding.getMissingAffectationSymbole());
 		newLine();
@@ -609,15 +632,17 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		newLine();
 		builder.append("missing open mode: " + errorFileStatement.getMissingOpenMode());
 		newLine();
-		builder.append("missing open parenthesis: " + errorFileStatement.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX
+				+ errorFileStatement.getMissingOpenParenthesis());
 		newLine();
 		builder.append("missing comma: " + errorFileStatement.getMissingComma());
 		newLine();
-		builder.append("missing close parenthesis: " + errorFileStatement.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX
+				+ errorFileStatement.getMissingCloseParenthesis());
 		newLine();
-		builder.append("missing end header: " + errorFileStatement.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorFileStatement.getMissingEndHeader());
 		newLine();
-		builder.append("missing end: " + errorFileStatement.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorFileStatement.getMissingEnd());
 		newLine();
 
 		return null;
@@ -638,13 +663,15 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorForStatement(ErrorForStatement errorForStatement) {
 		builder.append("*** error for statement ***");
 		newLine();
-		builder.append("missing open parenthesis: " + errorForStatement.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX
+				+ errorForStatement.getMissingOpenParenthesis());
 		newLine();
-		builder.append("missing close parenthesis: " + errorForStatement.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX
+				+ errorForStatement.getMissingCloseParenthesis());
 		newLine();
-		builder.append("missing end header: " + errorForStatement.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorForStatement.getMissingEndHeader());
 		newLine();
-		builder.append("missing end: " + errorForStatement.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorForStatement.getMissingEnd());
 		newLine();
 
 		return null;
@@ -670,13 +697,14 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorIfStatement(ErrorIfStatement errorIfStatement) {
 		builder.append("*** error if statement ***");
 		newLine();
-		builder.append("missing open parenthesis: " + errorIfStatement.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX + errorIfStatement.getMissingOpenParenthesis());
 		newLine();
-		builder.append("missing close parenthesis: " + errorIfStatement.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX
+				+ errorIfStatement.getMissingCloseParenthesis());
 		newLine();
-		builder.append("missing end header: " + errorIfStatement.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorIfStatement.getMissingEndHeader());
 		newLine();
-		builder.append("missing end: " + errorIfStatement.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorIfStatement.getMissingEnd());
 		newLine();
 
 		return null;
@@ -700,9 +728,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorLetStatement(ErrorLetStatement errorLetStatement) {
 		builder.append("*** error let statement ***");
 		newLine();
-		builder.append("missing end header: " + errorLetStatement.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorLetStatement.getMissingEndHeader());
 		newLine();
-		builder.append("missing end: " + errorLetStatement.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorLetStatement.getMissingEnd());
 		newLine();
 
 		return null;
@@ -714,7 +742,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			doSwitch(query.getDocumentation());
 		}
 		builder.append(query.getVisibility().getName());
-		builder.append(" query " + query.getName() + "(");
+		builder.append(" query " + query.getName() + '(');
 		final StringBuilder previousBuilder = builder;
 		builder = new StringBuilder();
 		for (Variable variable : query.getParameters()) {
@@ -728,9 +756,9 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		if (query.getType() != null) {
 			builder.append(query.getType().getName());
 		} else {
-			builder.append("null");
+			builder.append(NULL_STRING);
 		}
-		builder.append(" ");
+		builder.append(' ');
 		doSwitch(query.getBody());
 		newLine();
 		builder.append("/]");
@@ -744,19 +772,19 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		newLine();
 		builder.append("missing visibility: " + errorQuery.getMissingVisibility());
 		newLine();
-		builder.append("missing name: " + errorQuery.getMissingName());
+		builder.append(MISSING_NAME_MESSAGE_PREFIX + errorQuery.getMissingName());
 		newLine();
-		builder.append("missing open parenthesis: " + errorQuery.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX + errorQuery.getMissingOpenParenthesis());
 		newLine();
-		builder.append("missing close parenthesis: " + errorQuery.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX + errorQuery.getMissingCloseParenthesis());
 		newLine();
-		builder.append("missing colon: " + errorQuery.getMissingColon());
+		builder.append(MISSING_COLON_MESSAGE_PREFIX + errorQuery.getMissingColon());
 		newLine();
-		builder.append("missing type: " + errorQuery.getMissingType());
+		builder.append(MISSING_TYPE_MESSAGE_PREFIX + errorQuery.getMissingType());
 		newLine();
 		builder.append("missing equal: " + errorQuery.getMissingEqual());
 		newLine();
-		builder.append("missing end: " + errorQuery.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorQuery.getMissingEnd());
 		newLine();
 
 		return null;
@@ -764,15 +792,15 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 
 	@Override
 	public Void caseTextStatement(TextStatement text) {
-		builder.append(text.getValue().replaceAll("\r\n", "\n" + indentation).replaceAll("\r",
-				"\n" + indentation));
+		builder.append(text.getValue().replaceAll("\r\n", '\n' + indentation).replaceAll("\r",
+				'\n' + indentation));
 
 		return null;
 	}
 
 	@Override
 	public Void caseExpressionStatement(ExpressionStatement expressionStatement) {
-		builder.append("[");
+		builder.append('[');
 		doSwitch(expressionStatement.getExpression());
 		builder.append("/]");
 
@@ -783,7 +811,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorExpressionStatement(ErrorExpressionStatement errorExpressionStatement) {
 		builder.append("*** error expression statement ***");
 		newLine();
-		builder.append("missing end header: " + errorExpressionStatement.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorExpressionStatement.getMissingEndHeader());
 		newLine();
 
 		return null;
@@ -797,7 +825,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			if (variable.getType() != null) {
 				builder.append(variable.getType().getName());
 			} else {
-				builder.append("null");
+				builder.append(NULL_STRING);
 			}
 		}
 
@@ -808,11 +836,11 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorVariable(ErrorVariable errorVariable) {
 		builder.append("*** error variable ***");
 		newLine();
-		builder.append("missing name: " + errorVariable.getMissingName());
+		builder.append(MISSING_NAME_MESSAGE_PREFIX + errorVariable.getMissingName());
 		newLine();
-		builder.append("missing colon: " + errorVariable.getMissingColon());
+		builder.append(MISSING_COLON_MESSAGE_PREFIX + errorVariable.getMissingColon());
 		newLine();
-		builder.append("missing type: " + errorVariable.getMissingType());
+		builder.append(MISSING_TYPE_MESSAGE_PREFIX + errorVariable.getMissingType());
 		newLine();
 
 		return null;
@@ -833,13 +861,15 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 	public Void caseErrorProtectedArea(ErrorProtectedArea errorProtectedArea) {
 		builder.append("*** error protected area ***");
 		newLine();
-		builder.append("missing open parenthesis: " + errorProtectedArea.getMissingOpenParenthesis());
+		builder.append(MISSING_OPEN_PARENTHESIS_MESSAGE_PREFIX
+				+ errorProtectedArea.getMissingOpenParenthesis());
 		newLine();
-		builder.append("missing close parenthesis: " + errorProtectedArea.getMissingCloseParenthesis());
+		builder.append(MISSING_CLOSE_PARENTHESIS_MESSAGE_PREFIX
+				+ errorProtectedArea.getMissingCloseParenthesis());
 		newLine();
-		builder.append("missing end header: " + errorProtectedArea.getMissingEndHeader());
+		builder.append(MISSING_END_HEADER_MESSAGE_PREFIX + errorProtectedArea.getMissingEndHeader());
 		newLine();
-		builder.append("missing end: " + errorProtectedArea.getMissingEnd());
+		builder.append(MISSING_END_MESSAGE_PREFIX + errorProtectedArea.getMissingEnd());
 		newLine();
 
 		return null;

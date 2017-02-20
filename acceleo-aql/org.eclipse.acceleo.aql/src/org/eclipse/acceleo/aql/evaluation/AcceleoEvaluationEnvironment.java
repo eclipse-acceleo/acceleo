@@ -76,7 +76,7 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	 * {@link #aqlEnvironment}.
 	 * </p>
 	 */
-	private Deque<Deque<ModuleElement>> callStacks;
+	private Deque<AcceleoCallStack> callStacks;
 
 	/**
 	 * Initializes an environment for acceleo evaluations.
@@ -117,21 +117,32 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	}
 
 	/**
-	 * Push the given module element atop the latest stack, or create a new stack for it according to
-	 * {@code newStack}.
+	 * Push the given module element atop the latest stack.
 	 * 
 	 * @param element
 	 *            The module element we're entering into.
-	 * @param newStack
-	 *            Tells us whether this should be a new stack or if we should push on the latest one.
 	 */
-	public void pushStack(ModuleElement element, boolean newStack) {
-		Deque<ModuleElement> currentStack = null;
-		if (!newStack) {
+	public void pushStack(ModuleElement element) {
+		pushStack(element, null);
+	}
+
+	/**
+	 * Push the given module element atop the latest stack, or create a new stack for it if
+	 * <code>newStackStartingModule</code> is not null.
+	 * 
+	 * @param element
+	 *            The module element we're entering into.
+	 * @param newStackStartingModule
+	 *            If this is not null, we'll create a new stack with this module as starting point to push the
+	 *            module element on. Otherwise we'll just push this element on the latest stack.
+	 */
+	public void pushStack(ModuleElement element, Module newStackStartingModule) {
+		// TODO exception if we try and push an element without stack
+		AcceleoCallStack currentStack = null;
+		if (newStackStartingModule == null) {
 			currentStack = callStacks.peekLast();
-		}
-		if (currentStack == null) {
-			currentStack = new ArrayDeque<>();
+		} else {
+			currentStack = new AcceleoCallStack(newStackStartingModule);
 			callStacks.addLast(currentStack);
 		}
 		currentStack.addLast(element);
@@ -145,10 +156,10 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	 *            The module element we're exiting out of.
 	 */
 	public void popStack(ModuleElement element) {
-		Deque<ModuleElement> currentStack = callStacks.peekLast();
+		AcceleoCallStack currentStack = callStacks.peekLast();
 		if (currentStack == null || !currentStack.pollLast().equals(element)) {
-			// TODO this module wasn't on the top of our current stack. we're out of turn on our push/pop.
-			// throw exception?
+			// TODO this module wasn't on the top of our current stack. we're out of turn on our push/pop
+			// cycle. throw exception?
 		}
 		if (currentStack.isEmpty()) {
 			callStacks.pollLast();
@@ -161,7 +172,7 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	 * 
 	 * @return The latest (current) call stack known to this environment.
 	 */
-	public Deque<ModuleElement> getCurrentStack() {
+	public AcceleoCallStack getCurrentStack() {
 		return callStacks.peekLast();
 	}
 
@@ -188,6 +199,8 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	 *         none.
 	 */
 	public Set<AbstractModuleElementService> getServicesWithName(Module module, String name) {
+		final Set<AbstractModuleElementService> res;
+
 		// FIXME null or empty set if either of the two gets is null?
 		return moduleServices.get(module).get(name);
 	}

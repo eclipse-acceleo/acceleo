@@ -280,6 +280,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 	public List<IValidationMessage> caseTemplate(Template template) {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
+		environment.pushStack(template, (Module)template.eContainer());
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
@@ -311,6 +312,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			res.addAll(doSwitch(template.getBody()));
 		} finally {
 			stack.pop();
+			environment.popStack(template);
 		}
 
 		return res;
@@ -364,6 +366,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 	public List<IValidationMessage> caseQuery(Query query) {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
+		environment.pushStack(query, (Module)query.eContainer());
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
@@ -381,6 +384,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			res.addAll(doSwitch(query.getBody()));
 		} finally {
 			stack.pop();
+			environment.popStack(query);
 		}
 
 		return res;

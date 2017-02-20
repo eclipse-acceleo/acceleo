@@ -26,19 +26,40 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GenerationTest {
+/**
+ * This will test the template lookup through various scenarios involving imports and extends.
+ * 
+ * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
+ */
+public class TemplateLookupTest {
+	/** Name of the first parameter on all of our templates. */
+	private static final String PARAM1 = "param1";
+
+	/** The aql environment used to read and parse the modules from disk. */
 	private IQueryEnvironment aqlEnvironment;
 
+	/** The Acceleo environment we'll use to test the lookup. */
 	private AcceleoEvaluationEnvironment acceleoEnvironment;
 
+	/** First of the tested modules. See M1 through M4.acceleo beside this class. */
 	private Module module1;
 
+	/** Second of the tested modules. See M1 through M4.acceleo beside this class. */
 	private Module module2;
 
+	/** Third of the tested modules. See M1 through M4.acceleo beside this class. */
 	private Module module3;
 
+	/** Fourth of the tested modules. See M1 through M4.acceleo beside this class. */
 	private Module module4;
 
+	/**
+	 * Prepares the environment. This will load the 4 modules and register them against a new environment
+	 * before each test.
+	 * 
+	 * @throws IOException
+	 *             If we couldn't read the modules from disk.
+	 */
 	@Before
 	public void loadModules() throws IOException {
 		aqlEnvironment = Query.newEnvironmentWithDefaultServices(null);
@@ -54,14 +75,17 @@ public class GenerationTest {
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m4", module4);
 	}
 
+	/**
+	 * Calls "M1.t11(EPackage)". This doesn't call any other module's templates.
+	 */
 	@Test
 	public void testCallM1T11EPackage() {
-		acceleoEnvironment.addVariable("param1", EcoreFactory.eINSTANCE.createEPackage());
+		acceleoEnvironment.addVariable(PARAM1, EcoreFactory.eINSTANCE.createEPackage());
 
 		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
 		ModuleElement start = module1.getModuleElements().get(0);
-		assertTrue(start instanceof Template && ((Template)start).getName().equals("t11"));
-		acceleoEnvironment.pushStack(start, true);
+		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
+		acceleoEnvironment.pushStack(start, module1);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -69,14 +93,17 @@ public class GenerationTest {
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
+	/**
+	 * Calls "M1.t11(EClass)". This calls two other templates that should be found in the same module.
+	 */
 	@Test
 	public void testCallM1T11EClass() {
-		acceleoEnvironment.addVariable("param1", EcoreFactory.eINSTANCE.createEClass());
+		acceleoEnvironment.addVariable(PARAM1, EcoreFactory.eINSTANCE.createEClass());
 
 		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
 		ModuleElement start = module1.getModuleElements().get(1);
-		assertTrue(start instanceof Template && ((Template)start).getName().equals("t11"));
-		acceleoEnvironment.pushStack(start, true);
+		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
+		acceleoEnvironment.pushStack(start, module1);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -86,7 +113,7 @@ public class GenerationTest {
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
-	/*
+	/**
 	 * M2.t21 calls "t11" which is not overriden in M2, so goes up to M1.t11, which calls "overrideMe",
 	 * overriden in M2 so we go down to M2.overrideMe, and "privateInBoth" which should call the one in M1 at
 	 * that point in the stack.
@@ -96,12 +123,12 @@ public class GenerationTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable("param1", pack);
+		acceleoEnvironment.addVariable(PARAM1, pack);
 
 		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(0);
-		assertTrue(start instanceof Template && ((Template)start).getName().equals("t21"));
-		acceleoEnvironment.pushStack(start, true);
+		assertTrue(start instanceof Template && "t21".equals(((Template)start).getName()));
+		acceleoEnvironment.pushStack(start, module2);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -110,24 +137,28 @@ public class GenerationTest {
 				result);
 	}
 
+	/**
+	 * Calls M2.overrideMe(), which is overriden in M1 but M1 is not in the scope, so we're not going to call
+	 * anything in other modules.
+	 */
 	@Test
 	public void testCallM2OverrideMe() {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable("param1", pack);
+		acceleoEnvironment.addVariable(PARAM1, pack);
 
 		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(1);
-		assertTrue(start instanceof Template && ((Template)start).getName().equals("overrideMe"));
-		acceleoEnvironment.pushStack(start, true);
+		assertTrue(start instanceof Template && "overrideMe".equals(((Template)start).getName()));
+		acceleoEnvironment.pushStack(start, module2);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
 		assertEquals("\r\ngenerated from m2.overrideMe(EClass)\r\n", result);
 	}
 
-	/*
+	/**
 	 * We're calling M2.toImportsAndBack as a starting point. This will call m4.t41 that's accessible through
 	 * the import of m2. This then tries to call "t31" which is available on m3 through the extends of m4,
 	 * which in turns tries to call "overrideMe". This is available on both m3 (the current template) and m4
@@ -141,12 +172,12 @@ public class GenerationTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable("param1", clazz);
+		acceleoEnvironment.addVariable(PARAM1, clazz);
 
 		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(3);
-		assertTrue(start instanceof Template && ((Template)start).getName().equals("toImportsAndBack"));
-		acceleoEnvironment.pushStack(start, true);
+		assertTrue(start instanceof Template && "toImportsAndBack".equals(((Template)start).getName()));
+		acceleoEnvironment.pushStack(start, module2);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -155,7 +186,7 @@ public class GenerationTest {
 				result);
 	}
 
-	/*
+	/**
 	 * We're calling m2.toImportsExtends as a starting point. this tries to call "t31" which is not available
 	 * in our hierarchy, not available on the import, but available on the import's extends hierarchy, on m3.
 	 * We thus call m3.t31 which calls "overrideMe". Since m3 is not the one which was imported, we expect
@@ -166,20 +197,31 @@ public class GenerationTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable("param1", clazz);
+		acceleoEnvironment.addVariable(PARAM1, clazz);
 
 		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(4);
-		assertTrue(start instanceof Template && ((Template)start).getName().equals("toImportsExtends"));
-		acceleoEnvironment.pushStack(start, true);
+		assertTrue(start instanceof Template && "toImportsExtends".equals(((Template)start).getName()));
+		acceleoEnvironment.pushStack(start, module2);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
 		assertEquals(
-				"\r\n\r\ngenerated from m3.t31(EClass)\r\n\r\ngenerated from m3.overrideMe(EClass)\r\n\r\n\r\n",
+				"\r\n\r\ngenerated from m3.t31(EClass)\r\n\r\ngenerated from m4.overrideMe(EClass)\r\n\r\n\r\n",
 				result);
 	}
 
+	/**
+	 * Reads a module from disk, parses it and returns the AST.
+	 * 
+	 * @param env
+	 *            The AQL environment with which to parse this module.
+	 * @param name
+	 *            Name of the module file to read. This can be a path relative to this current class.
+	 * @return The parsed AST.
+	 * @throws IOException
+	 *             if we couldn't read the file from disk.
+	 */
 	private Module readModule(IQueryEnvironment env, String name) throws IOException {
 		AcceleoParser parser = new AcceleoParser(env);
 		URL url = getClass().getResource(name);
