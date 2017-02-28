@@ -28,8 +28,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl#getValues <em>Values</em>}
- * </li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.SequenceInExtensionLiteralImpl#getValues <em>Values</em>}</li>
  * </ul>
  * </p>
  *

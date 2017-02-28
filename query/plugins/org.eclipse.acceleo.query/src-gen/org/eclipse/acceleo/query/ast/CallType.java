@@ -101,8 +101,7 @@ public enum CallType implements Enumerator {
 	 * 
 	 * @generated
 	 */
-	private static final CallType[] VALUES_ARRAY = new CallType[] {CALLSERVICE, CALLORAPPLY,
-			COLLECTIONCALL, };
+	private static final CallType[] VALUES_ARRAY = new CallType[] {CALLSERVICE, CALLORAPPLY, COLLECTIONCALL, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Call Type</b></em>' enumerators. <!-- begin-user-doc -->

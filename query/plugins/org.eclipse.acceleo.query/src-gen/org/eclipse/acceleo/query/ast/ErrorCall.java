@@ -16,8 +16,8 @@ package org.eclipse.acceleo.query.ast;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis <em>Missing End Parenthesis</em>
- * }</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis <em>Missing End Parenthesis
+ * </em>}</li>
  * </ul>
  * </p>
  *

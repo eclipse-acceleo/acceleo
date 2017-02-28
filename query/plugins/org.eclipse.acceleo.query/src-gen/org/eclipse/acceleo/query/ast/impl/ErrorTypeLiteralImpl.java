@@ -30,8 +30,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <ul>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl#getValue <em>Value</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl#getSegments <em>Segments</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl#isMissingColon <em>Missing Colon</em>}
- * </li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorTypeLiteralImpl#isMissingColon <em>Missing Colon</em>}</li>
  * </ul>
  * </p>
  *

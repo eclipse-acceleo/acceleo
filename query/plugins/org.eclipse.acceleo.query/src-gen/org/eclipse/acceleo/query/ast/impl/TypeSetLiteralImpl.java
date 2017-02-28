@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class TypeSetLiteralImpl extends LiteralImpl implements TypeSetLiteral {
+public class TypeSetLiteralImpl extends TypeLiteralImpl implements TypeSetLiteral {
 	/**
 	 * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->

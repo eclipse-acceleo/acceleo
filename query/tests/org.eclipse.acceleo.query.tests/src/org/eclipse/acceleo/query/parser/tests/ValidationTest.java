@@ -970,6 +970,95 @@ public class ValidationTest {
 	}
 
 	@Test
+	public void testLetBindingCompatibleType() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : ecore::EClass = self in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void testLetBindingCompatibleTypeTypeSetLiteral() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : {ecore::EPackage | ecore::EClass} = self in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void testLetBindingIncompatibleType() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : ecore::EPackage = self in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
+				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage].", 39, 45);
+	}
+
+	@Test
+	public void testLetBindingInvalidType() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : invalid::Type = self in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"invalid type literal invalid::Type", 13, 26);
+	}
+
+	@Test
+	public void testLetBindingIncompatibleTypeTypeSetLiteral() {
+		final IValidationResult validationResult = engine.validate(
+				"let newVar : {ecore::EPackage | ecore::EReference} = self in newVar", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof EClassifierType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((EClassifierType)possibleType).getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.WARNING,
+				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
+				61, 67);
+	}
+
+	@Test
 	public void testLetExpressionError() {
 		final IValidationResult validationResult = engine.validate(
 				"let newVar = 'text' in newVar + notAVariable", variableTypes);
@@ -1172,6 +1261,101 @@ public class ValidationTest {
 		assertEquals(Boolean.class, ((ClassType)possibleType).getType());
 
 		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void variableDefinitionCompatibleType() {
+		final IValidationResult validationResult = engine.validate(
+				"self->select(newVar : ecore::EClass | newVar <> null)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void variableDefinitionCompatibleTypeTypeSetLiteral() {
+		final IValidationResult validationResult = engine.validate(
+				"self->select(newVar : {ecore::EPackage | ecore::EClass} | newVar <> null)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		assertEquals(0, validationResult.getMessages().size());
+	}
+
+	@Test
+	public void variableDefinitionIncompatibleType() {
+		final IValidationResult validationResult = engine.validate(
+				"self->select(newVar : ecore::EPackage | newVar <> null)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.WARNING,
+				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage].", 40, 46);
+	}
+
+	@Test
+	public void variableDefinitionInvalidType() {
+		final IValidationResult validationResult = engine.validate(
+				"self->select(newVar : invalid::Type | newVar <> null)", variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.ERROR,
+				"invalid type literal invalid::Type", 22, 35);
+	}
+
+	@Test
+	public void variableDefinitionIncompatibleTypeTypeSetLiteral() {
+		final IValidationResult validationResult = engine.validate(
+				"self->select(newVar : {ecore::EPackage | ecore::EReference} | newVar <> null)",
+				variableTypes);
+
+		final Expression ast = validationResult.getAstResult().getAst();
+		final Set<IType> possibleTypes = validationResult.getPossibleTypes(ast);
+
+		assertEquals(1, possibleTypes.size());
+		Iterator<IType> it = possibleTypes.iterator();
+		IType possibleType = it.next();
+		assertTrue(possibleType instanceof SetType);
+		assertEquals(EcorePackage.eINSTANCE.getEClass(), ((SetType)possibleType).getCollectionType()
+				.getType());
+		assertEquals(1, validationResult.getMessages().size());
+		assertValidationMessage(
+				validationResult.getMessages().get(0),
+				ValidationMessageLevel.WARNING,
+				"EClassifier=EClass is incompatible with declaration [EClassifier=EPackage, EClassifier=EReference].",
+				62, 68);
 	}
 
 	@Test
