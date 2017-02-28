@@ -382,6 +382,53 @@ public class TypeTests {
 		}
 	}
 
+	@Test
+	public void testAssignableFromNullToEClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EClassifierType toType = eClassifierType(EcorePackage.eINSTANCE.getEClass());
+		final ClassType fromType = classType(null);
+
+		assertTrue(toType.getType() + " should have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromNullToObject() {
+		final ClassType toType = classType(Object.class);
+		final ClassType fromType = classType(null);
+
+		assertTrue(toType.getType() + " should have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromEClassToNull() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final ClassType toType = classType(null);
+		final EClassifierType fromType = eClassifierType(EcorePackage.eINSTANCE.getEClass());
+
+		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromObjectToNull() {
+		final ClassType toType = classType(null);
+		final ClassType fromType = classType(Object.class);
+
+		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromNullToNull() {
+		final ClassType toType = classType(null);
+		final ClassType fromType = classType(null);
+
+		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
 	protected IQueryEnvironment getQueryEnvironment() {
 		return queryEnvironment;
 	}

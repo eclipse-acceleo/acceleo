@@ -76,15 +76,18 @@ public abstract class AbstractType implements IType {
 	 * @since 4.1
 	 */
 	protected boolean isAssignableFrom(Class<?> toType, Class<?> fromType) {
-		Class<?> wrappedToType = wrapPrimitive(toType);
-		Class<?> wrappedFromType = wrapPrimitive(fromType);
+		final boolean result;
 
-		boolean result = false;
-		if (toType == null || fromType == null) {
+		final Class<?> wrappedToType = wrapPrimitive(toType);
+		final Class<?> wrappedFromType = wrapPrimitive(fromType);
+		if (toType == null) {
 			result = false;
+		} else if (fromType == null) {
+			result = true;
 		} else {
 			result = wrappedToType.isAssignableFrom(wrappedFromType);
 		}
+
 		return result;
 	}
 
