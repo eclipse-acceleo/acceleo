@@ -20,7 +20,7 @@ import java.util.Set;
 import org.eclipse.acceleo.query.ast.CallType;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IServiceCompletionProposal;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
@@ -44,12 +44,12 @@ import org.eclipse.emf.ecore.EPackage;
 public class CompletionServices extends ValidationServices {
 
 	/**
-	 * Creates a new service instance given a {@link IQueryEnvironment} and logging flag.
+	 * Creates a new service instance given a {@link IReadOnlyQueryEnvironment} and logging flag.
 	 * 
 	 * @param queryEnv
-	 *            the {@link IQueryEnvironment} to use
+	 *            the {@link IReadOnlyQueryEnvironment} to use
 	 */
-	public CompletionServices(IQueryEnvironment queryEnv) {
+	public CompletionServices(IReadOnlyQueryEnvironment queryEnv) {
 		super(queryEnv);
 	}
 
