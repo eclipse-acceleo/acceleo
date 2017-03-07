@@ -1,0 +1,30 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _4XuUAP_9EeaWNdFOlwG9mQ
+Element-Name: Coloration EClassifierSetType
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _V4J-IAAhEeeWNdFOlwG9mQ
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 3/3/17 5:03 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view "AQL Test View" | get-text-viewer] {
+    key-type "M1+a"
+    key-type BackSpace
+    type-text "{ecore::EPackage|ecore::EClass}"
+}
+
+with [get-view "AQL Test View" | get-text-viewer] {
+    get-property "styles[0].start" | equals 0 | verify-true
+    get-property "styles[0].length" | equals 31 | verify-true
+    get-property "styles[0].text" | equals "{ecore::EPackage|ecore::EClass}" | verify-true
+    get-property "styles[0].fontStyle" | equals normal | verify-true
+    get-property "styles[0].foregroundColor" | equals "#000080" | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

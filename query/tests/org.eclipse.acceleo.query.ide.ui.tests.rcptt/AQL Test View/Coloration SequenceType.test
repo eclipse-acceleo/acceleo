@@ -1,0 +1,48 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _4XuUAP_9EeaWNdFOlwG9mQ
+Element-Name: Coloration SequenceType
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _yYmKsAAfEeeWNdFOlwG9mQ
+Runtime-Version: 2.1.0.201606221726
+Save-Time: 3/3/17 3:48 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view "AQL Test View" | get-text-viewer] {
+    key-type "M1+a"
+    key-type BackSpace
+    type-text "Sequence(Boolean)"
+}
+
+with [get-view "AQL Test View" | get-text-viewer] {
+    get-property "styles[0].start" | equals 0 | verify-true
+    get-property "styles[0].length" | equals 8 | verify-true
+    get-property "styles[0].text" | equals Sequence | verify-true
+    get-property "styles[0].fontStyle" | equals normal | verify-true
+    get-property "styles[0].foregroundColor" | equals "#000080" | verify-true
+
+    get-property "styles[1].start" | equals 8 | verify-true
+    get-property "styles[1].length" | equals 1 | verify-true
+    get-property "styles[1].text" | equals "(" | verify-true
+    get-property "styles[1].fontStyle" | equals normal | verify-true
+    get-property "styles[1].foregroundColor" | is-empty | verify-true
+
+    get-property "styles[2].start" | equals 9 | verify-true
+    get-property "styles[2].length" | equals 7 | verify-true
+    get-property "styles[2].text" | equals Boolean | verify-true
+    get-property "styles[2].fontStyle" | equals normal | verify-true
+    get-property "styles[2].foregroundColor" | equals "#000080" | verify-true
+
+    get-property "styles[3].start" | equals 16 | verify-true
+    get-property "styles[3].length" | equals 1 | verify-true
+    get-property "styles[3].text" | equals ")" | verify-true
+    get-property "styles[3].fontStyle" | equals normal | verify-true
+    get-property "styles[3].foregroundColor" | is-empty | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
