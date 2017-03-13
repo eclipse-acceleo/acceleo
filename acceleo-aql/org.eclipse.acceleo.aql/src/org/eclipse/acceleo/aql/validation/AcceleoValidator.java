@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.aql.validation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -76,12 +75,17 @@ import org.eclipse.emf.ecore.EPackage;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 @SuppressWarnings("restriction")
-public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
+public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	/**
 	 * Missing name message.
 	 */
 	private static final String MISSING_NAME = "Missing name";
+
+	/**
+	 * A return value to prevent switch to get to extended EClasses.
+	 */
+	private static final Object RETURN_VALUE = new Object();
 
 	/**
 	 * The {@link IAcceleoEnvironment}.
@@ -104,6 +108,11 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 	private boolean forceCollectionBinding;
 
 	/**
+	 * The {@link IAcceleoValidationResult}.
+	 */
+	private AcceleoValidationResult result;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
@@ -115,188 +124,198 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 	}
 
 	/**
-	 * Validates the given Module.
+	 * Validates the given {@link Module}.
 	 * 
 	 * @param module
 	 *            the {@link Module} to validate
-	 * @return the {@link List} of {@link IValidationMessage}
+	 * @return the {@link IAcceleoValidationResult}
 	 */
-	public List<IValidationMessage> validate(Module module) {
+	public IAcceleoValidationResult validate(Module module) {
 		stack.clear();
 		stack.push(new HashMap<String, Set<IType>>());
 		forceCollectionBinding = false;
-		return doSwitch(module);
+		result = new AcceleoValidationResult(module);
+
+		doSwitch(module);
+
+		return result;
+	}
+
+	/**
+	 * Adds a {@link IValidationMessage} to the given ast node.
+	 * 
+	 * @param node
+	 *            the ast node
+	 * @param level
+	 *            the {@link ValidationMessageLevel}
+	 * @param messageString
+	 *            the message
+	 * @param startPosition
+	 *            the start position
+	 * @param endPosition
+	 *            the end position
+	 */
+	protected void addMessage(Object node, ValidationMessageLevel level, String messageString,
+			int startPosition, int endPosition) {
+		final IValidationMessage message = new ValidationMessage(level, messageString, startPosition,
+				endPosition);
+		result.getMessages().put(node, message);
 	}
 
 	@Override
-	public List<IValidationMessage> caseModule(Module module) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseModule(Module module) {
 		final Set<EPackage> ePackages = new HashSet<EPackage>();
 		for (Metamodel metamodel : module.getMetamodels()) {
-			res.addAll(doSwitch(metamodel));
+			doSwitch(metamodel);
 			if (metamodel.getReferencedPackage() != null) {
 				if (!ePackages.add(metamodel.getReferencedPackage())) {
-					res.add(new ValidationMessage(ValidationMessageLevel.WARNING, metamodel
-							.getReferencedPackage().getNsURI()
-							+ " already referenced", metamodel.getStartPosition(), metamodel.getEndPosition()));
+					addMessage(module, ValidationMessageLevel.WARNING, metamodel.getReferencedPackage()
+							.getNsURI()
+							+ " already referenced", metamodel.getStartPosition(), metamodel.getEndPosition());
 				}
 			}
 		}
 
 		if (module.getExtends() != null) {
-			res.addAll(doSwitch(module.getExtends()));
+			doSwitch(module.getExtends());
 		}
 
 		final Set<String> imports = new HashSet<String>();
 		for (Import imp : module.getImports()) {
-			res.addAll(doSwitch(imp));
+			doSwitch(imp);
 			if (imp.getModule().getQualifiedName() != null) {
 				if (!imports.add(imp.getModule().getQualifiedName())) {
-					res.add(new ValidationMessage(ValidationMessageLevel.WARNING, imp.getModule()
-							.getQualifiedName()
-							+ " already imported", imp.getStartPosition(), imp.getEndPosition()));
+					addMessage(module, ValidationMessageLevel.WARNING, imp.getModule().getQualifiedName()
+							+ " already imported", imp.getStartPosition(), imp.getEndPosition());
 				}
 			}
 		}
 
 		for (ModuleElement element : module.getModuleElements()) {
 			// TODO check IService registration
-			res.addAll(doSwitch(element));
+			doSwitch(element);
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseModuleElementDocumentation(
-			ModuleElementDocumentation moduleElementDocumentation) {
+	public Object caseModuleElementDocumentation(ModuleElementDocumentation moduleElementDocumentation) {
 		// TODO Auto-generated method stub
-		return Collections.emptyList();
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseComment(Comment comment) {
+	public Object caseComment(Comment comment) {
 		// TODO Auto-generated method stub
-		return Collections.emptyList();
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorModule(ErrorModule errorModule) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorModule(ErrorModule errorModule) {
 		if (errorModule.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorModule, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorModule
-							.getMissingOpenParenthesis(), errorModule.getMissingOpenParenthesis()));
+							.getMissingOpenParenthesis(), errorModule.getMissingOpenParenthesis());
 		} else if (errorModule.getMissingEPackage() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing metamodel", errorModule
-					.getMissingEPackage(), errorModule.getMissingEPackage()));
+			addMessage(errorModule, ValidationMessageLevel.ERROR, "Missing metamodel", errorModule
+					.getMissingEPackage(), errorModule.getMissingEPackage());
 		} else if (errorModule.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorModule, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorModule
-							.getMissingCloseParenthesis(), errorModule.getMissingCloseParenthesis()));
+							.getMissingCloseParenthesis(), errorModule.getMissingCloseParenthesis());
 		} else if (errorModule.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorModule, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.MODULE_HEADER_END), errorModule
-							.getMissingEndHeader(), errorModule.getMissingEndHeader()));
+							.getMissingEndHeader(), errorModule.getMissingEndHeader());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseMetamodel(Metamodel metamodel) {
-		return Collections.emptyList();
+	public Object caseMetamodel(Metamodel metamodel) {
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
 		if (errorMetamodel.getFragment() != null) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Invalid metamodel "
+			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel "
 					+ errorMetamodel.getFragment(), errorMetamodel.getStartPosition(), errorMetamodel
-					.getEndPosition()));
+					.getEndPosition());
 		} else if (errorMetamodel.getMissingEndQuote() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorMetamodel, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.QUOTE), errorMetamodel.getMissingEndQuote(),
-					errorMetamodel.getMissingEndQuote()));
+					errorMetamodel.getMissingEndQuote());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseImport(Import imp) {
-		return doSwitch(imp.getModule());
+	public Object caseImport(Import imp) {
+		doSwitch(imp.getModule());
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorImport(ErrorImport errorImport) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
-		res.addAll(doSwitch(errorImport.getModule()));
+	public Object caseErrorImport(ErrorImport errorImport) {
+		doSwitch(errorImport.getModule());
 
 		if (errorImport.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorImport, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.IMPORT_END), errorImport.getMissingEnd(),
-					errorImport.getMissingEnd()));
+					errorImport.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseModuleReference(ModuleReference moduleReference) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseModuleReference(ModuleReference moduleReference) {
 		if (!environment.hasModule(moduleReference.getQualifiedName())) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Could not find module "
+			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not find module "
 					+ moduleReference.getQualifiedName(), moduleReference.getStartPosition(), moduleReference
-					.getEndPosition()));
+					.getEndPosition());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseBlock(Block block) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseBlock(Block block) {
 		for (Statement statement : block.getStatements()) {
-			res.addAll(doSwitch(statement));
+			doSwitch(statement);
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseTextStatement(TextStatement object) {
-		return Collections.emptyList();
+	public Object caseTextStatement(TextStatement object) {
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseTemplate(Template template) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseTemplate(Template template) {
 		environment.pushStack(template, (Module)template.eContainer());
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
 			for (Variable parameter : template.getParameters()) {
-				res.addAll(doSwitch(parameter));
+				doSwitch(parameter);
 				if (parameter.getName() != null) {
 					if (!parameterNames.add(parameter.getName())) {
-						res.add(new ValidationMessage(ValidationMessageLevel.ERROR, parameter.getName()
+						addMessage(template, ValidationMessageLevel.ERROR, parameter.getName()
 								+ " duplicated parameter", parameter.getStartPosition(), parameter
-								.getEndPosition()));
+								.getEndPosition());
 
 					}
 				}
 			}
 			if (template.getGuard() != null) {
-				res.addAll(doSwitch(template.getGuard()));
+				doSwitch(template.getGuard());
 			}
 			if (template.getPost() != null) {
 				stack.push(new HashMap<String, Set<IType>>(stack.peek()));
@@ -304,175 +323,163 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 				possibleTypes.add(new ClassType(environment.getQueryEnvironment(), String.class));
 				stack.peek().put("self", possibleTypes);
 				try {
-					res.addAll(doSwitch(template.getPost()));
+					doSwitch(template.getPost());
 				} finally {
 					stack.pop();
 				}
 			}
-			res.addAll(doSwitch(template.getBody()));
+			doSwitch(template.getBody());
 		} finally {
 			stack.pop();
 			environment.popStack(template);
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorTemplate(ErrorTemplate errorTemplate) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorTemplate(ErrorTemplate errorTemplate) {
 		if (errorTemplate.getMissingVisibility() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing visibility", errorTemplate
-					.getMissingVisibility(), errorTemplate.getMissingVisibility()));
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, "Missing visibility", errorTemplate
+					.getMissingVisibility(), errorTemplate.getMissingVisibility());
 		} else if (errorTemplate.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorTemplate
-					.getMissingName(), errorTemplate.getMissingName()));
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, MISSING_NAME, errorTemplate
+					.getMissingName(), errorTemplate.getMissingName());
 		} else if (errorTemplate.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorTemplate
-							.getMissingOpenParenthesis(), errorTemplate.getMissingOpenParenthesis()));
+							.getMissingOpenParenthesis(), errorTemplate.getMissingOpenParenthesis());
 		} else if (errorTemplate.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
-							.getMissingCloseParenthesis(), errorTemplate.getMissingCloseParenthesis()));
+							.getMissingCloseParenthesis(), errorTemplate.getMissingCloseParenthesis());
 		} else if (errorTemplate.getMissingGuardOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorTemplate
-							.getMissingGuardOpenParenthesis(), errorTemplate.getMissingGuardOpenParenthesis()));
+							.getMissingGuardOpenParenthesis(), errorTemplate.getMissingGuardOpenParenthesis());
 		} else if (errorTemplate.getMissingGuardCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
 							.getMissingGuardCloseParenthesis(), errorTemplate
-							.getMissingGuardCloseParenthesis()));
+							.getMissingGuardCloseParenthesis());
 		} else if (errorTemplate.getMissingPostCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
-							.getMissingPostCloseParenthesis(), errorTemplate.getMissingPostCloseParenthesis()));
+							.getMissingPostCloseParenthesis(), errorTemplate.getMissingPostCloseParenthesis());
 		} else if (errorTemplate.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.TEMPLATE_HEADER_END), errorTemplate
-							.getMissingEndHeader(), errorTemplate.getMissingEndHeader()));
+							.getMissingEndHeader(), errorTemplate.getMissingEndHeader());
 		} else if (errorTemplate.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.TEMPLATE_END), errorTemplate.getMissingEnd(),
-					errorTemplate.getMissingEnd()));
+					errorTemplate.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseQuery(Query query) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseQuery(Query query) {
 		environment.pushStack(query, (Module)query.eContainer());
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
 			for (Variable parameter : query.getParameters()) {
-				res.addAll(doSwitch(parameter));
+				doSwitch(parameter);
 				if (parameter.getName() != null) {
 					if (!parameterNames.add(parameter.getName())) {
-						res.add(new ValidationMessage(ValidationMessageLevel.ERROR, parameter.getName()
+						addMessage(query, ValidationMessageLevel.ERROR, parameter.getName()
 								+ " duplicated parameter", parameter.getStartPosition(), parameter
-								.getEndPosition()));
+								.getEndPosition());
 
 					}
 				}
 			}
-			res.addAll(doSwitch(query.getBody()));
+			doSwitch(query.getBody());
 		} finally {
 			stack.pop();
 			environment.popStack(query);
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorQuery(ErrorQuery errorQuery) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorQuery(ErrorQuery errorQuery) {
 		if (errorQuery.getMissingVisibility() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing visibility", errorQuery
-					.getMissingVisibility(), errorQuery.getMissingVisibility()));
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, "Missing visibility", errorQuery
+					.getMissingVisibility(), errorQuery.getMissingVisibility());
 		} else if (errorQuery.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorQuery
-					.getMissingName(), errorQuery.getMissingName()));
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, MISSING_NAME, errorQuery.getMissingName(),
+					errorQuery.getMissingName());
 		} else if (errorQuery.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorQuery, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorQuery
-							.getMissingOpenParenthesis(), errorQuery.getMissingOpenParenthesis()));
+							.getMissingOpenParenthesis(), errorQuery.getMissingOpenParenthesis());
 		} else if (errorQuery.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorQuery, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorQuery
-							.getMissingCloseParenthesis(), errorQuery.getMissingCloseParenthesis()));
+							.getMissingCloseParenthesis(), errorQuery.getMissingCloseParenthesis());
 		} else if (errorQuery.getMissingColon() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.COLON), errorQuery.getMissingColon(), errorQuery
-							.getMissingColon()));
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(AcceleoParser.COLON),
+					errorQuery.getMissingColon(), errorQuery.getMissingColon());
 		} else if (errorQuery.getMissingType() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing or invalid type", errorQuery
-					.getMissingType(), errorQuery.getMissingType()));
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, "Missing or invalid type", errorQuery
+					.getMissingType(), errorQuery.getMissingType());
 		} else if (errorQuery.getMissingEqual() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.EQUAL), errorQuery.getMissingEqual(), errorQuery
-							.getMissingEqual()));
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(AcceleoParser.EQUAL),
+					errorQuery.getMissingEqual(), errorQuery.getMissingEqual());
 		} else if (errorQuery.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorQuery, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.QUERY_END), errorQuery.getMissingEnd(), errorQuery
-							.getMissingEnd()));
+							.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseVariable(Variable variable) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseVariable(Variable variable) {
 		if (stack.peek().containsKey(variable.getName())) {
-			res.add(new ValidationMessage(ValidationMessageLevel.WARNING, "Variable " + variable.getName()
-					+ " already exists.", variable.getStartPosition(), variable.getEndPosition()));
+			addMessage(variable, ValidationMessageLevel.WARNING, "Variable " + variable.getName()
+					+ " already exists.", variable.getStartPosition(), variable.getEndPosition());
 		}
 		final Set<IType> types = new LinkedHashSet<IType>();
 		types.add(new EClassifierType(environment.getQueryEnvironment(), variable.getType()));
 		stack.peek().put(variable.getName(), types);
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorVariable(ErrorVariable errorVariable) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorVariable(ErrorVariable errorVariable) {
 		if (errorVariable.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorVariable
-					.getMissingName(), errorVariable.getMissingName()));
+			addMessage(errorVariable, ValidationMessageLevel.ERROR, MISSING_NAME, errorVariable
+					.getMissingName(), errorVariable.getMissingName());
 		} else if (errorVariable.getMissingColon() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorVariable, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.COLON), errorVariable.getMissingColon(),
-					errorVariable.getMissingColon()));
+					errorVariable.getMissingColon());
 		} else if (errorVariable.getMissingType() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing or invalid type",
-					errorVariable.getMissingType(), errorVariable.getMissingType()));
+			addMessage(errorVariable, ValidationMessageLevel.ERROR, "Missing or invalid type", errorVariable
+					.getMissingType(), errorVariable.getMissingType());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseBinding(Binding binding) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseBinding(Binding binding) {
 		if (stack.peek().containsKey(binding.getName())) {
-			res.add(new ValidationMessage(ValidationMessageLevel.WARNING, "Variable " + binding.getName()
-					+ " already exists.", binding.getStartPosition(), binding.getEndPosition()));
+			addMessage(binding, ValidationMessageLevel.WARNING, "Variable " + binding.getName()
+					+ " already exists.", binding.getStartPosition(), binding.getEndPosition());
 		}
 		final IValidationResult validationResult = validateExpression(binding.getInitExpression());
-		res.addAll(shiftMessages(validationResult.getMessages(), binding.getInitExpression()
-				.getStartPosition()));
+		result.getMessages()
+				.putAll(binding,
+						shiftMessages(validationResult.getMessages(), binding.getInitExpression()
+								.getStartPosition()));
 
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
@@ -482,19 +489,19 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			for (IType possibleType : possibleTypes) {
 				if (!iType.isAssignableFrom(possibleType)) {
 					if (forceCollectionBinding) {
-						res.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
+						result.getMessages().putAll(binding,
+								validateBindingTypeForceCollection(binding, iType, possibleType));
 					} else {
-						res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-								+ " is incompatible with " + possibleType, binding.getStartPosition(),
-								binding.getEndPosition()));
+						addMessage(binding, ValidationMessageLevel.WARNING, iType + " is incompatible with "
+								+ possibleType, binding.getStartPosition(), binding.getEndPosition());
 					}
 				}
 			}
 		} else if (forceCollectionBinding) {
 			for (IType possibleType : possibleTypes) {
 				if (!(possibleType instanceof ICollectionType)) {
-					res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Must be a Collection not "
-							+ possibleType, binding.getStartPosition(), binding.getEndPosition()));
+					addMessage(binding, ValidationMessageLevel.ERROR, "Must be a Collection not "
+							+ possibleType, binding.getStartPosition(), binding.getEndPosition());
 				}
 			}
 		}
@@ -511,7 +518,7 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 		}
 		stack.peek().put(binding.getName(), variableTypes);
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	/**
@@ -546,144 +553,133 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorBinding(ErrorBinding errorBinding) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorBinding(ErrorBinding errorBinding) {
 		if (errorBinding.getMissingName() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, MISSING_NAME, errorBinding
-					.getMissingName(), errorBinding.getMissingName()));
+			addMessage(errorBinding, ValidationMessageLevel.ERROR, MISSING_NAME, errorBinding
+					.getMissingName(), errorBinding.getMissingName());
 		} else if (errorBinding.getMissingColon() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorBinding, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.COLON), errorBinding.getMissingColon(), errorBinding
-							.getMissingColon()));
+							.getMissingColon());
 		} else if (errorBinding.getMissingType() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Missing type literal", errorBinding
-					.getMissingType(), errorBinding.getMissingType()));
+			addMessage(errorBinding, ValidationMessageLevel.ERROR, "Missing type literal", errorBinding
+					.getMissingType(), errorBinding.getMissingType());
 		} else if (errorBinding.getMissingAffectationSymbolePosition() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, getMissingTokenMessage(errorBinding
+			addMessage(errorBinding, ValidationMessageLevel.ERROR, getMissingTokenMessage(errorBinding
 					.getMissingAffectationSymbole()), errorBinding.getMissingAffectationSymbolePosition(),
-					errorBinding.getMissingAffectationSymbolePosition()));
+					errorBinding.getMissingAffectationSymbolePosition());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseExpressionStatement(ExpressionStatement expressionStatement) {
-		return doSwitch(expressionStatement.getExpression());
+	public Object caseExpressionStatement(ExpressionStatement expressionStatement) {
+		doSwitch(expressionStatement.getExpression());
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorExpressionStatement(
-			ErrorExpressionStatement errorExpressionStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
-		res.addAll(doSwitch(errorExpressionStatement.getExpression()));
+	public Object caseErrorExpressionStatement(ErrorExpressionStatement errorExpressionStatement) {
+		doSwitch(errorExpressionStatement.getExpression());
 		if (errorExpressionStatement.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorExpressionStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.EXPRESSION_STATEMENT_END), errorExpressionStatement
-							.getMissingEndHeader(), errorExpressionStatement.getMissingEndHeader()));
+							.getMissingEndHeader(), errorExpressionStatement.getMissingEndHeader());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseProtectedArea(ProtectedArea protectedArea) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
+	public Object caseProtectedArea(ProtectedArea protectedArea) {
+		doSwitch(protectedArea.getId());
+		doSwitch(protectedArea.getBody());
 
-		res.addAll(doSwitch(protectedArea.getId()));
-		res.addAll(doSwitch(protectedArea.getBody()));
-
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseExpression(Expression expression) {
+	public Object caseErrorProtectedArea(ErrorProtectedArea errorProtectedArea) {
+		if (errorProtectedArea.getMissingOpenParenthesis() != -1) {
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
+					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorProtectedArea
+							.getMissingOpenParenthesis(), errorProtectedArea.getMissingOpenParenthesis());
+		} else if (errorProtectedArea.getMissingCloseParenthesis() != -1) {
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
+					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea
+							.getMissingCloseParenthesis(), errorProtectedArea.getMissingCloseParenthesis());
+		} else if (errorProtectedArea.getMissingEndHeader() != -1) {
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
+					getMissingTokenMessage(AcceleoParser.PROTECTED_AREA_HEADER_END), errorProtectedArea
+							.getMissingEndHeader(), errorProtectedArea.getMissingEndHeader());
+		} else if (errorProtectedArea.getMissingEnd() != -1) {
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
+					getMissingTokenMessage(AcceleoParser.PROTECTED_AREA_END), errorProtectedArea
+							.getMissingEnd(), errorProtectedArea.getMissingEnd());
+		}
+
+		return RETURN_VALUE;
+	}
+
+	@Override
+	public Object caseExpression(Expression expression) {
 		final IValidationResult validationResult = validateExpression(expression);
 
-		return shiftMessages(validationResult.getMessages(), expression.getStartPosition());
+		result.getMessages().putAll(expression,
+				shiftMessages(validationResult.getMessages(), expression.getStartPosition()));
+
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorProtectedArea(ErrorProtectedArea errorProtectedArea) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
-		if (errorProtectedArea.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorProtectedArea
-							.getMissingOpenParenthesis(), errorProtectedArea.getMissingOpenParenthesis()));
-		} else if (errorProtectedArea.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea
-							.getMissingCloseParenthesis(), errorProtectedArea.getMissingCloseParenthesis()));
-		} else if (errorProtectedArea.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.PROTECTED_AREA_HEADER_END), errorProtectedArea
-							.getMissingEndHeader(), errorProtectedArea.getMissingEndHeader()));
-		} else if (errorProtectedArea.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.PROTECTED_AREA_END), errorProtectedArea
-							.getMissingEnd(), errorProtectedArea.getMissingEnd()));
-		}
-
-		return res;
-	}
-
-	@Override
-	public List<IValidationMessage> caseForStatement(ForStatement forStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseForStatement(ForStatement forStatement) {
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			forceCollectionBinding = true;
 			try {
-				res.addAll(doSwitch(forStatement.getBinding()));
+				doSwitch(forStatement.getBinding());
 			} finally {
 				forceCollectionBinding = false;
 			}
-			res.addAll(doSwitch(forStatement.getBody()));
+			doSwitch(forStatement.getBody());
 		} finally {
 			stack.pop();
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorForStatement(ErrorForStatement errorForStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorForStatement(ErrorForStatement errorForStatement) {
 		if (errorForStatement.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorForStatement
-							.getMissingOpenParenthesis(), errorForStatement.getMissingOpenParenthesis()));
+							.getMissingOpenParenthesis(), errorForStatement.getMissingOpenParenthesis());
 		} else if (errorForStatement.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorForStatement
-							.getMissingCloseParenthesis(), errorForStatement.getMissingCloseParenthesis()));
+							.getMissingCloseParenthesis(), errorForStatement.getMissingCloseParenthesis());
 		} else if (errorForStatement.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.FOR_HEADER_END), errorForStatement
-							.getMissingEndHeader(), errorForStatement.getMissingEndHeader()));
+							.getMissingEndHeader(), errorForStatement.getMissingEndHeader());
 		} else if (errorForStatement.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.FOR_END), errorForStatement.getMissingEnd(),
-					errorForStatement.getMissingEnd()));
+					errorForStatement.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseIfStatement(IfStatement ifStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseIfStatement(IfStatement ifStatement) {
 		final IValidationResult validationResult = validateExpression(ifStatement.getCondition());
 		final Set<IType> conditionTypes = validationResult.getPossibleTypes(ifStatement.getCondition()
 				.getAst().getAst());
-		res.addAll(shiftMessages(validationResult.getMessages(), ifStatement.getCondition()
-				.getStartPosition()));
+		result.getMessages().putAll(ifStatement,
+				shiftMessages(validationResult.getMessages(), ifStatement.getCondition().getStartPosition()));
 
 		if (!conditionTypes.isEmpty()) {
 			boolean onlyBoolean = true;
@@ -704,20 +700,20 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			} else if (onlyNotBoolean) {
 				final String message = String.format("The predicate never evaluates to a boolean type (%s).",
 						conditionTypes);
-				res.add(new ValidationMessage(ValidationMessageLevel.ERROR, message, ifStatement
-						.getCondition().getStartPosition(), ifStatement.getCondition().getEndPosition()));
+				addMessage(ifStatement, ValidationMessageLevel.ERROR, message, ifStatement.getCondition()
+						.getStartPosition(), ifStatement.getCondition().getEndPosition());
 			} else {
 				final String message = String.format(
 						"The predicate may evaluate to a value that is not a boolean type (%s).",
 						conditionTypes);
-				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, message, ifStatement
-						.getCondition().getStartPosition(), ifStatement.getCondition().getEndPosition()));
+				addMessage(ifStatement, ValidationMessageLevel.WARNING, message, ifStatement.getCondition()
+						.getStartPosition(), ifStatement.getCondition().getEndPosition());
 			}
 		} else {
 			final String message = String.format("The predicate never evaluates to a boolean type (%s).",
 					conditionTypes);
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, message, ifStatement.getCondition()
-					.getStartPosition(), ifStatement.getCondition().getEndPosition()));
+			addMessage(ifStatement, ValidationMessageLevel.ERROR, message, ifStatement.getCondition()
+					.getStartPosition(), ifStatement.getCondition().getEndPosition());
 		}
 
 		final Map<String, Set<IType>> thenTypes = new HashMap<String, Set<IType>>(stack.peek());
@@ -741,112 +737,102 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 			}
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorIfStatement(ErrorIfStatement errorIfStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorIfStatement(ErrorIfStatement errorIfStatement) {
 		if (errorIfStatement.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorIfStatement
-							.getMissingOpenParenthesis(), errorIfStatement.getMissingOpenParenthesis()));
+							.getMissingOpenParenthesis(), errorIfStatement.getMissingOpenParenthesis());
 		} else if (errorIfStatement.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorIfStatement
-							.getMissingCloseParenthesis(), errorIfStatement.getMissingCloseParenthesis()));
+							.getMissingCloseParenthesis(), errorIfStatement.getMissingCloseParenthesis());
 		} else if (errorIfStatement.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.IF_HEADER_END), errorIfStatement
-							.getMissingEndHeader(), errorIfStatement.getMissingEndHeader()));
+							.getMissingEndHeader(), errorIfStatement.getMissingEndHeader());
 		} else if (errorIfStatement.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.IF_END), errorIfStatement.getMissingEnd(),
-					errorIfStatement.getMissingEnd()));
+					errorIfStatement.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseLetStatement(LetStatement letStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseLetStatement(LetStatement letStatement) {
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			for (Binding binding : letStatement.getVariables()) {
-				res.addAll(doSwitch(binding));
+				doSwitch(binding);
 			}
-			res.addAll(doSwitch(letStatement.getBody()));
+			doSwitch(letStatement.getBody());
 		} finally {
 			stack.pop();
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorLetStatement(ErrorLetStatement errorLetStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorLetStatement(ErrorLetStatement errorLetStatement) {
 		if (errorLetStatement.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorLetStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.LET_HEADER_END), errorLetStatement
-							.getMissingEndHeader(), errorLetStatement.getMissingEndHeader()));
+							.getMissingEndHeader(), errorLetStatement.getMissingEndHeader());
 		} else if (errorLetStatement.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorLetStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.LET_END), errorLetStatement.getMissingEnd(),
-					errorLetStatement.getMissingEnd()));
+					errorLetStatement.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseFileStatement(FileStatement fileStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
-		res.addAll(doSwitch(fileStatement.getUrl()));
+	public Object caseFileStatement(FileStatement fileStatement) {
+		doSwitch(fileStatement.getUrl());
 		if (fileStatement.getCharset() != null) {
-			res.addAll(doSwitch(fileStatement.getCharset()));
+			doSwitch(fileStatement.getCharset());
 		}
-		res.addAll(doSwitch(fileStatement.getBody()));
+		doSwitch(fileStatement.getBody());
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	@Override
-	public List<IValidationMessage> caseErrorFileStatement(ErrorFileStatement errorFileStatement) {
-		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
-
+	public Object caseErrorFileStatement(ErrorFileStatement errorFileStatement) {
 		if (errorFileStatement.getMissingOpenParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorFileStatement
-							.getMissingOpenParenthesis(), errorFileStatement.getMissingOpenParenthesis()));
+							.getMissingOpenParenthesis(), errorFileStatement.getMissingOpenParenthesis());
 		} else if (errorFileStatement.getMissingComma() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.COMMA), errorFileStatement.getMissingComma(),
-					errorFileStatement.getMissingComma()));
+					errorFileStatement.getMissingComma());
 		} else if (errorFileStatement.getMissingOpenMode() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					"Missing or invalid file open mode: overwrite, append, create", errorFileStatement
-							.getMissingOpenMode(), errorFileStatement.getMissingOpenMode()));
+							.getMissingOpenMode(), errorFileStatement.getMissingOpenMode());
 		} else if (errorFileStatement.getMissingCloseParenthesis() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorFileStatement
-							.getMissingCloseParenthesis(), errorFileStatement.getMissingCloseParenthesis()));
+							.getMissingCloseParenthesis(), errorFileStatement.getMissingCloseParenthesis());
 		} else if (errorFileStatement.getMissingEndHeader() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.FILE_HEADER_END), errorFileStatement
-							.getMissingEndHeader(), errorFileStatement.getMissingEndHeader()));
+							.getMissingEndHeader(), errorFileStatement.getMissingEndHeader());
 		} else if (errorFileStatement.getMissingEnd() != -1) {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR,
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.FILE_END), errorFileStatement.getMissingEnd(),
-					errorFileStatement.getMissingEnd()));
+					errorFileStatement.getMissingEnd());
 		}
 
-		return res;
+		return RETURN_VALUE;
 	}
 
 	/**
@@ -879,7 +865,11 @@ public class AcceleoValidator extends AcceleoSwitch<List<IValidationMessage>> {
 	 * @return the {@link IValidationResult}
 	 */
 	private IValidationResult validateExpression(Expression expression) {
-		return validator.validate(stack.peek(), expression.getAst());
+		final IValidationResult res = validator.validate(stack.peek(), expression.getAst());
+
+		result.getAqlValidationResutls().put(expression.getAst(), res);
+
+		return res;
 	}
 
 	/**

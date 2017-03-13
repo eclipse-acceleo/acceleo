@@ -180,7 +180,7 @@ public abstract class AbstractTemplatesTestSuite {
 	@Test
 	public void validation() throws FileNotFoundException, IOException {
 		AcceleoValidator validator = new AcceleoValidator(environment);
-		final List<IValidationMessage> messages = validator.validate(module);
+		final List<IValidationMessage> messages = validator.validate(module).getValidationMessages();
 		final String actualContent = getValidationContent(messages);
 		final File expectedFile = getExpectedValidatedFile(new File(testFolderPath));
 		final File actualFile = getActualValidatedFile(new File(testFolderPath));
