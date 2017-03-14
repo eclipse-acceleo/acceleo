@@ -229,7 +229,7 @@ public class TemplateLookupTest {
 		if (content instanceof InputStream) {
 			try (InputStream stream = (InputStream)content) {
 				String moduleSource = CharStreams.toString(new InputStreamReader(stream, "UTF-8"));
-				return parser.parse(moduleSource);
+				return parser.parse(moduleSource).getModule();
 			}
 		} else {
 			fail("failed to load content of module " + name);

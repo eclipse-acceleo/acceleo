@@ -13,7 +13,7 @@ package org.eclipse.acceleo.aql.validation;
 import java.util.List;
 
 import org.eclipse.acceleo.ASTNode;
-import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -26,11 +26,11 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 public interface IAcceleoValidationResult {
 
 	/**
-	 * Gets the validated {@link Module}.
+	 * Gets the validated {@link AcceleoAstResult}.
 	 * 
-	 * @return the validated {@link Module}
+	 * @return the validated {@link AcceleoAstResult}
 	 */
-	Module getModule();
+	AcceleoAstResult getAcceleoAstResult();
 
 	/**
 	 * Gets the {@link List} of all {@link IValidationMessage} for

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.acceleo.ASTNode;
-import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
@@ -32,9 +32,9 @@ import org.eclipse.acceleo.query.runtime.IValidationResult;
 public class AcceleoValidationResult implements IAcceleoValidationResult {
 
 	/**
-	 * The {@link #getModule() validated module}.
+	 * The {@link AcceleoAstResult}.
 	 */
-	private final Module module;
+	private final AcceleoAstResult astResult;
 
 	/**
 	 * Mapping of {@link IValidationMessage}.
@@ -49,16 +49,16 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	/**
 	 * Constructor.
 	 * 
-	 * @param module
-	 *            the {@link #getModule() validated module}
+	 * @param astResult
+	 *            the {@link AcceleoAstResult}
 	 */
-	public AcceleoValidationResult(Module module) {
-		this.module = module;
+	public AcceleoValidationResult(AcceleoAstResult astResult) {
+		this.astResult = astResult;
 	}
 
 	@Override
-	public Module getModule() {
-		return module;
+	public AcceleoAstResult getAcceleoAstResult() {
+		return astResult;
 	}
 
 	@Override

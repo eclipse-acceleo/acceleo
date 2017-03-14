@@ -54,6 +54,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -126,17 +127,17 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	/**
 	 * Validates the given {@link Module}.
 	 * 
-	 * @param module
-	 *            the {@link Module} to validate
+	 * @param astResult
+	 *            the {@link AcceleoAstResult} to validate
 	 * @return the {@link IAcceleoValidationResult}
 	 */
-	public IAcceleoValidationResult validate(Module module) {
+	public IAcceleoValidationResult validate(AcceleoAstResult astResult) {
 		stack.clear();
 		stack.push(new HashMap<String, Set<IType>>());
 		forceCollectionBinding = false;
-		result = new AcceleoValidationResult(module);
+		result = new AcceleoValidationResult(astResult);
 
-		doSwitch(module);
+		doSwitch(astResult.getModule());
 
 		return result;
 	}

@@ -30,9 +30,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluationEnvironment;
+import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
@@ -69,9 +69,9 @@ public abstract class AbstractTemplatesTestSuite {
 	private final String testFolderPath;
 
 	/**
-	 * The {@link Module}.
+	 * The {@link AcceleoAstResult}.
 	 */
-	private final Module module;
+	private final AcceleoAstResult astResult;
 
 	/**
 	 * The {@link Resource}.
@@ -102,8 +102,9 @@ public abstract class AbstractTemplatesTestSuite {
 		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
-			module = parser.parse(getContent(stream, UTF_8));
-			environment.registerModule("org::eclipse::acceleo::tests::" + module.getName(), module);
+			astResult = parser.parse(getContent(stream, UTF_8));
+			environment.registerModule("org::eclipse::acceleo::tests::" + astResult.getModule().getName(),
+					astResult.getModule());
 		}
 	}
 
@@ -153,7 +154,7 @@ public abstract class AbstractTemplatesTestSuite {
 	@Test
 	public void parsing() throws FileNotFoundException, IOException {
 		final File expectedASTFile = getExpectedASTFile(new File(testFolderPath));
-		final String actualAst = moduleAstSerializer.serialize(module);
+		final String actualAst = moduleAstSerializer.serialize(astResult.getModule());
 		if (!expectedASTFile.exists()) {
 			final File actualASTFile = getActualASTFile(new File(testFolderPath));
 			if (!actualASTFile.exists()) {
@@ -180,7 +181,7 @@ public abstract class AbstractTemplatesTestSuite {
 	@Test
 	public void validation() throws FileNotFoundException, IOException {
 		AcceleoValidator validator = new AcceleoValidator(environment);
-		final List<IValidationMessage> messages = validator.validate(module).getValidationMessages();
+		final List<IValidationMessage> messages = validator.validate(astResult).getValidationMessages();
 		final String actualContent = getValidationContent(messages);
 		final File expectedFile = getExpectedValidatedFile(new File(testFolderPath));
 		final File actualFile = getActualValidatedFile(new File(testFolderPath));

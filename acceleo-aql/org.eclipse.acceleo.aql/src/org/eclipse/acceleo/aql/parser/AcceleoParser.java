@@ -28,6 +28,7 @@ import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.Documentation;
+import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.ErrorBinding;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
@@ -37,6 +38,7 @@ import org.eclipse.acceleo.ErrorImport;
 import org.eclipse.acceleo.ErrorLetStatement;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.ErrorModule;
+import org.eclipse.acceleo.ErrorModuleReference;
 import org.eclipse.acceleo.ErrorProtectedArea;
 import org.eclipse.acceleo.ErrorQuery;
 import org.eclipse.acceleo.ErrorTemplate;
@@ -360,6 +362,11 @@ public class AcceleoParser {
 	private String text;
 
 	/**
+	 * The {@link List} of {@link Error}.
+	 */
+	private List<Error> errors;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param queryEnvironment
@@ -376,12 +383,14 @@ public class AcceleoParser {
 	 *            the source text
 	 * @return the created {@link Module} if any is recognized, <code>null</code> otherwise
 	 */
-	public Module parse(String source) {
+	public AcceleoAstResult parse(String source) {
 		this.text = source;
 
+		errors = new ArrayList<Error>();
 		final List<Comment> comments = parseCommentsOrModuleDocumentations();
+		final Module module = parseModule(comments);
 
-		return parseModule(comments);
+		return new AcceleoAstResult(module, errors);
 	}
 
 	/**
@@ -682,6 +691,7 @@ public class AcceleoParser {
 				((ErrorModule)res).setMissingEPackage(missingEPackage);
 				((ErrorModule)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorModule)res).setMissingEndHeader(missingEndHeader);
+				errors.add((ErrorModule)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModule();
 			}
@@ -719,6 +729,7 @@ public class AcceleoParser {
 			if (missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorImport();
 				((ErrorImport)res).setMissingEnd(missingEnd);
+				errors.add((ErrorImport)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createImport();
 			}
@@ -744,6 +755,7 @@ public class AcceleoParser {
 		final String moduleQualifiedName = parseModuleQualifiedName();
 		if (moduleQualifiedName == null) {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModuleReference();
+			errors.add((ErrorModuleReference)res);
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModuleReference();
 		}
@@ -918,6 +930,7 @@ public class AcceleoParser {
 				((ErrorQuery)res).setMissingType(missingType);
 				((ErrorQuery)res).setMissingEqual(missingEqual);
 				((ErrorQuery)res).setMissingEnd(missingEnd);
+				errors.add((ErrorQuery)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createQuery();
 			}
@@ -992,6 +1005,7 @@ public class AcceleoParser {
 			((ErrorVariable)res).setMissingName(missingName);
 			((ErrorVariable)res).setMissingColon(missingColon);
 			((ErrorVariable)res).setMissingType(missingType);
+			errors.add((ErrorVariable)res);
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
 		}
@@ -1093,6 +1107,7 @@ public class AcceleoParser {
 				((ErrorTemplate)res).setMissingPostCloseParenthesis(missingPostCloseParenthesis);
 				((ErrorTemplate)res).setMissingEndHeader(missingEndHeader);
 				((ErrorTemplate)res).setMissingEnd(missingEnd);
+				errors.add((ErrorTemplate)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
 			}
@@ -1242,6 +1257,7 @@ public class AcceleoParser {
 				((ErrorIfStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorIfStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorIfStatement)res).setMissingEnd(missingEnd);
+				errors.add((ErrorIfStatement)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createIfStatement();
 			}
@@ -1286,6 +1302,7 @@ public class AcceleoParser {
 				((ErrorForStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorForStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorForStatement)res).setMissingEnd(missingEnd);
+				errors.add((ErrorForStatement)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createForStatement();
 			}
@@ -1342,6 +1359,7 @@ public class AcceleoParser {
 				((ErrorFileStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorFileStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorFileStatement)res).setMissingEnd(missingEnd);
+				errors.add((ErrorFileStatement)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createFileStatement();
 			}
@@ -1408,6 +1426,7 @@ public class AcceleoParser {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorLetStatement();
 				((ErrorLetStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorLetStatement)res).setMissingEnd(missingEnd);
+				errors.add((ErrorLetStatement)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createLetStatement();
 			}
@@ -1482,6 +1501,7 @@ public class AcceleoParser {
 				((ErrorBinding)res).setMissingAffectationSymbole(affectationSymbol);
 				((ErrorBinding)res).setMissingAffectationSymbolePosition(missingAffectationSymbol);
 			}
+			errors.add((ErrorBinding)res);
 		} else {
 			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
 		}
@@ -1582,6 +1602,7 @@ public class AcceleoParser {
 				((ErrorProtectedArea)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorProtectedArea)res).setMissingEndHeader(missingEndHeader);
 				((ErrorProtectedArea)res).setMissingEnd(missingEnd);
+				errors.add((ErrorProtectedArea)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createProtectedArea();
 			}
@@ -1617,6 +1638,7 @@ public class AcceleoParser {
 			if (missingEndHeader != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorExpressionStatement();
 				((ErrorExpressionStatement)res).setMissingEndHeader(missingEndHeader);
+				errors.add((ErrorExpressionStatement)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createExpressionStatement();
 			}
@@ -1687,6 +1709,7 @@ public class AcceleoParser {
 			if (ePackage == null || missingEndQuote != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorMetamodel();
 				((ErrorMetamodel)res).setMissingEndQuote(missingEndQuote);
+				errors.add((ErrorMetamodel)res);
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createMetamodel();
 			}
@@ -1772,9 +1795,9 @@ public class AcceleoParser {
 		} else {
 			ErrorExpression errorExpression = (ErrorExpression)EcoreUtil.create(AstPackage.eINSTANCE
 					.getErrorExpression());
-			List<org.eclipse.acceleo.query.ast.Error> errors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
+			List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
-			errors.add(errorExpression);
+			aqlErrors.add(errorExpression);
 			final Map<Object, Integer> positions = new HashMap<Object, Integer>();
 			if (expression != null) {
 				positions.put(errorExpression, Integer.valueOf(0));
@@ -1782,7 +1805,7 @@ public class AcceleoParser {
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
 					"null or empty string.", new Object[] {errorExpression }));
-			result = new AstResult(errorExpression, positions, positions, errors, diagnostic);
+			result = new AstResult(errorExpression, positions, positions, aqlErrors, diagnostic);
 		}
 
 		return result;
