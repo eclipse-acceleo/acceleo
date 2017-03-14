@@ -15,4 +15,4 @@ module myModule
       
     some static text.
  (145..168) (145..168)
-    [/protected] (119..168) (116..168)[/template] (61..179)
+    [/protected] (119..168) (116..168)[/template] (61..179) (0..179)

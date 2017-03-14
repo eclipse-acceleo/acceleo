@@ -12,8 +12,6 @@
 package org.eclipse.acceleo.impl;
 
 import java.util.Collection;
-
-import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
@@ -458,16 +456,6 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == ASTNode.class) {
-			switch (derivedFeatureID) {
-				case AcceleoPackage.ERROR_LET_STATEMENT__START_POSITION:
-					return AcceleoPackage.AST_NODE__START_POSITION;
-				case AcceleoPackage.ERROR_LET_STATEMENT__END_POSITION:
-					return AcceleoPackage.AST_NODE__END_POSITION;
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Statement.class) {
 			switch (derivedFeatureID) {
 				default:
@@ -494,16 +482,6 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == ASTNode.class) {
-			switch (baseFeatureID) {
-				case AcceleoPackage.AST_NODE__START_POSITION:
-					return AcceleoPackage.ERROR_LET_STATEMENT__START_POSITION;
-				case AcceleoPackage.AST_NODE__END_POSITION:
-					return AcceleoPackage.ERROR_LET_STATEMENT__END_POSITION;
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Statement.class) {
 			switch (baseFeatureID) {
 				default:

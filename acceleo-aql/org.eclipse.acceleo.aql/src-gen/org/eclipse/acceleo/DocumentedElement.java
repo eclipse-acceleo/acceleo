@@ -11,8 +11,6 @@
  */
 package org.eclipse.acceleo;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Documented Element</b></em>'.
@@ -30,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface DocumentedElement extends EObject {
+public interface DocumentedElement extends ASTNode {
 	/**
 	 * Returns the value of the '<em><b>Documentation</b></em>' containment reference.
 	 * It is bidirectional and its opposite is '{@link org.eclipse.acceleo.Documentation#getDocumentedElement <em>Documented Element</em>}'.

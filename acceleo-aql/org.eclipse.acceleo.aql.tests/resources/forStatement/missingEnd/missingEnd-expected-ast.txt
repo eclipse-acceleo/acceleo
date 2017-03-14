@@ -15,4 +15,4 @@ module myModule
       
     some static text.
  (184..207) (184..207)
-    [/for] (119..207) (116..207)[/template] (61..218)
+    [/for] (119..207) (116..207)[/template] (61..218) (0..218)

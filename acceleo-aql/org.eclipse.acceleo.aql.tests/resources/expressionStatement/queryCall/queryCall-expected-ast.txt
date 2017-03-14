@@ -10,4 +10,4 @@ module myModule
     
  (148..149) (116..149)[/template] (61..160)
   public query calledQuery(myParam : EPackage (189..214)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (239..268)
-  /] (163..270)
+  /] (163..270) (0..271)

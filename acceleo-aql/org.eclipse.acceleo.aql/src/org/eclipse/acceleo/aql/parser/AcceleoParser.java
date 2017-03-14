@@ -635,6 +635,7 @@ public class AcceleoParser {
 		final Module res;
 
 		if (text.startsWith(MODULE_HEADER_START, currentPosition)) {
+			final int startPosition = currentPosition;
 			final int startHeaderPosition = currentPosition;
 			currentPosition += MODULE_HEADER_START.length();
 			skipSpaces();
@@ -677,13 +678,13 @@ public class AcceleoParser {
 			skipSpaces();
 			final List<Import> imports = new ArrayList<Import>();
 			Import imported = parseImport();
-			skipSpaces();
 			while (imported != null) {
 				imports.add(imported);
-				imported = parseImport();
 				skipSpaces();
+				imported = parseImport();
 			}
 			final List<ModuleElement> moduleElements = parseModuleElements();
+			final int endPosition = currentPosition;
 			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1;
 			if (missingParenthesis || missingEPackage != -1 || missingEndHeader != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModule();
@@ -695,6 +696,8 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createModule();
 			}
+			res.setStartPosition(startPosition);
+			res.setEndPosition(endPosition);
 			res.setStartHeaderPosition(startHeaderPosition);
 			res.setEndHeaderPosition(endHeaderPosition);
 			res.getModuleElements().addAll(comments);
@@ -823,6 +826,7 @@ public class AcceleoParser {
 
 		ModuleElement moduleElement;
 		do {
+			skipSpaces();
 			final List<Comment> comments = parseCommentsOrModuleElementDocumentations();
 			res.addAll(comments);
 			final Documentation documentation = getLastDocumentation(comments);
@@ -835,7 +839,6 @@ public class AcceleoParser {
 			if (moduleElement != null) {
 				res.add(moduleElement);
 			}
-			skipSpaces();
 		} while (moduleElement != null);
 
 		return res;

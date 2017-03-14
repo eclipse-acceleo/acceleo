@@ -129,6 +129,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseDocumentedElement(module);
 				if (result == null)
+					result = caseASTNode(module);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -143,6 +145,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 					result = caseNamedElement(errorModule);
 				if (result == null)
 					result = caseDocumentedElement(errorModule);
+				if (result == null)
+					result = caseASTNode(errorModule);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -371,6 +375,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				DocumentedElement documentedElement = (DocumentedElement)theEObject;
 				T result = caseDocumentedElement(documentedElement);
 				if (result == null)
+					result = caseASTNode(documentedElement);
+				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
 			}
@@ -391,6 +397,8 @@ public class AcceleoSwitch<T> extends Switch<T> {
 			case AcceleoPackage.ERROR: {
 				org.eclipse.acceleo.Error error = (org.eclipse.acceleo.Error)theEObject;
 				T result = caseError(error);
+				if (result == null)
+					result = caseASTNode(error);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -513,11 +521,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseVariable(errorVariable);
 				if (result == null)
+					result = caseASTNode(errorVariable);
+				if (result == null)
 					result = caseTypedElement(errorVariable);
 				if (result == null)
 					result = caseNamedElement(errorVariable);
-				if (result == null)
-					result = caseASTNode(errorVariable);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -547,11 +555,11 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				if (result == null)
 					result = caseVariable(errorBinding);
 				if (result == null)
+					result = caseASTNode(errorBinding);
+				if (result == null)
 					result = caseTypedElement(errorBinding);
 				if (result == null)
 					result = caseNamedElement(errorBinding);
-				if (result == null)
-					result = caseASTNode(errorBinding);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;

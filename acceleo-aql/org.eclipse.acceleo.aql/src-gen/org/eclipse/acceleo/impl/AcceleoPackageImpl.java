@@ -2173,6 +2173,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		// Add supertypes to classes
 		moduleEClass.getESuperTypes().add(this.getNamedElement());
 		moduleEClass.getESuperTypes().add(this.getDocumentedElement());
+		moduleEClass.getESuperTypes().add(this.getASTNode());
 		errorModuleEClass.getESuperTypes().add(this.getError());
 		errorModuleEClass.getESuperTypes().add(this.getModule());
 		metamodelEClass.getESuperTypes().add(this.getASTNode());
@@ -2198,6 +2199,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorModuleElementDocumentationEClass.getESuperTypes().add(this.getError());
 		errorModuleElementDocumentationEClass.getESuperTypes().add(this.getModuleElementDocumentation());
 		parameterDocumentationEClass.getESuperTypes().add(this.getComment());
+		documentedElementEClass.getESuperTypes().add(this.getASTNode());
+		errorEClass.getESuperTypes().add(this.getASTNode());
 		blockEClass.getESuperTypes().add(this.getASTNode());
 		templateEClass.getESuperTypes().add(this.getModuleElement());
 		templateEClass.getESuperTypes().add(this.getDocumentedElement());

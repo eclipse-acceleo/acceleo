@@ -11,7 +11,6 @@
  */
 package org.eclipse.acceleo.impl;
 
-import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ErrorMetamodel;
 import org.eclipse.acceleo.Metamodel;
@@ -389,16 +388,6 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == ASTNode.class) {
-			switch (derivedFeatureID) {
-				case AcceleoPackage.ERROR_METAMODEL__START_POSITION:
-					return AcceleoPackage.AST_NODE__START_POSITION;
-				case AcceleoPackage.ERROR_METAMODEL__END_POSITION:
-					return AcceleoPackage.AST_NODE__END_POSITION;
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Metamodel.class) {
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_METAMODEL__REFERENCED_PACKAGE:
@@ -417,16 +406,6 @@ public class ErrorMetamodelImpl extends MinimalEObjectImpl.Container implements 
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == ASTNode.class) {
-			switch (baseFeatureID) {
-				case AcceleoPackage.AST_NODE__START_POSITION:
-					return AcceleoPackage.ERROR_METAMODEL__START_POSITION;
-				case AcceleoPackage.AST_NODE__END_POSITION:
-					return AcceleoPackage.ERROR_METAMODEL__END_POSITION;
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == Metamodel.class) {
 			switch (baseFeatureID) {
 				case AcceleoPackage.METAMODEL__REFERENCED_PACKAGE:

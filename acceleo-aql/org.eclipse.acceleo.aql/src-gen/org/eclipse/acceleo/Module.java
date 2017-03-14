@@ -34,7 +34,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface Module extends NamedElement, DocumentedElement {
+public interface Module extends NamedElement, DocumentedElement, ASTNode {
 	/**
 	 * Returns the value of the '<em><b>Metamodels</b></em>' reference list.
 	 * The list contents are of type {@link org.eclipse.acceleo.Metamodel}.

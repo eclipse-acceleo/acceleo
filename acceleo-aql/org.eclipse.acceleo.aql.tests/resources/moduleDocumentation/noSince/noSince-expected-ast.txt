@@ -13,4 +13,4 @@ since: null
 * (3..81) /] (0..83)
 header position 84..143
 module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (102..140)
+  metamodel http://www.eclipse.org/emf/2002/Ecore (102..140) (84..143)

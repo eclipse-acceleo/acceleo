@@ -17,4 +17,4 @@ module myModule
       
     some static text.
  (160..183) (160..183)
-    [/file] (119..183) (116..183)[/template] (61..194)
+    [/file] (119..183) (116..183)[/template] (61..194) (0..194)

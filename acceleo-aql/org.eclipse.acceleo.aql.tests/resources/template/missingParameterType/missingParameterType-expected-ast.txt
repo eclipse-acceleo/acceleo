@@ -10,4 +10,4 @@ module myModule
    (89..99))
     
  some static text.
- (101..121) (101..121)[/template] (61..132)
+ (101..121) (101..121)[/template] (61..132) (0..132)

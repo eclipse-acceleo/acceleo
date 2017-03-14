@@ -7,4 +7,4 @@ module myModule
   post .trim(notExisting) (121..139)
     
  some static text.
- (141..161) (141..161)[/template] (61..172)
+ (141..161) (141..161)[/template] (61..172) (0..172)

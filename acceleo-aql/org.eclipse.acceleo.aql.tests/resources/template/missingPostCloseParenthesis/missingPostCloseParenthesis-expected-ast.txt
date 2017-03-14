@@ -17,4 +17,4 @@ module myModule
   post .trim(result) (121..134)
     
  some static text.
- (135..155) (135..155)[/template] (61..166)
+ (135..155) (135..155)[/template] (61..166) (0..166)

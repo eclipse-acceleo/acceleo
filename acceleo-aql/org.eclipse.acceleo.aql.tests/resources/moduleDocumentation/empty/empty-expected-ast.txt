@@ -5,4 +5,4 @@ since: null
 [comment  (3..3) /] (0..5)
 header position 6..65
 module myModule
-  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62)
+  metamodel http://www.eclipse.org/emf/2002/Ecore (24..62) (6..65)

@@ -37,9 +37,9 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	private final AcceleoAstResult astResult;
 
 	/**
-	 * Mapping of {@link IValidationMessage}.
+	 * Mapping of {@link ASTNode} to {@link IValidationMessage}.
 	 */
-	private final Multimap<Object, IValidationMessage> messages = LinkedListMultimap.create();
+	private final Multimap<ASTNode, IValidationMessage> messages = LinkedListMultimap.create();
 
 	/**
 	 * Mapping of AQL AST to AQL validation result.
@@ -77,11 +77,11 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	}
 
 	/**
-	 * Gets the mapping of {@link IValidationMessage}.
+	 * Gets the mapping of {@link ASTNode} to {@link IValidationMessage}.
 	 * 
-	 * @return the mapping of {@link IValidationMessage}
+	 * @return the mapping of {@link ASTNode} to {@link IValidationMessage}
 	 */
-	public Multimap<Object, IValidationMessage> getMessages() {
+	public Multimap<ASTNode, IValidationMessage> getMessages() {
 		return messages;
 	}
 

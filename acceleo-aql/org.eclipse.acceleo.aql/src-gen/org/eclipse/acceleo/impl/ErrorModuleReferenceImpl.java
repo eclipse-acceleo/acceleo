@@ -11,7 +11,6 @@
  */
 package org.eclipse.acceleo.impl;
 
-import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.ErrorModuleReference;
 import org.eclipse.acceleo.ModuleReference;
@@ -270,16 +269,6 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == ASTNode.class) {
-			switch (derivedFeatureID) {
-				case AcceleoPackage.ERROR_MODULE_REFERENCE__START_POSITION:
-					return AcceleoPackage.AST_NODE__START_POSITION;
-				case AcceleoPackage.ERROR_MODULE_REFERENCE__END_POSITION:
-					return AcceleoPackage.AST_NODE__END_POSITION;
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == ModuleReference.class) {
 			switch (derivedFeatureID) {
 				case AcceleoPackage.ERROR_MODULE_REFERENCE__QUALIFIED_NAME:
@@ -298,16 +287,6 @@ public class ErrorModuleReferenceImpl extends MinimalEObjectImpl.Container imple
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == ASTNode.class) {
-			switch (baseFeatureID) {
-				case AcceleoPackage.AST_NODE__START_POSITION:
-					return AcceleoPackage.ERROR_MODULE_REFERENCE__START_POSITION;
-				case AcceleoPackage.AST_NODE__END_POSITION:
-					return AcceleoPackage.ERROR_MODULE_REFERENCE__END_POSITION;
-				default:
-					return -1;
-			}
-		}
 		if (baseClass == ModuleReference.class) {
 			switch (baseFeatureID) {
 				case AcceleoPackage.MODULE_REFERENCE__QUALIFIED_NAME:

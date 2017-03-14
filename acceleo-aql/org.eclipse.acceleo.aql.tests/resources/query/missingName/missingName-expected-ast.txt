@@ -12,4 +12,4 @@ module myModule
   missing equal: -1
   missing end: -1
   public query null(myParam : EPackage (76..101)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (126..155)
-  /] (61..157)
+  /] (61..157) (0..157)

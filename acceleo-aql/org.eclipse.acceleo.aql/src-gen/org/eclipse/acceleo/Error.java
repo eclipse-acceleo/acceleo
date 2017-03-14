@@ -11,8 +11,6 @@
  */
 package org.eclipse.acceleo;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Error</b></em>'.
@@ -23,5 +21,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model interface="true" abstract="true"
  * @generated
  */
-public interface Error extends EObject {
+public interface Error extends ASTNode {
 } // Error

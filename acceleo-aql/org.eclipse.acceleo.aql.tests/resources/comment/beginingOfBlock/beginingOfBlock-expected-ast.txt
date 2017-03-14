@@ -7,4 +7,4 @@ module myModule
     [comment [comment a basic comment/ (125..141) /] (116..141)
     
  some static text.
- (142..162) (116..162)[/template] (61..173)
+ (142..162) (116..162)[/template] (61..173) (0..173)

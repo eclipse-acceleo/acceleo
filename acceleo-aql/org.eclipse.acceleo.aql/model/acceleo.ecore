@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="acceleo" nsURI="http://www.eclipse.org/acceleo/4.0" nsPrefix="acceleo">
-  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//NamedElement #//DocumentedElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//NamedElement #//DocumentedElement #//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="metamodels" lowerBound="1"
         upperBound="-1" eType="#//Metamodel"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="#//ModuleReference"
@@ -83,7 +83,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParameterDocumentation" eSuperTypes="#//Comment"/>
-  <eClassifiers xsi:type="ecore:EClass" name="DocumentedElement" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentedElement" abstract="true" interface="true"
+      eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="documentation" eType="#//Documentation"
         containment="true" eOpposite="#//Documentation/documentedElement"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="deprecated" lowerBound="1"
@@ -96,7 +97,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startPosition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endPosition" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Error" abstract="true" interface="true"
+      eSuperTypes="#//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EReference" name="statements" upperBound="-1"
         eType="#//Statement" containment="true"/>

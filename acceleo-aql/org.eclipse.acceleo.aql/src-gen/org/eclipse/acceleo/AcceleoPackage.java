@@ -124,13 +124,31 @@ public interface AcceleoPackage extends EPackage {
 	int MODULE__NAME = NAMED_ELEMENT__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE__START_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODULE__END_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__DOCUMENTATION = NAMED_ELEMENT_FEATURE_COUNT + 0;
+	int MODULE__DOCUMENTATION = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Deprecated</b></em>' attribute.
@@ -139,7 +157,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__DEPRECATED = NAMED_ELEMENT_FEATURE_COUNT + 1;
+	int MODULE__DEPRECATED = NAMED_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Metamodels</b></em>' reference list.
@@ -148,7 +166,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__METAMODELS = NAMED_ELEMENT_FEATURE_COUNT + 2;
+	int MODULE__METAMODELS = NAMED_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Extends</b></em>' containment reference.
@@ -157,7 +175,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__EXTENDS = NAMED_ELEMENT_FEATURE_COUNT + 3;
+	int MODULE__EXTENDS = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Imports</b></em>' containment reference list.
@@ -166,7 +184,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__IMPORTS = NAMED_ELEMENT_FEATURE_COUNT + 4;
+	int MODULE__IMPORTS = NAMED_ELEMENT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Module Elements</b></em>' containment reference list.
@@ -175,7 +193,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__MODULE_ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 5;
+	int MODULE__MODULE_ELEMENTS = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Start Header Position</b></em>' attribute.
@@ -184,7 +202,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__START_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 6;
+	int MODULE__START_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>End Header Position</b></em>' attribute.
@@ -193,7 +211,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE__END_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 7;
+	int MODULE__END_HEADER_POSITION = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Module</em>' class.
@@ -202,7 +220,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 8;
+	int MODULE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Module</em>' class.
@@ -224,24 +242,6 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR = 21;
 
 	/**
-	 * The number of structural features of the '<em>Error</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_FEATURE_COUNT = 0;
-
-	/**
-	 * The number of operations of the '<em>Error</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorModuleImpl <em>Error Module</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -250,6 +250,106 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	int ERROR_MODULE = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.ASTNode <em>AST Node</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.ASTNode
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTNode()
+	 * @generated
+	 */
+	int AST_NODE = 20;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AST_NODE__START_POSITION = 0;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AST_NODE__END_POSITION = 1;
+
+	/**
+	 * The number of structural features of the '<em>AST Node</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AST_NODE_FEATURE_COUNT = 2;
+
+	/**
+	 * The number of operations of the '<em>AST Node</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AST_NODE_OPERATION_COUNT = 0;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR__START_POSITION = AST_NODE__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR__END_POSITION = AST_NODE__END_POSITION;
+
+	/**
+	 * The number of structural features of the '<em>Error</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Error</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_MODULE__START_POSITION = ERROR__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_MODULE__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -387,52 +487,6 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_MODULE_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.ASTNode <em>AST Node</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.acceleo.ASTNode
-	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTNode()
-	 * @generated
-	 */
-	int AST_NODE = 20;
-
-	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE__START_POSITION = 0;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE__END_POSITION = 1;
-
-	/**
-	 * The number of structural features of the '<em>AST Node</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE_FEATURE_COUNT = 2;
-
-	/**
-	 * The number of operations of the '<em>AST Node</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int AST_NODE_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.MetamodelImpl <em>Metamodel</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -504,7 +558,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_METAMODEL__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -513,7 +567,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_METAMODEL__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Referenced Package</b></em>' reference.
@@ -522,7 +576,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__REFERENCED_PACKAGE = ERROR_FEATURE_COUNT + 2;
+	int ERROR_METAMODEL__REFERENCED_PACKAGE = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Fragment</b></em>' attribute.
@@ -531,7 +585,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__FRAGMENT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_METAMODEL__FRAGMENT = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Quote</b></em>' attribute.
@@ -540,7 +594,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL__MISSING_END_QUOTE = ERROR_FEATURE_COUNT + 4;
+	int ERROR_METAMODEL__MISSING_END_QUOTE = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Error Metamodel</em>' class.
@@ -549,7 +603,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_METAMODEL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
+	int ERROR_METAMODEL_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Error Metamodel</em>' class.
@@ -642,7 +696,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IMPORT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_IMPORT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -651,7 +705,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IMPORT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_IMPORT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Module</b></em>' containment reference.
@@ -660,7 +714,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IMPORT__MODULE = ERROR_FEATURE_COUNT + 2;
+	int ERROR_IMPORT__MODULE = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -669,7 +723,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IMPORT__MISSING_END = ERROR_FEATURE_COUNT + 3;
+	int ERROR_IMPORT__MISSING_END = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Error Import</em>' class.
@@ -678,7 +732,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IMPORT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_IMPORT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Error Import</em>' class.
@@ -751,7 +805,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_REFERENCE__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_MODULE_REFERENCE__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -760,7 +814,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_REFERENCE__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_MODULE_REFERENCE__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
@@ -769,7 +823,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_REFERENCE__QUALIFIED_NAME = ERROR_FEATURE_COUNT + 2;
+	int ERROR_MODULE_REFERENCE__QUALIFIED_NAME = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Error Module Reference</em>' class.
@@ -778,7 +832,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_REFERENCE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_MODULE_REFERENCE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Error Module Reference</em>' class.
@@ -907,7 +961,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_COMMENT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -916,7 +970,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_COMMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -925,7 +979,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__BODY = ERROR_FEATURE_COUNT + 2;
+	int ERROR_COMMENT__BODY = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -934,7 +988,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
+	int ERROR_COMMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Error Comment</em>' class.
@@ -943,7 +997,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_COMMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_COMMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Error Comment</em>' class.
@@ -1181,7 +1235,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_MODULE_DOCUMENTATION__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -1190,7 +1244,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_MODULE_DOCUMENTATION__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1199,7 +1253,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 2;
+	int ERROR_MODULE_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
@@ -1208,7 +1262,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_MODULE_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Author</b></em>' attribute.
@@ -1217,7 +1271,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__AUTHOR = ERROR_FEATURE_COUNT + 4;
+	int ERROR_MODULE_DOCUMENTATION__AUTHOR = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
@@ -1226,7 +1280,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__VERSION = ERROR_FEATURE_COUNT + 5;
+	int ERROR_MODULE_DOCUMENTATION__VERSION = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Since</b></em>' attribute.
@@ -1235,7 +1289,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__SINCE = ERROR_FEATURE_COUNT + 6;
+	int ERROR_MODULE_DOCUMENTATION__SINCE = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -1244,7 +1298,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 7;
+	int ERROR_MODULE_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Error Module Documentation</em>' class.
@@ -1253,7 +1307,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
+	int ERROR_MODULE_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Error Module Documentation</em>' class.
@@ -1354,7 +1408,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -1363,7 +1417,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1372,7 +1426,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 2;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__BODY = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Documented Element</b></em>' container reference.
@@ -1381,7 +1435,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 3;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__DOCUMENTED_ELEMENT = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Parameter Documentation</b></em>' containment reference list.
@@ -1390,7 +1444,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION = ERROR_FEATURE_COUNT + 4;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__PARAMETER_DOCUMENTATION = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -1399,7 +1453,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Error Module Element Documentation</em>' class.
@@ -1408,7 +1462,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_MODULE_ELEMENT_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
+	int ERROR_MODULE_ELEMENT_DOCUMENTATION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Error Module Element Documentation</em>' class.
@@ -1485,13 +1539,31 @@ public interface AcceleoPackage extends EPackage {
 	int DOCUMENTED_ELEMENT = 18;
 
 	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENTED_ELEMENT__START_POSITION = AST_NODE__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENTED_ELEMENT__END_POSITION = AST_NODE__END_POSITION;
+
+	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT__DOCUMENTATION = 0;
+	int DOCUMENTED_ELEMENT__DOCUMENTATION = AST_NODE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Deprecated</b></em>' attribute.
@@ -1500,7 +1572,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT__DEPRECATED = 1;
+	int DOCUMENTED_ELEMENT__DEPRECATED = AST_NODE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Documented Element</em>' class.
@@ -1509,7 +1581,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT_FEATURE_COUNT = 2;
+	int DOCUMENTED_ELEMENT_FEATURE_COUNT = AST_NODE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Documented Element</em>' class.
@@ -1518,7 +1590,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENTED_ELEMENT_OPERATION_COUNT = 0;
+	int DOCUMENTED_ELEMENT_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.BlockImpl <em>Block</em>}' class.
@@ -1756,7 +1828,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_TEMPLATE__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -1765,7 +1837,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_TEMPLATE__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -1774,7 +1846,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__DOCUMENTATION = ERROR_FEATURE_COUNT + 2;
+	int ERROR_TEMPLATE__DOCUMENTATION = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Deprecated</b></em>' attribute.
@@ -1783,7 +1855,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__DEPRECATED = ERROR_FEATURE_COUNT + 3;
+	int ERROR_TEMPLATE__DEPRECATED = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1792,7 +1864,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__NAME = ERROR_FEATURE_COUNT + 4;
+	int ERROR_TEMPLATE__NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -1801,7 +1873,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__PARAMETERS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_TEMPLATE__PARAMETERS = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Guard</b></em>' containment reference.
@@ -1810,7 +1882,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__GUARD = ERROR_FEATURE_COUNT + 6;
+	int ERROR_TEMPLATE__GUARD = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Post</b></em>' containment reference.
@@ -1819,7 +1891,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__POST = ERROR_FEATURE_COUNT + 7;
+	int ERROR_TEMPLATE__POST = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Main</b></em>' attribute.
@@ -1828,7 +1900,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MAIN = ERROR_FEATURE_COUNT + 8;
+	int ERROR_TEMPLATE__MAIN = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -1837,7 +1909,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__VISIBILITY = ERROR_FEATURE_COUNT + 9;
+	int ERROR_TEMPLATE__VISIBILITY = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1846,7 +1918,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__BODY = ERROR_FEATURE_COUNT + 10;
+	int ERROR_TEMPLATE__BODY = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing Visibility</b></em>' attribute.
@@ -1855,7 +1927,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 11;
+	int ERROR_TEMPLATE__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
@@ -1864,7 +1936,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_NAME = ERROR_FEATURE_COUNT + 12;
+	int ERROR_TEMPLATE__MISSING_NAME = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -1873,7 +1945,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
+	int ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -1882,7 +1954,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 14;
+	int ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing Guard Open Parenthesis</b></em>' attribute.
@@ -1891,7 +1963,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 15;
+	int ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing Guard Close Parenthesis</b></em>' attribute.
@@ -1900,7 +1972,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 16;
+	int ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Missing Post Close Parenthesis</b></em>' attribute.
@@ -1909,7 +1981,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 17;
+	int ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -1918,7 +1990,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 18;
+	int ERROR_TEMPLATE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -1927,7 +1999,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_END = ERROR_FEATURE_COUNT + 19;
+	int ERROR_TEMPLATE__MISSING_END = ERROR_FEATURE_COUNT + 17;
 
 	/**
 	 * The number of structural features of the '<em>Error Template</em>' class.
@@ -1936,7 +2008,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 20;
+	int ERROR_TEMPLATE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 18;
 
 	/**
 	 * The number of operations of the '<em>Error Template</em>' class.
@@ -2073,7 +2145,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_QUERY__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -2082,7 +2154,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_QUERY__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Documentation</b></em>' containment reference.
@@ -2091,7 +2163,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__DOCUMENTATION = ERROR_FEATURE_COUNT + 2;
+	int ERROR_QUERY__DOCUMENTATION = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Deprecated</b></em>' attribute.
@@ -2100,7 +2172,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__DEPRECATED = ERROR_FEATURE_COUNT + 3;
+	int ERROR_QUERY__DEPRECATED = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2109,7 +2181,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__NAME = ERROR_FEATURE_COUNT + 4;
+	int ERROR_QUERY__NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -2118,7 +2190,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__TYPE = ERROR_FEATURE_COUNT + 5;
+	int ERROR_QUERY__TYPE = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Parameters</b></em>' containment reference list.
@@ -2127,7 +2199,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__PARAMETERS = ERROR_FEATURE_COUNT + 6;
+	int ERROR_QUERY__PARAMETERS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -2136,7 +2208,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__VISIBILITY = ERROR_FEATURE_COUNT + 7;
+	int ERROR_QUERY__VISIBILITY = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' reference.
@@ -2145,7 +2217,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__BODY = ERROR_FEATURE_COUNT + 8;
+	int ERROR_QUERY__BODY = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Visibility</b></em>' attribute.
@@ -2154,7 +2226,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 9;
+	int ERROR_QUERY__MISSING_VISIBILITY = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
@@ -2163,7 +2235,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_NAME = ERROR_FEATURE_COUNT + 10;
+	int ERROR_QUERY__MISSING_NAME = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -2172,7 +2244,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
+	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -2181,7 +2253,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
+	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2190,7 +2262,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 13;
+	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2199,7 +2271,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 14;
+	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing Equal</b></em>' attribute.
@@ -2208,7 +2280,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 15;
+	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -2217,7 +2289,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 16;
+	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The number of structural features of the '<em>Error Query</em>' class.
@@ -2226,7 +2298,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 17;
+	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The number of operations of the '<em>Error Query</em>' class.
@@ -2367,6 +2439,24 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_VARIABLE = 30;
 
 	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE__START_POSITION = ERROR__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_VARIABLE__END_POSITION = ERROR__END_POSITION;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2385,31 +2475,13 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_VARIABLE__NAME = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_VARIABLE__START_POSITION = ERROR_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_VARIABLE__END_POSITION = ERROR_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_NAME = ERROR_FEATURE_COUNT + 4;
+	int ERROR_VARIABLE__MISSING_NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2418,7 +2490,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_COLON = ERROR_FEATURE_COUNT + 5;
+	int ERROR_VARIABLE__MISSING_COLON = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2427,7 +2499,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE__MISSING_TYPE = ERROR_FEATURE_COUNT + 6;
+	int ERROR_VARIABLE__MISSING_TYPE = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Error Variable</em>' class.
@@ -2436,7 +2508,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_VARIABLE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
+	int ERROR_VARIABLE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Error Variable</em>' class.
@@ -2531,6 +2603,24 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_BINDING = 32;
 
 	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__START_POSITION = ERROR__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_BINDING__END_POSITION = ERROR__END_POSITION;
+
+	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2549,31 +2639,13 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_BINDING__NAME = ERROR_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_BINDING__START_POSITION = ERROR_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>End Position</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ERROR_BINDING__END_POSITION = ERROR_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Init Expression</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__INIT_EXPRESSION = ERROR_FEATURE_COUNT + 4;
+	int ERROR_BINDING__INIT_EXPRESSION = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Name</b></em>' attribute.
@@ -2582,7 +2654,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_NAME = ERROR_FEATURE_COUNT + 5;
+	int ERROR_BINDING__MISSING_NAME = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2591,7 +2663,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_COLON = ERROR_FEATURE_COUNT + 6;
+	int ERROR_BINDING__MISSING_COLON = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2600,7 +2672,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_TYPE = ERROR_FEATURE_COUNT + 7;
+	int ERROR_BINDING__MISSING_TYPE = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Affectation Symbole</b></em>' attribute.
@@ -2609,7 +2681,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = ERROR_FEATURE_COUNT + 8;
+	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Affectation Symbole Position</b></em>' attribute.
@@ -2618,7 +2690,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION = ERROR_FEATURE_COUNT + 9;
+	int ERROR_BINDING__MISSING_AFFECTATION_SYMBOLE_POSITION = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>Error Binding</em>' class.
@@ -2627,7 +2699,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
+	int ERROR_BINDING_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>Error Binding</em>' class.
@@ -2756,7 +2828,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_EXPRESSION_STATEMENT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -2765,7 +2837,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_EXPRESSION_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Expression</b></em>' reference.
@@ -2774,7 +2846,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__EXPRESSION = ERROR_FEATURE_COUNT + 2;
+	int ERROR_EXPRESSION_STATEMENT__EXPRESSION = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -2783,7 +2855,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
+	int ERROR_EXPRESSION_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Error Expression Statement</em>' class.
@@ -2792,7 +2864,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_EXPRESSION_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_EXPRESSION_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>Error Expression Statement</em>' class.
@@ -2884,7 +2956,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_PROTECTED_AREA__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -2893,7 +2965,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_PROTECTED_AREA__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' containment reference.
@@ -2902,7 +2974,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__ID = ERROR_FEATURE_COUNT + 2;
+	int ERROR_PROTECTED_AREA__ID = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -2911,7 +2983,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__BODY = ERROR_FEATURE_COUNT + 3;
+	int ERROR_PROTECTED_AREA__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -2920,7 +2992,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_PROTECTED_AREA__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -2929,7 +3001,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_PROTECTED_AREA__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -2938,7 +3010,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 6;
+	int ERROR_PROTECTED_AREA__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -2947,7 +3019,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA__MISSING_END = ERROR_FEATURE_COUNT + 7;
+	int ERROR_PROTECTED_AREA__MISSING_END = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Error Protected Area</em>' class.
@@ -2956,7 +3028,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_PROTECTED_AREA_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
+	int ERROR_PROTECTED_AREA_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Error Protected Area</em>' class.
@@ -3048,7 +3120,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_FOR_STATEMENT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -3057,7 +3129,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_FOR_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Binding</b></em>' containment reference.
@@ -3066,7 +3138,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__BINDING = ERROR_FEATURE_COUNT + 2;
+	int ERROR_FOR_STATEMENT__BINDING = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -3075,7 +3147,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__BODY = ERROR_FEATURE_COUNT + 3;
+	int ERROR_FOR_STATEMENT__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -3084,7 +3156,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
+	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -3093,7 +3165,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -3102,7 +3174,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 6;
+	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3111,7 +3183,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 7;
+	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Error For Statement</em>' class.
@@ -3120,7 +3192,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 8;
+	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Error For Statement</em>' class.
@@ -3221,7 +3293,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_IF_STATEMENT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -3230,7 +3302,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_IF_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -3239,7 +3311,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__CONDITION = ERROR_FEATURE_COUNT + 2;
+	int ERROR_IF_STATEMENT__CONDITION = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Then</b></em>' containment reference.
@@ -3248,7 +3320,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__THEN = ERROR_FEATURE_COUNT + 3;
+	int ERROR_IF_STATEMENT__THEN = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Else</b></em>' containment reference.
@@ -3257,7 +3329,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__ELSE = ERROR_FEATURE_COUNT + 4;
+	int ERROR_IF_STATEMENT__ELSE = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -3266,7 +3338,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 5;
+	int ERROR_IF_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -3275,7 +3347,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
+	int ERROR_IF_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -3284,7 +3356,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 7;
+	int ERROR_IF_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3293,7 +3365,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 8;
+	int ERROR_IF_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Error If Statement</em>' class.
@@ -3302,7 +3374,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_IF_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 9;
+	int ERROR_IF_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Error If Statement</em>' class.
@@ -3394,7 +3466,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_LET_STATEMENT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -3403,7 +3475,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_LET_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Variables</b></em>' containment reference list.
@@ -3412,7 +3484,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__VARIABLES = ERROR_FEATURE_COUNT + 2;
+	int ERROR_LET_STATEMENT__VARIABLES = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -3421,7 +3493,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__BODY = ERROR_FEATURE_COUNT + 3;
+	int ERROR_LET_STATEMENT__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -3430,7 +3502,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
+	int ERROR_LET_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3439,7 +3511,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 5;
+	int ERROR_LET_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Error Let Statement</em>' class.
@@ -3448,7 +3520,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
+	int ERROR_LET_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Error Let Statement</em>' class.
@@ -3558,7 +3630,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__START_POSITION = ERROR_FEATURE_COUNT + 0;
+	int ERROR_FILE_STATEMENT__START_POSITION = ERROR__START_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>End Position</b></em>' attribute.
@@ -3567,7 +3639,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__END_POSITION = ERROR_FEATURE_COUNT + 1;
+	int ERROR_FILE_STATEMENT__END_POSITION = ERROR__END_POSITION;
 
 	/**
 	 * The feature id for the '<em><b>Mode</b></em>' attribute.
@@ -3576,7 +3648,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MODE = ERROR_FEATURE_COUNT + 2;
+	int ERROR_FILE_STATEMENT__MODE = ERROR_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Url</b></em>' containment reference.
@@ -3585,7 +3657,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__URL = ERROR_FEATURE_COUNT + 3;
+	int ERROR_FILE_STATEMENT__URL = ERROR_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Charset</b></em>' containment reference.
@@ -3594,7 +3666,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__CHARSET = ERROR_FEATURE_COUNT + 4;
+	int ERROR_FILE_STATEMENT__CHARSET = ERROR_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -3603,7 +3675,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__BODY = ERROR_FEATURE_COUNT + 5;
+	int ERROR_FILE_STATEMENT__BODY = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Parenthesis</b></em>' attribute.
@@ -3612,7 +3684,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 6;
+	int ERROR_FILE_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing Comma</b></em>' attribute.
@@ -3621,7 +3693,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_COMMA = ERROR_FEATURE_COUNT + 7;
+	int ERROR_FILE_STATEMENT__MISSING_COMMA = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing Open Mode</b></em>' attribute.
@@ -3630,7 +3702,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_OPEN_MODE = ERROR_FEATURE_COUNT + 8;
+	int ERROR_FILE_STATEMENT__MISSING_OPEN_MODE = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
@@ -3639,7 +3711,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 9;
+	int ERROR_FILE_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -3648,7 +3720,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 10;
+	int ERROR_FILE_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3657,7 +3729,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 11;
+	int ERROR_FILE_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Error File Statement</em>' class.
@@ -3666,7 +3738,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FILE_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 12;
+	int ERROR_FILE_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of operations of the '<em>Error File Statement</em>' class.

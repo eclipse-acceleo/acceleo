@@ -7,4 +7,4 @@ module myModule
   missing colon: -1
   missing type: -1
    (84..101)) ) : EClassifier ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (126..155)
-  /] (61..157)
+  /] (61..157) (0..157)

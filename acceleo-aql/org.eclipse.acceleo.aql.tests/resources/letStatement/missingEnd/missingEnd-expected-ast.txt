@@ -13,4 +13,4 @@ module myModule
     myVariable : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (158..187) (124..187)
       
     some static text.
- (188..211) (188..211)[/let] (119..211) (116..211)[/template] (61..222)
+ (188..211) (188..211)[/let] (119..211) (116..211)[/template] (61..222) (0..222)

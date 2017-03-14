@@ -8,4 +8,4 @@ module myModule
    (116..119)
     *** error expression statement ***
     missing end header: 142
-    [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (120..141)/] (119..142) (116..142)[/template] (61..153)
+    [.add(.aqlFeatureAccess(myParam, 'name'), '.txt') (120..141)/] (119..142) (116..142)[/template] (61..153) (0..153)

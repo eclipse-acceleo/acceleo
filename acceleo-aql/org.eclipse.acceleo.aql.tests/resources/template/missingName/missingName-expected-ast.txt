@@ -16,4 +16,4 @@ module myModule
   public template null(myParam : EPackage (79..104))
     
  some static text.
- (106..126) (106..126)[/template] (61..137)
+ (106..126) (106..126)[/template] (61..137) (0..137)

@@ -16,4 +16,4 @@ since: 0.0.1
 header position 100..159
 module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (118..156)
-  [comment [comment a basic comment/ (169..185) /] (160..185)
+  [comment [comment a basic comment/ (169..185) /] (160..185) (100..186)

@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
@@ -143,10 +144,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Adds a {@link IValidationMessage} to the given ast node.
+	 * Adds a {@link IValidationMessage} to the given {@link ASTNode}.
 	 * 
 	 * @param node
-	 *            the ast node
+	 *            the {@link ASTNode}
 	 * @param level
 	 *            the {@link ValidationMessageLevel}
 	 * @param messageString
@@ -156,7 +157,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * @param endPosition
 	 *            the end position
 	 */
-	protected void addMessage(Object node, ValidationMessageLevel level, String messageString,
+	protected void addMessage(ASTNode node, ValidationMessageLevel level, String messageString,
 			int startPosition, int endPosition) {
 		final IValidationMessage message = new ValidationMessage(level, messageString, startPosition,
 				endPosition);
