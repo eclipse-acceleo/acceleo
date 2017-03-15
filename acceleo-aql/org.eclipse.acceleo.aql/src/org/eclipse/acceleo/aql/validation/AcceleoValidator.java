@@ -64,7 +64,6 @@ import org.eclipse.acceleo.query.runtime.ValidationMessageLevel;
 import org.eclipse.acceleo.query.runtime.impl.ValidationMessage;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
 import org.eclipse.acceleo.util.AcceleoSwitch;
@@ -447,8 +446,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(variable, ValidationMessageLevel.WARNING, "Variable " + variable.getName()
 					+ " already exists.", variable.getStartPosition(), variable.getEndPosition());
 		}
-		final Set<IType> types = new LinkedHashSet<IType>();
-		types.add(new EClassifierType(environment.getQueryEnvironment(), variable.getType()));
+		final IValidationResult validationResult = validator.validate(null, variable.getType());
+		final Set<IType> types = validator.getDeclarationTypes(environment.getQueryEnvironment(),
+				validationResult.getPossibleTypes(variable.getType().getAst()));
 		stack.peek().put(variable.getName(), types);
 
 		return RETURN_VALUE;
@@ -486,19 +486,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
 		if (binding.getType() != null) {
-			final EClassifierType iType = new EClassifierType(environment.getQueryEnvironment(), binding
-					.getType());
-			for (IType possibleType : possibleTypes) {
-				if (!iType.isAssignableFrom(possibleType)) {
-					if (forceCollectionBinding) {
-						result.getMessages().putAll(binding,
-								validateBindingTypeForceCollection(binding, iType, possibleType));
-					} else {
-						addMessage(binding, ValidationMessageLevel.WARNING, iType + " is incompatible with "
-								+ possibleType, binding.getStartPosition(), binding.getEndPosition());
-					}
-				}
-			}
+			final IValidationResult typeValidationResult = validator.validate(null, binding.getType());
+			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
+					typeValidationResult.getPossibleTypes(binding.getType().getAst()));
+			checkTypesCompatibility(binding, possibleTypes, iTypes);
 		} else if (forceCollectionBinding) {
 			for (IType possibleType : possibleTypes) {
 				if (!(possibleType instanceof ICollectionType)) {
@@ -524,11 +515,45 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	}
 
 	/**
+	 * Check compatibility between {@link Binding#getInitExpression() expression} {@link IType} and
+	 * {@link Binding#getType() declared} {@link IType}.
+	 * 
+	 * @param binding
+	 *            the {@link Binding}
+	 * @param possibleTypes
+	 *            the {@link Set} of {@link Binding#getInitExpression() expression} {@link IType}
+	 * @param declaredTypes
+	 *            the {@link Set} of {@link Binding#getType() declared} {@link IType}
+	 */
+	protected void checkTypesCompatibility(Binding binding, final Set<IType> possibleTypes,
+			final Set<IType> declaredTypes) {
+		for (IType possibleType : possibleTypes) {
+			List<IValidationMessage> messages = new ArrayList<IValidationMessage>();
+			boolean hasCompatibleType = false;
+			for (IType iType : declaredTypes) {
+				if (!iType.isAssignableFrom(possibleType)) {
+					if (forceCollectionBinding) {
+						messages.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
+					} else {
+						messages.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
+								+ " is incompatible with " + possibleType, binding.getStartPosition(),
+								binding.getEndPosition()));
+					}
+				} else {
+					hasCompatibleType = true;
+				}
+			}
+			if (!hasCompatibleType) {
+				result.getMessages().putAll(binding, messages);
+			}
+		}
+	}
+
+	/**
 	 * Validates the given {@link Binding} type.
 	 * 
 	 * @param binding
 	 *            the {@link Binding}
-	 * @param res
 	 * @param iType
 	 *            the {@link IType} corresponding to the given {@link Binding#getType() binding type}
 	 * @param possibleType
@@ -536,8 +561,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 *            expression}
 	 * @return the {@link List} of {@link IValidationMessage} is something doesn't validate
 	 */
-	protected List<IValidationMessage> validateBindingTypeForceCollection(Binding binding,
-			final EClassifierType iType, IType possibleType) {
+	protected List<IValidationMessage> validateBindingTypeForceCollection(Binding binding, final IType iType,
+			IType possibleType) {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
 		if (possibleType instanceof ICollectionType) {

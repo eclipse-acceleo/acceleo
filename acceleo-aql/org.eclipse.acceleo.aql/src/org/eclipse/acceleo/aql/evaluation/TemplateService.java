@@ -20,11 +20,11 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -89,9 +89,12 @@ public class TemplateService extends AbstractModuleElementService {
 	 */
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
-		List<IType> result = new ArrayList<IType>();
+		final List<IType> result = new ArrayList<IType>();
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : template.getParameters()) {
-			EClassifierType rawType = new EClassifierType(queryEnvironment, var.getType());
+			IType rawType = validator.getDeclarationTypes(queryEnvironment,
+					validator.validate(null, var.getType()).getPossibleTypes(var.getType().getAst()))
+					.iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
 			result.add(rawType);
 		}

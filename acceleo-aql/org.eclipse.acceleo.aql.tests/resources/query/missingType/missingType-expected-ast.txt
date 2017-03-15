@@ -11,5 +11,5 @@ module myModule
   missing type: 113
   missing equal: -1
   missing end: -1
-  public query myQuery(myParam : EPackage (83..108)) ) : null ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (115..144)
+  public query myQuery(myParam : EPackage (83..108)) ) : ***ERROR*** ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (115..144)
   /] (61..146) (0..146)

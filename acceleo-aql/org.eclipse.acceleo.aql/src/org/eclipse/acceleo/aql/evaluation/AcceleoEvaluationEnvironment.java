@@ -47,6 +47,8 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	private IQueryEnvironment aqlEnvironment;
 
 	/* FIXME This is not functional. We need to be able to push/pop variable values during the evaluation. */
+	// FIXME this should not be part of the AcceleoEvaluationEnvironment. the life spawn of a variable is
+	// shorter than the AcceleoEvaluationEnvironment
 	/** Keeps track of the available variables. */
 	private Map<String, Object> variables;
 

@@ -18,14 +18,11 @@ import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.NamedElement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
-
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -93,14 +90,24 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	protected int endPosition = END_POSITION_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected EClassifier type;
+	protected static final AstResult TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -256,16 +263,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier getType() {
-		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject)type;
-			type = (EClassifier)eResolveProxy(oldType);
-			if (type != oldType) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.ERROR_BINDING__TYPE, oldType, type));
-			}
-		}
+	public AstResult getType() {
 		return type;
 	}
 
@@ -274,17 +272,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier basicGetType() {
-		return type;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setType(EClassifier newType) {
-		EClassifier oldType = type;
+	public void setType(AstResult newType) {
+		AstResult oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_BINDING__TYPE,
@@ -546,9 +535,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_BINDING__END_POSITION:
 				return getEndPosition();
 			case AcceleoPackage.ERROR_BINDING__TYPE:
-				if (resolve)
-					return getType();
-				return basicGetType();
+				return getType();
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				return getName();
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
@@ -582,7 +569,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 				setEndPosition((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_BINDING__TYPE:
-				setType((EClassifier)newValue);
+				setType((AstResult)newValue);
 				return;
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				setName((String)newValue);
@@ -624,7 +611,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 				setEndPosition(END_POSITION_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_BINDING__TYPE:
-				setType((EClassifier)null);
+				setType(TYPE_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				setName(NAME_EDEFAULT);
@@ -664,7 +651,7 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 			case AcceleoPackage.ERROR_BINDING__END_POSITION:
 				return endPosition != END_POSITION_EDEFAULT;
 			case AcceleoPackage.ERROR_BINDING__TYPE:
-				return type != null;
+				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 			case AcceleoPackage.ERROR_BINDING__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.ERROR_BINDING__INIT_EXPRESSION:
@@ -779,6 +766,8 @@ public class ErrorBindingImpl extends MinimalEObjectImpl.Container implements Er
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
 		result.append(endPosition);
+		result.append(", type: "); //$NON-NLS-1$
+		result.append(type);
 		result.append(", name: "); //$NON-NLS-1$
 		result.append(name);
 		result.append(", missingName: "); //$NON-NLS-1$

@@ -13,7 +13,7 @@ module myModule
     missing type: 138
     missing affectation symbol: null
     missing affectation symbol position: -1
-    myVariable : null = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (140..169) (124..169)
+    myVariable : ***ERROR*** = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (140..169) (124..169)
       
     some static text.
    (170..195) (170..195)[/let] (119..201)

@@ -23,19 +23,14 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -160,14 +155,24 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected EClassifier type;
+	protected static final AstResult TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
@@ -531,16 +536,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier getType() {
-		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject)type;
-			type = (EClassifier)eResolveProxy(oldType);
-			if (type != oldType) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.ERROR_QUERY__TYPE, oldType, type));
-			}
-		}
+	public AstResult getType() {
 		return type;
 	}
 
@@ -549,17 +545,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier basicGetType() {
-		return type;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setType(EClassifier newType) {
-		EClassifier oldType = type;
+	public void setType(AstResult newType) {
+		AstResult oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.ERROR_QUERY__TYPE, oldType,
@@ -871,9 +858,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			case AcceleoPackage.ERROR_QUERY__NAME:
 				return getName();
 			case AcceleoPackage.ERROR_QUERY__TYPE:
-				if (resolve)
-					return getType();
-				return basicGetType();
+				return getType();
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				return getParameters();
 			case AcceleoPackage.ERROR_QUERY__VISIBILITY:
@@ -927,7 +912,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				setName((String)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__TYPE:
-				setType((EClassifier)newValue);
+				setType((AstResult)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				getParameters().clear();
@@ -991,7 +976,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				setName(NAME_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_QUERY__TYPE:
-				setType((EClassifier)null);
+				setType(TYPE_EDEFAULT);
 				return;
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				getParameters().clear();
@@ -1049,7 +1034,7 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			case AcceleoPackage.ERROR_QUERY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case AcceleoPackage.ERROR_QUERY__TYPE:
-				return type != null;
+				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 			case AcceleoPackage.ERROR_QUERY__PARAMETERS:
 				return parameters != null && !parameters.isEmpty();
 			case AcceleoPackage.ERROR_QUERY__VISIBILITY:
@@ -1203,6 +1188,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		result.append(deprecated);
 		result.append(", name: "); //$NON-NLS-1$
 		result.append(name);
+		result.append(", type: "); //$NON-NLS-1$
+		result.append(type);
 		result.append(", visibility: "); //$NON-NLS-1$
 		result.append(visibility);
 		result.append(", missingVisibility: "); //$NON-NLS-1$

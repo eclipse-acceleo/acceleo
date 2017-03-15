@@ -1658,7 +1658,7 @@ public interface AcceleoPackage extends EPackage {
 	int TYPED_ELEMENT = 23;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2075,7 +2075,7 @@ public interface AcceleoPackage extends EPackage {
 	int QUERY__NAME = MODULE_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2184,7 +2184,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_QUERY__NAME = ERROR_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2375,7 +2375,7 @@ public interface AcceleoPackage extends EPackage {
 	int VARIABLE = 29;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2457,7 +2457,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_VARIABLE__END_POSITION = ERROR__END_POSITION;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2530,7 +2530,7 @@ public interface AcceleoPackage extends EPackage {
 	int BINDING = 31;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2621,7 +2621,7 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_BINDING__END_POSITION = ERROR__END_POSITION;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -4437,15 +4437,15 @@ public interface AcceleoPackage extends EPackage {
 	EClass getTypedElement();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.eclipse.acceleo.TypedElement#getType <em>Type</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.TypedElement#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @return the meta object for the attribute '<em>Type</em>'.
 	 * @see org.eclipse.acceleo.TypedElement#getType()
 	 * @see #getTypedElement()
 	 * @generated
 	 */
-	EReference getTypedElement_Type();
+	EAttribute getTypedElement_Type();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Template <em>Template</em>}'.
@@ -6035,12 +6035,12 @@ public interface AcceleoPackage extends EPackage {
 		EClass TYPED_ELEMENT = eINSTANCE.getTypedElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference TYPED_ELEMENT__TYPE = eINSTANCE.getTypedElement_Type();
+		EAttribute TYPED_ELEMENT__TYPE = eINSTANCE.getTypedElement_Type();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.TemplateImpl <em>Template</em>}' class.

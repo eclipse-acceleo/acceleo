@@ -100,7 +100,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Block/statements"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//TypedElement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference acceleo.ecore#//TypedElement/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EAttribute acceleo.ecore#//TypedElement/type"/>
     </genClasses>
     <genClasses ecoreClass="acceleo.ecore#//Template">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference acceleo.ecore#//Template/parameters"/>

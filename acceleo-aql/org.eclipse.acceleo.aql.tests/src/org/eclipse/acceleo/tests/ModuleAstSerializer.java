@@ -561,7 +561,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append(binding.getName());
 		builder.append(" : ");
 		if (binding.getType() != null) {
-			builder.append(binding.getType().getName());
+			builder.append(querySerializer.serialize(binding.getType().getAst()));
 		} else {
 			builder.append(NULL_STRING);
 		}
@@ -754,7 +754,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		builder.append(") ");
 		builder.append(") : ");
 		if (query.getType() != null) {
-			builder.append(query.getType().getName());
+			builder.append(querySerializer.serialize(query.getType().getAst()));
 		} else {
 			builder.append(NULL_STRING);
 		}
@@ -823,7 +823,7 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 			builder.append(variable.getName());
 			builder.append(" : ");
 			if (variable.getType() != null) {
-				builder.append(variable.getType().getName());
+				builder.append(querySerializer.serialize(variable.getType().getAst()));
 			} else {
 				builder.append(NULL_STRING);
 			}

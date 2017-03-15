@@ -13,13 +13,9 @@ package org.eclipse.acceleo.impl;
 
 import org.eclipse.acceleo.AcceleoPackage;
 import org.eclipse.acceleo.TypedElement;
-
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
-import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -38,14 +34,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class TypedElementImpl extends MinimalEObjectImpl.Container implements TypedElement {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected EClassifier type;
+	protected static final AstResult TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getType()
+	 * @generated
+	 * @ordered
+	 */
+	protected AstResult type = TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -71,16 +77,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier getType() {
-		if (type != null && type.eIsProxy()) {
-			InternalEObject oldType = (InternalEObject)type;
-			type = (EClassifier)eResolveProxy(oldType);
-			if (type != oldType) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							AcceleoPackage.TYPED_ELEMENT__TYPE, oldType, type));
-			}
-		}
+	public AstResult getType() {
 		return type;
 	}
 
@@ -89,17 +86,8 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClassifier basicGetType() {
-		return type;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setType(EClassifier newType) {
-		EClassifier oldType = type;
+	public void setType(AstResult newType) {
+		AstResult oldType = type;
 		type = newType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AcceleoPackage.TYPED_ELEMENT__TYPE,
@@ -115,9 +103,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AcceleoPackage.TYPED_ELEMENT__TYPE:
-				if (resolve)
-					return getType();
-				return basicGetType();
+				return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -131,7 +117,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case AcceleoPackage.TYPED_ELEMENT__TYPE:
-				setType((EClassifier)newValue);
+				setType((AstResult)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -146,7 +132,7 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case AcceleoPackage.TYPED_ELEMENT__TYPE:
-				setType((EClassifier)null);
+				setType(TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -161,9 +147,26 @@ public class TypedElementImpl extends MinimalEObjectImpl.Container implements Ty
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AcceleoPackage.TYPED_ELEMENT__TYPE:
-				return type != null;
+				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (type: "); //$NON-NLS-1$
+		result.append(type);
+		result.append(')');
+		return result.toString();
 	}
 
 } //TypedElementImpl

@@ -61,7 +61,6 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.TypedElement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
-
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -1008,8 +1007,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getTypedElement_Type() {
-		return (EReference)typedElementEClass.getEStructuralFeatures().get(0);
+	public EAttribute getTypedElement_Type() {
+		return (EAttribute)typedElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2013,7 +2012,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(blockEClass, BLOCK__STATEMENTS);
 
 		typedElementEClass = createEClass(TYPED_ELEMENT);
-		createEReference(typedElementEClass, TYPED_ELEMENT__TYPE);
+		createEAttribute(typedElementEClass, TYPED_ELEMENT__TYPE);
 
 		templateEClass = createEClass(TEMPLATE);
 		createEReference(templateEClass, TEMPLATE__PARAMETERS);
@@ -2454,11 +2453,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(typedElementEClass, TypedElement.class,
 				"TypedElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
-		initEReference(
+		initEAttribute(
 				getTypedElement_Type(),
-				ecorePackage.getEClassifier(),
-				null,
-				"type", null, 1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+				this.getASTResult(),
+				"type", null, 1, 1, TypedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
 
 		initEClass(templateEClass, Template.class,
 				"Template", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

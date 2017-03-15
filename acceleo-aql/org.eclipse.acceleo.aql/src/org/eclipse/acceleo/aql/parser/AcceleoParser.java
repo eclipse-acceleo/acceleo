@@ -67,6 +67,7 @@ import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.ast.AstPackage;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
+import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
@@ -75,7 +76,6 @@ import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -906,9 +906,11 @@ public class AcceleoParser {
 			skipSpaces();
 			final int missingColon = readMissingString(COLON);
 			skipSpaces();
-			final EClassifier type = parseEClassifier();
+			final int typeEndLimit = getAqlExpressionEndLimit(EQUAL, QUERY_END);
+			final AstResult type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			currentPosition += type.getEndPosition(type.getAst());
 			final int missingType;
-			if (type == null) {
+			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingType = currentPosition;
 			} else {
 				missingType = -1;
@@ -996,9 +998,11 @@ public class AcceleoParser {
 		skipSpaces();
 		final int missingColon = readMissingString(COLON);
 		skipSpaces();
-		final EClassifier type = parseEClassifier();
+		final int typeEndLimit = getAqlExpressionEndLimit(COMMA, CLOSE_PARENTHESIS);
+		final AstResult type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+		currentPosition += type.getEndPosition(type.getAst());
 		final int missingType;
-		if (type == null) {
+		if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 			missingType = currentPosition;
 		} else {
 			missingType = -1;
@@ -1467,12 +1471,14 @@ public class AcceleoParser {
 		}
 		skipSpaces();
 		int missingType;
-		EClassifier type;
+		AstResult type;
 		int missingColon = currentPosition;
 		if (readString(COLON)) {
 			skipSpaces();
-			type = parseEClassifier();
-			if (type == null) {
+			final int typeEndLimit = Math.min(getAqlExpressionEndLimit(affectationSymbol, COMMA), endLimit);
+			type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			currentPosition += type.getEndPosition(type.getAst());
+			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingType = currentPosition;
 			} else {
 				missingType = -1;
@@ -1485,8 +1491,10 @@ public class AcceleoParser {
 		skipSpaces();
 		int missingAffectationSymbol = readMissingString(affectationSymbol);
 		if (missingColon != -1 && missingAffectationSymbol != -1) {
-			type = parseEClassifier();
-			if (type == null) {
+			final int typeEndLimit = Math.min(getAqlExpressionEndLimit(affectationSymbol, COMMA), endLimit);
+			type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			currentPosition += type.getEndPosition(type.getAst());
+			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
 				missingType = currentPosition;
 			} else {
 				missingType = -1;
@@ -1514,35 +1522,6 @@ public class AcceleoParser {
 		res.setType(type);
 		res.setInitExpression(expression);
 		res.setEndPosition(currentPosition);
-
-		return res;
-	}
-
-	/**
-	 * Parses a {@link EClassifier}.
-	 * 
-	 * @return the recognized {@link EClassifier} if any, <code>null</code> otherwise
-	 */
-	protected EClassifier parseEClassifier() {
-		final EClassifier res;
-
-		final String ePackageName = parseIdentifier();
-		if (readString(QUALIFIER_SEPARATOR)) {
-			final String eClassifierName = parseIdentifier();
-
-			if (ePackageName != null && eClassifierName != null) {
-				final EPackage ePkg = getEPackage(ePackageName);
-				if (ePkg != null) {
-					res = ePkg.getEClassifier(eClassifierName);
-				} else {
-					res = null;
-				}
-			} else {
-				res = null;
-			}
-		} else {
-			res = null;
-		}
 
 		return res;
 	}
@@ -1808,8 +1787,52 @@ public class AcceleoParser {
 			}
 			final BasicDiagnostic diagnostic = new BasicDiagnostic();
 			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
-					"null or empty string.", new Object[] {errorExpression }));
+					"missing expression", new Object[] {errorExpression }));
 			result = new AstResult(errorExpression, positions, positions, aqlErrors, diagnostic);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Parses while matching an AQL expression.
+	 * 
+	 * @param expression
+	 *            the expression to parse
+	 * @return the corresponding {@link AstResult}
+	 */
+	protected AstResult parseWhileAqlTypeLiteral(String expression) {
+		final IQueryBuilderEngine.AstResult result;
+
+		if (expression != null && expression.length() > 0) {
+			AstBuilderListener astBuilder = new AstBuilderListener(queryEnvironment);
+			CharStream input = new UnbufferedCharStream(new StringReader(expression), expression.length());
+			QueryLexer lexer = new QueryLexer(input);
+			lexer.setTokenFactory(new CommonTokenFactory(true));
+			lexer.removeErrorListeners();
+			lexer.addErrorListener(astBuilder.getErrorListener());
+			TokenStream tokens = new UnbufferedTokenStream<CommonToken>(lexer);
+			QueryParser parser = new QueryParser(tokens);
+			parser.addParseListener(astBuilder);
+			parser.removeErrorListeners();
+			parser.addErrorListener(astBuilder.getErrorListener());
+			// parser.setTrace(true);
+			parser.typeLiteral();
+			result = astBuilder.getAstResult();
+		} else {
+			ErrorTypeLiteral errorTypeLiteral = (ErrorTypeLiteral)EcoreUtil.create(AstPackage.eINSTANCE
+					.getErrorTypeLiteral());
+			List<org.eclipse.acceleo.query.ast.Error> errs = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
+					1);
+			errs.add(errorTypeLiteral);
+			final Map<Object, Integer> positions = new HashMap<Object, Integer>();
+			if (expression != null) {
+				positions.put(errorTypeLiteral, Integer.valueOf(0));
+			}
+			final BasicDiagnostic diagnostic = new BasicDiagnostic();
+			diagnostic.add(new BasicDiagnostic(Diagnostic.ERROR, AstBuilderListener.PLUGIN_ID, 0,
+					"missing type literal", new Object[] {errorTypeLiteral }));
+			result = new AstResult(errorTypeLiteral, positions, positions, errs, diagnostic);
 		}
 
 		return result;
@@ -1830,6 +1853,10 @@ public class AcceleoParser {
 
 		int parenthesisDepth = 0;
 		while (res < text.length()) {
+			if (text.startsWith(endTag, res) || parenthesisDepth == 0
+					&& (text.startsWith(endDelimiter, res) || text.startsWith(TEXT_END, res))) {
+				break;
+			}
 			switch (text.charAt(res)) {
 				case '\'':
 					// skip string literal
@@ -1867,10 +1894,6 @@ public class AcceleoParser {
 				default:
 					res++;
 					break;
-			}
-			if (text.startsWith(endTag, res) || parenthesisDepth == 0
-					&& (text.startsWith(endDelimiter, res) || text.startsWith(TEXT_END, res))) {
-				break;
 			}
 		}
 

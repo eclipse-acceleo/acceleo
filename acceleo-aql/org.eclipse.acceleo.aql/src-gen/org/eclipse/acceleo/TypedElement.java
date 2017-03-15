@@ -11,7 +11,7 @@
  */
 package org.eclipse.acceleo;
 
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -32,29 +32,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface TypedElement extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Type</b></em>' reference.
+	 * Returns the value of the '<em><b>Type</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Type</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Type</em>' reference.
-	 * @see #setType(EClassifier)
+	 * @return the value of the '<em>Type</em>' attribute.
+	 * @see #setType(AstResult)
 	 * @see org.eclipse.acceleo.AcceleoPackage#getTypedElement_Type()
-	 * @model required="true"
+	 * @model dataType="org.eclipse.acceleo.ASTResult" required="true"
 	 * @generated
 	 */
-	EClassifier getType();
+	AstResult getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.acceleo.TypedElement#getType <em>Type</em>}' reference.
+	 * Sets the value of the '{@link org.eclipse.acceleo.TypedElement#getType <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @param value the new value of the '<em>Type</em>' attribute.
 	 * @see #getType()
 	 * @generated
 	 */
-	void setType(EClassifier value);
+	void setType(AstResult value);
 
 } // TypedElement

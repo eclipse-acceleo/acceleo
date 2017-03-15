@@ -11,7 +11,6 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,10 +19,10 @@ import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
-import org.eclipse.acceleo.query.validation.type.EClassifierType;
 import org.eclipse.acceleo.query.validation.type.IType;
 
 /**
@@ -89,8 +88,11 @@ public class QueryService extends AbstractModuleElementService {
 	@Override
 	public List<IType> getParameterTypes(IReadOnlyQueryEnvironment queryEnvironment) {
 		List<IType> result = new ArrayList<IType>();
+		final AstValidator validator = new AstValidator(new ValidationServices(queryEnvironment));
 		for (Variable var : query.getParameters()) {
-			EClassifierType rawType = new EClassifierType(queryEnvironment, var.getType());
+			IType rawType = validator.getDeclarationTypes(queryEnvironment,
+					validator.validate(null, var.getType()).getPossibleTypes(var.getType().getAst()))
+					.iterator().next();
 			// TODO for now, using only the raw variable type, do we need special handling for collections?
 			result.add(rawType);
 		}
@@ -118,8 +120,11 @@ public class QueryService extends AbstractModuleElementService {
 	@Override
 	public Set<IType> getType(Call call, ValidationServices services, IValidationResult validationResult,
 			IReadOnlyQueryEnvironment queryEnvironment, List<IType> argTypes) {
-		Set<IType> result = new LinkedHashSet<IType>();
-		result.add(new EClassifierType(queryEnvironment, query.getType()));
+		final AstValidator validator = new AstValidator(services);
+
+		final Set<IType> result = validator.getDeclarationTypes(queryEnvironment, validator.validate(null,
+				query.getType()).getPossibleTypes(query.getType().getAst()));
+
 		return result;
 	}
 

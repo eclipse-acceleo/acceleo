@@ -12,7 +12,7 @@ module myModule
     missing type: 139
     missing affectation symbol: null
     missing affectation symbol position: -1
-    myVariable : null = .aqlFeatureAccess(myTemplate, 'eClassifiers') (141..164) (125..164)
+    myVariable : ***ERROR*** = .aqlFeatureAccess(myTemplate, 'eClassifiers') (141..164) (125..164)
       
     some static text.
    (166..191) (166..191)
