@@ -27,7 +27,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface TypeSetLiteral extends Literal {
+public interface TypeSetLiteral extends TypeLiteral {
 	/**
 	 * Returns the value of the '<em><b>Types</b></em>' containment reference list. The list contents are of
 	 * type {@link org.eclipse.acceleo.query.ast.TypeLiteral}. <!-- begin-user-doc -->

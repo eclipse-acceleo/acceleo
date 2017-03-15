@@ -230,13 +230,17 @@ public class EObjectServices extends AbstractServiceProvider {
 						}
 					}
 				}
-			} else {
+			} else if (receiverType.getType() != null) {
 				throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + receiverType.getType());
 			}
 
 			if (receiverEClasses.isEmpty()) {
-				result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType.getType()
-						.toString()));
+				if (receiverType.getType() != null) {
+					result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, receiverType
+							.getType().toString()));
+				} else {
+					result.add(services.nothing(NON_EOBJECT_FEATURE_ACCESS, featureName, "null"));
+				}
 			} else {
 				for (EClass eClass : receiverEClasses) {
 					EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
@@ -255,7 +259,6 @@ public class EObjectServices extends AbstractServiceProvider {
 			}
 
 			return result;
-			// CHECKSTYLE:OFF
 		}
 
 		/**

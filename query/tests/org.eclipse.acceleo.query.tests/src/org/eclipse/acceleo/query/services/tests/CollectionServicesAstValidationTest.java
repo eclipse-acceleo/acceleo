@@ -5587,12 +5587,17 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionIntListRealList() {
 		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(Sequence{2.0})");
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		String message = "Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Integer) and Sequence(java.lang.Double)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
 	}
 
 	@Test
@@ -5671,12 +5676,17 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionIntListRealSet() {
 		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(OrderedSet{2.0})");
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		String message = "Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Integer) and Set(java.lang.Double)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SequenceType);
+		assertTrue(((SequenceType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SequenceType)type).getCollectionType()).getMessage());
 	}
 
 	@Test
@@ -5887,12 +5897,17 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionIntSetRealSet() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(OrderedSet{2.0})");
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		String message = "Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Integer) and Set(java.lang.Double)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
 	}
 
 	@Test
@@ -5948,6 +5963,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
+
 		ValidationTest
 				.assertValidationMessage(
 						validationResult.getMessages().get(0),
@@ -5971,12 +5987,17 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 	public void testIntersectionIntSetRealList() {
 		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(Sequence{2.0})");
 
-		assertTrue(validationResult.getMessages().isEmpty());
+		assertEquals(1, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		String message = "Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Integer) and Sequence(java.lang.Double)";
+		assertEquals(1, types.size());
+		IType type = types.iterator().next();
+		assertTrue(type instanceof SetType);
+		assertTrue(((SetType)type).getCollectionType() instanceof NothingType);
+		assertEquals(message, ((NothingType)((SetType)type).getCollectionType()).getMessage());
 	}
 
 	@Test

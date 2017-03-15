@@ -189,54 +189,6 @@ public class TypeTests {
 	}
 
 	@Test
-	public void testWideningConversions() {
-		for (Map.Entry<TypeVariants, Set<TypeVariants>> entry : wideningConversions.entrySet()) {
-			for (IType fromType : entry.getKey().getVariants()) {
-				assertFalse(entry.getValue().isEmpty());
-				for (TypeVariants toVariant : entry.getValue()) {
-					assertFalse(toVariant.getVariants().isEmpty());
-					for (IType toType : toVariant.getVariants()) {
-						assertTrue(toType.getType() + " should have been assignable from "
-								+ fromType.getType(), toType.isAssignableFrom(fromType));
-					}
-				}
-			}
-		}
-	}
-
-	@Test
-	public void testWideningConversionsWithEcore() {
-		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		addEcoreDataTypesAndClassifiersToVariants();
-
-		testWideningConversions();
-	}
-
-	@Test
-	public void testWideningConversionsWithUnregisteredEcore() {
-		addEcoreDataTypesAndClassifiersToVariants();
-
-		for (Map.Entry<TypeVariants, Set<TypeVariants>> entry : wideningConversions.entrySet()) {
-			for (IType fromType : entry.getKey().getVariants()) {
-				assertFalse(entry.getValue().isEmpty());
-				for (TypeVariants toVariant : entry.getValue()) {
-					assertFalse(toVariant.getVariants().isEmpty());
-					for (IType toType : toVariant.getVariants()) {
-						if (toType instanceof EClassifierType || fromType instanceof EClassifierType) {
-							assertFalse(toType.getType() + " should not have been assignable from "
-									+ fromType.getType() + " as ecore is not registered in the environment.",
-									toType.isAssignableFrom(fromType));
-						} else {
-							assertTrue(toType.getType() + " should have been assignable from "
-									+ fromType.getType(), toType.isAssignableFrom(fromType));
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Test
 	public void testNarrowingConversions() {
 		for (Map.Entry<TypeVariants, Set<TypeVariants>> entry : narrowingConversions.entrySet()) {
 			for (IType fromType : entry.getKey().getVariants()) {
@@ -428,6 +380,53 @@ public class TypeTests {
 				assertTrue(universal.isAssignableFrom(variant));
 			}
 		}
+	}
+
+	@Test
+	public void testAssignableFromNullToEClass() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final EClassifierType toType = eClassifierType(EcorePackage.eINSTANCE.getEClass());
+		final ClassType fromType = classType(null);
+
+		assertTrue(toType.getType() + " should have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromNullToObject() {
+		final ClassType toType = classType(Object.class);
+		final ClassType fromType = classType(null);
+
+		assertTrue(toType.getType() + " should have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromEClassToNull() {
+		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
+		final ClassType toType = classType(null);
+		final EClassifierType fromType = eClassifierType(EcorePackage.eINSTANCE.getEClass());
+
+		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromObjectToNull() {
+		final ClassType toType = classType(null);
+		final ClassType fromType = classType(Object.class);
+
+		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
+	}
+
+	@Test
+	public void testAssignableFromNullToNull() {
+		final ClassType toType = classType(null);
+		final ClassType fromType = classType(null);
+
+		assertFalse(toType.getType() + " should not have been assignable from " + fromType.getType(), toType
+				.isAssignableFrom(fromType));
 	}
 
 	protected IQueryEnvironment getQueryEnvironment() {

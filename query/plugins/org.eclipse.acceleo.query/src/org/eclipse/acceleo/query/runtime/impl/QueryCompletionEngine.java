@@ -21,8 +21,8 @@ import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryCompletionEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -36,15 +36,15 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 	/**
 	 * The environment containing all necessary information and used to execute query services.
 	 */
-	private IQueryEnvironment queryEnvironment;
+	private IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
-	 * Constructor. It takes an {@link IQueryEnvironment} as parameter.
+	 * Constructor. It takes an {@link IReadOnlyQueryEnvironment} as parameter.
 	 * 
 	 * @param queryEnvironment
 	 *            The environment containing all necessary information and used to execute query services.
 	 */
-	public QueryCompletionEngine(IQueryEnvironment queryEnvironment) {
+	public QueryCompletionEngine(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
 	}
 

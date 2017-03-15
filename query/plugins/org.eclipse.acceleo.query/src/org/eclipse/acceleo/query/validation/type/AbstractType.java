@@ -76,43 +76,18 @@ public abstract class AbstractType implements IType {
 	 * @since 4.1
 	 */
 	protected boolean isAssignableFrom(Class<?> toType, Class<?> fromType) {
-		Class<?> wrappedToType = wrapPrimitive(toType);
-		Class<?> wrappedFromType = wrapPrimitive(fromType);
+		final boolean result;
 
-		boolean result = false;
-		if (toType == null || fromType == null) {
+		final Class<?> wrappedToType = wrapPrimitive(toType);
+		final Class<?> wrappedFromType = wrapPrimitive(fromType);
+		if (toType == null) {
 			result = false;
-		} else if (wrappedToType.isAssignableFrom(wrappedFromType)) {
+		} else if (fromType == null) {
 			result = true;
 		} else {
-			// Widening conversions
-			// - byte to short, int, long, float, or double
-			// - short to int, long, float, or double
-			// - char to int, long, float, or double
-			// - int to long, float, or double
-			// - long to float or double
-			// - float to double
-			// CHECKSTYLE:OFF not much to do here since we're testing against all conversions
-			if (wrappedFromType == Byte.class) {
-				result = wrappedToType == Short.class || wrappedToType == Integer.class
-						|| wrappedToType == Long.class || wrappedToType == Float.class
-						|| wrappedToType == Double.class;
-			} else if (wrappedFromType == Short.class) {
-				result = wrappedToType == Integer.class || wrappedToType == Long.class
-						|| wrappedToType == Float.class || wrappedToType == Double.class;
-			} else if (wrappedFromType == Character.class) {
-				result = wrappedToType == Integer.class || wrappedToType == Long.class
-						|| wrappedToType == Float.class || wrappedToType == Double.class;
-			} else if (wrappedFromType == Integer.class) {
-				result = wrappedToType == Long.class || wrappedToType == Float.class
-						|| wrappedToType == Double.class;
-			} else if (wrappedFromType == Long.class) {
-				result = wrappedToType == Float.class || wrappedToType == Double.class;
-			} else if (wrappedFromType == Float.class) {
-				result = wrappedToType == Double.class;
-			}
+			result = wrappedToType.isAssignableFrom(wrappedFromType);
 		}
-		// CHECKSTYLE:ON
+
 		return result;
 	}
 

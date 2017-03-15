@@ -201,6 +201,8 @@ public class AstSwitch<T> extends Switch<T> {
 				TypeSetLiteral typeSetLiteral = (TypeSetLiteral)theEObject;
 				T result = caseTypeSetLiteral(typeSetLiteral);
 				if (result == null)
+					result = caseTypeLiteral(typeSetLiteral);
+				if (result == null)
 					result = caseLiteral(typeSetLiteral);
 				if (result == null)
 					result = caseExpression(typeSetLiteral);

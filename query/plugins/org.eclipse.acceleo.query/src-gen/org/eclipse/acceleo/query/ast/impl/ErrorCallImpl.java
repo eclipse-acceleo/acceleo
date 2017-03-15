@@ -35,8 +35,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getServiceName <em>Service Name</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getType <em>Type</em>}</li>
  * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#getArguments <em>Arguments</em>}</li>
- * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#isMissingEndParenthesis
- * <em>Missing End Parenthesis</em>}</li>
+ * <li>{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl#isMissingEndParenthesis <em>Missing End
+ * Parenthesis</em>}</li>
  * </ul>
  * </p>
  *
@@ -172,8 +172,7 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 		CallType oldType = type;
 		type = newType == null ? TYPE_EDEFAULT : newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_CALL__TYPE, oldType,
-					type));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.ERROR_CALL__TYPE, oldType, type));
 	}
 
 	/**
@@ -305,8 +304,8 @@ public class ErrorCallImpl extends ExpressionImpl implements ErrorCall {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case AstPackage.ERROR_CALL__SERVICE_NAME:
-				return SERVICE_NAME_EDEFAULT == null ? serviceName != null
-						: !SERVICE_NAME_EDEFAULT.equals(serviceName);
+				return SERVICE_NAME_EDEFAULT == null ? serviceName != null : !SERVICE_NAME_EDEFAULT
+						.equals(serviceName);
 			case AstPackage.ERROR_CALL__TYPE:
 				return type != TYPE_EDEFAULT;
 			case AstPackage.ERROR_CALL__ARGUMENTS:

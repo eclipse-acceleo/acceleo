@@ -33,6 +33,11 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 public class ServicesValidationResult {
 
 	/**
+	 * The current line separator which will be used by the tooling in order to compute the description.
+	 */
+	private static final String LS = System.getProperty("line.separator");
+
+	/**
 	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
 	private final IReadOnlyQueryEnvironment queryEnvironment;
@@ -122,14 +127,12 @@ public class ServicesValidationResult {
 			for (Set<IType> resultTypes : map.values()) {
 				Set<IType> flattenedTypes = new LinkedHashSet<IType>();
 				for (IType resultType : resultTypes) {
-					if (!(resultType instanceof NothingType)) {
-						// flatten
-						if (resultType instanceof ICollectionType) {
-							flattenedTypes.add(new SetType(queryEnvironment, ((ICollectionType)resultType)
-									.getCollectionType()));
-						} else {
-							flattenedTypes.add(new SetType(queryEnvironment, resultType));
-						}
+					// flatten
+					if (resultType instanceof ICollectionType) {
+						flattenedTypes.add(new SetType(queryEnvironment, ((ICollectionType)resultType)
+								.getCollectionType()));
+					} else {
+						flattenedTypes.add(new SetType(queryEnvironment, resultType));
 					}
 				}
 				resultTypes.clear();
@@ -146,14 +149,12 @@ public class ServicesValidationResult {
 			for (Set<IType> resultTypes : map.values()) {
 				Set<IType> flattenedTypes = new LinkedHashSet<IType>();
 				for (IType resultType : resultTypes) {
-					if (!(resultType instanceof NothingType)) {
-						// flatten
-						if (resultType instanceof ICollectionType) {
-							flattenedTypes.add(new SequenceType(queryEnvironment,
-									((ICollectionType)resultType).getCollectionType()));
-						} else {
-							flattenedTypes.add(new SequenceType(queryEnvironment, resultType));
-						}
+					// flatten
+					if (resultType instanceof ICollectionType) {
+						flattenedTypes.add(new SequenceType(queryEnvironment, ((ICollectionType)resultType)
+								.getCollectionType()));
+					} else {
+						flattenedTypes.add(new SequenceType(queryEnvironment, resultType));
 					}
 				}
 				resultTypes.clear();
@@ -170,16 +171,57 @@ public class ServicesValidationResult {
 	public Set<IType> getResultingTypes() {
 		final Set<IType> result = new LinkedHashSet<IType>();
 
+		final Set<IType> aggregated = new LinkedHashSet<IType>();
 		if (!typesPerService.isEmpty()) {
 			for (Entry<IService, Map<List<IType>, Set<IType>>> entry : typesPerService.entrySet()) {
 				final IService service = entry.getKey();
 				final Map<List<IType>, Set<IType>> types = entry.getValue();
 				Set<IType> validatedTypes = service.validateAllType(validationServices, queryEnvironment,
 						types);
-				result.addAll(validatedTypes);
+				aggregated.addAll(validatedTypes);
 			}
 		} else {
-			result.addAll(serviceNotFoundMessages.values());
+			aggregated.addAll(serviceNotFoundMessages.values());
+		}
+
+		final StringBuilder builderSequenceNothing = new StringBuilder();
+		final StringBuilder builderSetNothing = new StringBuilder();
+		final StringBuilder builderNothing = new StringBuilder();
+		for (IType type : aggregated) {
+			if (type instanceof ICollectionType) {
+				if (((ICollectionType)type).getCollectionType() instanceof NothingType) {
+					final NothingType collectionType = (NothingType)((ICollectionType)type)
+							.getCollectionType();
+					if (type instanceof SequenceType) {
+						builderSequenceNothing.append(collectionType.getMessage());
+						builderSequenceNothing.append(LS);
+					} else if (type instanceof SetType) {
+						builderSetNothing.append(collectionType.getMessage());
+						builderSetNothing.append(LS);
+					} else {
+						throw new IllegalStateException("new collection type ?");
+					}
+				} else {
+					result.add(type);
+				}
+			} else if (type instanceof NothingType) {
+				builderNothing.append(((NothingType)type).getMessage());
+				builderNothing.append(LS);
+			} else {
+				result.add(type);
+			}
+		}
+
+		if (builderSequenceNothing.length() != 0) {
+			result.add(new SequenceType(queryEnvironment, new NothingType(builderSequenceNothing.substring(0,
+					builderSequenceNothing.length() - 1))));
+		}
+		if (builderSetNothing.length() != 0) {
+			result.add(new SetType(queryEnvironment, new NothingType(builderSetNothing.substring(0,
+					builderSetNothing.length() - 1))));
+		}
+		if (builderNothing.length() != 0) {
+			result.add(new NothingType(builderNothing.substring(0, builderNothing.length() - 1)));
 		}
 
 		return result;

@@ -38,6 +38,7 @@ import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Gra
 import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childFactory;
 import org.eclipse.acceleo.query.tests.nestedpackages.root.child.grand_child.Grand_childPackage;
 import org.eclipse.acceleo.query.tests.services.EObjectServices;
+import org.eclipse.acceleo.query.tests.services.ReceiverServices;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -48,6 +49,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import nooperationreflection.NoOperationReflection;
@@ -365,6 +367,20 @@ public class EvaluationTest {
 	}
 
 	@Test
+	public void enumLiteralNotExisting() {
+		Map<String, Object> variables = Maps.newHashMap();
+
+		final EvaluationResult result = engine.eval(builder.build("anydsl::Part::NotExisting"), variables);
+
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
+		assertEquals(1, result.getDiagnostic().getChildren().size());
+		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
+		String message = result.getDiagnostic().getChildren().get(0).getMessage();
+		assertEquals("Invalid enum literal.", message);
+		assertNull(result.getResult());
+	}
+
+	@Test
 	@SuppressWarnings("unchecked")
 	public void testSetInExtensionLiteral() {
 		Map<String, Object> varDefinitions = Maps.newHashMap();
@@ -626,4 +642,27 @@ public class EvaluationTest {
 
 		assertEquals("\u1F61C \u1F62D \u1F63D \u1F1EB\u1F1F7", result.getResult());
 	}
+
+	@Test
+	public void javaMethodReceiverServiceNoArg() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", new ReceiverServices());
+		ServiceUtils.registerServices(queryEnvironment, ServiceUtils.getReceiverServices(queryEnvironment,
+				ReceiverServices.class));
+		EvaluationResult result = engine.eval(builder.build("self.noArg()"), variables);
+
+		assertEquals("noArgResult", result.getResult());
+	}
+
+	@Test
+	public void javaMethodReceiverServiceArg() {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", new ReceiverServices());
+		ServiceUtils.registerServices(queryEnvironment, ServiceUtils.getReceiverServices(queryEnvironment,
+				ReceiverServices.class));
+		EvaluationResult result = engine.eval(builder.build("self.arg('arg')"), variables);
+
+		assertEquals("argResultarg", result.getResult());
+	}
+
 }

@@ -33,7 +33,7 @@ import org.eclipse.acceleo.query.parser.QueryLexer;
 import org.eclipse.acceleo.query.parser.QueryParser;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -48,7 +48,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 	/**
 	 * The environment containing all necessary information and used to execute query services.
 	 */
-	private IQueryEnvironment queryEnvironment;
+	private IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
 	 * Constructor. It takes an IQueryEnvironment as parameter.
@@ -56,7 +56,7 @@ public class QueryBuilderEngine implements IQueryBuilderEngine {
 	 * @param queryEnvironment
 	 *            The environment containing all necessary information and used to execute query services.
 	 */
-	public QueryBuilderEngine(IQueryEnvironment queryEnvironment) {
+	public QueryBuilderEngine(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
 	}
 

@@ -16,8 +16,8 @@ import java.util.Set;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryValidationEngine;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.validation.type.IType;
 
@@ -31,15 +31,15 @@ public class QueryValidationEngine implements IQueryValidationEngine {
 	/**
 	 * The environment containing all necessary information and used to execute query services.
 	 */
-	private IQueryEnvironment queryEnvironment;
+	private IReadOnlyQueryEnvironment queryEnvironment;
 
 	/**
-	 * Constructor. It takes an {@link IQueryEnvironment} as parameter.
+	 * Constructor. It takes an {@link IReadOnlyQueryEnvironment} as parameter.
 	 * 
 	 * @param queryEnvironment
 	 *            The environment containing all necessary information and used to execute query services.
 	 */
-	public QueryValidationEngine(IQueryEnvironment queryEnvironment) {
+	public QueryValidationEngine(IReadOnlyQueryEnvironment queryEnvironment) {
 		this.queryEnvironment = queryEnvironment;
 	}
 

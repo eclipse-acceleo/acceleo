@@ -35,7 +35,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="TypeLiteral" eSuperTypes="#//Literal">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//ObjectType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeSetLiteral" eSuperTypes="#//Literal">
+  <eClassifiers xsi:type="ecore:EClass" name="TypeSetLiteral" eSuperTypes="#//TypeLiteral">
     <eStructuralFeatures xsi:type="ecore:EReference" name="types" lowerBound="1" upperBound="-1"
         eType="#//TypeLiteral" containment="true"/>
   </eClassifiers>

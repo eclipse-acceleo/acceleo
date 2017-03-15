@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Error;
-import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -133,13 +132,12 @@ public class ValidationServices extends AbstractLanguageServices {
 		}
 		try {
 			final ServicesValidationResult result = new ServicesValidationResult(queryEnvironment, this);
-			final CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
+			final Set<List<IType>> product = Sets.cartesianProduct(argTypes);
 			final Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
 			boolean serviceFound = false;
-			boolean emptyCombination = !it.hasNext();
+			boolean emptyCombination = product.isEmpty();
 			List<String> notFoundSignatures = new ArrayList<String>();
-			while (it.hasNext()) {
-				List<IType> currentArgTypes = it.next();
+			for (List<IType> currentArgTypes : product) {
 				IService service = queryEnvironment.getLookupEngine().lookup(serviceName,
 						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
 				if (service != null) {

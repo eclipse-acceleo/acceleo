@@ -86,8 +86,8 @@ public class IntegerLiteralImpl extends LiteralImpl implements IntegerLiteral {
 		int oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.INTEGER_LITERAL__VALUE, oldValue,
-					value));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.INTEGER_LITERAL__VALUE,
+					oldValue, value));
 	}
 
 	/**

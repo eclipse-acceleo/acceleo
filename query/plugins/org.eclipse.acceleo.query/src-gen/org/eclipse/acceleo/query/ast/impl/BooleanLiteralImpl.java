@@ -86,8 +86,8 @@ public class BooleanLiteralImpl extends LiteralImpl implements BooleanLiteral {
 		boolean oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BOOLEAN_LITERAL__VALUE, oldValue,
-					value));
+			eNotify(new ENotificationImpl(this, Notification.SET, AstPackage.BOOLEAN_LITERAL__VALUE,
+					oldValue, value));
 	}
 
 	/**

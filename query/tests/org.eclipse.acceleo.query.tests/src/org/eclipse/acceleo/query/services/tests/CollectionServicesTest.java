@@ -4780,6 +4780,23 @@ public class CollectionServicesTest {
 	}
 
 	@Test
+	public void testIntersectionSetIntegerDouble() {
+		Set<Object> set1 = Sets.newLinkedHashSet();
+		set1.add(Integer.valueOf(1));
+		set1.add(Integer.valueOf(2));
+		set1.add(Integer.valueOf(3));
+		set1.add(Integer.valueOf(4));
+
+		Set<Object> set2 = Sets.newLinkedHashSet();
+		set2.add(Double.valueOf(3));
+		set2.add(Double.valueOf(5));
+		set2.add(Double.valueOf(1));
+
+		Set<Object> result = collectionServices.intersection(set1, set2);
+		assertEquals(0, result.size());
+	}
+
+	@Test
 	public void testIntersectionSetDifferentClasses() {
 		Set<Object> set1 = Sets.newLinkedHashSet();
 		set1.add("aString");
@@ -4915,6 +4932,23 @@ public class CollectionServicesTest {
 		assertEquals(1, it.next());
 		assertEquals(3, it.next());
 		assertFalse(it.hasNext());
+	}
+
+	@Test
+	public void testIntersectionListIntegerDouble() {
+		List<Object> list1 = Lists.newArrayList();
+		list1.add(Integer.valueOf(1));
+		list1.add(Integer.valueOf(2));
+		list1.add(Integer.valueOf(3));
+		list1.add(Integer.valueOf(4));
+
+		List<Object> list2 = Lists.newArrayList();
+		list2.add(Double.valueOf(3));
+		list2.add(Double.valueOf(5));
+		list2.add(Double.valueOf(1));
+
+		List<Object> result = collectionServices.intersection(list1, list2);
+		assertEquals(0, result.size());
 	}
 
 	@Test

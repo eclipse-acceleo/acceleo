@@ -35,8 +35,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * Abstract implementation of an {@link org.eclipse.acceleo.query.runtime.IService IService} for
- * {@link Method}.
+ * Implementation of an {@link org.eclipse.acceleo.query.runtime.IService IService} for {@link Method}.
  * 
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */

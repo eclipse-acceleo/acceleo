@@ -435,13 +435,21 @@ public interface AstPackage extends EPackage {
 	int TYPE_SET_LITERAL = 10;
 
 	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_SET_LITERAL__VALUE = TYPE_LITERAL__VALUE;
+
+	/**
 	 * The feature id for the '<em><b>Types</b></em>' containment reference list. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_SET_LITERAL__TYPES = LITERAL_FEATURE_COUNT + 0;
+	int TYPE_SET_LITERAL__TYPES = TYPE_LITERAL_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Type Set Literal</em>' class. <!-- begin-user-doc -->
@@ -450,7 +458,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_SET_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
+	int TYPE_SET_LITERAL_FEATURE_COUNT = TYPE_LITERAL_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Type Set Literal</em>' class. <!-- begin-user-doc --> <!--
@@ -459,7 +467,7 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TYPE_SET_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
+	int TYPE_SET_LITERAL_OPERATION_COUNT = TYPE_LITERAL_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.CollectionTypeLiteralImpl
@@ -872,8 +880,8 @@ public interface AstPackage extends EPackage {
 	int ERROR_ENUM_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl <em>Error Call</em>
-	 * }' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
+	 * <em>Error Call</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.acceleo.query.ast.impl.ErrorCallImpl
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCall()
@@ -1561,8 +1569,9 @@ public interface AstPackage extends EPackage {
 	EClass getIntegerLiteral();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.query.ast.IntegerLiteral#getValue
-	 * <em>Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link org.eclipse.acceleo.query.ast.IntegerLiteral#getValue <em>Value</em>}'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Value</em>'.
 	 * @see org.eclipse.acceleo.query.ast.IntegerLiteral#getValue()
@@ -1954,8 +1963,8 @@ public interface AstPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis <em>Missing End Parenthesis</em>
-	 * }'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis
+	 * <em>Missing End Parenthesis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Missing End Parenthesis</em>'.
 	 * @see org.eclipse.acceleo.query.ast.ErrorCall#isMissingEndParenthesis()
@@ -2072,8 +2081,9 @@ public interface AstPackage extends EPackage {
 	EReference getLet_Bindings();
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.acceleo.query.ast.Let#getBody
-	 * <em>Body</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the containment reference '
+	 * {@link org.eclipse.acceleo.query.ast.Let#getBody <em>Body</em>}'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference '<em>Body</em>'.
 	 * @see org.eclipse.acceleo.query.ast.Let#getBody()

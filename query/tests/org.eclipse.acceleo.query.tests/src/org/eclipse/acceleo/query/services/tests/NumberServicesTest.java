@@ -19,12 +19,11 @@ import org.eclipse.acceleo.query.services.NumberServices;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class NumberServicesTest extends AbstractServicesTest {
 
 	private NumberServices numServices;
-
-	NumberServices services = new NumberServices();
 
 	@Override
 	public void before() throws Exception {
@@ -42,11 +41,11 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test
 	public void testUnaryMinInteger() {
-		Integer int1 = new Integer(1);
-		Integer int2 = new Integer(5);
+		Integer integer1 = new Integer(1);
+		Integer integer2 = new Integer(5);
 
-		assertEquals("-1", numServices.unaryMin(int1).toString());
-		assertEquals("-5", numServices.unaryMin(int2).toString());
+		assertEquals("-1", numServices.unaryMin(integer1).toString());
+		assertEquals("-5", numServices.unaryMin(integer2).toString());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -70,27 +69,27 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddIntegerIntegerNull() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.add(int0, (Integer)null);
+		numServices.add(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddIntegerNullInteger() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.add((Integer)null, int0);
+		numServices.add((Integer)null, integer0);
 	}
 
 	@Test
 	public void testAddInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer int0 = new Integer(0);
-		Integer int1 = new Integer(1);
+		Integer integer0 = new Integer(0);
+		Integer integer1 = new Integer(1);
 
-		assertEquals("2", numServices.add(int1, int1).toString());
-		assertEquals("1", numServices.add(int1, int0).toString());
-		assertEquals("1", numServices.add(int0, int1).toString());
+		assertEquals("2", numServices.add(integer1, integer1).toString());
+		assertEquals("1", numServices.add(integer1, integer0).toString());
+		assertEquals("1", numServices.add(integer0, integer1).toString());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -100,27 +99,27 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubIntegerIntegerNull() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.sub(int0, (Integer)null);
+		numServices.sub(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubIntegerNullInteger() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.sub((Integer)null, int0);
+		numServices.sub((Integer)null, integer0);
 	}
 
 	@Test
 	public void testSubInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer int0 = new Integer(0);
-		Integer int1 = new Integer(1);
-		Integer int3 = new Integer(3);
+		Integer integer0 = new Integer(0);
+		Integer integer1 = new Integer(1);
+		Integer integer3 = new Integer(3);
 
-		assertEquals("-1", numServices.sub(int0, int1).toString());
-		assertEquals("2", numServices.sub(int3, int1).toString());
+		assertEquals("-1", numServices.sub(integer0, integer1).toString());
+		assertEquals("2", numServices.sub(integer3, integer1).toString());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -130,27 +129,27 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testDivIntegerIntegerNull() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.div(int0, (Integer)null);
+		numServices.div(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDivIntegerNullInteger() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.div((Integer)null, int0);
+		numServices.div((Integer)null, integer0);
 	}
 
 	@Test
 	public void testDivInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer int1 = new Integer(1);
-		Integer int2 = new Integer(2);
-		Integer int4 = new Integer(4);
+		Integer integer1 = new Integer(1);
+		Integer integer2 = new Integer(2);
+		Integer integer4 = new Integer(4);
 
-		assertEquals("2", numServices.divOp(int4, int2).toString());
-		assertEquals("0", numServices.divOp(int1, int2).toString());
+		assertEquals("2", numServices.divOp(integer4, integer2).toString());
+		assertEquals("0", numServices.divOp(integer1, integer2).toString());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -160,30 +159,30 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultIntegerIntegerNull() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.mult(int0, (Integer)null);
+		numServices.mult(integer0, (Integer)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultIntegerNullInteger() {
-		Integer int0 = new Integer(0);
+		Integer integer0 = new Integer(0);
 
-		numServices.mult((Integer)null, int0);
+		numServices.mult((Integer)null, integer0);
 	}
 
 	@Test
 	public void testMultInteger() throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException {
-		Integer int0 = new Integer(0);
-		Integer int1 = new Integer(1);
-		Integer int2 = new Integer(2);
-		Integer int4 = new Integer(4);
+		Integer integer0 = new Integer(0);
+		Integer integer1 = new Integer(1);
+		Integer integer2 = new Integer(2);
+		Integer integer4 = new Integer(4);
 
-		assertEquals("8", numServices.mult(int4, int2).toString());
-		assertEquals("2", numServices.mult(int1, int2).toString());
-		assertEquals("0", numServices.mult(int0, int2).toString());
-		assertEquals("0", numServices.mult(int2, int0).toString());
+		assertEquals("8", numServices.mult(integer4, integer2).toString());
+		assertEquals("2", numServices.mult(integer1, integer2).toString());
+		assertEquals("0", numServices.mult(integer0, integer2).toString());
+		assertEquals("0", numServices.mult(integer2, integer0).toString());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -193,16 +192,16 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddDoubleDoubleNull() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.add(int0, (Double)null);
+		numServices.add(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAddDoubleNullDouble() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.add((Double)null, int0);
+		numServices.add((Double)null, integer0);
 	}
 
 	@Test
@@ -223,16 +222,16 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubDoubleDoubleNull() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.sub(int0, (Double)null);
+		numServices.sub(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testSubDoubleNullDouble() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.sub((Double)null, int0);
+		numServices.sub((Double)null, integer0);
 	}
 
 	@Test
@@ -253,16 +252,16 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testDivDoubleDoubleNull() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.div(int0, (Double)null);
+		numServices.div(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testDivDoubleNullDouble() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.div((Double)null, int0);
+		numServices.div((Double)null, integer0);
 	}
 
 	@Test
@@ -283,16 +282,16 @@ public class NumberServicesTest extends AbstractServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultDoubleDoubleNull() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.mult(int0, (Double)null);
+		numServices.mult(integer0, (Double)null);
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testMultDoubleNullDouble() {
-		Double int0 = new Double(0);
+		Double integer0 = new Double(0);
 
-		numServices.mult((Double)null, int0);
+		numServices.mult((Double)null, integer0);
 	}
 
 	@Test
@@ -579,6 +578,585 @@ public class NumberServicesTest extends AbstractServicesTest {
 	public void modInteger() {
 		Integer result = numServices.mod(Integer.valueOf(3 * 7 + 1), Integer.valueOf(3));
 		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testUnaryMinLongNull() {
+		numServices.unaryMin((Long)null);
+	}
+
+	@Test
+	public void testUnaryMinLong() {
+		Long long1 = new Long(1);
+		Long long2 = new Long(5);
+
+		assertEquals("-1", numServices.unaryMin(long1).toString());
+		assertEquals("-5", numServices.unaryMin(long2).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testUnaryMinFloatNull() {
+		numServices.unaryMin((Float)null);
+	}
+
+	@Test
+	public void testUnaryMinFloat() {
+		Float float1 = new Float(1);
+		Float float2 = new Float(5);
+
+		assertEquals("-1.0", numServices.unaryMin(float1).toString());
+		assertEquals("-5.0", numServices.unaryMin(float2).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAddLongNullNull() {
+		numServices.add((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAddLongLongNull() {
+		Long long0 = new Long(0);
+
+		numServices.add(long0, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAddLongNullLong() {
+		Long long0 = new Long(0);
+
+		numServices.add((Long)null, long0);
+	}
+
+	@Test
+	public void testAddLong() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Long long0 = new Long(0);
+		Long long1 = new Long(1);
+
+		assertEquals("2", numServices.add(long1, long1).toString());
+		assertEquals("1", numServices.add(long1, long0).toString());
+		assertEquals("1", numServices.add(long0, long1).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSubLongNullNull() {
+		numServices.sub((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSubLongLongNull() {
+		Long long0 = new Long(0);
+
+		numServices.sub(long0, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSubLongNullLong() {
+		Long long0 = new Long(0);
+
+		numServices.sub((Long)null, long0);
+	}
+
+	@Test
+	public void testSubLong() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Long long0 = new Long(0);
+		Long long1 = new Long(1);
+		Long long3 = new Long(3);
+
+		assertEquals("-1", numServices.sub(long0, long1).toString());
+		assertEquals("2", numServices.sub(long3, long1).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testDivLongNullNull() {
+		numServices.div((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testDivLongLongNull() {
+		Long long0 = new Long(0);
+
+		numServices.div(long0, (Long)null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testDivLongNullLong() {
+		Long long0 = new Long(0);
+
+		numServices.div((Long)null, long0);
+	}
+
+	@Test
+	public void testDivLong() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Long long1 = new Long(1);
+		Long long2 = new Long(2);
+		Long long4 = new Long(4);
+
+		assertEquals("2", numServices.divOp(long4, long2).toString());
+		assertEquals("0", numServices.divOp(long1, long2).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMultLongNullNull() {
+		numServices.mult((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMultLongLongNull() {
+		Long long0 = new Long(0);
+
+		numServices.mult(long0, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMultLongNullLong() {
+		Long long0 = new Long(0);
+
+		numServices.mult((Long)null, long0);
+	}
+
+	@Test
+	public void testMultLong() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Long long0 = new Long(0);
+		Long long1 = new Long(1);
+		Long long2 = new Long(2);
+		Long long4 = new Long(4);
+
+		assertEquals("8", numServices.mult(long4, long2).toString());
+		assertEquals("2", numServices.mult(long1, long2).toString());
+		assertEquals("0", numServices.mult(long0, long2).toString());
+		assertEquals("0", numServices.mult(long2, long0).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAddFloatNullNull() {
+		numServices.add((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAddFloatFloatNull() {
+		Float long0 = new Float(0);
+
+		numServices.add(long0, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testAddFloatNullFloat() {
+		Float long0 = new Float(0);
+
+		numServices.add((Float)null, long0);
+	}
+
+	@Test
+	public void testAddFloat() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Float float0 = new Float(0);
+		Float float1 = new Float(1);
+
+		assertEquals("2.0", numServices.add(float1, float1).toString());
+		assertEquals("1.0", numServices.add(float1, float0).toString());
+		assertEquals("1.0", numServices.add(float0, float1).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSubFloatNullNull() {
+		numServices.sub((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSubFloatFloatNull() {
+		Float long0 = new Float(0);
+
+		numServices.sub(long0, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testSubFloatNullFloat() {
+		Float long0 = new Float(0);
+
+		numServices.sub((Float)null, long0);
+	}
+
+	@Test
+	public void testSubFloat() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Float float0 = new Float(0);
+		Float float1 = new Float(1);
+		Float float3 = new Float(3);
+
+		assertEquals("-1.0", numServices.sub(float0, float1).toString());
+		assertEquals("2.0", numServices.sub(float3, float1).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testDivFloatNullNull() {
+		numServices.div((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testDivFloatFloatNull() {
+		Float long0 = new Float(0);
+
+		numServices.div(long0, (Float)null);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testDivFloatNullFloat() {
+		Float long0 = new Float(0);
+
+		numServices.div((Float)null, long0);
+	}
+
+	@Test
+	public void testDivFloat() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Float float1 = new Float(1);
+		Float float2 = new Float(2);
+		Float float4 = new Float(4);
+
+		assertEquals("2.0", numServices.divOp(float4, float2).toString());
+		assertEquals("0.5", numServices.divOp(float1, float2).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMultFloatNullNull() {
+		numServices.mult((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMultFloatFloatNull() {
+		Float long0 = new Float(0);
+
+		numServices.mult(long0, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void testMultFloatNullFloat() {
+		Float long0 = new Float(0);
+
+		numServices.mult((Float)null, long0);
+	}
+
+	@Test
+	public void testMultFloat() throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
+		Float float0 = new Float(0);
+		Float float1 = new Float(1);
+		Float float2 = new Float(2);
+		Float float4 = new Float(4);
+
+		assertEquals("8.0", numServices.mult(float4, float2).toString());
+		assertEquals("2.0", numServices.mult(float1, float2).toString());
+		assertEquals("0.0", numServices.mult(float0, float2).toString());
+		assertEquals("0.0", numServices.mult(float2, float0).toString());
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void absFloatNull() {
+		numServices.abs((Float)null);
+	}
+
+	@Test
+	public void absFloatPositive() {
+		Float result = numServices.abs(Float.valueOf(3.14f));
+		assertEquals(Float.valueOf(3.14f), result);
+	}
+
+	@Test
+	public void absFloatNegative() {
+		Float result = numServices.abs(Float.valueOf(-3.14f));
+		assertEquals(Float.valueOf(3.14f), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void absLongNull() {
+		numServices.abs((Long)null);
+	}
+
+	@Test
+	public void absLongPositive() {
+		Long result = numServices.abs(Long.valueOf(3));
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test
+	public void absLongNegative() {
+		Long result = numServices.abs(Long.valueOf(-3));
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void floorFloatNull() {
+		numServices.floor((Float)null);
+	}
+
+	@Test
+	public void floorFloat() {
+		Integer result = numServices.floor(Float.valueOf(3.14f));
+		assertEquals(Integer.valueOf(3), result);
+	}
+
+	@Test
+	public void floorLongNull() {
+		Long result = numServices.floor((Long)null);
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void floorLong() {
+		Long result = numServices.floor(Long.valueOf(3));
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxFloatNullNull() {
+		numServices.max((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxFloatFloatNull() {
+		numServices.max(Float.valueOf(3.14f), (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxFloatNullFloat() {
+		numServices.max((Float)null, Float.valueOf(3.14f));
+	}
+
+	@Test
+	public void maxFloat() {
+		Float result = numServices.max(Float.valueOf(6.28f), Float.valueOf(3.14f));
+		assertEquals(Float.valueOf(6.28f), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxLongNullNull() {
+		numServices.max((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxLongLongNull() {
+		numServices.max(Long.valueOf(3), (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void maxLongNullLong() {
+		numServices.max((Long)null, Long.valueOf(3));
+	}
+
+	@Test
+	public void maxLong() {
+		Long result = numServices.max(Long.valueOf(6), Long.valueOf(3));
+		assertEquals(Long.valueOf(6), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minFloatNullNull() {
+		numServices.min((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minFloatFloatNull() {
+		numServices.min(Float.valueOf(3.14f), (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minFloatNullFloat() {
+		numServices.min((Float)null, Float.valueOf(3.14f));
+	}
+
+	@Test
+	public void minFloat() {
+		Float result = numServices.min(Float.valueOf(6.28f), Float.valueOf(3.14f));
+		assertEquals(Float.valueOf(3.14f), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minLongNullNull() {
+		numServices.min((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minLongLongNull() {
+		numServices.min(Long.valueOf(3), (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void minLongNullLong() {
+		numServices.min((Long)null, Long.valueOf(3));
+	}
+
+	@Test
+	public void minLong() {
+		Long result = numServices.min(Long.valueOf(6), Long.valueOf(3));
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void roundFloatNull() {
+		numServices.round((Float)null);
+	}
+
+	@Test
+	public void roundFloat() {
+		Integer result = numServices.round(Float.valueOf(3.64f));
+		assertEquals(Integer.valueOf(4), result);
+	}
+
+	@Test
+	public void roundLongNull() {
+		Long result = numServices.round((Long)null);
+		assertEquals(null, result);
+	}
+
+	@Test
+	public void roundLong() {
+		Long result = numServices.round(Long.valueOf(3));
+		assertEquals(Long.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divFloatNullNull() {
+		numServices.div((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divFloatFloatNull() {
+		numServices.div(Float.valueOf(3.14f), (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divFloatNullFloat() {
+		numServices.div((Float)null, Float.valueOf(3.14f));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void divFloatByZero() {
+		Integer result = numServices.div(Float.valueOf(3.14f), Float.valueOf(0));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void divFloat() {
+		Integer result = numServices.div(Float.valueOf(3.14f * 7 + 1), Float.valueOf(3.14f));
+		assertEquals(Integer.valueOf(7), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divLongNullNull() {
+		numServices.div((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divLongLongNull() {
+		numServices.div(Long.valueOf(3), (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void divLongNullLong() {
+		numServices.div((Long)null, Long.valueOf(3));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void divLongByZero() {
+		Long result = numServices.div(Long.valueOf(3), Long.valueOf(0));
+		assertEquals(Long.valueOf(0), result);
+	}
+
+	@Test
+	public void divLong() {
+		Long result = numServices.div(Long.valueOf(3 * 7 + 1), Long.valueOf(3));
+		assertEquals(Long.valueOf(7), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modFloatNullNull() {
+		numServices.mod((Float)null, (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modFloatFloatNull() {
+		numServices.mod(Float.valueOf(3.14f), (Float)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modFloatNullFloat() {
+		numServices.mod((Float)null, Float.valueOf(3.14f));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void modFloatByZero() {
+		Integer result = numServices.mod(Float.valueOf(3.14f), Float.valueOf(0));
+		assertEquals(Integer.valueOf(0), result);
+	}
+
+	@Test
+	public void modFloat() {
+		Integer result = numServices.mod(Float.valueOf(3.13f * 7 + 1), Float.valueOf(3.13f));
+		assertEquals(Integer.valueOf(1), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modLongNullNull() {
+		numServices.mod((Long)null, (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modLongLongNull() {
+		numServices.mod(Long.valueOf(3), (Long)null);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void modLongNullLong() {
+		numServices.mod((Long)null, Long.valueOf(3));
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void modLongByZero() {
+		Long result = numServices.mod(Long.valueOf(3), Long.valueOf(0));
+		assertEquals(Long.valueOf(0), result);
+	}
+
+	@Test
+	public void modLong() {
+		Long result = numServices.mod(Long.valueOf(3 * 7 + 1), Long.valueOf(3));
+		assertEquals(Long.valueOf(1), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void toDoubleIntegerNull() {
+		numServices.toDouble((Integer)null);
+	}
+
+	@Test
+	public void toDoubleInteger() {
+		Double result = numServices.toDouble(Integer.valueOf(3));
+		assertEquals(Double.valueOf(3), result);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void toDoubleFloatNull() {
+		numServices.toDouble((Float)null);
+	}
+
+	@Test
+	public void toDoubleFloat() {
+		Double result = numServices.toDouble(Float.valueOf(3.14f));
+		assertTrue((result.doubleValue() - 3.14) < 0.001);
+	}
+
+	@Test(expected = java.lang.NullPointerException.class)
+	public void toLongNull() {
+		numServices.toLong((Integer)null);
+	}
+
+	@Test
+	public void toLong() {
+		Long result = numServices.toLong(Integer.valueOf(3));
+		assertEquals(Long.valueOf(3), result);
 	}
 
 }

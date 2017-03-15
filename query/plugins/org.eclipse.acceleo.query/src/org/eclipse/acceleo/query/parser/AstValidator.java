@@ -28,7 +28,6 @@ import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.CollectionTypeLiteral;
 import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
-import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
@@ -779,20 +778,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
 				.peek());
 		for (VariableDeclaration variableDeclaration : object.getParameters()) {
-			final Set<IType> types;
-			if (variableDeclaration.getType() == null || variableDeclaration.getType() instanceof Error) {
-				final Set<IType> variableTypes = doSwitch(variableDeclaration);
-				types = new LinkedHashSet<IType>();
-				for (IType type : variableTypes) {
-					if (type instanceof ICollectionType) {
-						types.add(((ICollectionType)type).getCollectionType());
-					} else {
-						types.add(type);
-					}
-				}
-			} else {
-				types = doSwitch(variableDeclaration.getType());
-			}
+			final Set<IType> types = doSwitch(variableDeclaration);
 			if (newVariableTypes.containsKey(variableDeclaration.getName())) {
 				lambdaExpressionTypes.add(services.nothing(VARIABLE_OVERRIDES_AN_EXISTING_VALUE,
 						variableDeclaration.getName()));
@@ -1032,8 +1018,56 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseVariableDeclaration(org.eclipse.acceleo.query.ast.VariableDeclaration)
 	 */
 	@Override
-	public Set<IType> caseVariableDeclaration(VariableDeclaration object) {
-		return doSwitch(object.getExpression());
+	public Set<IType> caseVariableDeclaration(VariableDeclaration variableDeclaration) {
+		final Set<IType> result = new LinkedHashSet<IType>();
+
+		final Set<IType> expressionTypes = validationResult.getPossibleTypes(variableDeclaration
+				.getExpression());
+		int nbNullType = 0;
+		for (IType type : expressionTypes) {
+			if (type instanceof ICollectionType) {
+				result.add(((ICollectionType)type).getCollectionType());
+			} else {
+				if (type.getType() == null) {
+					nbNullType++;
+				}
+				result.add(type);
+			}
+		}
+
+		final boolean allNullType = result.size() == nbNullType;
+		if (variableDeclaration.getType() != null) {
+			final Set<IType> declaredTypes = getDeclarationTypes(services.getQueryEnvironment(),
+					doSwitch(variableDeclaration.getType()));
+			if (!(variableDeclaration.getType() instanceof ErrorTypeLiteral)) {
+				final List<IType> incompatibleTypes = new ArrayList<IType>();
+				for (IType expressionType : result) {
+					boolean compatible = false;
+					for (IType declaredType : declaredTypes) {
+						if (declaredType.isAssignableFrom(expressionType)) {
+							compatible = true;
+							break;
+						}
+					}
+					if (!compatible) {
+						incompatibleTypes.add(expressionType);
+					}
+				}
+
+				if (!incompatibleTypes.isEmpty()) {
+					for (IType incompatibleType : incompatibleTypes) {
+						result.add(services.nothing("%s is incompatible with declaration %s.",
+								incompatibleType, declaredTypes));
+					}
+				}
+				if (allNullType) {
+					result.clear();
+					result.addAll(declaredTypes);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/**
@@ -1150,8 +1184,64 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseBinding(org.eclipse.acceleo.query.ast.Binding)
 	 */
 	@Override
-	public Set<IType> caseBinding(Binding object) {
-		return doSwitch(object.getValue());
+	public Set<IType> caseBinding(Binding binding) {
+		final Set<IType> expressionTypes = doSwitch(binding.getValue());
+
+		if (binding.getType() != null) {
+			final Set<IType> declaredTypes = getDeclarationTypes(services.getQueryEnvironment(),
+					doSwitch(binding.getType()));
+			if (!(binding.getType() instanceof ErrorTypeLiteral)) {
+				final List<IType> incompatibleTypes = new ArrayList<IType>();
+				for (IType expressionType : expressionTypes) {
+					boolean compatible = false;
+					for (IType declaredType : declaredTypes) {
+						if (declaredType.isAssignableFrom(expressionType)) {
+							compatible = true;
+							break;
+						}
+					}
+					if (!compatible) {
+						incompatibleTypes.add(expressionType);
+					}
+				}
+
+				if (!incompatibleTypes.isEmpty()) {
+					for (IType incompatibleType : incompatibleTypes) {
+						expressionTypes.add(services.nothing("%s is incompatible with declaration %s.",
+								incompatibleType, declaredTypes));
+					}
+				}
+			}
+		}
+
+		return expressionTypes;
+	}
+
+	/**
+	 * Gets the {@link Set} declaration types from the given {@link Set} of {@link IType}.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param types
+	 *            the {@link Set} of {@link IType}
+	 * @return the {@link Set} declaration types from the given {@link Set} of {@link IType}
+	 */
+	public Set<IType> getDeclarationTypes(IReadOnlyQueryEnvironment queryEnvironment, final Set<IType> types) {
+		final Set<IType> res = new LinkedHashSet<IType>();
+
+		for (IType iType : types) {
+			if (iType instanceof EClassifierLiteralType) {
+				res.add(new EClassifierType(queryEnvironment, ((EClassifierLiteralType)iType).getType()));
+			} else if (iType instanceof EClassifierSetLiteralType) {
+				for (EClassifier eClassifier : ((EClassifierSetLiteralType)iType).getEClassifiers()) {
+					res.add(new EClassifierType(queryEnvironment, eClassifier));
+				}
+			} else {
+				res.add(iType);
+			}
+		}
+
+		return res;
 	}
 
 	/**

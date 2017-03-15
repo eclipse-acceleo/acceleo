@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.eclipse.acceleo.query.ide.ui.tests.category"
+            name="AQL Test View">
+      </category>
+      <view
+            allowMultiple="false"
+            category="org.eclipse.acceleo.query.ide.ui.tests.category"
+            class="org.eclipse.acceleo.query.ide.ui.test.view.AQLTestView"
+            id="org.eclipse.acceleo.query.ide.ui.tests.view"
+            name="AQL Test View"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>

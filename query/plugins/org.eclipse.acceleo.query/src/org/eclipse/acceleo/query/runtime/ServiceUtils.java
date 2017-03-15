@@ -18,6 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.runtime.impl.EOperationService;
+import org.eclipse.acceleo.query.runtime.impl.JavaMethodReceiverService;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -71,6 +72,28 @@ public final class ServiceUtils {
 			// we will go without instance and register only static methods
 		}
 		result.addAll(getServicesFromInstance(queryEnvironment, cls, instance));
+
+		return result;
+	}
+
+	/**
+	 * Gets the {@link Set} of {@link IService} for the given {@link Class} with receiver as first parameter.
+	 * 
+	 * @param queryEnvironment
+	 *            the {@link IReadOnlyQueryEnvironment}
+	 * @param cls
+	 *            the {@link Class}
+	 * @return the {@link Set} of {@link IService} for the given {@link Class} with receiver as first
+	 *         parameter
+	 */
+	public static Set<IService> getReceiverServices(IReadOnlyQueryEnvironment queryEnvironment, Class<?> cls) {
+		final Set<IService> result = new LinkedHashSet<IService>();
+
+		for (Method method : cls.getMethods()) {
+			if (isReveiverServiceMethod(method)) {
+				result.add(new JavaMethodReceiverService(method));
+			}
+		}
 
 		return result;
 	}
@@ -147,6 +170,22 @@ public final class ServiceUtils {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Tells if a given {@link Method} is considered as a {@link IService} with receiver as first parameter.
+	 * {@link Object} methods are not considered.
+	 * 
+	 * @param method
+	 *            the {@link Method} to check
+	 * @return <code>true</code> if a given {@link Method} is considered as a {@link IService} with receiver
+	 *         as first parameter, <code>false</code> otherwise
+	 */
+	public static boolean isReveiverServiceMethod(Method method) {
+		// We do not register java.lang.Object method as
+		// having an expression calling the 'wait' or the notify service
+		// could yield problems that are difficult to track down.
+		return method.getDeclaringClass() != Object.class;
 	}
 
 	/**

@@ -2877,4 +2877,27 @@ public class BuildTest {
 		assertExpression(build, ErrorExpression.class, 12, 12, lambda.getExpression());
 	}
 
+	@Test
+	public void doubleDot() {
+		IQueryBuilderEngine.AstResult build = engine.build("fke.primaryKeyColumn()..name");
+		Expression ast = build.getAst();
+
+		assertExpression(build, Call.class, 0, 28, ast);
+		assertEquals("aqlFeatureAccess", ((Call)ast).getServiceName());
+		assertEquals(CallType.CALLORAPPLY, ((Call)ast).getType());
+		assertEquals(2, ((Call)ast).getArguments().size());
+		assertExpression(build, ErrorCall.class, 0, 24, ((Call)ast).getArguments().get(0));
+		final ErrorCall arg0 = (ErrorCall)((Call)ast).getArguments().get(0);
+		assertEquals(false, arg0.isMissingEndParenthesis());
+		assertEquals("aqlFeatureAccess", arg0.getServiceName());
+		assertEquals(1, arg0.getArguments().size());
+		assertExpression(build, Call.class, 0, 22, arg0.getArguments().get(0));
+		assertEquals("primaryKeyColumn", ((Call)arg0.getArguments().get(0)).getServiceName());
+		assertEquals(1, ((Call)arg0.getArguments().get(0)).getArguments().size());
+		assertExpression(build, VarRef.class, 0, 3, ((Call)arg0.getArguments().get(0)).getArguments().get(0));
+		assertExpression(build, StringLiteral.class, 24, 28, ((Call)ast).getArguments().get(1));
+		final StringLiteral arg1 = (StringLiteral)((Call)ast).getArguments().get(1);
+		assertEquals("name", arg1.getValue());
+	}
+
 }

@@ -113,7 +113,7 @@ import org.eclipse.acceleo.query.parser.QueryParser.VariableDefinitionContext;
 import org.eclipse.acceleo.query.parser.QueryParser.XorContext;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
-import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EClassifier;
@@ -803,9 +803,9 @@ public class AstBuilderListener extends QueryBaseListener {
 	private final AstBuilder builder = new AstBuilder();
 
 	/**
-	 * {@link org.eclipse.emf.ecore.EPackage} instances that are available during evaluation.
+	 * The {@link IReadOnlyQueryEnvironment}.
 	 */
-	private final IQueryEnvironment environment;
+	private final IReadOnlyQueryEnvironment environment;
 
 	/**
 	 * Creates a new {@link AstBuilderListener}.
@@ -813,7 +813,7 @@ public class AstBuilderListener extends QueryBaseListener {
 	 * @param environment
 	 *            the package provider
 	 */
-	public AstBuilderListener(IQueryEnvironment environment) {
+	public AstBuilderListener(IReadOnlyQueryEnvironment environment) {
 		this.environment = environment;
 	}
 

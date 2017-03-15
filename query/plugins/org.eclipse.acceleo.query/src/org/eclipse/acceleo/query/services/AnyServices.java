@@ -18,6 +18,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
@@ -35,7 +37,11 @@ import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.validation.type.ClassType;
 import org.eclipse.acceleo.query.validation.type.EClassifierType;
+import org.eclipse.acceleo.query.validation.type.ICollectionType;
 import org.eclipse.acceleo.query.validation.type.IType;
+import org.eclipse.acceleo.query.validation.type.NothingType;
+import org.eclipse.acceleo.query.validation.type.SequenceType;
+import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -399,6 +405,7 @@ public class AnyServices extends AbstractServiceProvider {
 	}
 
 	private static class OCLAsTypeService extends FilterService {
+
 		public OCLAsTypeService(Method publicMethod, Object serviceInstance) {
 			super(publicMethod, serviceInstance);
 		}
@@ -422,17 +429,59 @@ public class AnyServices extends AbstractServiceProvider {
 					result.add(services.nothing("Unknown type %s", "null"));
 				}
 			} else {
-				if (receiverType instanceof EClassifierType && !environment.getEPackageProvider()
-						.isRegistered(((EClassifierType)receiverType).getType())) {
+				if (receiverType instanceof EClassifierType
+						&& !environment.getEPackageProvider().isRegistered(
+								((EClassifierType)receiverType).getType())) {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							receiverType));
-				} else if (filterType instanceof EClassifierType && !environment.getEPackageProvider()
-						.isRegistered(((EClassifierType)filterType).getType())) {
+				} else if (filterType instanceof EClassifierType
+						&& !environment.getEPackageProvider().isRegistered(
+								((EClassifierType)filterType).getType())) {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							filterType));
 				} else {
-					result.add(services.nothing("%s is not compatible with type %s", receiverType,
-							filterType));
+					result.add(services
+							.nothing("%s is not compatible with type %s", receiverType, filterType));
+					result.addAll(services.intersection(receiverType, filterType));
+				}
+			}
+
+			return result;
+		}
+
+		@Override
+		public Set<IType> validateAllType(ValidationServices services,
+				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
+			final Set<IType> result = new LinkedHashSet<IType>();
+			final StringBuilder builder = new StringBuilder();
+
+			for (Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
+				for (IType possibleType : entry.getValue()) {
+					final IType rawType;
+					if (possibleType instanceof ICollectionType) {
+						rawType = ((ICollectionType)possibleType).getCollectionType();
+					} else {
+						rawType = possibleType;
+					}
+					if (rawType instanceof NothingType) {
+						builder.append("\n");
+						builder.append(((NothingType)rawType).getMessage());
+					} else {
+						result.add(possibleType);
+					}
+				}
+			}
+
+			if (result.isEmpty()) {
+				final IType resultType = allTypes.entrySet().iterator().next().getValue().iterator().next();
+				final NothingType nothing = services.nothing("Nothing will be left after calling %s:"
+						+ builder.toString(), getName());
+				if (resultType instanceof SequenceType) {
+					result.add(new SequenceType(queryEnvironment, nothing));
+				} else if (resultType instanceof SetType) {
+					result.add(new SetType(queryEnvironment, nothing));
+				} else {
+					result.add(nothing);
 				}
 			}
 
