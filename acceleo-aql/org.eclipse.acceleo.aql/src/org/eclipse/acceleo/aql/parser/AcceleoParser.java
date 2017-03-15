@@ -629,7 +629,7 @@ public class AcceleoParser {
 	 * 
 	 * @param comments
 	 *            the {@link List} of {@link Comment}
-	 * @return the created {@link Module} if any recognized, <code>null</code> otherwise
+	 * @return the created {@link Module}
 	 */
 	protected Module parseModule(List<Comment> comments) {
 		final Module res;
@@ -708,7 +708,8 @@ public class AcceleoParser {
 			res.setExtends(extendedModule);
 			res.getModuleElements().addAll(moduleElements);
 		} else {
-			res = null;
+			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorModule();
+			errors.add((ErrorModule)res);
 		}
 
 		return res;
