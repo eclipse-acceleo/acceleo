@@ -139,6 +139,7 @@
     <genClasses ecoreClass="acceleo.ecore#//Expression">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//Expression/ast"/>
     </genClasses>
+    <genClasses ecoreClass="acceleo.ecore#//ErrorExpression"/>
     <genClasses ecoreClass="acceleo.ecore#//Variable"/>
     <genClasses ecoreClass="acceleo.ecore#//ErrorVariable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute acceleo.ecore#//ErrorVariable/missingName"/>

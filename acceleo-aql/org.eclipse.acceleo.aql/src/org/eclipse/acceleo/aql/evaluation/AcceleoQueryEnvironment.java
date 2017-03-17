@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation;
 
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
 import org.eclipse.acceleo.query.runtime.impl.QueryEnvironment;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
@@ -35,8 +36,7 @@ public class AcceleoQueryEnvironment extends QueryEnvironment {
 	 * @param acceleoEnvironment
 	 *            The environment keeping track of Acceleo's context.
 	 */
-	public AcceleoQueryEnvironment(EPackageProvider packageProvider,
-			AcceleoEvaluationEnvironment acceleoEnvironment) {
+	public AcceleoQueryEnvironment(EPackageProvider packageProvider, AcceleoEnvironment acceleoEnvironment) {
 		this.packageProvider = packageProvider;
 		this.lookupEngine = new AcceleoLookupEngine(this, acceleoEnvironment);
 	}

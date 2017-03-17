@@ -22,6 +22,7 @@ import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ErrorBinding;
 import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -280,6 +281,13 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * @generated
 	 */
 	private EClass expressionEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass errorExpressionEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1304,6 +1312,15 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getErrorExpression() {
+		return errorExpressionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getVariable() {
 		return variableEClass;
 	}
@@ -2051,6 +2068,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		expressionEClass = createEClass(EXPRESSION);
 		createEAttribute(expressionEClass, EXPRESSION__AST);
 
+		errorExpressionEClass = createEClass(ERROR_EXPRESSION);
+
 		variableEClass = createEClass(VARIABLE);
 
 		errorVariableEClass = createEClass(ERROR_VARIABLE);
@@ -2213,6 +2232,8 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		errorQueryEClass.getESuperTypes().add(this.getError());
 		errorQueryEClass.getESuperTypes().add(this.getQuery());
 		expressionEClass.getESuperTypes().add(this.getASTNode());
+		errorExpressionEClass.getESuperTypes().add(this.getError());
+		errorExpressionEClass.getESuperTypes().add(this.getExpression());
 		variableEClass.getESuperTypes().add(this.getTypedElement());
 		variableEClass.getESuperTypes().add(this.getNamedElement());
 		variableEClass.getESuperTypes().add(this.getASTNode());
@@ -2586,6 +2607,9 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				getExpression_Ast(),
 				this.getASTResult(),
 				"ast", null, 1, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$
+
+		initEClass(errorExpressionEClass, ErrorExpression.class,
+				"ErrorExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
 
 		initEClass(variableEClass, Variable.class,
 				"Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$

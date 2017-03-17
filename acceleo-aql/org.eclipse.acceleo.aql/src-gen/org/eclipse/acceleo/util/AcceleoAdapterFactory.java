@@ -21,6 +21,7 @@ import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ErrorBinding;
 import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -264,6 +265,11 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseExpression(Expression object) {
 			return createExpressionAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorExpression(ErrorExpression object) {
+			return createErrorExpressionAdapter();
 		}
 
 		@Override
@@ -778,6 +784,20 @@ public class AcceleoAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createExpressionAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.acceleo.ErrorExpression <em>Error Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.ErrorExpression
+	 * @generated
+	 */
+	public Adapter createErrorExpressionAdapter() {
 		return null;
 	}
 

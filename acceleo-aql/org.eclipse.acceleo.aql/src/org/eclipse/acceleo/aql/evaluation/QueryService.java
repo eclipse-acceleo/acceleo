@@ -18,6 +18,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -32,7 +33,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class QueryService extends AbstractModuleElementService {
 	/** The current evaluation environment. */
-	private final AcceleoEvaluationEnvironment env;
+	private final AcceleoEnvironment env;
 
 	/** The underlying query. */
 	private final Query query;
@@ -45,7 +46,7 @@ public class QueryService extends AbstractModuleElementService {
 	 * @param query
 	 *            The wrapped query.
 	 */
-	public QueryService(AcceleoEvaluationEnvironment env, Query query) {
+	public QueryService(AcceleoEnvironment env, Query query) {
 		this.env = env;
 		this.query = query;
 	}
@@ -136,6 +137,6 @@ public class QueryService extends AbstractModuleElementService {
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
 		// FIXME parameters
-		return new EvaluationSwitch(env).doSwitch(query);
+		return new AcceleoEvaluator(env).doSwitch(query);
 	}
 }

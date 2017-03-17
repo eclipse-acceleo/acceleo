@@ -21,6 +21,7 @@ import org.eclipse.acceleo.Documentation;
 import org.eclipse.acceleo.DocumentedElement;
 import org.eclipse.acceleo.ErrorBinding;
 import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -496,6 +497,19 @@ public class AcceleoSwitch<T> extends Switch<T> {
 				T result = caseExpression(expression);
 				if (result == null)
 					result = caseASTNode(expression);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AcceleoPackage.ERROR_EXPRESSION: {
+				ErrorExpression errorExpression = (ErrorExpression)theEObject;
+				T result = caseErrorExpression(errorExpression);
+				if (result == null)
+					result = caseError(errorExpression);
+				if (result == null)
+					result = caseExpression(errorExpression);
+				if (result == null)
+					result = caseASTNode(errorExpression);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -1177,6 +1191,21 @@ public class AcceleoSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseExpression(Expression object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Error Expression</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Error Expression</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorExpression(ErrorExpression object) {
 		return null;
 	}
 

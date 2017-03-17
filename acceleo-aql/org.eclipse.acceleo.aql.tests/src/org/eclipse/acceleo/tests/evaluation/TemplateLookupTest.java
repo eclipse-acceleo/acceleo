@@ -15,8 +15,8 @@ import java.net.URL;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
-import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluationEnvironment;
-import org.eclipse.acceleo.aql.evaluation.EvaluationSwitch;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
@@ -39,7 +39,7 @@ public class TemplateLookupTest {
 	private IQueryEnvironment aqlEnvironment;
 
 	/** The Acceleo environment we'll use to test the lookup. */
-	private AcceleoEvaluationEnvironment acceleoEnvironment;
+	private AcceleoEnvironment acceleoEnvironment;
 
 	/** First of the tested modules. See M1 through M4.acceleo beside this class. */
 	private Module module1;
@@ -68,7 +68,7 @@ public class TemplateLookupTest {
 		module3 = readModule(aqlEnvironment, "M3.acceleo");
 		module4 = readModule(aqlEnvironment, "M4.acceleo");
 
-		acceleoEnvironment = new AcceleoEvaluationEnvironment();
+		acceleoEnvironment = new AcceleoEnvironment();
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m1", module1);
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m2", module2);
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m3", module3);
@@ -82,7 +82,7 @@ public class TemplateLookupTest {
 	public void testCallM1T11EPackage() {
 		acceleoEnvironment.addVariable(PARAM1, EcoreFactory.eINSTANCE.createEPackage());
 
-		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
+		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module1.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
 		acceleoEnvironment.pushStack(start, module1);
@@ -100,7 +100,7 @@ public class TemplateLookupTest {
 	public void testCallM1T11EClass() {
 		acceleoEnvironment.addVariable(PARAM1, EcoreFactory.eINSTANCE.createEClass());
 
-		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
+		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module1.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
 		acceleoEnvironment.pushStack(start, module1);
@@ -125,7 +125,7 @@ public class TemplateLookupTest {
 		pack.getEClassifiers().add(clazz);
 		acceleoEnvironment.addVariable(PARAM1, pack);
 
-		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
+		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t21".equals(((Template)start).getName()));
 		acceleoEnvironment.pushStack(start, module2);
@@ -148,7 +148,7 @@ public class TemplateLookupTest {
 		pack.getEClassifiers().add(clazz);
 		acceleoEnvironment.addVariable(PARAM1, pack);
 
-		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
+		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "overrideMe".equals(((Template)start).getName()));
 		acceleoEnvironment.pushStack(start, module2);
@@ -174,7 +174,7 @@ public class TemplateLookupTest {
 		pack.getEClassifiers().add(clazz);
 		acceleoEnvironment.addVariable(PARAM1, clazz);
 
-		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
+		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(3);
 		assertTrue(start instanceof Template && "toImportsAndBack".equals(((Template)start).getName()));
 		acceleoEnvironment.pushStack(start, module2);
@@ -199,7 +199,7 @@ public class TemplateLookupTest {
 		pack.getEClassifiers().add(clazz);
 		acceleoEnvironment.addVariable(PARAM1, clazz);
 
-		EvaluationSwitch evaluationEngine = new EvaluationSwitch(acceleoEnvironment);
+		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(4);
 		assertTrue(start instanceof Template && "toImportsExtends".equals(((Template)start).getName()));
 		acceleoEnvironment.pushStack(start, module2);

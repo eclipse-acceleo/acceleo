@@ -19,6 +19,7 @@ import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.CommentBody;
 import org.eclipse.acceleo.ErrorBinding;
 import org.eclipse.acceleo.ErrorComment;
+import org.eclipse.acceleo.ErrorExpression;
 import org.eclipse.acceleo.ErrorExpressionStatement;
 import org.eclipse.acceleo.ErrorFileStatement;
 import org.eclipse.acceleo.ErrorForStatement;
@@ -157,6 +158,8 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 				return createErrorQuery();
 			case AcceleoPackage.EXPRESSION:
 				return createExpression();
+			case AcceleoPackage.ERROR_EXPRESSION:
+				return createErrorExpression();
 			case AcceleoPackage.VARIABLE:
 				return createVariable();
 			case AcceleoPackage.ERROR_VARIABLE:
@@ -469,6 +472,16 @@ public class AcceleoFactoryImpl extends EFactoryImpl implements AcceleoFactory {
 	public Expression createExpression() {
 		ExpressionImpl expression = new ExpressionImpl();
 		return expression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ErrorExpression createErrorExpression() {
+		ErrorExpressionImpl errorExpression = new ErrorExpressionImpl();
+		return errorExpression;
 	}
 
 	/**

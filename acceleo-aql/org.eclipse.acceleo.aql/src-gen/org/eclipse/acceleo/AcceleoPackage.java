@@ -2365,6 +2365,61 @@ public interface AcceleoPackage extends EPackage {
 	int EXPRESSION_OPERATION_COUNT = AST_NODE_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.impl.ErrorExpressionImpl <em>Error Expression</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.acceleo.impl.ErrorExpressionImpl
+	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorExpression()
+	 * @generated
+	 */
+	int ERROR_EXPRESSION = 29;
+
+	/**
+	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION__START_POSITION = ERROR__START_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>End Position</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION__END_POSITION = ERROR__END_POSITION;
+
+	/**
+	 * The feature id for the '<em><b>Ast</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION__AST = ERROR_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Error Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION_FEATURE_COUNT = ERROR_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Error Expression</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_EXPRESSION_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.impl.VariableImpl <em>Variable</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2372,7 +2427,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVariable()
 	 * @generated
 	 */
-	int VARIABLE = 29;
+	int VARIABLE = 30;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2436,7 +2491,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorVariable()
 	 * @generated
 	 */
-	int ERROR_VARIABLE = 30;
+	int ERROR_VARIABLE = 31;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -2527,7 +2582,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 31;
+	int BINDING = 32;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -2600,7 +2655,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorBinding()
 	 * @generated
 	 */
-	int ERROR_BINDING = 32;
+	int ERROR_BINDING = 33;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -2718,7 +2773,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getStatement()
 	 * @generated
 	 */
-	int STATEMENT = 33;
+	int STATEMENT = 34;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -2764,7 +2819,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getExpressionStatement()
 	 * @generated
 	 */
-	int EXPRESSION_STATEMENT = 34;
+	int EXPRESSION_STATEMENT = 35;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -2819,7 +2874,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorExpressionStatement()
 	 * @generated
 	 */
-	int ERROR_EXPRESSION_STATEMENT = 35;
+	int ERROR_EXPRESSION_STATEMENT = 36;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -2883,7 +2938,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getProtectedArea()
 	 * @generated
 	 */
-	int PROTECTED_AREA = 36;
+	int PROTECTED_AREA = 37;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -2947,7 +3002,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorProtectedArea()
 	 * @generated
 	 */
-	int ERROR_PROTECTED_AREA = 37;
+	int ERROR_PROTECTED_AREA = 38;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3047,7 +3102,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getForStatement()
 	 * @generated
 	 */
-	int FOR_STATEMENT = 38;
+	int FOR_STATEMENT = 39;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3111,7 +3166,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorForStatement()
 	 * @generated
 	 */
-	int ERROR_FOR_STATEMENT = 39;
+	int ERROR_FOR_STATEMENT = 40;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3211,7 +3266,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getIfStatement()
 	 * @generated
 	 */
-	int IF_STATEMENT = 40;
+	int IF_STATEMENT = 41;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3284,7 +3339,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorIfStatement()
 	 * @generated
 	 */
-	int ERROR_IF_STATEMENT = 41;
+	int ERROR_IF_STATEMENT = 42;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3393,7 +3448,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getLetStatement()
 	 * @generated
 	 */
-	int LET_STATEMENT = 42;
+	int LET_STATEMENT = 43;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3457,7 +3512,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorLetStatement()
 	 * @generated
 	 */
-	int ERROR_LET_STATEMENT = 43;
+	int ERROR_LET_STATEMENT = 44;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3539,7 +3594,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getFileStatement()
 	 * @generated
 	 */
-	int FILE_STATEMENT = 44;
+	int FILE_STATEMENT = 45;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3621,7 +3676,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorFileStatement()
 	 * @generated
 	 */
-	int ERROR_FILE_STATEMENT = 45;
+	int ERROR_FILE_STATEMENT = 46;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3757,7 +3812,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getTextStatement()
 	 * @generated
 	 */
-	int TEXT_STATEMENT = 46;
+	int TEXT_STATEMENT = 47;
 
 	/**
 	 * The feature id for the '<em><b>Start Position</b></em>' attribute.
@@ -3812,7 +3867,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getVisibilityKind()
 	 * @generated
 	 */
-	int VISIBILITY_KIND = 47;
+	int VISIBILITY_KIND = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.OpenModeKind <em>Open Mode Kind</em>}' enum.
@@ -3822,7 +3877,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getOpenModeKind()
 	 * @generated
 	 */
-	int OPEN_MODE_KIND = 48;
+	int OPEN_MODE_KIND = 49;
 
 	/**
 	 * The meta object id for the '<em>AST Result</em>' data type.
@@ -3832,7 +3887,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getASTResult()
 	 * @generated
 	 */
-	int AST_RESULT = 49;
+	int AST_RESULT = 50;
 
 	/**
 	 * The meta object id for the '<em>Module Qualified Name</em>' data type.
@@ -3842,7 +3897,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getModuleQualifiedName()
 	 * @generated
 	 */
-	int MODULE_QUALIFIED_NAME = 50;
+	int MODULE_QUALIFIED_NAME = 51;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Module <em>Module</em>}'.
@@ -4793,6 +4848,16 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getExpression_Ast();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.ErrorExpression <em>Error Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Error Expression</em>'.
+	 * @see org.eclipse.acceleo.ErrorExpression
+	 * @generated
+	 */
+	EClass getErrorExpression();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.Variable <em>Variable</em>}'.
@@ -6312,6 +6377,16 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute EXPRESSION__AST = eINSTANCE.getExpression_Ast();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.ErrorExpressionImpl <em>Error Expression</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.acceleo.impl.ErrorExpressionImpl
+		 * @see org.eclipse.acceleo.impl.AcceleoPackageImpl#getErrorExpression()
+		 * @generated
+		 */
+		EClass ERROR_EXPRESSION = eINSTANCE.getErrorExpression();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.impl.VariableImpl <em>Variable</em>}' class.

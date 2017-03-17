@@ -18,6 +18,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
@@ -30,9 +31,9 @@ import org.eclipse.emf.common.util.Diagnostic;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class EvaluationSwitch extends AcceleoSwitch<Object> {
+public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	/** The current evaluation environment. */
-	private AcceleoEvaluationEnvironment environment;
+	private AcceleoEnvironment environment;
 
 	/**
 	 * Instantiates an evaluation switch given the acceleo environment to consider.
@@ -40,7 +41,7 @@ public class EvaluationSwitch extends AcceleoSwitch<Object> {
 	 * @param environment
 	 *            The current evaluation environment.
 	 */
-	public EvaluationSwitch(AcceleoEvaluationEnvironment environment) {
+	public AcceleoEvaluator(AcceleoEnvironment environment) {
 		this.environment = environment;
 	}
 

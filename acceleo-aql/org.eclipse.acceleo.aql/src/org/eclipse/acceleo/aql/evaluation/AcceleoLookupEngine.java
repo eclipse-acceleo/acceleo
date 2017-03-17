@@ -23,6 +23,7 @@ import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.lookup.basic.BasicLookupEngine;
@@ -37,7 +38,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class AcceleoLookupEngine extends BasicLookupEngine {
 	/** The current acceleo environment. */
-	private final AcceleoEvaluationEnvironment acceleoEnvironment;
+	private final AcceleoEnvironment acceleoEnvironment;
 
 	/**
 	 * Constructs a lookup engine given the aql and acceleo environments.
@@ -47,8 +48,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 * @param acceleoEnvironment
 	 *            The Acceleo environment.
 	 */
-	public AcceleoLookupEngine(IReadOnlyQueryEnvironment aqlEnvironment,
-			AcceleoEvaluationEnvironment acceleoEnvironment) {
+	public AcceleoLookupEngine(IReadOnlyQueryEnvironment aqlEnvironment, AcceleoEnvironment acceleoEnvironment) {
 		super(aqlEnvironment);
 		this.acceleoEnvironment = acceleoEnvironment;
 	}

@@ -180,6 +180,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Expression" eSuperTypes="#//ASTNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ast" lowerBound="1" eType="#//ASTResult"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorExpression" eSuperTypes="#//Error #//Expression"/>
   <eClassifiers xsi:type="ecore:EClass" name="Variable" eSuperTypes="#//TypedElement #//NamedElement #//ASTNode"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorVariable" eSuperTypes="#//Error #//Variable">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingName" lowerBound="1"

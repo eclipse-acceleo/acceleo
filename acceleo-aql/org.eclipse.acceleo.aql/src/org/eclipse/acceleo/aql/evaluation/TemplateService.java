@@ -19,6 +19,7 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.parser.AstValidator;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -34,7 +35,7 @@ import org.eclipse.acceleo.query.validation.type.IType;
  */
 public class TemplateService extends AbstractModuleElementService {
 	/** The current evaluation environment. */
-	private final AcceleoEvaluationEnvironment env;
+	private final AcceleoEnvironment env;
 
 	/** The underlying template. */
 	private final Template template;
@@ -47,7 +48,7 @@ public class TemplateService extends AbstractModuleElementService {
 	 * @param template
 	 *            The wrapped template.
 	 */
-	public TemplateService(AcceleoEvaluationEnvironment env, Template template) {
+	public TemplateService(AcceleoEnvironment env, Template template) {
 		this.env = env;
 		this.template = template;
 	}
@@ -138,6 +139,6 @@ public class TemplateService extends AbstractModuleElementService {
 			Variable var = template.getParameters().get(i);
 			env.addVariable(var.getName(), arguments[i]);
 		}
-		return new EvaluationSwitch(env).doSwitch(template);
+		return new AcceleoEvaluator(env).doSwitch(template);
 	}
 }

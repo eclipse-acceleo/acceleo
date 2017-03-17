@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.evaluation;
+package org.eclipse.acceleo.aql;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
@@ -25,7 +25,11 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
-import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
+import org.eclipse.acceleo.aql.evaluation.AcceleoCallStack;
+import org.eclipse.acceleo.aql.evaluation.AcceleoQueryEnvironment;
+import org.eclipse.acceleo.aql.evaluation.QueryService;
+import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
@@ -36,7 +40,7 @@ import org.eclipse.emf.ecore.EPackage;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
+public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/** maps the modules registered against this environment with their qualified name. */
 	private Map<String, Module> modules;
 
@@ -51,17 +55,6 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	// shorter than the AcceleoEvaluationEnvironment
 	/** Keeps track of the available variables. */
 	private Map<String, Object> variables;
-
-	/*
-	 * TODO we'll use the same EPackageProvider for all environments, which means we'll have all packages
-	 * available for all modules even if not declared... This can lead to issues if one module really
-	 * shouldn't be able to access another module's set of EPackage
-	 */
-	/**
-	 * The package provider for this Acceleo context. All EPackages declared by the modules available to this
-	 * evaluation will be registered against this package provider.
-	 */
-	private EPackageProvider packageProvider;
 
 	/**
 	 * Keeps track of the module elements we've called in order. Template and queries we call will be pushed
@@ -83,14 +76,13 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	/**
 	 * Initializes an environment for acceleo evaluations.
 	 */
-	public AcceleoEvaluationEnvironment() {
+	public AcceleoEnvironment() {
 		this.modules = new LinkedHashMap<>();
 		this.moduleServices = new LinkedHashMap<>();
 		this.variables = new LinkedHashMap<>();
 		this.callStacks = new ArrayDeque<>();
 
-		this.packageProvider = new EPackageProvider();
-		this.aqlEnvironment = new AcceleoQueryEnvironment(packageProvider, this);
+		this.aqlEnvironment = new AcceleoQueryEnvironment(new EPackageProvider(), this);
 		/* FIXME we need a cross reference provider, and we need to make it configurable */
 		org.eclipse.acceleo.query.runtime.Query.configureEnvironment(aqlEnvironment, null, null);
 	}
@@ -131,7 +123,7 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 	/**
 	 * Push the given module element atop the latest stack, or create a new stack for it if
 	 * <code>newStackStartingModule</code> is not null.
-	 * 
+	 *
 	 * @param element
 	 *            The module element we're entering into.
 	 * @param newStackStartingModule
@@ -221,7 +213,7 @@ public class AcceleoEvaluationEnvironment implements IAcceleoEnvironment {
 		for (Metamodel metamodel : module.getMetamodels()) {
 			if (!(metamodel instanceof ErrorMetamodel)) {
 				EPackage referredPackage = metamodel.getReferencedPackage();
-				packageProvider.registerPackage(referredPackage);
+				aqlEnvironment.registerEPackage(referredPackage);
 				ServiceUtils.registerServices(aqlEnvironment, ServiceUtils.getServices(referredPackage));
 			}
 		}

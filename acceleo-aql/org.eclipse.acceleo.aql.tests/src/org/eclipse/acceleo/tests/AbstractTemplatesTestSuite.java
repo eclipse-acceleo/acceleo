@@ -30,8 +30,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
-import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluationEnvironment;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
@@ -56,7 +56,7 @@ public abstract class AbstractTemplatesTestSuite {
 	/**
 	 * UTF-8 content.
 	 */
-	private static final String UTF_8 = "UTF-8";
+	public static final String UTF_8 = "UTF-8";
 
 	/**
 	 * The {@link ModuleAstSerializer}.
@@ -81,7 +81,7 @@ public abstract class AbstractTemplatesTestSuite {
 	/**
 	 * The {@link IAcceleoEnvironment}.
 	 */
-	private final IAcceleoEnvironment environment = new AcceleoEvaluationEnvironment();
+	private final IAcceleoEnvironment environment = new AcceleoEnvironment();
 
 	/**
 	 * Constructor.
