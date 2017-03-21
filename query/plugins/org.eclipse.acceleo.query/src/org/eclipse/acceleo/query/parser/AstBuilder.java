@@ -27,6 +27,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -134,8 +135,8 @@ public class AstBuilder {
 	 * @return the new {@link ErrorStringLiteral}
 	 */
 	public ErrorStringLiteral errorStringLiteral(String str) {
-		ErrorStringLiteral errorStringLiteral = (ErrorStringLiteral)EcoreUtil.create(
-				AstPackage.Literals.ERROR_STRING_LITERAL);
+		ErrorStringLiteral errorStringLiteral = (ErrorStringLiteral)EcoreUtil
+				.create(AstPackage.Literals.ERROR_STRING_LITERAL);
 		errorStringLiteral.setValue(str);
 		return errorStringLiteral;
 	}
@@ -235,14 +236,14 @@ public class AstBuilder {
 	 */
 	private static char[] stripUChar(String text, final int end, int i) {
 		if (i + 4 < end) {
-			return charFromHexaCode(text.charAt(i + 1), text.charAt(i + 2), text.charAt(i + 3), text.charAt(i
-					+ 4));
+			return charFromHexaCode(text.charAt(i + 1), text.charAt(i + 2), text.charAt(i + 3), text
+					.charAt(i + 4));
 		} else if (i + 3 < end) {
-			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1) + text
-					.charAt(i + 2) + text.charAt(i + 3));
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1)
+					+ text.charAt(i + 2) + text.charAt(i + 3));
 		} else if (i + 2 < end) {
-			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1) + text
-					.charAt(i + 2));
+			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1)
+					+ text.charAt(i + 2));
 		} else if (i + 1 < end) {
 			throw new IllegalArgumentException(INVALID_ESCAPE_SEQUENCE + ESCAPE_U + text.charAt(i + 1));
 		} else {
@@ -324,8 +325,8 @@ public class AstBuilder {
 		if (type != List.class && type != Set.class) {
 			throw new IllegalArgumentException("collection type must be either list or set.");
 		}
-		CollectionTypeLiteral literal = (CollectionTypeLiteral)EcoreUtil.create(
-				AstPackage.Literals.COLLECTION_TYPE_LITERAL);
+		CollectionTypeLiteral literal = (CollectionTypeLiteral)EcoreUtil
+				.create(AstPackage.Literals.COLLECTION_TYPE_LITERAL);
 		literal.setValue(type);
 		literal.setElementType(elementType);
 		return literal;
@@ -348,8 +349,8 @@ public class AstBuilder {
 		}
 
 		if (type instanceof Collection) {
-			TypeSetLiteral setLiteral = (TypeSetLiteral)EcoreUtil.create(
-					AstPackage.Literals.TYPE_SET_LITERAL);
+			TypeSetLiteral setLiteral = (TypeSetLiteral)EcoreUtil
+					.create(AstPackage.Literals.TYPE_SET_LITERAL);
 			for (Object oneType : (Collection<?>)type) {
 				TypeLiteral typeLiteral = (TypeLiteral)EcoreUtil.create(AstPackage.Literals.TYPE_LITERAL);
 				typeLiteral.setValue(oneType);
@@ -485,8 +486,31 @@ public class AstBuilder {
 	 * @return a new {@link ErrorTypeLiteral}.
 	 */
 	public ErrorTypeLiteral errorTypeLiteral(boolean missingColon, String... segments) {
-		final ErrorTypeLiteral result = (ErrorTypeLiteral)EcoreUtil.create(
-				AstPackage.Literals.ERROR_TYPE_LITERAL);
+		final ErrorTypeLiteral result = (ErrorTypeLiteral)EcoreUtil
+				.create(AstPackage.Literals.ERROR_TYPE_LITERAL);
+
+		result.setMissingColon(missingColon);
+		for (String segment : segments) {
+			if (segment != null && segment.length() != 0) {
+				result.getSegments().add(segment);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Creates a new {@link ErrorEClassifierTypeLiteral}.
+	 * 
+	 * @param missingColon
+	 *            <code>true</code> if one colon ending is missing, <code>false</code> otherwise
+	 * @param segments
+	 *            known segments of the {@link TypeLiteral}
+	 * @return a new {@link ErrorEClassifierTypeLiteral}.
+	 */
+	public ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral(boolean missingColon, String... segments) {
+		final ErrorEClassifierTypeLiteral result = (ErrorEClassifierTypeLiteral)EcoreUtil
+				.create(AstPackage.Literals.ERROR_ECLASSIFIER_TYPE_LITERAL);
 
 		result.setMissingColon(missingColon);
 		for (String segment : segments) {
@@ -508,8 +532,8 @@ public class AstBuilder {
 	 * @return a new {@link ErrorEnumLiteral}.
 	 */
 	public ErrorEnumLiteral errorEnumLiteral(boolean missingColon, String... segments) {
-		final ErrorEnumLiteral result = (ErrorEnumLiteral)EcoreUtil.create(
-				AstPackage.Literals.ERROR_ENUM_LITERAL);
+		final ErrorEnumLiteral result = (ErrorEnumLiteral)EcoreUtil
+				.create(AstPackage.Literals.ERROR_ENUM_LITERAL);
 
 		result.setMissingColon(missingColon);
 		for (String segment : segments) {
@@ -552,8 +576,8 @@ public class AstBuilder {
 	 * @return a new {@link VariableDeclaration}
 	 */
 	public VariableDeclaration variableDeclaration(String name, Expression expression) {
-		final VariableDeclaration result = (VariableDeclaration)EcoreUtil.create(
-				AstPackage.Literals.VARIABLE_DECLARATION);
+		final VariableDeclaration result = (VariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.VARIABLE_DECLARATION);
 
 		result.setName(name);
 		result.setExpression(expression);
@@ -597,8 +621,8 @@ public class AstBuilder {
 	 * @return a new {@link SetInExtensionLiteral} with the given {@link List} of {@link Expression}
 	 */
 	public SetInExtensionLiteral setInExtension(List<Expression> expressions) {
-		final SetInExtensionLiteral result = (SetInExtensionLiteral)EcoreUtil.create(
-				AstPackage.Literals.SET_IN_EXTENSION_LITERAL);
+		final SetInExtensionLiteral result = (SetInExtensionLiteral)EcoreUtil
+				.create(AstPackage.Literals.SET_IN_EXTENSION_LITERAL);
 
 		result.getValues().addAll(expressions);
 
@@ -613,8 +637,8 @@ public class AstBuilder {
 	 * @return a new {@link SequenceInExtensionLiteral} with the given {@link List} of {@link Expression}
 	 */
 	public SequenceInExtensionLiteral sequenceInExtension(List<Expression> expressions) {
-		final SequenceInExtensionLiteral result = (SequenceInExtensionLiteral)EcoreUtil.create(
-				AstPackage.Literals.SEQUENCE_IN_EXTENSION_LITERAL);
+		final SequenceInExtensionLiteral result = (SequenceInExtensionLiteral)EcoreUtil
+				.create(AstPackage.Literals.SEQUENCE_IN_EXTENSION_LITERAL);
 
 		result.getValues().addAll(expressions);
 
@@ -634,8 +658,8 @@ public class AstBuilder {
 	 */
 	public ErrorVariableDeclaration errorVariableDeclaration(String variableName, TypeLiteral type,
 			Expression expression) {
-		ErrorVariableDeclaration result = (ErrorVariableDeclaration)EcoreUtil.create(
-				AstPackage.Literals.ERROR_VARIABLE_DECLARATION);
+		ErrorVariableDeclaration result = (ErrorVariableDeclaration)EcoreUtil
+				.create(AstPackage.Literals.ERROR_VARIABLE_DECLARATION);
 
 		result.setName(variableName);
 		result.setType(type);
@@ -732,8 +756,8 @@ public class AstBuilder {
 	 * @return the created {@link TypeSetLiteral}
 	 */
 	public TypeSetLiteral typeSetLiteral(List<TypeLiteral> types) {
-		final TypeSetLiteral typeSetLiteral = (TypeSetLiteral)EcoreUtil.create(
-				AstPackage.Literals.TYPE_SET_LITERAL);
+		final TypeSetLiteral typeSetLiteral = (TypeSetLiteral)EcoreUtil
+				.create(AstPackage.Literals.TYPE_SET_LITERAL);
 
 		typeSetLiteral.getTypes().addAll(types);
 

@@ -23,6 +23,7 @@ import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -211,14 +212,49 @@ public class AstCompletor extends AstSwitch<List<ICompletionProposal>> {
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
 		if (object.getSegments().size() == 0) {
+			result.add(new TextCompletionProposal("String", 0));
+			result.add(new TextCompletionProposal("Integer", 0));
+			result.add(new TextCompletionProposal("Real", 0));
+			result.add(new TextCompletionProposal("Boolean", 0));
+			result.add(new TextCompletionProposal("Sequence()", 1));
+			result.add(new TextCompletionProposal("OrderedSet()", 1));
+			result.add(new TextCompletionProposal("{}", 1));
+		}
+
+		result.addAll(getEClassifierCompletion(object));
+
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEClassifierTypeLiteral(org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral)
+	 */
+	@Override
+	public List<ICompletionProposal> caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
+		return getEClassifierCompletion(object);
+	}
+
+	/**
+	 * Gets the {@link List} of {@link ICompletionProposal} for the given {@link ErrorTypeLiteral}.
+	 * 
+	 * @param errorTypeLiteral
+	 *            the {@link ErrorTypeLiteral} to complete
+	 * @return the {@link List} of {@link ICompletionProposal} for the given {@link ErrorTypeLiteral}
+	 */
+	protected List<ICompletionProposal> getEClassifierCompletion(ErrorTypeLiteral errorTypeLiteral) {
+		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+
+		if (errorTypeLiteral.getSegments().size() == 0) {
 			result.addAll(services.getEClassifierProposals());
 			result.addAll(services.getEEnumLiteralProposals());
-		} else if (object.getSegments().size() == 1) {
-			result.addAll(services.getEClassifierProposals(object.getSegments().get(0)));
-			result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0)));
-		} else if (object.getSegments().size() == 2) {
-			result.addAll(services.getEEnumLiteralProposals(object.getSegments().get(0), object.getSegments()
-					.get(1)));
+		} else if (errorTypeLiteral.getSegments().size() == 1) {
+			result.addAll(services.getEClassifierProposals(errorTypeLiteral.getSegments().get(0)));
+			result.addAll(services.getEEnumLiteralProposals(errorTypeLiteral.getSegments().get(0)));
+		} else if (errorTypeLiteral.getSegments().size() == 2) {
+			result.addAll(services.getEEnumLiteralProposals(errorTypeLiteral.getSegments().get(0),
+					errorTypeLiteral.getSegments().get(1)));
 		}
 
 		return result;

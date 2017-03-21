@@ -75,6 +75,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingColon" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ErrorEClassifierTypeLiteral" eSuperTypes="#//ErrorTypeLiteral"/>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorEnumLiteral" eSuperTypes="#//Error #//EnumLiteral">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="segments" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

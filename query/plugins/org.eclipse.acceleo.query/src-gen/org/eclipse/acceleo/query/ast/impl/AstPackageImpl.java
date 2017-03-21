@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -199,6 +200,13 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * @generated
 	 */
 	private EClass errorTypeLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass errorEClassifierTypeLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -737,6 +745,15 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getErrorEClassifierTypeLiteral() {
+		return errorEClassifierTypeLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getErrorEnumLiteral() {
 		return errorEnumLiteralEClass;
 	}
@@ -1046,6 +1063,8 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		createEAttribute(errorTypeLiteralEClass, ERROR_TYPE_LITERAL__SEGMENTS);
 		createEAttribute(errorTypeLiteralEClass, ERROR_TYPE_LITERAL__MISSING_COLON);
 
+		errorEClassifierTypeLiteralEClass = createEClass(ERROR_ECLASSIFIER_TYPE_LITERAL);
+
 		errorEnumLiteralEClass = createEClass(ERROR_ENUM_LITERAL);
 		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__SEGMENTS);
 		createEAttribute(errorEnumLiteralEClass, ERROR_ENUM_LITERAL__MISSING_COLON);
@@ -1139,6 +1158,7 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		errorExpressionEClass.getESuperTypes().add(this.getError());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getError());
 		errorTypeLiteralEClass.getESuperTypes().add(this.getTypeLiteral());
+		errorEClassifierTypeLiteralEClass.getESuperTypes().add(this.getErrorTypeLiteral());
 		errorEnumLiteralEClass.getESuperTypes().add(this.getError());
 		errorEnumLiteralEClass.getESuperTypes().add(this.getEnumLiteral());
 		errorCallEClass.getESuperTypes().add(this.getError());
@@ -1278,6 +1298,9 @@ public class AstPackageImpl extends EPackageImpl implements AstPackage {
 		initEAttribute(getErrorTypeLiteral_MissingColon(), ecorePackage.getEBoolean(), "missingColon", null,
 				1, 1, ErrorTypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
 				!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(errorEClassifierTypeLiteralEClass, ErrorEClassifierTypeLiteral.class,
+				"ErrorEClassifierTypeLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(errorEnumLiteralEClass, ErrorEnumLiteral.class, "ErrorEnumLiteral", !IS_ABSTRACT,
 				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

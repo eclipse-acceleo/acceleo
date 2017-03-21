@@ -334,7 +334,8 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->select( a : ", 17,
 				variableTypes);
 
-		assertCompletion(completionResult, 118, "", "", 17, 0, "ecore::EClass", "ecore::EString");
+		assertCompletion(completionResult, 125, "", "", 17, 0, "Integer", "Boolean", "ecore::EClass",
+				"ecore::EString");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -867,7 +868,8 @@ public class CompletionTest {
 
 		final ICompletionResult completionResult = engine.getCompletion("self->select(e :", 16, types);
 
-		assertCompletion(completionResult, 118, "", "", 16, 0, "ecore::EPackage", "ecore::EClass");
+		assertCompletion(completionResult, 125, "", "", 16, 0, "String", "Real", "ecore::EPackage",
+				"ecore::EClass");
 		assertNoEOperationCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);

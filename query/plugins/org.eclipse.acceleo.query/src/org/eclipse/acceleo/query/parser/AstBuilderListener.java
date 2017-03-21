@@ -44,6 +44,7 @@ import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -431,10 +432,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				final String variableName = e.getCtx().getParent().getChild(0).getText();
 				final ErrorTypeLiteral errorTypeLiteral;
 				if (ctx.getChildCount() > 0) {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {ctx.getChild(0)
-							.getText(), });
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {ctx.getChild(
+							0).getText(), });
 				} else {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {});
 				}
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
@@ -455,10 +456,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				errorRule = QueryParser.RULE_classifierTypeRule;
 				final ErrorTypeLiteral errorTypeLiteral;
 				if (ctx.getChildCount() > 0) {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {ctx.getChild(0)
-							.getText(), });
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {ctx.getChild(
+							0).getText(), });
 				} else {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {});
 				}
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
@@ -1485,7 +1486,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				if (eClassName != null) {
 					segments.add(eClassName);
 				}
-				toPush = builder.errorTypeLiteral(false, segments.toArray(new String[segments.size()]));
+				toPush = builder.errorEClassifierTypeLiteral(false, segments.toArray(new String[segments
+						.size()]));
 				pushError((Error)toPush, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 			} else {
 				toPush = builder.typeLiteral(type);
@@ -1510,7 +1512,8 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitErrorClassifierType(ErrorClassifierTypeContext ctx) {
 		final String ePackageName = ctx.getChild(0).getText();
 
-		final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(true, ePackageName);
+		final ErrorEClassifierTypeLiteral errorTypeLiteral = builder.errorEClassifierTypeLiteral(true,
+				ePackageName);
 
 		pushError((Error)errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 		startPositions.put(errorTypeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
