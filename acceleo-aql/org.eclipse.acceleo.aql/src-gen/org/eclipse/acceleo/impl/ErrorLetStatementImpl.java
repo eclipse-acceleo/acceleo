@@ -44,6 +44,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getEndPosition <em>End Position</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getVariables <em>Variables</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingBindings <em>Missing Bindings</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorLetStatementImpl#getMissingEnd <em>Missing End</em>}</li>
  * </ul>
@@ -111,6 +112,26 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * @ordered
 	 */
 	protected Block body;
+
+	/**
+	 * The default value of the '{@link #getMissingBindings() <em>Missing Bindings</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingBindings()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_BINDINGS_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingBindings() <em>Missing Bindings</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingBindings()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingBindings = MISSING_BINDINGS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingEndHeader() <em>Missing End Header</em>}' attribute.
@@ -283,6 +304,28 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getMissingBindings() {
+		return missingBindings;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingBindings(int newMissingBindings) {
+		int oldMissingBindings = missingBindings;
+		missingBindings = newMissingBindings;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS, oldMissingBindings, missingBindings));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getMissingEndHeader() {
 		return missingEndHeader;
 	}
@@ -355,6 +398,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 				return getVariables();
 			case AcceleoPackage.ERROR_LET_STATEMENT__BODY:
 				return getBody();
+			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS:
+				return getMissingBindings();
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
 				return getMissingEndHeader();
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END:
@@ -384,6 +429,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 				return;
 			case AcceleoPackage.ERROR_LET_STATEMENT__BODY:
 				setBody((Block)newValue);
+				return;
+			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS:
+				setMissingBindings((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
 				setMissingEndHeader((Integer)newValue);
@@ -415,6 +463,9 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 			case AcceleoPackage.ERROR_LET_STATEMENT__BODY:
 				setBody((Block)null);
 				return;
+			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS:
+				setMissingBindings(MISSING_BINDINGS_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
 				setMissingEndHeader(MISSING_END_HEADER_EDEFAULT);
 				return;
@@ -441,6 +492,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 				return variables != null && !variables.isEmpty();
 			case AcceleoPackage.ERROR_LET_STATEMENT__BODY:
 				return body != null;
+			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_BINDINGS:
+				return missingBindings != MISSING_BINDINGS_EDEFAULT;
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END_HEADER:
 				return missingEndHeader != MISSING_END_HEADER_EDEFAULT;
 			case AcceleoPackage.ERROR_LET_STATEMENT__MISSING_END:
@@ -516,6 +569,8 @@ public class ErrorLetStatementImpl extends MinimalEObjectImpl.Container implemen
 		result.append(startPosition);
 		result.append(", endPosition: "); //$NON-NLS-1$
 		result.append(endPosition);
+		result.append(", missingBindings: "); //$NON-NLS-1$
+		result.append(missingBindings);
 		result.append(", missingEndHeader: "); //$NON-NLS-1$
 		result.append(missingEndHeader);
 		result.append(", missingEnd: "); //$NON-NLS-1$

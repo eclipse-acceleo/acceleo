@@ -1,0 +1,61 @@
+[**	
+ * My module has a nice comment.
+ * <<moduleComment>>@author Yvan Lussaud
+ * <<moduleCommentAfterAuthor>>@version 0.1.0
+ * <<moduleCommentAfterAuthorAndVersion>>@since 0.0.1<<moduleCommentAfterAuthorAndVersionAndSince>>
+*/]
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[**
+ * My query has a nice comment.
+ * <<queryComment>>@param myParam the input EPackage<<queryCommentAfterParameters>>
+*/]
+<<moduleElementAndImport>>
+[query <<queryVisibility>>public <<queryName>>myQuery<<queryOpenParenthesis>>(<<queryVariableName>>myParam <<queryVariableColon>>: <<queryVariableType>>ecore::EPackage<<queryCloseParenthesis>>) <<queryColon>>: <<queryType>>ecore::EClassifier <<queryEqual>>= <<queryExpression>>myParam.<<queryExpressionAfterDot>>eClassifiers->first()<<queryEndHeader>>/]
+
+[**
+ * My template has a nice comment.
+ * <<templateComment>>@param myParam the input EPackage<<templateCommentAfterParameters>>
+*/]
+[template <<templateVisibility>>public <<templateName>>myTemplate<<templateOpenParenthesis>>(<<templateVariableName>>myParam <<templateVariableColon>>: <<templateVariableType>>ecore::EPackage<<templateCloseParenthesis>>) ? <<templateGuardOpenParenthesis>>(<<templateGuardExpression>>myParam.<<templateGuardExpressionAfterDot>>name <> null<<templateGuardCloseParenthesis>>) post(<<templatePostExpression>>self.<<templatePostExpressionAfterDot>>trim()<<templatePostCloseParenthesis>>) <<templateEndHeader>>]
+  <<statementInTemplate>>
+  some static text.
+  [<<queryStatementExpression>>myParam.<<queryStatementExpressionAfterDot>>name + '.txt'<<queryStatementEnd>>/]
+  [file <<fileStatementOpenParenthesis>>(<<fileStatementExpression>>myParam.<<fileStatementExpressionAfterDot>>name + '.txt'<<fileStatementComa>>, <<fileStatementOpenModeKind>>overwrite<<fileStatementCloseParenthesis>>)<<fileStatementEndHeader>>]
+    <<statementInFileStatement>>
+    some static text.
+  [/file]
+  [for <<forStatementOpenParenthesis>>(<<forStatementBindingName>>myVariable <<forStatementBindingColon>>: <<forStatementBindingType>>ecore::EClassifier <<forStatementBindingPipe>>| <<forStatementBindingExpression>>myParam.<<forStatementBindingExpressionAfterDot>>eClassifiers<<forStatementCloseParenthesis>>)<<forStatementEndHeader>>]
+    <<statementInForStatement>>
+    some static text.
+  [/for]
+  [if <<ifStatementOpenParenthesis>>(<<ifStatementExpression>>myParam.<<ifStatementExpressionAfterDot>>eClassifiers->size() = 0<<ifStatementCloseParenthesis>>)<<ifStatementEndHeader>>]
+    <<statementInIfStatementThen>>
+    some static text.
+  [elseif <<ifStatementElseIfOpenParenthesis>>(<<ifStatementElseIfExpression>>myParam.<<ifStatementElseIfExpressionAfterDot>>eClassifiers->size() > 2<<ifStatementElseIfCloseParenthesis>>)<<ifStatementElseIfEndHeader>>]
+    <<statementInIfStatementElseIf>>
+    some different static text.
+  [else]
+    <<statementInIfStatementElse>>
+    yet some different static text again.
+  [/if]
+  [let <<letStatementBindingName>>myVariable <<letStatementBindingColumn>>: <<letStatementBindingType>>ecore::EClassifier <<letStatementBindingEqual>>= <<letStatementBindingExpression>>myParam.<<letStatementBindingExpressionAfterDot>>eClassifiers->first()<<letStatementEndHeader>>]
+    <<statementInLetStatement>>
+    some static text.
+  [/let]
+  [protected <<protectedAreaOpenParenthesis>>(<<protectedAreaExpression>>myParam.name<<protectedAreaCloseParenthesis>>)<<protectedAreaEndHeader>>]
+    <<statementInProtectedArea>>
+    some static text.
+  [/protected]
+  [let myVariable1 : ecore::EClassifier = myParam.eClassifiers->first()]
+    [let myVariable2 : ecore::EClassifier = myParam.eClassifiers->first()]
+      [for (myVariable3 : ecore::EClassifier | myParam.eClassifiers)]
+        [for (myVariable4 : ecore::EClassifier | myParam.eClassifiers)]
+          [<<nestedQueryStatementExpression>>myParam.<<nestedQueryStatementExpressionAfterDot>>name + '.txt'/]
+        [/for]
+      [/for]
+    [/let]
+  [/let]
+[/template]
+<<moduleElement>>
+

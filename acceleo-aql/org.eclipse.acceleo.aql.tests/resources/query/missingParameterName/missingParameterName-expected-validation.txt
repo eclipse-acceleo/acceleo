@@ -1,2 +1,2 @@
-ERROR Missing name - 84 84
+ERROR Missing parameter - 101 101
 ERROR Couldn't find the 'myParam' variable - 126 133

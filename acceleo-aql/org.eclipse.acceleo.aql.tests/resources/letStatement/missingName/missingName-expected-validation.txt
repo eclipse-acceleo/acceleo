@@ -1,1 +1,1 @@
-ERROR Missing name - 125 125
+WARNING Missing binding - 177 177

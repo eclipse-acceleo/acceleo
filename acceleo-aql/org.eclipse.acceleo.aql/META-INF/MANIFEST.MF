@@ -9,6 +9,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.acceleo,
  org.eclipse.acceleo.aql,
+ org.eclipse.acceleo.aql.completion,
  org.eclipse.acceleo.aql.evaluation,
  org.eclipse.acceleo.aql.parser,
  org.eclipse.acceleo.aql.validation,

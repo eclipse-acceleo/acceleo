@@ -1,2 +1,2 @@
 ERROR Missing or invalid type - 93 93
-ERROR Couldn't find the 'myParam' variable - 118 125
+ERROR missing type literal - 118 125

@@ -1,0 +1,9 @@
+private  8
+private 
+
+protected  10
+protected 
+
+public  7
+public 
+

@@ -8,11 +8,12 @@ module myModule
    (116..119)
     *** error for statement ***
     missing open parenthesis: -1
+    missing binding: -1
     missing close parenthesis: -1
     missing end header: -1
-    missing end: 207
-    [for myVariable : EClassifier = .aqlFeatureAccess(myTemplate, 'eClassifiers') (159..182) (125..182)
+    missing end: 204
+    [for myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (159..179) (125..179)
       
     some static text.
- (184..207) (184..207)
-    [/for] (119..207) (116..207)[/template] (61..218) (0..218)
+ (181..204) (181..204)
+    [/for] (119..204) (116..204)[/template] (61..215) (0..215)

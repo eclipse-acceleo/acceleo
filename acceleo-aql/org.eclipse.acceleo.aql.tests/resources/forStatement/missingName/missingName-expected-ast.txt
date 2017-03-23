@@ -6,13 +6,13 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
-    [for *** error binding ***
-    missing name: 126
-    missing colon: -1
-    missing type: -1
-    missing affectation symbol: null
-    missing affectation symbol position: -1
-    null : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (149..169) (126..169)
+    *** error for statement ***
+    missing open parenthesis: -1
+    missing binding: 169
+    missing close parenthesis: -1
+    missing end header: -1
+    missing end: -1
+    [for null binding]
       
     some static text.
    (171..196) (171..196)

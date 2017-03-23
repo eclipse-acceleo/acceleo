@@ -84,6 +84,11 @@ public abstract class AbstractTemplatesTestSuite {
 	private final IAcceleoEnvironment environment = new AcceleoEnvironment();
 
 	/**
+	 * The module qualified name.
+	 */
+	private final String qualifiedName;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param testFolder
@@ -103,8 +108,8 @@ public abstract class AbstractTemplatesTestSuite {
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
 			astResult = parser.parse(getContent(stream, UTF_8));
-			environment.registerModule("org::eclipse::acceleo::tests::" + astResult.getModule().getName(),
-					astResult.getModule());
+			qualifiedName = "org::eclipse::acceleo::tests::" + astResult.getModule().getName();
+			environment.registerModule(qualifiedName, astResult.getModule());
 		}
 	}
 
@@ -181,7 +186,8 @@ public abstract class AbstractTemplatesTestSuite {
 	@Test
 	public void validation() throws FileNotFoundException, IOException {
 		AcceleoValidator validator = new AcceleoValidator(environment);
-		final List<IValidationMessage> messages = validator.validate(astResult).getValidationMessages();
+		final List<IValidationMessage> messages = validator.validate(astResult, qualifiedName)
+				.getValidationMessages();
 		final String actualContent = getValidationContent(messages);
 		final File expectedFile = getExpectedValidatedFile(new File(testFolderPath));
 		final File actualFile = getActualValidatedFile(new File(testFolderPath));

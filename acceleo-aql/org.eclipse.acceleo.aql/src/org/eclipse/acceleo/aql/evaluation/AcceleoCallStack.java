@@ -13,7 +13,6 @@ package org.eclipse.acceleo.aql.evaluation;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 
 /**
@@ -30,8 +29,8 @@ import org.eclipse.acceleo.ModuleElement;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoCallStack {
-	/** The module that was the starting point of us creating this stack. */
-	private final Module startingModule;
+	/** The module qualified name that was the starting point of us creating this stack. */
+	private final String startingModuleQualifiedName;
 
 	/** The underlying call stack. */
 	private final Deque<ModuleElement> stack;
@@ -39,11 +38,11 @@ public class AcceleoCallStack {
 	/**
 	 * Creates a stack starting at the given module.
 	 * 
-	 * @param startingModule
-	 *            The module that will be considered the "starting point" of this stack.
+	 * @param startingModuleQualifiedName
+	 *            The module qualified name that will be considered the "starting point" of this stack.
 	 */
-	public AcceleoCallStack(Module startingModule) {
-		this.startingModule = startingModule;
+	public AcceleoCallStack(String startingModuleQualifiedName) {
+		this.startingModuleQualifiedName = startingModuleQualifiedName;
 		this.stack = new ArrayDeque<ModuleElement>();
 	}
 
@@ -51,35 +50,36 @@ public class AcceleoCallStack {
 		return stack;
 	}
 
-	public Module getStartingModule() {
-		return startingModule;
+	public String getStartingModuleQualifiedName() {
+		return startingModuleQualifiedName;
 	}
 
 	/**
-	 * Adds the given module element to the top of this stack.
+	 * Adds the given {@link ModuleElement} to the top of this stack.
 	 * 
-	 * @param element
-	 *            The element we're pushing atop the stack.
+	 * @param moduleElement
+	 *            The {@link ModuleElement} we're pushing atop the stack.
 	 */
-	public void addLast(ModuleElement element) {
-		stack.addLast(element);
+	public void push(ModuleElement moduleElement) {
+		stack.addLast(moduleElement);
 	}
 
 	/**
-	 * Retrieves and removes the element atop this stack.
+	 * Retrieves and removes the {@link ModuleElement} atop this stack.
 	 * 
-	 * @return The element that was at the top of this stack if any, <code>null</code> otherwise.
+	 * @return The {@link ModuleElement} that was at the top of this stack if any, <code>null</code>
+	 *         otherwise.
 	 */
-	public ModuleElement pollLast() {
+	public ModuleElement pop() {
 		return stack.pollLast();
 	}
 
 	/**
-	 * Retrieves the element atop this stack without removing it.
+	 * Retrieves the {@link ModuleElement} atop this stack without removing it.
 	 * 
-	 * @return The element at the top of this stack if any, <code>null</code> otherwise.
+	 * @return The {@link ModuleElement} at the top of this stack if any, <code>null</code> otherwise.
 	 */
-	public ModuleElement peekLast() {
+	public ModuleElement peek() {
 		return stack.peekLast();
 	}
 

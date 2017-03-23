@@ -6,15 +6,16 @@ module myModule
   missing visibility: -1
   missing name: -1
   missing open parenthesis: -1
+  missing parameters: -1
   missing close parenthesis: -1
   missing guard open parenthesis: -1
   missing guard close parenthesis: -1
-  missing post close parenthesis: 134
+  missing post close parenthesis: 132
   missing post end header: -1
   missing post end: -1
   
   public template myTemplate(myParam : EPackage (89..114))
-  post .trim(result) (121..134)
+  post .trim(self) (121..132)
     
  some static text.
- (135..155) (135..155)[/template] (61..166) (0..166)
+ (133..153) (133..153)[/template] (61..164) (0..164)

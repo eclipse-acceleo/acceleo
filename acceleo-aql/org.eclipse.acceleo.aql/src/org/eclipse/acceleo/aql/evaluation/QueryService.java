@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
@@ -57,8 +57,13 @@ public class QueryService extends AbstractModuleElementService {
 	 * @see org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService#getModuleElement()
 	 */
 	@Override
-	public ModuleElement getModuleElement() {
+	public Query getModuleElement() {
 		return query;
+	}
+
+	@Override
+	public String getModuleQualifiedName() {
+		return env.getModuleQualifiedName((Module)query.eContainer());
 	}
 
 	/**

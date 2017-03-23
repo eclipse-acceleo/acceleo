@@ -1,0 +1,159 @@
+ecore::EAnnotation 18
+EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EAttribute 17
+EClass named EAttribute in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EBigDecimal 18
+EDataType named EBigDecimal in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EBigInteger 18
+EDataType named EBigInteger in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EBoolean 15
+EDataType named EBoolean in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EBooleanObject 21
+EDataType named EBooleanObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EByteArray 17
+EDataType named EByteArray in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EByte 12
+EDataType named EByte in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EByteObject 18
+EDataType named EByteObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EChar 12
+EDataType named EChar in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ECharacterObject 23
+EDataType named ECharacterObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EClass 13
+EClass named EClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EClassifier 18
+EClass named EClassifier in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EDataType 16
+EClass named EDataType in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EDate 12
+EDataType named EDate in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EDiagnosticChain 23
+EDataType named EDiagnosticChain in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EDouble 14
+EDataType named EDouble in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EDoubleObject 20
+EDataType named EDoubleObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EEList 13
+EDataType named EEList in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EEnum 12
+EClass named EEnum in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EEnumLiteral 19
+EClass named EEnumLiteral in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EEnumerator 18
+EDataType named EEnumerator in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EFactory 15
+EClass named EFactory in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EFeatureMap 18
+EDataType named EFeatureMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EFeatureMapEntry 23
+EDataType named EFeatureMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EFloat 13
+EDataType named EFloat in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EFloatObject 19
+EDataType named EFloatObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EGenericType 19
+EClass named EGenericType in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EInt 11
+EDataType named EInt in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EIntegerObject 21
+EDataType named EIntegerObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EInvocationTargetException 33
+EDataType named EInvocationTargetException in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EJavaClass 17
+EDataType named EJavaClass in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EJavaObject 18
+EDataType named EJavaObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ELong 12
+EDataType named ELong in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ELongObject 18
+EDataType named ELongObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EMap 11
+EDataType named EMap in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EModelElement 20
+EClass named EModelElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ENamedElement 20
+EClass named ENamedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EObject 14
+EClass named EObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EOperation 17
+EClass named EOperation in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EPackage 15
+EClass named EPackage in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EParameter 17
+EClass named EParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EReference 17
+EClass named EReference in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EResource 16
+EDataType named EResource in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EResourceSet 19
+EDataType named EResourceSet in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EShort 13
+EDataType named EShort in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EShortObject 19
+EDataType named EShortObject in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EString 14
+EDataType named EString in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EStringToStringMapEntry 30
+EClass named EStringToStringMapEntry in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::EStructuralFeature 25
+EClass named EStructuralFeature in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ETreeIterator 20
+EDataType named ETreeIterator in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ETypeParameter 21
+EClass named ETypeParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+ecore::ETypedElement 20
+EClass named ETypedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql;
 
+import java.util.Collection;
+
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
@@ -31,6 +33,35 @@ public interface IAcceleoEnvironment {
 	void registerModule(String qualifiedName, Module module);
 
 	/**
+	 * Gets the {@link Module} qualified name.
+	 * 
+	 * @param module
+	 *            the {@link Module}
+	 * @return the {@link Module} qualified name if the {@link Module} is
+	 *         {@link IAcceleoEnvironment#registerModule(String, Module) registered}, <code>null</code>
+	 *         otherwise
+	 */
+	String getModuleQualifiedName(Module module);
+
+	/**
+	 * Gets the extend for the given module qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the module qualified name
+	 * @return the extend for the given module qualified name if nay, <code>null</code> otherwise
+	 */
+	String getExtend(String qualifiedName);
+
+	/**
+	 * Gets the {@link Collection} of imports for the given module qualified name.
+	 * 
+	 * @param qualifiedName
+	 *            the module qualified name
+	 * @return the {@link Collection} of imports for the given module qualified name
+	 */
+	Collection<String> getImports(String qualifiedName);
+
+	/**
 	 * Tells if the given {@link org.eclipse.acceleo.Module} qualified name exists.
 	 * 
 	 * @param qualifiedName
@@ -48,23 +79,29 @@ public interface IAcceleoEnvironment {
 	IQueryEnvironment getQueryEnvironment();
 
 	/**
-	 * Push the given module element atop the latest stack, or create a new stack for it if
-	 * <code>newStackStartingModule</code> is not null.
+	 * Pushes the given imported module qualified name.
 	 * 
-	 * @param element
-	 *            The module element we're entering into.
-	 * @param newStackStartingModule
-	 *            If this is not null, we'll create a new stack with this module as starting point to push the
-	 *            module element on. Otherwise we'll just push this element on the latest stack.
+	 * @param importModuleQualifiedName
+	 *            the imported module qualified name
+	 * @param moduleElement
+	 *            the {@link ModuleElement} been called
 	 */
-	void pushStack(ModuleElement element, Module newStackStartingModule);
+	void pushImport(String importModuleQualifiedName, ModuleElement moduleElement);
 
 	/**
-	 * Removes a module element from the latest call stack, popping that stack out as well if it's empty
-	 * afterwards.
+	 * Pushes the given module qualified name.
 	 * 
-	 * @param element
-	 *            The module element we're exiting out of.
+	 * @param moduleElement
+	 *            the {@link ModuleElement} been called
 	 */
-	void popStack(ModuleElement element);
+	void push(ModuleElement moduleElement);
+
+	/**
+	 * Removes a module qualified name from the latest call stack, popping that stack out as well if it's
+	 * empty afterwards.
+	 * 
+	 * @param moduleElement
+	 *            The {@link ModuleElement} we're exiting out of.
+	 */
+	void popStack(ModuleElement moduleElement);
 }

@@ -53,6 +53,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingVisibility <em>Missing Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingName <em>Missing Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingParameters <em>Missing Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingColon <em>Missing Colon</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorQueryImpl#getMissingType <em>Missing Type</em>}</li>
@@ -273,6 +274,26 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * @ordered
 	 */
 	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingParameters() <em>Missing Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_PARAMETERS_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingParameters() <em>Missing Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingParameters()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingParameters = MISSING_PARAMETERS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
@@ -700,6 +721,28 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getMissingParameters() {
+		return missingParameters;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingParameters(int newMissingParameters) {
+		int oldMissingParameters = missingParameters;
+		missingParameters = newMissingParameters;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_QUERY__MISSING_PARAMETERS, oldMissingParameters, missingParameters));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -873,6 +916,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return getMissingName();
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
+			case AcceleoPackage.ERROR_QUERY__MISSING_PARAMETERS:
+				return getMissingParameters();
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
 				return getMissingCloseParenthesis();
 			case AcceleoPackage.ERROR_QUERY__MISSING_COLON:
@@ -932,6 +977,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_QUERY__MISSING_PARAMETERS:
+				setMissingParameters((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis((Integer)newValue);
@@ -996,6 +1044,9 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_QUERY__MISSING_PARAMETERS:
+				setMissingParameters(MISSING_PARAMETERS_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis(MISSING_CLOSE_PARENTHESIS_EDEFAULT);
 				return;
@@ -1047,6 +1098,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 				return missingName != MISSING_NAME_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_QUERY__MISSING_PARAMETERS:
+				return missingParameters != MISSING_PARAMETERS_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_CLOSE_PARENTHESIS:
 				return missingCloseParenthesis != MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_QUERY__MISSING_COLON:
@@ -1198,6 +1251,8 @@ public class ErrorQueryImpl extends MinimalEObjectImpl.Container implements Erro
 		result.append(missingName);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
+		result.append(", missingParameters: "); //$NON-NLS-1$
+		result.append(missingParameters);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);
 		result.append(", missingColon: "); //$NON-NLS-1$

@@ -22,6 +22,7 @@ package org.eclipse.acceleo;
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingVisibility <em>Missing Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingName <em>Missing Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingParameters <em>Missing Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardOpenParenthesis <em>Missing Guard Open Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorTemplate#getMissingGuardCloseParenthesis <em>Missing Guard Close Parenthesis</em>}</li>
@@ -116,6 +117,33 @@ public interface ErrorTemplate extends org.eclipse.acceleo.Error, Template {
 	 * @generated
 	 */
 	void setMissingOpenParenthesis(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Parameters</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Parameters</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Parameters</em>' attribute.
+	 * @see #setMissingParameters(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorTemplate_MissingParameters()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingParameters();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorTemplate#getMissingParameters <em>Missing Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Parameters</em>' attribute.
+	 * @see #getMissingParameters()
+	 * @generated
+	 */
+	void setMissingParameters(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.

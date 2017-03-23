@@ -1,2 +1,1 @@
 ERROR Missing ":" - 92 92
-ERROR Couldn't find the 'myParam' variable - 132 139

@@ -66,7 +66,6 @@ import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.query.ast.AstPackage;
-import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
 import org.eclipse.acceleo.query.parser.QueryLexer;
@@ -471,10 +470,10 @@ public class AcceleoParser {
 	protected String parseIdentifier() {
 		final String res;
 
-		if (currentPosition <= text.length() && Character.isJavaIdentifierStart(text.charAt(currentPosition))) {
+		if (currentPosition < text.length() && Character.isJavaIdentifierStart(text.charAt(currentPosition))) {
 			final int identifierStart = currentPosition;
 			currentPosition++;
-			while (currentPosition <= text.length()
+			while (currentPosition < text.length()
 					&& Character.isJavaIdentifierPart(text.charAt(currentPosition))) {
 				currentPosition++;
 			}
@@ -558,7 +557,11 @@ public class AcceleoParser {
 			if (sincePosition >= 0) {
 				final int sinceStart = sincePosition + SINCE_TAG.length();
 				int sinceEnd = docString.indexOf(NEW_LINE, sinceStart);
-				res.setSince(docString.substring(sinceStart, sinceEnd));
+				if (sinceEnd >= 0) {
+					res.setSince(docString.substring(sinceStart, sinceEnd));
+				} else {
+					res.setSince(docString.substring(sinceStart, docString.length()));
+				}
 			}
 			res.setEndPosition(currentPosition);
 		} else {
@@ -901,6 +904,12 @@ public class AcceleoParser {
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Variable> parameters = parseVariables();
+			final int missingParameters;
+			if (parameters.isEmpty()) {
+				missingParameters = currentPosition;
+			} else {
+				missingParameters = -1;
+			}
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
@@ -924,13 +933,15 @@ public class AcceleoParser {
 			final int missingEnd = readMissingString(QUERY_END);
 			final boolean missingValue = missingVisibility != -1 || missingName != -1 || missingType != -1
 					|| parameters.isEmpty();
-			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1;
+			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingParameters != -1
+					|| missingCloseParenthesis != -1;
 			final boolean missingSymbols = missingColon != -1 || missingEqual != -1 || missingEnd != -1;
 			if (missingVisibility != -1 || missingValue || missingParenthesis || missingSymbols) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorQuery();
 				((ErrorQuery)res).setMissingVisibility(missingVisibility);
 				((ErrorQuery)res).setMissingName(missingName);
 				((ErrorQuery)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorQuery)res).setMissingParameters(missingParameters);
 				((ErrorQuery)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorQuery)res).setMissingColon(missingColon);
 				((ErrorQuery)res).setMissingType(missingType);
@@ -970,8 +981,8 @@ public class AcceleoParser {
 			if (readString(COMMA)) {
 				skipSpaces();
 				variable = parseVariable();
-				skipSpaces();
 			} else {
+				skipSpaces();
 				break;
 			}
 		}
@@ -1008,19 +1019,23 @@ public class AcceleoParser {
 			missingType = -1;
 		}
 
-		if (missingName != -1 || missingType != -1 || missingColon != -1) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorVariable();
-			((ErrorVariable)res).setMissingName(missingName);
-			((ErrorVariable)res).setMissingColon(missingColon);
-			((ErrorVariable)res).setMissingType(missingType);
-			errors.add((ErrorVariable)res);
+		if (missingName == -1) {
+			if (missingType != -1 || missingColon != -1) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorVariable();
+				((ErrorVariable)res).setMissingName(missingName);
+				((ErrorVariable)res).setMissingColon(missingColon);
+				((ErrorVariable)res).setMissingType(missingType);
+				errors.add((ErrorVariable)res);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
+			}
+			res.setStartPosition(startPosition);
+			res.setName(name);
+			res.setType(type);
+			res.setEndPosition(currentPosition);
 		} else {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createVariable();
+			res = null;
 		}
-		res.setStartPosition(startPosition);
-		res.setName(name);
-		res.setType(type);
-		res.setEndPosition(currentPosition);
 
 		return res;
 	}
@@ -1059,6 +1074,12 @@ public class AcceleoParser {
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
 			final List<Variable> parameters = parseVariables();
+			final int missingParameters;
+			if (parameters.isEmpty()) {
+				missingParameters = currentPosition;
+			} else {
+				missingParameters = -1;
+			}
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
@@ -1102,13 +1123,15 @@ public class AcceleoParser {
 			final boolean missingValue = missingVisibility != -1 || missingName != -1 || parameters.isEmpty();
 			final boolean missingGuardParenthesis = missingGuardOpenParenthesis != -1
 					|| missingGuardCloseParenthesis != -1;
-			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingCloseParenthesis != -1
-					|| missingGuardParenthesis || missingPostCloseParenthesis != -1;
+			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingParameters != -1
+					|| missingCloseParenthesis != -1 || missingGuardParenthesis
+					|| missingPostCloseParenthesis != -1;
 			if (missingValue || missingParenthesis || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorTemplate();
 				((ErrorTemplate)res).setMissingVisibility(missingVisibility);
 				((ErrorTemplate)res).setMissingName(missingName);
 				((ErrorTemplate)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorTemplate)res).setMissingParameters(missingParameters);
 				((ErrorTemplate)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorTemplate)res).setMissingGuardOpenParenthesis(missingGuardOpenParenthesis);
 				((ErrorTemplate)res).setMissingGuardCloseParenthesis(missingGuardCloseParenthesis);
@@ -1297,16 +1320,24 @@ public class AcceleoParser {
 			skipSpaces();
 			final int bindingEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS, FOR_HEADER_END);
 			final Binding binding = parseBinding(PIPE, bindingEndLimit);
+			final int missingBinding;
+			if (binding == null) {
+				missingBinding = currentPosition;
+			} else {
+				missingBinding = -1;
+			}
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
 			final int missingEndHeader = readMissingString(FOR_HEADER_END);
 			final Block body = parseBlock(FOR_END);
 			final int missingEnd = readMissingString(FOR_END);
-			if (missingOpenParenthesis != -1 || missingCloseParenthesis != -1 || missingEndHeader != -1
-					|| missingEnd != -1) {
+			final boolean missingParenthesis = missingOpenParenthesis != -1 || missingBinding != -1
+					|| missingCloseParenthesis != -1;
+			if (missingParenthesis || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorForStatement();
 				((ErrorForStatement)res).setMissingOpenParenthesis(missingOpenParenthesis);
+				((ErrorForStatement)res).setMissingBinding(missingBinding);
 				((ErrorForStatement)res).setMissingCloseParenthesis(missingCloseParenthesis);
 				((ErrorForStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorForStatement)res).setMissingEnd(missingEnd);
@@ -1414,24 +1445,20 @@ public class AcceleoParser {
 			final int startPosition = currentPosition;
 			currentPosition += LET_HEADER_START.length();
 			skipSpaces();
-			int bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
-			final List<Binding> bindings = new ArrayList<Binding>();
-			Binding binding = parseBinding(EQUAL, bindingEndLimit);
-			bindings.add(binding);
-			skipSpaces();
-			while (readString(COMMA)) {
-				skipSpaces();
-				bindingEndLimit = getAqlExpressionEndLimit(COMMA, LET_HEADER_END);
-				binding = parseBinding(EQUAL, bindingEndLimit);
-				bindings.add(binding);
-				skipSpaces();
+			final List<Binding> bindings = parseBindings(EQUAL, LET_HEADER_END);
+			final int missingBindings;
+			if (bindings.isEmpty()) {
+				missingBindings = currentPosition;
+			} else {
+				missingBindings = -1;
 			}
 			skipSpaces();
 			final int missingEndHeader = readMissingString(LET_HEADER_END);
 			final Block body = parseBlock(LET_END);
 			final int missingEnd = readMissingString(LET_END);
-			if (missingEndHeader != -1 || missingEnd != -1) {
+			if (missingBindings != -1 || missingEndHeader != -1 || missingEnd != -1) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorLetStatement();
+				((ErrorLetStatement)res).setMissingBindings(missingBindings);
 				((ErrorLetStatement)res).setMissingEndHeader(missingEndHeader);
 				((ErrorLetStatement)res).setMissingEnd(missingEnd);
 				errors.add((ErrorLetStatement)res);
@@ -1504,24 +1531,60 @@ public class AcceleoParser {
 		}
 		skipSpaces();
 		final Expression expression = parseExpression(endLimit);
-		if (missingName != -1 || missingColon != -1 || missingType != -1 || missingAffectationSymbol != -1) {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorBinding();
-			((ErrorBinding)res).setMissingName(missingName);
-			((ErrorBinding)res).setMissingColon(missingColon);
-			((ErrorBinding)res).setMissingType(missingType);
-			if (missingAffectationSymbol != -1) {
-				((ErrorBinding)res).setMissingAffectationSymbole(affectationSymbol);
-				((ErrorBinding)res).setMissingAffectationSymbolePosition(missingAffectationSymbol);
+		if (missingName == -1) {
+			final boolean hasErrorExpression = expression.getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error;
+			if (missingColon != -1 || missingType != -1 || missingAffectationSymbol != -1
+					|| hasErrorExpression) {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorBinding();
+				((ErrorBinding)res).setMissingName(missingName);
+				((ErrorBinding)res).setMissingColon(missingColon);
+				((ErrorBinding)res).setMissingType(missingType);
+				if (missingAffectationSymbol != -1) {
+					((ErrorBinding)res).setMissingAffectationSymbole(affectationSymbol);
+					((ErrorBinding)res).setMissingAffectationSymbolePosition(missingAffectationSymbol);
+				}
+				errors.add((ErrorBinding)res);
+			} else {
+				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
 			}
-			errors.add((ErrorBinding)res);
+			res.setStartPosition(startPosition);
+			res.setName(name);
+			res.setType(type);
+			res.setInitExpression(expression);
+			res.setEndPosition(currentPosition);
 		} else {
-			res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createBinding();
+			res = null;
 		}
-		res.setStartPosition(startPosition);
-		res.setName(name);
-		res.setType(type);
-		res.setInitExpression(expression);
-		res.setEndPosition(currentPosition);
+
+		return res;
+	}
+
+	/**
+	 * Parses a {@link List} of at least one {@link Binding}.
+	 * 
+	 * @param affectationSymbol
+	 *            the affectation symbol
+	 * @param endTag
+	 *            the end tag
+	 * @return the {@link List} of at least one {@link Binding}
+	 */
+	protected List<Binding> parseBindings(String affectationSymbol, String endTag) {
+		final List<Binding> res = new ArrayList<Binding>();
+
+		int bindingEndLimit = getAqlExpressionEndLimit(COMMA, endTag);
+		Binding binding = parseBinding(affectationSymbol, bindingEndLimit);
+		while (binding != null) {
+			res.add(binding);
+			skipSpaces();
+			if (readString(COMMA)) {
+				skipSpaces();
+				bindingEndLimit = getAqlExpressionEndLimit(COMMA, endTag);
+				binding = parseBinding(affectationSymbol, bindingEndLimit);
+			} else {
+				skipSpaces();
+				break;
+			}
+		}
 
 		return res;
 	}
@@ -1776,8 +1839,8 @@ public class AcceleoParser {
 			parser.expression();
 			result = astBuilder.getAstResult();
 		} else {
-			ErrorExpression errorExpression = (ErrorExpression)EcoreUtil.create(AstPackage.eINSTANCE
-					.getErrorExpression());
+			org.eclipse.acceleo.query.ast.ErrorExpression errorExpression = (org.eclipse.acceleo.query.ast.ErrorExpression)EcoreUtil
+					.create(AstPackage.eINSTANCE.getErrorExpression());
 			List<org.eclipse.acceleo.query.ast.Error> aqlErrors = new ArrayList<org.eclipse.acceleo.query.ast.Error>(
 					1);
 			aqlErrors.add(errorExpression);

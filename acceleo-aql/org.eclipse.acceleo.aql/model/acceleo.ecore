@@ -133,6 +133,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingOpenParenthesis"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingParameters" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingCloseParenthesis"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="-1"/>
@@ -165,6 +167,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingOpenParenthesis"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingParameters" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingCloseParenthesis"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="-1"/>
@@ -244,6 +248,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingOpenParenthesis"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="-1"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingBinding" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingCloseParenthesis"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="-1"/>
@@ -279,6 +285,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ErrorLetStatement" eSuperTypes="#//Error #//LetStatement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingBindings" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEndHeader" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="missingEnd" lowerBound="1"

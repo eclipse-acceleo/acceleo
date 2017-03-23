@@ -1123,7 +1123,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorTemplate_MissingCloseParenthesis() {
+	public EAttribute getErrorTemplate_MissingParameters() {
 		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1132,7 +1132,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorTemplate_MissingGuardOpenParenthesis() {
+	public EAttribute getErrorTemplate_MissingCloseParenthesis() {
 		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1141,7 +1141,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorTemplate_MissingGuardCloseParenthesis() {
+	public EAttribute getErrorTemplate_MissingGuardOpenParenthesis() {
 		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1150,7 +1150,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorTemplate_MissingPostCloseParenthesis() {
+	public EAttribute getErrorTemplate_MissingGuardCloseParenthesis() {
 		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1159,7 +1159,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorTemplate_MissingEndHeader() {
+	public EAttribute getErrorTemplate_MissingPostCloseParenthesis() {
 		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -1168,8 +1168,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorTemplate_MissingEnd() {
+	public EAttribute getErrorTemplate_MissingEndHeader() {
 		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorTemplate_MissingEnd() {
+		return (EAttribute)errorTemplateEClass.getEStructuralFeatures().get(9);
 	}
 
 	/**
@@ -1249,7 +1258,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorQuery_MissingCloseParenthesis() {
+	public EAttribute getErrorQuery_MissingParameters() {
 		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -1258,7 +1267,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorQuery_MissingColon() {
+	public EAttribute getErrorQuery_MissingCloseParenthesis() {
 		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -1267,7 +1276,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorQuery_MissingType() {
+	public EAttribute getErrorQuery_MissingColon() {
 		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -1276,7 +1285,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorQuery_MissingEqual() {
+	public EAttribute getErrorQuery_MissingType() {
 		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -1285,8 +1294,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorQuery_MissingEnd() {
+	public EAttribute getErrorQuery_MissingEqual() {
 		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorQuery_MissingEnd() {
+		return (EAttribute)errorQueryEClass.getEStructuralFeatures().get(8);
 	}
 
 	/**
@@ -1600,7 +1618,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorForStatement_MissingCloseParenthesis() {
+	public EAttribute getErrorForStatement_MissingBinding() {
 		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -1609,7 +1627,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorForStatement_MissingEndHeader() {
+	public EAttribute getErrorForStatement_MissingCloseParenthesis() {
 		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -1618,8 +1636,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorForStatement_MissingEnd() {
+	public EAttribute getErrorForStatement_MissingEndHeader() {
 		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorForStatement_MissingEnd() {
+		return (EAttribute)errorForStatementEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -1744,7 +1771,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorLetStatement_MissingEndHeader() {
+	public EAttribute getErrorLetStatement_MissingBindings() {
 		return (EAttribute)errorLetStatementEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -1753,8 +1780,17 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getErrorLetStatement_MissingEnd() {
+	public EAttribute getErrorLetStatement_MissingEndHeader() {
 		return (EAttribute)errorLetStatementEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getErrorLetStatement_MissingEnd() {
+		return (EAttribute)errorLetStatementEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -2043,6 +2079,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_VISIBILITY);
 		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_NAME);
 		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_PARAMETERS);
 		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS);
 		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS);
 		createEAttribute(errorTemplateEClass, ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS);
@@ -2059,6 +2096,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_VISIBILITY);
 		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_NAME);
 		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_PARAMETERS);
 		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_CLOSE_PARENTHESIS);
 		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_COLON);
 		createEAttribute(errorQueryEClass, ERROR_QUERY__MISSING_TYPE);
@@ -2111,6 +2149,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		errorForStatementEClass = createEClass(ERROR_FOR_STATEMENT);
 		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS);
+		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_BINDING);
 		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS);
 		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_END_HEADER);
 		createEAttribute(errorForStatementEClass, ERROR_FOR_STATEMENT__MISSING_END);
@@ -2131,6 +2170,7 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 		createEReference(letStatementEClass, LET_STATEMENT__BODY);
 
 		errorLetStatementEClass = createEClass(ERROR_LET_STATEMENT);
+		createEAttribute(errorLetStatementEClass, ERROR_LET_STATEMENT__MISSING_BINDINGS);
 		createEAttribute(errorLetStatementEClass, ERROR_LET_STATEMENT__MISSING_END_HEADER);
 		createEAttribute(errorLetStatementEClass, ERROR_LET_STATEMENT__MISSING_END);
 
@@ -2525,6 +2565,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				ecorePackage.getEInt(),
 				"missingOpenParenthesis", "-1", 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 		initEAttribute(
+				getErrorTemplate_MissingParameters(),
+				ecorePackage.getEInt(),
+				"missingParameters", "-1", 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
+		initEAttribute(
 				getErrorTemplate_MissingCloseParenthesis(),
 				ecorePackage.getEInt(),
 				"missingCloseParenthesis", "-1", 1, 1, ErrorTemplate.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2580,6 +2624,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				getErrorQuery_MissingOpenParenthesis(),
 				ecorePackage.getEInt(),
 				"missingOpenParenthesis", "-1", 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
+		initEAttribute(
+				getErrorQuery_MissingParameters(),
+				ecorePackage.getEInt(),
+				"missingParameters", "-1", 1, 1, ErrorQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 		initEAttribute(
 				getErrorQuery_MissingCloseParenthesis(),
 				ecorePackage.getEInt(),
@@ -2730,6 +2778,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 				ecorePackage.getEInt(),
 				"missingOpenParenthesis", "-1", 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 		initEAttribute(
+				getErrorForStatement_MissingBinding(),
+				ecorePackage.getEInt(),
+				"missingBinding", "-1", 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
+		initEAttribute(
 				getErrorForStatement_MissingCloseParenthesis(),
 				ecorePackage.getEInt(),
 				"missingCloseParenthesis", "-1", 1, 1, ErrorForStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
@@ -2794,6 +2846,10 @@ public class AcceleoPackageImpl extends EPackageImpl implements AcceleoPackage {
 
 		initEClass(errorLetStatementEClass, ErrorLetStatement.class,
 				"ErrorLetStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS); //$NON-NLS-1$
+		initEAttribute(
+				getErrorLetStatement_MissingBindings(),
+				ecorePackage.getEInt(),
+				"missingBindings", "-1", 1, 1, ErrorLetStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED); //$NON-NLS-1$ //$NON-NLS-2$
 		initEAttribute(
 				getErrorLetStatement_MissingEndHeader(),
 				ecorePackage.getEInt(),

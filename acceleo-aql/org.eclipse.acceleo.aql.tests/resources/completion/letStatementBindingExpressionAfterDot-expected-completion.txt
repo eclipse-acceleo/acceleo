@@ -1,0 +1,525 @@
+ancestors() 11
+ancestors(self: org.eclipse.emf.ecore.EObject) = List
+
+Returns a Sequence containing the full set of object's ancestors.
+
+  @param self
+        The EObject we seek the ancestors of
+
+  @return
+        Sequence containing the full set of the receiver's ancestors
+
+
+
+ancestors() 10
+ancestors(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List
+
+Returns a Sequence containing the set of object's ancestors of the given type.
+
+  @param self
+        The EObject we seek the ancestors of
+  @param filter
+        The filtering EClass
+
+  @return
+        Sequence containing the set of the receiver's ancestors of the given type
+
+
+
+ancestors() 10
+ancestors(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List
+
+Returns a Sequence containing the set of object's ancestors of any given types.
+
+  @param self
+        The EObject we seek the ancestors of
+  @param filters
+        The set of filtering EClasses
+
+  @return
+        Sequence containing the set of the receiver's ancestors of any given types
+
+
+
+eAllContents() 14
+eAllContents(eObject: org.eclipse.emf.ecore.EObject) = List
+
+Returns a sequence of the EObjects recursively contained in the specified root eObject.
+
+  @param eObject
+        The root of the content tree
+
+  @return
+        The recursive content of the specified eObject.
+
+
+
+eAllContents() 13
+eAllContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = List
+
+Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
+
+  @param eObject
+        The root of the content tree
+  @param type
+        The type used to select elements
+
+  @return
+        The recursive content of the specified eObject.
+
+
+
+eAllContents() 13
+eAllContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List
+
+Returns a sequence of the EObjects recursively contained in the specified root eObject and that are instances of the specified EClass
+
+  @param eObject
+        The root of the content tree
+  @param types
+        The set of types used to select elements
+
+  @return
+        The recursive content of the specified eObject.
+
+
+
+eAnnotations 12
+EReference named eAnnotations in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+
+eClass() 8
+eClass(eObject: org.eclipse.emf.ecore.EObject) = EClass
+
+Returns the EClass of the specified EObject
+
+  @param eObject
+        The eObject which EClass is requested.
+
+  @return
+        The EClass of the specified EObject
+
+
+
+eClassifiers 12
+EReference named eClassifiers in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+eContainer() 12
+eContainer(eObject: org.eclipse.emf.ecore.EObject) = EObject
+
+Returns the container of the specified EObject
+
+  @param eObject
+        The eObject which container is requested.
+
+  @return
+        The container of the specified eObject.
+
+
+
+eContainer() 11
+eContainer(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = EObject
+
+Returns the first container of the specified EObject that matches the given type
+
+  @param eObject
+        The eObject which container is requested.
+  @param type
+        The type filter.
+
+  @return
+        The first container of the specified eObject that matches the given type.
+
+
+
+eContainerOrSelf() 17
+eContainerOrSelf(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = EObject
+
+Returns self or the first container of the specified EObject that matches the given type
+
+  @param eObject
+        The eObject which container is requested.
+  @param type
+        The type filter.
+
+  @return
+        Self or the first container of the specified eObject that matches the given type.
+
+
+
+eContainingFeature() 20
+eContainingFeature(eObject: org.eclipse.emf.ecore.EObject) = EStructuralFeature
+
+Returns the containing feature of the specified EObject
+
+  @param eObject
+        The eObject which containing feature is requested.
+
+  @return
+        The containing feature of the specified EObject
+
+
+
+eContainmentFeature() 21
+eContainmentFeature(eObject: org.eclipse.emf.ecore.EObject) = EReference
+
+Returns the containment feature of the specified EObject
+
+  @param eObject
+        The eObject which containment feature is requested.
+
+  @return
+        The containment feature of the specified EObject
+
+
+
+eContents() 11
+eContents(eObject: org.eclipse.emf.ecore.EObject) = List
+
+Returns the contents of the specified EObject instance.
+
+  @param eObject
+        The eObject which content is requested.
+
+  @return
+        The content of the specified eObject.
+
+
+
+eContents() 10
+eContents(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClass) = List
+
+Returns a sequence made of the instances of the specified type in the contents of the specified eObject.
+
+  @param eObject
+        The eObject which content is requested.
+  @param type
+        The type filter.
+
+  @return
+        The filtered content of the specified eObject.
+
+
+
+eContents() 10
+eContents(eObject: org.eclipse.emf.ecore.EObject, types: java.util.Set) = List
+
+Returns a sequence made of the instances of the specified types in the contents of the specified eObject.
+
+  @param eObject
+        The eObject which content is requested.
+  @param types
+        The Set of types filter.
+
+  @return
+        The filtered content of the specified eObject.
+
+
+
+eCrossReferences() 18
+eCrossReferences(eObject: org.eclipse.emf.ecore.EObject) = Object
+
+Returns the list of all EObjects cross-referenced from the receiver.
+
+  @param eObject
+        The eObject of which we need the cross-references.
+
+  @return
+        The list of all EObjects cross-referenced from the receiver.
+
+
+
+eFactoryInstance 16
+EReference named eFactoryInstance in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+eGet() 5
+eGet(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) = Object
+
+Handles calls to the operation "eGet". This will fetch the value of the feature named "featureName" on "source"
+
+  @param eObject
+        The eObject we seek to retrieve a feature value of.
+  @param featureName
+        The name of the feature which value we need to retrieve.
+
+  @return
+        The value of the given feature on the given EObject
+
+
+
+eInverse() 10
+eInverse(eObject: org.eclipse.emf.ecore.EObject) = Set
+
+Returns the set containing the inverse references.
+
+  @param eObject
+        The eObject which inverse references are requested.
+
+  @return
+        The set of the inverse references
+
+
+
+eInverse() 9
+eInverse(eObject: org.eclipse.emf.ecore.EObject, featureName: java.lang.String) = Set
+
+Returns the elements from the set of the inverse references of the receiver that are referencing the receiver using a feature with the given name.
+
+  @param eObject
+        The eObject which inverse references are requested.
+  @param featureName
+        The feature name.
+
+  @return
+        The set of the inverse references
+
+
+
+eInverse() 9
+eInverse(eObject: org.eclipse.emf.ecore.EObject, type: org.eclipse.emf.ecore.EClassifier) = Set
+
+Returns the elements of the given type from the set of the inverse references of the receiver.
+
+  @param eObject
+        The eObject which inverse references are requested.
+  @param type
+        The type filter.
+
+  @return
+        The set of the inverse references
+
+
+
+eResource() 11
+eResource(eObject: org.eclipse.emf.ecore.EObject) = Resource
+
+Returns the Resource containing the given EObject. This service is equivalent to a direct call to EObject#eResource().
+
+  @param eObject
+        The EObject
+
+  @return
+        The Resource containing the given EObject.
+
+
+
+eSubpackages 12
+EReference named eSubpackages in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+eSuperPackage 13
+EReference named eSuperPackage in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+followingSiblings() 19
+followingSiblings(self: org.eclipse.emf.ecore.EObject) = List
+
+Returns a Sequence containing the full set of object's following siblings.
+
+  @param self
+        The EObject we seek the following siblings of
+
+  @return
+        Sequence containing the full set of the receiver's following siblings
+
+
+
+followingSiblings() 18
+followingSiblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List
+
+Returns a Sequence containing the set of object's following siblings of the given type.
+
+  @param self
+        The EObject we seek the following siblings of
+  @param filter
+        The filtering EClass
+
+  @return
+        Sequence containing the set of the receiver's following siblings of the given type
+
+
+
+followingSiblings() 18
+followingSiblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List
+
+Returns a Sequence containing the set of object's following siblings of any given types.
+
+  @param self
+        The EObject we seek the following siblings of
+  @param filters
+        The set of filtering EClasses
+
+  @return
+        Sequence containing the set of the receiver's following siblings of any given types
+
+
+
+getEAnnotation() 15
+EOperation named getEAnnotation in EModelElement(http://www.eclipse.org/emf/2002/Ecore)
+
+getEClassifier() 15
+EOperation named getEClassifier in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+name 4
+EAttribute named name in ENamedElement(http://www.eclipse.org/emf/2002/Ecore)
+
+nsPrefix 8
+EAttribute named nsPrefix in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+nsURI 5
+EAttribute named nsURI in EPackage(http://www.eclipse.org/emf/2002/Ecore)
+
+oclAsType() 10
+oclAsType(object: java.lang.Object, type: java.lang.Object) = Object
+
+Casts the current object to the given type.
+
+  @param object
+        The object to cast
+  @param type
+        The type to cast the object to
+
+  @return
+        The current object cast to a "type"
+
+
+
+oclIsKindOf() 12
+oclIsKindOf(object: java.lang.Object, type: java.lang.Object) = Boolean
+
+Evaluates to "true" if the type of the object o1 conforms to the type "classifier". That is, o1 is of type "classifier" or a subtype of "classifier".
+
+  @param object
+        The reference Object we seek to test.
+  @param type
+        The expected supertype classifier.
+
+  @return
+        "true" if the object o1 is a kind of the classifier, "false" otherwise.
+
+
+
+oclIsTypeOf() 12
+oclIsTypeOf(object: java.lang.Object, type: java.lang.Object) = Boolean
+
+Evaluates to "true" if the object o1 if of the type "classifier" but not a subtype of the "classifier".
+
+  @param object
+        The reference Object we seek to test.
+  @param type
+        The expected type classifier.
+
+  @return
+        "true" if the object o1 is a type of the classifier, "false" otherwise.
+
+
+
+precedingSiblings() 19
+precedingSiblings(self: org.eclipse.emf.ecore.EObject) = List
+
+Returns a Sequence containing the full set of object's preceding siblings.
+
+  @param self
+        The EObject we seek the preceding siblings of
+
+  @return
+        Sequence containing the full set of the receiver's preceding siblings
+
+
+
+precedingSiblings() 18
+precedingSiblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List
+
+Returns a Sequence containing the set of object's preceding siblings of the given type.
+
+  @param self
+        The EObject we seek the preceding siblings of
+  @param filter
+        The filtering EClass
+
+  @return
+        Sequence containing the set of the receiver's preceding siblings of the given type
+
+
+
+precedingSiblings() 18
+precedingSiblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List
+
+Returns a Sequence containing the set of object's preceding siblings of any given types.
+
+  @param self
+        The EObject we seek the preceding siblings of
+  @param filters
+        The set of filtering EClasses
+
+  @return
+        Sequence containing the set of the receiver's preceding siblings of any given types
+
+
+
+siblings() 10
+siblings(self: org.eclipse.emf.ecore.EObject) = List
+
+Returns a Sequence containing the full set of object's siblings.
+
+  @param self
+        The EObject we seek the siblings of
+
+  @return
+        Sequence containing the full set of the receiver's siblings
+
+
+
+siblings() 9
+siblings(self: org.eclipse.emf.ecore.EObject, filter: org.eclipse.emf.ecore.EClass) = List
+
+Returns a Sequence containing the set of object's siblings of the given type.
+
+  @param self
+        The EObject we seek the siblings of
+  @param filter
+        The filtering EClass
+
+  @return
+        Sequence containing the set of the receiver's siblings of the given type
+
+
+
+siblings() 9
+siblings(self: org.eclipse.emf.ecore.EObject, filters: java.util.Set) = List
+
+Returns a Sequence containing the set of object's siblings of any given types.
+
+  @param self
+        The EObject we seek the siblings of
+  @param filters
+        The set of filtering EClasses
+
+  @return
+        Sequence containing the set of the receiver's siblings of any given types
+
+
+
+toString() 10
+toString(self: java.lang.Object) = String
+
+Returns a string representation of the current object.
+
+  @param self
+        The current object
+
+  @return
+        a String representation of the given Object. For Collections, this will be the concatenation of all contained Objects' toString.
+
+
+
+trace() 7
+trace(self: java.lang.Object) = String
+
+Returns a string representation of the current environment.
+
+  @param self
+        The current object
+
+  @return
+        a string representation of the current environment.
+
+
+

@@ -1948,13 +1948,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_TEMPLATE__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
 
 	/**
+	 * The feature id for the '<em><b>Missing Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_TEMPLATE__MISSING_PARAMETERS = ERROR_FEATURE_COUNT + 12;
+
+	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 12;
+	int ERROR_TEMPLATE__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing Guard Open Parenthesis</b></em>' attribute.
@@ -1963,7 +1972,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 13;
+	int ERROR_TEMPLATE__MISSING_GUARD_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Missing Guard Close Parenthesis</b></em>' attribute.
@@ -1972,7 +1981,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 14;
+	int ERROR_TEMPLATE__MISSING_GUARD_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Missing Post Close Parenthesis</b></em>' attribute.
@@ -1981,7 +1990,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 15;
+	int ERROR_TEMPLATE__MISSING_POST_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -1990,7 +1999,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 16;
+	int ERROR_TEMPLATE__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 17;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -1999,7 +2008,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE__MISSING_END = ERROR_FEATURE_COUNT + 17;
+	int ERROR_TEMPLATE__MISSING_END = ERROR_FEATURE_COUNT + 18;
 
 	/**
 	 * The number of structural features of the '<em>Error Template</em>' class.
@@ -2008,7 +2017,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_TEMPLATE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 18;
+	int ERROR_TEMPLATE_FEATURE_COUNT = ERROR_FEATURE_COUNT + 19;
 
 	/**
 	 * The number of operations of the '<em>Error Template</em>' class.
@@ -2247,13 +2256,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_QUERY__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Missing Parameters</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_QUERY__MISSING_PARAMETERS = ERROR_FEATURE_COUNT + 10;
+
+	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 10;
+	int ERROR_QUERY__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute.
@@ -2262,7 +2280,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 11;
+	int ERROR_QUERY__MISSING_COLON = ERROR_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Missing Type</b></em>' attribute.
@@ -2271,7 +2289,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 12;
+	int ERROR_QUERY__MISSING_TYPE = ERROR_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Missing Equal</b></em>' attribute.
@@ -2280,7 +2298,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 13;
+	int ERROR_QUERY__MISSING_EQUAL = ERROR_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -2289,7 +2307,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 14;
+	int ERROR_QUERY__MISSING_END = ERROR_FEATURE_COUNT + 15;
 
 	/**
 	 * The number of structural features of the '<em>Error Query</em>' class.
@@ -2298,7 +2316,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 15;
+	int ERROR_QUERY_FEATURE_COUNT = ERROR_FEATURE_COUNT + 16;
 
 	/**
 	 * The number of operations of the '<em>Error Query</em>' class.
@@ -3214,13 +3232,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS = ERROR_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Missing Binding</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_FOR_STATEMENT__MISSING_BINDING = ERROR_FEATURE_COUNT + 3;
+
+	/**
 	 * The feature id for the '<em><b>Missing Close Parenthesis</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 3;
+	int ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
@@ -3229,7 +3256,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 4;
+	int ERROR_FOR_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3238,7 +3265,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 5;
+	int ERROR_FOR_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of structural features of the '<em>Error For Statement</em>' class.
@@ -3247,7 +3274,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 6;
+	int ERROR_FOR_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of operations of the '<em>Error For Statement</em>' class.
@@ -3551,13 +3578,22 @@ public interface AcceleoPackage extends EPackage {
 	int ERROR_LET_STATEMENT__BODY = ERROR_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Missing Bindings</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_LET_STATEMENT__MISSING_BINDINGS = ERROR_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Missing End Header</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 2;
+	int ERROR_LET_STATEMENT__MISSING_END_HEADER = ERROR_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Missing End</b></em>' attribute.
@@ -3566,7 +3602,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 3;
+	int ERROR_LET_STATEMENT__MISSING_END = ERROR_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of structural features of the '<em>Error Let Statement</em>' class.
@@ -3575,7 +3611,7 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ERROR_LET_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 4;
+	int ERROR_LET_STATEMENT_FEATURE_COUNT = ERROR_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Error Let Statement</em>' class.
@@ -4622,6 +4658,17 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getErrorTemplate_MissingOpenParenthesis();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingParameters <em>Missing Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Parameters</em>'.
+	 * @see org.eclipse.acceleo.ErrorTemplate#getMissingParameters()
+	 * @see #getErrorTemplate()
+	 * @generated
+	 */
+	EAttribute getErrorTemplate_MissingParameters();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorTemplate#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4772,6 +4819,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorQuery_MissingOpenParenthesis();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingParameters <em>Missing Parameters</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Parameters</em>'.
+	 * @see org.eclipse.acceleo.ErrorQuery#getMissingParameters()
+	 * @see #getErrorQuery()
+	 * @generated
+	 */
+	EAttribute getErrorQuery_MissingParameters();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorQuery#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
@@ -5190,6 +5248,17 @@ public interface AcceleoPackage extends EPackage {
 	EAttribute getErrorForStatement_MissingOpenParenthesis();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingBinding <em>Missing Binding</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Binding</em>'.
+	 * @see org.eclipse.acceleo.ErrorForStatement#getMissingBinding()
+	 * @see #getErrorForStatement()
+	 * @generated
+	 */
+	EAttribute getErrorForStatement_MissingBinding();
+
+	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorForStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5360,6 +5429,17 @@ public interface AcceleoPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getErrorLetStatement();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorLetStatement#getMissingBindings <em>Missing Bindings</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Missing Bindings</em>'.
+	 * @see org.eclipse.acceleo.ErrorLetStatement#getMissingBindings()
+	 * @see #getErrorLetStatement()
+	 * @generated
+	 */
+	EAttribute getErrorLetStatement_MissingBindings();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.acceleo.ErrorLetStatement#getMissingEndHeader <em>Missing End Header</em>}'.
@@ -6201,6 +6281,14 @@ public interface AcceleoPackage extends EPackage {
 				.getErrorTemplate_MissingOpenParenthesis();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Parameters</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_TEMPLATE__MISSING_PARAMETERS = eINSTANCE.getErrorTemplate_MissingParameters();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing Close Parenthesis</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6319,6 +6407,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ERROR_QUERY__MISSING_OPEN_PARENTHESIS = eINSTANCE.getErrorQuery_MissingOpenParenthesis();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Parameters</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_QUERY__MISSING_PARAMETERS = eINSTANCE.getErrorQuery_MissingParameters();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing Close Parenthesis</b></em>' attribute feature.
@@ -6666,6 +6762,14 @@ public interface AcceleoPackage extends EPackage {
 				.getErrorForStatement_MissingOpenParenthesis();
 
 		/**
+		 * The meta object literal for the '<em><b>Missing Binding</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_FOR_STATEMENT__MISSING_BINDING = eINSTANCE.getErrorForStatement_MissingBinding();
+
+		/**
 		 * The meta object literal for the '<em><b>Missing Close Parenthesis</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6804,6 +6908,14 @@ public interface AcceleoPackage extends EPackage {
 		 * @generated
 		 */
 		EClass ERROR_LET_STATEMENT = eINSTANCE.getErrorLetStatement();
+
+		/**
+		 * The meta object literal for the '<em><b>Missing Bindings</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ERROR_LET_STATEMENT__MISSING_BINDINGS = eINSTANCE.getErrorLetStatement_MissingBindings();
 
 		/**
 		 * The meta object literal for the '<em><b>Missing End Header</b></em>' attribute feature.

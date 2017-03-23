@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBinding <em>Binding</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getBody <em>Body</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingBinding <em>Missing Binding</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.impl.ErrorForStatementImpl#getMissingEnd <em>Missing End</em>}</li>
@@ -127,6 +128,26 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * @ordered
 	 */
 	protected int missingOpenParenthesis = MISSING_OPEN_PARENTHESIS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMissingBinding() <em>Missing Binding</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingBinding()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int MISSING_BINDING_EDEFAULT = -1;
+
+	/**
+	 * The cached value of the '{@link #getMissingBinding() <em>Missing Binding</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMissingBinding()
+	 * @generated
+	 * @ordered
+	 */
+	protected int missingBinding = MISSING_BINDING_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMissingCloseParenthesis() <em>Missing Close Parenthesis</em>}' attribute.
@@ -379,6 +400,28 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getMissingBinding() {
+		return missingBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setMissingBinding(int newMissingBinding) {
+		int oldMissingBinding = missingBinding;
+		missingBinding = newMissingBinding;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_BINDING, oldMissingBinding, missingBinding));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getMissingCloseParenthesis() {
 		return missingCloseParenthesis;
 	}
@@ -476,6 +519,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return getBody();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				return getMissingOpenParenthesis();
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_BINDING:
+				return getMissingBinding();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				return getMissingCloseParenthesis();
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END_HEADER:
@@ -508,6 +553,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis((Integer)newValue);
+				return;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_BINDING:
+				setMissingBinding((Integer)newValue);
 				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis((Integer)newValue);
@@ -545,6 +593,9 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				setMissingOpenParenthesis(MISSING_OPEN_PARENTHESIS_EDEFAULT);
 				return;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_BINDING:
+				setMissingBinding(MISSING_BINDING_EDEFAULT);
+				return;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				setMissingCloseParenthesis(MISSING_CLOSE_PARENTHESIS_EDEFAULT);
 				return;
@@ -576,6 +627,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 				return body != null;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_OPEN_PARENTHESIS:
 				return missingOpenParenthesis != MISSING_OPEN_PARENTHESIS_EDEFAULT;
+			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_BINDING:
+				return missingBinding != MISSING_BINDING_EDEFAULT;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_CLOSE_PARENTHESIS:
 				return missingCloseParenthesis != MISSING_CLOSE_PARENTHESIS_EDEFAULT;
 			case AcceleoPackage.ERROR_FOR_STATEMENT__MISSING_END_HEADER:
@@ -655,6 +708,8 @@ public class ErrorForStatementImpl extends MinimalEObjectImpl.Container implemen
 		result.append(endPosition);
 		result.append(", missingOpenParenthesis: "); //$NON-NLS-1$
 		result.append(missingOpenParenthesis);
+		result.append(", missingBinding: "); //$NON-NLS-1$
+		result.append(missingBinding);
 		result.append(", missingCloseParenthesis: "); //$NON-NLS-1$
 		result.append(missingCloseParenthesis);
 		result.append(", missingEndHeader: "); //$NON-NLS-1$

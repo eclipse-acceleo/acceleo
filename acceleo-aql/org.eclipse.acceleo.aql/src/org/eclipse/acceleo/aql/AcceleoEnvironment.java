@@ -11,18 +11,23 @@
 package org.eclipse.acceleo.aql;
 
 import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.ErrorMetamodel;
+import org.eclipse.acceleo.Import;
 import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
@@ -42,10 +47,26 @@ import org.eclipse.emf.ecore.EPackage;
  */
 public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/** maps the modules registered against this environment with their qualified name. */
-	private Map<String, Module> modules;
+	private Map<String, Module> qualifiedNameToModule;
 
-	/** Keeps track of the services each module provides, mapped to their names. */
-	private Map<Module, SetMultimap<String, AbstractModuleElementService>> moduleServices;
+	/**
+	 * Maps a {@link IAcceleoEnvironment#registerModule(String, Module) registered} {@link Module} to its
+	 * qualified name.
+	 */
+	private final Map<Module, String> moduleToQualifiedName;
+
+	/**
+	 * The mapping from the module qualified name to its extends.
+	 */
+	private final Map<String, String> moduleExtends;
+
+	/**
+	 * The mapping from the module qualified name to its imports.
+	 */
+	private final Multimap<String, String> moduleImports;
+
+	/** Keeps track of the services each module qualified name provides, mapped to their names. */
+	private Map<String, SetMultimap<String, AbstractModuleElementService>> moduleServices;
 
 	/** The AQL environment that will be used to evaluate aql expressions from this Acceleo context. */
 	private IQueryEnvironment aqlEnvironment;
@@ -77,7 +98,10 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * Initializes an environment for acceleo evaluations.
 	 */
 	public AcceleoEnvironment() {
-		this.modules = new LinkedHashMap<>();
+		this.qualifiedNameToModule = new LinkedHashMap<>();
+		this.moduleToQualifiedName = new LinkedHashMap<>();
+		this.moduleExtends = new LinkedHashMap<>();
+		this.moduleImports = LinkedListMultimap.create();
 		this.moduleServices = new LinkedHashMap<>();
 		this.variables = new LinkedHashMap<>();
 		this.callStacks = new ArrayDeque<>();
@@ -110,50 +134,30 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		return variables;
 	}
 
-	/**
-	 * Push the given module element atop the latest stack.
-	 * 
-	 * @param element
-	 *            The module element we're entering into.
-	 */
-	public void pushStack(ModuleElement element) {
-		pushStack(element, null);
+	@Override
+	public void pushImport(String importModuleQualifiedName, ModuleElement moduleElement) {
+		final AcceleoCallStack currentStack = new AcceleoCallStack(importModuleQualifiedName);
+		callStacks.addLast(currentStack);
+		currentStack.push(moduleElement);
+	}
+
+	@Override
+	public void push(ModuleElement moduleElement) {
+		final AcceleoCallStack currentStack = callStacks.peekLast();
+		currentStack.push(moduleElement);
 	}
 
 	/**
-	 * Push the given module element atop the latest stack, or create a new stack for it if
-	 * <code>newStackStartingModule</code> is not null.
+	 * {@inheritDoc}
 	 *
-	 * @param element
-	 *            The module element we're entering into.
-	 * @param newStackStartingModule
-	 *            If this is not null, we'll create a new stack with this module as starting point to push the
-	 *            module element on. Otherwise we'll just push this element on the latest stack.
+	 * @see org.eclipse.acceleo.aql.IAcceleoEnvironment#popStack(java.lang.String)
 	 */
-	public void pushStack(ModuleElement element, Module newStackStartingModule) {
-		// TODO exception if we try and push an element without stack
-		AcceleoCallStack currentStack = null;
-		if (newStackStartingModule == null) {
-			currentStack = callStacks.peekLast();
-		} else {
-			currentStack = new AcceleoCallStack(newStackStartingModule);
-			callStacks.addLast(currentStack);
-		}
-		currentStack.addLast(element);
-	}
-
-	/**
-	 * Removes a module element from the latest call stack, popping that stack out as well if it's empty
-	 * afterwards.
-	 * 
-	 * @param element
-	 *            The module element we're exiting out of.
-	 */
-	public void popStack(ModuleElement element) {
+	public void popStack(ModuleElement moduleElement) {
 		AcceleoCallStack currentStack = callStacks.peekLast();
-		if (currentStack == null || !currentStack.pollLast().equals(element)) {
+		if (currentStack == null || (!currentStack.pop().equals(moduleElement) && currentStack.isEmpty())) {
 			// TODO this module wasn't on the top of our current stack. we're out of turn on our push/pop
 			// cycle. throw exception?
+			// this probably need to be an assert since it's a developer concern
 		}
 		if (currentStack.isEmpty()) {
 			callStacks.pollLast();
@@ -179,24 +183,42 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 *         if none.
 	 */
 	public Module getModule(String qualifiedName) {
-		return modules.get(qualifiedName);
+		return qualifiedNameToModule.get(qualifiedName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.aql.IAcceleoEnvironment#getModuleQualifiedName(org.eclipse.acceleo.Module)
+	 */
+	public String getModuleQualifiedName(Module module) {
+		return moduleToQualifiedName.get(module);
+	}
+
+	@Override
+	public String getExtend(String qualifiedName) {
+		return moduleExtends.get(qualifiedName);
+	}
+
+	@Override
+	public Collection<String> getImports(String qualifiedName) {
+		return moduleImports.get(qualifiedName);
 	}
 
 	/**
 	 * Returns all IServices with the given {@code name} provided by the given module.
 	 * 
-	 * @param module
-	 *            The module which services we're looking up.
-	 * @param name
+	 * @param moduleQualifiedName
+	 *            The module qualified name which services we're looking up.
+	 * @param moduleElementName
 	 *            Name of the service(s) we're searching for.
 	 * @return All IServices with the given {@code name} provided by the given module, <code>null</code> if
 	 *         none.
 	 */
-	public Set<AbstractModuleElementService> getServicesWithName(Module module, String name) {
-		final Set<AbstractModuleElementService> res;
-
+	public Set<AbstractModuleElementService> getServicesWithName(String moduleQualifiedName,
+			String moduleElementName) {
 		// FIXME null or empty set if either of the two gets is null?
-		return moduleServices.get(module).get(name);
+		return moduleServices.get(moduleQualifiedName).get(moduleElementName);
 	}
 
 	/**
@@ -208,7 +230,17 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 *            The module to register.
 	 */
 	public void registerModule(String qualifiedName, Module module) {
-		modules.put(qualifiedName, module);
+		qualifiedNameToModule.put(qualifiedName, module);
+		moduleToQualifiedName.put(module, qualifiedName);
+		if (module.getExtends() != null && module.getExtends().getQualifiedName() != null) {
+			moduleExtends.put(qualifiedName, module.getExtends().getQualifiedName());
+		}
+		for (Import imp : module.getImports()) {
+			final ModuleReference moduleRef = imp.getModule();
+			if (moduleRef != null && moduleRef.getQualifiedName() != null) {
+				moduleImports.put(qualifiedName, moduleRef.getQualifiedName());
+			}
+		}
 
 		for (Metamodel metamodel : module.getMetamodels()) {
 			if (!(metamodel instanceof ErrorMetamodel)) {
@@ -221,7 +253,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		SetMultimap<String, AbstractModuleElementService> services = moduleServices.get(module);
 		if (services == null) {
 			services = LinkedHashMultimap.create();
-			moduleServices.put(module, services);
+			moduleServices.put(qualifiedName, services);
 		}
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template) {
@@ -250,6 +282,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		// FIXME delegate to the lookup class that will provide an input stream and try to load the module
 		// FIXME remove the test mock code
 		final boolean testMock = !qualifiedName.contains("notExisting");
-		return modules.containsKey(qualifiedName) || testMock;
+		return qualifiedNameToModule.containsKey(qualifiedName) || testMock;
 	}
+
 }

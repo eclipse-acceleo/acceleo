@@ -114,6 +114,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private AcceleoValidationResult result;
 
 	/**
+	 * The module qualified name.
+	 */
+	private String qualifiedName;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
@@ -129,12 +134,15 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * 
 	 * @param astResult
 	 *            the {@link AcceleoAstResult} to validate
+	 * @param moduleQualifiedName
+	 *            the module qualified name
 	 * @return the {@link IAcceleoValidationResult}
 	 */
-	public IAcceleoValidationResult validate(AcceleoAstResult astResult) {
+	public IAcceleoValidationResult validate(AcceleoAstResult astResult, String moduleQualifiedName) {
 		stack.clear();
 		stack.push(new HashMap<String, Set<IType>>());
 		forceCollectionBinding = false;
+		qualifiedName = moduleQualifiedName;
 		result = new AcceleoValidationResult(astResult);
 
 		doSwitch(astResult.getModule());
@@ -231,7 +239,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 							.getMissingEndHeader(), errorModule.getMissingEndHeader());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -251,7 +259,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorMetamodel.getMissingEndQuote());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -270,7 +278,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorImport.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -300,7 +308,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseTemplate(Template template) {
-		environment.pushStack(template, (Module)template.eContainer());
+		environment.pushImport(qualifiedName, template);
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
@@ -350,6 +358,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorTemplate
 							.getMissingOpenParenthesis(), errorTemplate.getMissingOpenParenthesis());
+		} else if (errorTemplate.getMissingParameters() != -1) {
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, "Missing parameter", errorTemplate
+					.getMissingParameters(), errorTemplate.getMissingParameters());
 		} else if (errorTemplate.getMissingCloseParenthesis() != -1) {
 			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
@@ -377,12 +388,12 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorTemplate.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
 	public Object caseQuery(Query query) {
-		environment.pushStack(query, (Module)query.eContainer());
+		environment.pushImport(qualifiedName, query);
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
 			final Set<String> parameterNames = new HashSet<String>();
@@ -397,7 +408,19 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					}
 				}
 			}
-			doSwitch(query.getBody());
+			final IValidationResult validationResult = validateExpression(query.getBody());
+			result.getMessages().putAll(query,
+					shiftMessages(validationResult.getMessages(), query.getBody().getStartPosition()));
+
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
+					.getAstResult().getAst());
+			if (query.getType() != null) {
+				final IValidationResult typeValidationResult = validator.validate(null, query.getType());
+				result.getAqlValidationResutls().put(query.getType(), typeValidationResult);
+				final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
+						typeValidationResult.getPossibleTypes(query.getType().getAst()));
+				checkTypesCompatibility(query, possibleTypes, iTypes);
+			}
 		} finally {
 			stack.pop();
 			environment.popStack(query);
@@ -418,6 +441,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorQuery, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorQuery
 							.getMissingOpenParenthesis(), errorQuery.getMissingOpenParenthesis());
+		} else if (errorQuery.getMissingParameters() != -1) {
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, "Missing parameter", errorQuery
+					.getMissingParameters(), errorQuery.getMissingParameters());
 		} else if (errorQuery.getMissingCloseParenthesis() != -1) {
 			addMessage(errorQuery, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorQuery
@@ -437,7 +463,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 							.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -446,9 +472,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(variable, ValidationMessageLevel.WARNING, "Variable " + variable.getName()
 					+ " already exists.", variable.getStartPosition(), variable.getEndPosition());
 		}
-		final IValidationResult validationResult = validator.validate(null, variable.getType());
+		final IValidationResult typeValidationResult = validator.validate(null, variable.getType());
+		result.getAqlValidationResutls().put(variable.getType(), typeValidationResult);
 		final Set<IType> types = validator.getDeclarationTypes(environment.getQueryEnvironment(),
-				validationResult.getPossibleTypes(variable.getType().getAst()));
+				typeValidationResult.getPossibleTypes(variable.getType().getAst()));
 		stack.peek().put(variable.getName(), types);
 
 		return RETURN_VALUE;
@@ -468,7 +495,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					.getMissingType(), errorVariable.getMissingType());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -487,6 +514,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				.getAst());
 		if (binding.getType() != null) {
 			final IValidationResult typeValidationResult = validator.validate(null, binding.getType());
+			result.getAqlValidationResutls().put(binding.getType(), typeValidationResult);
 			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 					typeValidationResult.getPossibleTypes(binding.getType().getAst()));
 			checkTypesCompatibility(binding, possibleTypes, iTypes);
@@ -525,7 +553,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 * @param declaredTypes
 	 *            the {@link Set} of {@link Binding#getType() declared} {@link IType}
 	 */
-	protected void checkTypesCompatibility(Binding binding, final Set<IType> possibleTypes,
+	protected void checkTypesCompatibility(ASTNode binding, final Set<IType> possibleTypes,
 			final Set<IType> declaredTypes) {
 		for (IType possibleType : possibleTypes) {
 			List<IValidationMessage> messages = new ArrayList<IValidationMessage>();
@@ -552,8 +580,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	/**
 	 * Validates the given {@link Binding} type.
 	 * 
-	 * @param binding
-	 *            the {@link Binding}
+	 * @param node
+	 *            the {@link ASTNode}
 	 * @param iType
 	 *            the {@link IType} corresponding to the given {@link Binding#getType() binding type}
 	 * @param possibleType
@@ -561,19 +589,19 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 *            expression}
 	 * @return the {@link List} of {@link IValidationMessage} is something doesn't validate
 	 */
-	protected List<IValidationMessage> validateBindingTypeForceCollection(Binding binding, final IType iType,
+	protected List<IValidationMessage> validateBindingTypeForceCollection(ASTNode node, final IType iType,
 			IType possibleType) {
 		final List<IValidationMessage> res = new ArrayList<IValidationMessage>();
 
 		if (possibleType instanceof ICollectionType) {
 			if (!iType.isAssignableFrom(((ICollectionType)possibleType).getCollectionType())) {
 				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-						+ " is incompatible with " + possibleType, binding.getStartPosition(), binding
+						+ " is incompatible with " + possibleType, node.getStartPosition(), node
 						.getEndPosition()));
 			}
 		} else {
 			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Must be a Collection not "
-					+ possibleType, binding.getStartPosition(), binding.getEndPosition()));
+					+ possibleType, node.getStartPosition(), node.getEndPosition()));
 		}
 
 		return res;
@@ -597,7 +625,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorBinding.getMissingAffectationSymbolePosition());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -615,7 +643,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 							.getMissingEndHeader(), errorExpressionStatement.getMissingEndHeader());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -646,7 +674,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 							.getMissingEnd(), errorProtectedArea.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -663,11 +691,13 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	public Object caseForStatement(ForStatement forStatement) {
 		stack.push(new HashMap<String, Set<IType>>(stack.peek()));
 		try {
-			forceCollectionBinding = true;
-			try {
-				doSwitch(forStatement.getBinding());
-			} finally {
-				forceCollectionBinding = false;
+			if (forStatement.getBinding() != null) {
+				forceCollectionBinding = true;
+				try {
+					doSwitch(forStatement.getBinding());
+				} finally {
+					forceCollectionBinding = false;
+				}
 			}
 			doSwitch(forStatement.getBody());
 		} finally {
@@ -683,6 +713,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorForStatement
 							.getMissingOpenParenthesis(), errorForStatement.getMissingOpenParenthesis());
+		} else if (errorForStatement.getMissingBinding() != -1) {
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR, "Missing binding", errorForStatement
+					.getMissingBinding(), errorForStatement.getMissingBinding());
 		} else if (errorForStatement.getMissingCloseParenthesis() != -1) {
 			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorForStatement
@@ -697,7 +730,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorForStatement.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -787,7 +820,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorIfStatement.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -807,7 +840,10 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseErrorLetStatement(ErrorLetStatement errorLetStatement) {
-		if (errorLetStatement.getMissingEndHeader() != -1) {
+		if (errorLetStatement.getMissingBindings() != -1) {
+			addMessage(errorLetStatement, ValidationMessageLevel.WARNING, "Missing binding",
+					errorLetStatement.getMissingBindings(), errorLetStatement.getMissingBindings());
+		} else if (errorLetStatement.getMissingEndHeader() != -1) {
 			addMessage(errorLetStatement, ValidationMessageLevel.ERROR,
 					getMissingTokenMessage(AcceleoParser.LET_HEADER_END), errorLetStatement
 							.getMissingEndHeader(), errorLetStatement.getMissingEndHeader());
@@ -817,7 +853,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorLetStatement.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	@Override
@@ -859,7 +895,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					errorFileStatement.getMissingEnd());
 		}
 
-		return RETURN_VALUE;
+		return null;
 	}
 
 	/**

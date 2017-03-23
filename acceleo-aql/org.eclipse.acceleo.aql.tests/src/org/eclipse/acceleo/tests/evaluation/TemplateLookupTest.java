@@ -85,7 +85,7 @@ public class TemplateLookupTest {
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module1.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
-		acceleoEnvironment.pushStack(start, module1);
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -103,7 +103,7 @@ public class TemplateLookupTest {
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module1.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
-		acceleoEnvironment.pushStack(start, module1);
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -128,7 +128,7 @@ public class TemplateLookupTest {
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t21".equals(((Template)start).getName()));
-		acceleoEnvironment.pushStack(start, module2);
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -151,7 +151,7 @@ public class TemplateLookupTest {
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "overrideMe".equals(((Template)start).getName()));
-		acceleoEnvironment.pushStack(start, module2);
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -177,7 +177,7 @@ public class TemplateLookupTest {
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(3);
 		assertTrue(start instanceof Template && "toImportsAndBack".equals(((Template)start).getName()));
-		acceleoEnvironment.pushStack(start, module2);
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);
@@ -202,7 +202,7 @@ public class TemplateLookupTest {
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(4);
 		assertTrue(start instanceof Template && "toImportsExtends".equals(((Template)start).getName()));
-		acceleoEnvironment.pushStack(start, module2);
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		Object result = evaluationEngine.doSwitch(start);
 
 		assertTrue(result instanceof String);

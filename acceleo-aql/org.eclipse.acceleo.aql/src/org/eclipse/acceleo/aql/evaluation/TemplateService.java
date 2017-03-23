@@ -15,7 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.Variable;
 import org.eclipse.acceleo.VisibilityKind;
@@ -59,8 +59,13 @@ public class TemplateService extends AbstractModuleElementService {
 	 * @see org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService#getModuleElement()
 	 */
 	@Override
-	public ModuleElement getModuleElement() {
+	public Template getModuleElement() {
 		return template;
+	}
+
+	@Override
+	public String getModuleQualifiedName() {
+		return env.getModuleQualifiedName((Module)template.eContainer());
 	}
 
 	/**

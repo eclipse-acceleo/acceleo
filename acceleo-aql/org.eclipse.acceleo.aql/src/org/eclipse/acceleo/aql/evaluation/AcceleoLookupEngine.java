@@ -19,9 +19,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.acceleo.Import;
-import org.eclipse.acceleo.Module;
-import org.eclipse.acceleo.ModuleReference;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -76,7 +73,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		AcceleoCallStack currentStack = acceleoEnvironment.getCurrentStack();
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
-		Module last = (Module)currentStack.peekLast().eContainer();
+		String last = currentStack.getStartingModuleQualifiedName();
 		Set<AbstractModuleElementService> lastServices = acceleoEnvironment.getServicesWithName(last, name);
 		IService result = lookup(lastServices, argumentTypes, VisibilityKind.PRIVATE);
 
@@ -85,7 +82,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		 * hierarchy (first of the stack)
 		 */
 		if (result == null) {
-			Module start = currentStack.getStartingModule();
+			String start = currentStack.getStartingModuleQualifiedName();
 			result = lookupExtendedService(start, name, argumentTypes, VisibilityKind.PROTECTED,
 					VisibilityKind.PUBLIC);
 		}
@@ -94,12 +91,14 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		 * We couldn't find a template or query matching that in our current extends hierarchy, try the
 		 * imports of our current (last of the stack) module for a PUBLIC matching module element.
 		 */
-		ImportLookupResult importService = null;
+		final ImportLookupResult importService;
 		if (result == null) {
 			importService = lookupImportedService(last, name, argumentTypes);
 			if (importService != null) {
 				result = importService.getResult();
 			}
+		} else {
+			importService = null;
 		}
 
 		/* There is no module element matching our target, fall back to regular services. */
@@ -109,10 +108,11 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 
 		if (result instanceof AbstractModuleElementService) {
 			if (importService != null) {
-				acceleoEnvironment.pushStack(((AbstractModuleElementService)result).getModuleElement(),
-						importService.getImportedModule());
+				acceleoEnvironment.pushImport(
+						((AbstractModuleElementService)result).getModuleQualifiedName(),
+						((AbstractModuleElementService)result).getModuleElement());
 			} else {
-				acceleoEnvironment.pushStack(((AbstractModuleElementService)result).getModuleElement());
+				acceleoEnvironment.push(((AbstractModuleElementService)result).getModuleElement());
 			}
 		}
 
@@ -120,11 +120,11 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	}
 
 	/**
-	 * Looks up in the hierarchy of the given {@code start}ing module for a query or template matching the
-	 * given name and arguments.
+	 * Looks up in the hierarchy of the given {@code start}ing module qualified name for a query or template
+	 * matching the given name and arguments.
 	 * 
-	 * @param start
-	 *            The module we're considering as the "root" of our extends hierarchy.
+	 * @param startQualifiedName
+	 *            The module qualified name we're considering as the "root" of our extends hierarchy.
 	 * @param name
 	 *            The name of the service we're looking for.
 	 * @param argumentTypes
@@ -133,41 +133,43 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            The visibility to consider for our services.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private IService lookupExtendedService(Module start, String name, IType[] argumentTypes,
+	private IService lookupExtendedService(String startQualifiedName, String name, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
-		Set<AbstractModuleElementService> services = acceleoEnvironment.getServicesWithName(start, name);
+		Set<AbstractModuleElementService> services = acceleoEnvironment.getServicesWithName(
+				startQualifiedName, name);
 		IService result = lookup(services, argumentTypes, candidateVisibilities);
-		if (result == null && start.getExtends() != null) {
-			ModuleReference extended = start.getExtends();
-			Module extendedModule = acceleoEnvironment.getModule(extended.getQualifiedName());
-			result = lookupExtendedService(extendedModule, name, argumentTypes, candidateVisibilities);
+		if (result == null) {
+			final String extendedModuleQualifiedName = acceleoEnvironment.getExtend(startQualifiedName);
+			if (extendedModuleQualifiedName != null) {
+				result = lookupExtendedService(extendedModuleQualifiedName, name, argumentTypes,
+						candidateVisibilities);
+			}
 		}
 		return result;
 	}
 
 	/**
-	 * Looks up in the imports of the given {@code start}ing module for a query or template matching the given
-	 * name and arguments. This will consider public templates and queries from the imports and their extends
-	 * hierarchy.
+	 * Looks up in the imports of the given {@code start}ing module qualified name for a query or template
+	 * matching the given name and arguments. This will consider public templates and queries from the imports
+	 * and their extends hierarchy.
 	 * 
 	 * @param start
-	 *            The module we're considering as the "root" of our imports lookup.
+	 *            The module qualified name we're considering as the "root" of our imports lookup.
 	 * @param name
 	 *            The name of the service we're looking for.
 	 * @param argumentTypes
 	 *            Type of the arguments accepted by the service we're looking for.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private ImportLookupResult lookupImportedService(Module start, String name, IType[] argumentTypes) {
+	private ImportLookupResult lookupImportedService(String start, String name, IType[] argumentTypes) {
 		ImportLookupResult result = null;
-		Iterator<Import> importedIterator = start.getImports().iterator();
+		Iterator<String> importedIterator = acceleoEnvironment.getImports(start).iterator();
 		while (importedIterator.hasNext() && result == null) {
-			Import imported = importedIterator.next();
-			Module importedModule = acceleoEnvironment.getModule(imported.getModule().getQualifiedName());
-			IService matchingService = lookupExtendedService(importedModule, name, argumentTypes,
+			String imported = importedIterator.next();
+			IService matchingService = lookupExtendedService(imported, name, argumentTypes,
 					VisibilityKind.PUBLIC);
 			if (matchingService != null) {
-				result = new ImportLookupResult(importedModule, matchingService);
+				result = new ImportLookupResult(imported, matchingService);
 			}
 		}
 		return result;
@@ -237,7 +239,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 */
 	private static class ImportLookupResult {
 		/** The module that was the starting point of our lookup. */
-		private Module importedModule;
+		private String importedModule;
 
 		/** The actual result of this lookup. */
 		private IService result;
@@ -250,12 +252,12 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		 * @param result
 		 *            The result of this lookup.
 		 */
-		public ImportLookupResult(Module imported, IService result) {
+		public ImportLookupResult(String imported, IService result) {
 			this.importedModule = imported;
 			this.result = result;
 		}
 
-		public Module getImportedModule() {
+		public String getImportedModule() {
 			return importedModule;
 		}
 

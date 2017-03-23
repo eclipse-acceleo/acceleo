@@ -22,6 +22,7 @@ package org.eclipse.acceleo;
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingVisibility <em>Missing Visibility</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingName <em>Missing Name</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingParameters <em>Missing Parameters</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingColon <em>Missing Colon</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorQuery#getMissingType <em>Missing Type</em>}</li>
@@ -115,6 +116,33 @@ public interface ErrorQuery extends org.eclipse.acceleo.Error, Query {
 	 * @generated
 	 */
 	void setMissingOpenParenthesis(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Parameters</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Parameters</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Parameters</em>' attribute.
+	 * @see #setMissingParameters(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorQuery_MissingParameters()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingParameters();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorQuery#getMissingParameters <em>Missing Parameters</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Parameters</em>' attribute.
+	 * @see #getMissingParameters()
+	 * @generated
+	 */
+	void setMissingParameters(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.

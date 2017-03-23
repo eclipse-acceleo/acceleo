@@ -7,6 +7,7 @@ module myModule
     
    (116..119)
     *** error let statement ***
+    missing bindings: -1
     missing end header: 192
     missing end: -1
     [let 

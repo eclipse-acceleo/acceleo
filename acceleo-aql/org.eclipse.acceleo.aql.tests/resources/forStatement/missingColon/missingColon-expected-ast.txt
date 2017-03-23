@@ -12,10 +12,10 @@ module myModule
     missing type: -1
     missing affectation symbol: null
     missing affectation symbol position: -1
-    myVariable : EClassifier = .aqlFeatureAccess(myTemplate, 'eClassifiers') (158..181) (125..181)
+    myVariable : EClassifier = .aqlFeatureAccess(myParam, 'eClassifiers') (158..178) (125..178)
       
     some static text.
-   (183..208) (183..208)
-    [/for] (119..214)
+   (180..205) (180..205)
+    [/for] (119..211)
     
- (214..215) (116..215)[/template] (61..226) (0..226)
+ (211..212) (116..212)[/template] (61..223) (0..223)

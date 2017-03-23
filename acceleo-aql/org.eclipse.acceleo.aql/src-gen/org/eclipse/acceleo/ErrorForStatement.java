@@ -20,6 +20,7 @@ package org.eclipse.acceleo;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingOpenParenthesis <em>Missing Open Parenthesis</em>}</li>
+ *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingBinding <em>Missing Binding</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingCloseParenthesis <em>Missing Close Parenthesis</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingEndHeader <em>Missing End Header</em>}</li>
  *   <li>{@link org.eclipse.acceleo.ErrorForStatement#getMissingEnd <em>Missing End</em>}</li>
@@ -57,6 +58,33 @@ public interface ErrorForStatement extends org.eclipse.acceleo.Error, ForStateme
 	 * @generated
 	 */
 	void setMissingOpenParenthesis(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Missing Binding</b></em>' attribute.
+	 * The default value is <code>"-1"</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Missing Binding</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Missing Binding</em>' attribute.
+	 * @see #setMissingBinding(int)
+	 * @see org.eclipse.acceleo.AcceleoPackage#getErrorForStatement_MissingBinding()
+	 * @model default="-1" required="true"
+	 * @generated
+	 */
+	int getMissingBinding();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.acceleo.ErrorForStatement#getMissingBinding <em>Missing Binding</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Missing Binding</em>' attribute.
+	 * @see #getMissingBinding()
+	 * @generated
+	 */
+	void setMissingBinding(int value);
 
 	/**
 	 * Returns the value of the '<em><b>Missing Close Parenthesis</b></em>' attribute.

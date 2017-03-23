@@ -33,6 +33,11 @@ public abstract class AbstractModuleElementService extends AbstractService {
 	 */
 	public abstract ModuleElement getModuleElement();
 
+	/**Gets the module qualified name.
+	 * @return the module qualified name
+	 */
+	public abstract String getModuleQualifiedName();
+
 	/**
 	 * Returns the underlying element's visibility if any.
 	 * 

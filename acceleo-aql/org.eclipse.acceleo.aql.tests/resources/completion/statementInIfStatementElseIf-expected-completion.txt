@@ -1,0 +1,27 @@
+[/if] 5
+[/if]
+
+[ 1
+[
+
+[comment  9
+[comment 
+
+[else] 6
+[else]
+
+[elseif ()] 9
+[elseif ()]
+
+[file  6
+[file 
+
+[if  4
+[if 
+
+[let  5
+[let 
+
+[protected  11
+[protected 
+

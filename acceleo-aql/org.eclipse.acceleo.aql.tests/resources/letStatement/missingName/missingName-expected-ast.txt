@@ -6,14 +6,11 @@ module myModule
   public template myTemplate(myParam : EPackage (89..114))
     
    (116..119)
+    *** error let statement ***
+    missing bindings: 177
+    missing end header: -1
+    missing end: -1
     [let 
-    *** error binding ***
-    missing name: 125
-    missing colon: -1
-    missing type: -1
-    missing affectation symbol: null
-    missing affectation symbol position: -1
-    null : EClassifier = ->first(.aqlFeatureAccess(myParam, 'eClassifiers')) (148..177) (125..177)
       
     some static text.
    (178..203) (178..203)[/let] (119..209)
