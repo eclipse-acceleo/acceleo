@@ -260,12 +260,16 @@ public final class SWTUtil {
 				lastSize = textSize;
 			}
 			if (clientArea.width > textSize.x && text.getHorizontalBar() != null) {
-				text.getHorizontalBar().setVisible(false);
+				if (clientArea.height > text.getHorizontalBar().getSize().y) {
+					text.getHorizontalBar().setVisible(false);
+				}
 			} else if (text.getHorizontalBar() != null) {
 				text.getHorizontalBar().setVisible(true);
 			}
 			if (clientArea.height > textSize.y && text.getVerticalBar() != null) {
-				text.getVerticalBar().setVisible(false);
+				if (clientArea.width > text.getVerticalBar().getSize().x) {
+					text.getVerticalBar().setVisible(false);
+				}
 			} else if (text.getVerticalBar() != null) {
 				text.getVerticalBar().setVisible(true);
 			}
