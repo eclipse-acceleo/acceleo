@@ -11,8 +11,10 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.Module;
@@ -37,6 +39,11 @@ public class TemplateService extends AbstractModuleElementService {
 	/** The current evaluation environment. */
 	private final AcceleoEnvironment env;
 
+	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	private final AcceleoEvaluator acceleoEvaluator;
+
 	/** The underlying template. */
 	private final Template template;
 
@@ -50,6 +57,7 @@ public class TemplateService extends AbstractModuleElementService {
 	 */
 	public TemplateService(AcceleoEnvironment env, Template template) {
 		this.env = env;
+		this.acceleoEvaluator = new AcceleoEvaluator(env);
 		this.template = template;
 	}
 
@@ -140,10 +148,16 @@ public class TemplateService extends AbstractModuleElementService {
 	 */
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
+		final Map<String, Object> variables = new HashMap<String, Object>();
 		for (int i = 0; i < arguments.length; i++) {
 			Variable var = template.getParameters().get(i);
-			env.addVariable(var.getName(), arguments[i]);
+			variables.put(var.getName(), arguments[i]);
 		}
-		return new AcceleoEvaluator(env).doSwitch(template);
+		acceleoEvaluator.pushVariables(variables);
+		try {
+			return acceleoEvaluator.doSwitch(template);
+		} finally {
+			acceleoEvaluator.popVariables();
+		}
 	}
 }

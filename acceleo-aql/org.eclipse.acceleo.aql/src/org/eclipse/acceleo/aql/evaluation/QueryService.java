@@ -11,7 +11,9 @@
 package org.eclipse.acceleo.aql.evaluation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.acceleo.Module;
@@ -35,6 +37,11 @@ public class QueryService extends AbstractModuleElementService {
 	/** The current evaluation environment. */
 	private final AcceleoEnvironment env;
 
+	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	private final AcceleoEvaluator acceleoEvaluator;
+
 	/** The underlying query. */
 	private final Query query;
 
@@ -48,6 +55,7 @@ public class QueryService extends AbstractModuleElementService {
 	 */
 	public QueryService(AcceleoEnvironment env, Query query) {
 		this.env = env;
+		this.acceleoEvaluator = new AcceleoEvaluator(env);
 		this.query = query;
 	}
 
@@ -141,7 +149,16 @@ public class QueryService extends AbstractModuleElementService {
 	 */
 	@Override
 	protected Object internalInvoke(Object[] arguments) throws Exception {
-		// FIXME parameters
-		return new AcceleoEvaluator(env).doSwitch(query);
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		for (int i = 0; i < arguments.length; i++) {
+			Variable var = query.getParameters().get(i);
+			variables.put(var.getName(), arguments[i]);
+		}
+		acceleoEvaluator.pushVariables(variables);
+		try {
+			return acceleoEvaluator.doSwitch(query);
+		} finally {
+			acceleoEvaluator.popVariables();
+		}
 	}
 }

@@ -71,12 +71,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/** The AQL environment that will be used to evaluate aql expressions from this Acceleo context. */
 	private IQueryEnvironment aqlEnvironment;
 
-	/* FIXME This is not functional. We need to be able to push/pop variable values during the evaluation. */
-	// FIXME this should not be part of the AcceleoEvaluationEnvironment. the life spawn of a variable is
-	// shorter than the AcceleoEvaluationEnvironment
-	/** Keeps track of the available variables. */
-	private Map<String, Object> variables;
-
 	/**
 	 * Keeps track of the module elements we've called in order. Template and queries we call will be pushed
 	 * against this depending on "how" they were called.
@@ -103,35 +97,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		this.moduleExtends = new LinkedHashMap<>();
 		this.moduleImports = LinkedListMultimap.create();
 		this.moduleServices = new LinkedHashMap<>();
-		this.variables = new LinkedHashMap<>();
 		this.callStacks = new ArrayDeque<>();
 
 		this.aqlEnvironment = new AcceleoQueryEnvironment(new EPackageProvider(), this);
 		/* FIXME we need a cross reference provider, and we need to make it configurable */
 		org.eclipse.acceleo.query.runtime.Query.configureEnvironment(aqlEnvironment, null, null);
-	}
-
-	/* FIXME not functional, would need to be a stack? Probably not the right place either. */
-	/**
-	 * Binds a value to a variable name.
-	 * 
-	 * @param name
-	 *            Name of the binding.
-	 * @param value
-	 *            Value of that binding.
-	 */
-	public void addVariable(String name, Object value) {
-		variables.put(name, value);
-	}
-
-	/* FIXME this returns the map itself and not a copy, should it be exposed? */
-	/**
-	 * Returns all of the variables known to this Acceleo environment.
-	 * 
-	 * @return All of the variables known to this Acceleo environment.
-	 */
-	public Map<String, Object> getVariables() {
-		return variables;
 	}
 
 	@Override

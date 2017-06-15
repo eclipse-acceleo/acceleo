@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation;
 
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.Map;
+
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
@@ -36,6 +41,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private AcceleoEnvironment environment;
 
 	/**
+	 * The variables stack.
+	 */
+	private final Deque<Map<String, Object>> variablesStack;
+
+	/**
 	 * Instantiates an evaluation switch given the acceleo environment to consider.
 	 * 
 	 * @param environment
@@ -43,6 +53,25 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public AcceleoEvaluator(AcceleoEnvironment environment) {
 		this.environment = environment;
+		this.variablesStack = new ArrayDeque<>();
+		variablesStack.addLast(Collections.<String, Object> emptyMap());
+	}
+
+	/**
+	 * Pushes the given variables into the stack.
+	 * 
+	 * @param variables
+	 *            the variables to push
+	 */
+	public void pushVariables(Map<String, Object> variables) {
+		variablesStack.addLast(variables);
+	}
+
+	/**
+	 * Pops the last {@link #pushVariables(Map) pushed} variables from the stack.
+	 */
+	public void popVariables() {
+		variablesStack.removeLast();
 	}
 
 	/**
@@ -58,7 +87,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		IQueryEnvironment env = environment.getQueryEnvironment();
-		return QueryEvaluation.newEngine(env).eval(ast, environment.getVariables()).getResult();
+		return QueryEvaluation.newEngine(env).eval(ast, variablesStack.peekLast()).getResult();
 	}
 
 	/**

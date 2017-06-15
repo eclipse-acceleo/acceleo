@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
@@ -80,9 +82,11 @@ public class TemplateLookupTest {
 	 */
 	@Test
 	public void testCallM1T11EPackage() {
-		acceleoEnvironment.addVariable(PARAM1, EcoreFactory.eINSTANCE.createEPackage());
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(PARAM1, EcoreFactory.eINSTANCE.createEPackage());
 
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		evaluationEngine.pushVariables(variables);
 		ModuleElement start = module1.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
@@ -98,9 +102,11 @@ public class TemplateLookupTest {
 	 */
 	@Test
 	public void testCallM1T11EClass() {
-		acceleoEnvironment.addVariable(PARAM1, EcoreFactory.eINSTANCE.createEClass());
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(PARAM1, EcoreFactory.eINSTANCE.createEClass());
 
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		evaluationEngine.pushVariables(variables);
 		ModuleElement start = module1.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
@@ -123,9 +129,11 @@ public class TemplateLookupTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable(PARAM1, pack);
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(PARAM1, pack);
 
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		evaluationEngine.pushVariables(variables);
 		ModuleElement start = module2.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t21".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
@@ -146,9 +154,11 @@ public class TemplateLookupTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable(PARAM1, pack);
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(PARAM1, pack);
 
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		evaluationEngine.pushVariables(variables);
 		ModuleElement start = module2.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "overrideMe".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
@@ -172,9 +182,11 @@ public class TemplateLookupTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable(PARAM1, clazz);
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(PARAM1, clazz);
 
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		evaluationEngine.pushVariables(variables);
 		ModuleElement start = module2.getModuleElements().get(3);
 		assertTrue(start instanceof Template && "toImportsAndBack".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
@@ -197,9 +209,11 @@ public class TemplateLookupTest {
 		EPackage pack = EcoreFactory.eINSTANCE.createEPackage();
 		EClass clazz = EcoreFactory.eINSTANCE.createEClass();
 		pack.getEClassifiers().add(clazz);
-		acceleoEnvironment.addVariable(PARAM1, clazz);
+		final Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(PARAM1, clazz);
 
 		AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		evaluationEngine.pushVariables(variables);
 		ModuleElement start = module2.getModuleElements().get(4);
 		assertTrue(start instanceof Template && "toImportsExtends".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
