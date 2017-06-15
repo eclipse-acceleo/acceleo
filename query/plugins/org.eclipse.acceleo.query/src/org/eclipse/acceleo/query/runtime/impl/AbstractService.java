@@ -136,13 +136,14 @@ public abstract class AbstractService implements IService {
 			// CHECKSTYLE:OFF
 		} catch (Exception e) {
 			// CHECKSTYLE:ON
-			final Throwable cause = e.getCause();
+			final Throwable cause;
 			final String message;
-			if (cause != null) {
-				message = cause.getMessage();
+			if (e.getCause() != null) {
+				cause = e.getCause();
 			} else {
-				message = e.getMessage();
+				cause = e;
 			}
+			message = cause.getMessage();
 			throw new AcceleoQueryEvaluationException(getShortSignature() + " with arguments "
 					+ Arrays.deepToString(arguments) + " failed:\n\t" + message, cause);
 		}
