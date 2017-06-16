@@ -59,6 +59,7 @@
 
     <module>query/plugins/org.eclipse.acceleo.annotations</module>
     <module>query/plugins/org.eclipse.acceleo.query</module>
+    <module>query/plugins/org.eclipse.acceleo.query.ide</module>
     <module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
 
     <module>query/plugins/org.eclipse.acceleo.query.doc</module>
@@ -313,34 +314,6 @@
           </plugin>
         </plugins>
       </build>
-      <modules>
-        <module>query/plugins/org.eclipse.acceleo.annotations</module>
-        <module>query/plugins/org.eclipse.acceleo.query</module>
-        <module>query/plugins/org.eclipse.acceleo.query.ide</module>
-        <module>query/plugins/org.eclipse.acceleo.query.ide.ui</module>
-
-        <module>query/plugins/org.eclipse.acceleo.query.doc</module>
-
-        <module>query/features/org.eclipse.acceleo.query-feature</module>
-
-        <module>query/tests/org.eclipse.acceleo.query.tests.nestedpackages</module>
-        <module>query/tests/org.eclipse.acceleo.query.tests.qmodel</module>
-        <module>query/tests/org.eclipse.acceleo.query.tests.anydsl</module>
-        <module>query/tests/org.eclipse.acceleo.query.tests.anydsl.edit</module>
-        <module>query/tests/org.eclipse.acceleo.query.tests.anydsl.editor</module>
-        <module>query/tests/org.eclipse.acceleo.query.tests</module>
-        <module>query/tests/org.eclipse.acceleo.query.ide.tests</module>
-        <module>query/tests/org.eclipse.acceleo.query.ide.ui.tests</module>
-
-        <module>plugins/org.eclipse.acceleo.ui.interpreter.ocl</module>
-        <module>plugins/org.eclipse.acceleo.ui.interpreter.completeocl.edit</module>
-        <module>plugins/org.eclipse.acceleo.ui.interpreter.completeocl</module>
-
-        <module>features/org.eclipse.acceleo.ui.interpreter.ocl-feature</module>
-        <module>features/org.eclipse.acceleo.ui.interpreter.completeocl-feature</module>
-
-        <module>releng/org.eclipse.acceleo-updatesite</module>
-      </modules>
     </profile>
     <profile>
       <id>platform-neon</id>

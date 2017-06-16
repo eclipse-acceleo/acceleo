@@ -14,7 +14,9 @@ import java.util.Collection;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.URI;
 
 /**
  * Acceleo environment.
@@ -104,4 +106,32 @@ public interface IAcceleoEnvironment {
 	 *            The {@link ModuleElement} we're exiting out of.
 	 */
 	void popStack(ModuleElement moduleElement);
+
+	/**
+	 * Opens a writer for the given file uri.
+	 * 
+	 * @param uri
+	 *            The {@link URI} for which we need a writer.
+	 * @param openMode
+	 *            The mode in which to open the file.
+	 * @param charset
+	 *            Charset for the target file.
+	 * @param lineDelimiter
+	 *            Line delimiter that should be used for that file.
+	 */
+	void openWriter(URI uri, OpenModeKind openMode, String charset, String lineDelimiter);
+
+	/**
+	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
+	 */
+	void closeWriter();
+
+	/**
+	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
+	 * opened} writer.
+	 * 
+	 * @param text
+	 *            the text to write
+	 */
+	void write(String text);
 }

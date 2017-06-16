@@ -28,20 +28,37 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.acceleo.Module;
+import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
+import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.GenerationResult;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
+import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -58,6 +75,16 @@ public abstract class AbstractTemplatesTestSuite {
 	 * UTF-8 content.
 	 */
 	public static final String UTF_8 = "UTF-8";
+
+	/**
+	 * The {@link MemoryURIHandler} that check we don't have adherence to {@link File}.
+	 */
+	private static MemoryURIHandler uriHandler = new MemoryURIHandler();
+
+	/**
+	 * Copy buffer size.
+	 */
+	private static final int BUFFER_SIZE = 8192;
 
 	/**
 	 * The {@link ModuleAstSerializer}.
@@ -82,7 +109,12 @@ public abstract class AbstractTemplatesTestSuite {
 	/**
 	 * The {@link IAcceleoEnvironment}.
 	 */
-	private final IAcceleoEnvironment environment = new AcceleoEnvironment();
+	private final IAcceleoEnvironment environment = new AcceleoEnvironment(new DefaultGenerationStrategy());
+
+	/**
+	 * The {@link AcceleoEvaluator}.
+	 */
+	private final AcceleoEvaluator evaluator;
 
 	/**
 	 * The module qualified name.
@@ -104,12 +136,32 @@ public abstract class AbstractTemplatesTestSuite {
 		model = getModel(modelFile, rs);
 		final File moduleFile = getModuleFile(new File(testFolderPath));
 		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
+		evaluator = new AcceleoEvaluator(environment);
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
 			astResult = parser.parse(getContent(stream, UTF_8));
+			final Resource r = new XMIResourceImpl(URI.createFileURI(moduleFile.getAbsolutePath()));
+			r.getContents().add(astResult.getModule());
 			qualifiedName = "org::eclipse::acceleo::tests::" + astResult.getModule().getName();
 			environment.registerModule(qualifiedName, astResult.getModule());
 		}
+	}
+
+	/**
+	 * Registers {@link MemoryURIHandler}.
+	 */
+	@BeforeClass
+	public static void beforeClass() {
+		URIConverter.INSTANCE.getURIHandlers().add(0, uriHandler);
+	}
+
+	/**
+	 * Removes {@link MemoryURIHandler}.
+	 */
+	@AfterClass
+	public static void afterClass() {
+		uriHandler.clear();
+		URIConverter.INSTANCE.getURIHandlers().remove(uriHandler);
 	}
 
 	/**
@@ -250,10 +302,81 @@ public abstract class AbstractTemplatesTestSuite {
 
 	/**
 	 * Tests the generation by comparing the result of the generation.
+	 * 
+	 * @throws IOException
+	 *             if a file can't be read or written
 	 */
-	public void generation() {
-		// TODO
-		fail("not implemented yet.");
+	@Test
+	public void generation() throws IOException {
+		final Module module = astResult.getModule();
+
+		Template main = null;
+		for (ModuleElement element : module.getModuleElements()) {
+			if (element instanceof Template && ((Template)element).isMain()) {
+				main = (Template)element;
+				break;
+			}
+		}
+
+		final List<EObject> eObjects = new ArrayList<EObject>();
+		boolean missingFile = false;
+		if (main != null) {
+			if (model != null) {
+				final String parameterName = main.getParameters().get(0).getName();
+				final EClassifier parameterType = (EClassifier)((TypeLiteral)main.getParameters().get(0)
+						.getType().getAst()).getValue();
+				for (EObject root : model.getContents()) {
+					if (parameterType.isInstance(root)) {
+						eObjects.add(root);
+					}
+					final Iterator<EObject> it = root.eAllContents();
+					while (it.hasNext()) {
+						final EObject eObj = it.next();
+						if (parameterType.isInstance(eObj)) {
+							eObjects.add(eObj);
+						}
+					}
+				}
+
+				final URI destination = URI.createURI("acceleotests://" + testFolderPath + "/");
+				final Set<URI> generatedFiles = new LinkedHashSet<URI>();
+				for (EObject eObj : eObjects) {
+					final Map<String, Object> variables = new HashMap<String, Object>();
+					variables.put(parameterName, eObj);
+					final GenerationResult result = evaluator.generate(module, variables, destination);
+					generatedFiles.addAll(result.getGeneratedFiles());
+				}
+
+				// assert generated content
+				for (URI generatedURI : generatedFiles) {
+					final URI expectedURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
+							.toString()
+							+ "-expected");
+					final URI actualURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
+							.toString()
+							+ "-actual");
+					if (URIConverter.INSTANCE.exists(expectedURI, null)) {
+						final String expectedContent;
+						try (InputStream expectedStream = URIConverter.INSTANCE
+								.createInputStream(expectedURI)) {
+							expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
+						}
+						final String actualContent;
+						try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(generatedURI)) {
+							actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
+						}
+						assertEquals(expectedContent, actualContent);
+					} else {
+						copy(generatedURI, actualURI);
+						missingFile = true;
+					}
+				}
+			}
+		}
+
+		if (missingFile) {
+			fail("missing file.");
+		}
 	}
 
 	/**
@@ -436,6 +559,31 @@ public abstract class AbstractTemplatesTestSuite {
 			throws UnsupportedEncodingException, IOException {
 		stream.write(content.getBytes(charsetName));
 		stream.flush();
+	}
+
+	/**
+	 * Copies all bytes from a source {@link URI} to a destination {@link URI}.
+	 * 
+	 * @param sourceURI
+	 *            the source {@link URI}
+	 * @param destURI
+	 *            the destination {@link URI}
+	 * @return the number of copied bytes
+	 * @throws IOException
+	 *             if the copy can't be done
+	 */
+	private static long copy(URI sourceURI, URI destURI) throws IOException {
+		try (InputStream source = URIConverter.INSTANCE.createInputStream(sourceURI);
+				OutputStream dest = URIConverter.INSTANCE.createOutputStream(destURI);) {
+			long nread = 0L;
+			byte[] buf = new byte[BUFFER_SIZE];
+			int n;
+			while ((n = source.read(buf)) > 0) {
+				dest.write(buf, 0, n);
+				nread += n;
+			}
+			return nread;
+		}
 	}
 
 }

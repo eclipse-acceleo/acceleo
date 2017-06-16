@@ -15,6 +15,7 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
@@ -28,6 +29,7 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
@@ -35,9 +37,13 @@ import org.eclipse.acceleo.aql.evaluation.AcceleoCallStack;
 import org.eclipse.acceleo.aql.evaluation.AcceleoQueryEnvironment;
 import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.aql.evaluation.writer.NullGenerationStrategy;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -86,18 +92,36 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * {@link #aqlEnvironment}.
 	 * </p>
 	 */
-	private Deque<AcceleoCallStack> callStacks;
+	private final Deque<AcceleoCallStack> callStacks;
+
+	/** This will hold the writer stack for the file blocks. */
+	private final Deque<IAcceleoWriter> writers;
+
+	/** The current generation strategy. */
+	private final IAcceleoGenerationStrategy generationStrategy;
 
 	/**
 	 * Initializes an environment for acceleo evaluations.
 	 */
 	public AcceleoEnvironment() {
+		this(new NullGenerationStrategy());
+	}
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param generationStrategy
+	 *            the {@link IAcceleoGenerationStrategy}
+	 */
+	public AcceleoEnvironment(IAcceleoGenerationStrategy generationStrategy) {
 		this.qualifiedNameToModule = new LinkedHashMap<>();
 		this.moduleToQualifiedName = new LinkedHashMap<>();
 		this.moduleExtends = new LinkedHashMap<>();
 		this.moduleImports = LinkedListMultimap.create();
 		this.moduleServices = new LinkedHashMap<>();
 		this.callStacks = new ArrayDeque<>();
+		this.writers = new ArrayDeque<>();
+		this.generationStrategy = generationStrategy;
 
 		this.aqlEnvironment = new AcceleoQueryEnvironment(new EPackageProvider(), this);
 		/* FIXME we need a cross reference provider, and we need to make it configurable */
@@ -253,6 +277,41 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		// FIXME remove the test mock code
 		final boolean testMock = !qualifiedName.contains("notExisting");
 		return qualifiedNameToModule.containsKey(qualifiedName) || testMock;
+	}
+
+	@Override
+	public void openWriter(URI uri, OpenModeKind openMode, String charset, String lineDelimiter) {
+		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
+				lineDelimiter);
+		writers.addLast(writer);
+	}
+
+	@Override
+	public void closeWriter() {
+		final IAcceleoWriter writer = writers.removeLast();
+		try {
+			writer.close();
+		} catch (IOException e) {
+			// FIXME log a status
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.aql.IAcceleoEnvironment#write(java.lang.String)
+	 */
+	public void write(String text) {
+		if (!writers.isEmpty()) {
+			IAcceleoWriter writer = writers.peekLast();
+			try {
+				writer.append(text);
+			} catch (IOException e) {
+				// FIXME log a status everytime, or close the writer and ignore future calls?
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
