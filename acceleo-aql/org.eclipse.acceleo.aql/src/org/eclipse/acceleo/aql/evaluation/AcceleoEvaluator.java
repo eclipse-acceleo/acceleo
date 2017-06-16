@@ -13,11 +13,14 @@ package org.eclipse.acceleo.aql.evaluation;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
+import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Query;
@@ -77,10 +80,21 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * Pops the last {@link #pushVariables(Map) pushed} variables from the stack.
+	 * Peeks the last {@link #pushVariables(Map) pushed} variables from the stack.
+	 * 
+	 * @return the last {@link #pushVariables(Map) pushed} variables from the stack
 	 */
-	public void popVariables() {
-		variablesStack.removeLast();
+	public Map<String, Object> peekVariables() {
+		return variablesStack.peekLast();
+	}
+
+	/**
+	 * Pops the last {@link #pushVariables(Map) pushed} variables from the stack.
+	 * 
+	 * @return the last {@link #pushVariables(Map) pushed} variables from the stack
+	 */
+	public Map<String, Object> popVariables() {
+		return variablesStack.removeLast();
 	}
 
 	/**
@@ -132,27 +146,28 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	@Override
 	public Object caseTemplate(Template template) {
-		final StringBuilder builder = new StringBuilder();
+		final Object res;
 
 		try {
-			Block body = template.getBody();
-			for (Statement stmt : body.getStatements()) {
-				builder.append(doSwitch(stmt));
-			}
+			res = doSwitch(template.getBody());
 		} finally {
 			environment.popStack(template);
 		}
 
-		return builder.toString();
+		return res;
 	}
 
 	@Override
 	public Object caseQuery(Query query) {
+		final Object res;
+
 		try {
-			return doSwitch(query.getBody());
+			res = doSwitch(query.getBody());
 		} finally {
 			environment.popStack(query);
 		}
+
+		return res;
 	}
 
 	/**
@@ -164,4 +179,37 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public Object caseTextStatement(TextStatement text) {
 		return text.getValue();
 	}
+
+	@Override
+	public Object caseBlock(Block block) {
+		final StringBuilder builder = new StringBuilder();
+
+		for (Statement stmt : block.getStatements()) {
+			builder.append(doSwitch(stmt));
+		}
+
+		return builder.toString();
+	}
+
+	@Override
+	public Object caseLetStatement(LetStatement let) {
+		final Object res;
+
+		final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
+		for (Binding binding : let.getVariables()) {
+			final String name = binding.getName();
+			final Object value = doSwitch(binding.getInitExpression());
+			variables.put(name, value);
+		}
+
+		pushVariables(variables);
+		try {
+			res = doSwitch(let.getBody());
+		} finally {
+			popVariables();
+		}
+
+		return res;
+	}
+
 }
