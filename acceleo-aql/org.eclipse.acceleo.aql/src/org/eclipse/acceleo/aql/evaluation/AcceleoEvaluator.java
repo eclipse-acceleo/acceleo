@@ -20,12 +20,14 @@ import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
+import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.TextStatement;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.Diagnostic;
@@ -41,6 +43,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private AcceleoEnvironment environment;
 
 	/**
+	 * The {@link IQueryEvaluationEngine} used to evaluate AQL expressions.
+	 */
+	private final IQueryEvaluationEngine aqlEngine;
+
+	/**
 	 * The variables stack.
 	 */
 	private final Deque<Map<String, Object>> variablesStack;
@@ -53,6 +60,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	public AcceleoEvaluator(AcceleoEnvironment environment) {
 		this.environment = environment;
+		final IQueryEnvironment env = environment.getQueryEnvironment();
+		this.aqlEngine = QueryEvaluation.newEngine(env);
 		this.variablesStack = new ArrayDeque<>();
 		variablesStack.addLast(Collections.<String, Object> emptyMap());
 	}
@@ -86,8 +95,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			// FIXME throw / log
 		}
 
-		IQueryEnvironment env = environment.getQueryEnvironment();
-		return QueryEvaluation.newEngine(env).eval(ast, variablesStack.peekLast()).getResult();
+		return aqlEngine.eval(ast, variablesStack.peekLast()).getResult();
 	}
 
 	/**
@@ -136,6 +144,15 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public Object caseQuery(Query query) {
+		try {
+			return doSwitch(query.getBody());
+		} finally {
+			environment.popStack(query);
+		}
 	}
 
 	/**
