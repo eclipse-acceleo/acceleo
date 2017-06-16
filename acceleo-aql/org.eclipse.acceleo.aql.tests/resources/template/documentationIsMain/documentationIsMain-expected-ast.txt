@@ -1,0 +1,24 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @main
+* (149..147)
+  myParam the input EPackage
+ * @main
+* (110..147)[comment myParam the input EPackage
+ * @main
+* (110..147) /] (110..211)[comment 
+ * My template has a nice comment.
+ * @param myParam the input EPackage
+ * @main
+* (149..147) /] (61..149)
+  
+  public template myTemplate(myParam : EPackage (178..203))
+  @main
+    
+ some static text.
+ (205..225) (205..225)[/template] (150..236) (0..236)

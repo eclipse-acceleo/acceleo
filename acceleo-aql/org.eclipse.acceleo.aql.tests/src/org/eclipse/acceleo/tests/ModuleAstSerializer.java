@@ -502,6 +502,10 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		}
 		builder = previousBuilder;
 		builder.append(')');
+		if (template.isMain()) {
+			newLine();
+			builder.append("@main");
+		}
 		if (template.getGuard() != null) {
 			newLine();
 			builder.append("guard ");

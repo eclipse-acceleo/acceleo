@@ -321,6 +321,11 @@ public class AcceleoParser {
 	public static final String DOCUMENTATION_END = SLASH_END;
 
 	/**
+	 * Main tag.
+	 */
+	public static final String MAIN_TAG = "@main";
+
+	/**
 	 * Author tag.
 	 */
 	public static final String AUTHOR_TAG = "@author ";
@@ -834,7 +839,7 @@ public class AcceleoParser {
 			final List<Comment> comments = parseCommentsOrModuleElementDocumentations();
 			res.addAll(comments);
 			final Documentation documentation = getLastDocumentation(comments);
-			final Template template = parseTemplate(documentation);
+			final Template template = parseTemplate(documentation, hasMain(comments));
 			if (template != null) {
 				moduleElement = template;
 			} else {
@@ -846,6 +851,23 @@ public class AcceleoParser {
 		} while (moduleElement != null);
 
 		return res;
+	}
+
+	/**
+	 * Tells if the given {@link List} of {@link Comment} contains a {@value #MAIN_TAG}.
+	 * 
+	 * @param comments
+	 *            the {@link List} of {@link Comment}
+	 * @return <code>true</code> if the given {@link List} of {@link Comment} contains a {@value #MAIN_TAG},
+	 *         <code>false</code> otherwise
+	 */
+	private boolean hasMain(List<Comment> comments) {
+		for (Comment comment : comments) {
+			if (comment.getBody().getValue().contains(MAIN_TAG)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -1045,10 +1067,13 @@ public class AcceleoParser {
 	 * 
 	 * @param documentation
 	 *            the {@link Documentation} for the {@link Template} if any, <code>null</code> otherwise
+	 * @param isMain
+	 *            tells if the parsed {@link Template} should be a {@link Template#isMain() main}
+	 *            {@link Template}.
 	 * @return the created {@link Template} if any recognized, <code>null</code> otherwise
 	 */
 	// CHECKSTYLE:OFF
-	protected Template parseTemplate(Documentation documentation) {
+	protected Template parseTemplate(Documentation documentation, boolean isMain) {
 		final Template res;
 
 		if (text.startsWith(TEMPLATE_HEADER_START, currentPosition)) {
@@ -1142,6 +1167,7 @@ public class AcceleoParser {
 			} else {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createTemplate();
 			}
+			res.setMain(isMain);
 			res.setStartPosition(startPosition);
 			res.setDocumentation(documentation);
 			res.setVisibility(visibility);

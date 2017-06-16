@@ -39,6 +39,7 @@ import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.junit.Test;
@@ -98,11 +99,9 @@ public abstract class AbstractTemplatesTestSuite {
 	 */
 	public AbstractTemplatesTestSuite(String testFolder) throws IOException {
 		this.testFolderPath = testFolder;
-		// TODO
-		// final File genconfFile = getModelFile(new File(testFolderPath));
-		// final ResourceSet rs = getResourceSet();
-		// model = getModel(genconfFile, rs);
-		model = null;
+		final File modelFile = getModelFile(new File(testFolderPath));
+		final ResourceSet rs = getResourceSet();
+		model = getModel(modelFile, rs);
 		final File moduleFile = getModuleFile(new File(testFolderPath));
 		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
 
@@ -114,16 +113,25 @@ public abstract class AbstractTemplatesTestSuite {
 	}
 
 	/**
-	 * Gets the {@link Generation}.
+	 * Gets the {@link Resource}.
 	 * 
-	 * @param genconfFile
-	 *            the {@link Generation} file
+	 * @param modelFile
+	 *            the model {@link File}
 	 * @param rs
 	 *            the {@link ResourceSet}
-	 * @return the {@link Generation}
+	 * @return the {@link Resource}
 	 */
-	protected Resource getModel(File genconfFile, ResourceSet rs) {
-		return rs.getResource(URI.createFileURI(genconfFile.getAbsolutePath()), true);
+	protected Resource getModel(File modelFile, ResourceSet rs) {
+		final Resource res;
+
+		final URI modelURI = URI.createFileURI(modelFile.getAbsolutePath());
+		if (URIConverter.INSTANCE.exists(modelURI, null)) {
+			res = rs.getResource(modelURI, true);
+		} else {
+			res = null;
+		}
+
+		return res;
 	}
 
 	/**
