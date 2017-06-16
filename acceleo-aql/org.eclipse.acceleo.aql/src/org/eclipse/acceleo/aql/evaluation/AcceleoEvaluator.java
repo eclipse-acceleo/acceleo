@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
+import org.eclipse.acceleo.Comment;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.LetStatement;
@@ -189,6 +190,11 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public Object caseComment(Comment comment) {
+		return "";
 	}
 
 	@Override
