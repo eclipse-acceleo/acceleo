@@ -94,7 +94,7 @@ public class AnyServices extends AbstractServiceProvider {
 
 	// @formatter:off
 	@Documentation(
-		value = "Indicates whether the object \"o1\" i\"the same as the object \"o2\". For more " +
+		value = "Indicates whether the object \"o1\" is the same as the object \"o2\". For more " +
 	            "information refer to the Object#equals(Object) method.",
 	    params = {
 			@Param(name = "o1", value = "The object to compare for equality"),
