@@ -983,6 +983,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		if (!stack.isEmpty() && stack.peek() instanceof ErrorExpression) {
 			final ErrorExpression error = (ErrorExpression)pop();
 			errors.remove(error);
+			startPositions.remove(error);
+			endPositions.remove(error);
 			diagnostics.remove(diagnostics.size() - 1);
 		}
 	}
@@ -1674,18 +1676,26 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitLetExpr(LetExprContext ctx) {
-		Expression body;
+		final Expression body;
+		final Binding[] bindings;
+
 		if (!(ctx.getChild(ctx.getChildCount() - 1) instanceof ExpressionContext)) {
+			popErrorExpression();
 			body = builder.errorExpression();
 			startPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 			endPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			final List<Binding> bindingList = new ArrayList<Binding>();
+			while (!stack.isEmpty() && stack.peek() instanceof Binding) {
+				bindingList.add(popBinding());
+			}
+			bindings = bindingList.toArray(new Binding[bindingList.size()]);
 		} else {
 			body = popExpression();
-		}
-		int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
-		Binding[] bindings = new Binding[bindingNumber];
-		for (int i = bindingNumber - 1; i >= 0; i--) {
-			bindings[i] = popBinding();
+			int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
+			bindings = new Binding[bindingNumber];
+			for (int i = bindingNumber - 1; i >= 0; i--) {
+				bindings[i] = popBinding();
+			}
 		}
 		final Let let = builder.let(body, bindings);
 

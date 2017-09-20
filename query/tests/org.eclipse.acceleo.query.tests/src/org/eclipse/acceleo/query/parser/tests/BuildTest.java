@@ -1157,6 +1157,17 @@ public class BuildTest {
 	}
 
 	@Test
+	public void LetNoIn() {
+		IQueryBuilderEngine.AstResult build = engine.build("let v = self.name");
+		final Expression ast = build.getAst();
+
+		assertExpression(build, Let.class, 0, 17, ast);
+		assertEquals(1, ((Let)ast).getBindings().size());
+		assertEquals("v", ((Let)ast).getBindings().get(0).getName());
+		assertExpression(build, ErrorExpression.class, 17, 17, ((Let)ast).getBody());
+	}
+
+	@Test
 	public void nullTest() {
 		IQueryBuilderEngine.AstResult build = engine.build(null);
 		Expression ast = build.getAst();
