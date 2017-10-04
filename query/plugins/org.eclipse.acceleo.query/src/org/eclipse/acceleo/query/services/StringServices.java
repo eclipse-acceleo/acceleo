@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.base.Strings;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -54,7 +52,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String concat(String self, String b) {
-		return Strings.nullToEmpty(self) + Strings.nullToEmpty(b);
+		return nullToEmpty(self) + nullToEmpty(b);
 	}
 
 	// @formatter:off
@@ -72,7 +70,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String add(String self, String b) {
-		return Strings.nullToEmpty(self) + Strings.nullToEmpty(b);
+		return nullToEmpty(self) + nullToEmpty(b);
 	}
 
 	// @formatter:off
@@ -95,8 +93,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String replace(String self, String regex, String replacement) {
-		return Strings.nullToEmpty(self).replaceFirst(Strings.nullToEmpty(regex),
-				Strings.nullToEmpty(replacement));
+		return nullToEmpty(self).replaceFirst(nullToEmpty(regex), nullToEmpty(replacement));
 	}
 
 	// @formatter:off
@@ -119,8 +116,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String replaceAll(String self, String regex, String replacement) {
-		return Strings.nullToEmpty(self).replaceAll(Strings.nullToEmpty(regex),
-				Strings.nullToEmpty(replacement));
+		return nullToEmpty(self).replaceAll(nullToEmpty(regex), nullToEmpty(replacement));
 	}
 
 	// @formatter:off
@@ -137,7 +133,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String prefix(String self, String prefix) {
-		return Strings.nullToEmpty(prefix) + Strings.nullToEmpty(self);
+		return nullToEmpty(prefix) + nullToEmpty(self);
 	}
 
 	// @formatter:off
@@ -157,7 +153,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean contains(String self, String b) {
-		return Boolean.valueOf(Strings.nullToEmpty(self).contains(Strings.nullToEmpty(b)));
+		return Boolean.valueOf(nullToEmpty(self).contains(nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -177,7 +173,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean matches(String self, String regex) {
-		return Boolean.valueOf(Strings.nullToEmpty(self).matches(Strings.nullToEmpty(regex)));
+		return Boolean.valueOf(nullToEmpty(self).matches(nullToEmpty(regex)));
 	}
 
 	// @formatter:off
@@ -197,7 +193,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean endsWith(String self, String b) {
-		return Boolean.valueOf(Strings.nullToEmpty(self).endsWith(Strings.nullToEmpty(b)));
+		return Boolean.valueOf(nullToEmpty(self).endsWith(nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -217,7 +213,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean startsWith(String self, String b) {
-		return Boolean.valueOf(Strings.nullToEmpty(self).startsWith(Strings.nullToEmpty(b)));
+		return Boolean.valueOf(nullToEmpty(self).startsWith(nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -237,7 +233,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean equalsIgnoreCase(String self, String b) {
-		return Boolean.valueOf(Strings.nullToEmpty(self).equalsIgnoreCase(Strings.nullToEmpty(b)));
+		return Boolean.valueOf(nullToEmpty(self).equalsIgnoreCase(nullToEmpty(b)));
 	}
 
 	// @formatter:off
@@ -316,7 +312,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer lastIndex(String self, String subString) {
-		int index = Strings.nullToEmpty(self).lastIndexOf(Strings.nullToEmpty(subString)) + 1;
+		int index = nullToEmpty(self).lastIndexOf(nullToEmpty(subString)) + 1;
 
 		if (index == 0) {
 			index = -1;
@@ -343,7 +339,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer index(String self, String b) {
-		int index = Strings.nullToEmpty(self).indexOf(Strings.nullToEmpty(b)) + 1;
+		int index = nullToEmpty(self).indexOf(nullToEmpty(b)) + 1;
 
 		if (index == 0) {
 			index = -1;
@@ -371,7 +367,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer index(String self, String subString, Integer index) {
-		int indexResult = Strings.nullToEmpty(self).indexOf(Strings.nullToEmpty(subString), index) + 1;
+		int indexResult = nullToEmpty(self).indexOf(nullToEmpty(subString), index) + 1;
 
 		if (indexResult == 0) {
 			indexResult = -1;
@@ -399,7 +395,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer lastIndex(String self, String subString, Integer index) {
-		int indexResult = Strings.nullToEmpty(self).lastIndexOf(Strings.nullToEmpty(subString), index) + 1;
+		int indexResult = nullToEmpty(self).lastIndexOf(nullToEmpty(subString), index) + 1;
 
 		if (indexResult == 0) {
 			indexResult = -1;
@@ -605,7 +601,7 @@ public class StringServices {
 		if (self == null || self.isEmpty()) {
 			result = 0;
 		} else {
-			result = Strings.nullToEmpty(self).length();
+			result = nullToEmpty(self).length();
 		}
 
 		return Integer.valueOf(result);
@@ -685,7 +681,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer toInteger(String self) {
-		return Integer.valueOf(Strings.nullToEmpty(self));
+		return Integer.valueOf(nullToEmpty(self));
 	}
 
 	// @formatter:off
@@ -704,7 +700,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Double toReal(String self) {
-		return Double.valueOf(Strings.nullToEmpty(self));
+		return Double.valueOf(nullToEmpty(self));
 	}
 
 	// @formatter:off
@@ -727,7 +723,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Integer strcmp(String self, String s1) {
-		return Integer.valueOf(Strings.nullToEmpty(self).compareTo(Strings.nullToEmpty(s1)));
+		return Integer.valueOf(nullToEmpty(self).compareTo(nullToEmpty(s1)));
 	}
 
 	// @formatter:off
@@ -744,7 +740,7 @@ public class StringServices {
 	)
 	// @formatter:on
 	public Boolean strstr(String self, String r) {
-		return Boolean.valueOf(Strings.nullToEmpty(self).indexOf(Strings.nullToEmpty(r)) > -1);
+		return Boolean.valueOf(nullToEmpty(self).indexOf(nullToEmpty(r)) > -1);
 	}
 
 	// @formatter:off
@@ -763,8 +759,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substitute(String self, String r, String t) {
-		return Pattern.compile(Strings.nullToEmpty(r), Pattern.LITERAL).matcher(Strings.nullToEmpty(self))
-				.replaceFirst(Matcher.quoteReplacement(Strings.nullToEmpty(t)));
+		return Pattern.compile(nullToEmpty(r), Pattern.LITERAL).matcher(nullToEmpty(self)).replaceFirst(
+				Matcher.quoteReplacement(nullToEmpty(t)));
 	}
 
 	// @formatter:off
@@ -783,8 +779,8 @@ public class StringServices {
 	)
 	// @formatter:on
 	public String substituteAll(String self, String r, String t) {
-		return Pattern.compile(Strings.nullToEmpty(r), Pattern.LITERAL).matcher(Strings.nullToEmpty(self))
-				.replaceAll(Matcher.quoteReplacement(Strings.nullToEmpty(t)));
+		return Pattern.compile(nullToEmpty(r), Pattern.LITERAL).matcher(nullToEmpty(self)).replaceAll(
+				Matcher.quoteReplacement(nullToEmpty(t)));
 	}
 
 	// @formatter:off
@@ -807,7 +803,7 @@ public class StringServices {
 		} else if (self.isEmpty()) {
 			result = self;
 		} else {
-			result = Strings.nullToEmpty(self).trim();
+			result = nullToEmpty(self).trim();
 		}
 
 		return result;
@@ -827,7 +823,7 @@ public class StringServices {
 	// @formatter:on
 	public List<String> tokenize(String self) {
 		final List<String> segments = new ArrayList<String>();
-		final StringTokenizer tokenizer = new StringTokenizer(Strings.nullToEmpty(self));
+		final StringTokenizer tokenizer = new StringTokenizer(nullToEmpty(self));
 
 		while (tokenizer.hasMoreTokens()) {
 			segments.add(tokenizer.nextToken());
@@ -852,13 +848,31 @@ public class StringServices {
 	public List<String> tokenize(String self, String delimiter) {
 		final List<String> segments = new ArrayList<String>();
 
-		StringTokenizer tokenizer = new StringTokenizer(Strings.nullToEmpty(self), Strings
-				.nullToEmpty(delimiter));
+		StringTokenizer tokenizer = new StringTokenizer(nullToEmpty(self), nullToEmpty(delimiter));
 		while (tokenizer.hasMoreTokens()) {
 			segments.add(tokenizer.nextToken());
 		}
 
 		return segments;
+	}
+
+	/**
+	 * Gets the empty {@link String} if the given {@link String} is <code>null</code>.
+	 * 
+	 * @param str
+	 *            the {@link String}
+	 * @return the empty {@link String} if the given {@link String} is <code>null</code>
+	 */
+	private String nullToEmpty(String str) {
+		final String res;
+
+		if (str == null) {
+			res = "";
+		} else {
+			res = str;
+		}
+
+		return res;
 	}
 
 }

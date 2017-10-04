@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -247,7 +245,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseBooleanLiteral(BooleanLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Boolean.class));
 
@@ -760,7 +758,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseIntegerLiteral(IntegerLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Integer.class));
 
@@ -809,7 +807,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseRealLiteral(RealLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Double.class));
 
@@ -823,7 +821,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseStringLiteral(StringLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.String.class));
 
@@ -877,7 +875,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			possibleTypes.add(new EClassifierLiteralType(services.getQueryEnvironment(), (EClassifier)object
 					.getValue()));
 		} else if (object.getValue() instanceof Class<?>) {
-			possibleTypes = Sets.newLinkedHashSet();
+			possibleTypes = new LinkedHashSet<IType>();
 			possibleTypes.add(new ClassType(services.getQueryEnvironment(), (Class<?>)object.getValue()));
 		} else {
 			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
@@ -1088,7 +1086,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseConditional(Conditional object) {
-		Set<IType> result = Sets.newLinkedHashSet();
+		Set<IType> result = new LinkedHashSet<IType>();
 
 		final Set<IType> selectorTypes;
 		if (object.getPredicate() != null) {
@@ -1164,7 +1162,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseLet(Let object) {
-		Set<IType> result = Sets.newLinkedHashSet();
+		Set<IType> result = new LinkedHashSet<IType>();
 
 		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
 				.peek());

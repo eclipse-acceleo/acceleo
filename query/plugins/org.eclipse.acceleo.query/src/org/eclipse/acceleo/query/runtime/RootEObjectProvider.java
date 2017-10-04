@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime;
 
-import com.google.common.collect.Sets;
-
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
@@ -46,7 +45,7 @@ public class RootEObjectProvider implements IRootEObjectProvider {
 	 *            the array of root {@link EObject}
 	 */
 	public RootEObjectProvider(EObject... roots) {
-		this.roots = Sets.newLinkedHashSet();
+		this.roots = new LinkedHashSet<EObject>();
 		for (EObject root : roots) {
 			this.roots.add(root);
 		}

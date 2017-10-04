@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
-import com.google.common.collect.Lists;
-
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -383,7 +382,7 @@ public class AstBuilder {
 		final Call call = (Call)EcoreUtil.create(AstPackage.Literals.CALL);
 
 		call.setServiceName(serviceName);
-		call.getArguments().addAll(Lists.newArrayList(args));
+		call.getArguments().addAll(Arrays.asList(args));
 
 		return call;
 	}
@@ -399,7 +398,7 @@ public class AstBuilder {
 		final And and = (And)EcoreUtil.create(AstPackage.Literals.AND);
 
 		and.setServiceName(AstBuilderListener.AND_SERVICE_NAME);
-		and.getArguments().addAll(Lists.newArrayList(args));
+		and.getArguments().addAll(Arrays.asList(args));
 
 		return and;
 	}
@@ -415,7 +414,7 @@ public class AstBuilder {
 		final Or or = (Or)EcoreUtil.create(AstPackage.Literals.OR);
 
 		or.setServiceName(AstBuilderListener.OR_SERVICE_NAME);
-		or.getArguments().addAll(Lists.newArrayList(args));
+		or.getArguments().addAll(Arrays.asList(args));
 
 		return or;
 	}
@@ -431,7 +430,7 @@ public class AstBuilder {
 		final Implies implies = (Implies)EcoreUtil.create(AstPackage.Literals.IMPLIES);
 
 		implies.setServiceName(AstBuilderListener.IMPLIES_SERVICE_NAME);
-		implies.getArguments().addAll(Lists.newArrayList(args));
+		implies.getArguments().addAll(Arrays.asList(args));
 
 		return implies;
 	}
@@ -462,7 +461,7 @@ public class AstBuilder {
 	public Lambda lambda(Expression expression, VariableDeclaration... parameters) {
 		Lambda lambda = (Lambda)EcoreUtil.create(AstPackage.Literals.LAMBDA);
 		lambda.setExpression(expression);
-		List<VariableDeclaration> params = Lists.newArrayList(parameters);
+		List<VariableDeclaration> params = Arrays.asList(parameters);
 		lambda.getParameters().addAll(params);
 		return lambda;
 	}
@@ -561,7 +560,7 @@ public class AstBuilder {
 
 		result.setServiceName(serviceName);
 		result.setMissingEndParenthesis(isMissingEndParenthesis);
-		result.getArguments().addAll(Lists.newArrayList(args));
+		result.getArguments().addAll(Arrays.asList(args));
 
 		return result;
 	}

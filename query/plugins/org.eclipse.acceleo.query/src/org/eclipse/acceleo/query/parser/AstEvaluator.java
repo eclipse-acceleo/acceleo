@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -323,7 +320,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseSetInExtensionLiteral(SetInExtensionLiteral object) {
-		final Set<Object> result = Sets.newLinkedHashSet();
+		final Set<Object> result = new LinkedHashSet<Object>();
 
 		for (Expression expression : object.getValues()) {
 			result.add(doSwitch(expression));
@@ -339,7 +336,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseSequenceInExtensionLiteral(SequenceInExtensionLiteral object) {
-		final List<Object> result = Lists.newArrayList();
+		final List<Object> result = new ArrayList<Object>();
 
 		for (Expression expression : object.getValues()) {
 			result.add(doSwitch(expression));
@@ -380,7 +377,7 @@ public class AstEvaluator extends AstSwitch<Object> {
 	 */
 	@Override
 	public Object caseLet(Let object) {
-		Map<String, Object> letEnv = Maps.newHashMap(variablesStack.peek());
+		Map<String, Object> letEnv = new HashMap<String, Object>(variablesStack.peek());
 		for (Binding binding : object.getBindings()) {
 			letEnv.put(binding.getName(), doSwitch(binding.getValue()));
 		}

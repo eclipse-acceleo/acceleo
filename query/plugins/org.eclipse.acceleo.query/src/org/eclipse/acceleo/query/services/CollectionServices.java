@@ -10,20 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -693,7 +686,7 @@ public class CollectionServices extends AbstractServiceProvider {
 				java.util.List<IType> argTypes) {
 			final Set<IType> result = new LinkedHashSet<IType>();
 
-			final Set<EClassifierType> rawTypes = Sets.newLinkedHashSet();
+			final Set<EClassifierType> rawTypes = new LinkedHashSet<EClassifierType>();
 
 			final IType receiverType = argTypes.get(0);
 			if (receiverType instanceof NothingType) {
@@ -1009,13 +1002,16 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> List<T> concat(List<? extends T> sequence, Collection<? extends T> collection) {
-		checkNotNull(sequence);
+		if (sequence == null) {
+			throw new NullPointerException();
+		}
 		final List<T> result;
 
 		if (collection.isEmpty()) {
 			result = (List<T>)sequence;
 		} else {
-			result = Lists.newArrayList(Iterables.concat(sequence, collection));
+			result = new ArrayList<T>(sequence);
+			result.addAll(collection);
 		}
 
 		return result;
@@ -1045,13 +1041,16 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> Set<T> concat(Set<? extends T> set, Collection<? extends T> collection) {
-		checkNotNull(set);
+		if (set == null) {
+			throw new NullPointerException();
+		}
 		final Set<T> result;
 
 		if (collection.isEmpty()) {
 			result = (Set<T>)set;
 		} else {
-			result = Sets.newLinkedHashSet(Iterables.concat(set, collection));
+			result = new LinkedHashSet<T>(set);
+			result.addAll(collection);
 		}
 
 		return result;
@@ -1155,11 +1154,13 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> List<T> sub(List<T> sequence, Collection<?> collection) {
-		checkNotNull(sequence);
+		if (sequence == null) {
+			throw new NullPointerException();
+		}
 		if (collection.isEmpty()) {
 			return sequence;
 		} else {
-			List<T> result = Lists.newArrayList(sequence);
+			List<T> result = new ArrayList<T>(sequence);
 			result.removeAll(collection);
 			return result;
 		}
@@ -1189,11 +1190,13 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> Set<T> sub(Set<T> set, Collection<?> collection) {
-		checkNotNull(set);
+		if (set == null) {
+			throw new NullPointerException();
+		}
 		if (collection.isEmpty()) {
 			return set;
 		} else {
-			Set<T> result = Sets.newLinkedHashSet(set);
+			Set<T> result = new LinkedHashSet<T>(set);
 			result.removeAll(collection);
 			return result;
 		}
@@ -1217,9 +1220,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		final List<T> newList;
 
 		if (lambda == null) {
-			newList = Lists.newArrayList();
+			newList = new ArrayList<T>();
 		} else {
-			newList = Lists.newArrayList();
+			newList = new ArrayList<T>();
 			for (T elt : sequence) {
 				try {
 					Object value = lambda.eval(new Object[] {elt });
@@ -1255,9 +1258,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		final Set<T> newSet;
 
 		if (lambda == null) {
-			newSet = Sets.newLinkedHashSet();
+			newSet = new LinkedHashSet<T>();
 		} else {
-			newSet = Sets.newLinkedHashSet();
+			newSet = new LinkedHashSet<T>();
 			for (T elt : set) {
 				try {
 					Object value = lambda.eval(new Object[] {elt });
@@ -1293,9 +1296,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		final Set<T> newSet;
 
 		if (lambda == null) {
-			newSet = Sets.newLinkedHashSet();
+			newSet = new LinkedHashSet<T>();
 		} else {
-			newSet = Sets.newLinkedHashSet();
+			newSet = new LinkedHashSet<T>();
 			for (T elt : set) {
 				try {
 					Object value = lambda.eval(new Object[] {elt });
@@ -1331,9 +1334,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		final List<T> newList;
 
 		if (lambda == null) {
-			newList = Lists.newArrayList();
+			newList = new ArrayList<T>();
 		} else {
-			newList = Lists.newArrayList();
+			newList = new ArrayList<T>();
 			for (T elt : sequence) {
 				try {
 					Object value = lambda.eval(new Object[] {elt });
@@ -1371,7 +1374,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (lambda == null) {
 			result = Collections.emptySet();
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<Object>();
 			for (Object elt : set) {
 				try {
 					Object lambdaResult = lambda.eval(new Object[] {elt });
@@ -1413,7 +1416,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (lambda == null) {
 			result = Collections.emptyList();
 		} else {
-			result = Lists.newArrayList();
+			result = new ArrayList<Object>();
 			for (Object elt : sequence) {
 				try {
 					Object lambdaResult = lambda.eval(new Object[] {elt });
@@ -1454,11 +1457,11 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (lambda == null) {
 			result = Collections.emptySet();
 		} else {
-			result = Sets.newLinkedHashSet(collection);
-			Set<Object> currentSet = Sets.newLinkedHashSet(collection);
+			result = new LinkedHashSet<Object>(collection);
+			Set<Object> currentSet = new LinkedHashSet<Object>(collection);
 			Set<Object> added;
 			do {
-				added = Sets.newLinkedHashSet();
+				added = new LinkedHashSet<Object>();
 				for (Object current : currentSet) {
 					try {
 						final Object lambdaResult = lambda.eval(new Object[] {current });
@@ -1507,7 +1510,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if (lambda == null) {
 			return sequence;
 		} else {
-			result = Lists.newArrayList(sequence);
+			result = new ArrayList<T>(sequence);
 
 			final Map<T, Object> values = new HashMap<T, Object>();
 			for (T object : result) {
@@ -1547,7 +1550,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		} else if (lambda == null) {
 			return set;
 		} else {
-			List<T> sorted = Lists.newArrayList(set);
+			List<T> sorted = new ArrayList<T>(set);
 
 			final Map<T, Object> values = new HashMap<T, Object>();
 			for (T object : sorted) {
@@ -1561,7 +1564,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			}
 
 			Collections.sort(sorted, new LambdaComparator<T>(values));
-			result = Sets.newLinkedHashSet(sorted);
+			result = new LinkedHashSet<T>(sorted);
 		}
 
 		return result;
@@ -1601,7 +1604,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (set.contains(object)) {
 			return set;
 		} else {
-			Set<T> result = Sets.newLinkedHashSet(set);
+			Set<T> result = new LinkedHashSet<T>(set);
 			result.add(object);
 			return result;
 		}
@@ -1624,7 +1627,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (!set.contains(object)) {
 			return set;
 		} else {
-			Set<T> result = Sets.newLinkedHashSet(set);
+			Set<T> result = new LinkedHashSet<T>(set);
 			result.remove(object);
 			return result;
 		}
@@ -1644,7 +1647,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> List<T> including(List<T> sequence, T object) {
-		List<T> result = Lists.newArrayList(sequence);
+		List<T> result = new ArrayList<T>(sequence);
 		result.add(object);
 		return result;
 	}
@@ -1663,7 +1666,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> List<T> excluding(List<T> sequence, Object object) {
-		List<T> result = Lists.newArrayList(sequence);
+		List<T> result = new ArrayList<T>(sequence);
 		result.removeAll(Collections.singleton(object));
 		return result;
 	}
@@ -1686,7 +1689,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (collection instanceof List) {
 			return (List<T>)collection;
 		} else {
-			return Lists.newArrayList(collection);
+			return new ArrayList<T>(collection);
 		}
 	}
 
@@ -1708,7 +1711,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (collection instanceof Set) {
 			return (Set<T>)collection;
 		} else {
-			return Sets.newLinkedHashSet(collection);
+			return new LinkedHashSet<T>(collection);
 		}
 	}
 
@@ -1743,7 +1746,16 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> T first(Collection<T> collection) {
-		return Iterators.getNext(collection.iterator(), null);
+		final T res;
+
+		final Iterator<T> it = collection.iterator();
+		if (it.hasNext()) {
+			res = it.next();
+		} else {
+			res = null;
+		}
+
+		return res;
 	}
 
 	// @formatter:off
@@ -1759,7 +1771,11 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> List<T> reverse(List<T> sequence) {
-		return Lists.newArrayList(Lists.reverse(sequence));
+		final ArrayList<T> res = new ArrayList<T>(sequence);
+
+		Collections.reverse(res);
+
+		return res;
 	}
 
 	// @formatter:off
@@ -1775,7 +1791,11 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> Set<T> reverse(Set<T> set) {
-		return Sets.newLinkedHashSet(ImmutableList.copyOf(set).reverse());
+		final ArrayList<T> res = new ArrayList<T>(set);
+
+		Collections.reverse(res);
+
+		return new LinkedHashSet<T>(res);
 	}
 
 	// @formatter:off
@@ -1853,7 +1873,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			eClassifiers.add(eClassifier);
 			result = filter(set, eClassifiers);
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<T>();
 		}
 
 		return result;
@@ -1879,9 +1899,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (set == null) {
 			result = null;
 		} else if (eClassifiers == null || eClassifiers.isEmpty()) {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<T>();
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<T>();
 			for (T object : set) {
 				for (EClassifier eClassifier : eClassifiers) {
 					if (eClassifier.isInstance(object)) {
@@ -1919,7 +1939,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			eClassifiers.add(eClassifier);
 			result = filter(sequence, eClassifiers);
 		} else {
-			result = Lists.newArrayList();
+			result = new ArrayList<T>();
 		}
 
 		return result;
@@ -1945,9 +1965,9 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (sequence == null) {
 			result = null;
 		} else if (eClassifiers == null || eClassifiers.isEmpty()) {
-			result = Lists.newArrayList();
+			result = new ArrayList<T>();
 		} else {
-			result = Lists.newArrayList();
+			result = new ArrayList<T>();
 			for (T object : sequence) {
 				for (EClassifier eClassifier : eClassifiers) {
 					if (eClassifier.isInstance(object)) {
@@ -1981,7 +2001,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (collection == null) {
 			result = null;
 		} else {
-			result = Lists.newArrayList();
+			result = new ArrayList<Object>();
 
 			final Iterator<?> it = collection.iterator();
 			if (it.hasNext()) {
@@ -2013,7 +2033,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<Object> sep(Collection<?> collection, Object prefix, Object separator, Object suffix) {
-		final List<Object> result = Lists.newArrayList();
+		final List<Object> result = new ArrayList<Object>();
 
 		result.add(prefix);
 		if (collection != null) {
@@ -2057,7 +2077,14 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> T last(Set<T> set) {
-		return Iterators.getLast(set.iterator(), null);
+		T res = null;
+
+		final Iterator<T> it = set.iterator();
+		while (it.hasNext()) {
+			res = it.next();
+		}
+
+		return res;
 	}
 
 	// @formatter:off
@@ -2346,7 +2373,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	// @formatter:on
 	public Boolean isUnique(Collection<?> collection, LambdaValue lambda) {
 		boolean result = true;
-		final Set<Object> evaluated = Sets.newHashSet();
+		final Set<Object> evaluated = new HashSet<Object>();
 
 		if (collection != null && lambda == null) {
 			result = false;
@@ -2616,11 +2643,10 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> Set<T> intersection(Set<T> set, Collection<?> collection) {
-		if (collection instanceof Set<?>) {
-			return Sets.intersection(set, (Set<?>)collection);
-		}
-		final Set<T> result = Sets.newLinkedHashSet(set);
+		final Set<T> result = new LinkedHashSet<T>(set);
+
 		result.retainAll(collection);
+
 		return result;
 	}
 
@@ -2641,7 +2667,7 @@ public class CollectionServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public <T> List<T> intersection(List<T> sequence, Collection<?> collection) {
-		final List<T> result = Lists.newArrayList(sequence);
+		final List<T> result = new ArrayList<T>(sequence);
 		result.retainAll(collection);
 		return result;
 	}
@@ -2707,7 +2733,7 @@ public class CollectionServices extends AbstractServiceProvider {
 		if (startIndex < 1 || endIndex > sequence.size() || startIndex > endIndex) {
 			throw new IndexOutOfBoundsException();
 		}
-		return Lists.newArrayList(sequence.subList(startIndex - 1, endIndex));
+		return new ArrayList<T>(sequence.subList(startIndex - 1, endIndex));
 	}
 
 	/**

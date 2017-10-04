@@ -20,7 +20,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.validation.type;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract implementation of {@link IType}.
@@ -29,21 +31,21 @@ import com.google.common.collect.ImmutableMap;
  */
 public abstract class AbstractType implements IType {
 	/** Associates primitive java classes to their wrapper. */
-	private static final ImmutableMap<Class<?>, Class<?>> PRIMITIVE_WRAPPERS;
+	private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPERS;
 
 	static {
-		//@formatter:off
-		PRIMITIVE_WRAPPERS = ImmutableMap.<Class<?>, Class<?>> builder()
-				.put(byte.class, Byte.class)
-				.put(short.class, Short.class)
-				.put(char.class, Character.class)
-				.put(int.class, Integer.class)
-				.put(long.class, Long.class)
-				.put(float.class, Float.class)
-				.put(double.class, Double.class)
-				.put(boolean.class, Boolean.class)
-				.build();
-		//@formatter:on
+		final Map<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
+
+		map.put(byte.class, Byte.class);
+		map.put(short.class, Short.class);
+		map.put(char.class, Character.class);
+		map.put(int.class, Integer.class);
+		map.put(long.class, Long.class);
+		map.put(float.class, Float.class);
+		map.put(double.class, Double.class);
+		map.put(boolean.class, Boolean.class);
+
+		PRIMITIVE_WRAPPERS = Collections.unmodifiableMap(map);
 	}
 
 	/**
