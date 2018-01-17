@@ -156,10 +156,14 @@ public class CompletionServices extends ValidationServices {
 		final List<EClassifierCompletionProposal> result = new ArrayList<EClassifierCompletionProposal>();
 
 		final Collection<EPackage> ePkgs = queryEnvironment.getEPackageProvider().getEPackage(name);
-		for (EPackage ePkg : ePkgs) {
-			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
-				result.add(new EClassifierCompletionProposal(eClassifier));
+		if (!ePkgs.isEmpty()) {
+			for (EPackage ePkg : ePkgs) {
+				for (EClassifier eClassifier : ePkg.getEClassifiers()) {
+					result.add(new EClassifierCompletionProposal(eClassifier));
+				}
 			}
+		} else {
+			result.addAll(getEClassifierProposals());
 		}
 
 		return result;
@@ -191,14 +195,18 @@ public class CompletionServices extends ValidationServices {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
 		final Collection<EPackage> ePkgs = queryEnvironment.getEPackageProvider().getEPackage(name);
-		for (EPackage ePkg : ePkgs) {
-			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
-				if (eClassifier instanceof EEnum) {
-					for (EEnumLiteral literal : ((EEnum)eClassifier).getELiterals()) {
-						result.add(new EEnumLiteralCompletionProposal(literal));
+		if (!ePkgs.isEmpty()) {
+			for (EPackage ePkg : ePkgs) {
+				for (EClassifier eClassifier : ePkg.getEClassifiers()) {
+					if (eClassifier instanceof EEnum) {
+						for (EEnumLiteral literal : ((EEnum)eClassifier).getELiterals()) {
+							result.add(new EEnumLiteralCompletionProposal(literal));
+						}
 					}
 				}
 			}
+		} else {
+			result.addAll(getEEnumLiteralProposals());
 		}
 
 		return result;
@@ -217,13 +225,21 @@ public class CompletionServices extends ValidationServices {
 		final List<EEnumLiteralCompletionProposal> result = new ArrayList<EEnumLiteralCompletionProposal>();
 
 		final Collection<EPackage> ePkgs = queryEnvironment.getEPackageProvider().getEPackage(name);
-		for (EPackage ePkg : ePkgs) {
-			EClassifier eClassifier = ePkg.getEClassifier(eEnumName);
-			if (eClassifier instanceof EEnum) {
-				for (EEnumLiteral literal : ((EEnum)eClassifier).getELiterals()) {
-					result.add(new EEnumLiteralCompletionProposal(literal));
+		if (!ePkgs.isEmpty()) {
+			for (EPackage ePkg : ePkgs) {
+				EClassifier eClassifier = ePkg.getEClassifier(eEnumName);
+				if (eClassifier != null) {
+					if (eClassifier instanceof EEnum) {
+						for (EEnumLiteral literal : ((EEnum)eClassifier).getELiterals()) {
+							result.add(new EEnumLiteralCompletionProposal(literal));
+						}
+					}
+				} else {
+					result.addAll(getEEnumLiteralProposals(eEnumName));
 				}
 			}
+		} else {
+			result.addAll(getEEnumLiteralProposals());
 		}
 
 		return result;

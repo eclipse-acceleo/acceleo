@@ -81,7 +81,7 @@ public class CompletionTest {
 	public void typeLiteralOneColon() {
 		final ICompletionResult completionResult = engine.getCompletion("ecore:", 6, variableTypes);
 
-		assertCompletion(completionResult, 53, "", "", 0, 6, "ecore::EClass", "ecore::EPackage");
+		assertCompletion(completionResult, 53, "ecore:", "", 0, 6, "ecore::EClass", "ecore::EPackage");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -90,7 +90,8 @@ public class CompletionTest {
 	public void enumLiteralOneColon() {
 		final ICompletionResult completionResult = engine.getCompletion("anydsl::Color:", 14, variableTypes);
 
-		assertCompletion(completionResult, 10, "", "", 0, 14, "anydsl::Color::black", "anydsl::Color::red");
+		assertCompletion(completionResult, 10, "anydsl::Color:", "", 0, 14, "anydsl::Color::black",
+				"anydsl::Color::red");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -99,7 +100,8 @@ public class CompletionTest {
 	public void enumLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("anydsl::Color::", 15, variableTypes);
 
-		assertCompletion(completionResult, 10, "", "", 0, 15, "anydsl::Color::black", "anydsl::Color::yellow");
+		assertCompletion(completionResult, 10, "anydsl::Color::", "", 0, 15, "anydsl::Color::black",
+				"anydsl::Color::yellow");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -109,7 +111,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{anydsl::Color:", 25,
 				variableTypes);
 
-		assertCompletion(completionResult, 10, "", "", 11, 14, "anydsl::Color::white",
+		assertCompletion(completionResult, 10, "anydsl::Color:", "", 11, 14, "anydsl::Color::white",
 				"anydsl::Color::palPink");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
@@ -120,7 +122,8 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("OrderedSet{anydsl::Color::", 26,
 				variableTypes);
 
-		assertCompletion(completionResult, 10, "", "", 11, 15, "anydsl::Color::white", "anydsl::Color::red");
+		assertCompletion(completionResult, 10, "anydsl::Color::", "", 11, 15, "anydsl::Color::white",
+				"anydsl::Color::red");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -302,7 +305,7 @@ public class CompletionTest {
 	public void errorTypeLiteralOneSegmentTest() {
 		final ICompletionResult completionResult = engine.getCompletion("ecore::", 7, variableTypes);
 
-		assertCompletion(completionResult, 53, "", "", 0, 7, "ecore::EObject", "ecore::EInt");
+		assertCompletion(completionResult, 53, "ecore::", "", 0, 7, "ecore::EObject", "ecore::EInt");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
@@ -314,7 +317,7 @@ public class CompletionTest {
 	public void errorTypeLiteralTwoSegmentsTest() {
 		final ICompletionResult completionResult = engine.getCompletion("ecore::EClass::", 15, variableTypes);
 
-		assertCompletion(completionResult, 0, "", "", 0, 15);
+		assertCompletion(completionResult, 0, "ecore::EClass::", "", 0, 15);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
 
@@ -331,10 +334,10 @@ public class CompletionTest {
 
 	@Test
 	public void selfSelectMissingVariableTypeTest() {
-		final ICompletionResult completionResult = engine.getCompletion("self->select( a : ", 17,
+		final ICompletionResult completionResult = engine.getCompletion("self->select( a : ", 18,
 				variableTypes);
 
-		assertCompletion(completionResult, 125, "", "", 17, 0, "Integer", "Boolean", "ecore::EClass",
+		assertCompletion(completionResult, 125, "", "", 18, 0, "Integer", "Boolean", "ecore::EClass",
 				"ecore::EString");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoServiceCompletionProposal(completionResult);
@@ -366,7 +369,7 @@ public class CompletionTest {
 	public void testLetCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("le", 2, variableTypes);
 
-		assertCompletion(completionResult, 1, "le", "", 0, 2, "let ");
+		assertCompletion(completionResult, 2, "le", "", 0, 2, "let ", "anydsl::Kind::Leaf");
 	}
 
 	@Test
@@ -394,7 +397,7 @@ public class CompletionTest {
 	public void testBindingCompletionWithErrorType() {
 		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::", 15, variableTypes);
 
-		assertCompletion(completionResult, 53, "", "", 8, 7, "ecore::EPackage", "ecore::EString");
+		assertCompletion(completionResult, 53, "ecore::", "", 8, 7, "ecore::EPackage", "ecore::EString");
 		assertNoServiceCompletionProposal(completionResult);
 		assertNoFeatureCompletionProposal(completionResult);
 		assertNoEOperationCompletionProposal(completionResult);
@@ -406,7 +409,8 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("let a : ecore::EClass", 21,
 				variableTypes);
 
-		assertCompletion(completionResult, 2, "EClass", "", 8, 13, "ecore::EClass", "ecore::EClassifier");
+		assertCompletion(completionResult, 2, "ecore::EClass", "", 8, 13, "ecore::EClass",
+				"ecore::EClassifier");
 	}
 
 	@Test
@@ -443,7 +447,7 @@ public class CompletionTest {
 	public void testConditionalIfCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("i", 1, variableTypes);
 
-		assertCompletion(completionResult, 1, "i", "", 0, 1, "if ");
+		assertCompletion(completionResult, 2, "i", "", 0, 1, "if ", "anydsl::Kind::Inflorescence");
 	}
 
 	@Test
@@ -506,7 +510,7 @@ public class CompletionTest {
 	public void testConditionWithinTrueBranchCompletion() {
 		final ICompletionResult completionResult = engine.getCompletion("if true then tr", 15, variableTypes);
 
-		assertCompletion(completionResult, 1, "tr", "", 13, 2, "true");
+		assertCompletion(completionResult, 2, "tr", "", 13, 2, "true", "anydsl::Kind::Tree");
 	}
 
 	/**
@@ -593,7 +597,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eContainer(ecore::EP)", 25,
 				variableTypes);
 
-		assertCompletion(completionResult, 2, "EP", "", 16, 9, "ecore::EPackage", "ecore::EParameter");
+		assertCompletion(completionResult, 2, "ecore::EP", "", 16, 9, "ecore::EPackage", "ecore::EParameter");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -603,7 +607,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self.eContainer(ecore::EPack)", 28,
 				variableTypes);
 
-		assertCompletion(completionResult, 1, "EPack", "", 16, 12, "ecore::EPackage");
+		assertCompletion(completionResult, 1, "ecore::EPack", "", 16, 12, "ecore::EPackage");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -614,7 +618,8 @@ public class CompletionTest {
 				variableTypes);
 
 		// the "remaining" ck are not part of the replacement
-		assertCompletion(completionResult, 2, "EPa", "ck", 16, 10, "ecore::EPackage", "ecore::EParameter");
+		assertCompletion(completionResult, 2, "ecore::EPa", "ck", 16, 10, "ecore::EPackage",
+				"ecore::EParameter");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -624,7 +629,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion(
 				"self->eClassifiers->filter(ecore::)", 34, variableTypes);
 
-		assertCompletion(completionResult, 53, "", "", 27, 7, "ecore::EPackage", "ecore::EClass");
+		assertCompletion(completionResult, 53, "ecore::", "", 27, 7, "ecore::EPackage", "ecore::EClass");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -929,7 +934,7 @@ public class CompletionTest {
 	public void testTypeLiteralInTypeSetLiteral() {
 		final ICompletionResult completionResult = engine.getCompletion("{ecore::", 8, variableTypes);
 
-		assertCompletion(completionResult, 53, "", "", 1, 7, "ecore::EClass", "ecore::EInt");
+		assertCompletion(completionResult, 53, "ecore::", "", 1, 7, "ecore::EClass", "ecore::EInt");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -948,7 +953,7 @@ public class CompletionTest {
 		final ICompletionResult completionResult = engine.getCompletion("self->filter({ecore::", 21,
 				variableTypes);
 
-		assertCompletion(completionResult, 53, "", "", 14, 7, "ecore::EClass", "ecore::EInt");
+		assertCompletion(completionResult, 53, "ecore::", "", 14, 7, "ecore::EClass", "ecore::EInt");
 		assertNoVariableCompletionProposal(completionResult);
 		assertNoVariableDeclarationCompletionProposal(completionResult);
 	}
@@ -1205,11 +1210,48 @@ public class CompletionTest {
 		assertTrue(exception);
 	}
 
+	@Test
 	public void suffixFilter_479632() {
 		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents()", 5,
 				variableTypes);
 
 		assertCompletion(completionResult, 73, "", "eAllContents", 5, 0, "eContainer()", "eAttributes");
+	}
+
+	@Test
+	public void typeInEAllContents_529808() {
+		final ICompletionResult completionResult = engine.getCompletion("self.eAllContents(eco", 21,
+				variableTypes);
+
+		assertCompletion(completionResult, 53, "eco", "", 18, 3, "ecore::EInt", "ecore::EClassifier");
+	}
+
+	@Test
+	public void partialEPackageName() {
+		final ICompletionResult completionResult = engine.getCompletion("eco::", 5, variableTypes);
+
+		assertCompletion(completionResult, 53, "eco::", "", 0, 5, "ecore::EClass", "ecore::EClassifier");
+	}
+
+	@Test
+	public void partialEPackageNameAndEClassName() {
+		final ICompletionResult completionResult = engine.getCompletion("eco::ECl", 8, variableTypes);
+
+		assertCompletion(completionResult, 2, "eco::ECl", "", 0, 8, "ecore::EClass", "ecore::EClassifier");
+	}
+
+	@Test
+	public void partialEPackageNameAndEClassNameAndEnumNameNotEnum() {
+		final ICompletionResult completionResult = engine.getCompletion("eco::ECl::", 8, variableTypes);
+
+		assertCompletion(completionResult, 0, "eco::ECl", "", 0, 8);
+	}
+
+	@Test
+	public void partialEPackageNameAndEClassNameAndEnumName() {
+		final ICompletionResult completionResult = engine.getCompletion("any::Co::whi", 12, variableTypes);
+
+		assertCompletion(completionResult, 1, "any::Co::whi", "", 0, 12, "anydsl::Color::white");
 	}
 
 	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,

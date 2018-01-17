@@ -10,14 +10,9 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.acceleo.query.ast.Error;
-import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
-import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
-import org.eclipse.acceleo.query.ast.Expression;
 import org.eclipse.acceleo.query.parser.AstCompletor;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IQueryCompletionEngine;
@@ -32,6 +27,11 @@ import org.eclipse.acceleo.query.validation.type.IType;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public class QueryCompletionEngine implements IQueryCompletionEngine {
+
+	/**
+	 * A colon.
+	 */
+	private static final String COLON = ":";
 
 	/**
 	 * The environment containing all necessary information and used to execute query services.
@@ -74,33 +74,10 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 		result.setPrefix(prefix);
 		result.setRemaining(remaining);
 
-		int replacementLength = 0;
-		int replacementOffset = 0;
-		if (toParse != null) {
-			replacementOffset = toParse.length();
-		}
-
-		// Errors on types or enum literals must be handled differently
-		List<Error> errors = validationResult.getAstResult().getErrors();
-		for (Error error : errors) {
-			if (error instanceof ErrorTypeLiteral || error instanceof ErrorEnumLiteral) {
-				int errorStart = validationResult.getAstResult().getStartPosition((Expression)error);
-				int errorEnd = validationResult.getAstResult().getEndPosition((Expression)error);
-				if (errorStart <= offset - prefix.length() && offset - prefix.length() <= errorEnd) {
-					replacementOffset = validationResult.getAstResult().getStartPosition((Expression)error);
-					replacementLength = validationResult.getAstResult().getEndPosition((Expression)error)
-							- replacementOffset;
-					break;
-				}
-			}
-		}
-
-		// The prefix part is to be replaced in all cases
 		if (prefix != null) {
-			replacementLength += prefix.length();
+			result.setReplacementOffset(offset - prefix.length());
+			result.setReplacementLength(prefix.length());
 		}
-		result.setReplacementOffset(replacementOffset);
-		result.setReplacementLength(replacementLength);
 
 		return result;
 	}
@@ -125,13 +102,18 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 			int start = offset;
 			while (start - 1 >= 0) {
 				char charAt = expression.charAt(start - 1);
-				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_') {
+				if (Character.isLetter(charAt) || Character.isDigit(charAt) || charAt == '_' || charAt == ':') {
 					--start;
 				} else {
 					break;
 				}
 			}
-			result = expression.substring(start, offset);
+			final String prefix = expression.substring(start, offset);
+			if (COLON.equals(prefix)) {
+				result = "";
+			} else {
+				result = prefix;
+			}
 		}
 
 		return result;
@@ -187,6 +169,9 @@ public class QueryCompletionEngine implements IQueryCompletionEngine {
 
 		if (expression == null) {
 			result = null;
+		} else if (prefix.contains(COLON)) {
+			// special case of EClassifier and EEnumLiteral
+			result = expression.substring(0, expression.lastIndexOf(COLON) + 1);
 		} else {
 			result = expression.substring(0, offset - prefix.length());
 		}
