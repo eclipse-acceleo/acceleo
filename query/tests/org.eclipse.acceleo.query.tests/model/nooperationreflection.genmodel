@@ -16,6 +16,9 @@
       <genOperations ecoreOperation="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflectionListParameter">
         <genParameters ecoreParameter="nooperationreflection.ecore#//NoOperationReflection/eOperationNoReflectionListParameter/classifiers"/>
       </genOperations>
+      <genOperations ecoreOperation="nooperationreflection.ecore#//NoOperationReflection/identity">
+        <genParameters ecoreParameter="nooperationreflection.ecore#//NoOperationReflection/identity/eObject"/>
+      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.tests.anydsl.util;
 
 import java.util.Map;
+
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.Animal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;

@@ -5,6 +5,7 @@ package nooperationreflection.impl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import nooperationreflection.NoOperationReflection;
@@ -69,5 +70,14 @@ public class NoOperationReflectionImpl extends MinimalEObjectImpl.Container impl
 		}
 
 		return result.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public EObject identity(EObject eObject) {
+		return eObject;
 	}
 } // NoOperationReflectionImpl

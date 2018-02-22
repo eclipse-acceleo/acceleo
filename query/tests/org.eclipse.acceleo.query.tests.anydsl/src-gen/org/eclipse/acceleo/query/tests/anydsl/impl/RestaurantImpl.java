@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.tests.anydsl.impl;
 
 import java.util.Collection;
+
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslPackage;
 import org.eclipse.acceleo.query.tests.anydsl.Chef;

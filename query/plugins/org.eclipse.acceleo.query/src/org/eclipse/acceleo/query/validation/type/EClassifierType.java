@@ -13,6 +13,7 @@ package org.eclipse.acceleo.query.validation.type;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EcorePackage;
 
 /**
  * {@link EClassifier} validation type.
@@ -67,6 +68,7 @@ public class EClassifierType extends AbstractType {
 			result = false;
 		} else if (getType() instanceof EClass && otherType.getType() instanceof EClass) {
 			result = getType() == otherType.getType()
+					|| getType() == EcorePackage.eINSTANCE.getEObject()
 					|| queryEnvironment.getEPackageProvider().getAllSubTypes((EClass)getType()).contains(
 							otherType.getType());
 		} else {

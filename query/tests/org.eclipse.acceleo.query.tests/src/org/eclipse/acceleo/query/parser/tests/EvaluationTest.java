@@ -313,6 +313,18 @@ public class EvaluationTest {
 	}
 
 	@Test
+	public void eOperationEObjectParameterTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		final Food self = AnydslPackage.eINSTANCE.getAnydslFactory().createFood();
+		self.setName("self berry");
+		final Food other = AnydslPackage.eINSTANCE.getAnydslFactory().createFood();
+		other.setName("other berry");
+		variables.put("self", self);
+		variables.put("other", other);
+		assertOKResultEquals(true, engine.eval(builder.build("self.identity(other) == other"), variables));
+	}
+
+	@Test
 	public void eOperationNoReflectionTest() {
 		Map<String, Object> variables = Maps.newHashMap();
 		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
@@ -343,6 +355,18 @@ public class EvaluationTest {
 				engine.eval(
 						builder.build("self.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})"),
 						variables));
+	}
+
+	@Test
+	public void eOperationNoReflectionEObjectParameterTest() {
+		Map<String, Object> variables = Maps.newHashMap();
+		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
+				.getNooperationreflectionFactory().createNoOperationReflection();
+		final NoOperationReflection other = NooperationreflectionPackage.eINSTANCE
+				.getNooperationreflectionFactory().createNoOperationReflection();
+		variables.put("self", self);
+		variables.put("other", other);
+		assertOKResultEquals(true, engine.eval(builder.build("self.identity(other) == other"), variables));
 	}
 
 	@Test

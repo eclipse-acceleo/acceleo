@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.tests.anydsl.impl;
 
 import java.util.Map;
+
 import org.eclipse.acceleo.query.tests.anydsl.Adress;
 import org.eclipse.acceleo.query.tests.anydsl.Animal;
 import org.eclipse.acceleo.query.tests.anydsl.AnydslFactory;
@@ -682,6 +683,15 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 	 * 
 	 * @generated
 	 */
+	public EOperation getFood__Identity__EObject() {
+		return foodEClass.getEOperations().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	public EClass getSource() {
 		return sourceEClass;
 	}
@@ -922,6 +932,7 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 		createEOperation(foodEClass, FOOD___ACCEPTED_CALIBER__CALIBER);
 		createEOperation(foodEClass, FOOD___LABEL__STRING);
 		createEOperation(foodEClass, FOOD___PREFERRED_LABEL__STRING);
+		createEOperation(foodEClass, FOOD___IDENTITY__EOBJECT);
 
 		sourceEClass = createEClass(SOURCE);
 		createEReference(sourceEClass, SOURCE__FOODS);
@@ -1125,6 +1136,10 @@ public class AnydslPackageImpl extends EPackageImpl implements AnydslPackage {
 		op = initEOperation(getFood__PreferredLabel__String(), ecorePackage.getEString(), "preferredLabel",
 				0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "text", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = initEOperation(getFood__Identity__EObject(), ecorePackage.getEObject(), "identity", 0, 1,
+				IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "eObject", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(sourceEClass, Source.class, "Source", IS_ABSTRACT, IS_INTERFACE,
 				IS_GENERATED_INSTANCE_CLASS);

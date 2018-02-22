@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.query.tests.anydsl;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Food</b></em>'. <!-- end-user-doc -->
@@ -264,5 +265,13 @@ public interface Food extends NamedElement {
 	 * @generated
 	 */
 	String preferredLabel(String text);
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	EObject identity(EObject eObject);
 
 } // Food

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcorePackage;
 
 /**
  * Utility for {@link IService}.
@@ -255,10 +256,26 @@ public final class ServiceUtils {
 		final Set<IService> result = new LinkedHashSet<IService>();
 
 		for (EOperation eOperation : eCls.getEAllOperations()) {
-			result.add(new EOperationService(eOperation));
+			if (isServiceEOperation(eOperation)) {
+				result.add(new EOperationService(eOperation));
+			}
 		}
 
 		return result;
+	}
+
+	/**
+	 * Tells if the given {@link EOperation} is considered as a {@link IService}.
+	 * {@link org.eclipse.emf.ecore.EObject EObject} {@link EOperation} are not considered as {@link IService}
+	 * .
+	 * 
+	 * @param eOperation
+	 *            the {@link EOperation} to test
+	 * @return <code>true</code> if the given {@link EOperation} is considered as a {@link IService},
+	 *         <code>false</code> otherwise
+	 */
+	public static boolean isServiceEOperation(EOperation eOperation) {
+		return eOperation.getEContainingClass() != EcorePackage.eINSTANCE.getEObject();
 	}
 
 }
