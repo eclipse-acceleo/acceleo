@@ -49,11 +49,11 @@ public abstract class AbstractType implements IType {
 	}
 
 	/**
-	 * Returns the primitve wrapper for the given class if any, or the class itself if it isn't a primitive.
+	 * Returns the primitive wrapper for the given class if any, or the class itself if it isn't a primitive.
 	 * 
 	 * @param source
 	 *            The class to check for a primitive wrapper.
-	 * @return The primitve wrapper for the given class if any, or the class itself if it isn't a primitive.
+	 * @return The primitive wrapper for the given class if any, or the class itself if it isn't a primitive.
 	 * @since 4.1
 	 */
 	protected Class<?> wrapPrimitive(Class<?> source) {

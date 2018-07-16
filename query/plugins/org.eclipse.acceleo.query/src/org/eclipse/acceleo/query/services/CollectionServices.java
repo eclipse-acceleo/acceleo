@@ -1863,6 +1863,7 @@ public class CollectionServices extends AbstractServiceProvider {
 			@Example(expression = "OrderedSet{anEClass, anEAttribute}->filter(ecore::EStructuralFeature)", result = "OrederedSet{anEAttribute}"),
 		}
 	)
+	// @formatter:on
 	public <T> Set<T> filter(Set<T> set, final EClassifier eClassifier) {
 		final Set<T> result;
 
