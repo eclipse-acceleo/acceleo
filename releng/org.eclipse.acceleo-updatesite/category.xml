@@ -53,7 +53,7 @@
    </feature>
    <category-def name="org.eclipse.acceleo" label="Acceleo">
       <description>
-         Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.) while keeping the traceability of the generated code.
+         Acceleo is an open source code generator that can use any kind of EMF based models (UML, SysML, DSM, etc.) to generate any kind of textual based languages (Java, Scala, DSL, etc.).
       </description>
    </category-def>
    <category-def name="org.eclipse.acceleo.interpreters" label="Additional Interpreters">
