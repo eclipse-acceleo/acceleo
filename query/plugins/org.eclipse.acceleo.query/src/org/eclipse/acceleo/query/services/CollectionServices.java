@@ -379,17 +379,17 @@ public class CollectionServices extends AbstractServiceProvider {
 				IReadOnlyQueryEnvironment queryEnvironment, Map<List<IType>, Set<IType>> allTypes) {
 			IType currentResult = null;
 
+			final IType longType = new ClassType(queryEnvironment, Long.class);
+			final IType doubleType = new ClassType(queryEnvironment, Double.class);
 			for (Map.Entry<List<IType>, Set<IType>> entry : allTypes.entrySet()) {
-				IType longType = new ClassType(queryEnvironment, Long.class);
-				IType doubleType = new ClassType(queryEnvironment, Double.class);
 
 				IType returnType = entry.getValue().iterator().next();
 				if (currentResult == null) {
 					currentResult = returnType;
 				} else if (currentResult.equals(doubleType) || returnType.equals(doubleType)) {
-					currentResult = doubleType;
+					currentResult = new ClassType(queryEnvironment, Double.class);
 				} else if (returnType.equals(longType)) {
-					currentResult = longType;
+					currentResult = new ClassType(queryEnvironment, Long.class);
 				} else {
 					currentResult = services.nothing(SUM_ONLY_NUMERIC_ERROR);
 					break;
