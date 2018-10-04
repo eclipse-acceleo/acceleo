@@ -41,13 +41,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.antlr.runtime"
-         download-size="0"
-         install-size="0"
-         version="4.3.0.v201502022030"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.acceleo.query.doc"
          download-size="0"
          install-size="0"
