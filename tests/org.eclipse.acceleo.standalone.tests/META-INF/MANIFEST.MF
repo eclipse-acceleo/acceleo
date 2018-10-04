@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.7.5.qualifier
+Bundle-Version: 3.7.6.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.standalone.tests;singleton:=true
 Bundle-ActivationPolicy: lazy
@@ -10,4 +10,4 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.acceleo.parser,
  org.eclipse.acceleo.engine,
  org.junit;bundle-version="4.11.0",
- com.google.guava;bundle-version="[12.0.0,16.0.0)"
+ com.google.guava;bundle-version="[15.0.0,22.0.0)"
