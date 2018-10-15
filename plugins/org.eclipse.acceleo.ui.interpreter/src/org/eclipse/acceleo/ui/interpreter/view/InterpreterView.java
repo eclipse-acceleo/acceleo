@@ -502,9 +502,6 @@ public class InterpreterView extends ViewPart {
 		layout.verticalSpacing = 0;
 		layout.horizontalSpacing = 0;
 		rootContainer.setLayout(layout);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalIndent = 1;
-		rootContainer.setLayoutData(gridData);
 
 		formToolkit = new FormToolkit(rootContainer.getDisplay());
 
