@@ -58,7 +58,7 @@
     <requirement
         name="org.eclipse.m2e.feature.feature.group"/>
     <repository
-        url="http://mbarbero.github.io/fr.obeo.releng.targetplatform/p2/"/>
+        url="https://dl.bintray.com/mbarbero/fr.obeo.releng.targetplatform/latest"/>
     <repository
         url="http://eclipse-cs.sourceforge.net/update/"/>
     <repository
