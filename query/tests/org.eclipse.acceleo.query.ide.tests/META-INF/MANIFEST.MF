@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: org.eclipse.acceleo.query.ide.tests
-Bundle-Version: 6.0.6.qualifier
+Bundle-Version: 6.0.7.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.acceleo.query,
  org.eclipse.acceleo.query.ide,
