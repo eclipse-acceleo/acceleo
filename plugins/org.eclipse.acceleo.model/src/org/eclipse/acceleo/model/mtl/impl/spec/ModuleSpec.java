@@ -13,8 +13,14 @@ package org.eclipse.acceleo.model.mtl.impl.spec;
 import java.util.List;
 
 import org.eclipse.acceleo.model.mtl.Module;
+import org.eclipse.acceleo.model.mtl.ModuleElement;
+import org.eclipse.acceleo.model.mtl.MtlPackage;
 import org.eclipse.acceleo.model.mtl.TypedModel;
 import org.eclipse.acceleo.model.mtl.impl.ModuleImpl;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 
 /**
  * Specializes the Module implementation.
@@ -22,6 +28,17 @@ import org.eclipse.acceleo.model.mtl.impl.ModuleImpl;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class ModuleSpec extends ModuleImpl {
+	/**
+	 * See bug 543026. We need to invalidate EMF's caches when changing the module's content list, which will
+	 * be done by adding and removing a dummy sub-package.
+	 */
+	private static EPackage dummyEPackage;
+
+	static {
+		dummyEPackage = EcoreFactory.eINSTANCE.createEPackage();
+		dummyEPackage.setName("$dummy$"); //$NON-NLS-1$
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -55,5 +72,25 @@ public class ModuleSpec extends ModuleImpl {
 			}
 		}
 		return toString.toString();
+	}
+
+	@Override
+	public EList<ModuleElement> getOwnedModuleElement() {
+		if (ownedModuleElement == null) {
+			ownedModuleElement = new EObjectContainmentEList<ModuleElement>(ModuleElement.class, this,
+					MtlPackage.MODULE__OWNED_MODULE_ELEMENT) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void didChange() {
+					// workaround for bug 543026. Force invalidation of emf's eNameToENamedElementMaps cache
+					EList<EPackage> eSubpackages2 = getESubpackages();
+					eSubpackages2.add(dummyEPackage);
+					eSubpackages2.remove(dummyEPackage);
+					super.didChange();
+				}
+			};
+		}
+		return ownedModuleElement;
 	}
 }
