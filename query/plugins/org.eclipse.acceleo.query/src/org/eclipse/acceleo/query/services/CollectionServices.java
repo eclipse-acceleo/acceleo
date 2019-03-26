@@ -1103,12 +1103,12 @@ public class CollectionServices extends AbstractServiceProvider {
 		result = "The current set including the elements of the given collection.",
 		examples = {
 			@Example(
-				expression = "OrderedSet{'a', 'b', 'c'} + OrderedSet{'c', 'b', 'f'}", result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}",
+				expression = "OrderedSet{'a', 'b', 'c'} + OrderedSet{'c', 'b', 'f'}", result = "OrderedSet{'a', 'b', 'c', 'f'}",
 				others = {
 					@Other(
 						language = Other.ACCELEO_3,
 						expression = "OrderedSet{'a', 'b', 'c'}.addAll(OrderedSet{'c', 'b', 'f'})",
-						result = "OrderedSet{'a', 'b', 'c', 'c', 'b', 'f'}"
+						result = "OrderedSet{'a', 'b', 'c', 'f'}"
 					)
 				}
 			)
