@@ -1498,7 +1498,7 @@
   </queries>
   <queries expression="[not self.eContainer(uml::EncapsulatedClassifier).ownedElement->includes(object)/]" startingPoint="//@modelElements.1">
     <expectations xsi:type="qmodel:QueryEvaluationResultExpectation">
-      <expectedResult xsi:type="qmodel:InvalidResult" interpreter="mtl"/>
+      <expectedResult xsi:type="qmodel:BooleanResult" interpreter="mtl" value="true"/>
     </expectations>
     <expectations xsi:type="qmodel:QueryValidationResultExpectation">
       <expectedResult interpreter="manual">

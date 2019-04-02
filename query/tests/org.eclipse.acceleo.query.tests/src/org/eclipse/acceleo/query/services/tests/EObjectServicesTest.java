@@ -49,6 +49,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -988,9 +989,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 		final Object result = eObjectServices.aqlFeatureAccess(null, null);
 
-		assertTrue(result instanceof Nothing);
-		assertEquals("Attempt to access feature (null) on a non ModelObject value (null).", ((Nothing)result)
-				.getMessage());
+		assertNull(result);
 	}
 
 	@Test
@@ -1000,9 +999,7 @@ public class EObjectServicesTest extends AbstractEngineInitializationWithCrossRe
 
 		final Object result = eObjectServices.aqlFeatureAccess(null, "feature");
 
-		assertTrue(result instanceof Nothing);
-		assertEquals("Attempt to access feature (feature) on a non ModelObject value (null).",
-				((Nothing)result).getMessage());
+		assertNull(result);
 	}
 
 	@Test

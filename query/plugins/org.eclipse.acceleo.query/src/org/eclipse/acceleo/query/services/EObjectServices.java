@@ -1572,8 +1572,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		final Object result;
 
 		if (self == null) {
-			final String message = String.format(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
-			result = new Nothing(message);
+			result = null;
 		} else {
 			EClass eClass = ((EObject)self).eClass();
 			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
