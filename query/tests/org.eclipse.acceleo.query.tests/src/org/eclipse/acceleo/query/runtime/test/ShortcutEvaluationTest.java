@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.test;
 
-import com.google.common.collect.Maps;
-
 import java.util.HashMap;
 import java.util.Set;
 
@@ -45,7 +43,7 @@ public class ShortcutEvaluationTest {
 		ServiceUtils.registerServices(queryEnvironment, services);
 		parser = QueryParsing.newBuilder(queryEnvironment);
 		evaluator = QueryEvaluation.newEngine(queryEnvironment);
-		variables = Maps.newHashMap();
+		variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
 		evaluator.eval(parser.build("self.reset()"), variables);
 
@@ -70,24 +68,24 @@ public class ShortcutEvaluationTest {
 	@Test
 	public void andPrematureStopWhenFalse() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.FALSE, evaluator.eval(
-				parser.build("self.checkAlwaysFalse() and self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(Boolean.FALSE, evaluator.eval(parser.build(
+				"self.checkAlwaysFalse() and self.checkAlwaysTrue()"), variables).getResult());
 		assertEquals(1, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 	}
 
 	@Test
 	public void andNoStopWhenTrue() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.TRUE, evaluator.eval(
-				parser.build("self.checkAlwaysTrue() and self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(parser.build(
+				"self.checkAlwaysTrue() and self.checkAlwaysTrue()"), variables).getResult());
 		assertEquals(2, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 	}
 
 	@Test
 	public void orPrematureStopWhenTrue() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.TRUE, evaluator.eval(
-				parser.build("self.checkAlwaysTrue() or self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(parser.build(
+				"self.checkAlwaysTrue() or self.checkAlwaysTrue()"), variables).getResult());
 		assertEquals(1, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 
 	}
@@ -95,25 +93,24 @@ public class ShortcutEvaluationTest {
 	@Test
 	public void orNoStopWhenFalse() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.TRUE, evaluator.eval(
-				parser.build("self.checkAlwaysFalse() or self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(parser.build(
+				"self.checkAlwaysFalse() or self.checkAlwaysTrue()"), variables).getResult());
 		assertEquals(2, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 	}
 
 	@Test
 	public void impliesPrematureStopWhenFalse() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.TRUE, evaluator.eval(
-				parser.build("self.checkAlwaysFalse() implies self.checkAlwaysTrue()"), variables)
-				.getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(parser.build(
+				"self.checkAlwaysFalse() implies self.checkAlwaysTrue()"), variables).getResult());
 		assertEquals(1, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 	}
 
 	@Test
 	public void impliesNoStopWhenTrue() {
 		assertEquals(0, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
-		assertEquals(Boolean.TRUE, evaluator.eval(
-				parser.build("self.checkAlwaysTrue() implies self.checkAlwaysTrue()"), variables).getResult());
+		assertEquals(Boolean.TRUE, evaluator.eval(parser.build(
+				"self.checkAlwaysTrue() implies self.checkAlwaysTrue()"), variables).getResult());
 		assertEquals(2, evaluator.eval(parser.build("self.getCallCounts()"), variables).getResult());
 	}
 

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import com.google.common.collect.Maps;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -87,36 +85,36 @@ public class EvaluationTest {
 		Grand_childFactory grand_childFactory = Grand_childPackage.eINSTANCE.getGrand_childFactory();
 		GrandChildEClass grandChildEClass = grand_childFactory.createGrandChildEClass();
 
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("rootEClass", rootEClass);
 		variables.put("childEClass", childEClass);
 		variables.put("grandChildEClass", grandChildEClass);
 
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("rootEClass.oclIsKindOf(root::RootEClass)"), variables));
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("childEClass.oclIsKindOf(child::ChildEClass)"), variables));
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("grandChildEClass.oclIsKindOf(grand_child::GrandChildEClass)"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"rootEClass.oclIsKindOf(root::RootEClass)"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"childEClass.oclIsKindOf(child::ChildEClass)"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"grandChildEClass.oclIsKindOf(grand_child::GrandChildEClass)"), variables));
 	}
 
 	@Test
 	public void variableTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("x", 1);
 		assertOKResultEquals(Integer.valueOf(1), engine.eval(builder.build("x"), variables));
 	}
 
 	@Test
 	public void featureAccessTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
 		assertOKResultEquals("ecore", engine.eval(builder.build("self.name"), variables));
 	}
 
 	@Test
 	public void featureAccessNotExistingFeatureTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
 
 		final EvaluationResult result = engine.eval(builder.build("self.notExistingFeature"), variables);
@@ -134,62 +132,62 @@ public class EvaluationTest {
 
 	@Test
 	public void intliteralTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Integer.valueOf(2), engine.eval(builder.build("2"), variables));
 	}
 
 	@Test
 	public void realliteralTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Double.valueOf(1d), engine.eval(builder.build("1.0"), variables));
 	}
 
 	@Test
 	public void trueliteralTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build("true"), variables));
 	}
 
 	@Test
 	public void falseliteralTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Boolean.FALSE, engine.eval(builder.build("false"), variables));
 	}
 
 	@Test
 	public void stringliteralTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals("acceleo query is great", engine.eval(builder.build("'acceleo query is great'"),
 				variables));
 	}
 
 	@Test
 	public void lowerEqualTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build("1<=2"), variables));
 	}
 
 	@Test
 	public void lowerTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build("1<2"), variables));
 	}
 
 	@Test
 	public void greaterEqualTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Boolean.FALSE, engine.eval(builder.build("1>=2"), variables));
 	}
 
 	@Test
 	public void greaterTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Boolean.FALSE, engine.eval(builder.build("1>2"), variables));
 	}
 
 	@Test
 	public void addTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
 		assertOKResultEquals("ecore.ecore", engine.eval(builder.build("self.nsPrefix + '.' + self.name"),
 				variables));
@@ -197,23 +195,23 @@ public class EvaluationTest {
 
 	@Test
 	public void orTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("self.nsPrefix = 'ecore' or self.name='autrechose'"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"self.nsPrefix = 'ecore' or self.name='autrechose'"), variables));
 	}
 
 	@Test
 	public void andTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
-		assertOKResultEquals(Boolean.FALSE, engine.eval(builder
-				.build("self.nsPrefix = 'ecore' and self.name='autrechose'"), variables));
+		assertOKResultEquals(Boolean.FALSE, engine.eval(builder.build(
+				"self.nsPrefix = 'ecore' and self.name='autrechose'"), variables));
 	}
 
 	@Test
 	public void notTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
 		// TODO check priorities. This test fails because "not" takes priority over "=".
 		// boolean operations should probably have a lower priorty than other services
@@ -223,36 +221,36 @@ public class EvaluationTest {
 
 	@Test
 	public void multTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(Integer.valueOf(4), engine.eval(builder.build("2*2"), variables));
 		assertOKResultEquals(Double.valueOf(4d), engine.eval(builder.build("2.0*2.0"), variables));
 	}
 
 	@Test
 	public void compComplexTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE);
-		assertOKResultEquals(Boolean.TRUE, engine.eval(
-				builder.build("self.name.size()=self.nsPrefix.size()"), variables));
-		assertOKResultEquals(Boolean.FALSE, engine.eval(builder
-				.build("self.name.size()<self.nsPrefix.size()-1"), variables));
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("self.name.size()<self.nsPrefix.size()+1"), variables));
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("self.name.size()+2>self.nsPrefix.size()+1"), variables));
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("self.name.size()<=self.nsPrefix.size()+1"), variables));
-		assertOKResultEquals(Boolean.TRUE, engine.eval(builder
-				.build("self.name.size()>=self.nsPrefix.size()-1"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build("self.name.size()=self.nsPrefix.size()"),
+				variables));
+		assertOKResultEquals(Boolean.FALSE, engine.eval(builder.build(
+				"self.name.size()<self.nsPrefix.size()-1"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"self.name.size()<self.nsPrefix.size()+1"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"self.name.size()+2>self.nsPrefix.size()+1"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"self.name.size()<=self.nsPrefix.size()+1"), variables));
+		assertOKResultEquals(Boolean.TRUE, engine.eval(builder.build(
+				"self.name.size()>=self.nsPrefix.size()-1"), variables));
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void minusTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.Literals.ECLASS);
-		EvaluationResult result = engine.eval(builder
-				.build("self.eAllSuperTypes->including(self)-self.eAllSuperTypes"), variables);
+		EvaluationResult result = engine.eval(builder.build(
+				"self.eAllSuperTypes->including(self)-self.eAllSuperTypes"), variables);
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
@@ -264,7 +262,7 @@ public class EvaluationTest {
 	@Test
 	public void testSelect0() {
 		String expr = "self.oclAsType(ecore::EClass).eAllSuperTypes->select(e | e.oclIsKindOf(ecore::EClass))";
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.Literals.ECLASS);
 		EvaluationResult result = engine.eval(builder.build(expr), variables);
 		assertTrue(result.getResult() instanceof List);
@@ -278,27 +276,27 @@ public class EvaluationTest {
 
 	@Test
 	public void nullTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		EvaluationResult result = engine.eval(builder.build(null), variables);
 		assertOKResultEquals(null, result);
 	}
 
 	@Test
 	public void emtpyTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		EvaluationResult result = engine.eval(builder.build(""), variables);
 		assertOKResultEquals(null, result);
 	}
 
 	@Test
 	public void nullLiteralTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(null, engine.eval(builder.build("null"), variables));
 	}
 
 	@Test
 	public void serviceTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE.getEClass());
 		assertOKResultEquals(Integer.valueOf(1), engine.eval(builder.build("self.someService('a')"),
 				variables));
@@ -306,7 +304,7 @@ public class EvaluationTest {
 
 	@Test
 	public void eOperationTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		final Food self = AnydslPackage.eINSTANCE.getAnydslFactory().createFood();
 		variables.put("self", self);
 		assertOKResultEquals("text", engine.eval(builder.build("self.preferredLabel('text')"), variables));
@@ -314,7 +312,7 @@ public class EvaluationTest {
 
 	@Test
 	public void eOperationEObjectParameterTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		final Food self = AnydslPackage.eINSTANCE.getAnydslFactory().createFood();
 		self.setName("self berry");
 		final Food other = AnydslPackage.eINSTANCE.getAnydslFactory().createFood();
@@ -326,7 +324,7 @@ public class EvaluationTest {
 
 	@Test
 	public void eOperationNoReflectionTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
 				.getNooperationreflectionFactory().createNoOperationReflection();
 		variables.put("self", self);
@@ -336,30 +334,28 @@ public class EvaluationTest {
 
 	@Test
 	public void eOperationNoReflectionSubParameterTypeTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
 				.getNooperationreflectionFactory().createNoOperationReflection();
 		variables.put("self", self);
-		assertOKResultEquals("EClass", engine.eval(builder
-				.build("self.eOperationNoReflectionSubParameterType(ecore::EClass)"), variables));
+		assertOKResultEquals("EClass", engine.eval(builder.build(
+				"self.eOperationNoReflectionSubParameterType(ecore::EClass)"), variables));
 	}
 
 	@Test
 	public void eOperationNoReflectionListParameterTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
 				.getNooperationreflectionFactory().createNoOperationReflection();
 		variables.put("self", self);
-		assertOKResultEquals(
-				"EClassEOperation",
-				engine.eval(
-						builder.build("self.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})"),
-						variables));
+		assertOKResultEquals("EClassEOperation", engine.eval(builder.build(
+				"self.eOperationNoReflectionListParameter(Sequence{ecore::EClass, ecore::EOperation})"),
+				variables));
 	}
 
 	@Test
 	public void eOperationNoReflectionEObjectParameterTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		final NoOperationReflection self = NooperationreflectionPackage.eINSTANCE
 				.getNooperationreflectionFactory().createNoOperationReflection();
 		final NoOperationReflection other = NooperationreflectionPackage.eINSTANCE
@@ -371,28 +367,28 @@ public class EvaluationTest {
 
 	@Test
 	public void serviceNullParameterTest() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", EcorePackage.eINSTANCE.getEClass());
 		assertOKResultEquals(1, engine.eval(builder.build("self.someService(null)"), variables));
 	}
 
 	@Test
 	public void enumLiteralOrEClassifierTwoSegmentsEClassifier() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(EcorePackage.eINSTANCE.getEClass(), engine.eval(builder.build("ecore::EClass"),
 				variables));
 	}
 
 	@Test
 	public void enumLiteralOrEClassifierThreeSegments() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 		assertOKResultEquals(AnydslPackage.eINSTANCE.getPart().getEEnumLiteral("Other").getInstance(), engine
 				.eval(builder.build("anydsl::Part::Other"), variables));
 	}
 
 	@Test
 	public void enumLiteralNotExisting() {
-		Map<String, Object> variables = Maps.newHashMap();
+		Map<String, Object> variables = new HashMap<String, Object>();
 
 		final EvaluationResult result = engine.eval(builder.build("anydsl::Part::NotExisting"), variables);
 
@@ -407,7 +403,7 @@ public class EvaluationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSetInExtensionLiteral() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
 
 		final EvaluationResult result = engine.eval(builder.build("OrderedSet{self, self, true, false}"),
@@ -427,7 +423,7 @@ public class EvaluationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testSequenceInExtensionLiteral() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		varDefinitions.put("self", EcorePackage.Literals.ECLASS);
 
 		final EvaluationResult result = engine.eval(builder.build("Sequence{self, self, true, false}"),
@@ -452,10 +448,10 @@ public class EvaluationTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testVariableUsedInLambda() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		varDefinitions.put("selector", "str");
-		EvaluationResult result = engine.eval(builder
-				.build("Sequence{'str1','str2','out'}->select(i | i.startsWith(selector))"), varDefinitions);
+		EvaluationResult result = engine.eval(builder.build(
+				"Sequence{'str1','str2','out'}->select(i | i.startsWith(selector))"), varDefinitions);
 		assertTrue(result.getResult() instanceof List);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
 		assertTrue(result.getDiagnostic().getChildren().isEmpty());
@@ -467,34 +463,34 @@ public class EvaluationTest {
 
 	@Test
 	public void testConditionnalTrue() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertOKResultEquals("trueBranch", engine.eval(builder
-				.build("if true then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		assertOKResultEquals("trueBranch", engine.eval(builder.build(
+				"if true then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
 	}
 
 	@Test
 	public void testConditionnalFalse() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertOKResultEquals("falseBranch", engine.eval(builder
-				.build("if false then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		assertOKResultEquals("falseBranch", engine.eval(builder.build(
+				"if false then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
 	}
 
 	@Test
 	public void testConditionnalCompletePredicate() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		varDefinitions.put("x", new Integer(1));
-		assertOKResultEquals("trueBranch", engine.eval(builder
-				.build("if x > 0 then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+		assertOKResultEquals("trueBranch", engine.eval(builder.build(
+				"if x > 0 then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
 		varDefinitions.put("x", new Integer(0));
-		assertOKResultEquals("falseBranch", engine.eval(builder
-				.build("if x > 0 then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
+		assertOKResultEquals("falseBranch", engine.eval(builder.build(
+				"if x > 0 then 'trueBranch' else 'falseBranch' endif"), varDefinitions));
 	}
 
 	@Test
 	public void testConditionnalNotBoolean() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		EvaluationResult result = engine.eval(builder
-				.build("if 'notboolean' then 'trueBranch' else 'falseBranch' endif"), varDefinitions);
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		EvaluationResult result = engine.eval(builder.build(
+				"if 'notboolean' then 'trueBranch' else 'falseBranch' endif"), varDefinitions);
 		assertEquals(null, result.getResult());
 		assertEquals(Diagnostic.WARNING, result.getDiagnostic().getSeverity());
 		assertEquals(1, result.getDiagnostic().getChildren().size());
@@ -506,21 +502,21 @@ public class EvaluationTest {
 
 	@Test
 	public void testLetOneDefinition() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertOKResultEquals("prefixsuffix", engine.eval(builder
-				.build("let x='prefix' in x.concat('suffix')"), varDefinitions));
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		assertOKResultEquals("prefixsuffix", engine.eval(builder.build(
+				"let x='prefix' in x.concat('suffix')"), varDefinitions));
 	}
 
 	@Test
 	public void testLetBasic() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		assertOKResultEquals("prefixsuffix", engine.eval(builder
-				.build("let x='prefix', y='suffix' in x.concat(y)"), varDefinitions));
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		assertOKResultEquals("prefixsuffix", engine.eval(builder.build(
+				"let x='prefix', y='suffix' in x.concat(y)"), varDefinitions));
 	}
 
 	@Test
 	public void testNotRecursiveLet() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		varDefinitions.put("x", "suffix");
 		assertOKResultEquals("prefixsuffix", engine.eval(builder.build("let x='prefix', y=x in x.concat(y)"),
 				varDefinitions));
@@ -528,9 +524,9 @@ public class EvaluationTest {
 
 	@Test
 	public void letWithUnusedNothingBoundTest() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		EvaluationResult result = engine.eval(
-				builder.build("let x='prefix', y=x, z='suffix' in x.concat(z)"), varDefinitions);
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		EvaluationResult result = engine.eval(builder.build("let x='prefix', y=x, z='suffix' in x.concat(z)"),
+				varDefinitions);
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
 		assertEquals(1, result.getDiagnostic().getChildren().size());
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getChildren().get(0).getSeverity());
@@ -541,9 +537,9 @@ public class EvaluationTest {
 
 	@Test
 	public void letWithNothingBoundTest() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		EvaluationResult result = engine.eval(builder
-				.build("let x='prefix', y=x, z='suffix' in x.concat(z).concat(y)"), varDefinitions);
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		EvaluationResult result = engine.eval(builder.build(
+				"let x='prefix', y=x, z='suffix' in x.concat(z).concat(y)"), varDefinitions);
 		assertEquals(Diagnostic.ERROR, result.getDiagnostic().getSeverity());
 		assertEquals(2, result.getDiagnostic().getChildren().size());
 		String message1 = result.getDiagnostic().getChildren().get(0).getMessage();
@@ -557,7 +553,7 @@ public class EvaluationTest {
 
 	@Test
 	public void letWithAffixNotation() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
 		varDefinitions.put("x", "suffix");
 		assertOKResultEquals("prefixsuffix", engine.eval(builder.build("let x='prefix', y='suffix' in x+y"),
 				varDefinitions));
@@ -566,9 +562,9 @@ public class EvaluationTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void typeSetLiteral() {
-		Map<String, Object> varDefinitions = Maps.newHashMap();
-		EvaluationResult result = engine.eval(builder
-				.build("{ecore::EClass | ecore::EPackage | ecore::EAttribute}"), varDefinitions);
+		Map<String, Object> varDefinitions = new HashMap<String, Object>();
+		EvaluationResult result = engine.eval(builder.build(
+				"{ecore::EClass | ecore::EPackage | ecore::EAttribute}"), varDefinitions);
 
 		assertTrue(result.getResult() instanceof Set);
 		assertEquals(Diagnostic.OK, result.getDiagnostic().getSeverity());
@@ -591,8 +587,8 @@ public class EvaluationTest {
 
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put("self", pack);
-		EvaluationResult result = engine.eval(builder
-				.build("self.oclAsType(ecore::EObject).eCrossReferences()"), variables);
+		EvaluationResult result = engine.eval(builder.build(
+				"self.oclAsType(ecore::EObject).eCrossReferences()"), variables);
 
 		assertEquals(pack.eCrossReferences(), result.getResult());
 	}
@@ -660,9 +656,8 @@ public class EvaluationTest {
 	@Test
 	public void emoji() {
 		Map<String, Object> variables = new HashMap<String, Object>();
-		EvaluationResult result = engine.eval(builder
-				.build("Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}->sep(' ')->toString()"),
-				variables);
+		EvaluationResult result = engine.eval(builder.build(
+				"Sequence{'\u1F61C','\u1F62D','\u1F63D','\u1F1EB\u1F1F7'}->sep(' ')->toString()"), variables);
 
 		assertEquals("\u1F61C \u1F62D \u1F63D \u1F1EB\u1F1F7", result.getResult());
 	}

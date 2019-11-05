@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ide.ui.tests.builder;
 
-import com.google.common.collect.Sets;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,9 +50,6 @@ import org.eclipse.ui.PlatformUI;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class AcceleoBuilderTests {
 
@@ -172,8 +172,9 @@ public class AcceleoBuilderTests {
 			// Check the existence of the output files
 			File src = project.getFolder("src").getLocation().toFile(); //$NON-NLS-1$
 			File bin = project.getFolder("bin").getLocation().toFile(); //$NON-NLS-1$
-			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), Sets
-					.newHashSet(new AcceleoProjectClasspathEntry(src, bin)));
+			Set<AcceleoProjectClasspathEntry> classPath = new LinkedHashSet<AcceleoProjectClasspathEntry>(
+					Arrays.asList(new AcceleoProjectClasspathEntry(src, bin)));
+			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), classPath);
 			Set<File> compiledAcceleoModules = acceleoProject.getAllCompiledAcceleoModules();
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
@@ -181,7 +182,8 @@ public class AcceleoBuilderTests {
 			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 			for (IMarker iMarker : markers) {
 				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
-				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+				if (attribute instanceof Integer && ((Integer)attribute)
+						.intValue() == IMarker.SEVERITY_ERROR) {
 					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
 				}
 			}
@@ -236,8 +238,9 @@ public class AcceleoBuilderTests {
 			// Check the existence of the output files
 			File src = project.getFolder("src").getLocation().toFile(); //$NON-NLS-1$
 			File bin = project.getFolder("bin").getLocation().toFile(); //$NON-NLS-1$
-			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), Sets
-					.newHashSet(new AcceleoProjectClasspathEntry(src, bin)));
+			Set<AcceleoProjectClasspathEntry> classPath = new LinkedHashSet<AcceleoProjectClasspathEntry>(
+					Arrays.asList(new AcceleoProjectClasspathEntry(src, bin)));
+			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), classPath);
 			Set<File> compiledAcceleoModules = acceleoProject.getAllCompiledAcceleoModules();
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
@@ -246,7 +249,8 @@ public class AcceleoBuilderTests {
 			boolean foundError = false;
 			for (IMarker iMarker : markers) {
 				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
-				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+				if (attribute instanceof Integer && ((Integer)attribute)
+						.intValue() == IMarker.SEVERITY_ERROR) {
 					foundError = true;
 				}
 			}
@@ -281,11 +285,15 @@ public class AcceleoBuilderTests {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ls); //$NON-NLS-1$
 			buffer.append("<ecore:EPackage xmi:version=\"2.0\"" + ls); //$NON-NLS-1$
-			buffer.append("    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + ls); //$NON-NLS-1$
+			buffer.append(
+					"    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" //$NON-NLS-1$
+							+ ls);
 			buffer.append("    xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"target\"" + ls); //$NON-NLS-1$
 			buffer.append("    nsURI=\"" + nsURI + "\" nsPrefix=\"target\">" + ls); //$NON-NLS-1$ //$NON-NLS-2$
 			buffer.append("  <eClassifiers xsi:type=\"ecore:EClass\" name=\"ClasseA\">" + ls); //$NON-NLS-1$
-			buffer.append("    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" + ls); //$NON-NLS-1$
+			buffer.append(
+					"    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" //$NON-NLS-1$
+							+ ls);
 			buffer.append("  </eClassifiers>" + ls); //$NON-NLS-1$
 			buffer.append("</ecore:EPackage>" + ls); //$NON-NLS-1$
 			modelFile.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
@@ -334,8 +342,9 @@ public class AcceleoBuilderTests {
 			// Check the existence of the output files
 			File src = project.getFolder("src").getLocation().toFile(); //$NON-NLS-1$
 			File bin = project.getFolder("bin").getLocation().toFile(); //$NON-NLS-1$
-			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), Sets
-					.newHashSet(new AcceleoProjectClasspathEntry(src, bin)));
+			Set<AcceleoProjectClasspathEntry> classPath = new LinkedHashSet<AcceleoProjectClasspathEntry>(
+					Arrays.asList(new AcceleoProjectClasspathEntry(src, bin)));
+			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), classPath);
 			Set<File> compiledAcceleoModules = acceleoProject.getAllCompiledAcceleoModules();
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
@@ -343,7 +352,8 @@ public class AcceleoBuilderTests {
 			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 			for (IMarker iMarker : markers) {
 				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
-				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+				if (attribute instanceof Integer && ((Integer)attribute)
+						.intValue() == IMarker.SEVERITY_ERROR) {
 					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
 				}
 			}
@@ -378,11 +388,17 @@ public class AcceleoBuilderTests {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ls); //$NON-NLS-1$
 			buffer.append("<ecore:EPackage xmi:version=\"2.0\"" + ls); //$NON-NLS-1$
-			buffer.append("    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + ls); //$NON-NLS-1$
+			buffer.append(
+					"    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" //$NON-NLS-1$
+							+ ls);
 			buffer.append("    xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"target\"" + ls); //$NON-NLS-1$
 			buffer.append("    nsURI=\"" + nsURI + "\" nsPrefix=\"target\">" + ls); //$NON-NLS-1$ //$NON-NLS-2$
-			buffer.append("  <eClassifiers xsi:type=\"ecore:EClass\" name=\"ClasseA\" eSuperTypes=\"platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass\">" + ls); //$NON-NLS-1$
-			buffer.append("    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" + ls); //$NON-NLS-1$
+			buffer.append(
+					"  <eClassifiers xsi:type=\"ecore:EClass\" name=\"ClasseA\" eSuperTypes=\"platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass\">" //$NON-NLS-1$
+							+ ls);
+			buffer.append(
+					"    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" //$NON-NLS-1$
+							+ ls);
 			buffer.append("  </eClassifiers>" + ls); //$NON-NLS-1$
 			buffer.append("</ecore:EPackage>" + ls); //$NON-NLS-1$
 			modelFile.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
@@ -398,9 +414,8 @@ public class AcceleoBuilderTests {
 		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
 		acceleoModule.setName("commonModule"); //$NON-NLS-1$
 		acceleoModule.setProjectName(projectName);
-		acceleoModule
-				.setParentFolder(projectName
-						+ "/src/org/eclipse/acceleo/ide/ui/tests/builder/metamodelinworkspacedependingonmetamodelinplugin/common"); //$NON-NLS-1$
+		acceleoModule.setParentFolder(projectName
+				+ "/src/org/eclipse/acceleo/ide/ui/tests/builder/metamodelinworkspacedependingonmetamodelinplugin/common"); //$NON-NLS-1$
 		acceleoModule.setIsInitialized(false);
 		acceleoModule.setGenerateDocumentation(true);
 		acceleoModule.getMetamodelURIs().add("http://www.eclipse.org/emf/2002/Ecore"); //$NON-NLS-1$
@@ -433,8 +448,9 @@ public class AcceleoBuilderTests {
 			// Check the existence of the output files
 			File src = project.getFolder("src").getLocation().toFile(); //$NON-NLS-1$
 			File bin = project.getFolder("bin").getLocation().toFile(); //$NON-NLS-1$
-			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), Sets
-					.newHashSet(new AcceleoProjectClasspathEntry(src, bin)));
+			Set<AcceleoProjectClasspathEntry> classPath = new LinkedHashSet<AcceleoProjectClasspathEntry>(
+					Arrays.asList(new AcceleoProjectClasspathEntry(src, bin)));
+			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), classPath);
 			Set<File> compiledAcceleoModules = acceleoProject.getAllCompiledAcceleoModules();
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
@@ -442,7 +458,8 @@ public class AcceleoBuilderTests {
 			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 			for (IMarker iMarker : markers) {
 				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
-				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+				if (attribute instanceof Integer && ((Integer)attribute)
+						.intValue() == IMarker.SEVERITY_ERROR) {
 					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
 				}
 			}
@@ -478,11 +495,15 @@ public class AcceleoBuilderTests {
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ls); //$NON-NLS-1$
 			buffer.append("<ecore:EPackage xmi:version=\"2.0\"" + ls); //$NON-NLS-1$
-			buffer.append("    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + ls); //$NON-NLS-1$
+			buffer.append(
+					"    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" //$NON-NLS-1$
+							+ ls);
 			buffer.append("    xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"target\"" + ls); //$NON-NLS-1$
 			buffer.append("    nsURI=\"" + nsURI + "\" nsPrefix=\"target\">" + ls); //$NON-NLS-1$ //$NON-NLS-2$
 			buffer.append("  <eClassifiers xsi:type=\"ecore:EClass\" name=\"ClasseA\">" + ls); //$NON-NLS-1$
-			buffer.append("    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" + ls); //$NON-NLS-1$
+			buffer.append(
+					"    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"name\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" //$NON-NLS-1$
+							+ ls);
 			buffer.append("  </eClassifiers>" + ls); //$NON-NLS-1$
 			buffer.append("</ecore:EPackage>" + ls); //$NON-NLS-1$
 			modelFile.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
@@ -492,11 +513,17 @@ public class AcceleoBuilderTests {
 			buffer = new StringBuffer();
 			buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + ls); //$NON-NLS-1$
 			buffer.append("<ecore:EPackage xmi:version=\"2.0\"" + ls); //$NON-NLS-1$
-			buffer.append("    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + ls); //$NON-NLS-1$
+			buffer.append(
+					"    xmlns:xmi=\"http://www.omg.org/XMI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" //$NON-NLS-1$
+							+ ls);
 			buffer.append("    xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" name=\"target\"" + ls); //$NON-NLS-1$
 			buffer.append("    nsURI=\"" + nsURI2 + "\" nsPrefix=\"target\">" + ls); //$NON-NLS-1$ //$NON-NLS-2$
-			buffer.append("  <eClassifiers xsi:type=\"ecore:EClass\" name=\"ClasseB\" eSuperTypes=\"model1.ecore#//ClassA\">" + ls); //$NON-NLS-1$
-			buffer.append("    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"othername\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" + ls); //$NON-NLS-1$
+			buffer.append(
+					"  <eClassifiers xsi:type=\"ecore:EClass\" name=\"ClasseB\" eSuperTypes=\"model1.ecore#//ClassA\">" //$NON-NLS-1$
+							+ ls);
+			buffer.append(
+					"    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"othername\" eType=\"ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString\"/>" //$NON-NLS-1$
+							+ ls);
 			buffer.append("  </eClassifiers>" + ls); //$NON-NLS-1$
 			buffer.append("</ecore:EPackage>" + ls); //$NON-NLS-1$
 			modelFile2.create(new ByteArrayInputStream(buffer.toString().getBytes()), true, monitor);
@@ -512,9 +539,8 @@ public class AcceleoBuilderTests {
 		AcceleoModule acceleoModule = AcceleowizardmodelFactory.eINSTANCE.createAcceleoModule();
 		acceleoModule.setName("commonModule"); //$NON-NLS-1$
 		acceleoModule.setProjectName(projectName);
-		acceleoModule
-				.setParentFolder(projectName
-						+ "/src/org/eclipse/acceleo/ide/ui/tests/builder/metamodelinworkspacedependingonmetamodelinworkspace/common"); //$NON-NLS-1$
+		acceleoModule.setParentFolder(projectName
+				+ "/src/org/eclipse/acceleo/ide/ui/tests/builder/metamodelinworkspacedependingonmetamodelinworkspace/common"); //$NON-NLS-1$
 		acceleoModule.setIsInitialized(false);
 		acceleoModule.setGenerateDocumentation(true);
 		acceleoModule.getMetamodelURIs().add(nsURI);
@@ -547,8 +573,9 @@ public class AcceleoBuilderTests {
 			// Check the existence of the output files
 			File src = project.getFolder("src").getLocation().toFile(); //$NON-NLS-1$
 			File bin = project.getFolder("bin").getLocation().toFile(); //$NON-NLS-1$
-			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), Sets
-					.newHashSet(new AcceleoProjectClasspathEntry(src, bin)));
+			Set<AcceleoProjectClasspathEntry> classPath = new LinkedHashSet<AcceleoProjectClasspathEntry>(
+					Arrays.asList(new AcceleoProjectClasspathEntry(src, bin)));
+			AcceleoProject acceleoProject = new AcceleoProject(project.getLocation().toFile(), classPath);
 			Set<File> compiledAcceleoModules = acceleoProject.getAllCompiledAcceleoModules();
 			assertEquals(1, compiledAcceleoModules.size());
 			assertEquals("commonModule.emtl", compiledAcceleoModules.iterator().next().getName()); //$NON-NLS-1$
@@ -556,7 +583,8 @@ public class AcceleoBuilderTests {
 			IMarker[] markers = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 			for (IMarker iMarker : markers) {
 				Object attribute = iMarker.getAttribute(IMarker.SEVERITY);
-				if (attribute instanceof Integer && ((Integer)attribute).intValue() == IMarker.SEVERITY_ERROR) {
+				if (attribute instanceof Integer && ((Integer)attribute)
+						.intValue() == IMarker.SEVERITY_ERROR) {
 					fail(iMarker.getAttribute(IMarker.MESSAGE).toString());
 				}
 			}

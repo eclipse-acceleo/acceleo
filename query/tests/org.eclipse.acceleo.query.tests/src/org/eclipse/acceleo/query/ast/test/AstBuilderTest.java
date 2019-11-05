@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.test;
 
-import com.google.common.collect.Sets;
-
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -107,7 +106,7 @@ public class AstBuilderTest {
 
 	@Test
 	public void testTypeLiteralSet() {
-		Set<Class<?>> classeInSet = Sets.newLinkedHashSet();
+		Set<Class<?>> classeInSet = new LinkedHashSet<Class<?>>();
 		classeInSet.add(Integer.class);
 		assertEquals(Integer.class, ((TypeLiteral)new AstBuilder().typeLiteral(classeInSet)).getValue());
 

@@ -34,6 +34,6 @@ Export-Package: nooperationreflection,
  org.eclipse.acceleo.query.tests.services;x-friends:="org.eclipse.acceleo.query.compat.tests",
  org.eclipse.acceleo.query.tests.unit;x-friends:="org.eclipse.acceleo.query.compat.tests",
  org.eclipse.acceleo.query.tests.validation.types
-Import-Package: com.google.common.base,
- com.google.common.collect;version="13.0.0",
- org.antlr.v4.runtime
+Import-Package: org.antlr.v4.runtime,
+ com.google.common.base;version="[15.0.0,22.0.0)",
+ com.google.common.collect;version="[15.0.0,22.0.0)"
