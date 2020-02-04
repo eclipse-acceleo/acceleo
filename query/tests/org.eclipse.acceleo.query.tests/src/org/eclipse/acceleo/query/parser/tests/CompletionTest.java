@@ -1254,6 +1254,18 @@ public class CompletionTest {
 		assertCompletion(completionResult, 1, "any::Co::whi", "", 0, 12, "anydsl::Color::white");
 	}
 
+	@Test
+	public void eObjectFeatureAccessCompletionOnJavaType() {
+		final Map<String, Set<IType>> types = new LinkedHashMap<String, Set<IType>>();
+		final Set<IType> selfType = new LinkedHashSet<IType>();
+		selfType.add(new EClassifierType(queryEnvironment, EcorePackage.eINSTANCE.getEObject()));
+		types.put("self", selfType);
+
+		final ICompletionResult completionResult = engine.getCompletion("self.eClass().nam", 17, types);
+
+		assertCompletion(completionResult, 1, "nam", "", 14, 3, "name");
+	}
+
 	public static void assertCompletion(ICompletionResult completionResult, int size, String prefix,
 			String suffix, int replacementOffset, int replacementLength, String... proposalStrings) {
 		final List<ICompletionProposal> proposals = completionResult.getProposals(new BasicFilter(

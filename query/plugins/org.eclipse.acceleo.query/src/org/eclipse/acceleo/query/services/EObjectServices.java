@@ -302,6 +302,16 @@ public class EObjectServices extends AbstractServiceProvider {
 			for (IType iType : receiverTypes) {
 				if (iType.getType() instanceof EClass) {
 					eClasses.add((EClass)iType.getType());
+				} else if (iType.getType() instanceof Class<?>) {
+					final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider()
+							.getEClassifiers((Class<?>)iType.getType());
+					if (eClassifiers != null) {
+						for (EClassifier eClassifier : eClassifiers) {
+							if (eClassifier instanceof EClass) {
+								eClasses.add((EClass)eClassifier);
+							}
+						}
+					}
 				}
 			}
 
