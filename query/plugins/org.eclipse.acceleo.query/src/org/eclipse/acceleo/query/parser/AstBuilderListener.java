@@ -28,8 +28,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.acceleo.query.ast.And;
@@ -375,8 +373,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		private static final String MISSING_EXPRESSION = "missing expression";
 
 		@Override
-		public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol,
-				int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
+		public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line,
+				int charPositionInLine, String msg, RecognitionException e) {
 			if (e != null) {
 				if (e.getCtx() instanceof IterationCallContext) {
 					iterationCallContextError(e);
