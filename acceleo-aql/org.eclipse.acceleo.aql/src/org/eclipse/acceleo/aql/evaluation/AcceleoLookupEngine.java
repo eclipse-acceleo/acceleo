@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.VisibilityKind;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -45,7 +46,8 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 * @param acceleoEnvironment
 	 *            The Acceleo environment.
 	 */
-	public AcceleoLookupEngine(IReadOnlyQueryEnvironment aqlEnvironment, AcceleoEnvironment acceleoEnvironment) {
+	public AcceleoLookupEngine(IReadOnlyQueryEnvironment aqlEnvironment,
+			AcceleoEnvironment acceleoEnvironment) {
 		super(aqlEnvironment);
 		this.acceleoEnvironment = acceleoEnvironment;
 	}
@@ -61,7 +63,8 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 * the first call was. Then, in order or priority, we'll look for:
 	 * <ol>
 	 * <li>A private query or template in the module of the current call,</li>
-	 * <li>A protected or public query or template in the hierarchy of the first module of the current stack,</li>
+	 * <li>A protected or public query or template in the hierarchy of the first module of the current
+	 * stack,</li>
 	 * <li>A public query or template in the modules imported by the module of the current call and their own
 	 * extends hierarchy,</li>
 	 * <li>A service registered in the AQL environment.</li>
@@ -73,7 +76,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		AcceleoCallStack currentStack = acceleoEnvironment.getCurrentStack();
 
 		/* PRIVATE query or template in the same module as our current (last of the stack) */
-		String last = currentStack.getStartingModuleQualifiedName();
+		String last = acceleoEnvironment.getModuleQualifiedName((Module)currentStack.peek().eContainer());
 		Set<AbstractModuleElementService> lastServices = acceleoEnvironment.getServicesWithName(last, name);
 		IService result = lookup(lastServices, argumentTypes, VisibilityKind.PRIVATE);
 
@@ -108,8 +111,7 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 
 		if (result instanceof AbstractModuleElementService) {
 			if (importService != null) {
-				acceleoEnvironment.pushImport(
-						((AbstractModuleElementService)result).getModuleQualifiedName(),
+				acceleoEnvironment.pushImport(importService.getImportedModule(),
 						((AbstractModuleElementService)result).getModuleElement());
 			} else {
 				acceleoEnvironment.push(((AbstractModuleElementService)result).getModuleElement());
