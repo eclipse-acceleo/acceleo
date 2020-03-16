@@ -37,6 +37,7 @@ import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
+import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

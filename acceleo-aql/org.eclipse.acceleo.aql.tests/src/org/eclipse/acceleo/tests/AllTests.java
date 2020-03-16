@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.tests;
 
+import org.eclipse.acceleo.tests.evaluation.TemplateLookupTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -24,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		TextStatementTests.class, ForStatementTests.class, IfStatementTests.class,
 		ExpressionStatementTests.class, ProtectedAreaTests.class, LetStatementTests.class,
 		ModuleDocumentationTests.class, ModuleElementDocumentationTests.class, CommentTests.class,
-		CompletionTests.class })
+		CompletionTests.class, TemplateLookupTest.class })
 public class AllTests {
 
 }

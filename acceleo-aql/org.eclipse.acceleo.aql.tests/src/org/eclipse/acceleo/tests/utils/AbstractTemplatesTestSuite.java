@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

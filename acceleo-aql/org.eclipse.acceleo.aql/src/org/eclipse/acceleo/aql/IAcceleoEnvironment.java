@@ -11,10 +11,12 @@
 package org.eclipse.acceleo.aql;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.aql.evaluation.IAcceleoEvaluationListener;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 
@@ -134,4 +136,11 @@ public interface IAcceleoEnvironment {
 	 *            the text to write
 	 */
 	void write(String text);
+
+	/**
+	 * Gets the {@link List} of {@link IAcceleoEvaluationListener}.
+	 * 
+	 * @return the {@link List} of {@link IAcceleoEvaluationListener}
+	 */
+	public List<IAcceleoEvaluationListener> getListeners();
 }

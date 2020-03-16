@@ -3,14 +3,12 @@ package org.eclipse.acceleo.tests.evaluation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import com.google.common.io.CharStreams;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,10 +63,10 @@ public class TemplateLookupTest {
 	@Before
 	public void loadModules() throws IOException {
 		aqlEnvironment = Query.newEnvironmentWithDefaultServices(null);
-		module1 = readModule(aqlEnvironment, "M1.acceleo");
-		module2 = readModule(aqlEnvironment, "M2.acceleo");
-		module3 = readModule(aqlEnvironment, "M3.acceleo");
-		module4 = readModule(aqlEnvironment, "M4.acceleo");
+		module1 = readModule(aqlEnvironment, "/org/eclipse/acceleo/tests/evaluation/M1.acceleo");
+		module2 = readModule(aqlEnvironment, "/org/eclipse/acceleo/tests/evaluation/M2.acceleo");
+		module3 = readModule(aqlEnvironment, "/org/eclipse/acceleo/tests/evaluation/M3.acceleo");
+		module4 = readModule(aqlEnvironment, "/org/eclipse/acceleo/tests/evaluation/M4.acceleo");
 
 		acceleoEnvironment = new AcceleoEnvironment();
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m1", module1);
@@ -238,16 +236,10 @@ public class TemplateLookupTest {
 	 */
 	private Module readModule(IQueryEnvironment env, String name) throws IOException {
 		AcceleoParser parser = new AcceleoParser(env);
-		URL url = getClass().getResource(name);
-		Object content = url.getContent();
-		if (content instanceof InputStream) {
-			try (InputStream stream = (InputStream)content) {
-				String moduleSource = CharStreams.toString(new InputStreamReader(stream, "UTF-8"));
-				return parser.parse(moduleSource).getModule();
-			}
-		} else {
-			fail("failed to load content of module " + name);
+		InputStream content = getClass().getResourceAsStream(name);
+		try (InputStream stream = (InputStream)content) {
+			String moduleSource = CharStreams.toString(new InputStreamReader(stream, "UTF-8"));
+			return parser.parse(moduleSource).getModule();
 		}
-		return null;
 	}
 }

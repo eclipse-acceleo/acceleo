@@ -14,6 +14,7 @@ package org.eclipse.acceleo.tests;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
 import org.junit.runners.Parameterized.Parameters;
 
 /**

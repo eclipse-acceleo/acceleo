@@ -17,9 +17,11 @@ import com.google.common.collect.SetMultimap;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +37,7 @@ import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
 import org.eclipse.acceleo.aql.evaluation.AcceleoCallStack;
 import org.eclipse.acceleo.aql.evaluation.AcceleoQueryEnvironment;
+import org.eclipse.acceleo.aql.evaluation.IAcceleoEvaluationListener;
 import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
@@ -99,6 +102,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 
 	/** The current generation strategy. */
 	private final IAcceleoGenerationStrategy generationStrategy;
+
+	/**
+	 * The {@link List} of {@link IAcceleoEvaluationListener}.
+	 */
+	private final List<IAcceleoEvaluationListener> listeners = new ArrayList<IAcceleoEvaluationListener>();
 
 	/**
 	 * Initializes an environment for acceleo evaluations.
@@ -312,6 +320,15 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Gets the {@link List} of {@link IAcceleoEvaluationListener}.
+	 * 
+	 * @return the {@link List} of {@link IAcceleoEvaluationListener}
+	 */
+	public List<IAcceleoEvaluationListener> getListeners() {
+		return listeners;
 	}
 
 }

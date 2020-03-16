@@ -9,7 +9,7 @@
  *       Obeo - initial API and implementation
  *  
  *******************************************************************************/
-package org.eclipse.acceleo.tests;
+package org.eclipse.acceleo.tests.utils;
 
 import java.util.List;
 import java.util.Set;
