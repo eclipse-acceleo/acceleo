@@ -28,8 +28,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.misc.Nullable;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.acceleo.query.ast.And;
@@ -44,6 +42,7 @@ import org.eclipse.acceleo.query.ast.Error;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -374,8 +373,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		private static final String MISSING_EXPRESSION = "missing expression";
 
 		@Override
-		public void syntaxError(@NotNull Recognizer<?, ?> recognizer, @Nullable Object offendingSymbol,
-				int line, int charPositionInLine, @NotNull String msg, @Nullable RecognitionException e) {
+		public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line,
+				int charPositionInLine, String msg, RecognitionException e) {
 			if (e != null) {
 				if (e.getCtx() instanceof IterationCallContext) {
 					iterationCallContextError(e);
@@ -431,10 +430,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				final String variableName = e.getCtx().getParent().getChild(0).getText();
 				final ErrorTypeLiteral errorTypeLiteral;
 				if (ctx.getChildCount() > 0) {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {ctx.getChild(0)
-							.getText(), });
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {ctx.getChild(
+							0).getText(), });
 				} else {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {});
 				}
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
@@ -455,10 +454,10 @@ public class AstBuilderListener extends QueryBaseListener {
 				errorRule = QueryParser.RULE_classifierTypeRule;
 				final ErrorTypeLiteral errorTypeLiteral;
 				if (ctx.getChildCount() > 0) {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {ctx.getChild(0)
-							.getText(), });
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {ctx.getChild(
+							0).getText(), });
 				} else {
-					errorTypeLiteral = builder.errorTypeLiteral(false, new String[] {});
+					errorTypeLiteral = builder.errorEClassifierTypeLiteral(false, new String[] {});
 				}
 				startPositions.put(errorTypeLiteral, startPosition);
 				endPositions.put(errorTypeLiteral, endPosition);
@@ -982,6 +981,8 @@ public class AstBuilderListener extends QueryBaseListener {
 		if (!stack.isEmpty() && stack.peek() instanceof ErrorExpression) {
 			final ErrorExpression error = (ErrorExpression)pop();
 			errors.remove(error);
+			startPositions.remove(error);
+			endPositions.remove(error);
 			diagnostics.remove(diagnostics.size() - 1);
 		}
 	}
@@ -1485,7 +1486,8 @@ public class AstBuilderListener extends QueryBaseListener {
 				if (eClassName != null) {
 					segments.add(eClassName);
 				}
-				toPush = builder.errorTypeLiteral(false, segments.toArray(new String[segments.size()]));
+				toPush = builder.errorEClassifierTypeLiteral(false, segments.toArray(new String[segments
+						.size()]));
 				pushError((Error)toPush, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 			} else {
 				toPush = builder.typeLiteral(type);
@@ -1510,7 +1512,8 @@ public class AstBuilderListener extends QueryBaseListener {
 	public void exitErrorClassifierType(ErrorClassifierTypeContext ctx) {
 		final String ePackageName = ctx.getChild(0).getText();
 
-		final ErrorTypeLiteral errorTypeLiteral = builder.errorTypeLiteral(true, ePackageName);
+		final ErrorEClassifierTypeLiteral errorTypeLiteral = builder.errorEClassifierTypeLiteral(true,
+				ePackageName);
 
 		pushError((Error)errorTypeLiteral, String.format(INVALID_TYPE_LITERAL, ctx.getText()));
 		startPositions.put(errorTypeLiteral, Integer.valueOf(ctx.start.getStartIndex()));
@@ -1671,18 +1674,26 @@ public class AstBuilderListener extends QueryBaseListener {
 	 */
 	@Override
 	public void exitLetExpr(LetExprContext ctx) {
-		Expression body;
+		final Expression body;
+		final Binding[] bindings;
+
 		if (!(ctx.getChild(ctx.getChildCount() - 1) instanceof ExpressionContext)) {
+			popErrorExpression();
 			body = builder.errorExpression();
 			startPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
 			endPositions.put(body, Integer.valueOf(ctx.stop.getStopIndex() + 1));
+			final List<Binding> bindingList = new ArrayList<Binding>();
+			while (!stack.isEmpty() && stack.peek() instanceof Binding) {
+				bindingList.add(popBinding());
+			}
+			bindings = bindingList.toArray(new Binding[bindingList.size()]);
 		} else {
 			body = popExpression();
-		}
-		int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
-		Binding[] bindings = new Binding[bindingNumber];
-		for (int i = bindingNumber - 1; i >= 0; i--) {
-			bindings[i] = popBinding();
+			int bindingNumber = 1 + (ctx.getChildCount() - 3) / 2;
+			bindings = new Binding[bindingNumber];
+			for (int i = bindingNumber - 1; i >= 0; i--) {
+				bindings[i] = popBinding();
+			}
 		}
 		final Let let = builder.let(body, bindings);
 

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.collect.Sets;
-
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -135,7 +133,7 @@ class EAllContentsService extends FilterService {
 						"%s doesn't contain any other EClass", argTypes.get(0))));
 			}
 		} else if (argTypes.size() == 2) {
-			final Set<IType> filterTypes = Sets.newLinkedHashSet();
+			final Set<IType> filterTypes = new LinkedHashSet<IType>();
 			if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
 				for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1)).getEClassifiers()) {
 					filterTypes.add(new EClassifierType(queryEnvironment, eClassifier));

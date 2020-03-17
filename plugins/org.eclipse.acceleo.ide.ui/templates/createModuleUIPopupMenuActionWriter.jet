@@ -78,15 +78,19 @@ public class AcceleoGenerate<%=content.getModuleNameWithoutSpaces()%>Action exte
 						while (filesIt.hasNext()) {
 							IFile model = (IFile)filesIt.next();
 							URI modelURI = URI.createPlatformResourceURI(model.getFullPath().toString(), true);
+							IContainer targetFolder = null;
 							try {
 								<%=content.getTargetFolderAccess().replaceAll("\n", "\n\t\t\t\t\t\t\t\t")%>
-								GenerateAll generator = new GenerateAll(modelURI, target, getArguments());
+								targetFolder = target;
+								GenerateAll generator = new GenerateAll(modelURI, targetFolder, getArguments());
 								generator.doGenerate(monitor);
 							} catch (IOException e) {
 								IStatus status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, e.getMessage(), e);
 								Activator.getDefault().getLog().log(status);
 							} finally {
-								model.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+								if (targetFolder != null) {
+									targetFolder.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+								}
 							}
 						}
 					} catch (CoreException e) {

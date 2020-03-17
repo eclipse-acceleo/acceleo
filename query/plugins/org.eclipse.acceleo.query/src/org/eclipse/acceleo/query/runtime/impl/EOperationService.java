@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import com.google.common.collect.Sets;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Call;
+import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -328,9 +327,10 @@ public class EOperationService extends AbstractService {
 		}
 
 		if (canMatch) {
-			final Set<List<IType>> product = Sets.cartesianProduct(eClassifierTypes);
+			CombineIterator<IType> it = new CombineIterator<IType>(eClassifierTypes);
 			boolean matched = false;
-			for (List<IType> parameterTypes : product) {
+			while (it.hasNext()) {
+				final List<IType> parameterTypes = it.next();
 				if (super.matches(queryEnvironment, parameterTypes.toArray(new IType[parameterTypes.size()]))) {
 					matched = true;
 					break;

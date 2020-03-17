@@ -6,3 +6,5 @@
 /AcceleoQueryLanguageParser.java
 /Query.tokens
 /QueryLexer.tokens
+/Query.interp
+/QueryLexer.interp

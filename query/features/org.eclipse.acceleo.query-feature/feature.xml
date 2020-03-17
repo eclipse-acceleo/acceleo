@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.acceleo.query"
       label="%featureName"
-      version="6.0.0.qualifier"
+      version="7.0.0.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1">
@@ -34,17 +34,10 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.acceleo.query.ide.ui"
+         id="org.eclipse.acceleo.query.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.antlr.runtime"
-         download-size="0"
-         install-size="0"
-         version="4.3.0"
          unpack="false"/>
 
    <plugin

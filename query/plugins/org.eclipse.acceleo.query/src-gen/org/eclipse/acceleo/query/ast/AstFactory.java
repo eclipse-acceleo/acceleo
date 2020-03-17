@@ -179,6 +179,15 @@ public interface AstFactory extends EFactory {
 	ErrorTypeLiteral createErrorTypeLiteral();
 
 	/**
+	 * Returns a new object of class '<em>Error EClassifier Type Literal</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Error EClassifier Type Literal</em>'.
+	 * @generated
+	 */
+	ErrorEClassifierTypeLiteral createErrorEClassifierTypeLiteral();
+
+	/**
 	 * Returns a new object of class '<em>Error Enum Literal</em>'. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 

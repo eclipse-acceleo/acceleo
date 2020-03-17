@@ -15,11 +15,20 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.acceleo.query.runtime.EvaluationResult;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.IQueryBuilderEngine.AstResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.query.runtime.impl.QueryBuilderEngine;
+import org.eclipse.acceleo.query.runtime.impl.QueryEvaluationEngine;
 import org.eclipse.acceleo.query.services.EObjectServices;
 import org.eclipse.acceleo.query.tests.Setup;
 import org.eclipse.acceleo.query.tests.UnitTestModels;
@@ -63,6 +72,57 @@ public class EObjectServicesPerformanceTest {
 		this.queryEnvironment = Query.newEnvironmentWithDefaultServices(null);
 		this.queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		this.eObjectService = new EObjectServices(queryEnvironment, null, null);
+	}
+
+	@Test
+	public void eAllContentsWithFailingAccessBenchmark() {
+		Stopwatch noError = Stopwatch.createUnstarted();
+		Stopwatch error = Stopwatch.createUnstarted();
+		int iterations = 20;
+		noError.start();
+		for (int i = 0; i < iterations; i++) {
+			for (EObject root : reverseEcoreModel.getContents()) {
+				EvaluationResult result = eval(root,
+						"self.eAllContents(ecore::EClass)->select(c | not c.abstract)");
+				assertTrue(result.getResult() instanceof Collection);
+				assertEquals(5219, ((Collection<?>)result.getResult()).size());
+			}
+		}
+		noError.stop();
+		error.start();
+		for (int i = 0; i < iterations; i++) {
+			for (EObject root : reverseEcoreModel.getContents()) {
+				EvaluationResult result = eval(root, "self.eAllContents()->select(c | not c.abstract)");
+				assertTrue(result.getResult() instanceof Collection);
+				assertEquals(5219, ((Collection<?>)result.getResult()).size());
+			}
+		}
+		error.stop();
+		System.out.println("PERFO: self.eAllContents(ecore::EClass)->select(c | not c.abstract)  :  "
+				+ noError.elapsed(TimeUnit.MILLISECONDS)
+				+ "ms /  self.eAllContents()->select(c | not c.abstract) : "
+				+ error.elapsed(TimeUnit.MILLISECONDS) + "ms");
+
+		final double noErrorElapsed = noError.elapsed(TimeUnit.MILLISECONDS);
+		final double errorElapsed = error.elapsed(TimeUnit.MILLISECONDS);
+
+		assertTrue("We expect a maximum overhead of 1600% (9 time more calls) and we had:"
+				+ (errorElapsed / noErrorElapsed) * 100 + "%", errorElapsed / noErrorElapsed < 16.0);
+	}
+
+	/**
+	 * @param root
+	 * @param expr
+	 * @return
+	 */
+	private EvaluationResult eval(EObject root, String expr) {
+		IQueryBuilderEngine queryBuilder = new QueryBuilderEngine(queryEnvironment);
+		AstResult query = queryBuilder.build(expr);
+		IQueryEvaluationEngine evaluationEngine = new QueryEvaluationEngine(queryEnvironment);
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("self", root);
+		EvaluationResult result = evaluationEngine.eval(query, variables);
+		return result;
 	}
 
 	@Test

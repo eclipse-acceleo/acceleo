@@ -10,8 +10,7 @@ Require-Bundle: org.junit,
  org.eclipse.acceleo.model,
  org.eclipse.acceleo.engine,
  org.eclipse.acceleo.traceability,
- org.eclipse.acceleo.traceability.model,
- com.google.guava;bundle-version="10.0.1"
+ org.eclipse.acceleo.traceability.model
 Export-Package: org.eclipse.acceleo.unit.core.annotation,
  org.eclipse.acceleo.unit.core.assertion,
  org.eclipse.acceleo.unit.core.generation,

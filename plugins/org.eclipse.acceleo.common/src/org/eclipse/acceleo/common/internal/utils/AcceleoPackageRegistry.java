@@ -254,7 +254,8 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		boolean isInAcceleoResourceSet = false;
 		if (value instanceof EPackage) {
 			EPackage ePackage = (EPackage)value;
-			if (ePackage.eResource() != null && ePackage.eResource().getResourceSet() != null && ePackage.eResource().getResourceSet().getPackageRegistry() == this) {
+			if (ePackage.eResource() != null && ePackage.eResource().getResourceSet() != null && ePackage
+					.eResource().getResourceSet().getPackageRegistry() == this) {
 				isInAcceleoResourceSet = true;
 			}
 		}
@@ -307,7 +308,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 			/*
 			 * If the resourceset already have the EPackage loaded as a model, lets reload it.
 			 */
-			List<Resource> resources = resourceSet.getResources();
+			List<Resource> resources = new ArrayList<Resource>(resourceSet.getResources());
 			for (Resource resource : resources) {
 				if (resource.getURI() != null && resource.getURI().equals(metaURI)) {
 					resource.unload();
@@ -407,7 +408,8 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 			// The MTL ecore file mustn't be dynamic!!!
 			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
 			if (!"mtl".equals(descriptor.getNsPrefix()) && !"mtlnonstdlib".equals(descriptor.getNsPrefix()) //$NON-NLS-1$ //$NON-NLS-2$
-					&& !"mtlstdlib".equals(descriptor.getNsPrefix()) && !"oclstdlib".equals(descriptor.getNsPrefix())) { //$NON-NLS-1$ //$NON-NLS-2$
+					&& !"mtlstdlib".equals(descriptor.getNsPrefix()) && !"oclstdlib".equals(descriptor //$NON-NLS-1$ //$NON-NLS-2$
+							.getNsPrefix())) {
 				dynamicEcorePackagePaths.put(descriptor.getNsURI(), descriptor.getResourceURI().toString());
 
 				registry.put(descriptor.getNsURI(), descriptor);

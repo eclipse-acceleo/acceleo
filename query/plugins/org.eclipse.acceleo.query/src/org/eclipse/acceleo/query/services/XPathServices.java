@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.collect.Sets;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -145,7 +143,7 @@ public class XPathServices extends AbstractServiceProvider {
 							argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				final Set<IType> filterTypes = new LinkedHashSet<IType>();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
 					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
 							.getEClassifiers()) {
@@ -259,7 +257,7 @@ public class XPathServices extends AbstractServiceProvider {
 				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 						EcorePackage.eINSTANCE.getEObject())));
 			} else if (argTypes.size() == 2) {
-				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				final Set<IType> filterTypes = new LinkedHashSet<IType>();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
 					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
 							.getEClassifiers()) {
@@ -371,7 +369,7 @@ public class XPathServices extends AbstractServiceProvider {
 				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 						EcorePackage.eINSTANCE.getEObject())));
 			} else if (argTypes.size() == 2) {
-				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				final Set<IType> filterTypes = new LinkedHashSet<IType>();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
 					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
 							.getEClassifiers()) {
@@ -483,7 +481,7 @@ public class XPathServices extends AbstractServiceProvider {
 				result.add(new SequenceType(queryEnvironment, new EClassifierType(queryEnvironment,
 						EcorePackage.eINSTANCE.getEObject())));
 			} else if (argTypes.size() == 2) {
-				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				final Set<IType> filterTypes = new LinkedHashSet<IType>();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
 					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
 							.getEClassifiers()) {
@@ -589,7 +587,7 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> ancestors(EObject self, EClass filter) {
-		final Set<EClass> filters = Sets.newLinkedHashSet();
+		final Set<EClass> filters = new LinkedHashSet<EClass>();
 		filters.add(filter);
 
 		return ancestors(self, filters);
@@ -663,7 +661,7 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> followingSiblings(EObject self, EClass filter) {
-		final Set<EClass> filters = Sets.newLinkedHashSet();
+		final Set<EClass> filters = new LinkedHashSet<EClass>();
 		filters.add(filter);
 
 		return followingSiblings(self, filters);
@@ -799,7 +797,7 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> precedingSiblings(EObject self, EClass filter) {
-		final Set<EClass> filters = Sets.newLinkedHashSet();
+		final Set<EClass> filters = new LinkedHashSet<EClass>();
 		filters.add(filter);
 
 		return precedingSiblings(self, filters);
@@ -932,7 +930,7 @@ public class XPathServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> siblings(final EObject self, final EClass filter) {
-		final Set<EClass> filters = Sets.newLinkedHashSet();
+		final Set<EClass> filters = new LinkedHashSet<EClass>();
 		filters.add(filter);
 
 		return siblings(self, filters);

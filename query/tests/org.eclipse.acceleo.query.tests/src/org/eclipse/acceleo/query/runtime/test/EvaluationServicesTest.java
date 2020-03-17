@@ -10,14 +10,12 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.test;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -75,7 +73,7 @@ public class EvaluationServicesTest {
 	EvaluationServices services;
 
 	private LinkedHashSet<Object> createSet(Object... elements) {
-		return Sets.newLinkedHashSet(Lists.newArrayList(elements));
+		return new LinkedHashSet<Object>(Arrays.asList(elements));
 	}
 
 	@Before
@@ -165,7 +163,7 @@ public class EvaluationServicesTest {
 
 		Diagnostic child = status.getChildren().iterator().next();
 		assertEquals(Diagnostic.WARNING, child.getSeverity());
-		assertTrue(child.getException().getMessage().contains("Feature noname"));
+		assertTrue(child.getMessage().contains("Feature noname"));
 	}
 
 	/**
@@ -294,7 +292,7 @@ public class EvaluationServicesTest {
 	 * </p>
 	 */
 	public void testFeatureAccessOnListOneObjectOneNonModel() {
-		List<Object> list = Lists.<Object> newArrayList(1);
+		List<Object> list = new ArrayList<Object>(Arrays.asList(1));
 		EAttribute attribute0 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute0.setName("attr0");
 		list.add(attribute0);
@@ -325,7 +323,7 @@ public class EvaluationServicesTest {
 	 * </p>
 	 */
 	public void testFeatureAccessOnListTwoObjectsOneNonModel() {
-		List<Object> list = Lists.<Object> newArrayList();
+		List<Object> list = new ArrayList<Object>();
 		EAttribute attribute0 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute0.setName("attr0");
 		EAttribute attribute1 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
@@ -384,7 +382,7 @@ public class EvaluationServicesTest {
 		EReference ref = (EReference)EcoreUtil.create(EcorePackage.Literals.EREFERENCE);
 		ref.setContainment(true);
 
-		List<EStructuralFeature> list = Lists.newArrayList(attr, ref);
+		List<EStructuralFeature> list = new ArrayList<EStructuralFeature>(Arrays.asList(attr, ref));
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
 				list, "containment" }, status);
@@ -431,8 +429,8 @@ public class EvaluationServicesTest {
 		EAttribute attribute1 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute1.setName("attr1");
 
-		List<Object> list1 = Lists.newArrayList((Object)attribute1);
-		List<Object> list0 = Lists.newArrayList(attribute0, list1);
+		List<Object> list1 = new ArrayList<Object>(Arrays.asList((Object)attribute1));
+		List<Object> list0 = new ArrayList<Object>(Arrays.asList(attribute0, list1));
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
 				list0, "name" }, status);
@@ -458,7 +456,7 @@ public class EvaluationServicesTest {
 		attribute1.setName("attr1");
 
 		Set<Object> list1 = createSet(attribute1);
-		List<Object> list0 = Lists.newArrayList(attribute0, list1);
+		List<Object> list0 = new ArrayList<Object>(Arrays.asList(attribute0, list1));
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
 				list0, "name" }, status);
@@ -480,8 +478,8 @@ public class EvaluationServicesTest {
 		EAttribute attribute0 = (EAttribute)EcoreUtil.create(EcorePackage.Literals.EATTRIBUTE);
 		attribute0.setName("attr0");
 
-		List<Object> list1 = Lists.newArrayList((Object)1);
-		List<Object> list0 = Lists.newArrayList(attribute0, list1);
+		List<Object> list1 = new ArrayList<Object>(Arrays.asList((Object)1));
+		List<Object> list0 = new ArrayList<Object>(Arrays.asList(attribute0, list1));
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply(AstBuilderListener.FEATURE_ACCESS_SERVICE_NAME, new Object[] {
 				list0, "name" }, status);
@@ -574,7 +572,7 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void callOrApplyOnListTest() {
-		List<Integer> list = Lists.newArrayList(1, 2);
+		List<Integer> list = new ArrayList<Integer>(Arrays.asList(1, 2));
 		Object[] args = {list };
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply("toString", args, status);
@@ -610,8 +608,8 @@ public class EvaluationServicesTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void callOrApplyOnNestedList() {
-		List<Integer> list2 = Lists.newArrayList(3, 4);
-		List<Object> list1 = Lists.newArrayList(1, 2, list2);
+		List<Integer> list2 = new ArrayList<Integer>(Arrays.asList(3, 4));
+		List<Object> list1 = new ArrayList<Object>(Arrays.asList(1, 2, list2));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply("toString", args, status);
@@ -630,7 +628,7 @@ public class EvaluationServicesTest {
 	@Test
 	public void callOrApplyOnNestedSet() {
 		Set<Object> list2 = createSet(3, 4);
-		List<Object> list1 = Lists.newArrayList(1, 2, list2);
+		List<Object> list1 = new ArrayList<Object>(Arrays.asList(1, 2, list2));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply("toString", args, status);
@@ -651,8 +649,8 @@ public class EvaluationServicesTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void callOrApplySpecialOnNestedList() {
-		List<Integer> list2 = Lists.newArrayList(3);
-		List<Object> list1 = Lists.newArrayList(1, 2, list2);
+		List<Integer> list2 = new ArrayList<Integer>(Arrays.asList(3));
+		List<Object> list1 = new ArrayList<Object>(Arrays.asList(1, 2, list2));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply("special", args, status);
@@ -669,7 +667,7 @@ public class EvaluationServicesTest {
 	 */
 	@Test
 	public void callOrapplySpecialOnList() {
-		List<Integer> list1 = Lists.newArrayList(1, 2, 3);
+		List<Integer> list1 = new ArrayList<Integer>(Arrays.asList(1, 2, 3));
 		Object[] args = {list1 };
 		Diagnostic status = new BasicDiagnostic();
 		Object result = services.callOrApply("special", args, status);
@@ -816,8 +814,8 @@ public class EvaluationServicesTest {
 	public void testEOperationGeneratedClass() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("getEClassifier",
-				new Object[] {EcorePackage.eINSTANCE, "EClass", }, status);
+		final Object result = services.call("getEClassifier", new Object[] {EcorePackage.eINSTANCE,
+				"EClass", }, status);
 		assertEquals(EcorePackage.eINSTANCE.getEClass(), result);
 	}
 
@@ -825,8 +823,8 @@ public class EvaluationServicesTest {
 	public void testEOperationGeneratedClassWithEObjectParameter() {
 		queryEnvironment.registerEPackage(EcorePackage.eINSTANCE);
 		Diagnostic status = new BasicDiagnostic();
-		final Object result = services.call("isSuperTypeOf", new Object[] {
-				EcorePackage.eINSTANCE.getEClass(), EcorePackage.eINSTANCE.getEPackage(), }, status);
+		final Object result = services.call("isSuperTypeOf", new Object[] {EcorePackage.eINSTANCE.getEClass(),
+				EcorePackage.eINSTANCE.getEPackage(), }, status);
 		assertEquals(false, result);
 	}
 

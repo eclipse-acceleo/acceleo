@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.6.1.qualifier
+Bundle-Version: 3.7.10.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.ide.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
@@ -21,6 +21,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtbot.eclipse.core,
  org.eclipse.swtbot.eclipse.finder,
  org.eclipse.jdt.core,
- com.google.guava;bundle-version="10.0.1",
  org.eclipse.ui
 Export-Package: org.eclipse.acceleo.ide.ui.tests.suite;x-friends:="org.eclipse.acceleo.tests"

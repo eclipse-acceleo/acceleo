@@ -825,6 +825,60 @@ public interface AstPackage extends EPackage {
 	int ERROR_TYPE_LITERAL_OPERATION_COUNT = ERROR_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorEClassifierTypeLiteralImpl
+	 * <em>Error EClassifier Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see org.eclipse.acceleo.query.ast.impl.ErrorEClassifierTypeLiteralImpl
+	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorEClassifierTypeLiteral()
+	 * @generated
+	 */
+	int ERROR_ECLASSIFIER_TYPE_LITERAL = 20;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ECLASSIFIER_TYPE_LITERAL__VALUE = ERROR_TYPE_LITERAL__VALUE;
+
+	/**
+	 * The feature id for the '<em><b>Segments</b></em>' attribute list. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ECLASSIFIER_TYPE_LITERAL__SEGMENTS = ERROR_TYPE_LITERAL__SEGMENTS;
+
+	/**
+	 * The feature id for the '<em><b>Missing Colon</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ECLASSIFIER_TYPE_LITERAL__MISSING_COLON = ERROR_TYPE_LITERAL__MISSING_COLON;
+
+	/**
+	 * The number of structural features of the '<em>Error EClassifier Type Literal</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ECLASSIFIER_TYPE_LITERAL_FEATURE_COUNT = ERROR_TYPE_LITERAL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Error EClassifier Type Literal</em>' class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int ERROR_ECLASSIFIER_TYPE_LITERAL_OPERATION_COUNT = ERROR_TYPE_LITERAL_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl
 	 * <em>Error Enum Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -832,7 +886,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorEnumLiteral()
 	 * @generated
 	 */
-	int ERROR_ENUM_LITERAL = 20;
+	int ERROR_ENUM_LITERAL = 21;
 
 	/**
 	 * The feature id for the '<em><b>Literal</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -887,7 +941,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorCall()
 	 * @generated
 	 */
-	int ERROR_CALL = 21;
+	int ERROR_CALL = 22;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -950,7 +1004,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorVariableDeclaration()
 	 * @generated
 	 */
-	int ERROR_VARIABLE_DECLARATION = 22;
+	int ERROR_VARIABLE_DECLARATION = 23;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1004,7 +1058,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorStringLiteral()
 	 * @generated
 	 */
-	int ERROR_STRING_LITERAL = 23;
+	int ERROR_STRING_LITERAL = 24;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1040,7 +1094,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorConditional()
 	 * @generated
 	 */
-	int ERROR_CONDITIONAL = 24;
+	int ERROR_CONDITIONAL = 25;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1095,7 +1149,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getBinding()
 	 * @generated
 	 */
-	int BINDING = 25;
+	int BINDING = 26;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1148,7 +1202,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorBinding()
 	 * @generated
 	 */
-	int ERROR_BINDING = 26;
+	int ERROR_BINDING = 27;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1202,7 +1256,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getLet()
 	 * @generated
 	 */
-	int LET = 27;
+	int LET = 28;
 
 	/**
 	 * The feature id for the '<em><b>Bindings</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -1247,7 +1301,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getConditional()
 	 * @generated
 	 */
-	int CONDITIONAL = 28;
+	int CONDITIONAL = 29;
 
 	/**
 	 * The feature id for the '<em><b>Predicate</b></em>' containment reference. <!-- begin-user-doc --> <!--
@@ -1302,7 +1356,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getOr()
 	 * @generated
 	 */
-	int OR = 29;
+	int OR = 30;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1355,7 +1409,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getAnd()
 	 * @generated
 	 */
-	int AND = 30;
+	int AND = 31;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1408,7 +1462,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getImplies()
 	 * @generated
 	 */
-	int IMPLIES = 31;
+	int IMPLIES = 32;
 
 	/**
 	 * The feature id for the '<em><b>Service Name</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1461,7 +1515,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getCallType()
 	 * @generated
 	 */
-	int CALL_TYPE = 32;
+	int CALL_TYPE = 33;
 
 	/**
 	 * The meta object id for the '<em>Object Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -1471,7 +1525,7 @@ public interface AstPackage extends EPackage {
 	 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getObjectType()
 	 * @generated
 	 */
-	int OBJECT_TYPE = 33;
+	int OBJECT_TYPE = 34;
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.Expression <em>Expression</em>}
@@ -1916,6 +1970,16 @@ public interface AstPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getErrorTypeLiteral_MissingColon();
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral
+	 * <em>Error EClassifier Type Literal</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Error EClassifier Type Literal</em>'.
+	 * @see org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral
+	 * @generated
+	 */
+	EClass getErrorEClassifierTypeLiteral();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.ast.ErrorEnumLiteral
@@ -2582,6 +2646,17 @@ public interface AstPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ERROR_TYPE_LITERAL__MISSING_COLON = eINSTANCE.getErrorTypeLiteral_MissingColon();
+
+		/**
+		 * The meta object literal for the '
+		 * {@link org.eclipse.acceleo.query.ast.impl.ErrorEClassifierTypeLiteralImpl
+		 * <em>Error EClassifier Type Literal</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @see org.eclipse.acceleo.query.ast.impl.ErrorEClassifierTypeLiteralImpl
+		 * @see org.eclipse.acceleo.query.ast.impl.AstPackageImpl#getErrorEClassifierTypeLiteral()
+		 * @generated
+		 */
+		EClass ERROR_ECLASSIFIER_TYPE_LITERAL = eINSTANCE.getErrorEClassifierTypeLiteral();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.ast.impl.ErrorEnumLiteralImpl

@@ -48,6 +48,7 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.ecore.CallExp;
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.EcoreFactory;
+import org.eclipse.ocl.ecore.IteratorExp;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.ecore.OCLExpression;
 import org.eclipse.ocl.ecore.OperationCallExp;
@@ -883,6 +884,10 @@ public class OCLParser {
 					createAcceleoInvocation(oclExpression, iModelExpression);
 				}
 			}
+		} else if (eObject instanceof IteratorExp) {
+			// Try and see if the body of this iterator contain an Acceleo invocation and replace it as needed
+			org.eclipse.ocl.expressions.OCLExpression<EClassifier> body = ((IteratorExp)eObject).getBody();
+			createAcceleoInvocation(body, iModelExpression);
 		}
 		return null;
 	}

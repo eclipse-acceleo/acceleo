@@ -7,16 +7,16 @@ module myModule
     
    (116..119)
     *** error file statement ***
-    missing open mode: 141
+    missing open mode: -1
     missing open parenthesis: -1
-    missing comma: 141
-    missing close parenthesis: 141
-    missing end header: 141
+    missing comma: 148
+    missing close parenthesis: -1
+    missing end header: -1
     missing end: -1
-    [file url .add('.txt', ***ERROR***) (126..141) mode overwrite
-      '.txt' overwrite)]
+    [file url .add(.aqlFeatureAccess(myParam, 'name'), '.txt') (126..147) mode overwrite
+      
     some static text.
-   (141..184) (141..184)
+   (159..184) (159..184)
     [/file] (119..191)
     
  (191..192) (116..192)[/template] (61..203) (0..203)

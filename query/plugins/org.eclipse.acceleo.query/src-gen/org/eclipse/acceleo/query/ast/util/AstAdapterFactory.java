@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -198,6 +199,11 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseErrorTypeLiteral(ErrorTypeLiteral object) {
 			return createErrorTypeLiteralAdapter();
+		}
+
+		@Override
+		public Adapter caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
+			return createErrorEClassifierTypeLiteralAdapter();
 		}
 
 		@Override
@@ -555,6 +561,21 @@ public class AstAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createErrorTypeLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '
+	 * {@link org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral
+	 * <em>Error EClassifier Type Literal</em>}'. <!-- begin-user-doc --> This default implementation returns
+	 * null so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all
+	 * the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral
+	 * @generated
+	 */
+	public Adapter createErrorEClassifierTypeLiteralAdapter() {
 		return null;
 	}
 

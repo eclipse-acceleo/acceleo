@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2013 Obeo.
+ * Copyright (c) 2010, 2017 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -98,6 +98,7 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -159,7 +160,6 @@ import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
-import org.eclipse.ui.views.navigator.LocalSelectionTransfer;
 
 /**
  * The Actual "Interpreter" view that will be displayed in the Eclipse workbench.
@@ -502,9 +502,6 @@ public class InterpreterView extends ViewPart {
 		layout.verticalSpacing = 0;
 		layout.horizontalSpacing = 0;
 		rootContainer.setLayout(layout);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalIndent = 1;
-		rootContainer.setLayoutData(gridData);
 
 		formToolkit = new FormToolkit(rootContainer.getDisplay());
 
@@ -1764,7 +1761,7 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected void setUpResultDragSupport(TreeViewer viewer) {
 		int operations = DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE;
-		Transfer[] transfers = new Transfer[] {LocalTransfer.getInstance(), };
+		Transfer[] transfers = new Transfer[] {LocalSelectionTransfer.getTransfer(), };
 
 		viewer.addDragSupport(operations, transfers, new ResultDragListener(viewer));
 	}

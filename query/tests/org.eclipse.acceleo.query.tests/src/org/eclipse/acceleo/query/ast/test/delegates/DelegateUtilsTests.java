@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.ast.test.delegates;
 
-import com.google.common.collect.Lists;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.acceleo.query.ast.AstPackage;
@@ -42,7 +42,7 @@ public class DelegateUtilsTests {
 	public void setSettingDelegatesNotExisting() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 
-		EcoreUtil.setSettingDelegates(ePkg, Lists.newArrayList("uri"));
+		EcoreUtil.setSettingDelegates(ePkg, new ArrayList<String>(Arrays.asList("uri")));
 
 		DelegateUtils.setSettingDelegates(ePkg);
 
@@ -57,7 +57,7 @@ public class DelegateUtilsTests {
 	public void setSettingDelegatesExisting() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 
-		EcoreUtil.setSettingDelegates(ePkg, Lists.newArrayList("uri", AstPackage.eNS_URI));
+		EcoreUtil.setSettingDelegates(ePkg, new ArrayList<String>(Arrays.asList("uri", AstPackage.eNS_URI)));
 
 		DelegateUtils.setSettingDelegates(ePkg);
 
@@ -77,7 +77,7 @@ public class DelegateUtilsTests {
 	public void setInvocationDelegatesNotExisting() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 
-		EcoreUtil.setInvocationDelegates(ePkg, Lists.newArrayList("uri"));
+		EcoreUtil.setInvocationDelegates(ePkg, new ArrayList<String>(Arrays.asList("uri")));
 
 		DelegateUtils.setInvocationDelegates(ePkg);
 
@@ -92,7 +92,8 @@ public class DelegateUtilsTests {
 	public void setInvocationDelegatesExisting() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 
-		EcoreUtil.setInvocationDelegates(ePkg, Lists.newArrayList("uri", AstPackage.eNS_URI));
+		EcoreUtil.setInvocationDelegates(ePkg, new ArrayList<String>(Arrays.asList("uri",
+				AstPackage.eNS_URI)));
 
 		DelegateUtils.setInvocationDelegates(ePkg);
 
@@ -112,7 +113,7 @@ public class DelegateUtilsTests {
 	public void setValidationDelegatesNotExisting() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 
-		EcoreUtil.setValidationDelegates(ePkg, Lists.newArrayList("uri"));
+		EcoreUtil.setValidationDelegates(ePkg, new ArrayList<String>(Arrays.asList("uri")));
 
 		DelegateUtils.setValidationDelegates(ePkg);
 
@@ -127,7 +128,8 @@ public class DelegateUtilsTests {
 	public void setValidationDelegatesExisting() {
 		final EPackage ePkg = EcorePackage.eINSTANCE.getEcoreFactory().createEPackage();
 
-		EcoreUtil.setValidationDelegates(ePkg, Lists.newArrayList("uri", AstPackage.eNS_URI));
+		EcoreUtil.setValidationDelegates(ePkg, new ArrayList<String>(Arrays.asList("uri",
+				AstPackage.eNS_URI)));
 
 		DelegateUtils.setValidationDelegates(ePkg);
 
@@ -168,7 +170,7 @@ public class DelegateUtilsTests {
 	public void setConstraintNotExisting() {
 		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 
-		EcoreUtil.setConstraints(eCls, Lists.newArrayList("someOtherConstraint"));
+		EcoreUtil.setConstraints(eCls, new ArrayList<String>(Arrays.asList("someOtherConstraint")));
 
 		DelegateUtils.setConstraint(eCls, "someConstraint", "true");
 
@@ -187,7 +189,8 @@ public class DelegateUtilsTests {
 	public void setConstraintExisting() {
 		final EClass eCls = EcorePackage.eINSTANCE.getEcoreFactory().createEClass();
 
-		EcoreUtil.setConstraints(eCls, Lists.newArrayList("someConstraint", "someOtherConstraint"));
+		EcoreUtil.setConstraints(eCls, new ArrayList<String>(Arrays.asList("someConstraint",
+				"someOtherConstraint")));
 
 		DelegateUtils.setConstraint(eCls, "someConstraint", "true");
 

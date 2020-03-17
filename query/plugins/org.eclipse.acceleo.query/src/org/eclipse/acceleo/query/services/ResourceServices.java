@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -111,12 +107,15 @@ public class ResourceServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> getContents(Resource resource, final EClass type) {
-		return Lists.newArrayList(Iterables.filter(resource.getContents(), new Predicate<EObject>() {
-			@Override
-			public boolean apply(EObject input) {
-				return type.isInstance(input);
+		final List<EObject> res = new ArrayList<EObject>();
+
+		for (EObject eObj : resource.getContents()) {
+			if (type.isInstance(eObj)) {
+				res.add(eObj);
 			}
-		}));
+		}
+
+		return res;
 	}
 
 	// @formatter:off

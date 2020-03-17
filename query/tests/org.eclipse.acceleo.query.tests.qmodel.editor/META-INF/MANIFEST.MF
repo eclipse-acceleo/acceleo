@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.acceleo.query.tests.qmodel.editor;singleton:=true
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 7.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.acceleo.query.tests.qmodel.presentation.QmodelEditorPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -20,8 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- com.google.guava,
  org.eclipse.jdt.core,
- org.eclipse.acceleo.query.compat.tests;bundle-version="3.5.0",
- org.eclipse.acceleo.query.tests;bundle-version="3.5.0"
+ org.eclipse.acceleo.query.compat.tests,
+ org.eclipse.acceleo.query.tests
 Bundle-ActivationPolicy: lazy

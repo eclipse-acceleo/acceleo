@@ -654,19 +654,19 @@ public final class AcceleoService {
 						generationHasOccurred = true;
 					}
 				}
-			}
-			// There is a possibility that "model" is but one of the resource's roots.
-			if (model.eResource() != null) {
-				List<EObject> roots = new ArrayList<EObject>(model.eResource().getContents());
-				roots.remove(model);
-				for (EObject root : roots) {
-					if (argumentType.isInstance(root)) {
-						final List<Object> actualArguments = new ArrayList<Object>();
-						actualArguments.add(root);
-						actualArguments.addAll(arguments);
-						previewResult.putAll(doGenerateTemplate(template, actualArguments, generationRoot,
-								monitor));
-						generationHasOccurred = true;
+				// There is a possibility that "model" is but one of the resource's roots.
+				if (model.eResource() != null) {
+					List<EObject> roots = new ArrayList<EObject>(model.eResource().getContents());
+					roots.remove(model);
+					for (EObject root : roots) {
+						if (argumentType.isInstance(root)) {
+							final List<Object> actualArguments = new ArrayList<Object>();
+							actualArguments.add(root);
+							actualArguments.addAll(arguments);
+							previewResult.putAll(doGenerateTemplate(template, actualArguments,
+									generationRoot, monitor));
+							generationHasOccurred = true;
+						}
 					}
 				}
 			}

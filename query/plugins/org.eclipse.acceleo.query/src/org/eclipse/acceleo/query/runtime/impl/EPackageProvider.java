@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +41,7 @@ public class EPackageProvider implements IEPackageProvider {
 	/**
 	 * Map the name to their corresponding package.
 	 */
-	private Multimap<String, EPackage> ePackages = HashMultimap.create();
+	private Map<String, Set<EPackage>> ePackages = new LinkedHashMap<String, Set<EPackage>>();
 
 	/**
 	 * {@link Class} to {@link EClassifier} mapping.
@@ -89,7 +86,14 @@ public class EPackageProvider implements IEPackageProvider {
 	 */
 	@Override
 	public Collection<EPackage> getEPackage(String name) {
-		return ePackages.get(name);
+		final Set<EPackage> res = new LinkedHashSet<EPackage>();
+
+		final Set<EPackage> set = ePackages.get(name);
+		if (set != null) {
+			res.addAll(set);
+		}
+
+		return res;
 	}
 
 	/**
@@ -103,20 +107,26 @@ public class EPackageProvider implements IEPackageProvider {
 	public Collection<EPackage> removePackage(EPackage ePackage) {
 		final Collection<EPackage> result = new ArrayList<EPackage>();
 
-		if (ePackages.remove(ePackage.getName(), ePackage)) {
-			result.add(ePackage);
-			for (EClassifier eCls : ePackage.getEClassifiers()) {
-				removeEClassifierClass(eCls);
-				if (eCls instanceof EClass) {
-					removeFeatures((EClass)eCls);
-					removeSubType((EClass)eCls);
+		final Set<EPackage> set = ePackages.get(ePackage.getName());
+		if (set != null) {
+			if (set.remove(ePackage)) {
+				if (set.isEmpty()) {
+					ePackages.remove(ePackage.getName());
 				}
+				result.add(ePackage);
+				for (EClassifier eCls : ePackage.getEClassifiers()) {
+					removeEClassifierClass(eCls);
+					if (eCls instanceof EClass) {
+						removeFeatures((EClass)eCls);
+						removeSubType((EClass)eCls);
+					}
+				}
+				for (EPackage childPkg : ePackage.getESubpackages()) {
+					removePackage(childPkg);
+				}
+				containingFeatures.clear();
+				allContainingFeatures.clear();
 			}
-			for (EPackage childPkg : ePackage.getESubpackages()) {
-				removePackage(childPkg.getName());
-			}
-			containingFeatures.clear();
-			allContainingFeatures.clear();
 		}
 
 		return result;
@@ -132,24 +142,30 @@ public class EPackageProvider implements IEPackageProvider {
 	 * @deprecated
 	 */
 	public Collection<EPackage> removePackage(String name) {
-		final Collection<EPackage> removed = ePackages.removeAll(name);
-		for (EPackage ePackage : removed) {
-			for (EClassifier eCls : ePackage.getEClassifiers()) {
-				removeEClassifierClass(eCls);
-				if (eCls instanceof EClass) {
-					removeFeatures((EClass)eCls);
-					removeSubType((EClass)eCls);
-				}
-			}
-			for (EPackage childPkg : ePackage.getESubpackages()) {
-				removePackage(childPkg.getName());
-			}
-			containingFeatures.clear();
-			allContainingFeatures.clear();
+		final Collection<EPackage> res;
 
+		final Collection<EPackage> removed = ePackages.remove(name);
+		if (removed != null) {
+			res = removed;
+			for (EPackage ePackage : removed) {
+				for (EClassifier eCls : ePackage.getEClassifiers()) {
+					removeEClassifierClass(eCls);
+					if (eCls instanceof EClass) {
+						removeFeatures((EClass)eCls);
+						removeSubType((EClass)eCls);
+					}
+				}
+				for (EPackage childPkg : ePackage.getESubpackages()) {
+					removePackage(childPkg.getName());
+				}
+				containingFeatures.clear();
+				allContainingFeatures.clear();
+			}
+		} else {
+			res = new LinkedHashSet<EPackage>();
 		}
 
-		return removed;
+		return res;
 	}
 
 	/**
@@ -239,13 +255,17 @@ public class EPackageProvider implements IEPackageProvider {
 
 		if (!("ecore".equals(ePackage.getName()) && !EcorePackage.eNS_URI.equals(ePackage.getNsURI()))) {
 			if (ePackage.getName() != null) {
-				boolean increasedSize = ePackages.put(ePackage.getName(), ePackage);
+				Set<EPackage> set = ePackages.get(ePackage.getName());
+				if (set == null) {
+					set = new LinkedHashSet<EPackage>();
+					ePackages.put(ePackage.getName(), set);
+				}
+				boolean increasedSize = set.add(ePackage);
 				if (!increasedSize) {
 					// duplicate package
 					return null;
 				}
 				result = ePackage;
-				ePackages.put(ePackage.getName(), ePackage);
 				for (EClassifier eCls : ePackage.getEClassifiers()) {
 					registerEClassifierClass(eCls);
 					if (eCls instanceof EClass) {
@@ -346,13 +366,18 @@ public class EPackageProvider implements IEPackageProvider {
 	 */
 	@Override
 	public Collection<EClassifier> getTypes(String name, String classifierName) {
-		Set<EClassifier> classifiers = Sets.newLinkedHashSet();
-		for (EPackage ePackage : ePackages.get(name)) {
-			EClassifier clazz = ePackage.getEClassifier(classifierName);
-			if (clazz != null) {
-				classifiers.add(clazz);
+		final Set<EClassifier> classifiers = new LinkedHashSet<EClassifier>();
+
+		final Set<EPackage> set = ePackages.get(name);
+		if (set != null) {
+			for (EPackage ePackage : set) {
+				EClassifier clazz = ePackage.getEClassifier(classifierName);
+				if (clazz != null) {
+					classifiers.add(clazz);
+				}
 			}
 		}
+
 		return classifiers;
 	}
 
@@ -379,14 +404,17 @@ public class EPackageProvider implements IEPackageProvider {
 	 */
 	@Override
 	public Collection<EEnumLiteral> getEnumLiterals(String name, String enumName, String literalName) {
-		Collection<EEnumLiteral> result = Sets.newLinkedHashSet();
+		Collection<EEnumLiteral> result = new LinkedHashSet<EEnumLiteral>();
 
-		for (EPackage ePackage : ePackages.get(name)) {
-			EClassifier eClassifier = ePackage.getEClassifier(enumName);
-			if (eClassifier != null) {
-				EEnumLiteral literal = getEnumLiteral(eClassifier, literalName);
-				if (literal != null) {
-					result.add(literal);
+		final Set<EPackage> set = ePackages.get(name);
+		if (set != null) {
+			for (EPackage ePackage : set) {
+				EClassifier eClassifier = ePackage.getEClassifier(enumName);
+				if (eClassifier != null) {
+					EEnumLiteral literal = getEnumLiteral(eClassifier, literalName);
+					if (literal != null) {
+						result.add(literal);
+					}
 				}
 			}
 		}
@@ -402,18 +430,21 @@ public class EPackageProvider implements IEPackageProvider {
 	@Override
 	public EClassifier getType(String classifierName) {
 		EClassifier result = null;
-		for (EPackage ePackage : ePackages.values()) {
-			EClassifier foundClassifier = ePackage.getEClassifier(classifierName);
-			if (foundClassifier != null) {
-				if (result == null) {
-					result = foundClassifier;
-				} else {
-					String firstFullyQualifiedName = result.getEPackage().getName() + "." + result.getName();
-					String secondFullyQualifiedName = foundClassifier.getEPackage().getName() + "."
-							+ foundClassifier.getName();
-					String message = "Ambiguous classifier request. At least two classifiers matches %s : %s and %s";
-					throw new IllegalStateException(String.format(message, classifierName,
-							firstFullyQualifiedName, secondFullyQualifiedName));
+		for (Set<EPackage> ePkgs : ePackages.values()) {
+			for (EPackage ePackage : ePkgs) {
+				EClassifier foundClassifier = ePackage.getEClassifier(classifierName);
+				if (foundClassifier != null) {
+					if (result == null) {
+						result = foundClassifier;
+					} else {
+						String firstFullyQualifiedName = result.getEPackage().getName() + "."
+								+ result.getName();
+						String secondFullyQualifiedName = foundClassifier.getEPackage().getName() + "."
+								+ foundClassifier.getName();
+						String message = "Ambiguous classifier request. At least two classifiers matches %s : %s and %s";
+						throw new IllegalStateException(String.format(message, classifierName,
+								firstFullyQualifiedName, secondFullyQualifiedName));
+					}
 				}
 			}
 		}
@@ -427,11 +458,13 @@ public class EPackageProvider implements IEPackageProvider {
 	 */
 	@Override
 	public Collection<EClassifier> getTypes(String classifierName) {
-		Set<EClassifier> result = Sets.newLinkedHashSet();
-		for (EPackage ePackage : ePackages.values()) {
-			EClassifier foundClassifier = ePackage.getEClassifier(classifierName);
-			if (foundClassifier != null) {
-				result.add(foundClassifier);
+		Set<EClassifier> result = new LinkedHashSet<EClassifier>();
+		for (Set<EPackage> ePkgs : ePackages.values()) {
+			for (EPackage ePackage : ePkgs) {
+				EClassifier foundClassifier = ePackage.getEClassifier(classifierName);
+				if (foundClassifier != null) {
+					result.add(foundClassifier);
+				}
 			}
 		}
 		return result;
@@ -572,8 +605,10 @@ public class EPackageProvider implements IEPackageProvider {
 	public Set<EClassifier> getEClassifiers() {
 		final Set<EClassifier> result = new LinkedHashSet<EClassifier>();
 
-		for (EPackage ePkg : ePackages.values()) {
-			result.addAll(ePkg.getEClassifiers());
+		for (Set<EPackage> ePkgs : ePackages.values()) {
+			for (EPackage ePkg : ePkgs) {
+				result.addAll(ePkg.getEClassifiers());
+			}
 		}
 
 		return result;
@@ -588,10 +623,12 @@ public class EPackageProvider implements IEPackageProvider {
 	public Set<EEnumLiteral> getEEnumLiterals() {
 		final Set<EEnumLiteral> result = new LinkedHashSet<EEnumLiteral>();
 
-		for (EPackage ePkg : ePackages.values()) {
-			for (EClassifier eClassifier : ePkg.getEClassifiers()) {
-				if (eClassifier instanceof EEnum) {
-					result.addAll(((EEnum)eClassifier).getELiterals());
+		for (Set<EPackage> ePkgs : ePackages.values()) {
+			for (EPackage ePkg : ePkgs) {
+				for (EClassifier eClassifier : ePkg.getEClassifiers()) {
+					if (eClassifier instanceof EEnum) {
+						result.addAll(((EEnum)eClassifier).getELiterals());
+					}
 				}
 			}
 		}
@@ -1001,7 +1038,12 @@ public class EPackageProvider implements IEPackageProvider {
 	 */
 	@Override
 	public Set<EPackage> getRegisteredEPackages() {
-		return new LinkedHashSet<EPackage>(ePackages.values());
-	}
+		final LinkedHashSet<EPackage> res = new LinkedHashSet<EPackage>();
 
+		for (Set<EPackage> ePkgs : ePackages.values()) {
+			res.addAll(ePkgs);
+		}
+
+		return res;
+	}
 }

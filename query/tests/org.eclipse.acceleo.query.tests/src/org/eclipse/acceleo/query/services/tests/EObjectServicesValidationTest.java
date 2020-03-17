@@ -68,7 +68,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -87,7 +87,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -106,7 +106,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -231,7 +231,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -256,7 +256,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -273,7 +273,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -303,7 +303,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eAllContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -317,7 +317,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eClass", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -342,7 +342,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -363,7 +363,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -377,7 +377,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertNoService("eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -395,7 +395,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -410,7 +410,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -435,7 +435,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -452,7 +452,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -468,7 +468,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -494,7 +494,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -511,7 +511,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -541,7 +541,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainer", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -566,7 +566,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -583,7 +583,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -599,7 +599,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -617,7 +617,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -634,7 +634,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -664,7 +664,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContainerOrSelf", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -689,7 +689,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -706,7 +706,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -721,7 +721,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -746,7 +746,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -763,7 +763,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -782,7 +782,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -801,7 +801,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -820,7 +820,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -839,7 +839,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -855,7 +855,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -874,7 +874,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -891,7 +891,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -921,7 +921,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eContents", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(ePkg.getName());
+			getQueryEnvironment().removeEPackage(ePkg);
 		}
 	}
 
@@ -937,7 +937,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -961,7 +961,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -978,7 +978,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -998,7 +998,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1013,7 +1013,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1029,7 +1029,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1046,7 +1046,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedAllReturnTypes, "eInverse", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1062,7 +1062,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1077,7 +1077,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1093,7 +1093,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1109,7 +1109,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, expectedReturnAllTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1127,7 +1127,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1143,7 +1143,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1162,7 +1162,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 
@@ -1179,7 +1179,7 @@ public class EObjectServicesValidationTest extends AbstractServicesValidationTes
 
 			assertValidation(expectedReturnTypes, "allInstances", parameterTypes);
 		} finally {
-			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE.getName());
+			getQueryEnvironment().removeEPackage(EcorePackage.eINSTANCE);
 		}
 	}
 

@@ -72,6 +72,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorTypeLiteral/segments"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorTypeLiteral/missingColon"/>
     </genClasses>
+    <genClasses ecoreClass="ast.ecore#//ErrorEClassifierTypeLiteral"/>
     <genClasses ecoreClass="ast.ecore#//ErrorEnumLiteral">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEnumLiteral/segments"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ast.ecore#//ErrorEnumLiteral/missingColon"/>

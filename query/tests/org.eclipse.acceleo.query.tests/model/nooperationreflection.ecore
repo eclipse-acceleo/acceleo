@@ -12,5 +12,8 @@
     <eOperations name="eOperationNoReflectionListParameter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="classifiers" lowerBound="1" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
     </eOperations>
+    <eOperations name="identity" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eParameters name="eObject" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
   </eClassifiers>
 </ecore:EPackage>

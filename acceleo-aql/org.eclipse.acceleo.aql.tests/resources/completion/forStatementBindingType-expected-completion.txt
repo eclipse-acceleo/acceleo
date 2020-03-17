@@ -1,3 +1,21 @@
+Boolean 7
+Boolean
+
+Integer 7
+Integer
+
+OrderedSet() 11
+OrderedSet()
+
+Real 4
+Real
+
+Sequence() 9
+Sequence()
+
+String 6
+String
+
 ecore::EAnnotation 18
 EClass named EAnnotation in ecore(http://www.eclipse.org/emf/2002/Ecore)
 
@@ -156,4 +174,7 @@ EClass named ETypeParameter in ecore(http://www.eclipse.org/emf/2002/Ecore)
 
 ecore::ETypedElement 20
 EClass named ETypedElement in ecore(http://www.eclipse.org/emf/2002/Ecore)
+
+{} 1
+{}
 

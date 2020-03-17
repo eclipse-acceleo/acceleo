@@ -79,6 +79,9 @@
     <eOperations name="preferredLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
+    <eOperations name="identity" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eParameters name="eObject" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" upperBound="-1"
         eType="#//Color"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="caliber" eType="#//Caliber"/>

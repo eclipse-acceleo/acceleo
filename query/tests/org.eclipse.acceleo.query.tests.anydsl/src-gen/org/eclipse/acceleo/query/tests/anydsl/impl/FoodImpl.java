@@ -24,6 +24,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -470,6 +471,15 @@ public class FoodImpl extends MinimalEObjectImpl.Container implements Food {
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
+	 * @generated NOT
+	 */
+	public EObject identity(EObject eObject) {
+		return eObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -666,6 +676,8 @@ public class FoodImpl extends MinimalEObjectImpl.Container implements Food {
 				return null;
 			case AnydslPackage.FOOD___PREFERRED_LABEL__STRING:
 				return preferredLabel((String)arguments.get(0));
+			case AnydslPackage.FOOD___IDENTITY__EOBJECT:
+				return identity((EObject)arguments.get(0));
 		}
 		return super.eInvoke(operationID, arguments);
 	}

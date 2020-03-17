@@ -41,4 +41,12 @@ public interface NoOperationReflection extends EObject {
 	 */
 	String eOperationNoReflectionListParameter(EList<EClassifier> classifiers);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model required="true" eObjectRequired="true"
+	 * @generated
+	 */
+	EObject identity(EObject eObject);
+
 } // NoOperationReflection

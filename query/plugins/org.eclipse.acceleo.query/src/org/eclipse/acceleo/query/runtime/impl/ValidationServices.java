@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.runtime.impl;
 
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -23,6 +21,7 @@ import java.util.Set;
 
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.Error;
+import org.eclipse.acceleo.query.parser.CombineIterator;
 import org.eclipse.acceleo.query.runtime.AcceleoQueryValidationException;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -132,12 +131,13 @@ public class ValidationServices extends AbstractLanguageServices {
 		}
 		try {
 			final ServicesValidationResult result = new ServicesValidationResult(queryEnvironment, this);
-			final Set<List<IType>> product = Sets.cartesianProduct(argTypes);
+			CombineIterator<IType> it = new CombineIterator<IType>(argTypes);
 			final Map<IService, Map<List<IType>, Set<IType>>> typesPerService = new LinkedHashMap<IService, Map<List<IType>, Set<IType>>>();
 			boolean serviceFound = false;
-			boolean emptyCombination = product.isEmpty();
+			boolean emptyCombination = !it.hasNext();
 			List<String> notFoundSignatures = new ArrayList<String>();
-			for (List<IType> currentArgTypes : product) {
+			while (it.hasNext()) {
+				List<IType> currentArgTypes = it.next();
 				IService service = queryEnvironment.getLookupEngine().lookup(serviceName,
 						currentArgTypes.toArray(new IType[currentArgTypes.size()]));
 				if (service != null) {
@@ -456,7 +456,8 @@ public class ValidationServices extends AbstractLanguageServices {
 		final Set<EClass> subTypes1 = queryEnvironment.getEPackageProvider().getAllSubTypes(eCls1);
 		final Set<EClass> subTypes2 = queryEnvironment.getEPackageProvider().getAllSubTypes(eCls2);
 
-		final Set<EClass> intersection = Sets.intersection(subTypes1, subTypes2);
+		final Set<EClass> intersection = new LinkedHashSet<EClass>(subTypes1);
+		intersection.retainAll(subTypes2);
 
 		for (EClass eCls : intersection) {
 			final boolean isTopEClass = Collections.disjoint(eCls.getEAllSuperTypes(), intersection);

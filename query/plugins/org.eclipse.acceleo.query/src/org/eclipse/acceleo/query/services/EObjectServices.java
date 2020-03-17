@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +28,6 @@ import org.eclipse.acceleo.annotations.api.documentation.ServiceProvider;
 import org.eclipse.acceleo.query.ast.Call;
 import org.eclipse.acceleo.query.ast.StringLiteral;
 import org.eclipse.acceleo.query.parser.AstBuilderListener;
-import org.eclipse.acceleo.query.runtime.AcceleoQueryEvaluationException;
 import org.eclipse.acceleo.query.runtime.CrossReferenceProvider;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.IReadOnlyQueryEnvironment;
@@ -41,6 +36,7 @@ import org.eclipse.acceleo.query.runtime.IService;
 import org.eclipse.acceleo.query.runtime.IValidationResult;
 import org.eclipse.acceleo.query.runtime.impl.AbstractServiceProvider;
 import org.eclipse.acceleo.query.runtime.impl.JavaMethodService;
+import org.eclipse.acceleo.query.runtime.impl.Nothing;
 import org.eclipse.acceleo.query.runtime.impl.ValidationServices;
 import org.eclipse.acceleo.query.runtime.impl.completion.EFeatureCompletionProposal;
 import org.eclipse.acceleo.query.validation.type.ClassType;
@@ -53,6 +49,7 @@ import org.eclipse.acceleo.query.validation.type.SetType;
 import org.eclipse.emf.common.util.AbstractTreeIterator;
 import org.eclipse.emf.common.util.BasicEMap;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -128,7 +125,7 @@ public class EObjectServices extends AbstractServiceProvider {
 
 		@Override
 		public Iterator<EObject> getChildren(Object object) {
-			final List<EObject> result = Lists.newArrayList();
+			final List<EObject> result = new ArrayList<EObject>();
 			if (object instanceof EObject) {
 				EObject host = (EObject)object;
 				EStructuralFeature[] eStructuralFeatures = ((EClassImpl.FeatureSubsetSupplier)host.eClass()
@@ -157,8 +154,10 @@ public class EObjectServices extends AbstractServiceProvider {
 			Object value = eObject.eGet(feature);
 			if (feature.isMany()) {
 				if (value instanceof Collection<?>) {
-					for (EObject childElement : Iterables.filter((Collection<?>)value, EObject.class)) {
-						result.add(childElement);
+					for (Object childElement : (Collection<?>)value) {
+						if (childElement instanceof EObject) {
+							result.add((EObject)childElement);
+						}
 					}
 				} else {
 					throw new IllegalStateException(DON_T_KNOW_WHAT_TO_DO_WITH + value.getClass());
@@ -303,6 +302,16 @@ public class EObjectServices extends AbstractServiceProvider {
 			for (IType iType : receiverTypes) {
 				if (iType.getType() instanceof EClass) {
 					eClasses.add((EClass)iType.getType());
+				} else if (iType.getType() instanceof Class<?>) {
+					final Set<EClassifier> eClassifiers = queryEnvironment.getEPackageProvider()
+							.getEClassifiers((Class<?>)iType.getType());
+					if (eClassifiers != null) {
+						for (EClassifier eClassifier : eClassifiers) {
+							if (eClassifier instanceof EClass) {
+								eClasses.add((EClass)eClassifier);
+							}
+						}
+					}
 				}
 			}
 
@@ -583,7 +592,7 @@ public class EObjectServices extends AbstractServiceProvider {
 							"%s doesn't contain any other EClass", argTypes.get(0))));
 				}
 			} else if (argTypes.size() == 2) {
-				final Set<IType> filterTypes = Sets.newLinkedHashSet();
+				final Set<IType> filterTypes = new LinkedHashSet<IType>();
 				if (argTypes.get(1) instanceof EClassifierSetLiteralType) {
 					for (EClassifier eClassifier : ((EClassifierSetLiteralType)argTypes.get(1))
 							.getEClassifiers()) {
@@ -652,10 +661,10 @@ public class EObjectServices extends AbstractServiceProvider {
 			final Set<IType> result;
 
 			if (rootProvider == null) {
-				result = Sets.newLinkedHashSet();
+				result = new LinkedHashSet<IType>();
 				result.add(new SequenceType(queryEnv, services.nothing("No IRootEObjectProvider registered")));
 			} else {
-				List<IType> newArgTypes = Lists.newArrayList(argTypes);
+				List<IType> newArgTypes = new ArrayList<IType>(argTypes);
 				final Collection<EClassifier> eObjectEClasses = queryEnv.getEPackageProvider().getTypes(
 						"ecore", "EObject");
 				for (EClassifier eObjectEClass : eObjectEClasses) {
@@ -980,7 +989,14 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eAllContents(EObject eObject) {
-		return Lists.newArrayList(eObject.eAllContents());
+		final ArrayList<EObject> res = new ArrayList<EObject>();
+
+		final TreeIterator<EObject> it = eObject.eAllContents();
+		while (it.hasNext()) {
+			res.add(it.next());
+		}
+
+		return res;
 	}
 
 	// @formatter:off
@@ -1004,7 +1020,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (type == EcorePackage.eINSTANCE.getEObject()) {
 			return eAllContents(eObject);
 		}
-		final Set<EClass> types = Sets.newLinkedHashSet();
+		final Set<EClass> types = new LinkedHashSet<EClass>();
 		types.add(type);
 
 		return eAllContents(eObject, types);
@@ -1031,7 +1047,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		final List<EObject> result;
 
 		if (types != null) {
-			final Set<EStructuralFeature> features = Sets.newLinkedHashSet();
+			final Set<EStructuralFeature> features = new LinkedHashSet<EStructuralFeature>();
 			for (EClass type : types) {
 				features.addAll(queryEnvironment.getEPackageProvider().getAllContainingEStructuralFeatures(
 						type));
@@ -1058,12 +1074,11 @@ public class EObjectServices extends AbstractServiceProvider {
 	 */
 	private List<EObject> eAllContents(EObject eObject, Set<EClass> types,
 			final Set<EStructuralFeature> features) {
-		List<EObject> allChildrens = Lists.newArrayList();
+		List<EObject> allChildrens = new ArrayList<EObject>();
 		if (eObject == null) {
 			throw new NullPointerException();
 		}
 		if (!features.isEmpty()) {
-
 			final AbstractTreeIterator<EObject> treeIterator = new FilteredContentIterator(eObject, false,
 					features);
 			while (treeIterator.hasNext()) {
@@ -1072,7 +1087,6 @@ public class EObjectServices extends AbstractServiceProvider {
 					allChildrens.add(child);
 				}
 			}
-
 		}
 
 		return allChildrens;
@@ -1114,7 +1128,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> eContents(EObject eObject) {
-		return Lists.newArrayList(eObject.eContents());
+		return new ArrayList<EObject>(eObject.eContents());
 	}
 
 	// @formatter:off
@@ -1163,7 +1177,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		final List<EObject> result;
 
 		if (types != null) {
-			final Set<EStructuralFeature> features = Sets.newLinkedHashSet();
+			final Set<EStructuralFeature> features = new LinkedHashSet<EStructuralFeature>();
 			for (EClass type : types) {
 				features.addAll(queryEnvironment.getEPackageProvider().getContainingEStructuralFeatures(type));
 			}
@@ -1188,7 +1202,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	 * @return the filtered content of the given {@link EObject}
 	 */
 	private List<EObject> eContents(EObject eObject, Set<EClass> types, Set<EStructuralFeature> features) {
-		final List<EObject> result = Lists.newArrayList();
+		final List<EObject> result = new ArrayList<EObject>();
 
 		if (!features.isEmpty()) {
 			final EStructuralFeature[] containmentFeatures = ((EClassImpl.FeatureSubsetSupplier)eObject
@@ -1393,7 +1407,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (settings == null) {
 			result = Collections.emptySet();
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<EObject>();
 			for (EStructuralFeature.Setting setting : settings) {
 				result.add(setting.getEObject());
 			}
@@ -1419,7 +1433,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (settings == null || type == null) {
 			result = Collections.emptySet();
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<EObject>();
 			for (EStructuralFeature.Setting setting : settings) {
 				if (type.isInstance(setting.getEObject())) {
 					result.add(setting.getEObject());
@@ -1448,7 +1462,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		if (settings == null) {
 			result = Collections.emptySet();
 		} else {
-			result = Sets.newLinkedHashSet();
+			result = new LinkedHashSet<EObject>();
 			for (EStructuralFeature.Setting setting : settings) {
 				if (setting.getEStructuralFeature().getName().equals(featureName)) {
 					result.add(setting.getEObject());
@@ -1482,11 +1496,11 @@ public class EObjectServices extends AbstractServiceProvider {
 		}
 
 		if (result instanceof Set<?>) {
-			result = Sets.newLinkedHashSet((Set<?>)result);
+			result = new LinkedHashSet<Object>((Set<?>)result);
 		} else if (result instanceof EMap<?, ?>) {
 			result = new BasicEMap<Object, Object>(((EMap<?, ?>)result).map());
 		} else if (result instanceof Collection<?>) {
-			result = Lists.newArrayList((Collection<?>)result);
+			result = new ArrayList<Object>((Collection<?>)result);
 		}
 
 		return result;
@@ -1505,7 +1519,7 @@ public class EObjectServices extends AbstractServiceProvider {
 		final List<EObject> result;
 
 		if (type != null) {
-			final Set<EClass> types = Sets.newLinkedHashSet();
+			final Set<EClass> types = new LinkedHashSet<EClass>();
 			types.add(type);
 			result = allInstances(types);
 		} else {
@@ -1525,7 +1539,7 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public List<EObject> allInstances(Set<EClass> types) {
-		final List<EObject> result = Lists.newArrayList();
+		final List<EObject> result = new ArrayList<EObject>();
 
 		if (rootProvider != null && types != null) {
 			for (EObject root : rootProvider.getRoots()) {
@@ -1549,17 +1563,17 @@ public class EObjectServices extends AbstractServiceProvider {
 	)
 	// @formatter:on
 	public Object eCrossReferences(EObject eObject) {
-		return Lists.newArrayList(eObject.eCrossReferences());
+		return new ArrayList<Object>(eObject.eCrossReferences());
 	}
 
 	/**
-	 * Returns the value of the specified feature on the specified object. The object must be an
-	 * {@link EObject} or a {@link Set}, {@link List} of {@link EObject}.
+	 * Gets the value of the given {@link EStructuralFeature#getName() feature name} on the given
+	 * {@link EObject}.
 	 * 
-	 * @param context
-	 *            the object in which to read the feature.
+	 * @param self
+	 *            the {@link EObject}
 	 * @param featureName
-	 *            the name of the feature to read.
+	 *            the {@link EStructuralFeature#getName() feature name}
 	 * @param diagnostic
 	 *            The status to update in case of warnings or errors during this call.
 	 * @return the value of the specified feature in the specified object.
@@ -1568,14 +1582,13 @@ public class EObjectServices extends AbstractServiceProvider {
 		final Object result;
 
 		if (self == null) {
-			final String message = String.format(NON_EOBJECT_FEATURE_ACCESS, featureName, "null");
-			throw new AcceleoQueryEvaluationException(message);
+			result = null;
 		} else {
 			EClass eClass = ((EObject)self).eClass();
 			EStructuralFeature feature = eClass.getEStructuralFeature(featureName);
 			if (feature == null) {
 				final String message = String.format(UNKNOWN_FEATURE, featureName, eClass.getName());
-				throw new AcceleoQueryEvaluationException(message);
+				result = new Nothing(message);
 			} else {
 				result = ((EObject)self).eGet(feature);
 			}

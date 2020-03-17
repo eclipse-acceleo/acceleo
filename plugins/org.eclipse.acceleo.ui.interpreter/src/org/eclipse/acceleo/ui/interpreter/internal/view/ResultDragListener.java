@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2012 Obeo.
+ * Copyright (c) 2011, 2017 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.ui.interpreter.internal.view;
 
-import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -23,9 +22,6 @@ import org.eclipse.swt.dnd.DragSourceEvent;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class ResultDragListener extends DragSourceAdapter {
-	/** Keeps track of the elements selected at the time the user starts the drag operation. */
-	protected ISelection selection;
-
 	/** Keeps a reference towards the viewer against which this listener is registered. */
 	private TreeViewer viewer;
 
@@ -46,8 +42,8 @@ public class ResultDragListener extends DragSourceAdapter {
 	 */
 	@Override
 	public void dragFinished(DragSourceEvent event) {
-		selection = null;
-		LocalTransfer.getInstance().javaToNative(null, null);
+		LocalSelectionTransfer.getTransfer().setSelection(null);
+		LocalSelectionTransfer.getTransfer().setSelectionSetTime(0);
 	}
 
 	/**
@@ -57,8 +53,8 @@ public class ResultDragListener extends DragSourceAdapter {
 	 */
 	@Override
 	public void dragSetData(DragSourceEvent event) {
-		if (LocalTransfer.getInstance().isSupportedType(event.dataType)) {
-			event.data = selection;
+		if (LocalSelectionTransfer.getTransfer().isSupportedType(event.dataType)) {
+			event.data = LocalSelectionTransfer.getTransfer().getSelection();
 		}
 	}
 
@@ -69,6 +65,8 @@ public class ResultDragListener extends DragSourceAdapter {
 	 */
 	@Override
 	public void dragStart(DragSourceEvent event) {
-		selection = viewer.getSelection();
+		LocalSelectionTransfer.getTransfer().setSelection(viewer.getSelection());
+		LocalSelectionTransfer.getTransfer().setSelectionSetTime(event.time & 0xFFFFFFFFL);
+		event.doit = true;
 	}
 }

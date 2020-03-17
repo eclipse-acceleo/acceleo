@@ -744,12 +744,20 @@ public interface AnydslPackage extends EPackage {
 	int FOOD___PREFERRED_LABEL__STRING = NAMED_ELEMENT_OPERATION_COUNT + 7;
 
 	/**
+	 * The operation id for the '<em>Identity</em>' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int FOOD___IDENTITY__EOBJECT = NAMED_ELEMENT_OPERATION_COUNT + 8;
+
+	/**
 	 * The number of operations of the '<em>Food</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int FOOD_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 8;
+	int FOOD_OPERATION_COUNT = NAMED_ELEMENT_OPERATION_COUNT + 9;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.acceleo.query.tests.anydsl.Source <em>Source</em>}'
@@ -1562,6 +1570,17 @@ public interface AnydslPackage extends EPackage {
 	EOperation getFood__PreferredLabel__String();
 
 	/**
+	 * Returns the meta object for the '
+	 * {@link org.eclipse.acceleo.query.tests.anydsl.Food#identity(org.eclipse.emf.ecore.EObject)
+	 * <em>Identity</em>}' operation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the '<em>Identity</em>' operation.
+	 * @see org.eclipse.acceleo.query.tests.anydsl.Food#identity(org.eclipse.emf.ecore.EObject)
+	 * @generated
+	 */
+	EOperation getFood__Identity__EObject();
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.acceleo.query.tests.anydsl.Source
 	 * <em>Source</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -2159,6 +2178,14 @@ public interface AnydslPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation FOOD___PREFERRED_LABEL__STRING = eINSTANCE.getFood__PreferredLabel__String();
+
+		/**
+		 * The meta object literal for the '<em><b>Identity</b></em>' operation. <!-- begin-user-doc --> <!--
+		 * end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EOperation FOOD___IDENTITY__EOBJECT = eINSTANCE.getFood__Identity__EObject();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.acceleo.query.tests.anydsl.Source

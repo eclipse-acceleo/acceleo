@@ -168,6 +168,9 @@ public class NooperationreflectionPackageImpl extends EPackageImpl implements No
 		op = addEOperation(noOperationReflectionEClass, ecorePackage.getEString(), "eOperationNoReflectionListParameter", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEClassifier(), "classifiers", 1, -1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(noOperationReflectionEClass, ecorePackage.getEObject(), "identity", 1, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEObject(), "eObject", 1, 1, IS_UNIQUE, IS_ORDERED);
+
 		// Create resource
 		createResource(eNS_URI);
 	}

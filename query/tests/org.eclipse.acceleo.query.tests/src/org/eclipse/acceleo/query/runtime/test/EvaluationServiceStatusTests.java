@@ -95,8 +95,8 @@ public class EvaluationServiceStatusTests {
 		assertEquals(1, status.getChildren().size());
 
 		Diagnostic child = status.getChildren().iterator().next();
-		assertTrue(child.getMessage().endsWith("\n\t" + UNKNOWN_FEATURE));
-		assertTrue(child.getException().getMessage().endsWith("\n\t" + UNKNOWN_FEATURE));
+		assertEquals("Feature noname not found in EClass EAttribute", child.getMessage());
+		assertNull(child.getException());
 	}
 
 	@Test

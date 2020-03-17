@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser;
 
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +28,7 @@ import org.eclipse.acceleo.query.ast.Conditional;
 import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorTypeLiteral;
@@ -246,7 +245,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseBooleanLiteral(BooleanLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Boolean.class));
 
@@ -759,7 +758,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseIntegerLiteral(IntegerLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Integer.class));
 
@@ -808,7 +807,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseRealLiteral(RealLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.Double.class));
 
@@ -822,7 +821,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseStringLiteral(StringLiteral object) {
-		final Set<IType> possibleTypes = Sets.newLinkedHashSet();
+		final Set<IType> possibleTypes = new LinkedHashSet<IType>();
 
 		possibleTypes.add(new ClassType(services.getQueryEnvironment(), java.lang.String.class));
 
@@ -876,7 +875,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 			possibleTypes.add(new EClassifierLiteralType(services.getQueryEnvironment(), (EClassifier)object
 					.getValue()));
 		} else if (object.getValue() instanceof Class<?>) {
-			possibleTypes = Sets.newLinkedHashSet();
+			possibleTypes = new LinkedHashSet<IType>();
 			possibleTypes.add(new ClassType(services.getQueryEnvironment(), (Class<?>)object.getValue()));
 		} else {
 			throw new UnsupportedOperationException(SHOULD_NEVER_HAPPEN);
@@ -939,6 +938,16 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseErrorTypeLiteral(ErrorTypeLiteral object) {
+		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see org.eclipse.acceleo.query.ast.util.AstSwitch#caseErrorEClassifierTypeLiteral(org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral)
+	 */
+	@Override
+	public Set<IType> caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
 		return checkWarningsAndErrors(object, services.getErrorTypes(validationResult, object));
 	}
 
@@ -1077,7 +1086,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseConditional(Conditional object) {
-		Set<IType> result = Sets.newLinkedHashSet();
+		Set<IType> result = new LinkedHashSet<IType>();
 
 		final Set<IType> selectorTypes;
 		if (object.getPredicate() != null) {
@@ -1153,7 +1162,7 @@ public class AstValidator extends AstSwitch<Set<IType>> {
 	 */
 	@Override
 	public Set<IType> caseLet(Let object) {
-		Set<IType> result = Sets.newLinkedHashSet();
+		Set<IType> result = new LinkedHashSet<IType>();
 
 		final Map<String, Set<IType>> newVariableTypes = new HashMap<String, Set<IType>>(variableTypesStack
 				.peek());

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
-Bundle-Version: 3.7.0.qualifier
+Bundle-Version: 3.7.10.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.eclipse.acceleo.common;singleton:=true
 Bundle-Activator: org.eclipse.acceleo.common.AcceleoCommonPlugin
@@ -49,6 +49,6 @@ Require-Bundle: org.eclipse.emf.ecore.xmi,
  org.eclipse.core.runtime;bundle-version="3.4.0";resolution:=optional,
  org.eclipse.core.resources;bundle-version="3.3.0";resolution:=optional,
  org.eclipse.core.filesystem;resolution:=optional
-Import-Package: com.google.common.base;version="[12.0.0,16.0.0)",
- com.google.common.collect;version="[12.0.0,16.0.0)",
- com.google.common.io;version="[12.0.0,16.0.0)"
+Import-Package: com.google.common.base;version="[27.0.0,28.0.0)",
+ com.google.common.collect;version="[27.0.0,28.0.0)",
+ com.google.common.io;version="[27.0.0,28.0.0)"

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.common.ide.authoring;
 
-import com.google.common.io.Closeables;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -41,6 +39,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+
+import com.google.common.io.Closeables;
 
 /**
  * This class, inspired by the JavaModelManager of the JDt will be used to save the state of the workspace
@@ -87,8 +87,8 @@ public final class AcceleoModelManager implements ISaveParticipant {
 			// process deltas since last activated in indexer thread so that indexes are up-to-date.
 			final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-			Job processSavedState = new Job(AcceleoCommonMessages
-					.getString("AcceleoModelManager.ProcessingAcceleoChanges")) { //$NON-NLS-1$
+			Job processSavedState = new Job(AcceleoCommonMessages.getString(
+					"AcceleoModelManager.ProcessingAcceleoChanges")) { //$NON-NLS-1$
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
@@ -252,7 +252,7 @@ public final class AcceleoModelManager implements ISaveParticipant {
 					AcceleoModelManager.writeState(info.getSavedState(), out);
 				}
 			} finally {
-				Closeables.closeQuietly(out);
+				Closeables.close(out, true);
 			}
 			// CHECKSTYLE:OFF
 		} catch (RuntimeException e) {
@@ -312,13 +312,13 @@ public final class AcceleoModelManager implements ISaveParticipant {
 				try {
 					String pluginID = in.readUTF();
 					if (!pluginID.equals(AcceleoCommonPlugin.PLUGIN_ID)) {
-						AcceleoLogger.log(AcceleoCommonMessages
-								.getString("AcceleoModelManager.WrongFileFormat"), true); //$NON-NLS-1$
+						AcceleoLogger.log(AcceleoCommonMessages.getString(
+								"AcceleoModelManager.WrongFileFormat"), true); //$NON-NLS-1$
 					}
 					String kind = in.readUTF();
 					if (!"STATE".equals(kind)) { //$NON-NLS-1$
-						AcceleoLogger.log(AcceleoCommonMessages
-								.getString("AcceleoModelManager.WrongFileFormat"), true); //$NON-NLS-1$
+						AcceleoLogger.log(AcceleoCommonMessages.getString(
+								"AcceleoModelManager.WrongFileFormat"), true); //$NON-NLS-1$
 					}
 					if (in.readBoolean()) {
 						return AcceleoModelManager.readState(project, in);

@@ -24,6 +24,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -127,6 +128,8 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 				return createErrorExpression();
 			case AstPackage.ERROR_TYPE_LITERAL:
 				return createErrorTypeLiteral();
+			case AstPackage.ERROR_ECLASSIFIER_TYPE_LITERAL:
+				return createErrorEClassifierTypeLiteral();
 			case AstPackage.ERROR_ENUM_LITERAL:
 				return createErrorEnumLiteral();
 			case AstPackage.ERROR_CALL:
@@ -371,6 +374,16 @@ public class AstFactoryImpl extends EFactoryImpl implements AstFactory {
 	public ErrorTypeLiteral createErrorTypeLiteral() {
 		ErrorTypeLiteralImpl errorTypeLiteral = new ErrorTypeLiteralImpl();
 		return errorTypeLiteral;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public ErrorEClassifierTypeLiteral createErrorEClassifierTypeLiteral() {
+		ErrorEClassifierTypeLiteralImpl errorEClassifierTypeLiteral = new ErrorEClassifierTypeLiteralImpl();
+		return errorEClassifierTypeLiteral;
 	}
 
 	/**

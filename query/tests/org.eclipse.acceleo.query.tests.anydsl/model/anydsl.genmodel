@@ -134,6 +134,9 @@
       <genOperations ecoreOperation="anydsl.ecore#//Food/preferredLabel">
         <genParameters ecoreParameter="anydsl.ecore#//Food/preferredLabel/text"/>
       </genOperations>
+      <genOperations ecoreOperation="anydsl.ecore#//Food/identity">
+        <genParameters ecoreParameter="anydsl.ecore#//Food/identity/eObject"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="anydsl.ecore#//Source">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference anydsl.ecore#//Source/foods"/>

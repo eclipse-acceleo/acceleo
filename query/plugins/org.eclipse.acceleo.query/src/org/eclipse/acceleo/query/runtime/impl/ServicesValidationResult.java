@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Obeo.
+ * Copyright (c) 2015, 2017 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -214,14 +214,14 @@ public class ServicesValidationResult {
 
 		if (builderSequenceNothing.length() != 0) {
 			result.add(new SequenceType(queryEnvironment, new NothingType(builderSequenceNothing.substring(0,
-					builderSequenceNothing.length() - 1))));
+					builderSequenceNothing.length() - LS.length()))));
 		}
 		if (builderSetNothing.length() != 0) {
 			result.add(new SetType(queryEnvironment, new NothingType(builderSetNothing.substring(0,
-					builderSetNothing.length() - 1))));
+					builderSetNothing.length() - LS.length()))));
 		}
 		if (builderNothing.length() != 0) {
-			result.add(new NothingType(builderNothing.substring(0, builderNothing.length() - 1)));
+			result.add(new NothingType(builderNothing.substring(0, builderNothing.length() - LS.length())));
 		}
 
 		return result;

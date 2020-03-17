@@ -22,6 +22,7 @@ import org.eclipse.acceleo.query.ast.EnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorBinding;
 import org.eclipse.acceleo.query.ast.ErrorCall;
 import org.eclipse.acceleo.query.ast.ErrorConditional;
+import org.eclipse.acceleo.query.ast.ErrorEClassifierTypeLiteral;
 import org.eclipse.acceleo.query.ast.ErrorEnumLiteral;
 import org.eclipse.acceleo.query.ast.ErrorExpression;
 import org.eclipse.acceleo.query.ast.ErrorStringLiteral;
@@ -305,6 +306,23 @@ public class AstSwitch<T> extends Switch<T> {
 					result = caseLiteral(errorTypeLiteral);
 				if (result == null)
 					result = caseExpression(errorTypeLiteral);
+				if (result == null)
+					result = defaultCase(theEObject);
+				return result;
+			}
+			case AstPackage.ERROR_ECLASSIFIER_TYPE_LITERAL: {
+				ErrorEClassifierTypeLiteral errorEClassifierTypeLiteral = (ErrorEClassifierTypeLiteral)theEObject;
+				T result = caseErrorEClassifierTypeLiteral(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseErrorTypeLiteral(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseError(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseTypeLiteral(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseLiteral(errorEClassifierTypeLiteral);
+				if (result == null)
+					result = caseExpression(errorEClassifierTypeLiteral);
 				if (result == null)
 					result = defaultCase(theEObject);
 				return result;
@@ -752,6 +770,22 @@ public class AstSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseErrorTypeLiteral(ErrorTypeLiteral object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '
+	 * <em>Error EClassifier Type Literal</em>'. <!-- begin-user-doc --> This implementation returns null;
+	 * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+	 * 
+	 * @param object
+	 *            the target of the switch.
+	 * @return the result of interpreting the object as an instance of '
+	 *         <em>Error EClassifier Type Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseErrorEClassifierTypeLiteral(ErrorEClassifierTypeLiteral object) {
 		return null;
 	}
 

@@ -16,6 +16,9 @@ import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.query.runtime.ICompletionResult;
 import org.eclipse.acceleo.query.runtime.IProposalFilter;
 import org.eclipse.acceleo.query.runtime.impl.completion.EClassifierCompletionProposal;
+import org.eclipse.acceleo.query.runtime.impl.completion.EEnumLiteralCompletionProposal;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EEnumLiteral;
 
 /**
  * {@link BasicFilter} filters on prefix and remaining.
@@ -48,17 +51,51 @@ public class BasicFilter implements IProposalFilter {
 	 */
 	@Override
 	public boolean keepProposal(ICompletionProposal proposal) {
-		String prefix = completionResult.getPrefix();
+		final boolean result;
+
+		final String prefix = completionResult.getPrefix();
 		if (prefix == null) {
-			return true;
+			result = true;
+		} else if (proposal instanceof EClassifierCompletionProposal) {
+			final String[] segments = prefix.split("::?");
+			final EClassifier eClassifier = ((EClassifierCompletionProposal)proposal).getObject();
+			if (segments.length == 3) {
+				result = false;
+			} else if (segments.length == 2) {
+				result = startsWithOrMatchCamelCase(eClassifier.getEPackage().getName(), segments[0])
+						&& startsWithOrMatchCamelCase(eClassifier.getName(), segments[1]);
+			} else if (segments.length == 1) {
+				result = startsWithOrMatchCamelCase(eClassifier.getEPackage().getName(), segments[0])
+						|| startsWithOrMatchCamelCase(eClassifier.getName(), segments[0]);
+			} else {
+				result = true;
+			}
+		} else if (proposal instanceof EEnumLiteralCompletionProposal) {
+			final String[] segments = prefix.split("::?");
+			final EEnumLiteral eEnumLiteral = ((EEnumLiteralCompletionProposal)proposal).getObject();
+			if (segments.length == 3) {
+				result = startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getEPackage().getName(),
+						segments[0])
+						&& startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(), segments[1])
+						&& startsWithOrMatchCamelCase(eEnumLiteral.getName(), segments[2]);
+			} else if (segments.length == 2) {
+				result = startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getEPackage().getName(),
+						segments[0])
+						&& (startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(), segments[1]) || startsWithOrMatchCamelCase(
+								eEnumLiteral.getName(), segments[1]));
+			} else if (segments.length == 1) {
+				result = startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getEPackage().getName(),
+						segments[0])
+						|| startsWithOrMatchCamelCase(eEnumLiteral.getEEnum().getName(), segments[0])
+						|| startsWithOrMatchCamelCase(eEnumLiteral.getName(), segments[0]);
+			} else {
+				result = true;
+			}
+		} else {
+			result = startsWithOrMatchCamelCase(proposal.getProposal(), prefix);
 		}
 
-		String candidateName = proposal.getProposal();
-		if (proposal instanceof EClassifierCompletionProposal) {
-			candidateName = ((EClassifierCompletionProposal)proposal).getObject().getName();
-		}
-
-		return startsWithOrMatchCamelCase(candidateName, prefix);
+		return result;
 	}
 
 	/* visible for testing */
@@ -91,14 +128,18 @@ public class BasicFilter implements IProposalFilter {
 	 * @return <code>true</code> if {@code candidate} matches {@code query}, <code>false</code> otherwise.
 	 */
 	public static boolean startsWithOrMatchCamelCase(String candidate, String query) {
-		boolean result = false;
+		final boolean result;
+
 		if (startsWithIgnoreCase(candidate, query)) {
 			result = true;
 		} else if (candidate != null) {
 			// transform the query into a camelCase regex
 			String regex = CAMEL_CASE_PATTERN.matcher(query).replaceAll("$1[^A-Z]*") + ".*";
 			result = candidate.matches(regex);
+		} else {
+			result = false;
 		}
+
 		return result;
 	}
 
