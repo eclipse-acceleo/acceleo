@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ Copyright (c) 2008, 2020 Obeo.
+ 
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ 
+ Contributors:
+      Obeo - initial API and implementation
+-->
+
+<plugin>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="mtl"
+            id="org.eclipse.acceleo.aql.ide.ui"
+            name="Acceleo"
+            priority="normal">
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.lsp4e.languageServer">
+      <server
+            class="org.eclipse.acceleo.aql.ide.ui.AcceleoConnectionProvider"
+            id="org.eclipse.acceleo.aql.ide.ui.server"
+            label="Acceleo Language Server">
+      </server>
+      <contentTypeMapping
+            contentType="org.eclipse.acceleo.aql.ide.ui"
+            id="org.eclipse.acceleo.aql.ide.ui.server">
+      </contentTypeMapping>
+   </extension>
+   <extension
+         point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+            class="org.eclipse.tm4e.ui.text.TMPresentationReconciler"
+            contentType="org.eclipse.acceleo.aql.ide.ui">
+      </presentationReconciler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editorContentTypeBinding
+            contentTypeId="org.eclipse.acceleo.aql.ide.ui"
+            editorId="org.eclipse.ui.genericeditor.GenericEditor">
+      </editorContentTypeBinding>
+   </extension>
+   <extension
+         point="org.eclipse.tm4e.registry.grammars">
+      <grammar
+            path="syntaxes/acceleo.tmLanguage.json"
+            scopeName="text.acceleo">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.eclipse.acceleo.aql.ide.ui"
+            scopeName="text.acceleo">
+      </scopeNameContentTypeBinding>
+   </extension>
+</plugin>
