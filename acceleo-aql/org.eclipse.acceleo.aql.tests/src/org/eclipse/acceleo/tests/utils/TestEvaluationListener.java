@@ -10,8 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.tests.utils;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
@@ -25,29 +30,67 @@ import org.eclipse.acceleo.aql.evaluation.IAcceleoEvaluationListener;
 public class TestEvaluationListener implements IAcceleoEvaluationListener {
 
 	/**
-	 * Evaluation fragments.
+	 * The {@link StringBuilder} accumulating the generated text.
 	 */
-	private final Map<ASTNode, String> fragments = new HashMap<ASTNode, String>();
+	private final StringBuilder builder = new StringBuilder();
+
+	/**
+	 * The mapping from an {@link ASTNode} to the {@link List} of sub string offsets.
+	 */
+	private final Map<ASTNode, List<int[]>> fragments = new LinkedHashMap<ASTNode, List<int[]>>();
 
 	@Override
 	public void startEvaluation(ASTNode node, IAcceleoEnvironment environment,
 			Map<String, Object> variables) {
-		// nothing to do here
+		List<int[]> offsets = fragments.get(node);
+		if (offsets == null) {
+			offsets = new ArrayList<int[]>();
+			fragments.put(node, offsets);
+		}
+		final int[] positions = new int[2];
+		positions[0] = builder.length();
+		offsets.add(positions);
 	}
 
 	@Override
 	public void endEvaluation(ASTNode node, IAcceleoEnvironment environment, Map<String, Object> variables,
-			String result) {
-		fragments.put(node, result);
+			Object result) {
+		toString(builder, result);
+		final List<int[]> offsets = fragments.get(node);
+		final int[] positions = offsets.get(offsets.size() - 1);
+		positions[1] = builder.length();
+	}
+
+	public String getTextFragments(ASTNode node) {
+		final StringJoiner res = new StringJoiner(
+				"\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+
+		for (int[] fragmentoffsets : fragments.get(node)) {
+			res.add(builder.subSequence(fragmentoffsets[0], fragmentoffsets[1]));
+		}
+
+		return res.toString();
 	}
 
 	/**
-	 * Gets Evaluation fragments.
+	 * Converts the given {@link Object} to a {@link String}.
 	 * 
-	 * @return evaluation fragments
+	 * @param builder
+	 *            the {@link StringBuilder}
+	 * @param object
+	 *            the {@link Object} to convert
+	 * @return the {@link String} representation of the given {@link Object}
 	 */
-	public Map<ASTNode, String> getFragments() {
-		return fragments;
+	private void toString(StringBuilder builder, Object object) {
+
+		if (object instanceof Collection<?>) {
+			final Iterator<?> childrenIterator = ((Collection<?>)object).iterator();
+			while (childrenIterator.hasNext()) {
+				toString(builder, childrenIterator.next());
+			}
+		} else if (object != null) {
+			builder.append(object.toString());
+		}
 	}
 
 }

@@ -47,6 +47,6 @@ public interface IAcceleoEvaluationListener {
 	 *            the evaluated result if any, <code>null</code> otherwise
 	 */
 	public void endEvaluation(ASTNode node, IAcceleoEnvironment environment, Map<String, Object> variables,
-			String result);
+			Object result);
 
 }

@@ -30,10 +30,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
@@ -42,6 +40,7 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
+import org.eclipse.acceleo.aql.evaluation.WriterEvaludationListener;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -109,7 +108,7 @@ public abstract class AbstractTemplatesTestSuite {
 	/**
 	 * The {@link IAcceleoEnvironment}.
 	 */
-	private final IAcceleoEnvironment environment = new AcceleoEnvironment(new DefaultGenerationStrategy());
+	private final IAcceleoEnvironment environment = new AcceleoEnvironment();
 
 	/**
 	 * The {@link AcceleoEvaluator}.
@@ -275,7 +274,6 @@ public abstract class AbstractTemplatesTestSuite {
 	 * @param messages
 	 *            the {@link List} of {@link IValidationMessage}
 	 * @return the string representation of the given {@link List} of {@link IValidationMessage
-
 	 */
 	private String getValidationContent(List<IValidationMessage> messages) {
 		final String res;
@@ -320,56 +318,57 @@ public abstract class AbstractTemplatesTestSuite {
 
 		final List<EObject> eObjects = new ArrayList<EObject>();
 		boolean missingFile = false;
-		if (main != null) {
-			if (model != null) {
-				final String parameterName = main.getParameters().get(0).getName();
-				final EClassifier parameterType = (EClassifier)((TypeLiteral)main.getParameters().get(0)
-						.getType().getAst()).getValue();
-				for (EObject root : model.getContents()) {
-					if (parameterType.isInstance(root)) {
-						eObjects.add(root);
-					}
-					final Iterator<EObject> it = root.eAllContents();
-					while (it.hasNext()) {
-						final EObject eObj = it.next();
-						if (parameterType.isInstance(eObj)) {
-							eObjects.add(eObj);
-						}
+		if (main != null && model != null) {
+			final String parameterName = main.getParameters().get(0).getName();
+			final EClassifier parameterType = (EClassifier)((TypeLiteral)main.getParameters().get(0).getType()
+					.getAst()).getValue();
+			for (EObject root : model.getContents()) {
+				if (parameterType.isInstance(root)) {
+					eObjects.add(root);
+				}
+				final Iterator<EObject> it = root.eAllContents();
+				while (it.hasNext()) {
+					final EObject eObj = it.next();
+					if (parameterType.isInstance(eObj)) {
+						eObjects.add(eObj);
 					}
 				}
+			}
 
-				final URI destination = URI.createURI("acceleotests://" + testFolderPath + "/");
-				final Set<URI> generatedFiles = new LinkedHashSet<URI>();
+			final URI destination = URI.createURI("acceleotests://" + testFolderPath + "/");
+			final WriterEvaludationListener listener = new WriterEvaludationListener(
+					new DefaultGenerationStrategy(), destination);
+			environment.getEvaluationListeners().add(listener);
+			try {
 				for (EObject eObj : eObjects) {
 					final Map<String, Object> variables = new HashMap<String, Object>();
 					variables.put(parameterName, eObj);
-					final GenerationResult result = evaluator.generate(module, variables, destination);
-					generatedFiles.addAll(result.getGeneratedFiles());
+					evaluator.generate(module, variables);
 				}
+			} finally {
+				environment.getEvaluationListeners().remove(listener);
+			}
 
-				// assert generated content
-				for (URI generatedURI : generatedFiles) {
-					final URI expectedURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
-							.toString()
-							+ "-expected");
-					final URI actualURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
-							.toString()
-							+ "-actual");
-					if (URIConverter.INSTANCE.exists(expectedURI, null)) {
-						final String expectedContent;
-						try (InputStream expectedStream = URIConverter.INSTANCE
-								.createInputStream(expectedURI)) {
-							expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
-						}
-						final String actualContent;
-						try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(generatedURI)) {
-							actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
-						}
-						assertEquals(expectedContent, actualContent);
-					} else {
-						copy(generatedURI, actualURI);
-						missingFile = true;
+			// assert generated content
+			final GenerationResult result = listener.getGenerationResult();
+			for (URI generatedURI : result.getGeneratedFiles()) {
+				final URI expectedURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
+						.toString() + "-expected");
+				final URI actualURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
+						.toString() + "-actual");
+				if (URIConverter.INSTANCE.exists(expectedURI, null)) {
+					final String expectedContent;
+					try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
+						expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
 					}
+					final String actualContent;
+					try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(generatedURI)) {
+						actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
+					}
+					assertEquals(expectedContent, actualContent);
+				} else {
+					copy(generatedURI, actualURI);
+					missingFile = true;
 				}
 			}
 		}
@@ -388,6 +387,17 @@ public abstract class AbstractTemplatesTestSuite {
 	 */
 	protected final File getModuleFile(File testFolder) {
 		return getTemplateFileInternal(testFolder);
+	}
+
+	/**
+	 * Gets the expected AST file from the test folder path.
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the expected AST file from the test folder path
+	 */
+	protected File getFragmentsFolder(File testFolder) {
+		return new File(testFolder + File.separator + "fragments");
 	}
 
 	/**
@@ -528,7 +538,8 @@ public abstract class AbstractTemplatesTestSuite {
 		final int len = 8192;
 		StringBuilder res = new StringBuilder(len);
 		if (len != 0) {
-			try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream), charsetName)) {
+			try (InputStreamReader input = new InputStreamReader(new BufferedInputStream(stream),
+					charsetName)) {
 				char[] buffer = new char[len];
 				int length = input.read(buffer);
 				while (length != -1) {

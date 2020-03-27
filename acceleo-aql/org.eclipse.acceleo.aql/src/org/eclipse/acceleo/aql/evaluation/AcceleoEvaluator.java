@@ -31,7 +31,6 @@ import org.eclipse.acceleo.IfStatement;
 import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
-import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
@@ -44,7 +43,6 @@ import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.util.AcceleoSwitch;
 import org.eclipse.emf.common.util.Diagnostic;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -53,12 +51,7 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
-public class AcceleoEvaluator extends AcceleoSwitch<String> {
-	/**
-	 * The cases are not expected to ever return <code>null</code>; this is the placeholder for "no return
-	 * value".
-	 */
-	private static final String EMPTY_RETURN = "";
+public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 
 	/** The current evaluation environment. */
 	private IAcceleoEnvironment environment;
@@ -74,16 +67,6 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	private final Deque<Map<String, Object>> variablesStack;
 
 	/**
-	 * The current destination {@link URI}.
-	 */
-	private URI destination;
-
-	/**
-	 * The current {@link GenerationResult}.
-	 */
-	private GenerationResult generationResult;
-
-	/**
 	 * Instantiates an evaluation switch given the acceleo environment to consider.
 	 * 
 	 * @param environment
@@ -97,41 +80,35 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	}
 
 	/**
-	 * Generates the given {@link Module} with the given variables.
+	 * Generates the given {@link ASTNode} with the given variables.
 	 * 
-	 * @param module
-	 *            the {@link Module} to generate
+	 * @param node
+	 *            the {@link ASTNode} to generate
 	 * @param variables
 	 *            the variables
-	 * @param dest
-	 *            the destination {@link URI}
-	 * @return the {@link GenerationResult} produced by the generation
+	 * @param listeners
+	 *            the {@link List} of {@link IAcceleoEvaluationListener}
 	 */
-	public GenerationResult generate(Module module, Map<String, Object> variables, URI dest) {
-		generationResult = new GenerationResult();
-
-		this.destination = dest;
+	public void generate(ASTNode node, Map<String, Object> variables) {
 		pushVariables(variables);
 		try {
-			doSwitch(module);
+			doSwitch(node);
 		} finally {
 			popVariables();
 		}
-
-		return generationResult;
 	}
 
 	@Override
-	public String doSwitch(EObject eObject) {
-		final String res;
+	public Object doSwitch(EObject eObject) {
+		final Object res;
 
-		for (IAcceleoEvaluationListener listener : environment.getListeners()) {
+		for (IAcceleoEvaluationListener listener : environment.getEvaluationListeners()) {
 			listener.startEvaluation((ASTNode)eObject, environment, peekVariables());
 		}
 
 		res = super.doSwitch(eObject);
 
-		for (IAcceleoEvaluationListener listener : environment.getListeners()) {
+		for (IAcceleoEvaluationListener listener : environment.getEvaluationListeners()) {
 			listener.endEvaluation((ASTNode)eObject, environment, peekVariables(), res);
 		}
 
@@ -172,7 +149,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseExpression(org.eclipse.acceleo.Expression)
 	 */
 	@Override
-	public String caseExpression(Expression expression) {
+	public Object caseExpression(Expression expression) {
 		AstResult ast = expression.getAst();
 		if (ast.getDiagnostic().getSeverity() == Diagnostic.ERROR) {
 			// FIXME throw / log
@@ -180,11 +157,8 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 
 		// FIXME log evaluation problems
 		final EvaluationResult evalResult = aqlEngine.eval(ast, peekVariables());
-		if (evalResult.getResult() != null) {
-			return evalResult.getResult().toString();
-		} else {
-			return EMPTY_RETURN;
-		}
+
+		return evalResult.getResult();
 	}
 
 	/**
@@ -194,7 +168,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	 */
 	@Override
 	public String caseExpressionStatement(ExpressionStatement expressionStatement) {
-		return doSwitch(expressionStatement.getExpression());
+		return toString(doSwitch(expressionStatement.getExpression()));
 	}
 
 	/**
@@ -203,7 +177,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseModule(org.eclipse.acceleo.Module)
 	 */
 	@Override
-	public String caseModule(Module module) {
+	public Void caseModule(Module module) {
 
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template && ((Template)element).isMain()) {
@@ -212,7 +186,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 			}
 		}
 
-		return EMPTY_RETURN;
+		return null;
 	}
 
 	/**
@@ -221,21 +195,19 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseTemplate(org.eclipse.acceleo.Template)
 	 */
 	@Override
-	public String caseTemplate(Template template) {
-		final String res;
-
+	public Void caseTemplate(Template template) {
 		try {
-			res = doSwitch(template.getBody());
+			doSwitch(template.getBody());
 		} finally {
 			environment.popStack(template);
 		}
 
-		return res;
+		return null;
 	}
 
 	@Override
-	public String caseQuery(Query query) {
-		final String res;
+	public Object caseQuery(Query query) {
+		final Object res;
 
 		try {
 			res = doSwitch(query.getBody());
@@ -257,26 +229,21 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	}
 
 	@Override
-	public String caseBlock(Block block) {
-		final StringBuilder res = new StringBuilder();
-
+	public Void caseBlock(Block block) {
 		for (Statement stmt : block.getStatements()) {
-			final Object value = doSwitch(stmt);
-			res.append(value);
+			doSwitch(stmt);
 		}
 
-		return res.toString();
+		return null;
 	}
 
 	@Override
-	public String caseComment(Comment comment) {
-		return EMPTY_RETURN;
+	public Void caseComment(Comment comment) {
+		return null;
 	}
 
 	@Override
-	public String caseLetStatement(LetStatement letStatement) {
-		final String res;
-
+	public Void caseLetStatement(LetStatement letStatement) {
 		final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
 		for (Binding binding : letStatement.getVariables()) {
 			final String name = binding.getName();
@@ -286,12 +253,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 
 		pushVariables(variables);
 		try {
-			res = doSwitch(letStatement.getBody());
+			doSwitch(letStatement.getBody());
 		} finally {
 			popVariables();
 		}
 
-		return res;
+		return null;
 	}
 
 	/**
@@ -300,67 +267,39 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	 * @see org.eclipse.acceleo.util.AcceleoSwitch#caseFileStatement(org.eclipse.acceleo.FileStatement)
 	 */
 	@Override
-	public String caseFileStatement(FileStatement fileStatement) {
-		Object uriObject = doSwitch(fileStatement.getUrl());
+	public Void caseFileStatement(FileStatement fileStatement) {
+		final Object uriObject = doSwitch(fileStatement.getUrl());
 		if (uriObject == null) {
 			// FIXME log properly
 		} else {
-			final Object fileCharset;
-			final OpenModeKind mode = fileStatement.getMode();
-			if (fileStatement.getCharset() != null) {
-				// TODO add syntax for charset
-				final Object charsetValue = doSwitch(fileStatement.getCharset());
-				if (charsetValue != null) {
-					fileCharset = charsetValue;
-				} else {
-					// FIXME log ?
-					fileCharset = "UTF-8";
-				}
-			} else {
-				fileCharset = "UTF-8";
+			final Expression charset = fileStatement.getCharset();
+			if (charset != null) {
+				doSwitch(charset);
 			}
-
-			final URI uri = URI.createURI(toString(uriObject), true).resolve(destination);
-			// FIXME line delimiter
-			// TODO use a IAcceleoEvaluationListener
-			environment.openWriter(uri, mode, toString(fileCharset), "\n");
-			generationResult.getGeneratedFiles().add(uri);
-			try {
-				final Object bodyResult = doSwitch(fileStatement.getBody());
-				environment.write(toString(bodyResult));
-			} finally {
-				environment.closeWriter();
-			}
+			doSwitch(fileStatement.getBody());
 		}
 
-		return EMPTY_RETURN;
+		return null;
 	}
 
 	@Override
-	public String caseIfStatement(IfStatement ifStatement) {
-		final String res;
-
+	public Void caseIfStatement(IfStatement ifStatement) {
 		final Object condition = doSwitch(ifStatement.getCondition());
 		if (condition instanceof Boolean) {
-			final String result;
 			if (Boolean.TRUE.equals(condition)) {
-				result = doSwitch(ifStatement.getThen());
+				doSwitch(ifStatement.getThen());
 			} else {
-				result = doSwitch(ifStatement.getElse());
+				doSwitch(ifStatement.getElse());
 			}
-			res = result;
 		} else {
 			// FIXME log, evaluate to "false", ... ?
-			res = EMPTY_RETURN;
 		}
 
-		return res;
+		return null;
 	}
 
 	@Override
-	public String caseForStatement(ForStatement forStatement) {
-		final StringBuilder res = new StringBuilder();
-
+	public Void caseForStatement(ForStatement forStatement) {
 		final List<Object> iteration = new ArrayList<Object>();
 		final Object value = doSwitch(forStatement.getBinding().getInitExpression());
 		if (value instanceof Collection) {
@@ -376,13 +315,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 		try {
 			for (Object val : iteration) {
 				variables.put(name, val);
-				res.append(doSwitch(forStatement.getBody()));
+				doSwitch(forStatement.getBody());
 			}
 		} finally {
 			popVariables();
 		}
 
-		return res.toString();
+		return null;
 	}
 
 	/**
@@ -394,6 +333,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 	 */
 	private String toString(Object object) {
 		final StringBuffer buffer = new StringBuffer();
+
 		if (object instanceof Collection<?>) {
 			final Iterator<?> childrenIterator = ((Collection<?>)object).iterator();
 			while (childrenIterator.hasNext()) {
@@ -402,6 +342,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<String> {
 		} else if (object != null) {
 			buffer.append(object.toString());
 		}
+
 		return buffer.toString();
 	}
 
