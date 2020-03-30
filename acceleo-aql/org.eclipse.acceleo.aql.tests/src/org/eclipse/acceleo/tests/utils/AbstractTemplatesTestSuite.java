@@ -335,9 +335,10 @@ public abstract class AbstractTemplatesTestSuite {
 				}
 			}
 
-			final URI destination = URI.createURI("acceleotests://" + testFolderPath + "/");
+			final String memoryDestinationString = "acceleotests://" + testFolderPath + "/";
+			final URI memoryDestination = URI.createURI(memoryDestinationString);
 			final WriterEvaludationListener listener = new WriterEvaludationListener(
-					new DefaultGenerationStrategy(), destination);
+					new DefaultGenerationStrategy(), memoryDestination);
 			environment.getEvaluationListeners().add(listener);
 			try {
 				for (EObject eObj : eObjects) {
@@ -351,23 +352,25 @@ public abstract class AbstractTemplatesTestSuite {
 
 			// assert generated content
 			final GenerationResult result = listener.getGenerationResult();
-			for (URI generatedURI : result.getGeneratedFiles()) {
-				final URI expectedURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
-						.toString() + "-expected");
-				final URI actualURI = URI.createURI(module.eResource().getURI().resolve(generatedURI)
-						.toString() + "-actual");
+			final URI generatedFolderURI = URI.createURI("generated/").resolve(module.eResource().getURI());
+			for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
+				final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
+						memoryDestinationString.length())).resolve(generatedFolderURI);
+				final URI expectedURI = URI.createURI(generatedURI.toString() + "-expected.txt");
+				final URI actualURI = URI.createURI(generatedURI.toString() + "-actual.txt");
 				if (URIConverter.INSTANCE.exists(expectedURI, null)) {
 					final String expectedContent;
 					try (InputStream expectedStream = URIConverter.INSTANCE.createInputStream(expectedURI)) {
 						expectedContent = getContent(expectedStream, UTF_8); // TODO test other encoding
 					}
 					final String actualContent;
-					try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(generatedURI)) {
+					try (InputStream actualStream = URIConverter.INSTANCE.createInputStream(
+							memoryGeneratedURI)) {
 						actualContent = getContent(actualStream, UTF_8); // TODO test other encoding
 					}
 					assertEquals(expectedContent, actualContent);
 				} else {
-					copy(generatedURI, actualURI);
+					copy(memoryGeneratedURI, actualURI);
 					missingFile = true;
 				}
 			}
