@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="debug" nsURI="http://eclipse.org/acceleo/debug" nsPrefix="debug">
+  <eClassifiers xsi:type="ecore:EClass" name="Contextual" abstract="true" interface="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A contextual element."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link EObject} representing the context."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DebugTarget" eSuperTypes="#//Contextual">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="a {@link DebugTarget} is a debuggable execution context, for instance a debugggable process of a virtual machine."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A name of this {@link DebugTarget}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" lowerBound="1" eType="#//DebugTargetState">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The current {@link TargetState} of this {@link DebugerTarget}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="threads" upperBound="-1"
+        eType="#//Thread" containment="true" eOpposite="#//Thread/debugTarget">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Current {@link Thread threads} running in this {@link DebugerTarget}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DebugTargetState">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Possible States of a {@link DebugTarget} {@link DebugTarget#getState() state}."/>
+    </eAnnotations>
+    <eLiterals name="CONNECTED" literal="CONNECTED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link DebugTarget} is connected."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="DISCONNECTED" value="1" literal="DISCONNECTED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link DebugTarget} is disconnected."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TERMINATING" value="2" literal="TERMINATING">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link DebugTarget} is terminating."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TERMINATED" value="3" literal="TERMINATED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link DebugTarget} is terminated."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Thread" eSuperTypes="#//Contextual">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Current {@link Thread threads} running in this {@link DebugerTarget}."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bottomStackFrame" lowerBound="1"
+        eType="#//StackFrame" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The current bottom {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" lowerBound="1" eType="#//State">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The current {@link Thread} of this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="topStackFrame" lowerBound="1"
+        eType="#//StackFrame">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The curren top {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link Thread} name. It must be unique across a {@link DebugTarget}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="debugTarget" lowerBound="1"
+        eType="#//DebugTarget" eOpposite="#//DebugTarget/threads">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link DebugTarget} of this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="0">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The priority of the given thread. The meaning is debugger dependant."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StackFrame" eSuperTypes="#//Contextual">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A {@link StackFrame} represents an execution context in a {@link Thread}."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
+        eType="#//Variable" containment="true" eOpposite="#//Variable/frame">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="{@link Variable Variables} accessible in this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childFrame" eType="#//StackFrame"
+        containment="true" eOpposite="#//StackFrame/parentFrame">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The current child {@link StackFrame} of this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} name."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentInstruction" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link EObject} representing the current instruction in this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="canStepIntoCurrentInstruction"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentFrame" eType="#//StackFrame"
+        eOpposite="#//StackFrame/childFrame">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The current parent {@link StackFrame} of this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="registerGroups" upperBound="-1"
+        eType="#//RegisterGroup" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="{@link RegisterGroup Register groups} accessible in this {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="State">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Possible States of a {@link StackFrame} {@link StackFrame#getState() state}."/>
+    </eAnnotations>
+    <eLiterals name="RUNNING" literal="RUNNING">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is running."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="STEPPING_INTO" value="1" literal="STEPPING_INTO">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is stepping into."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="STEPPING_OVER" value="2" literal="STEPPING_OVER">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is stepping over."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="STEPPING_RETURN" value="3" literal="STEPPING_RETURN">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is stepping return."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="SUSPENDING" value="4" literal="SUSPENDING">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is stepping over."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="SUSPENDED" value="5" literal="SUSPENDED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is suspended."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TERMINATING" value="6" literal="TERMINATING">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is terminated."/>
+      </eAnnotations>
+    </eLiterals>
+    <eLiterals name="TERMINATED" value="7" literal="TERMINATED">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link StackFrame} is terminated."/>
+      </eAnnotations>
+    </eLiterals>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A {@link Variable} represents a visible data structure in the {@link StackFrame}."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link Variable} name. It must be unique across a {@link StackFrame} or a {@link RegisterGroup}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//Object"
+        transient="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link Variable} value."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueChanged" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="frame" eType="#//StackFrame"
+        eOpposite="#//StackFrame/variables"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="declarationType" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The {@link Variable} declaration type."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="supportModifications" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Tells if the {@link Variable#getValue() value} can be changed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CurrentSession">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A {@link DebugTarget} container."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="debugTargets" upperBound="-1"
+        eType="#//DebugTarget" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="{@link DebugTarget Debug targets}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RegisterGroup">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A name of this {@link RegisterGroup}. It must be unique across a {@link StackFrame}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="registers" upperBound="-1"
+        eType="#//Register" containment="true" eOpposite="#//Register/registerGroup">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="{@link Register Registers} grouped in this {@link RegisterGroup}."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Register" eSuperTypes="#//Variable">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A {@link Variable} representing a register."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="registerGroup" eType="#//RegisterGroup"
+        eOpposite="#//RegisterGroup/registers"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Object" instanceClassName="java.lang.Object"
+      serializable="false"/>
+</ecore:EPackage>
