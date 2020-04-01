@@ -20,11 +20,11 @@ public class SteppedReply extends SuspendedReply {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public SteppedReply(String threadName) {
-		super(threadName);
+	public SteppedReply(Long threadID) {
+		super(threadID);
 	}
 
 }

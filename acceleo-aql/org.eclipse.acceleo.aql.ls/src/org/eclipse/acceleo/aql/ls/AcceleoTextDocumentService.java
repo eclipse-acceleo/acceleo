@@ -23,9 +23,16 @@ import org.eclipse.lsp4j.DidOpenTextDocumentParams;
 import org.eclipse.lsp4j.DidSaveTextDocumentParams;
 import org.eclipse.lsp4j.jsonrpc.CompletableFutures;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
+import org.eclipse.lsp4j.services.LanguageClient;
+import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.TextDocumentService;
 
-public class AcceleoTextDocumentService implements TextDocumentService {
+public class AcceleoTextDocumentService implements TextDocumentService, LanguageClientAware {
+
+	/**
+	 * The {@link LanguageClient}.
+	 */
+	private LanguageClient client;
 
 	@Override
 	public void didOpen(DidOpenTextDocumentParams params) {
@@ -65,6 +72,11 @@ public class AcceleoTextDocumentService implements TextDocumentService {
 
 			return Either.forRight(new CompletionList(items));
 		});
+	}
+
+	@Override
+	public void connect(LanguageClient client) {
+		this.client = client;
 	}
 
 }

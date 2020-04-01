@@ -35,8 +35,8 @@ public class VariableReply extends AbstractVariableReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param stackName
 	 *            the {@link org.eclipse.acceleo.debug.StackFrame#getName() stack frame name}
 	 * @param declarationTypeName
@@ -48,9 +48,9 @@ public class VariableReply extends AbstractVariableReply {
 	 * @param supportModifications
 	 *            tells if the value can be changed
 	 */
-	public VariableReply(String threadName, String stackName, String declarationTypeName, String variableName,
+	public VariableReply(Long threadID, String stackName, String declarationTypeName, String variableName,
 			Object value, boolean supportModifications) {
-		super(threadName, stackName, variableName);
+		super(threadID, stackName, variableName);
 		this.declarationTypeName = declarationTypeName;
 		this.value = value;
 		this.supportModifications = supportModifications;

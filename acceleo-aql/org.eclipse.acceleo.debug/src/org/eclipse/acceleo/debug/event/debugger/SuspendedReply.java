@@ -20,11 +20,11 @@ public class SuspendedReply extends AbstractThreadReply {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public SuspendedReply(String threadName) {
-		super(threadName);
+	public SuspendedReply(Long threadID) {
+		super(threadID);
 	}
 
 }

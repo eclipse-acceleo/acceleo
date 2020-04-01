@@ -27,9 +27,9 @@ public class ThreadController {
 	private final IDSLDebugger debugger;
 
 	/**
-	 * The thread name.
+	 * The {@link Thread#getId() thread ID}.
 	 */
-	private final String threadName;
+	private final Long threadID;
 
 	/**
 	 * The next instruction to suspend after a step if any, <code>null</code> otherwise.
@@ -61,12 +61,12 @@ public class ThreadController {
 	 * 
 	 * @param debugger
 	 *            the {@link IDSLDebugger} responsible for the Java {@link Thread}
-	 * @param threadName
+	 * @param threadID
 	 *            the name of the thread
 	 */
-	public ThreadController(IDSLDebugger debugger, String threadName) {
+	public ThreadController(IDSLDebugger debugger, Long threadID) {
 		this.debugger = debugger;
-		this.threadName = threadName;
+		this.threadID = threadID;
 	}
 
 	/**
@@ -157,19 +157,19 @@ public class ThreadController {
 		boolean res = !debugger.isTerminated() && !terminated;
 		if (res) {
 			if (this.suspended) { // client request
-				debugger.suspended(threadName);
-				debugger.updateData(threadName, instruction);
+				debugger.suspended(threadID);
+				debugger.updateState(threadID, instruction);
 				putAsleep();
 				resuming(instruction);
 			} else if (debugger.shouldBreak(instruction)) { // breakpoint
-				debugger.breaked(threadName);
-				debugger.updateData(threadName, instruction);
+				debugger.breaked(threadID);
+				debugger.updateState(threadID, instruction);
 				putAsleep();
 				resuming(instruction);
 			} else if (stepping != Stepping.NONE) { // stepping
 				if (nextIntructionToSuspend == null || nextIntructionToSuspend == instruction) {
-					debugger.stepped(threadName);
-					debugger.updateData(threadName, instruction);
+					debugger.stepped(threadID);
+					debugger.updateState(threadID, instruction);
 					putAsleep();
 					resuming(instruction);
 				}
@@ -188,25 +188,25 @@ public class ThreadController {
 
 		switch (stepping) {
 			case STEP_INTO:
-				debugger.steppingInto(threadName);
-				nextIntructionToSuspend = debugger.getNextInstruction(threadName, instruction, stepping);
+				debugger.steppingInto(threadID);
+				nextIntructionToSuspend = debugger.getNextInstruction(threadID, instruction, stepping);
 				break;
 
 			case STEP_OVER:
-				debugger.steppingOver(threadName);
-				nextIntructionToSuspend = debugger.getNextInstruction(threadName, instruction, stepping);
+				debugger.steppingOver(threadID);
+				nextIntructionToSuspend = debugger.getNextInstruction(threadID, instruction, stepping);
 				break;
 
 			case STEP_RETURN:
-				debugger.steppingReturn(threadName);
-				nextIntructionToSuspend = debugger.getNextInstruction(threadName, instruction, stepping);
+				debugger.steppingReturn(threadID);
+				nextIntructionToSuspend = debugger.getNextInstruction(threadID, instruction, stepping);
 				break;
 
 			default:
 				if (!terminated) {
-					debugger.resuming(threadName); // client resume request
+					debugger.resuming(threadID); // client resume request
 				} else {
-					debugger.terminated(threadName); // terminated
+					debugger.terminated(threadID); // terminated
 				}
 				break;
 		}

@@ -20,11 +20,11 @@ public class BreakpointReply extends SuspendedReply {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public BreakpointReply(String threadName) {
-		super(threadName);
+	public BreakpointReply(Long threadID) {
+		super(threadID);
 	}
 
 }

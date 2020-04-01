@@ -25,8 +25,8 @@ public class ValidateVariableValueRequest extends AbstractVariableRequest {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param stackName
 	 *            the {@link org.eclipse.acceleo.debug.StackFrame#getName() thread name}
 	 * @param variableName
@@ -34,9 +34,8 @@ public class ValidateVariableValueRequest extends AbstractVariableRequest {
 	 * @param value
 	 *            the value to set
 	 */
-	public ValidateVariableValueRequest(String threadName, String stackName, String variableName,
-			String value) {
-		super(threadName, stackName, variableName);
+	public ValidateVariableValueRequest(Long threadID, String stackName, String variableName, String value) {
+		super(threadID, stackName, variableName);
 		this.value = value;
 	}
 

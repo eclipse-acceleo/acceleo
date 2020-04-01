@@ -34,10 +34,12 @@ import java.util.regex.Pattern;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.completion.AcceleoCompletor;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.ICompletionProposal;
 import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
+import org.eclipse.emf.common.util.URI;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -110,7 +112,8 @@ public class CompletionTests {
 	public void completion() throws FileNotFoundException, IOException {
 		final AcceleoCompletor completor = new AcceleoCompletor();
 
-		final AcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment();
+		final AcceleoEnvironment acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(),
+				URI.createURI(""));
 		final AcceleoParser parser = new AcceleoParser(acceleoEnvironment.getQueryEnvironment());
 		final AcceleoAstResult parsingResult = parser.parse(source);
 		final Module module = parsingResult.getModule();
@@ -151,8 +154,8 @@ public class CompletionTests {
 		Collections.sort(proposals, new Comparator<ICompletionProposal>() {
 
 			public int compare(ICompletionProposal o1, ICompletionProposal o2) {
-				return (o1.getProposal() + o1.getDescription()).compareTo(o2.getProposal()
-						+ o2.getDescription());
+				return (o1.getProposal() + o1.getDescription()).compareTo(o2.getProposal() + o2
+						.getDescription());
 			};
 
 		});

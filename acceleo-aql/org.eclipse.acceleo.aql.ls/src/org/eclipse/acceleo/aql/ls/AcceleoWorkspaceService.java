@@ -12,9 +12,16 @@ package org.eclipse.acceleo.aql.ls;
 
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
+import org.eclipse.lsp4j.services.LanguageClient;
+import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.WorkspaceService;
 
-public class AcceleoWorkspaceService implements WorkspaceService {
+public class AcceleoWorkspaceService implements WorkspaceService, LanguageClientAware {
+
+	/**
+	 * The {@link LanguageClient}.
+	 */
+	private LanguageClient client;
 
 	@Override
 	public void didChangeConfiguration(DidChangeConfigurationParams params) {
@@ -26,6 +33,11 @@ public class AcceleoWorkspaceService implements WorkspaceService {
 	public void didChangeWatchedFiles(DidChangeWatchedFilesParams params) {
 		// TODO Auto-generated method stub
 		System.out.println(params);
+	}
+
+	@Override
+	public void connect(LanguageClient client) {
+		this.client = client;
 	}
 
 }

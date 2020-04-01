@@ -29,9 +29,11 @@ public class TerminateRequest extends AbstractThreadRequest {
 	 * 
 	 * @param threadName
 	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public TerminateRequest(String threadName) {
-		super(threadName);
+	public TerminateRequest(Long threadID) {
+		super(threadID);
 	}
 
 }

@@ -25,13 +25,13 @@ public class DeleteVariableReply extends AbstractThreadReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param name
 	 *            the variable name
 	 */
-	public DeleteVariableReply(String threadName, String name) {
-		super(threadName);
+	public DeleteVariableReply(Long id, String name) {
+		super(id);
 		this.name = name;
 	}
 

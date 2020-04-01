@@ -28,13 +28,13 @@ public abstract class AbstractStepRequest extends AbstractThreadRequest {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param instruction
 	 *            the {@link EObject} representing the current instruction
 	 */
-	public AbstractStepRequest(String threadName, EObject instruction) {
-		super(threadName);
+	public AbstractStepRequest(Long threadID, EObject instruction) {
+		super(threadID);
 		this.instruction = instruction;
 	}
 

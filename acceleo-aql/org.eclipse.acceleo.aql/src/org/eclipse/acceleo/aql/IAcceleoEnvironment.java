@@ -11,12 +11,13 @@
 package org.eclipse.acceleo.aql;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
-import org.eclipse.acceleo.aql.evaluation.IAcceleoEvaluationListener;
+import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
+import org.eclipse.emf.common.util.URI;
 
 /**
  * Acceleo environment.
@@ -24,6 +25,14 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
  * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
  */
 public interface IAcceleoEnvironment {
+
+	/**
+	 * Gets the destination {@link URI}.
+	 * 
+	 * @return the destination {@link URI}
+	 */
+	URI getDestination();
+
 	/**
 	 * Registers the given module against this environment.
 	 * 
@@ -108,10 +117,38 @@ public interface IAcceleoEnvironment {
 	void popStack(ModuleElement moduleElement);
 
 	/**
-	 * Gets the {@link List} of {@link IAcceleoEvaluationListener}.
+	 * Opens a writer for the given file uri.
 	 * 
-	 * @return the {@link List} of {@link IAcceleoEvaluationListener}
+	 * @param uri
+	 *            The {@link URI} for which we need a writer.
+	 * @param openMode
+	 *            The mode in which to open the file.
+	 * @param charset
+	 *            Charset for the target file.
+	 * @param lineDelimiter
+	 *            Line delimiter that should be used for that file.
 	 */
-	public List<IAcceleoEvaluationListener> getEvaluationListeners();
+	public void openWriter(URI uri, OpenModeKind openMode, String charset, String lineDelimiter);
+
+	/**
+	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
+	 */
+	public void closeWriter();
+
+	/**
+	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
+	 * opened} writer.
+	 * 
+	 * @param text
+	 *            the text to write
+	 */
+	public void write(String text);
+
+	/**
+	 * Gets the {@link GenerationResult}.
+	 * 
+	 * @return the {@link GenerationResult}
+	 */
+	GenerationResult getGenerationResult();
 
 }

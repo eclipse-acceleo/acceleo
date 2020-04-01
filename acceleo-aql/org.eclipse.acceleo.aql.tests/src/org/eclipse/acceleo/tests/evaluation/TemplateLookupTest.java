@@ -17,10 +17,11 @@ import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
+import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
-import org.eclipse.acceleo.tests.utils.TestEvaluationListener;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -55,11 +56,6 @@ public class TemplateLookupTest {
 	private Module module4;
 
 	/**
-	 * The {@link TestEvaluationListener} to get text fragments.
-	 */
-	private TestEvaluationListener listener;
-
-	/**
 	 * Prepares the environment. This will load the 4 modules and register them against a new environment
 	 * before each test.
 	 * 
@@ -74,14 +70,11 @@ public class TemplateLookupTest {
 		module3 = readModule(aqlEnvironment, "/org/eclipse/acceleo/tests/evaluation/M3.acceleo");
 		module4 = readModule(aqlEnvironment, "/org/eclipse/acceleo/tests/evaluation/M4.acceleo");
 
-		acceleoEnvironment = new AcceleoEnvironment();
+		acceleoEnvironment = new AcceleoEnvironment(new DefaultGenerationStrategy(), URI.createURI(""));
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m1", module1);
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m2", module2);
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m3", module3);
 		acceleoEnvironment.registerModule("org::eclipse::acceleo::aql::tests::evaluation::m4", module4);
-
-		listener = new TestEvaluationListener();
-		acceleoEnvironment.getEvaluationListeners().add(listener);
 	}
 
 	/**
@@ -92,14 +85,14 @@ public class TemplateLookupTest {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(PARAM1, EcoreFactory.eINSTANCE.createEPackage());
 
-		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator();
 		final ModuleElement start = module1.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 
-		evaluationEngine.generate(start, variables);
+		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("\r\ngenerated from m1.t11(EPackage)\r\n", listener.getTextFragments(start));
+		assertEquals("\r\ngenerated from m1.t11(EPackage)\r\n", result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -111,16 +104,16 @@ public class TemplateLookupTest {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(PARAM1, EcoreFactory.eINSTANCE.createEClass());
 
-		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator();
 		final ModuleElement start = module1.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 
-		evaluationEngine.generate(start, variables);
+		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
 		assertEquals(
 				"\r\n\r\ngenerated from m1.overrideMe(EClass)\r\n\r\n\r\ngenerated from m1.privateInBoth(EClass)\r\n\r\n",
-				listener.getTextFragments(start));
+				result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -137,16 +130,16 @@ public class TemplateLookupTest {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(PARAM1, pack);
 
-		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator();
 		ModuleElement start = module2.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t21".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
-		evaluationEngine.generate(start, variables);
+		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
 		assertEquals(
 				"\r\ngenerated from m2.t21(EPackage)\r\n\r\n\r\ngenerated from m2.overrideMe(EClass)\r\n\r\n\r\ngenerated from m1.privateInBoth(EClass)\r\n\r\n\r\n",
-				listener.getTextFragments(start));
+				result);
 	}
 
 	/**
@@ -161,14 +154,14 @@ public class TemplateLookupTest {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(PARAM1, pack);
 
-		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator();
 		ModuleElement start = module2.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "overrideMe".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
-		evaluationEngine.generate(start, variables);
+		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("\r\ngenerated from m2.overrideMe(EClass)\r\n", listener.getTextFragments(start));
+		assertEquals("\r\ngenerated from m2.overrideMe(EClass)\r\n", result);
 	}
 
 	/**
@@ -188,16 +181,16 @@ public class TemplateLookupTest {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(PARAM1, clazz);
 
-		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator();
 		ModuleElement start = module2.getModuleElements().get(3);
 		assertTrue(start instanceof Template && "toImportsAndBack".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
-		evaluationEngine.generate(start, variables);
+		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
 		assertEquals(
 				"\r\n\r\ngenerated from m4.t41(EClass)\r\n\r\ngenerated from m3.t31(EClass)\r\n\r\ngenerated from m4.overrideMe(EClass)\r\n\r\n\r\n\r\n\r\ngenerated from m2.overrideMe(EClass)\r\n\r\n",
-				listener.getTextFragments(start));
+				result);
 	}
 
 	/**
@@ -214,16 +207,16 @@ public class TemplateLookupTest {
 		final Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(PARAM1, clazz);
 
-		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
+		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator();
 		ModuleElement start = module2.getModuleElements().get(4);
 		assertTrue(start instanceof Template && "toImportsExtends".equals(((Template)start).getName()));
 		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
-		evaluationEngine.generate(start, variables);
+		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
 		assertEquals(
 				"\r\n\r\ngenerated from m3.t31(EClass)\r\n\r\ngenerated from m4.overrideMe(EClass)\r\n\r\n\r\n",
-				listener.getTextFragments(start));
+				result);
 	}
 
 	/**

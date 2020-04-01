@@ -20,11 +20,11 @@ public class ResumingReply extends AbstractThreadReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public ResumingReply(String threadName) {
-		super(threadName);
+	public ResumingReply(Long threadID) {
+		super(threadID);
 	}
 
 }

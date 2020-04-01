@@ -30,7 +30,7 @@ public class AcceleoSocketServer {
 	/**
 	 * The {@link ServerSocket}.
 	 */
-	private ServerSocket server;
+	private ServerSocket serverSocket;
 
 	/**
 	 * The server {@link Thread}.
@@ -38,17 +38,18 @@ public class AcceleoSocketServer {
 	private Thread serverThread;
 
 	public synchronized void start(String host, int port) throws UnknownHostException, IOException {
-		server = new ServerSocket(port, 50, InetAddress.getByName(host));
+		serverSocket = new ServerSocket(port, 50, InetAddress.getByName(host));
 		serverThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				while (true) {
 					try {
-						final Socket client = server.accept();
+						final Socket client = serverSocket.accept();
+						final AcceleoLanguageServer acceleoLanguageServer = new AcceleoLanguageServer();
 						final Launcher<LanguageClient> launcher = LSPLauncher.createServerLauncher(
-								new AcceleoLanguageServer(), client.getInputStream(), client
-										.getOutputStream());
+								acceleoLanguageServer, client.getInputStream(), client.getOutputStream());
+						acceleoLanguageServer.connect(launcher.getRemoteProxy());
 						launcher.startListening(); // the thread is created inside this method
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -56,12 +57,12 @@ public class AcceleoSocketServer {
 					}
 				}
 			}
-		}, "Acceleo LS: " + server.getInetAddress().getHostName() + ":" + server.getLocalPort());
+		}, "Acceleo LS: " + serverSocket.getInetAddress().getHostName() + ":" + serverSocket.getLocalPort());
 		serverThread.start();
 	}
 
 	public synchronized void stop() throws IOException {
-		server.close();
+		serverSocket.close();
 		serverThread.interrupt();
 	}
 

@@ -15,12 +15,11 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.SetMultimap;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,17 +29,21 @@ import org.eclipse.acceleo.Metamodel;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.ModuleReference;
+import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Template;
 import org.eclipse.acceleo.aql.evaluation.AbstractModuleElementService;
 import org.eclipse.acceleo.aql.evaluation.AcceleoCallStack;
 import org.eclipse.acceleo.aql.evaluation.AcceleoQueryEnvironment;
-import org.eclipse.acceleo.aql.evaluation.IAcceleoEvaluationListener;
+import org.eclipse.acceleo.aql.evaluation.GenerationResult;
 import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
+import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
@@ -74,6 +77,17 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/** The AQL environment that will be used to evaluate aql expressions from this Acceleo context. */
 	private IQueryEnvironment aqlEnvironment;
 
+	/** This will hold the writer stack for the file blocks. */
+	private final Deque<IAcceleoWriter> writers = new ArrayDeque<IAcceleoWriter>();
+
+	/** The current generation strategy. */
+	private final IAcceleoGenerationStrategy generationStrategy;
+
+	/**
+	 * The destination {@link URI}.
+	 */
+	private final URI destination;
+
 	/**
 	 * Keeps track of the module elements we've called in order. Template and queries we call will be pushed
 	 * against this depending on "how" they were called.
@@ -92,14 +106,21 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	private final Deque<AcceleoCallStack> callStacks;
 
 	/**
-	 * The {@link List} of {@link IAcceleoEvaluationListener}.
+	 * The {@link GenerationResult}.
 	 */
-	private final List<IAcceleoEvaluationListener> listeners = new ArrayList<IAcceleoEvaluationListener>();
+	private final GenerationResult generationResult = new GenerationResult();
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param generationStrategy
+	 *            the {@link IAcceleoGenerationStrategy}
+	 * @param destination
+	 *            the destination {@link URI}
 	 */
-	public AcceleoEnvironment() {
+	public AcceleoEnvironment(IAcceleoGenerationStrategy generationStrategy, URI destination) {
+		this.generationStrategy = generationStrategy;
+		this.destination = destination;
 		this.qualifiedNameToModule = new LinkedHashMap<>();
 		this.moduleToQualifiedName = new LinkedHashMap<>();
 		this.moduleExtends = new LinkedHashMap<>();
@@ -263,8 +284,63 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		return qualifiedNameToModule.containsKey(qualifiedName) || testMock;
 	}
 
-	@Override
-	public List<IAcceleoEvaluationListener> getEvaluationListeners() {
-		return listeners;
+	/**
+	 * Opens a writer for the given file uri.
+	 * 
+	 * @param uri
+	 *            The {@link URI} for which we need a writer.
+	 * @param openMode
+	 *            The mode in which to open the file.
+	 * @param charset
+	 *            Charset for the target file.
+	 * @param lineDelimiter
+	 *            Line delimiter that should be used for that file.
+	 */
+	public void openWriter(URI uri, OpenModeKind openMode, String charset, String lineDelimiter) {
+		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
+				lineDelimiter);
+		writers.addLast(writer);
+		generationResult.getGeneratedFiles().add(uri);
 	}
+
+	/**
+	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
+	 */
+	public void closeWriter() {
+		final IAcceleoWriter writer = writers.removeLast();
+		try {
+			writer.close();
+		} catch (IOException e) {
+			// FIXME log a status
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
+	 * opened} writer.
+	 * 
+	 * @param text
+	 *            the text to write
+	 */
+	public void write(String text) {
+		IAcceleoWriter writer = writers.peekLast();
+		try {
+			writer.append(text);
+		} catch (IOException e) {
+			// FIXME log a status everytime, or close the writer and ignore future calls?
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public URI getDestination() {
+		return destination;
+	}
+
+	@Override
+	public GenerationResult getGenerationResult() {
+		return generationResult;
+	}
+
 }

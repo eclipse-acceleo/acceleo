@@ -30,15 +30,15 @@ public abstract class AbstractVariableRequest extends AbstractThreadRequest {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param stackName
 	 *            the {@link org.eclipse.acceleo.debug.StackFrame#getName() thread name}
 	 * @param variableName
 	 *            the {@link org.eclipse.acceleo.debug.Variable#getName() variable name}
 	 */
-	public AbstractVariableRequest(String threadName, String stackName, String variableName) {
-		super(threadName);
+	public AbstractVariableRequest(Long threadID, String stackName, String variableName) {
+		super(threadID);
 		this.stackName = stackName;
 		this.variableName = variableName;
 	}

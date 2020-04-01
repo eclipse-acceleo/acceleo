@@ -18,27 +18,27 @@ package org.eclipse.acceleo.debug.event.model;
 public abstract class AbstractThreadRequest implements IDSLModelRequest {
 
 	/**
-	 * The {@link org.eclipse.acceleo.debug.Thread#getName() thread name}.
+	 * The {@link Thread#getId()}.
 	 */
-	private final String threadName;
+	private final Long threadID;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public AbstractThreadRequest(String threadName) {
-		this.threadName = threadName;
+	public AbstractThreadRequest(Long threadID) {
+		this.threadID = threadID;
 	}
 
 	/**
-	 * Gets the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}.
+	 * Gets the {@link Thread#getId()}.
 	 * 
-	 * @return the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @return the {@link Thread#getId()}
 	 */
-	public String getThreadName() {
-		return threadName;
+	public Long getThreadID() {
+		return threadID;
 	}
 
 }

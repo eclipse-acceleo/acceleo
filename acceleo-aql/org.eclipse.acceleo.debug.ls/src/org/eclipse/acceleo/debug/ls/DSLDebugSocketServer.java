@@ -17,7 +17,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.eclipse.acceleo.debug.IDSLDebugger;
-import org.eclipse.acceleo.debug.util.IModelUpdater;
 import org.eclipse.lsp4j.debug.launch.DSPLauncher;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
@@ -39,8 +38,8 @@ public class DSLDebugSocketServer {
 	 */
 	private Thread serverThread;
 
-	public synchronized void start(final IModelUpdater modelUpdater, final IDSLDebugger debugger,
-			final String language, String host, int port) throws UnknownHostException, IOException {
+	public synchronized void start(final IDSLDebuggerFactory dslDebugFactory, final String language,
+			String host, int port) throws UnknownHostException, IOException {
 		serverSocket = new ServerSocket(port, 50, InetAddress.getByName(host));
 		serverThread = new Thread(new Runnable() {
 
@@ -48,7 +47,9 @@ public class DSLDebugSocketServer {
 				while (true) {
 					try {
 						final Socket client = serverSocket.accept();
-						final DSLDebugServer dslDebugServer = new DSLDebugServer(modelUpdater, debugger);
+						final DSLDebugServer dslDebugServer = new DSLDebugServer();
+						final IDSLDebugger debugger = dslDebugFactory.createDebugger(dslDebugServer);
+						dslDebugServer.setDebugger(debugger);
 						final Launcher<IDebugProtocolClient> launcher = DSPLauncher.createServerLauncher(
 								dslDebugServer, client.getInputStream(), client.getOutputStream());
 						dslDebugServer.connect(launcher.getRemoteProxy());
@@ -65,8 +66,8 @@ public class DSLDebugSocketServer {
 	}
 
 	public synchronized void stop() throws IOException {
-		serverSocket.close();
 		serverThread.interrupt();
+		serverSocket.close();
 	}
 
 }

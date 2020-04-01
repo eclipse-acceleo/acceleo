@@ -32,15 +32,15 @@ public class SetCurrentInstructionReply extends AbstractThreadReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param instruction
 	 *            the current instruction
 	 * @param canStepInto
 	 *            tells if we can step into the current instruction
 	 */
-	public SetCurrentInstructionReply(String threadName, EObject instruction, boolean canStepInto) {
-		super(threadName);
+	public SetCurrentInstructionReply(Long threadID, EObject instruction, boolean canStepInto) {
+		super(threadID);
 		this.instruction = instruction;
 		this.canStepInto = canStepInto;
 	}

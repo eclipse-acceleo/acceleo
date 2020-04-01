@@ -25,8 +25,8 @@ public class SetVariableValueReply extends AbstractVariableReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param stackName
 	 *            the {@link org.eclipse.acceleo.debug.StackFrame#getName() stack frame name}
 	 * @param variableName
@@ -34,8 +34,8 @@ public class SetVariableValueReply extends AbstractVariableReply {
 	 * @param value
 	 *            the value to set
 	 */
-	public SetVariableValueReply(String threadName, String stackName, String variableName, Object value) {
-		super(threadName, stackName, variableName);
+	public SetVariableValueReply(Long threadID, String stackName, String variableName, Object value) {
+		super(threadID, stackName, variableName);
 		this.value = value;
 	}
 

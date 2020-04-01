@@ -27,11 +27,11 @@ public class TerminatedReply extends AbstractThreadReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public TerminatedReply(String threadName) {
-		super(threadName);
+	public TerminatedReply(Long threadID) {
+		super(threadID);
 	}
 
 }

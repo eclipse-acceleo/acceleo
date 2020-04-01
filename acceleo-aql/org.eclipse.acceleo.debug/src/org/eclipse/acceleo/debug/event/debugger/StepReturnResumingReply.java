@@ -20,11 +20,11 @@ public class StepReturnResumingReply extends ResumingReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public StepReturnResumingReply(String threadName) {
-		super(threadName);
+	public StepReturnResumingReply(Long threadID) {
+		super(threadID);
 	}
 
 }

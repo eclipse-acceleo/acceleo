@@ -25,16 +25,28 @@ public class SpawnRunningThreadReply extends AbstractThreadReply {
 	private final EObject context;
 
 	/**
+	 * The thread name.
+	 */
+	private String threadName;
+
+	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
+	 * @param the
+	 *            {@link Thread#getName() thread name}
 	 * @param context
 	 *            the {@link EObject} representing the current context of the thread
 	 */
-	public SpawnRunningThreadReply(String threadName, EObject context) {
-		super(threadName);
+	public SpawnRunningThreadReply(Long threadID, String threadName, EObject context) {
+		super(threadID);
+		this.threadName = threadName;
 		this.context = context;
+	}
+
+	public String getThreadName() {
+		return threadName;
 	}
 
 	/**

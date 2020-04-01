@@ -18,27 +18,26 @@ package org.eclipse.acceleo.debug.event.debugger;
 public abstract class AbstractThreadReply implements IDSLDebuggerReply {
 
 	/**
-	 * The {@link org.eclipse.acceleo.debug.Thread#getName() thread name}.
+	 * The {@link Thread#getId() ID}.
 	 */
-	private final String threadName;
+	private final Long id;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public AbstractThreadReply(String threadName) {
-		this.threadName = threadName;
+	public AbstractThreadReply(Long threadID) {
+		this.id = threadID;
 	}
 
 	/**
-	 * Gets the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}.
+	 * Gets the {@link Thread#getId() ID}.
 	 * 
-	 * @return the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @return the {@link Thread#getId() ID}
 	 */
-	public String getThreadName() {
-		return threadName;
+	public Long getThreadID() {
+		return id;
 	}
-
 }

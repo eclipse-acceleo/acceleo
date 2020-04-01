@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.acceleo.debug.tests;
 
+import java.util.Map;
+
 import org.eclipse.acceleo.debug.AbstractDSLDebugger;
 import org.eclipse.acceleo.debug.DebugPackage;
-import org.eclipse.acceleo.debug.IDSLDebugger.Stepping;
+import org.eclipse.acceleo.debug.DebugTarget;
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.emf.ecore.EObject;
 
@@ -35,15 +37,16 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			spawnRunningThread(Thread.currentThread().getName(), INSTRUCTION_1);
+			spawnRunningThread(Thread.currentThread().getId(), Thread.currentThread().getName(),
+					INSTRUCTION_1);
 			boolean terminated = false;
 			while (!terminated) {
 				for (int i = 0; i < INSTRUCTIONS.length && !terminated; ++i) {
-					terminated = control(Thread.currentThread().getName(), INSTRUCTIONS[i]);
+					terminated = control(Thread.currentThread().getId(), INSTRUCTIONS[i]);
 				}
 			}
-			if (!isTerminated(Thread.currentThread().getName())) {
-				terminated(Thread.currentThread().getName());
+			if (!isTerminated(Thread.currentThread().getId())) {
+				terminated(Thread.currentThread().getId());
 			}
 		}
 	}
@@ -135,10 +138,15 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	private boolean terminateThreadCall;
 
 	/**
-	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#updateData(String, EObject)} call has been
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#updateState(String, EObject)} call has been
 	 * made.
 	 */
-	private boolean updateDataCall;
+	private boolean updateStateCall;
+
+	/**
+	 * A Call to {@link org.eclipse.acceleo.debug.IDSLDebugger#getState()} call has been made.
+	 */
+	private boolean getStateCall;
 
 	/**
 	 * A call to
@@ -148,9 +156,8 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	private boolean getNextInstructionCall;
 
 	/**
-	 * A call to
-	 * {@link org.eclipse.acceleo.debug.IDSLDebugger#validateVariableValue(String, String, String)} call has
-	 * been made.
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#validateVariableValue(String, String, String)}
+	 * call has been made.
 	 */
 	private boolean validateVariableValueCall;
 
@@ -173,50 +180,39 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	 * 
 	 * @param target
 	 *            the {@link org.eclipse.acceleo.debug.event.DSLDebugEventDispatcher dispatcher} for
-	 *            asynchronous communication or the
-	 *            {@link org.eclipse.acceleo.debug.ide.DSLDebugTargetAdapter target} for synchronous
-	 *            communication
+	 *            asynchronous communication or the {@link org.eclipse.acceleo.debug.ide.DSLDebugTargetAdapter
+	 *            target} for synchronous communication
 	 */
 	public TestDSLDebugger(IDSLDebugEventProcessor target) {
 		super(target);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.debug.org.eclipse.acceleo.debug.ide.IDSLDebugger#start()
-	 */
-	public void start() {
+	public void start(boolean noDebug, Map<String, Object> arguments) {
 		startCall = true;
 		new Thread(new Interpreter(), THREAD_NAME_1).start();
 		new Thread(new Interpreter(), THREAD_NAME_2).start();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.debug.org.eclipse.acceleo.debug.ide.IDSLDebugger#disconnect()
-	 */
 	public void disconnect() {
 		disconnectCall = true;
 	}
 
 	@Override
-	public void stepInto(String threadName) {
+	public void stepInto(Long threadID) {
 		stepIntoCall = true;
-		super.stepInto(threadName);
+		super.stepInto(threadID);
 	}
 
 	@Override
-	public void stepOver(String threadName) {
+	public void stepOver(Long threadID) {
 		stepOverCall = true;
-		super.stepOver(threadName);
+		super.stepOver(threadID);
 	}
 
 	@Override
-	public void stepReturn(String threadName) {
+	public void stepReturn(Long threadID) {
 		stepReturnCall = true;
-		super.stepReturn(threadName);
+		super.stepReturn(threadID);
 	}
 
 	@Override
@@ -226,9 +222,9 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	}
 
 	@Override
-	public void resume(String threadName) {
+	public void resume(Long threadID) {
 		resumeThreadCall = true;
-		super.resume(threadName);
+		super.resume(threadID);
 	}
 
 	@Override
@@ -238,9 +234,9 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	}
 
 	@Override
-	public void suspend(String threadName) {
+	public void suspend(Long threadID) {
 		suspendThreadCall = true;
-		super.suspend(threadName);
+		super.suspend(threadID);
 	}
 
 	@Override
@@ -250,9 +246,9 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	}
 
 	@Override
-	public void terminate(String threadName) {
+	public void terminate(Long threadID) {
 		terminateThreadCall = true;
-		super.terminate(threadName);
+		super.terminate(threadID);
 	}
 
 	/**
@@ -261,45 +257,44 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	 * @see org.eclipse.acceleo.debug.org.eclipse.acceleo.debug.ide.IDSLDebugger#canStepInto(java.lang.String,
 	 *      org.eclipse.emf.ecore.EObject)
 	 */
-	public boolean canStepInto(String threadName, EObject instruction) {
+	public boolean canStepInto(Long threadID, EObject instruction) {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.acceleo.debug.org.eclipse.acceleo.debug.ide.IDSLDebugger#updateData(java.lang.String,
-	 *      org.eclipse.emf.ecore.EObject)
-	 */
-	public void updateData(String threadName, EObject instruction) {
-		updateDataCall = true;
+	public void updateState(Long threadID, EObject instruction) {
+		updateStateCall = true;
+	}
+
+	public DebugTarget getState() {
+		getStateCall = true;
+		return null;
 	}
 
 	@Override
-	public EObject getNextInstruction(String threadName, EObject currentInstruction, Stepping stepping) {
+	public EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping) {
 		getNextInstructionCall = true;
-		return super.getNextInstruction(threadName, currentInstruction, stepping);
+		return null;
 	}
 
-	public boolean validateVariableValue(String threadName, String variableName, String value) {
+	public boolean validateVariableValue(Long threadID, String variableName, String value) {
 		validateVariableValueCall = true;
 		return false;
 	}
 
-	public Object getVariableValue(String threadName, String stackName, String variableName, String value) {
+	public Object getVariableValue(Long threadID, String stackName, String variableName, String value) {
 		getVariableValueCall = true;
 		return null;
 	}
 
-	public void setVariableValue(String threadName, String stackName, String variableName, Object value) {
+	public void setVariableValue(Long threadID, String stackName, String variableName, Object value) {
 		setVariableValueCall = true;
 	}
 
 	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#disconnect()} call has been made.
 	 * 
-	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#disconnect()}
-	 *         has been made.
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#disconnect()} has
+	 *         been made.
 	 */
 	public boolean hasDisconnectCall() {
 		return disconnectCall;
@@ -308,8 +303,8 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#start()} call has been made.
 	 * 
-	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#start()} has
-	 *         been made.
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#start()} has been
+	 *         made.
 	 */
 	public boolean hasStartCall() {
 		return startCall;
@@ -318,8 +313,8 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#stepInto(String)} call has been made.
 	 * 
-	 * @return <code>true</code> if a call to
-	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#stepInto(String)} has been made.
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#stepInto(String)}
+	 *         has been made.
 	 */
 	public boolean hasStepIntoCall() {
 		return stepIntoCall;
@@ -328,8 +323,8 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#stepOver(String)} call has been made.
 	 * 
-	 * @return <code>true</code> if a call to
-	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#stepOver(String)} has been made.
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#stepOver(String)}
+	 *         has been made.
 	 */
 	public boolean hasStepOverCall() {
 		return stepOverCall;
@@ -348,8 +343,8 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#resume()} call has been made.
 	 * 
-	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#resume()} has
-	 *         been made.
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#resume()} has been
+	 *         made.
 	 */
 	public boolean hasResumeCall() {
 		return resumeCall;
@@ -398,22 +393,32 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	/**
 	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#terminate(String)} call has been made.
 	 * 
-	 * @return <code>true</code> if a call to
-	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#terminate(String)} has been made.
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#terminate(String)}
+	 *         has been made.
 	 */
 	public boolean hasTerminateThreadCall() {
 		return terminateThreadCall;
 	}
 
 	/**
-	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#updateData(String, EObject)} call has been
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#updateState(String, EObject)} call has been
 	 * made.
 	 * 
 	 * @return <code>true</code> if a call to
-	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#updateData(String, EObject)} has been made
+	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#updateState(String, EObject)} has been made
 	 */
-	public boolean hasUpdateDataCall() {
-		return updateDataCall;
+	public boolean hasUpdateStateCall() {
+		return updateStateCall;
+	}
+
+	/**
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#getState()} call has been made.
+	 * 
+	 * @return <code>true</code> if a call to {@link org.eclipse.acceleo.debug.IDSLDebugger#getState()} has
+	 *         been made
+	 */
+	public boolean hasGetStateCall() {
+		return getStateCall;
 	}
 
 	/**
@@ -430,9 +435,8 @@ public class TestDSLDebugger extends AbstractDSLDebugger {
 	}
 
 	/**
-	 * A call to
-	 * {@link org.eclipse.acceleo.debug.IDSLDebugger#validateVariableValue(String, String, String)} call has
-	 * been made.
+	 * A call to {@link org.eclipse.acceleo.debug.IDSLDebugger#validateVariableValue(String, String, String)}
+	 * call has been made.
 	 * 
 	 * @return <code>true</code> if a call to
 	 *         {@link org.eclipse.acceleo.debug.IDSLDebugger#validateVariableValue(String, String, String)}

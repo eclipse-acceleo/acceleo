@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.debug;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.eclipse.acceleo.debug.event.IDSLDebugEventProcessor;
 import org.eclipse.emf.common.util.URI;
@@ -49,8 +50,13 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 
 	/**
 	 * Starts the debugger.
+	 * 
+	 * @param noDebug
+	 *            <code>true</code> if no debug is needed
+	 * @param arguments
+	 *            the {@link Map} of arguments
 	 */
-	void start();
+	void start(boolean noDebug, Map<String, Object> arguments);
 
 	/**
 	 * Terminates the debugger.
@@ -65,10 +71,10 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	/**
 	 * The thread is suspended with the given state.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void suspended(String threadName);
+	void suspended(Long threadID);
 
 	/**
 	 * Resumes the debugger.
@@ -84,101 +90,101 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 * Tells if we can step into the given the {@link EObject} representing an instruction for the given
 	 * thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param instruction
 	 *            the {@link EObject} representing an instruction
 	 * @return <code>true</code> if we can step into the given instruction, <code>false</code> otherwise
 	 */
-	boolean canStepInto(String threadName, EObject instruction);
+	boolean canStepInto(Long threadID, EObject instruction);
 
 	/**
 	 * Step into the current instruction of the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void stepInto(String threadName);
+	void stepInto(Long threadID);
 
 	/**
 	 * The thread is stepping into.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void steppingInto(String threadName);
+	void steppingInto(Long threadID);
 
 	/**
 	 * Step over the current instruction of the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void stepOver(String threadName);
+	void stepOver(Long threadID);
 
 	/**
 	 * The thread is stepping over.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void steppingOver(String threadName);
+	void steppingOver(Long threadID);
 
 	/**
 	 * Step return from the current stack frame of the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void stepReturn(String threadName);
+	void stepReturn(Long threadID);
 
 	/**
 	 * The thread is stepping return.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void steppingReturn(String threadName);
+	void steppingReturn(Long threadID);
 
 	/**
 	 * The thread is stepped with the given state.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void stepped(String threadName);
+	void stepped(Long threadID);
 
 	/**
 	 * Resumes the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void resume(String threadName);
+	void resume(Long threadID);
 
 	/**
 	 * The thread is resuming.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void resuming(String threadName);
+	void resuming(Long threadID);
 
 	/**
 	 * Suspends the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void suspend(String threadName);
+	void suspend(Long threadID);
 
 	/**
 	 * Terminates the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void terminate(String threadName);
+	void terminate(Long threadID);
 
 	/**
 	 * Adds the given {@link URI} pointing an {@link EObject instruction} as a break point.
@@ -211,10 +217,10 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	/**
 	 * The thread suspended on a breakpoint with the given state.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void breaked(String threadName);
+	void breaked(Long threadID);
 
 	/**
 	 * Notify the debug model that our debugger is terminated.
@@ -225,30 +231,32 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 * Method that can be called by a particular execution engine to delegate control of execution flow of the
 	 * given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param instruction
 	 *            the given {@link EObject} representing an instruction, can't be <code>null</code>
 	 * @return <code>false</code> if execution shall stop, <code>true</code> if execution shall continue
 	 */
-	boolean control(String threadName, EObject instruction);
+	boolean control(Long threadID, EObject instruction);
 
 	/**
 	 * Spawn a running thread in the model.
 	 * 
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param threadName
 	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
 	 * @param context
 	 *            the {@link EObject} representing the current context of the thread
 	 */
-	void spawnRunningThread(String threadName, EObject context);
+	void spawnRunningThread(Long threadID, String threadName, EObject context);
 
 	/**
 	 * Gets the next instruction to step on after the given {@link EObject current instruction} with the given
 	 * {@link Stepping stepping mode}.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param currentInstruction
 	 *            the {@link EObject current instruction}
 	 * @param stepping
@@ -256,7 +264,7 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 * @return the {@link EObject next instruction} to suspend, if <code>null</code> is returned, the very
 	 *         next instruction will be used as the next instruction to suspend.
 	 */
-	EObject getNextInstruction(String threadName, EObject currentInstruction, Stepping stepping);
+	EObject getNextInstruction(Long threadID, EObject currentInstruction, Stepping stepping);
 
 	/**
 	 * Tells is the debugger is terminated.
@@ -285,8 +293,8 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	/**
 	 * Sets the value of the variable with the given name in the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param stackName
 	 *            the stack frame name
 	 * @param declarationTypeName
@@ -298,104 +306,72 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 * @param supportModifications
 	 *            tells if the value can be changed
 	 */
-	void variable(String threadName, String stackName, String declarationTypeName, String variableName,
+	void variable(Long threadID, String stackName, String declarationTypeName, String variableName,
 			Object value, boolean supportModifications);
 
 	/**
 	 * Deletes the variable with the given name for the given thread.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param name
 	 *            the variable name
 	 */
-	void deleteVariable(String threadName, String name);
+	void deleteVariable(Long threadID, String name);
 
 	/**
-	 * Updates data (stack frames, variables, ...) for the given thread and instruction. Call:
-	 * <ul>
-	 * <li>{@link IDSLDebugger#pushStackFrame(String, String, EObject, EObject)}</li>
-	 * <li>{@link IDSLDebugger#popStackFrame(String)}</li>
-	 * <li>{@link IDSLDebugger#setCurrentInstruction(String, EObject)}</li>
-	 * <li>{@link IDSLDebugger#variable(String, String, String, Object)}</li>
-	 * <li>{@link IDSLDebugger#deleteVariable(String, String)}</li>
-	 * </ul>
+	 * Updates data (stack frames, variables, ...) for the given thread and instruction.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param instruction
 	 *            the current instruction
 	 */
-	void updateData(String threadName, EObject instruction);
+	void updateState(Long threadID, EObject instruction);
 
 	/**
-	 * Pushes a stack frame for the given thread.
+	 * Gets the {@link DebugTarget} representing the current state of the debugger.
 	 * 
-	 * @param threadName
-	 *            the thread name
-	 * @param frameName
-	 *            the frame name
-	 * @param context
-	 *            the frame context
-	 * @param instruction
-	 *            the current instruction
+	 * @return the {@link DebugTarget} representing the current state of the debugger
 	 */
-	void pushStackFrame(String threadName, String frameName, EObject context, EObject instruction);
-
-	/**
-	 * Pops a stack frame for the given thread.
-	 * 
-	 * @param threadName
-	 *            the thread name
-	 */
-	void popStackFrame(String threadName);
-
-	/**
-	 * Sets the current instruction for the given thread.
-	 * 
-	 * @param threadName
-	 *            the thread name
-	 * @param instruction
-	 *            the current instruction.
-	 */
-	void setCurrentInstruction(String threadName, EObject instruction);
+	DebugTarget getState();
 
 	/**
 	 * The given thread is terminated.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 */
-	void terminated(String threadName);
+	void terminated(Long threadID);
 
 	/**
 	 * Tells if the given thread is terminated.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @return <code>true</code> if the given thread is terminated, <code>false</code> otherwise
 	 */
-	boolean isTerminated(String threadName);
+	boolean isTerminated(Long threadID);
 
 	/**
 	 * Validates a variable value.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param variableName
 	 *            the variable name
 	 * @param value
 	 *            the value to validate
 	 * @return <code>true</code> if the value is valid, <code>false</code> otherwise
 	 */
-	boolean validateVariableValue(String threadName, String variableName, String value);
+	boolean validateVariableValue(Long threadID, String variableName, String value);
 
 	/**
 	 * Gets the variable value after {@link IDSLDebugger#validateVariableValue(String, String, String)
 	 * validation} returned <code>true</code>.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param stackName
 	 *            the stack frame name
 	 * @param variableName
@@ -404,14 +380,14 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 *            the value to validate
 	 * @return the variable value
 	 */
-	Object getVariableValue(String threadName, String stackName, String variableName, String value);
+	Object getVariableValue(Long threadID, String stackName, String variableName, String value);
 
 	/**
 	 * Sets the variable value after {@link IDSLDebugger#validateVariableValue(String, String, String)
 	 * validation} returned <code>true</code>.
 	 * 
-	 * @param threadName
-	 *            the thread name
+	 * @param threadID
+	 *            the {@link Thread#getThreadID() ID}
 	 * @param stackName
 	 *            the stack frame name
 	 * @param variableName
@@ -419,6 +395,6 @@ public interface IDSLDebugger extends IDSLDebugEventProcessor {
 	 * @param value
 	 *            the value to validate
 	 */
-	void setVariableValue(String threadName, String stackName, String variableName, Object value);
+	void setVariableValue(Long threadID, String stackName, String variableName, Object value);
 
 }

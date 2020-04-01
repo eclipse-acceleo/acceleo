@@ -30,15 +30,15 @@ public abstract class AbstractVariableReply extends AbstractThreadReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param stackName
 	 *            the {@link org.eclipse.acceleo.debug.StackFrame#getName() stack frame name}
 	 * @param variableName
 	 *            the {@link org.eclipse.acceleo.debug.Variable#getName() variable name}
 	 */
-	public AbstractVariableReply(String threadName, String stackName, String variableName) {
-		super(threadName);
+	public AbstractVariableReply(Long threadID, String stackName, String variableName) {
+		super(threadID);
 		this.stackName = stackName;
 		this.variableName = variableName;
 	}

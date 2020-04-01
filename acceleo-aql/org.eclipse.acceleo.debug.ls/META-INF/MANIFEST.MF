@@ -7,10 +7,10 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
+Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.acceleo.debug,
  org.eclipse.lsp4j.debug;bundle-version="0.8.1",
  org.eclipse.lsp4j.jsonrpc;bundle-version="0.8.1"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: org.eclipse.acceleo.debug.ls
+Export-Package: org.eclipse.acceleo.debug.ls

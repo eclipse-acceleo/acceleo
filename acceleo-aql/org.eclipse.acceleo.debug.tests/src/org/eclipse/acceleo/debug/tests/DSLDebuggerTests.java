@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.acceleo.debug.tests;
 
+import java.util.Collections;
+
 import org.eclipse.acceleo.debug.DebugPackage;
 import org.eclipse.acceleo.debug.Variable;
 import org.eclipse.acceleo.debug.event.IDSLDebugEvent;
@@ -46,7 +48,7 @@ public class DSLDebuggerTests {
 		final TestEventProcessor target = new TestEventProcessor();
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
-		debugger.handleEvent(new StartRequest());
+		debugger.handleEvent(new StartRequest(false, Collections.<String, Object> emptyMap()));
 
 		assertTrue(debugger.hasStartCall());
 	}
@@ -67,7 +69,7 @@ public class DSLDebuggerTests {
 		assertEquals(1, target.getEvents().size());
 		IDSLDebugEvent event = target.getEvents().get(0);
 		assertTrue(event instanceof TerminatedReply);
-		assertEquals(null, ((TerminatedReply)event).getThreadName());
+		assertEquals(null, ((TerminatedReply)event).getThreadID());
 	}
 
 	/**
@@ -79,8 +81,9 @@ public class DSLDebuggerTests {
 		final TestEventProcessor target = new TestEventProcessor();
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
-		debugger.spawnRunningThread("thread", DebugPackage.eINSTANCE.getDebugFactory().createVariable());
-		debugger.handleEvent(new TerminateRequest("thread"));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", DebugPackage.eINSTANCE.getDebugFactory()
+				.createVariable());
+		debugger.handleEvent(new TerminateRequest(Long.valueOf(1)));
 
 		assertTrue(debugger.hasTerminateThreadCall());
 	}
@@ -108,8 +111,9 @@ public class DSLDebuggerTests {
 		final TestEventProcessor target = new TestEventProcessor();
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
-		debugger.spawnRunningThread("thread", DebugPackage.eINSTANCE.getDebugFactory().createVariable());
-		debugger.handleEvent(new SuspendRequest("thread"));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", DebugPackage.eINSTANCE.getDebugFactory()
+				.createVariable());
+		debugger.handleEvent(new SuspendRequest(Long.valueOf(1)));
 
 		assertTrue(debugger.hasSuspendThreadCall());
 	}
@@ -137,8 +141,9 @@ public class DSLDebuggerTests {
 		final TestEventProcessor target = new TestEventProcessor();
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
-		debugger.spawnRunningThread("thread", DebugPackage.eINSTANCE.getDebugFactory().createVariable());
-		debugger.handleEvent(new ResumeRequest("thread"));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", DebugPackage.eINSTANCE.getDebugFactory()
+				.createVariable());
+		debugger.handleEvent(new ResumeRequest(Long.valueOf(1)));
 
 		assertTrue(debugger.hasResumeThreadCall());
 	}
@@ -153,9 +158,8 @@ public class DSLDebuggerTests {
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
 		final Variable instruction = DebugPackage.eINSTANCE.getDebugFactory().createVariable();
-		debugger.spawnRunningThread("thread", instruction);
-		debugger.pushStackFrame("thread", "frame", instruction, instruction);
-		debugger.handleEvent(new StepIntoRequest("thread", instruction));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", instruction);
+		debugger.handleEvent(new StepIntoRequest(Long.valueOf(1), instruction));
 
 		assertTrue(debugger.hasStepIntoCall());
 	}
@@ -170,9 +174,8 @@ public class DSLDebuggerTests {
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
 		final Variable instruction = DebugPackage.eINSTANCE.getDebugFactory().createVariable();
-		debugger.spawnRunningThread("thread", instruction);
-		debugger.pushStackFrame("thread", "frame", instruction, instruction);
-		debugger.handleEvent(new StepOverRequest("thread", instruction));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", instruction);
+		debugger.handleEvent(new StepOverRequest(Long.valueOf(1), instruction));
 
 		assertTrue(debugger.hasStepOverCall());
 	}
@@ -187,9 +190,8 @@ public class DSLDebuggerTests {
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
 		final Variable instruction = DebugPackage.eINSTANCE.getDebugFactory().createVariable();
-		debugger.spawnRunningThread("thread", instruction);
-		debugger.pushStackFrame("thread", "frame", instruction, instruction);
-		debugger.handleEvent(new StepReturnRequest("thread", instruction));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", instruction);
+		debugger.handleEvent(new StepReturnRequest(Long.valueOf(1), instruction));
 
 		assertTrue(debugger.hasStepReturnCall());
 	}
@@ -204,8 +206,7 @@ public class DSLDebuggerTests {
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
 		final Variable instruction = DebugPackage.eINSTANCE.getDebugFactory().createVariable();
-		debugger.spawnRunningThread("thread", instruction);
-		debugger.pushStackFrame("thread", "frame", instruction, instruction);
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", instruction);
 		debugger.handleEvent(new DisconnectRequest());
 
 		assertTrue(debugger.hasDisconnectCall());
@@ -221,10 +222,9 @@ public class DSLDebuggerTests {
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
 		final Variable instruction = DebugPackage.eINSTANCE.getDebugFactory().createVariable();
-		debugger.spawnRunningThread("thread", instruction);
-		debugger.pushStackFrame("thread", "frame", instruction, instruction);
-		debugger.variable("thread", "frame", "int", "variable", "value", false);
-		debugger.handleEvent(new SetVariableValueRequest("thread", "frame", "variable", "value2"));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", instruction);
+		debugger.variable(Long.valueOf(1), "frame", "int", "variable", "value", false);
+		debugger.handleEvent(new SetVariableValueRequest(Long.valueOf(1), "frame", "variable", "value2"));
 
 		assertTrue(debugger.hasSetVariableValueCall());
 	}
@@ -239,10 +239,10 @@ public class DSLDebuggerTests {
 		final TestDSLDebugger debugger = new TestDSLDebugger(target);
 
 		final Variable instruction = DebugPackage.eINSTANCE.getDebugFactory().createVariable();
-		debugger.spawnRunningThread("thread", instruction);
-		debugger.pushStackFrame("thread", "frame", instruction, instruction);
-		debugger.variable("thread", "frame", "int", "variable", "value", false);
-		debugger.handleEvent(new ValidateVariableValueRequest("thread", "frame", "variable", "value2"));
+		debugger.spawnRunningThread(Long.valueOf(1), "thread", instruction);
+		debugger.variable(Long.valueOf(1), "frame", "int", "variable", "value", false);
+		debugger.handleEvent(new ValidateVariableValueRequest(Long.valueOf(1), "frame", "variable",
+				"value2"));
 
 		assertTrue(debugger.hasValidateVariableValueCall());
 	}

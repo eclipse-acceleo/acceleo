@@ -25,8 +25,8 @@ public class ValidateVariableValueReply extends AbstractVariableReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param stackName
 	 *            the {@link org.eclipse.acceleo.debug.StackFrame#getName() stack frame name}
 	 * @param variableName
@@ -34,9 +34,8 @@ public class ValidateVariableValueReply extends AbstractVariableReply {
 	 * @param valid
 	 *            tells if the value is valid
 	 */
-	public ValidateVariableValueReply(String threadName, String stackName, String variableName,
-			boolean valid) {
-		super(threadName, stackName, variableName);
+	public ValidateVariableValueReply(Long threadID, String stackName, String variableName, boolean valid) {
+		super(threadID, stackName, variableName);
 		this.valid = valid;
 	}
 

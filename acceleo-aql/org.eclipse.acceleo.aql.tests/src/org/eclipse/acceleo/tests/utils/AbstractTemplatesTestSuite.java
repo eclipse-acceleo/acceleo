@@ -40,7 +40,6 @@ import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.AcceleoEvaluator;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
-import org.eclipse.acceleo.aql.evaluation.WriterEvaludationListener;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
@@ -108,7 +107,7 @@ public abstract class AbstractTemplatesTestSuite {
 	/**
 	 * The {@link IAcceleoEnvironment}.
 	 */
-	private final IAcceleoEnvironment environment = new AcceleoEnvironment();
+	private final IAcceleoEnvironment environment;
 
 	/**
 	 * The {@link AcceleoEvaluator}.
@@ -121,6 +120,16 @@ public abstract class AbstractTemplatesTestSuite {
 	private final String qualifiedName;
 
 	/**
+	 * The memory destination {@link String}.
+	 */
+	private final String memoryDestinationString;
+
+	/**
+	 * The memoty destination {@link URI}.
+	 */
+	private URI memoryDestination;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param testFolder
@@ -129,13 +138,16 @@ public abstract class AbstractTemplatesTestSuite {
 	 *             if the tested template can't be read
 	 */
 	public AbstractTemplatesTestSuite(String testFolder) throws IOException {
+		this.memoryDestinationString = "acceleotests://" + testFolder + "/";
+		this.memoryDestination = URI.createURI(memoryDestinationString);
+		this.environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), memoryDestination);
 		this.testFolderPath = testFolder;
 		final File modelFile = getModelFile(new File(testFolderPath));
 		final ResourceSet rs = getResourceSet();
 		model = getModel(modelFile, rs);
 		final File moduleFile = getModuleFile(new File(testFolderPath));
 		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
-		evaluator = new AcceleoEvaluator(environment);
+		evaluator = new AcceleoEvaluator();
 
 		try (FileInputStream stream = new FileInputStream(moduleFile)) {
 			astResult = parser.parse(getContent(stream, UTF_8));
@@ -335,23 +347,14 @@ public abstract class AbstractTemplatesTestSuite {
 				}
 			}
 
-			final String memoryDestinationString = "acceleotests://" + testFolderPath + "/";
-			final URI memoryDestination = URI.createURI(memoryDestinationString);
-			final WriterEvaludationListener listener = new WriterEvaludationListener(
-					new DefaultGenerationStrategy(), memoryDestination);
-			environment.getEvaluationListeners().add(listener);
-			try {
-				for (EObject eObj : eObjects) {
-					final Map<String, Object> variables = new HashMap<String, Object>();
-					variables.put(parameterName, eObj);
-					evaluator.generate(module, variables);
-				}
-			} finally {
-				environment.getEvaluationListeners().remove(listener);
+			for (EObject eObj : eObjects) {
+				final Map<String, Object> variables = new HashMap<String, Object>();
+				variables.put(parameterName, eObj);
+				evaluator.generate(environment, module, variables);
 			}
 
 			// assert generated content
-			final GenerationResult result = listener.getGenerationResult();
+			final GenerationResult result = environment.getGenerationResult();
 			final URI generatedFolderURI = URI.createURI("generated/").resolve(module.eResource().getURI());
 			for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
 				final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(

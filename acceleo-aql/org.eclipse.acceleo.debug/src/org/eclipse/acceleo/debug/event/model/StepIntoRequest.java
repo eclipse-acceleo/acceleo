@@ -22,13 +22,13 @@ public class StepIntoRequest extends AbstractStepRequest {
 	/**
 	 * Constructor.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 * @param instruction
 	 *            the {@link EObject} representing the current instruction
 	 */
-	public StepIntoRequest(String threadName, EObject instruction) {
-		super(threadName, instruction);
+	public StepIntoRequest(Long threadID, EObject instruction) {
+		super(threadID, instruction);
 	}
 
 }

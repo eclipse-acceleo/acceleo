@@ -20,11 +20,11 @@ public class StepOverResumingReply extends ResumingReply {
 	/**
 	 * Constructor for {@link org.eclipse.acceleo.debug.Thread Thread}.
 	 * 
-	 * @param threadName
-	 *            the {@link org.eclipse.acceleo.debug.Thread#getName() thread name}
+	 * @param threadID
+	 *            the {@link Thread#getId() ID}
 	 */
-	public StepOverResumingReply(String threadName) {
-		super(threadName);
+	public StepOverResumingReply(Long threadID) {
+		super(threadID);
 	}
 
 }
