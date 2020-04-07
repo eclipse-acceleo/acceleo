@@ -475,11 +475,12 @@ public class AcceleoParser {
 	protected String parseIdentifier() {
 		final String res;
 
-		if (currentPosition < text.length() && Character.isJavaIdentifierStart(text.charAt(currentPosition))) {
+		if (currentPosition < text.length() && Character.isJavaIdentifierStart(text.charAt(
+				currentPosition))) {
 			final int identifierStart = currentPosition;
 			currentPosition++;
-			while (currentPosition < text.length()
-					&& Character.isJavaIdentifierPart(text.charAt(currentPosition))) {
+			while (currentPosition < text.length() && Character.isJavaIdentifierPart(text.charAt(
+					currentPosition))) {
 				currentPosition++;
 			}
 			res = text.substring(identifierStart, currentPosition);
@@ -1538,7 +1539,14 @@ public class AcceleoParser {
 			}
 			missingColon = -1;
 		} else {
-			type = null;
+			skipSpaces();
+			final int typeEndLimit = Math.min(getAqlExpressionEndLimit(affectationSymbol, COMMA), endLimit);
+			type = parseWhileAqlTypeLiteral(text.substring(currentPosition, typeEndLimit));
+			currentPosition += type.getEndPosition(type.getAst());
+			if (type.getStartPosition(type.getAst()) == type.getEndPosition(type.getAst())) {
+				missingColon = -1;
+				type = null;
+			}
 			missingType = -1;
 		}
 		skipSpaces();
@@ -1558,7 +1566,8 @@ public class AcceleoParser {
 		skipSpaces();
 		final Expression expression = parseExpression(endLimit);
 		if (missingName == -1) {
-			final boolean hasErrorExpression = expression.getAst().getAst() instanceof org.eclipse.acceleo.query.ast.Error;
+			final boolean hasErrorExpression = expression.getAst()
+					.getAst() instanceof org.eclipse.acceleo.query.ast.Error;
 			if (missingColon != -1 || missingType != -1 || missingAffectationSymbol != -1
 					|| hasErrorExpression) {
 				res = AcceleoPackage.eINSTANCE.getAcceleoFactory().createErrorBinding();
@@ -1697,8 +1706,8 @@ public class AcceleoParser {
 	protected ExpressionStatement parseExpressionStatement() {
 		final ExpressionStatement res;
 
-		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition)
-				&& text.startsWith(EXPRESSION_STATEMENT_START, currentPosition)) {
+		if (!text.startsWith(END_BLOCK_PREFIX, currentPosition) && text.startsWith(EXPRESSION_STATEMENT_START,
+				currentPosition)) {
 			final int startPosition = currentPosition;
 			currentPosition += EXPRESSION_STATEMENT_START.length();
 			skipSpaces();
@@ -1942,8 +1951,8 @@ public class AcceleoParser {
 
 		int parenthesisDepth = 0;
 		while (res < text.length()) {
-			if (text.startsWith(endTag, res) || parenthesisDepth == 0
-					&& (text.startsWith(endDelimiter, res) || text.startsWith(TEXT_END, res))) {
+			if (text.startsWith(endTag, res) || parenthesisDepth == 0 && (text.startsWith(endDelimiter, res)
+					|| text.startsWith(TEXT_END, res))) {
 				break;
 			}
 			switch (text.charAt(res)) {

@@ -39,7 +39,7 @@
     <<statementInIfStatementElse>>
     yet some different static text again.
   [/if]
-  [let <<letStatementBindingName>>myVariable <<letStatementBindingColumn>>: <<letStatementBindingType>>ecore::EClassifier <<letStatementBindingEqual>>= <<letStatementBindingExpression>>myParam.<<letStatementBindingExpressionAfterDot>>eClassifiers->first()<<letStatementEndHeader>>]
+  [let <<letStatementBindingName>>myVariable <<letStatementBindingColon>>: <<letStatementBindingType>>ecore::EClassifier <<letStatementBindingEqual>>= <<letStatementBindingExpression>>myParam.<<letStatementBindingExpressionAfterDot>>eClassifiers->first()<<letStatementEndHeader>>]
     <<statementInLetStatement>>
     some static text.
   [/let]

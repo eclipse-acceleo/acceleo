@@ -1,1 +1,0 @@
-ERROR The myVariable variable has no types - 262 272

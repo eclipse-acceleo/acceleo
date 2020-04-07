@@ -1,0 +1,15 @@
+
+header position 0..59
+module myModule
+  metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
+  
+  public template myTemplate(myParam : EPackage (89..114))
+    
+   (116..119)
+    [for myVariable : null = 'a', 'b', 'c', } (138..161) (125..161)
+      
+    some static text.
+   (163..188) (163..188)
+    [/for] (119..194)
+    
+ (194..195) (116..195)[/template] (61..206) (0..206)

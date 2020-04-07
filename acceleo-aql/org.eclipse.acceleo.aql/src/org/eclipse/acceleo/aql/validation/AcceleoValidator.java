@@ -179,8 +179,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			if (metamodel.getReferencedPackage() != null) {
 				if (!ePackages.add(metamodel.getReferencedPackage())) {
 					addMessage(module, ValidationMessageLevel.WARNING, metamodel.getReferencedPackage()
-							.getNsURI()
-							+ " already referenced", metamodel.getStartPosition(), metamodel.getEndPosition());
+							.getNsURI() + " already referenced", metamodel.getStartPosition(), metamodel
+									.getEndPosition());
 				}
 			}
 		}
@@ -223,20 +223,20 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorModule(ErrorModule errorModule) {
 		if (errorModule.getMissingOpenParenthesis() != -1) {
-			addMessage(errorModule, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorModule
-							.getMissingOpenParenthesis(), errorModule.getMissingOpenParenthesis());
+			addMessage(errorModule, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorModule.getMissingOpenParenthesis(), errorModule
+							.getMissingOpenParenthesis());
 		} else if (errorModule.getMissingEPackage() != -1) {
 			addMessage(errorModule, ValidationMessageLevel.ERROR, "Missing metamodel", errorModule
 					.getMissingEPackage(), errorModule.getMissingEPackage());
 		} else if (errorModule.getMissingCloseParenthesis() != -1) {
-			addMessage(errorModule, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorModule
-							.getMissingCloseParenthesis(), errorModule.getMissingCloseParenthesis());
+			addMessage(errorModule, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorModule.getMissingCloseParenthesis(), errorModule
+							.getMissingCloseParenthesis());
 		} else if (errorModule.getMissingEndHeader() != -1) {
-			addMessage(errorModule, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.MODULE_HEADER_END), errorModule
-							.getMissingEndHeader(), errorModule.getMissingEndHeader());
+			addMessage(errorModule, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.MODULE_HEADER_END), errorModule.getMissingEndHeader(), errorModule
+							.getMissingEndHeader());
 		}
 
 		return null;
@@ -250,13 +250,12 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorMetamodel(ErrorMetamodel errorMetamodel) {
 		if (errorMetamodel.getFragment() != null) {
-			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel "
-					+ errorMetamodel.getFragment(), errorMetamodel.getStartPosition(), errorMetamodel
-					.getEndPosition());
+			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, "Invalid metamodel " + errorMetamodel
+					.getFragment(), errorMetamodel.getStartPosition(), errorMetamodel.getEndPosition());
 		} else if (errorMetamodel.getMissingEndQuote() != -1) {
-			addMessage(errorMetamodel, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.QUOTE), errorMetamodel.getMissingEndQuote(),
-					errorMetamodel.getMissingEndQuote());
+			addMessage(errorMetamodel, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.QUOTE), errorMetamodel.getMissingEndQuote(), errorMetamodel
+							.getMissingEndQuote());
 		}
 
 		return null;
@@ -273,9 +272,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		doSwitch(errorImport.getModule());
 
 		if (errorImport.getMissingEnd() != -1) {
-			addMessage(errorImport, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.IMPORT_END), errorImport.getMissingEnd(),
-					errorImport.getMissingEnd());
+			addMessage(errorImport, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.IMPORT_END), errorImport.getMissingEnd(), errorImport.getMissingEnd());
 		}
 
 		return null;
@@ -286,7 +284,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		if (!environment.hasModule(moduleReference.getQualifiedName())) {
 			addMessage(moduleReference, ValidationMessageLevel.ERROR, "Could not find module "
 					+ moduleReference.getQualifiedName(), moduleReference.getStartPosition(), moduleReference
-					.getEndPosition());
+							.getEndPosition());
 		}
 
 		return RETURN_VALUE;
@@ -318,7 +316,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					if (!parameterNames.add(parameter.getName())) {
 						addMessage(template, ValidationMessageLevel.ERROR, parameter.getName()
 								+ " duplicated parameter", parameter.getStartPosition(), parameter
-								.getEndPosition());
+										.getEndPosition());
 
 					}
 				}
@@ -355,37 +353,36 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorTemplate, ValidationMessageLevel.ERROR, MISSING_NAME, errorTemplate
 					.getMissingName(), errorTemplate.getMissingName());
 		} else if (errorTemplate.getMissingOpenParenthesis() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorTemplate
-							.getMissingOpenParenthesis(), errorTemplate.getMissingOpenParenthesis());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorTemplate.getMissingOpenParenthesis(), errorTemplate
+							.getMissingOpenParenthesis());
 		} else if (errorTemplate.getMissingParameters() != -1) {
 			addMessage(errorTemplate, ValidationMessageLevel.ERROR, "Missing parameter", errorTemplate
 					.getMissingParameters(), errorTemplate.getMissingParameters());
 		} else if (errorTemplate.getMissingCloseParenthesis() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
-							.getMissingCloseParenthesis(), errorTemplate.getMissingCloseParenthesis());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorTemplate.getMissingCloseParenthesis(),
+					errorTemplate.getMissingCloseParenthesis());
 		} else if (errorTemplate.getMissingGuardOpenParenthesis() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorTemplate
-							.getMissingGuardOpenParenthesis(), errorTemplate.getMissingGuardOpenParenthesis());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorTemplate.getMissingGuardOpenParenthesis(),
+					errorTemplate.getMissingGuardOpenParenthesis());
 		} else if (errorTemplate.getMissingGuardCloseParenthesis() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
-							.getMissingGuardCloseParenthesis(), errorTemplate
-							.getMissingGuardCloseParenthesis());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorTemplate.getMissingGuardCloseParenthesis(),
+					errorTemplate.getMissingGuardCloseParenthesis());
 		} else if (errorTemplate.getMissingPostCloseParenthesis() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorTemplate
-							.getMissingPostCloseParenthesis(), errorTemplate.getMissingPostCloseParenthesis());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorTemplate.getMissingPostCloseParenthesis(),
+					errorTemplate.getMissingPostCloseParenthesis());
 		} else if (errorTemplate.getMissingEndHeader() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.TEMPLATE_HEADER_END), errorTemplate
-							.getMissingEndHeader(), errorTemplate.getMissingEndHeader());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.TEMPLATE_HEADER_END), errorTemplate.getMissingEndHeader(), errorTemplate
+							.getMissingEndHeader());
 		} else if (errorTemplate.getMissingEnd() != -1) {
-			addMessage(errorTemplate, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.TEMPLATE_END), errorTemplate.getMissingEnd(),
-					errorTemplate.getMissingEnd());
+			addMessage(errorTemplate, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.TEMPLATE_END), errorTemplate.getMissingEnd(), errorTemplate
+							.getMissingEnd());
 		}
 
 		return null;
@@ -403,17 +400,17 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					if (!parameterNames.add(parameter.getName())) {
 						addMessage(query, ValidationMessageLevel.ERROR, parameter.getName()
 								+ " duplicated parameter", parameter.getStartPosition(), parameter
-								.getEndPosition());
+										.getEndPosition());
 
 					}
 				}
 			}
 			final IValidationResult validationResult = validateExpression(query.getBody());
-			result.getMessages().putAll(query,
-					shiftMessages(validationResult.getMessages(), query.getBody().getStartPosition()));
+			result.getMessages().putAll(query, shiftMessages(validationResult.getMessages(), query.getBody()
+					.getStartPosition()));
 
-			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult
-					.getAstResult().getAst());
+			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
+					.getAst());
 			if (query.getType() != null) {
 				final IValidationResult typeValidationResult = validator.validate(null, query.getType());
 				result.getAqlValidationResutls().put(query.getType(), typeValidationResult);
@@ -438,16 +435,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorQuery, ValidationMessageLevel.ERROR, MISSING_NAME, errorQuery.getMissingName(),
 					errorQuery.getMissingName());
 		} else if (errorQuery.getMissingOpenParenthesis() != -1) {
-			addMessage(errorQuery, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorQuery
-							.getMissingOpenParenthesis(), errorQuery.getMissingOpenParenthesis());
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorQuery.getMissingOpenParenthesis(), errorQuery
+							.getMissingOpenParenthesis());
 		} else if (errorQuery.getMissingParameters() != -1) {
 			addMessage(errorQuery, ValidationMessageLevel.ERROR, "Missing parameter", errorQuery
 					.getMissingParameters(), errorQuery.getMissingParameters());
 		} else if (errorQuery.getMissingCloseParenthesis() != -1) {
-			addMessage(errorQuery, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorQuery
-							.getMissingCloseParenthesis(), errorQuery.getMissingCloseParenthesis());
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorQuery.getMissingCloseParenthesis(), errorQuery
+							.getMissingCloseParenthesis());
 		} else if (errorQuery.getMissingColon() != -1) {
 			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(AcceleoParser.COLON),
 					errorQuery.getMissingColon(), errorQuery.getMissingColon());
@@ -458,9 +455,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(AcceleoParser.EQUAL),
 					errorQuery.getMissingEqual(), errorQuery.getMissingEqual());
 		} else if (errorQuery.getMissingEnd() != -1) {
-			addMessage(errorQuery, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.QUERY_END), errorQuery.getMissingEnd(), errorQuery
-							.getMissingEnd());
+			addMessage(errorQuery, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.QUERY_END), errorQuery.getMissingEnd(), errorQuery.getMissingEnd());
 		}
 
 		return null;
@@ -487,9 +483,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorVariable, ValidationMessageLevel.ERROR, MISSING_NAME, errorVariable
 					.getMissingName(), errorVariable.getMissingName());
 		} else if (errorVariable.getMissingColon() != -1) {
-			addMessage(errorVariable, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.COLON), errorVariable.getMissingColon(),
-					errorVariable.getMissingColon());
+			addMessage(errorVariable, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.COLON), errorVariable.getMissingColon(), errorVariable.getMissingColon());
 		} else if (errorVariable.getMissingType() != -1) {
 			addMessage(errorVariable, ValidationMessageLevel.ERROR, "Missing or invalid type", errorVariable
 					.getMissingType(), errorVariable.getMissingType());
@@ -505,10 +500,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					+ " already exists.", binding.getStartPosition(), binding.getEndPosition());
 		}
 		final IValidationResult validationResult = validateExpression(binding.getInitExpression());
-		result.getMessages()
-				.putAll(binding,
-						shiftMessages(validationResult.getMessages(), binding.getInitExpression()
-								.getStartPosition()));
+		result.getMessages().putAll(binding, shiftMessages(validationResult.getMessages(), binding
+				.getInitExpression().getStartPosition()));
 
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
@@ -518,13 +511,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			final Set<IType> iTypes = validator.getDeclarationTypes(environment.getQueryEnvironment(),
 					typeValidationResult.getPossibleTypes(binding.getType().getAst()));
 			checkTypesCompatibility(binding, possibleTypes, iTypes);
-		} else if (forceCollectionBinding) {
-			for (IType possibleType : possibleTypes) {
-				if (!(possibleType instanceof ICollectionType)) {
-					addMessage(binding, ValidationMessageLevel.ERROR, "Must be a Collection not "
-							+ possibleType, binding.getStartPosition(), binding.getEndPosition());
-				}
-			}
 		}
 
 		final Set<IType> variableTypes = new LinkedHashSet<IType>();
@@ -532,6 +518,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			for (IType possibleType : possibleTypes) {
 				if (possibleType instanceof ICollectionType) {
 					variableTypes.add(((ICollectionType)possibleType).getCollectionType());
+				} else {
+					variableTypes.add(possibleType);
 				}
 			}
 		} else {
@@ -564,8 +552,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 						messages.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
 					} else {
 						messages.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-								+ " is incompatible with " + possibleType, binding.getStartPosition(),
-								binding.getEndPosition()));
+								+ " is incompatible with " + possibleType, binding.getStartPosition(), binding
+										.getEndPosition()));
 					}
 				} else {
 					hasCompatibleType = true;
@@ -595,12 +583,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 		if (possibleType instanceof ICollectionType) {
 			if (!iType.isAssignableFrom(((ICollectionType)possibleType).getCollectionType())) {
-				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-						+ " is incompatible with " + possibleType, node.getStartPosition(), node
-						.getEndPosition()));
+				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + " is incompatible with "
+						+ possibleType, node.getStartPosition(), node.getEndPosition()));
 			}
-		} else {
-			res.add(new ValidationMessage(ValidationMessageLevel.ERROR, "Must be a Collection not "
+		} else if (!iType.isAssignableFrom(possibleType)) {
+			res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + " is incompatible with "
 					+ possibleType, node.getStartPosition(), node.getEndPosition()));
 		}
 
@@ -613,9 +600,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(errorBinding, ValidationMessageLevel.ERROR, MISSING_NAME, errorBinding
 					.getMissingName(), errorBinding.getMissingName());
 		} else if (errorBinding.getMissingColon() != -1) {
-			addMessage(errorBinding, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.COLON), errorBinding.getMissingColon(), errorBinding
-							.getMissingColon());
+			addMessage(errorBinding, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.COLON), errorBinding.getMissingColon(), errorBinding.getMissingColon());
 		} else if (errorBinding.getMissingType() != -1) {
 			addMessage(errorBinding, ValidationMessageLevel.ERROR, "Missing type literal", errorBinding
 					.getMissingType(), errorBinding.getMissingType());
@@ -638,9 +624,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	public Object caseErrorExpressionStatement(ErrorExpressionStatement errorExpressionStatement) {
 		doSwitch(errorExpressionStatement.getExpression());
 		if (errorExpressionStatement.getMissingEndHeader() != -1) {
-			addMessage(errorExpressionStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.EXPRESSION_STATEMENT_END), errorExpressionStatement
-							.getMissingEndHeader(), errorExpressionStatement.getMissingEndHeader());
+			addMessage(errorExpressionStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.EXPRESSION_STATEMENT_END), errorExpressionStatement.getMissingEndHeader(),
+					errorExpressionStatement.getMissingEndHeader());
 		}
 
 		return null;
@@ -657,21 +643,21 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorProtectedArea(ErrorProtectedArea errorProtectedArea) {
 		if (errorProtectedArea.getMissingOpenParenthesis() != -1) {
-			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorProtectedArea
-							.getMissingOpenParenthesis(), errorProtectedArea.getMissingOpenParenthesis());
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorProtectedArea.getMissingOpenParenthesis(),
+					errorProtectedArea.getMissingOpenParenthesis());
 		} else if (errorProtectedArea.getMissingCloseParenthesis() != -1) {
-			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea
-							.getMissingCloseParenthesis(), errorProtectedArea.getMissingCloseParenthesis());
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorProtectedArea.getMissingCloseParenthesis(),
+					errorProtectedArea.getMissingCloseParenthesis());
 		} else if (errorProtectedArea.getMissingEndHeader() != -1) {
-			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.PROTECTED_AREA_HEADER_END), errorProtectedArea
-							.getMissingEndHeader(), errorProtectedArea.getMissingEndHeader());
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.PROTECTED_AREA_HEADER_END), errorProtectedArea.getMissingEndHeader(),
+					errorProtectedArea.getMissingEndHeader());
 		} else if (errorProtectedArea.getMissingEnd() != -1) {
-			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.PROTECTED_AREA_END), errorProtectedArea
-							.getMissingEnd(), errorProtectedArea.getMissingEnd());
+			addMessage(errorProtectedArea, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.PROTECTED_AREA_END), errorProtectedArea.getMissingEnd(), errorProtectedArea
+							.getMissingEnd());
 		}
 
 		return null;
@@ -681,8 +667,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	public Object caseExpression(Expression expression) {
 		final IValidationResult validationResult = validateExpression(expression);
 
-		result.getMessages().putAll(expression,
-				shiftMessages(validationResult.getMessages(), expression.getStartPosition()));
+		result.getMessages().putAll(expression, shiftMessages(validationResult.getMessages(), expression
+				.getStartPosition()));
 
 		return RETURN_VALUE;
 	}
@@ -710,24 +696,24 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorForStatement(ErrorForStatement errorForStatement) {
 		if (errorForStatement.getMissingOpenParenthesis() != -1) {
-			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorForStatement
-							.getMissingOpenParenthesis(), errorForStatement.getMissingOpenParenthesis());
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorForStatement.getMissingOpenParenthesis(),
+					errorForStatement.getMissingOpenParenthesis());
 		} else if (errorForStatement.getMissingBinding() != -1) {
 			addMessage(errorForStatement, ValidationMessageLevel.ERROR, "Missing binding", errorForStatement
 					.getMissingBinding(), errorForStatement.getMissingBinding());
 		} else if (errorForStatement.getMissingCloseParenthesis() != -1) {
-			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorForStatement
-							.getMissingCloseParenthesis(), errorForStatement.getMissingCloseParenthesis());
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorForStatement.getMissingCloseParenthesis(),
+					errorForStatement.getMissingCloseParenthesis());
 		} else if (errorForStatement.getMissingEndHeader() != -1) {
-			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.FOR_HEADER_END), errorForStatement
-							.getMissingEndHeader(), errorForStatement.getMissingEndHeader());
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.FOR_HEADER_END), errorForStatement.getMissingEndHeader(), errorForStatement
+							.getMissingEndHeader());
 		} else if (errorForStatement.getMissingEnd() != -1) {
-			addMessage(errorForStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.FOR_END), errorForStatement.getMissingEnd(),
-					errorForStatement.getMissingEnd());
+			addMessage(errorForStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.FOR_END), errorForStatement.getMissingEnd(), errorForStatement
+							.getMissingEnd());
 		}
 
 		return null;
@@ -738,8 +724,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final IValidationResult validationResult = validateExpression(ifStatement.getCondition());
 		final Set<IType> conditionTypes = validationResult.getPossibleTypes(ifStatement.getCondition()
 				.getAst().getAst());
-		result.getMessages().putAll(ifStatement,
-				shiftMessages(validationResult.getMessages(), ifStatement.getCondition().getStartPosition()));
+		result.getMessages().putAll(ifStatement, shiftMessages(validationResult.getMessages(), ifStatement
+				.getCondition().getStartPosition()));
 
 		if (!conditionTypes.isEmpty()) {
 			boolean onlyBoolean = true;
@@ -747,8 +733,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			final IType booleanObjectType = new ClassType(environment.getQueryEnvironment(), Boolean.class);
 			final IType booleanType = new ClassType(environment.getQueryEnvironment(), boolean.class);
 			for (IType type : conditionTypes) {
-				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type)
-						|| booleanType.isAssignableFrom(type);
+				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type) || booleanType
+						.isAssignableFrom(type);
 				onlyBoolean = onlyBoolean && assignableFrom;
 				onlyNotBoolean = onlyNotBoolean && !assignableFrom;
 				if (!onlyBoolean && !onlyNotBoolean) {
@@ -803,21 +789,21 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorIfStatement(ErrorIfStatement errorIfStatement) {
 		if (errorIfStatement.getMissingOpenParenthesis() != -1) {
-			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorIfStatement
-							.getMissingOpenParenthesis(), errorIfStatement.getMissingOpenParenthesis());
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorIfStatement.getMissingOpenParenthesis(),
+					errorIfStatement.getMissingOpenParenthesis());
 		} else if (errorIfStatement.getMissingCloseParenthesis() != -1) {
-			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorIfStatement
-							.getMissingCloseParenthesis(), errorIfStatement.getMissingCloseParenthesis());
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorIfStatement.getMissingCloseParenthesis(),
+					errorIfStatement.getMissingCloseParenthesis());
 		} else if (errorIfStatement.getMissingEndHeader() != -1) {
-			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.IF_HEADER_END), errorIfStatement
-							.getMissingEndHeader(), errorIfStatement.getMissingEndHeader());
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.IF_HEADER_END), errorIfStatement.getMissingEndHeader(), errorIfStatement
+							.getMissingEndHeader());
 		} else if (errorIfStatement.getMissingEnd() != -1) {
-			addMessage(errorIfStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.IF_END), errorIfStatement.getMissingEnd(),
-					errorIfStatement.getMissingEnd());
+			addMessage(errorIfStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.IF_END), errorIfStatement.getMissingEnd(), errorIfStatement
+							.getMissingEnd());
 		}
 
 		return null;
@@ -841,16 +827,16 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorLetStatement(ErrorLetStatement errorLetStatement) {
 		if (errorLetStatement.getMissingBindings() != -1) {
-			addMessage(errorLetStatement, ValidationMessageLevel.WARNING, "Missing binding",
-					errorLetStatement.getMissingBindings(), errorLetStatement.getMissingBindings());
+			addMessage(errorLetStatement, ValidationMessageLevel.WARNING, "Missing binding", errorLetStatement
+					.getMissingBindings(), errorLetStatement.getMissingBindings());
 		} else if (errorLetStatement.getMissingEndHeader() != -1) {
-			addMessage(errorLetStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.LET_HEADER_END), errorLetStatement
-							.getMissingEndHeader(), errorLetStatement.getMissingEndHeader());
+			addMessage(errorLetStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.LET_HEADER_END), errorLetStatement.getMissingEndHeader(), errorLetStatement
+							.getMissingEndHeader());
 		} else if (errorLetStatement.getMissingEnd() != -1) {
-			addMessage(errorLetStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.LET_END), errorLetStatement.getMissingEnd(),
-					errorLetStatement.getMissingEnd());
+			addMessage(errorLetStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.LET_END), errorLetStatement.getMissingEnd(), errorLetStatement
+							.getMissingEnd());
 		}
 
 		return null;
@@ -870,29 +856,29 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	@Override
 	public Object caseErrorFileStatement(ErrorFileStatement errorFileStatement) {
 		if (errorFileStatement.getMissingOpenParenthesis() != -1) {
-			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.OPEN_PARENTHESIS), errorFileStatement
-							.getMissingOpenParenthesis(), errorFileStatement.getMissingOpenParenthesis());
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.OPEN_PARENTHESIS), errorFileStatement.getMissingOpenParenthesis(),
+					errorFileStatement.getMissingOpenParenthesis());
 		} else if (errorFileStatement.getMissingComma() != -1) {
-			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.COMMA), errorFileStatement.getMissingComma(),
-					errorFileStatement.getMissingComma());
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.COMMA), errorFileStatement.getMissingComma(), errorFileStatement
+							.getMissingComma());
 		} else if (errorFileStatement.getMissingOpenMode() != -1) {
 			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
 					"Missing or invalid file open mode: overwrite, append, create", errorFileStatement
 							.getMissingOpenMode(), errorFileStatement.getMissingOpenMode());
 		} else if (errorFileStatement.getMissingCloseParenthesis() != -1) {
-			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.CLOSE_PARENTHESIS), errorFileStatement
-							.getMissingCloseParenthesis(), errorFileStatement.getMissingCloseParenthesis());
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.CLOSE_PARENTHESIS), errorFileStatement.getMissingCloseParenthesis(),
+					errorFileStatement.getMissingCloseParenthesis());
 		} else if (errorFileStatement.getMissingEndHeader() != -1) {
-			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.FILE_HEADER_END), errorFileStatement
-							.getMissingEndHeader(), errorFileStatement.getMissingEndHeader());
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.FILE_HEADER_END), errorFileStatement.getMissingEndHeader(),
+					errorFileStatement.getMissingEndHeader());
 		} else if (errorFileStatement.getMissingEnd() != -1) {
-			addMessage(errorFileStatement, ValidationMessageLevel.ERROR,
-					getMissingTokenMessage(AcceleoParser.FILE_END), errorFileStatement.getMissingEnd(),
-					errorFileStatement.getMissingEnd());
+			addMessage(errorFileStatement, ValidationMessageLevel.ERROR, getMissingTokenMessage(
+					AcceleoParser.FILE_END), errorFileStatement.getMissingEnd(), errorFileStatement
+							.getMissingEnd());
 		}
 
 		return null;

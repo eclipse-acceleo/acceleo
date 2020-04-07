@@ -1,2 +1,1 @@
-ERROR Must be a Collection not EClassifier=EString - 125 171
-ERROR The myVariable variable has no types - 179 189
+WARNING EClassifier=EClassifier is incompatible with EClassifier=EString - 125 171

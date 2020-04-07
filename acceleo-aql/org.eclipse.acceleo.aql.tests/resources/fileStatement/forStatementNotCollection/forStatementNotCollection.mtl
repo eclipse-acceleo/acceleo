@@ -3,7 +3,7 @@
 [comment @main /]
 [template public myTemplate(myParam : ecore::EPackage)]
   [file (myParam.name + '.txt', overwrite)]
-    [for (myVariable : ecore::EClassifier | Sequence{})]
+    [for (myVariable | myParam.eClassifiers->first())]
       [myVariable.name/]
     [/for]
   [/file]
