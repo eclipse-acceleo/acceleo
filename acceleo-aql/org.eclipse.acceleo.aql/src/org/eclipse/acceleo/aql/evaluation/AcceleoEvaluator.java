@@ -32,6 +32,7 @@ import org.eclipse.acceleo.LetStatement;
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.OpenModeKind;
+import org.eclipse.acceleo.ProtectedArea;
 import org.eclipse.acceleo.Query;
 import org.eclipse.acceleo.Statement;
 import org.eclipse.acceleo.Template;
@@ -357,6 +358,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public Object caseProtectedArea(ProtectedArea object) {
+		// TODO Auto-generated method stub
+		return super.caseProtectedArea(object);
 	}
 
 	/**

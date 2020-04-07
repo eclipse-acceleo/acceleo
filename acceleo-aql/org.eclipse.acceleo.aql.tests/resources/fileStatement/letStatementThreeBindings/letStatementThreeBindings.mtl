@@ -1,0 +1,12 @@
+[module myModule('http://www.eclipse.org/emf/2002/Ecore')/]
+
+[comment @main /]
+[template public myTemplate(myParam : ecore::EPackage)]
+  [file (myParam.name + '.txt', overwrite)]
+    [let myVariable : ecore::EClassifier = myParam.eClassifiers->at(1),myVariable1 : ecore::EClassifier = myParam.eClassifiers->at(2),myVariable2 : ecore::EClassifier = myParam.eClassifiers->at(3)]
+      [myVariable.name/]
+      [myVariable1.name/]
+      [myVariable2.name/]
+    [/let]
+  [/file]
+[/template]
