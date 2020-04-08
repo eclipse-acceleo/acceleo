@@ -119,6 +119,18 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	private String qualifiedName;
 
 	/**
+	 * {@link String} {@link IType}.
+	 */
+	private final IType stringType;
+
+	/**
+	 * {@link Boolean} {@link IType}.
+	 */
+	private final IType booleanType;
+
+	private final IType booleanObjectType;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param environment
@@ -126,6 +138,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 */
 	public AcceleoValidator(IAcceleoEnvironment environment) {
 		this.environment = environment;
+		this.stringType = new ClassType(environment.getQueryEnvironment(), String.class);
+		this.booleanType = new ClassType(environment.getQueryEnvironment(), boolean.class);
+		this.booleanObjectType = new ClassType(environment.getQueryEnvironment(), Boolean.class);
 		validator = new AstValidator(new ValidationServices(environment.getQueryEnvironment()));
 	}
 
@@ -405,10 +420,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 					}
 				}
 			}
-			final IValidationResult validationResult = validateExpression(query.getBody());
-			result.getMessages().putAll(query, shiftMessages(validationResult.getMessages(), query.getBody()
-					.getStartPosition()));
 
+			final IValidationResult validationResult = (IValidationResult)doSwitch(query.getBody());
 			final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 					.getAst());
 			if (query.getType() != null) {
@@ -499,10 +512,8 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			addMessage(binding, ValidationMessageLevel.WARNING, "Variable " + binding.getName()
 					+ " already exists.", binding.getStartPosition(), binding.getEndPosition());
 		}
-		final IValidationResult validationResult = validateExpression(binding.getInitExpression());
-		result.getMessages().putAll(binding, shiftMessages(validationResult.getMessages(), binding
-				.getInitExpression().getStartPosition()));
 
+		final IValidationResult validationResult = (IValidationResult)doSwitch(binding.getInitExpression());
 		final Set<IType> possibleTypes = validationResult.getPossibleTypes(validationResult.getAstResult()
 				.getAst());
 		if (binding.getType() != null) {
@@ -665,12 +676,13 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseExpression(Expression expression) {
-		final IValidationResult validationResult = validateExpression(expression);
+		final IValidationResult res = validator.validate(stack.peek(), expression.getAst());
 
-		result.getMessages().putAll(expression, shiftMessages(validationResult.getMessages(), expression
+		result.getAqlValidationResutls().put(expression.getAst(), res);
+		result.getMessages().putAll(expression, shiftMessages(res.getMessages(), expression
 				.getStartPosition()));
 
-		return RETURN_VALUE;
+		return res;
 	}
 
 	@Override
@@ -721,18 +733,42 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseIfStatement(IfStatement ifStatement) {
-		final IValidationResult validationResult = validateExpression(ifStatement.getCondition());
-		final Set<IType> conditionTypes = validationResult.getPossibleTypes(ifStatement.getCondition()
-				.getAst().getAst());
-		result.getMessages().putAll(ifStatement, shiftMessages(validationResult.getMessages(), ifStatement
-				.getCondition().getStartPosition()));
+		final IValidationResult conditionValidationResult = (IValidationResult)doSwitch(ifStatement
+				.getCondition());
+		final Set<IType> conditionPossibleTypes = conditionValidationResult.getPossibleTypes(ifStatement
+				.getCondition().getAst().getAst());
 
-		if (!conditionTypes.isEmpty()) {
+		checkBooleanType(ifStatement.getCondition(), conditionPossibleTypes);
+
+		final Map<String, Set<IType>> thenTypes = new HashMap<String, Set<IType>>(stack.peek());
+		thenTypes.putAll(conditionValidationResult.getInferredVariableTypes(ifStatement.getCondition()
+				.getAst().getAst(), Boolean.TRUE));
+		stack.push(thenTypes);
+		try {
+			doSwitch(ifStatement.getThen());
+		} finally {
+			stack.pop();
+		}
+		if (ifStatement.getElse() != null) {
+			final Map<String, Set<IType>> elseTypes = new HashMap<String, Set<IType>>(stack.peek());
+			elseTypes.putAll(conditionValidationResult.getInferredVariableTypes(ifStatement.getCondition()
+					.getAst().getAst(), Boolean.FALSE));
+			stack.push(elseTypes);
+			try {
+				doSwitch(ifStatement.getElse());
+			} finally {
+				stack.pop();
+			}
+		}
+
+		return RETURN_VALUE;
+	}
+
+	private void checkBooleanType(ASTNode node, final Set<IType> possibleTypes) {
+		if (!possibleTypes.isEmpty()) {
 			boolean onlyBoolean = true;
 			boolean onlyNotBoolean = true;
-			final IType booleanObjectType = new ClassType(environment.getQueryEnvironment(), Boolean.class);
-			final IType booleanType = new ClassType(environment.getQueryEnvironment(), boolean.class);
-			for (IType type : conditionTypes) {
+			for (IType type : possibleTypes) {
 				final boolean assignableFrom = booleanObjectType.isAssignableFrom(type) || booleanType
 						.isAssignableFrom(type);
 				onlyBoolean = onlyBoolean && assignableFrom;
@@ -745,45 +781,22 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				// nothing to do here
 			} else if (onlyNotBoolean) {
 				final String message = String.format("The predicate never evaluates to a boolean type (%s).",
-						conditionTypes);
-				addMessage(ifStatement, ValidationMessageLevel.ERROR, message, ifStatement.getCondition()
-						.getStartPosition(), ifStatement.getCondition().getEndPosition());
+						possibleTypes);
+				addMessage(node, ValidationMessageLevel.ERROR, message, node.getStartPosition(), node
+						.getEndPosition());
 			} else {
 				final String message = String.format(
 						"The predicate may evaluate to a value that is not a boolean type (%s).",
-						conditionTypes);
-				addMessage(ifStatement, ValidationMessageLevel.WARNING, message, ifStatement.getCondition()
-						.getStartPosition(), ifStatement.getCondition().getEndPosition());
+						possibleTypes);
+				addMessage(node, ValidationMessageLevel.WARNING, message, node.getStartPosition(), node
+						.getEndPosition());
 			}
 		} else {
 			final String message = String.format("The predicate never evaluates to a boolean type (%s).",
-					conditionTypes);
-			addMessage(ifStatement, ValidationMessageLevel.ERROR, message, ifStatement.getCondition()
-					.getStartPosition(), ifStatement.getCondition().getEndPosition());
+					possibleTypes);
+			addMessage(node, ValidationMessageLevel.ERROR, message, node.getStartPosition(), node
+					.getEndPosition());
 		}
-
-		final Map<String, Set<IType>> thenTypes = new HashMap<String, Set<IType>>(stack.peek());
-		thenTypes.putAll(validationResult.getInferredVariableTypes(ifStatement.getCondition().getAst()
-				.getAst(), Boolean.TRUE));
-		stack.push(thenTypes);
-		try {
-			doSwitch(ifStatement.getThen());
-		} finally {
-			stack.pop();
-		}
-		if (ifStatement.getElse() != null) {
-			final Map<String, Set<IType>> elseTypes = new HashMap<String, Set<IType>>(stack.peek());
-			elseTypes.putAll(validationResult.getInferredVariableTypes(ifStatement.getCondition().getAst()
-					.getAst(), Boolean.FALSE));
-			stack.push(elseTypes);
-			try {
-				doSwitch(ifStatement.getElse());
-			} finally {
-				stack.pop();
-			}
-		}
-
-		return RETURN_VALUE;
 	}
 
 	@Override
@@ -844,13 +857,62 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	@Override
 	public Object caseFileStatement(FileStatement fileStatement) {
-		doSwitch(fileStatement.getUrl());
+		final IValidationResult urlValidationResult = (IValidationResult)doSwitch(fileStatement.getUrl());
+		Set<IType> urlpossibleTypes = urlValidationResult.getPossibleTypes(urlValidationResult.getAstResult()
+				.getAst());
+		checkStringType(fileStatement.getUrl(), urlpossibleTypes);
 		if (fileStatement.getCharset() != null) {
-			doSwitch(fileStatement.getCharset());
+			final IValidationResult charsetValidationResult = (IValidationResult)doSwitch(fileStatement
+					.getCharset());
+			Set<IType> charsetpossibleTypes = charsetValidationResult.getPossibleTypes(urlValidationResult
+					.getAstResult().getAst());
+			checkStringType(fileStatement.getCharset(), charsetpossibleTypes);
 		}
 		doSwitch(fileStatement.getBody());
 
 		return RETURN_VALUE;
+	}
+
+	/**
+	 * @param astNode
+	 *            the {@link ASTNode}
+	 * @param possibleTypes
+	 *            the {@link Set} of possible {@link IType}
+	 */
+	private void checkStringType(ASTNode node, Set<IType> possibleTypes) {
+		if (!possibleTypes.isEmpty()) {
+			boolean onlyString = true;
+			boolean onlyNotString = true;
+			for (IType type : possibleTypes) {
+				final boolean assignableFrom = stringType.isAssignableFrom(type);
+				onlyString = onlyString && assignableFrom;
+				onlyNotString = onlyNotString && !assignableFrom;
+				if (!onlyString && !onlyNotString) {
+					break;
+				}
+			}
+			if (!onlyString) {
+				if (onlyNotString) {
+					final String message = String.format(
+							"The expression never evaluates to a String type (%s).", possibleTypes);
+					addMessage(node, ValidationMessageLevel.WARNING, message, node.getStartPosition(), node
+							.getEndPosition());
+				} else {
+					final String message = String.format(
+							"The expression may evaluate to a value that is not a String type (%s).\"",
+							possibleTypes);
+					addMessage(node, ValidationMessageLevel.WARNING, message, node.getStartPosition(), node
+							.getEndPosition());
+				}
+			} else {
+				// everything is fine
+			}
+		} else {
+			final String message = String.format("The expression never evaluates to a String type (%s).",
+					possibleTypes);
+			addMessage(node, ValidationMessageLevel.ERROR, message, node.getStartPosition(), node
+					.getEndPosition());
+		}
 	}
 
 	@Override
@@ -902,21 +964,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			res.add(new ValidationMessage(message.getLevel(), message.getMessage(), newStartPosition,
 					newEndPosition));
 		}
-
-		return res;
-	}
-
-	/**
-	 * Validates the given {@link Expression}.
-	 * 
-	 * @param expression
-	 *            the {@link Expression}
-	 * @return the {@link IValidationResult}
-	 */
-	private IValidationResult validateExpression(Expression expression) {
-		final IValidationResult res = validator.validate(stack.peek(), expression.getAst());
-
-		result.getAqlValidationResutls().put(expression.getAst(), res);
 
 		return res;
 	}

@@ -1409,6 +1409,7 @@ public class AcceleoParser {
 			} else {
 				missingOpenMode = -1;
 			}
+			// TODO charset
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
