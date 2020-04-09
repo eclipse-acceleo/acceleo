@@ -2,6 +2,6 @@
 header position 0..59
 module myModule
   metamodel http://www.eclipse.org/emf/2002/Ecore (18..56)
-  imports org::eclipse::acceleo::MyModule (69..100) (61..102)
-  imports org::eclipse::acceleo::MyModule1 (111..143) (103..145)
-  imports org::eclipse::acceleo::MyModule2 (154..186) (146..188) (0..188)
+  imports language::module::withThreeImport::importedModule (69..118) (61..120)
+  imports language::module::withThreeImport::anotherImported (129..179) (121..181)
+  imports language::module::withThreeImport::aThirdImported (190..239) (182..241) (0..241)

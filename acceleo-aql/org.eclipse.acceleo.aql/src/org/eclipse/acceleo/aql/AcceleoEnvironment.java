@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017 Obeo.
+ * Copyright (c) 2016, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.acceleo.aql.evaluation.QueryService;
 import org.eclipse.acceleo.aql.evaluation.TemplateService;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.aql.evaluation.writer.IAcceleoWriter;
+import org.eclipse.acceleo.aql.resolver.IModuleResolver;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.ServiceUtils;
 import org.eclipse.acceleo.query.runtime.impl.EPackageProvider;
@@ -108,6 +109,17 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 */
 	private final GenerationResult generationResult = new GenerationResult();
 
+	// TODO without a default value, the environment will not be able to resolve imported or extended modules.
+	// Can we set a default with the information we have at creation time?
+	/**
+	 * The module resolver for this environment.
+	 * <p>
+	 * This will be used whenever a module tries to access another module referenced by its qualified name,
+	 * such as import or extends.
+	 * </p>
+	 */
+	private IModuleResolver moduleResolver;
+
 	/**
 	 * Constructor.
 	 * 
@@ -167,16 +179,16 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		return callStacks.peekLast();
 	}
 
-	/**
-	 * Returns the module registered against the given qualified name in this environment.
-	 * 
-	 * @param qualifiedName
-	 *            The qualified name of the module we seek.
-	 * @return The module registered against the given qualified name in this environment, <code>null</code>
-	 *         if none.
-	 */
-	public Module getModule(String qualifiedName) {
-		return qualifiedNameToModule.get(qualifiedName);
+	@Override
+	public Module resolveModule(String qualifiedName) {
+		if (moduleResolver == null) {
+			return qualifiedNameToModule.get(qualifiedName);
+		}
+		Module module = moduleResolver.resolveModule(qualifiedName);
+		if (module != null) {
+			registerModule(qualifiedName, module);
+		}
+		return module;
 	}
 
 	@Override
@@ -186,12 +198,23 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 
 	@Override
 	public String getExtend(String qualifiedName) {
-		return moduleExtends.get(qualifiedName);
+		String extended = moduleExtends.get(qualifiedName);
+		if (extended != null && !hasModule(extended)) {
+			// TODO log runtime error? This should happen at evaluation time if the extended module cannot be
+			// resolved
+		}
+		return extended;
 	}
 
 	@Override
 	public Collection<String> getImports(String qualifiedName) {
-		return moduleImports.getOrDefault(qualifiedName, new LinkedList<>());
+		Collection<String> imported = moduleImports.getOrDefault(qualifiedName, new LinkedList<>());
+		for (String importedName : imported) {
+			if (!hasModule(importedName)) {
+				// TODO log runtime error? would happen at evaluation time if an import cannot be resolved
+			}
+		}
+		return imported;
 	}
 
 	/**
@@ -256,10 +279,10 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 
 	@Override
 	public boolean hasModule(String qualifiedName) {
-		// FIXME delegate to the lookup class that will provide an input stream and try to load the module
-		// FIXME remove the test mock code
-		final boolean testMock = !qualifiedName.contains("notExisting");
-		return qualifiedNameToModule.containsKey(qualifiedName) || testMock;
+		if (qualifiedNameToModule.containsKey(qualifiedName)) {
+			return true;
+		}
+		return resolveModule(qualifiedName) != null;
 	}
 
 	@Override
@@ -291,6 +314,11 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	@Override
 	public GenerationResult getGenerationResult() {
 		return generationResult;
+	}
+
+	@Override
+	public void setModuleResolver(IModuleResolver moduleResolver) {
+		this.moduleResolver = moduleResolver;
 	}
 
 }

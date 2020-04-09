@@ -91,28 +91,13 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		 * We couldn't find a template or query matching that in our current extends hierarchy, try the
 		 * imports of our current (last of the stack) module for a PUBLIC matching module element.
 		 */
-		final ImportLookupResult importService;
 		if (result == null) {
-			importService = lookupImportedService(last, name, argumentTypes);
-			if (importService != null) {
-				result = importService.getResult();
-			}
-		} else {
-			importService = null;
+			result = lookupImportedService(last, name, argumentTypes);
 		}
 
 		/* There is no module element matching our target, fall back to regular services. */
 		if (result == null) {
 			result = super.lookup(name, argumentTypes);
-		}
-
-		if (result instanceof AbstractModuleElementService) {
-			if (importService != null) {
-				acceleoEnvironment.pushImport(importService.getImportedModule(),
-						((AbstractModuleElementService)result).getModuleElement());
-			} else {
-				acceleoEnvironment.push(((AbstractModuleElementService)result).getModuleElement());
-			}
 		}
 
 		return result;
@@ -160,16 +145,12 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 *            Type of the arguments accepted by the service we're looking for.
 	 * @return The service matching the criteria if any, <code>null</code> if none.
 	 */
-	private ImportLookupResult lookupImportedService(String start, String name, IType[] argumentTypes) {
-		ImportLookupResult result = null;
+	private IService lookupImportedService(String start, String name, IType[] argumentTypes) {
+		IService result = null;
 		Iterator<String> importedIterator = acceleoEnvironment.getImports(start).iterator();
 		while (importedIterator.hasNext() && result == null) {
 			String imported = importedIterator.next();
-			IService matchingService = lookupExtendedService(imported, name, argumentTypes,
-					VisibilityKind.PUBLIC);
-			if (matchingService != null) {
-				result = new ImportLookupResult(imported, matchingService);
-			}
+			result = lookupExtendedService(imported, name, argumentTypes, VisibilityKind.PUBLIC);
 		}
 		return result;
 	}
@@ -199,35 +180,4 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 		return result.orElse(null);
 	}
 
-	/**
-	 * Result of a lookup within the imports of a module.
-	 */
-	private static class ImportLookupResult {
-		/** The module that was the starting point of our lookup. */
-		private String importedModule;
-
-		/** The actual result of this lookup. */
-		private IService result;
-
-		/**
-		 * Creates a result object given the module and service found.
-		 * 
-		 * @param imported
-		 *            The module that was the starting point of our lookup.
-		 * @param result
-		 *            The result of this lookup.
-		 */
-		ImportLookupResult(String imported, IService result) {
-			this.importedModule = imported;
-			this.result = result;
-		}
-
-		public String getImportedModule() {
-			return importedModule;
-		}
-
-		public IService getResult() {
-			return result;
-		}
-	}
 }

@@ -240,16 +240,12 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public String caseTemplate(Template template) {
 		final String res;
 
-		try {
-			final String templateText = (String)doSwitch(template.getBody());
-			if (template.getPost() != null) {
-				variablesStack.peek().put("self", templateText);
-				res = toString(doSwitch(template.getPost()));
-			} else {
-				res = templateText;
-			}
-		} finally {
-			environment.popStack(template);
+		final String templateText = (String)doSwitch(template.getBody());
+		if (template.getPost() != null) {
+			variablesStack.peek().put("self", templateText);
+			res = toString(doSwitch(template.getPost()));
+		} else {
+			res = templateText;
 		}
 
 		return res;
@@ -259,11 +255,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public Object caseQuery(Query query) {
 		final Object res;
 
-		try {
-			res = doSwitch(query.getBody());
-		} finally {
-			environment.popStack(query);
-		}
+		res = doSwitch(query.getBody());
 
 		return res;
 	}

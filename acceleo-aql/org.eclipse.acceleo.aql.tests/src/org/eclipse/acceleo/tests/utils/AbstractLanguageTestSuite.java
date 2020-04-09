@@ -25,16 +25,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.aql.AcceleoEnvironment;
 import org.eclipse.acceleo.aql.IAcceleoEnvironment;
 import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
+import org.eclipse.acceleo.aql.resolver.FileSystemModuleResolver;
+import org.eclipse.acceleo.aql.resolver.IModuleResolver;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
 import org.eclipse.emf.common.util.URI;
@@ -119,14 +123,20 @@ public abstract class AbstractLanguageTestSuite {
 		this.memoryDestination = URI.createURI(memoryDestinationString);
 		this.environment = new AcceleoEnvironment(new DefaultGenerationStrategy(), memoryDestination);
 		this.testFolderPath = testFolder;
-		final File moduleFile = getModuleFile(new File(testFolderPath));
+		final File testFolderFile = new File(testFolderPath);
+		final File moduleFile = getModuleFile(testFolderFile);
 		final AcceleoParser parser = new AcceleoParser(environment.getQueryEnvironment());
 
-		try (FileInputStream stream = new FileInputStream(moduleFile)) {
-			astResult = parser.parse(getContent(stream, UTF_8), "org::eclipse::acceleo::tests::");
-			qualifiedName = "org::eclipse::acceleo::tests::" + astResult.getModule().getName();
-			environment.registerModule(qualifiedName, astResult.getModule());
-		}
+		Path rootPath = testFolderFile.toPath().getName(0);
+		IModuleResolver moduleResolver = new FileSystemModuleResolver(rootPath.toAbsolutePath(), environment
+				.getQueryEnvironment());
+		environment.setModuleResolver(moduleResolver);
+
+		String namespace = rootPath.relativize(testFolderFile.toPath()).toString().replace(File.separator,
+				"::") + "::";
+		qualifiedName = namespace + moduleFile.getName().substring(0, moduleFile.getName().lastIndexOf('.'));
+		Module module = environment.resolveModule(qualifiedName);
+		astResult = module.getAst();
 	}
 
 	/**

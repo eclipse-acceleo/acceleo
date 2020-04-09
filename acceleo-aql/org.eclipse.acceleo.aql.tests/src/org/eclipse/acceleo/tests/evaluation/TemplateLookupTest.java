@@ -87,9 +87,10 @@ public class TemplateLookupTest {
 		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		final ModuleElement start = module1.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
-		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 		final String result = (String)evaluationEngine.generate(start, variables);
+		acceleoEnvironment.popStack(start);
 
 		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m1.t11(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER,
@@ -108,9 +109,10 @@ public class TemplateLookupTest {
 		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		final ModuleElement start = module1.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "t11".equals(((Template)start).getName()));
-		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module1), start);
 		final String result = (String)evaluationEngine.generate(start, variables);
+		acceleoEnvironment.popStack(start);
 
 		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
@@ -140,9 +142,10 @@ public class TemplateLookupTest {
 		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(0);
 		assertTrue(start instanceof Template && "t21".equals(((Template)start).getName()));
-		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		final String result = (String)evaluationEngine.generate(start, variables);
+		acceleoEnvironment.popStack(start);
 
 		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m2.t21(EPackage)" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
@@ -175,9 +178,10 @@ public class TemplateLookupTest {
 		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(1);
 		assertTrue(start instanceof Template && "overrideMe".equals(((Template)start).getName()));
-		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		final String result = (String)evaluationEngine.generate(start, variables);
+		acceleoEnvironment.popStack(start);
 
 		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ "generated from m2.overrideMe(EClass)"
@@ -204,9 +208,10 @@ public class TemplateLookupTest {
 		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(3);
 		assertTrue(start instanceof Template && "toImportsAndBack".equals(((Template)start).getName()));
-		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		final String result = (String)evaluationEngine.generate(start, variables);
+		acceleoEnvironment.popStack(start);
 
 		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m4.t41(EClass)"
@@ -242,9 +247,10 @@ public class TemplateLookupTest {
 		final AcceleoEvaluator evaluationEngine = new AcceleoEvaluator(acceleoEnvironment);
 		ModuleElement start = module2.getModuleElements().get(4);
 		assertTrue(start instanceof Template && "toImportsExtends".equals(((Template)start).getName()));
-		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 
+		acceleoEnvironment.pushImport(acceleoEnvironment.getModuleQualifiedName(module2), start);
 		final String result = (String)evaluationEngine.generate(start, variables);
+		acceleoEnvironment.popStack(start);
 
 		assertEquals("" + AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER
 				+ AbstractLanguageTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Obeo.
+ * Copyright (c) 2017, 2020 Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -379,7 +379,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			doSwitch(template.getBody());
 		} finally {
 			stack.pop();
-			environment.popStack(template);
 		}
 
 		return RETURN_VALUE;
@@ -460,7 +459,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			}
 		} finally {
 			stack.pop();
-			environment.popStack(query);
 		}
 
 		return RETURN_VALUE;

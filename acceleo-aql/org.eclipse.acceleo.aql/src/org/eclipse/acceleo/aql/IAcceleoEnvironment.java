@@ -18,6 +18,7 @@ import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.evaluation.GenerationResult;
+import org.eclipse.acceleo.aql.resolver.IModuleResolver;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.emf.common.util.URI;
 
@@ -73,6 +74,24 @@ public interface IAcceleoEnvironment {
 	 * @return the {@link Collection} of imports for the given module qualified name
 	 */
 	Collection<String> getImports(String qualifiedName);
+
+	/**
+	 * Sets the resolver for Acceleo modules.
+	 * 
+	 * @param moduleResolver
+	 *            The module resolver for this environment.
+	 */
+	void setModuleResolver(IModuleResolver moduleResolver);
+
+	/**
+	 * Use the registered {@link #moduleResolver} to try and parse the module with the specified
+	 * qualifiedName.
+	 * 
+	 * @param qualifiedName
+	 *            The qualified name of the module we seek.
+	 * @return The parsed module if {@link #moduleResolver} could resolve it, <code>null</code> otherwise.
+	 */
+	Module resolveModule(String qualifiedName);
 
 	/**
 	 * Tells if the given {@link org.eclipse.acceleo.Module} qualified name exists.

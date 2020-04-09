@@ -15,6 +15,7 @@ Export-Package: org.eclipse.acceleo,
  org.eclipse.acceleo.aql.location,
  org.eclipse.acceleo.aql.outline,
  org.eclipse.acceleo.aql.parser,
+ org.eclipse.acceleo.aql.resolver,
  org.eclipse.acceleo.aql.validation,
  org.eclipse.acceleo.impl,
  org.eclipse.acceleo.util
