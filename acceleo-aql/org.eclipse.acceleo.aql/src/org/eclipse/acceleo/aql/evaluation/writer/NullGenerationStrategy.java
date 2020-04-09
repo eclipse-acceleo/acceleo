@@ -35,7 +35,7 @@ public class NullGenerationStrategy implements IAcceleoGenerationStrategy {
 
 	@Override
 	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
-			String lineDelimiter) {
+			String lineDelimiter) throws IOException {
 		return new NullWriter(uri);
 	}
 

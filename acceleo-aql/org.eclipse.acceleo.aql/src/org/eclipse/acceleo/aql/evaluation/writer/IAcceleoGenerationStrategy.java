@@ -91,8 +91,11 @@ public interface IAcceleoGenerationStrategy {
 	 * @param lineDelimiter
 	 *            the line delimiter that was demanded by the user for this writer.
 	 * @return The created writer. It can't be <code>null</code> use {@link NullWriter} instead.
+	 * @throws IOException
+	 *             if the writer can't be created
 	 */
-	IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter);
+	IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
+			throws IOException;
 
 	/**
 	 * This will be called by the engine when the evaluation ends or is cancelled. The strategy can use this

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collection;
 
@@ -128,13 +129,19 @@ public interface IAcceleoEnvironment {
 	 *            The {@link Charset} for the target file.
 	 * @param lineDelimiter
 	 *            Line delimiter that should be used for that file.
+	 * @throws IOException
+	 *             if the writed can't be opened
 	 */
-	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter);
+	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
+			throws IOException;
 
 	/**
 	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
+	 * 
+	 * @throws IOException
+	 *             if the writer can't be closed
 	 */
-	public void closeWriter();
+	public void closeWriter() throws IOException;
 
 	/**
 	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
@@ -142,8 +149,10 @@ public interface IAcceleoEnvironment {
 	 * 
 	 * @param text
 	 *            the text to write
+	 * @throws IOException
+	 *             if the writer can't be written
 	 */
-	public void write(String text);
+	public void write(String text) throws IOException;
 
 	/**
 	 * Gets the {@link GenerationResult}.

@@ -144,11 +144,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		currentStack.push(moduleElement);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.aql.IAcceleoEnvironment#popStack(java.lang.String)
-	 */
+	@Override
 	public void popStack(ModuleElement moduleElement) {
 		AcceleoCallStack currentStack = callStacks.peekLast();
 		if (currentStack == null || (!currentStack.pop().equals(moduleElement) && currentStack.isEmpty())) {
@@ -183,11 +179,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		return qualifiedNameToModule.get(qualifiedName);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see org.eclipse.acceleo.aql.IAcceleoEnvironment#getModuleQualifiedName(org.eclipse.acceleo.Module)
-	 */
+	@Override
 	public String getModuleQualifiedName(Module module) {
 		return moduleToQualifiedName.get(module);
 	}
@@ -219,14 +211,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 				moduleElementName, new LinkedHashSet<AbstractModuleElementService>());
 	}
 
-	/**
-	 * Registers the given module against this environment.
-	 * 
-	 * @param qualifiedName
-	 *            The qualified name of this module.
-	 * @param module
-	 *            The module to register.
-	 */
+	@Override
 	public void registerModule(String qualifiedName, Module module) {
 		qualifiedNameToModule.put(qualifiedName, module);
 		moduleToQualifiedName.put(module, qualifiedName);
@@ -264,12 +249,6 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		}
 	}
 
-	/**
-	 * Returns the AQL environment that needs to be used when evaluating AQL expressions from within this
-	 * Acceleo context.
-	 * 
-	 * @return The AQL environment configured with this Acceleo context.
-	 */
 	@Override
 	public IQueryEnvironment getQueryEnvironment() {
 		return aqlEnvironment;
@@ -283,53 +262,25 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		return qualifiedNameToModule.containsKey(qualifiedName) || testMock;
 	}
 
-	/**
-	 * Opens a writer for the given file uri.
-	 * 
-	 * @param uri
-	 *            The {@link URI} for which we need a writer.
-	 * @param openMode
-	 *            The mode in which to open the file.
-	 * @param charset
-	 *            Charset for the target file.
-	 * @param lineDelimiter
-	 *            Line delimiter that should be used for that file.
-	 */
-	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter) {
+	@Override
+	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter)
+			throws IOException {
 		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
 				lineDelimiter);
 		writers.addLast(writer);
 		generationResult.getGeneratedFiles().add(uri);
 	}
 
-	/**
-	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.
-	 */
-	public void closeWriter() {
+	@Override
+	public void closeWriter() throws IOException {
 		final IAcceleoWriter writer = writers.removeLast();
-		try {
-			writer.close();
-		} catch (IOException e) {
-			// FIXME log a status
-			e.printStackTrace();
-		}
+		writer.close();
 	}
 
-	/**
-	 * Writes the given {@link String} to the last {@link #openWriter(String, OpenModeKind, String, String)
-	 * opened} writer.
-	 * 
-	 * @param text
-	 *            the text to write
-	 */
-	public void write(String text) {
+	@Override
+	public void write(String text) throws IOException {
 		IAcceleoWriter writer = writers.peekLast();
-		try {
-			writer.append(text);
-		} catch (IOException e) {
-			// FIXME log a status everytime, or close the writer and ignore future calls?
-			e.printStackTrace();
-		}
+		writer.append(text);
 	}
 
 	@Override

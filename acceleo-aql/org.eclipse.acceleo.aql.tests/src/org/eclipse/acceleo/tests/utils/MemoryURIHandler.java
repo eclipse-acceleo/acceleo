@@ -31,6 +31,21 @@ import org.eclipse.emf.ecore.resource.URIHandler;
 public class MemoryURIHandler implements URIHandler {
 
 	/**
+	 * A not openable file.
+	 */
+	private static final String NOT_OPENABLE_TXT = "notOpenable.txt";
+
+	/**
+	 * A not writable file.
+	 */
+	private static final String NOT_WRITABLE_TXT = "notWritable.txt";
+
+	/**
+	 * A not closable file.
+	 */
+	private static final String NOT_CLOSABLE_TXT = "notClosable.txt";
+
+	/**
 	 * Resources.
 	 */
 	private final Map<URI, ByteArrayOutputStream> resources = new HashMap<URI, ByteArrayOutputStream>();
@@ -54,6 +69,9 @@ public class MemoryURIHandler implements URIHandler {
 		final ByteArrayOutputStream outputStream = resources.get(uri);
 		if (outputStream != null) {
 			res = new ByteArrayInputStream(outputStream.toByteArray());
+		} else if (NOT_OPENABLE_TXT.equals(uri.lastSegment()) || NOT_WRITABLE_TXT.equals(uri.lastSegment())
+				|| NOT_CLOSABLE_TXT.equals(uri.lastSegment())) {
+			res = new ByteArrayInputStream(new byte[] {});
 		} else {
 			throw new IOException("Resource " + uri + " doesn't exist in memory.");
 		}
@@ -63,9 +81,35 @@ public class MemoryURIHandler implements URIHandler {
 
 	@Override
 	public OutputStream createOutputStream(URI uri, Map<?, ?> options) throws IOException {
-		final ByteArrayOutputStream res = new ByteArrayOutputStream();
+		final OutputStream res;
 
-		resources.put(uri, res);
+		if (NOT_OPENABLE_TXT.equals(uri.lastSegment())) {
+			throw new IOException("Can't open OutputStream");
+		} else if (NOT_WRITABLE_TXT.equals(uri.lastSegment())) {
+			res = new OutputStream() {
+
+				@Override
+				public void write(int b) throws IOException {
+					throw new IOException("Can't write to OutputStream");
+				}
+			};
+		} else if (NOT_CLOSABLE_TXT.equals(uri.lastSegment())) {
+			res = new OutputStream() {
+
+				@Override
+				public void write(int b) throws IOException {
+					// nothing to do here
+				}
+
+				@Override
+				public void close() throws IOException {
+					throw new IOException("Can't close OutputStream");
+				}
+			};
+		} else {
+			res = new ByteArrayOutputStream();
+			resources.put(uri, (ByteArrayOutputStream)res);
+		}
 
 		return res;
 	}

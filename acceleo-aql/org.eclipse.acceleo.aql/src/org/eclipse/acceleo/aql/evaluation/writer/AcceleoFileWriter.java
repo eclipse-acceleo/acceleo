@@ -66,6 +66,8 @@ public class AcceleoFileWriter implements IAcceleoWriter {
 		this.uriConverter = uriConverter;
 		this.charset = charset;
 
+		// FIXME use memory instead of temp file and copy
+		// With the current implementation of AcceleoEvaluator it doesn't make sens to buffer anyway
 		temporaryFilePath = Files.createTempFile("acceleo_", "_generated");
 		// Opens a file for writing, truncating existing if any.
 		buffer = Files.newBufferedWriter(temporaryFilePath, charset);

@@ -74,45 +74,41 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 
 	@Override
 	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
-			String lineDelimiter) {
-		try {
-			final IAcceleoWriter writer;
-			final boolean exists = uriConverter.exists(uri, EMPTY_OPTION_MAP);
-			switch (openMode) {
-				case CREATE:
-					if (exists) {
-						writer = new NullWriter(uri);
-						break;
-					}
-					// fall through: same behavior as "OVERWRITE" if the file doesn't exist
-				case OVERWRITE:
-					if (exists) {
-						try (final InputStream input = uriConverter.createInputStream(uri);) {
-							Map<String, String> protectedAreas = readProtectedAreaContent(
-									new InputStreamReader(input), lineDelimiter);
-							if (protectedAreas != null && !protectedAreas.isEmpty()) {
-								protectedAreaContents.put(uri, protectedAreas);
-							}
-						}
-					}
+			String lineDelimiter) throws IOException {
+		final IAcceleoWriter writer;
 
-					writer = new AcceleoFileWriter(uri, uriConverter, charset);
-					break;
-				case APPEND:
-					// FIXME we can't create a stream to "append" to a file with the URIConverter. We probably
-					// need to fall back to a regular FileWriter here. For now, we'll fall through to the
-					// "default" case and use a null writer.
-				default:
-					// TODO shouldn't happen, fall back to a null writer and log
+		final boolean exists = uriConverter.exists(uri, EMPTY_OPTION_MAP);
+		switch (openMode) {
+			case CREATE:
+				if (exists) {
 					writer = new NullWriter(uri);
 					break;
-			}
-			return writer;
-		} catch (IOException e) {
-			// FIXME log
-			e.printStackTrace();
-			return new NullWriter(uri);
+				}
+				// fall through: same behavior as "OVERWRITE" if the file doesn't exist
+			case OVERWRITE:
+				if (exists) {
+					try (final InputStream input = uriConverter.createInputStream(uri);) {
+						Map<String, String> protectedAreas = readProtectedAreaContent(new InputStreamReader(
+								input), lineDelimiter);
+						if (protectedAreas != null && !protectedAreas.isEmpty()) {
+							protectedAreaContents.put(uri, protectedAreas);
+						}
+					}
+				}
+
+				writer = new AcceleoFileWriter(uri, uriConverter, charset);
+				break;
+			case APPEND:
+				// FIXME we can't create a stream to "append" to a file with the URIConverter. We probably
+				// need to fall back to a regular FileWriter here. For now, we'll fall through to the
+				// "default" case and use a null writer.
+			default:
+				// TODO shouldn't happen, fall back to a null writer and log
+				writer = new NullWriter(uri);
+				break;
 		}
+
+		return writer;
 	}
 
 	@Override

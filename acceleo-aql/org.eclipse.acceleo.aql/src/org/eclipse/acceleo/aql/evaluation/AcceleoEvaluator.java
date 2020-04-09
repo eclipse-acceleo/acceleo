@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -315,13 +316,20 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 			final OpenModeKind mode = fileStatement.getMode();
 			final Charset charset = getCharset(fileStatement);
 			final URI uri = URI.createURI(toString(uriObject), true).resolve(environment.getDestination());
-			// FIXME line delimiter
-			environment.openWriter(uri, mode, charset, "\n");
 			try {
-				final String content = (String)doSwitch(fileStatement.getBody());
-				environment.write(content);
-			} finally {
-				environment.closeWriter();
+				// FIXME line delimiter
+				environment.openWriter(uri, mode, charset, "\n");
+				try {
+					final String content = (String)doSwitch(fileStatement.getBody());
+					environment.write(content);
+				} finally {
+					environment.closeWriter();
+				}
+			} catch (IOException e) {
+				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0, e
+						.getMessage(), new Object[] {fileStatement, new HashMap<String, Object>(
+								peekVariables()) });
+				environment.getGenerationResult().addDiagnostic(diagnostic);
 			}
 
 			res = EMPTY_RESULT;
