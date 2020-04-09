@@ -164,13 +164,14 @@ public class CompletionTests {
 			builder.append(proposal.getProposal());
 			builder.append(' ');
 			builder.append(proposal.getCursorOffset());
-			builder.append('\n');
+			builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 			builder.append(proposal.getDescription());
-			builder.append('\n');
-			builder.append('\n');
+			builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
+			builder.append(AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER);
 		}
 
-		return builder.toString();
+		return builder.toString().replaceAll("\\r\\n|\\r|\\n", Character.toString(
+				AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER));
 	}
 
 	/**

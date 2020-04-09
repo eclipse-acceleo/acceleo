@@ -90,7 +90,9 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("\r\ngenerated from m1.t11(EPackage)\r\n", result);
+		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m1.t11(EPackage)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -109,9 +111,15 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals(
-				"\r\n\r\ngenerated from m1.overrideMe(EClass)\r\n\r\n\r\ngenerated from m1.privateInBoth(EClass)\r\n\r\n",
-				result);
+		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m1.overrideMe(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m1.privateInBoth(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 		assertNull(acceleoEnvironment.getCurrentStack());
 	}
 
@@ -135,9 +143,18 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals(
-				"\r\ngenerated from m2.t21(EPackage)\r\n\r\n\r\ngenerated from m2.overrideMe(EClass)\r\n\r\n\r\ngenerated from m1.privateInBoth(EClass)\r\n\r\n\r\n",
-				result);
+		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m2.t21(EPackage)" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m2.overrideMe(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m1.privateInBoth(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -159,7 +176,9 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals("\r\ngenerated from m2.overrideMe(EClass)\r\n", result);
+		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m2.overrideMe(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -186,9 +205,21 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals(
-				"\r\n\r\ngenerated from m4.t41(EClass)\r\n\r\ngenerated from m3.t31(EClass)\r\n\r\ngenerated from m4.overrideMe(EClass)\r\n\r\n\r\n\r\n\r\ngenerated from m2.overrideMe(EClass)\r\n\r\n",
-				result);
+		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m4.t41(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m4.overrideMe(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m2.overrideMe(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**
@@ -212,9 +243,14 @@ public class TemplateLookupTest {
 
 		final String result = (String)evaluationEngine.generate(acceleoEnvironment, start, variables);
 
-		assertEquals(
-				"\r\n\r\ngenerated from m3.t31(EClass)\r\n\r\ngenerated from m4.overrideMe(EClass)\r\n\r\n\r\n",
-				result);
+		assertEquals("" + AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER + "generated from m3.t31(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ "generated from m4.overrideMe(EClass)"
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER
+				+ AbstractTemplatesTestSuite.DEFAULT_END_OF_LINE_CHARACTER, result);
 	}
 
 	/**

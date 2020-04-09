@@ -78,6 +78,11 @@ public abstract class AbstractTemplatesTestSuite {
 	public static final String UTF_8 = "UTF-8";
 
 	/**
+	 * The default EOL character to use.
+	 */
+	public static final char DEFAULT_END_OF_LINE_CHARACTER = '\n';
+
+	/**
 	 * The {@link MemoryURIHandler} that check we don't have adherence to {@link File}.
 	 */
 	private static MemoryURIHandler uriHandler = new MemoryURIHandler();
@@ -303,7 +308,7 @@ public abstract class AbstractTemplatesTestSuite {
 				builder.append(message.getStartPosition());
 				builder.append(" ");
 				builder.append(message.getEndPosition());
-				builder.append("\n");
+				builder.append(DEFAULT_END_OF_LINE_CHARACTER);
 			}
 			res = builder.substring(0, builder.length() - 1);
 		} else {
