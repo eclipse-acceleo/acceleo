@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.parser.tests;
 
-import com.google.common.collect.Iterators;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IService;
@@ -46,22 +46,30 @@ public class CompletionCheck {
 
 	@Test
 	public void testReverseCompletion() throws Exception {
-		checkCompletionOnQueries(Iterators.filter(qmodels.reverse().getAllContents(), Query.class));
+		Stream<Query> queries = toStream(qmodels.reverse().getAllContents()).filter(Query.class::isInstance)
+				.map(Query.class::cast);
+		checkCompletionOnQueries(queries.iterator());
 	}
 
 	@Test
 	public void testAnyDSLCompletion() throws Exception {
-		checkCompletionOnQueries(Iterators.filter(qmodels.anydsl().getAllContents(), Query.class));
+		Stream<Query> queries = toStream(qmodels.anydsl().getAllContents()).filter(Query.class::isInstance)
+				.map(Query.class::cast);
+		checkCompletionOnQueries(queries.iterator());
 	}
 
 	@Test
 	public void testUMLCompletion() throws Exception {
-		checkCompletionOnQueries(Iterators.filter(qmodels.uml().getAllContents(), Query.class));
+		Stream<Query> queries = toStream(qmodels.uml().getAllContents()).filter(Query.class::isInstance).map(
+				Query.class::cast);
+		checkCompletionOnQueries(queries.iterator());
 	}
 
 	@Test
 	public void testUMLWithFragmentCompletion() throws Exception {
-		checkCompletionOnQueries(Iterators.filter(qmodels.umlWithFragment().getAllContents(), Query.class));
+		Stream<Query> queries = toStream(qmodels.umlWithFragment().getAllContents()).filter(
+				Query.class::isInstance).map(Query.class::cast);
+		checkCompletionOnQueries(queries.iterator());
 	}
 
 	private void checkCompletionOnQueries(Iterator<Query> queries) throws Exception {
@@ -74,8 +82,8 @@ public class CompletionCheck {
 			QueryCompletionEngine completionEngine = new QueryCompletionEngine(queryEnvironment);
 
 			for (String classToImport : next.getClassesToImport()) {
-				final Set<IService> services = ServiceUtils.getServices(queryEnvironment, Class
-						.forName(classToImport));
+				final Set<IService> services = ServiceUtils.getServices(queryEnvironment, Class.forName(
+						classToImport));
 				ServiceUtils.registerServices(queryEnvironment, services);
 			}
 
@@ -102,5 +110,10 @@ public class CompletionCheck {
 				}
 			}
 		}
+	}
+
+	private <T> Stream<T> toStream(final Iterator<T> iterator) {
+		Iterable<T> iterable = () -> iterator;
+		return StreamSupport.stream(iterable.spliterator(), false);
 	}
 }

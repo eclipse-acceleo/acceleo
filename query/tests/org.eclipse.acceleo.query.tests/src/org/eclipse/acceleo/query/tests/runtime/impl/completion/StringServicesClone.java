@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.runtime.impl.completion;
 
-import com.google.common.base.Strings;
-
 import org.eclipse.acceleo.annotations.api.documentation.Documentation;
 import org.eclipse.acceleo.annotations.api.documentation.Param;
 import org.eclipse.acceleo.annotations.api.documentation.Throw;
@@ -41,12 +39,12 @@ public class StringServicesClone {
 	)
 	// @formatter:on
 	public String concat(String self, String b) {
-		return Strings.nullToEmpty(self) + Strings.nullToEmpty(b);
+		return nullToEmpty(self) + nullToEmpty(b);
 	}
 
 	@Documentation("Concatenates a string b at the end of a self string \"a\".")
 	public String add(String a, String b) {
-		return Strings.nullToEmpty(a) + Strings.nullToEmpty(b);
+		return nullToEmpty(a) + nullToEmpty(b);
 	}
 
 	public String replace(String self, String subStringRegex, String replacementRegex) {
@@ -75,7 +73,7 @@ public class StringServicesClone {
 	)
 	// @formatter:on
 	public String prefix(String self, String prefix) {
-		return Strings.nullToEmpty(prefix) + Strings.nullToEmpty(self);
+		return nullToEmpty(prefix) + nullToEmpty(self);
 	}
 
 	// @formatter:off
@@ -89,6 +87,10 @@ public class StringServicesClone {
 	// @formatter:on
 	public Boolean contains(String self, String b) throws NullPointerException, IllegalAccessException {
 		return Boolean.valueOf(self.contains(b));
+	}
+
+	private String nullToEmpty(String s) {
+		return s == null ? "" : s;
 	}
 
 }

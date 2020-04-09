@@ -10,16 +10,13 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.SetMultimap;
-
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -69,10 +66,10 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	/**
 	 * The mapping from the module qualified name to its imports.
 	 */
-	private final Multimap<String, String> moduleImports;
+	private final Map<String, LinkedList<String>> moduleImports;
 
 	/** Keeps track of the services each module qualified name provides, mapped to their names. */
-	private Map<String, SetMultimap<String, AbstractModuleElementService>> moduleServices;
+	private Map<String, Map<String, Set<AbstractModuleElementService>>> moduleServices;
 
 	/** The AQL environment that will be used to evaluate aql expressions from this Acceleo context. */
 	private IQueryEnvironment aqlEnvironment;
@@ -124,7 +121,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		this.qualifiedNameToModule = new LinkedHashMap<>();
 		this.moduleToQualifiedName = new LinkedHashMap<>();
 		this.moduleExtends = new LinkedHashMap<>();
-		this.moduleImports = LinkedListMultimap.create();
+		this.moduleImports = new LinkedHashMap<>();
 		this.moduleServices = new LinkedHashMap<>();
 		this.callStacks = new ArrayDeque<>();
 
@@ -201,7 +198,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 
 	@Override
 	public Collection<String> getImports(String qualifiedName) {
-		return moduleImports.get(qualifiedName);
+		return moduleImports.getOrDefault(qualifiedName, new LinkedList<>());
 	}
 
 	/**
@@ -217,7 +214,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	public Set<AbstractModuleElementService> getServicesWithName(String moduleQualifiedName,
 			String moduleElementName) {
 		// FIXME null or empty set if either of the two gets is null?
-		return moduleServices.get(moduleQualifiedName).get(moduleElementName);
+		return moduleServices.getOrDefault(moduleQualifiedName, new LinkedHashMap<>()).getOrDefault(
+				moduleElementName, new LinkedHashSet<AbstractModuleElementService>());
 	}
 
 	/**
@@ -237,7 +235,8 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 		for (Import imp : module.getImports()) {
 			final ModuleReference moduleRef = imp.getModule();
 			if (moduleRef != null && moduleRef.getQualifiedName() != null) {
-				moduleImports.put(qualifiedName, moduleRef.getQualifiedName());
+				moduleImports.computeIfAbsent(qualifiedName, key -> new LinkedList<>()).add(moduleRef
+						.getQualifiedName());
 			}
 		}
 
@@ -249,18 +248,17 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 			}
 		}
 
-		SetMultimap<String, AbstractModuleElementService> services = moduleServices.get(module);
-		if (services == null) {
-			services = LinkedHashMultimap.create();
-			moduleServices.put(qualifiedName, services);
-		}
+		Map<String, Set<AbstractModuleElementService>> services = moduleServices.computeIfAbsent(
+				qualifiedName, key -> new LinkedHashMap<>());
 		for (ModuleElement element : module.getModuleElements()) {
 			if (element instanceof Template) {
 				String name = ((Template)element).getName();
-				services.put(name, new TemplateService(this, (Template)element));
+				services.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new TemplateService(this,
+						(Template)element));
 			} else if (element instanceof Query) {
 				String name = ((Query)element).getName();
-				services.put(name, new QueryService(this, (Query)element));
+				services.computeIfAbsent(name, key -> new LinkedHashSet<>()).add(new QueryService(this,
+						(Query)element));
 			}
 		}
 	}

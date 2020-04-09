@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableSet;
-
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -38,7 +37,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -50,7 +49,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -97,7 +96,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -110,7 +109,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -122,7 +121,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -169,7 +168,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -182,7 +181,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -195,7 +194,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -207,7 +206,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -254,7 +253,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -267,7 +266,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -280,7 +279,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -360,8 +359,8 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclAsTypeSameType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eCls",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EClass)", variables
 				.build());
 
@@ -370,14 +369,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
+		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
 
 	@Test
 	public void testOclAsTypeNotCompatibleType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eCls",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclAsType(ecore::EPackage)", variables
 				.build());
 
@@ -401,17 +400,17 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclAsTypeMayBeCompatibleType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier",
-				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()));
-		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)",
-				variables.build());
+		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", eClassifierType(
+				EcorePackage.eINSTANCE.getEClassifier()));
+		final IValidationResult validationResult = validate("eClasssifier.oclAsType(ecore::EClass)", variables
+				.build());
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
+		assertEquals(Collections.singleton(eClassifierType(EcorePackage.eINSTANCE.getEClass())), types);
 	}
 
 	@Test
@@ -424,7 +423,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
 		// ClassType(Boolean) because ecore is not registered
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -467,7 +466,8 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclIsKindOfNothingNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
-		final IValidationResult validationResult = validate("nothing.oclIsKindOf(nothing)", variables.build());
+		final IValidationResult validationResult = validate("nothing.oclIsKindOf(nothing)", variables
+				.build());
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -486,8 +486,8 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclIsKindOfSameType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eCls",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EClass)", variables
 				.build());
 
@@ -501,14 +501,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOclIsKindOfNotCompatibleType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eCls",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsKindOf(ecore::EPackage)", variables
 				.build());
 
@@ -522,14 +522,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOclIsKindOfMayBeCompatibleType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier",
-				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", eClassifierType(
+				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsKindOf(ecore::EClass)",
 				variables.build());
 
@@ -538,7 +538,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -551,7 +551,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
 		// ClassType(Boolean) because ecore is not registered
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -594,7 +594,8 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclIsTypeOfNothingNothing() {
 		final VariableBuilder variables = new VariableBuilder().addVar("nothing", nothingType("Nothing"));
-		final IValidationResult validationResult = validate("nothing.oclIsTypeOf(nothing)", variables.build());
+		final IValidationResult validationResult = validate("nothing.oclIsTypeOf(nothing)", variables
+				.build());
 
 		assertEquals(2, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -613,8 +614,8 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 	@Test
 	public void testOclIsTypeOfSameType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eCls",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EClass)", variables
 				.build());
 
@@ -628,14 +629,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOclIsTypeOfNotCompatibleType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eCls",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eCls", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass()));
 		final IValidationResult validationResult = validate("eCls.oclIsTypeOf(ecore::EPackage)", variables
 				.build());
 
@@ -649,14 +650,14 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOclIsTypeOfMayBeCompatibleType() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier",
-				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()));
+		final VariableBuilder variables = new VariableBuilder().addVar("eClasssifier", eClassifierType(
+				EcorePackage.eINSTANCE.getEClassifier()));
 		final IValidationResult validationResult = validate("eClasssifier.oclIsTypeOf(ecore::EClass)",
 				variables.build());
 
@@ -665,7 +666,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(Collections.singleton(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -677,7 +678,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -701,7 +702,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -713,7 +714,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 	@Test
@@ -737,7 +738,7 @@ public class AnyServicesAstValidationTest extends AbstractServicesValidationTest
 		final AstResult ast = validationResult.getAstResult();
 		final Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(Collections.singleton(classType(String.class)), types);
 	}
 
 }

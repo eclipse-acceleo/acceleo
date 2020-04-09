@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.validation;
 
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Multimap;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.aql.parser.AcceleoAstResult;
@@ -39,7 +40,7 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 	/**
 	 * Mapping of {@link ASTNode} to {@link IValidationMessage}.
 	 */
-	private final Multimap<ASTNode, IValidationMessage> messages = LinkedListMultimap.create();
+	private final Map<ASTNode, List<IValidationMessage>> messages = new LinkedHashMap<>();
 
 	/**
 	 * Mapping of AQL AST to AQL validation result.
@@ -63,12 +64,12 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 
 	@Override
 	public List<IValidationMessage> getValidationMessages() {
-		return new ArrayList<IValidationMessage>(messages.values());
+		return messages.values().stream().flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<IValidationMessage> getValidationMessages(ASTNode node) {
-		return new ArrayList<IValidationMessage>(messages.get(node));
+		return new ArrayList<IValidationMessage>(messages.getOrDefault(node, new LinkedList<>()));
 	}
 
 	@Override
@@ -76,13 +77,13 @@ public class AcceleoValidationResult implements IAcceleoValidationResult {
 		return aqlValidationResutls.get(aqlAst);
 	}
 
-	/**
-	 * Gets the mapping of {@link ASTNode} to {@link IValidationMessage}.
-	 * 
-	 * @return the mapping of {@link ASTNode} to {@link IValidationMessage}
-	 */
-	public Multimap<ASTNode, IValidationMessage> getMessages() {
-		return messages;
+	/* visible to the validator only */void addMessage(ASTNode node, IValidationMessage newMessage) {
+		messages.computeIfAbsent(node, key -> new LinkedList<>()).add(newMessage);
+	}
+
+	/* visible to the validator only */void addMessages(ASTNode node,
+			Collection<IValidationMessage> newMessages) {
+		messages.computeIfAbsent(node, key -> new LinkedList<>()).addAll(newMessages);
 	}
 
 	/**

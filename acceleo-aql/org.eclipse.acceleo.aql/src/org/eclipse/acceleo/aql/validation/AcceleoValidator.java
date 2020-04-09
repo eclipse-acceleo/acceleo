@@ -183,7 +183,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 			int startPosition, int endPosition) {
 		final IValidationMessage message = new ValidationMessage(level, messageString, startPosition,
 				endPosition);
-		result.getMessages().put(node, message);
+		result.addMessage(node, message);
 	}
 
 	@Override
@@ -571,7 +571,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 				}
 			}
 			if (!hasCompatibleType) {
-				result.getMessages().putAll(binding, messages);
+				result.addMessages(binding, messages);
 			}
 		}
 	}
@@ -679,8 +679,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		final IValidationResult res = validator.validate(stack.peek(), expression.getAst());
 
 		result.getAqlValidationResutls().put(expression.getAst(), res);
-		result.getMessages().putAll(expression, shiftMessages(res.getMessages(), expression
-				.getStartPosition()));
+		result.addMessages(expression, shiftMessages(res.getMessages(), expression.getStartPosition()));
 
 		return res;
 	}

@@ -10,17 +10,18 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests;
 
-import com.google.common.collect.Iterators;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.acceleo.query.tests.qmodel.Query;
+import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResultExpectation;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,11 +54,16 @@ public abstract class TestValidationQModel {
 	protected static Collection<Object[]> expectationsFrom(Resource reverse) throws URISyntaxException,
 			IOException {
 		Collection<Object[]> parameters = new ArrayList<Object[]>();
-		Iterator<QueryValidationResultExpectation> it = Iterators.filter(reverse.getAllContents(),
-				QueryValidationResultExpectation.class);
+		Iterable<EObject> allContents = () -> reverse.getAllContents();
 		int i = 0;
-		while (it.hasNext()) {
-			QueryValidationResultExpectation cur = it.next();
+		// @formatter:off
+		Iterator<QueryEvaluationResultExpectation> filtered = StreamSupport.stream(allContents.spliterator(), false)
+				.filter(QueryEvaluationResultExpectation.class::isInstance)
+				.map(QueryEvaluationResultExpectation.class::cast)
+				.iterator();
+		// @formatter:on
+		while (filtered.hasNext()) {
+			QueryEvaluationResultExpectation cur = filtered.next();
 			if (cur.getExpectedResult() != null) {
 				parameters.add(new Object[] {cur, ++i + " " + ((Query)cur.eContainer()).getExpression() });
 			}

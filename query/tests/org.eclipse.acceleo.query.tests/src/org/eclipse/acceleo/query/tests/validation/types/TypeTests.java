@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.tests.validation.types;
 
-import com.google.common.collect.ImmutableSet;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -102,26 +101,25 @@ public class TypeTests {
 		allPrimitiveVariants.add(booleanVariants);
 
 		wideningConversions = new HashMap<TypeVariants, Set<TypeVariants>>();
-		wideningConversions.put(byteVariants, ImmutableSet.of(shortVariants, integerVariants, longVariants,
+		wideningConversions.put(byteVariants, newSet(shortVariants, integerVariants, longVariants,
 				floatVariants, doubleVariants));
-		wideningConversions.put(shortVariants, ImmutableSet.of(integerVariants, longVariants, floatVariants,
+		wideningConversions.put(shortVariants, newSet(integerVariants, longVariants, floatVariants,
 				doubleVariants));
-		wideningConversions.put(charVariants, ImmutableSet.of(integerVariants, longVariants, floatVariants,
+		wideningConversions.put(charVariants, newSet(integerVariants, longVariants, floatVariants,
 				doubleVariants));
-		wideningConversions
-				.put(integerVariants, ImmutableSet.of(longVariants, floatVariants, doubleVariants));
-		wideningConversions.put(longVariants, ImmutableSet.of(floatVariants, doubleVariants));
-		wideningConversions.put(floatVariants, ImmutableSet.of(doubleVariants));
+		wideningConversions.put(integerVariants, newSet(longVariants, floatVariants, doubleVariants));
+		wideningConversions.put(longVariants, newSet(floatVariants, doubleVariants));
+		wideningConversions.put(floatVariants, newSet(doubleVariants));
 
 		narrowingConversions = new HashMap<TypeVariants, Set<TypeVariants>>();
-		narrowingConversions.put(shortVariants, ImmutableSet.of(byteVariants, charVariants));
-		narrowingConversions.put(charVariants, ImmutableSet.of(byteVariants, shortVariants));
-		narrowingConversions.put(integerVariants, ImmutableSet.of(byteVariants, shortVariants, charVariants));
-		narrowingConversions.put(longVariants, ImmutableSet.of(byteVariants, shortVariants, charVariants,
+		narrowingConversions.put(shortVariants, newSet(byteVariants, charVariants));
+		narrowingConversions.put(charVariants, newSet(byteVariants, shortVariants));
+		narrowingConversions.put(integerVariants, newSet(byteVariants, shortVariants, charVariants));
+		narrowingConversions.put(longVariants, newSet(byteVariants, shortVariants, charVariants,
 				integerVariants));
-		narrowingConversions.put(floatVariants, ImmutableSet.of(byteVariants, shortVariants, charVariants,
+		narrowingConversions.put(floatVariants, newSet(byteVariants, shortVariants, charVariants,
 				integerVariants, longVariants));
-		narrowingConversions.put(doubleVariants, ImmutableSet.of(byteVariants, shortVariants, charVariants,
+		narrowingConversions.put(doubleVariants, newSet(byteVariants, shortVariants, charVariants,
 				integerVariants, longVariants, floatVariants));
 	}
 
@@ -176,12 +174,12 @@ public class TypeTests {
 				others.remove(fromType);
 				for (IType toType : others) {
 					if (toType instanceof EClassifierType || fromType instanceof EClassifierType) {
-						assertFalse(toType.getType() + " should not have been assignable from "
-								+ fromType.getType() + " as ecore is not registered in the environment.",
-								toType.isAssignableFrom(fromType));
+						assertFalse(toType.getType() + " should not have been assignable from " + fromType
+								.getType() + " as ecore is not registered in the environment.", toType
+										.isAssignableFrom(fromType));
 					} else {
-						assertTrue(toType.getType() + " should have been assignable from "
-								+ fromType.getType(), toType.isAssignableFrom(fromType));
+						assertTrue(toType.getType() + " should have been assignable from " + fromType
+								.getType(), toType.isAssignableFrom(fromType));
 					}
 				}
 			}
@@ -196,8 +194,8 @@ public class TypeTests {
 				for (TypeVariants toVariant : entry.getValue()) {
 					assertFalse(toVariant.getVariants().isEmpty());
 					for (IType toType : toVariant.getVariants()) {
-						assertFalse(toType.getType() + " should not have been assignable from "
-								+ fromType.getType(), toType.isAssignableFrom(fromType));
+						assertFalse(toType.getType() + " should not have been assignable from " + fromType
+								.getType(), toType.isAssignableFrom(fromType));
 					}
 				}
 			}
@@ -228,8 +226,8 @@ public class TypeTests {
 
 			for (IType fromType : booleanVariants.getVariants()) {
 				for (IType toType : toVariant.getVariants()) {
-					assertFalse(toType.getType() + " should not have been assignable from "
-							+ fromType.getType(), toType.isAssignableFrom(fromType));
+					assertFalse(toType.getType() + " should not have been assignable from " + fromType
+							.getType(), toType.isAssignableFrom(fromType));
 				}
 			}
 		}
@@ -259,8 +257,8 @@ public class TypeTests {
 
 			for (IType toType : booleanVariants.getVariants()) {
 				for (IType fromType : fromVariant.getVariants()) {
-					assertFalse(toType.getType() + " should not have been assignable from "
-							+ fromType.getType(), toType.isAssignableFrom(fromType));
+					assertFalse(toType.getType() + " should not have been assignable from " + fromType
+							.getType(), toType.isAssignableFrom(fromType));
 				}
 			}
 		}
@@ -439,6 +437,12 @@ public class TypeTests {
 
 	protected EClassifierType eClassifierType(EClassifier eClassifier) {
 		return new EClassifierType(getQueryEnvironment(), eClassifier);
+	}
+
+	private static <T> Set<T> newSet(@SuppressWarnings("unchecked") T... elements) {
+		Set<T> set = new LinkedHashSet<T>();
+		set.addAll(Arrays.asList(elements));
+		return set;
 	}
 
 	private static class TypeVariants {

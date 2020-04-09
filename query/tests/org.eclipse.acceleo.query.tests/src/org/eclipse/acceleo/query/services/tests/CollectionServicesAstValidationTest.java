@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableSet;
-
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,12 +41,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->concat(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
-						10, 30);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
+				10, 30);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -69,8 +67,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -78,12 +76,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->concat(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
-						10, 32);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
+				10, 32);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -106,8 +102,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -115,12 +111,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->concat(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n concat can only be called on collections, but null was used as its argument.",
-						10, 24);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n concat can only be called on collections, but null was used as its argument.",
+				10, 24);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -139,18 +133,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->concat(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						23, 37);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						10, 38);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				23, 37);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				10, 38);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -169,18 +159,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->concat(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						23, 32);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						10, 33);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				23, 32);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				10, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -199,12 +185,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->concat(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
-						4, 24);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
+				4, 24);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -223,12 +207,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->concat(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
-						4, 26);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
+				4, 26);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -247,12 +229,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
-						12, 34);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
+				12, 34);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -275,8 +255,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -284,12 +263,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
-						12, 32);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
+				12, 32);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -312,8 +289,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -321,12 +297,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n concat can only be called on collections, but null was used as its argument.",
-						12, 26);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n concat can only be called on collections, but null was used as its argument.",
+				12, 26);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -345,18 +319,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						25, 39);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						12, 40);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				25, 39);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				12, 40);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -375,18 +345,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->concat(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						25, 34);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						12, 35);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				25, 34);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after concat:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				12, 35);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -405,12 +371,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->union(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
-						10, 29);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
+				10, 29);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -433,8 +397,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -442,12 +406,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->union(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n union can only be called on collections, but null was used as its argument.",
-						10, 23);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n union can only be called on collections, but null was used as its argument.",
+				10, 23);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -466,18 +428,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->union(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						22, 36);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						10, 37);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				22, 36);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				10, 37);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -496,12 +454,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->union(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
-						4, 25);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
+				4, 25);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -520,12 +476,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->union(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
-						12, 33);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
+				12, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -548,8 +502,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -557,12 +510,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->union(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n union can only be called on collections, but null was used as its argument.",
-						12, 25);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n union can only be called on collections, but null was used as its argument.",
+				12, 25);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -581,18 +532,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->union(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						24, 33);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						12, 34);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				24, 33);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after union:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				12, 34);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -649,7 +596,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -664,7 +611,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -676,8 +623,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -692,7 +638,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -720,8 +666,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -736,13 +681,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAddListStringNothing() {
 		VariableBuilder variables = new VariableBuilder().addVar("self", nothingType("Empty"));
-		final IValidationResult validationResult = validate("Sequence{'hello'}->add(self)", variables.build());
+		final IValidationResult validationResult = validate("Sequence{'hello'}->add(self)", variables
+				.build());
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
@@ -763,8 +709,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
 	}
 
 	@Test
@@ -795,7 +741,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -826,7 +772,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -853,12 +799,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->sub(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						20, 34);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				20, 34);
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 35);
 
@@ -878,12 +822,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->sub(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						20, 29);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				20, 29);
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.INFO, "Empty collection: Empty Sequence defined in extension", 0, 30);
 
@@ -903,12 +845,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->sub(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						0, 21);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				0, 21);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -926,12 +866,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->sub(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						0, 23);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				0, 23);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -949,9 +887,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection: Empty OrderedSet defined in extension", 0, 31);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, "Empty collection: Empty OrderedSet defined in extension", 0,
+				31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -973,7 +911,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -981,9 +919,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection: Empty OrderedSet defined in extension", 0, 29);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, "Empty collection: Empty OrderedSet defined in extension", 0,
+				29);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1005,7 +943,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1013,9 +951,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(0), ValidationMessageLevel.INFO,
-						"Empty collection: Empty OrderedSet defined in extension", 0, 23);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO, "Empty collection: Empty OrderedSet defined in extension", 0,
+				23);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1033,15 +971,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						22, 36);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection: Empty OrderedSet defined in extension", 0, 37);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				22, 36);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO, "Empty collection: Empty OrderedSet defined in extension", 0,
+				37);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1059,15 +995,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->sub(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						22, 31);
-		ValidationTest
-				.assertValidationMessage(validationResult.getMessages().get(1), ValidationMessageLevel.INFO,
-						"Empty collection: Empty OrderedSet defined in extension", 0, 32);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				22, 31);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO, "Empty collection: Empty OrderedSet defined in extension", 0,
+				32);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1089,7 +1023,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1101,8 +1035,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class))),
+				types);
 	}
 
 	@Test
@@ -1114,8 +1048,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -1127,7 +1060,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(null))), types);
 	}
 
 	@Test
@@ -1139,7 +1072,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1151,8 +1084,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(String.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1164,7 +1096,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(null))), types);
 	}
 
 	@Test
@@ -1176,7 +1108,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1188,7 +1120,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1196,12 +1128,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->excluding(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 21);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 21);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1223,7 +1153,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1235,7 +1165,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1247,7 +1177,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1255,12 +1185,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->reverse()");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 15);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 15);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1282,7 +1210,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1294,7 +1222,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -1306,7 +1234,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -1318,7 +1246,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -1330,7 +1258,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -1342,7 +1270,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -1354,7 +1282,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -1366,7 +1294,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -1396,7 +1324,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1426,7 +1354,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -1438,7 +1366,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1468,7 +1396,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -1480,7 +1408,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1492,7 +1420,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -1504,7 +1432,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -1516,7 +1444,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1525,12 +1453,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		String message = "The Collection was empty due to a null value being wrapped as a Collection.";
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 18);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 18);
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
 				ValidationMessageLevel.ERROR, message, 18, 25);
 
@@ -1552,7 +1478,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1564,7 +1490,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1576,7 +1502,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1588,7 +1514,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1600,7 +1526,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -1612,7 +1538,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1624,7 +1550,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1636,8 +1562,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1649,8 +1574,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1662,7 +1586,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1674,7 +1598,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1686,8 +1610,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1699,8 +1622,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -1712,7 +1634,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1724,7 +1646,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1736,8 +1658,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
 	}
 
 	@Test
@@ -1749,8 +1671,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
 	}
 
 	@Test
@@ -1762,19 +1684,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testSortedBySetContainingNull() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', null, 'world'}->sortedBy(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', null, 'world'}->sortedBy(i | i.size())");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(null))), types);
 	}
 
 	@Test
@@ -1786,8 +1709,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class)),
-				setType(classType(Double.class))), types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class)), setType(
+				classType(Double.class))), types);
 	}
 
 	@Test
@@ -1803,9 +1726,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		ePkg.getEClassifiers().add(eCls2);
 
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		VariableBuilder variables = new VariableBuilder().addVar("eCls1",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass())).addVar("eCls2",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		VariableBuilder variables = new VariableBuilder().addVar("eCls1", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass())).addVar("eCls2", eClassifierType(EcorePackage.eINSTANCE
+						.getEClass()));
 		final IValidationResult validationResult = validate("OrderedSet{eCls1, eCls2}->sortedBy(i | i.name)",
 				variables.build());
 
@@ -1814,19 +1737,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
 	}
 
 	@Test
 	public void testSortedBySetNoComparableLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->sortedBy(i | i->asSequence())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->sortedBy(i | i->asSequence())");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1838,7 +1762,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1847,12 +1771,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->sortedBy(i | i.size())");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 28);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 28);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -1874,20 +1796,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testSortedByListContainingNull() {
-		final IValidationResult validationResult = validate("Sequence{'hello', null, 'world'}->sortedBy(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', null, 'world'}->sortedBy(i | i.size())");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -1899,8 +1821,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class)),
+				sequenceType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -1916,9 +1838,9 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		ePkg.getEClassifiers().add(eCls2);
 
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		VariableBuilder variables = new VariableBuilder().addVar("eCls1",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass())).addVar("eCls2",
-				eClassifierType(EcorePackage.eINSTANCE.getEClass()));
+		VariableBuilder variables = new VariableBuilder().addVar("eCls1", eClassifierType(
+				EcorePackage.eINSTANCE.getEClass())).addVar("eCls2", eClassifierType(EcorePackage.eINSTANCE
+						.getEClass()));
 		final IValidationResult validationResult = validate("Sequence{eCls1, eCls2}->sortedBy(i | i.name)",
 				variables.build());
 
@@ -1927,20 +1849,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))),
-				types);
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
 	}
 
 	@Test
 	public void testSortedByListNoComparableLambda() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->sortedBy(i | i->asSequence())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->sortedBy(i | i->asSequence())");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1952,7 +1874,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -1964,12 +1886,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testSelectListAlwaysTrue() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->select(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->select(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
@@ -1979,12 +1902,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testSelectListAlwaysFalse() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->select(i | not i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->select(i | not i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertEquals(1, validationResult.getMessages().size());
@@ -1994,7 +1918,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -2003,8 +1927,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a select must return a boolean", 17, 31);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
+				17, 31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2019,12 +1943,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testSelectListNotBooleanLambda() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->select(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->select(i | i.size())");
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a select must return a boolean", 26, 48);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
+				26, 48);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2042,12 +1967,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->select(i | i <> null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 27);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 27);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2069,12 +1992,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testSelectSetAlwaysTrue() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->select(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->select(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
@@ -2084,12 +2008,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testSelectSetAlwaysFalse() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->select(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->select(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertEquals(1, validationResult.getMessages().size());
@@ -2099,7 +2024,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -2108,8 +2033,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a select must return a boolean", 19, 33);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
+				19, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2124,12 +2049,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testSelectSetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->select(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->select(i | i.size())");
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a select must return a boolean", 28, 50);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a select must return a boolean",
+				28, 50);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2151,7 +2077,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -2160,8 +2086,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a reject must return a boolean", 17, 31);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
+				17, 31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2176,12 +2102,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testRejectListNotBooleanLambda() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->reject(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->reject(i | i.size())");
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a reject must return a boolean", 26, 48);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
+				26, 48);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2199,12 +2126,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->reject(i | i.size() = 5)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 30);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 30);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2226,7 +2151,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -2235,8 +2160,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a reject must return a boolean", 19, 33);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
+				19, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2251,12 +2176,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testRejectSetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->reject(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->reject(i | i.size())");
 
 		assertEquals(1, validationResult.getMessages().size());
 		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
-				ValidationMessageLevel.INFO,
-				"Empty collection: expression in a reject must return a boolean", 28, 50);
+				ValidationMessageLevel.INFO, "Empty collection: expression in a reject must return a boolean",
+				28, 50);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2278,20 +2204,21 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
 	public void testCollectListImplicitFlatten() {
-		final IValidationResult validationResult = validate("Sequence{Sequence{'hello'}, Sequence{OrderedSet{1}}}->collect(i | i)");
+		final IValidationResult validationResult = validate(
+				"Sequence{Sequence{'hello'}, Sequence{OrderedSet{1}}}->collect(i | i)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
 	}
 
 	@Test
@@ -2304,7 +2231,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
 		// FIXME this shouldn't even parse in the first place
-		assertEquals(ImmutableSet.of(), types);
+		assertEquals(newSet(), types);
 
 		// String message = "expression in a reject must return a boolean";
 		// assertEquals(1, types.size());
@@ -2316,19 +2243,21 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testCollectListNullPruned() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 1, 3.1}->collect(i | if i.oclIsKindOf(String) then i else null endif)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 1, 3.1}->collect(i | if i.oclIsKindOf(String) then i else null endif)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testCollectListAlwaysTrueBoolean() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
@@ -2338,12 +2267,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Boolean.class))), types);
+		assertEquals(newSet(sequenceType(classType(Boolean.class))), types);
 	}
 
 	@Test
 	public void testCollectListAlwaysFalseBoolean() {
-		final IValidationResult validationResult = validate("Sequence{1, 2}->collect(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 2}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
@@ -2353,7 +2283,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Boolean.class))), types);
+		assertEquals(newSet(sequenceType(classType(Boolean.class))), types);
 	}
 
 	@Test
@@ -2361,12 +2291,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->collect(i | i.size())");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 27);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 27);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2388,20 +2316,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
 	public void testCollectSetImplicitFlatten() {
-		final IValidationResult validationResult = validate("OrderedSet{Sequence{'hello'}, Sequence{OrderedSet{1}}}->collect(i | i)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{Sequence{'hello'}, Sequence{OrderedSet{1}}}->collect(i | i)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -2414,7 +2342,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
 		// FIXME this shouldn't even parse in the first place
-		assertEquals(ImmutableSet.of(), types);
+		assertEquals(newSet(), types);
 
 		// String message = "expression in a reject must return a boolean";
 		// assertEquals(1, types.size());
@@ -2426,19 +2354,21 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testCollectSetNullPruned() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 1, 3.1}->collect(i | if i.oclIsKindOf(String) then i else null endif)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 1, 3.1}->collect(i | if i.oclIsKindOf(String) then i else null endif)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testCollectSetAlwaysTrueBoolean() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
@@ -2448,12 +2378,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Boolean.class))), types);
+		assertEquals(newSet(setType(classType(Boolean.class))), types);
 	}
 
 	@Test
 	public void testCollectSetAlwaysFalseBoolean() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 2}->collect(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 2}->collect(i | i.oclIsKindOf(String))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.Integer) is kind of java.lang.String";
 		assertEquals(1, validationResult.getMessages().size());
@@ -2463,7 +2394,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Boolean.class))), types);
+		assertEquals(newSet(setType(classType(Boolean.class))), types);
 	}
 
 	@Test
@@ -2478,7 +2409,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
 	}
 
 	@Test
@@ -2493,8 +2424,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
 	}
 
 	@Test
@@ -2510,21 +2441,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
 		// FIXME shouldn't parse
-		assertEquals(ImmutableSet.of(setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(null))), types);
 	}
 
 	@Test
 	public void testClosureOnNull() {
 		getQueryEnvironment().registerEPackage(EcorePackage.eINSTANCE);
-		final IValidationResult validationResult = validate("null->closure(i : ecore::EPackage | i.eSubpackages)");
+		final IValidationResult validationResult = validate(
+				"null->closure(i : ecore::EPackage | i.eSubpackages)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 51);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 51);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2549,7 +2479,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage()))), types);
 	}
 
 	@Test
@@ -2564,8 +2494,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())),
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEPackage())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
 	}
 
 	@Test
@@ -2581,7 +2511,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
 		// FIXME shouldn't parse
-		assertEquals(ImmutableSet.of(setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(null))), types);
 	}
 
 	@Test
@@ -2596,8 +2526,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))),
-				types);
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
 	}
 
 	@Test
@@ -2613,8 +2542,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), sequenceType(
+				eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
 	}
 
 	@Test
@@ -2630,8 +2559,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+		assertEquals(newSet(sequenceType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), sequenceType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
 	}
 
 	@Test
@@ -2639,12 +2568,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{'hello'}->filter(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing will be left after calling filter:\nEClassifier on filter cannot be null.",
-						17, 31);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing will be left after calling filter:\nEClassifier on filter cannot be null.",
+				17, 31);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2665,12 +2592,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 						.build());
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing will be left after calling filter:\nThe Collection was empty due to a null value being wrapped as a Collection.",
-						4, 27);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing will be left after calling filter:\nThe Collection was empty due to a null value being wrapped as a Collection.",
+				4, 27);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2695,7 +2620,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass()))), types);
 	}
 
 	@Test
@@ -2711,8 +2636,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEDataType()))), types);
 	}
 
 	@Test
@@ -2728,8 +2653,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())),
-				setType(eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
+		assertEquals(newSet(setType(eClassifierType(EcorePackage.eINSTANCE.getEClass())), setType(
+				eClassifierType(EcorePackage.eINSTANCE.getEClassifier()))), types);
 	}
 
 	@Test
@@ -2737,12 +2662,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{'hello'}->filter(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing will be left after calling filter:\nEClassifier on filter cannot be null.",
-						19, 33);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing will be left after calling filter:\nEClassifier on filter cannot be null.",
+				19, 33);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2764,7 +2687,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -2776,8 +2699,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2785,12 +2707,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->sep(' ')");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 14);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 14);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2822,7 +2742,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -2834,21 +2754,20 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
 	public void testSepPrefixSuffixListNullPrefixNullSeparatorNullSuffix() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->sep(null, null, null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->sep(null, null, null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2860,8 +2779,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2873,8 +2792,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2886,8 +2805,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2899,8 +2818,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2912,8 +2831,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2925,8 +2844,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -2938,8 +2857,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class))),
+				types);
 	}
 
 	@Test
@@ -2947,12 +2866,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->sep(1, 2, 3)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 18);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 18);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -2977,28 +2894,29 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testSepPrefixSuffixSetNullPrefixNullSeparatorNullSuffix() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, null, null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->sep(null, null, null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
 	public void testSepPrefixSuffixSetNullSeparatorNullSuffix() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(1, null, null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->sep(1, null, null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -3010,8 +2928,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -3023,34 +2941,36 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
 	public void testSepPrefixSuffixSetNullPrefixNullSuffix() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, 2, null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->sep(null, 2, null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
 	public void testSepPrefixSuffixSetNullPrefixNullSeparator() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->sep(null, null, 3)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->sep(null, null, 3)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -3062,8 +2982,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class)), sequenceType(classType(null))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class)),
+				sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -3075,8 +2995,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(String.class))),
+				types);
 	}
 
 	@Test
@@ -3088,7 +3008,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -3119,7 +3039,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class)), types);
 	}
 
 	@Test
@@ -3150,7 +3070,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -3162,7 +3082,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class)), types);
 	}
 
 	@Test
@@ -3192,7 +3112,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3204,7 +3124,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3216,7 +3136,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3228,7 +3148,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3240,7 +3160,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3252,7 +3172,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3264,7 +3184,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3276,7 +3196,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3288,7 +3208,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3300,7 +3220,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3312,7 +3232,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3324,7 +3244,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3336,7 +3256,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3348,7 +3268,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3360,7 +3280,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3372,7 +3292,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3384,7 +3304,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -3396,24 +3316,26 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testAnyList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->any(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->any(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnyListAlwaysTrue() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->any(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->any(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3424,12 +3346,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnyListAlwaysFalse() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->any(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->any(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3440,32 +3363,34 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnyListDifferentTypes() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->any(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->any(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class),
-				classType(Double.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class), classType(Double.class)),
+				types);
 	}
 
 	@Test
 	public void testAnyListDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->any(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->any(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
@@ -3527,19 +3452,21 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testAnySet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->any(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->any(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnySetAlwaysTrue() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->any(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->any(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3550,12 +3477,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnySetAlwaysFalse() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->any(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->any(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3566,37 +3494,40 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnySetDifferentTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->any(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->any(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class), classType(Integer.class),
-				classType(Double.class)), types);
+		assertEquals(newSet(classType(String.class), classType(Integer.class), classType(Double.class)),
+				types);
 	}
 
 	@Test
 	public void testAnySetDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->any(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->any(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(String.class)), types);
+		assertEquals(newSet(classType(String.class)), types);
 	}
 
 	@Test
 	public void testAnySetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->any(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->any(i | i.size())");
 
 		String message = "expression in an any must return a boolean";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3634,38 +3565,41 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testCountList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 'map', 'map', 'hello'}->count('map')");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 'map', 'map', 'hello'}->count('map')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
 	public void testCountListDifferentTypes() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2, 1, 3}->count(1)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2, 1, 3}->count(1)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
 	public void testCountListNull() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 'map', 'map', 'hello'}->count(null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 'map', 'map', 'hello'}->count(null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -3677,60 +3611,65 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
 	public void testCountSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 'map', 'map', 'hello'}->count('map')");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 'map', 'map', 'hello'}->count('map')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
 	public void testCountSetDifferentTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2, 1, 3}->count(1)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2, 1, 3}->count(1)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
 	public void testCountSetNull() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 'map', 'map', 'hello'}->count(null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 'map', 'map', 'hello'}->count(null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
 	public void testExistsList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->exists(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->exists(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsListAlwaysTrue() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->exists(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->exists(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3741,12 +3680,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsListAlwaysFalse() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->exists(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->exists(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3757,36 +3697,39 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsListDifferentTypes() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->exists(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->exists(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsListDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->exists(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->exists(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsListNotBooleanLambda() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->exists(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->exists(i | i.size())");
 
 		String message = "expression in exists must return a boolean";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3831,24 +3774,26 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->exists(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->exists(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsSetAlwaysTrue() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->exists(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->exists(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3859,12 +3804,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsSetAlwaysFalse() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->exists(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->exists(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3875,36 +3821,39 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsSetDifferentTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->exists(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->exists(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsSetDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->exists(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->exists(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExistsSetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->exists(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->exists(i | i.size())");
 
 		String message = "expression in exists must return a boolean";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3942,19 +3891,21 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testForAllList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->forAll(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllListAlwaysTrue() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3965,12 +3916,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllListAlwaysFalse() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -3981,36 +3933,39 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllListDifferentTypes() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->forAll(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->forAll(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllListDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->forAll(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->forAll(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllListNotBooleanLambda() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->forAll(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->forAll(i | i.size())");
 
 		String message = "expression in forAll must return a boolean";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4055,24 +4010,26 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->forAll(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllSetAlwaysTrue() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4083,12 +4040,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllSetAlwaysFalse() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->forAll(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4099,36 +4057,39 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllSetDifferentTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->forAll(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->forAll(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllSetDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->forAll(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->forAll(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testForAllSetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->forAll(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->forAll(i | i.size())");
 
 		String message = "expression in forAll must return a boolean";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4166,98 +4127,106 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testExcludesAllListList() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->excludesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->excludesAll(Sequence{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllListSet() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->excludesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->excludesAll(OrderedSet{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllEmptyListList() {
-		final IValidationResult validationResult = validate("Sequence{}->excludesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{}->excludesAll(Sequence{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllEmptyListSet() {
-		final IValidationResult validationResult = validate("Sequence{}->excludesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{}->excludesAll(OrderedSet{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllListEmptyList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(Sequence{})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->excludesAll(Sequence{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllListEmptySet() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->excludesAll(OrderedSet{})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->excludesAll(OrderedSet{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllListListMultipleTypes() {
-		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->excludesAll(Sequence{'world', null})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 'hello', 2.0}->excludesAll(Sequence{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllListSetMultipleTypes() {
-		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->excludesAll(OrderedSet{'world', null})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 'hello', 2.0}->excludesAll(OrderedSet{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4269,7 +4238,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4281,7 +4250,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4293,211 +4262,228 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetList() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->excludesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->excludesAll(Sequence{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->excludesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->excludesAll(OrderedSet{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllEmptySetList() {
-		final IValidationResult validationResult = validate("OrderedSet{}->excludesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{}->excludesAll(Sequence{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllEmptySetSet() {
-		final IValidationResult validationResult = validate("OrderedSet{}->excludesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{}->excludesAll(OrderedSet{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetEmptyList() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(Sequence{})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->excludesAll(Sequence{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetEmptySet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(OrderedSet{})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->excludesAll(OrderedSet{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetListMultipleTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->excludesAll(Sequence{'world', null})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 'hello', 2.0}->excludesAll(Sequence{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetSetMultipleTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->excludesAll(OrderedSet{'world', null})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 'hello', 2.0}->excludesAll(OrderedSet{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testExcludesAllSetNull() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->excludesAll(null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->excludesAll(null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllListList() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->includesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->includesAll(Sequence{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllListSet() {
-		final IValidationResult validationResult = validate("Sequence{'hello'}->includesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello'}->includesAll(OrderedSet{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllEmptyListList() {
-		final IValidationResult validationResult = validate("Sequence{}->includesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{}->includesAll(Sequence{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllEmptyListSet() {
-		final IValidationResult validationResult = validate("Sequence{}->includesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{}->includesAll(OrderedSet{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllListEmptyList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->includesAll(Sequence{})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->includesAll(Sequence{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllListEmptySet() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->includesAll(OrderedSet{})");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->includesAll(OrderedSet{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllListListMultipleTypes() {
-		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->includesAll(Sequence{'world', null})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 'hello', 2.0}->includesAll(Sequence{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllListSetMultipleTypes() {
-		final IValidationResult validationResult = validate("Sequence{1, 'hello', 2.0}->includesAll(OrderedSet{'world', null})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 'hello', 2.0}->includesAll(OrderedSet{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4509,7 +4495,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4521,7 +4507,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4533,132 +4519,143 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetList() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->includesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->includesAll(Sequence{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello'}->includesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello'}->includesAll(OrderedSet{'hello', 'world'})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllEmptySetList() {
-		final IValidationResult validationResult = validate("OrderedSet{}->includesAll(Sequence{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{}->includesAll(Sequence{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllEmptySetSet() {
-		final IValidationResult validationResult = validate("OrderedSet{}->includesAll(OrderedSet{'hello', 'world'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{}->includesAll(OrderedSet{'hello', 'world'})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetEmptyList() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->includesAll(Sequence{})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->includesAll(Sequence{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetEmptySet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->includesAll(OrderedSet{})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->includesAll(OrderedSet{})");
 
 		assertEquals(0, validationResult.getMessages().size());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetListMultipleTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->includesAll(Sequence{'world', null})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 'hello', 2.0}->includesAll(Sequence{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetSetMultipleTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 'hello', 2.0}->includesAll(OrderedSet{'world', null})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 'hello', 2.0}->includesAll(OrderedSet{'world', null})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIncludesAllSetNull() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->includesAll(null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->includesAll(null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->isUnique(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->isUnique(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueListAlwaysTrue() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->isUnique(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->isUnique(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4669,12 +4666,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueListAlwaysFalse() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->isUnique(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->isUnique(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4685,43 +4683,46 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueListDifferentTypes() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->isUnique(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->isUnique(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueListDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->isUnique(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->isUnique(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueListNotBooleanLambda() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->isUnique(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->isUnique(i | i.size())");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4733,7 +4734,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4745,24 +4746,26 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->isUnique(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->isUnique(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueSetAlwaysTrue() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->isUnique(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->isUnique(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4773,12 +4776,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueSetAlwaysFalse() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->isUnique(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->isUnique(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4789,43 +4793,46 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueSetDifferentTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->isUnique(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->isUnique(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueSetDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->isUnique(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->isUnique(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testIsUniqueSetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->isUnique(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->isUnique(i | i.size())");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4837,24 +4844,26 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneList() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->one(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->one(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneListAlwaysTrue() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->one(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->one(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4865,12 +4874,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneListAlwaysFalse() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->one(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->one(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4881,31 +4891,33 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneListDifferentTypes() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->one(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->one(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneListDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world', 1, 2.0}->one(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world', 1, 2.0}->one(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
@@ -4955,24 +4967,26 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneSet() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->one(i | i.size() > 2)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->one(i | i.size() > 2)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneSetAlwaysTrue() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->one(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->one(i | i.oclIsKindOf(String))");
 
 		String message = "Always true:\nNothing inferred when i (java.lang.String) is not kind of java.lang.String";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4983,12 +4997,13 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneSetAlwaysFalse() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->one(i | i.oclIsKindOf(Integer))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->one(i | i.oclIsKindOf(Integer))");
 
 		String message = "Always false:\nNothing inferred when i (java.lang.String) is kind of java.lang.Integer";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -4999,36 +5014,39 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneSetDifferentTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->one(i | i <> null)");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->one(i | i <> null)");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneSetDifferentTypesNarrowing() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world', 1, 2.0}->one(i | i.oclIsKindOf(String))");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world', 1, 2.0}->one(i | i.oclIsKindOf(String))");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Boolean.class)), types);
+		assertEquals(newSet(classType(Boolean.class)), types);
 	}
 
 	@Test
 	public void testOneSetNotBooleanLambda() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->one(i | i.size())");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->one(i | i.size())");
 
 		String message = "expression in one must return a boolean";
 		assertFalse(validationResult.getMessages().isEmpty());
@@ -5073,7 +5091,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Long.class)), types);
+		assertEquals(newSet(classType(Long.class)), types);
 	}
 
 	@Test
@@ -5085,7 +5103,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Double.class)), types);
+		assertEquals(newSet(classType(Double.class)), types);
 	}
 
 	@Test
@@ -5135,7 +5153,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Long.class)), types);
+		assertEquals(newSet(classType(Long.class)), types);
 	}
 
 	@Test
@@ -5147,7 +5165,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Double.class)), types);
+		assertEquals(newSet(classType(Double.class)), types);
 	}
 
 	@Test
@@ -5178,7 +5196,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5190,7 +5208,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5202,7 +5220,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5214,7 +5232,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5226,7 +5244,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5238,7 +5256,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5250,7 +5268,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5262,7 +5280,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5274,7 +5292,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(classType(Integer.class)), types);
+		assertEquals(newSet(classType(Integer.class)), types);
 	}
 
 	@Test
@@ -5286,7 +5304,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5298,56 +5316,60 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
 	}
 
 	@Test
 	public void testInsertAtListUnderLowerBound() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(-1, 'newString')");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->insertAt(-1, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testInsertAtListOverUpperBound() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(3, 'newString')");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->insertAt(3, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testInsertAtListLowerBound() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(0, 'newString')");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->insertAt(0, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testInsertAtListUpperBound() {
-		final IValidationResult validationResult = validate("Sequence{'hello', 'world'}->insertAt(2, 'newString')");
+		final IValidationResult validationResult = validate(
+				"Sequence{'hello', 'world'}->insertAt(2, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5359,8 +5381,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -5372,7 +5393,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5384,7 +5405,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5396,56 +5417,59 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
 	public void testInsertAtSetUnderLowerBound() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(-1, 'newString')");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->insertAt(-1, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testInsertAtSetOverUpperBound() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(3, 'newString')");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->insertAt(3, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testInsertAtSetLowerBound() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(0, 'newString')");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->insertAt(0, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
 	public void testInsertAtSetUpperBound() {
-		final IValidationResult validationResult = validate("OrderedSet{'hello', 'world'}->insertAt(2, 'newString')");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{'hello', 'world'}->insertAt(2, 'newString')");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5457,7 +5481,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(null))), types);
 	}
 
 	@Test
@@ -5469,7 +5493,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5481,8 +5505,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(String.class)),
-				sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(String.class)), sequenceType(classType(Integer.class))),
+				types);
 	}
 
 	@Test
@@ -5494,8 +5518,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)), sequenceType(classType(null))),
-				types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(null))), types);
 	}
 
 	@Test
@@ -5507,7 +5530,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5519,7 +5542,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class))), types);
+		assertEquals(newSet(setType(classType(String.class))), types);
 	}
 
 	@Test
@@ -5531,8 +5554,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(String.class)), setType(classType(Integer.class))),
-				types);
+		assertEquals(newSet(setType(classType(String.class)), setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5544,7 +5566,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(null))), types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(null))), types);
 	}
 
 	@Test
@@ -5556,7 +5578,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5564,12 +5586,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->intersection(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
-						10, 36);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n Empty Sequence defined in extension",
+				10, 36);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5602,15 +5622,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionListListIncompatibleTypes() {
-		final IValidationResult validationResult = validate("Sequence{1.0, 2.0, 3.0}->intersection(Sequence{'hello'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1.0, 2.0, 3.0}->intersection(Sequence{'hello'})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Sequence(java.lang.String)",
-						23, 56);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Sequence(java.lang.String)",
+				23, 56);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5626,14 +5645,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionListListMixedTypes() {
-		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->intersection(Sequence{'hello', 3})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 2.0, 3}->intersection(Sequence{'hello', 3})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5645,7 +5665,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5653,12 +5673,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->intersection(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
-						10, 38);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n Empty OrderedSet defined in extension",
+				10, 38);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5674,7 +5692,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionIntListRealSet() {
-		final IValidationResult validationResult = validate("Sequence{1, 2, 3}->intersection(OrderedSet{2.0})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 2, 3}->intersection(OrderedSet{2.0})");
 
 		assertEquals(1, validationResult.getMessages().size());
 
@@ -5691,15 +5710,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionListSetIncompatibleTypes() {
-		final IValidationResult validationResult = validate("Sequence{1.0, 2.0, 3.0}->intersection(OrderedSet{'hello'})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1.0, 2.0, 3.0}->intersection(OrderedSet{'hello'})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Set(java.lang.String)",
-						23, 58);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Sequence(java.lang.Double) and Set(java.lang.String)",
+				23, 58);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5715,14 +5733,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionListSetMixedTypes() {
-		final IValidationResult validationResult = validate("Sequence{1, 2.0, 3}->intersection(OrderedSet{'hello', 3})");
+		final IValidationResult validationResult = validate(
+				"Sequence{1, 2.0, 3}->intersection(OrderedSet{'hello', 3})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5730,12 +5749,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->intersection(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n intersection can only be called on collections, but null was used as its argument.",
-						10, 30);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n intersection can only be called on collections, but null was used as its argument.",
+				10, 30);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5754,18 +5771,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->intersection(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						29, 43);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						10, 44);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				29, 43);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				10, 44);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5784,18 +5797,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("Sequence{}->intersection(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						29, 38);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						10, 39);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				29, 38);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty Sequence defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				10, 39);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5814,12 +5823,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->intersection(Sequence{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
-						4, 30);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty Sequence defined in extension",
+				4, 30);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5838,12 +5845,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->intersection(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
-						4, 32);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n The Collection was empty due to a null value being wrapped as a Collection.\n Empty OrderedSet defined in extension",
+				4, 32);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5859,14 +5864,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionSetSet() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(OrderedSet{2})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 2, 3}->intersection(OrderedSet{2})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5874,12 +5880,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(OrderedSet{})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
-						12, 40);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n Empty OrderedSet defined in extension",
+				12, 40);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5895,7 +5899,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionIntSetRealSet() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(OrderedSet{2.0})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 2, 3}->intersection(OrderedSet{2.0})");
 
 		assertEquals(1, validationResult.getMessages().size());
 
@@ -5912,15 +5917,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionSetSetIncompatibleTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1.0, 2.0, 3.0}->intersection(OrderedSet{'hello'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1.0, 2.0, 3.0}->intersection(OrderedSet{'hello'})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Set(java.lang.String)",
-						25, 60);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Set(java.lang.String)",
+				25, 60);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5936,14 +5940,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionSetSetMixedTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->intersection(OrderedSet{'hello', 3})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 2.0, 3}->intersection(OrderedSet{'hello', 3})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5955,7 +5960,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -5964,12 +5969,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 		assertEquals(1, validationResult.getMessages().size());
 
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
-						12, 38);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n Empty Sequence defined in extension",
+				12, 38);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -5985,7 +5988,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionIntSetRealList() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 2, 3}->intersection(Sequence{2.0})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 2, 3}->intersection(Sequence{2.0})");
 
 		assertEquals(1, validationResult.getMessages().size());
 
@@ -6002,15 +6006,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionSetListIncompatibleTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1.0, 2.0, 3.0}->intersection(Sequence{'hello'})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1.0, 2.0, 3.0}->intersection(Sequence{'hello'})");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Sequence(java.lang.String)",
-						25, 58);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Nothing left after intersection of Set(java.lang.Double) and Sequence(java.lang.String)",
+				25, 58);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -6026,14 +6029,15 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 
 	@Test
 	public void testIntersectionSetListMixedTypes() {
-		final IValidationResult validationResult = validate("OrderedSet{1, 2.0, 3}->intersection(Sequence{'hello', 3})");
+		final IValidationResult validationResult = validate(
+				"OrderedSet{1, 2.0, 3}->intersection(Sequence{'hello', 3})");
 
 		assertTrue(validationResult.getMessages().isEmpty());
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class))), types);
+		assertEquals(newSet(setType(classType(Integer.class))), types);
 	}
 
 	@Test
@@ -6041,12 +6045,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n intersection can only be called on collections, but null was used as its argument.",
-						12, 32);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n intersection can only be called on collections, but null was used as its argument.",
+				12, 32);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -6065,18 +6067,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null->asSequence())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						31, 45);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						12, 46);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				31, 45);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				12, 46);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -6095,18 +6093,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("OrderedSet{}->intersection(null->asSet())");
 
 		assertEquals(2, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						31, 40);
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(1),
-						ValidationMessageLevel.INFO,
-						"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
-						12, 41);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				31, 40);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(1),
+				ValidationMessageLevel.INFO,
+				"Empty collection: Nothing left after intersection:\n Empty OrderedSet defined in extension\n The Collection was empty due to a null value being wrapped as a Collection.",
+				12, 41);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -6129,8 +6123,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6142,8 +6135,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6155,8 +6147,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6168,8 +6159,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6181,8 +6171,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6194,8 +6183,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6207,8 +6195,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(setType(classType(Integer.class)), setType(classType(Double.class))),
-				types);
+		assertEquals(newSet(setType(classType(Integer.class)), setType(classType(Double.class))), types);
 	}
 
 	@Test
@@ -6216,12 +6203,10 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		final IValidationResult validationResult = validate("null->subOrderedSet(1,1)");
 
 		assertEquals(1, validationResult.getMessages().size());
-		ValidationTest
-				.assertValidationMessage(
-						validationResult.getMessages().get(0),
-						ValidationMessageLevel.INFO,
-						"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
-						4, 24);
+		ValidationTest.assertValidationMessage(validationResult.getMessages().get(0),
+				ValidationMessageLevel.INFO,
+				"Empty collection: The Collection was empty due to a null value being wrapped as a Collection.",
+				4, 24);
 
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
@@ -6243,8 +6228,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -6256,8 +6241,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -6269,8 +6254,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -6282,8 +6267,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -6295,8 +6280,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -6308,8 +6293,8 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
 	}
 
 	@Test
@@ -6321,8 +6306,14 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		AstResult ast = validationResult.getAstResult();
 		Set<IType> types = validationResult.getPossibleTypes(ast.getAst());
 
-		assertEquals(ImmutableSet.of(sequenceType(classType(Integer.class)),
-				sequenceType(classType(Double.class))), types);
+		assertEquals(newSet(sequenceType(classType(Integer.class)), sequenceType(classType(Double.class))),
+				types);
+	}
+
+	private static <T> Set<T> newSet(@SuppressWarnings("unchecked") T... elements) {
+		Set<T> set = new LinkedHashSet<T>();
+		set.addAll(Arrays.asList(elements));
+		return set;
 	}
 
 	private static class VariableBuilder {
@@ -6333,7 +6324,7 @@ public class CollectionServicesAstValidationTest extends AbstractServicesValidat
 		}
 
 		public VariableBuilder addVar(String name, IType... types) {
-			variables.put(name, ImmutableSet.copyOf(types));
+			variables.put(name, newSet(types));
 			return this;
 		}
 

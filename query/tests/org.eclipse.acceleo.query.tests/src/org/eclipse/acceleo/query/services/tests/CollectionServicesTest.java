@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.eclipse.acceleo.query.services.tests;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -79,8 +74,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatListList() {
-		List<Object> list1 = Lists.newArrayList();
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
+		List<Object> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.concat(list1, list2).size());
 
@@ -102,8 +97,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatListSet() {
-		List<Object> list = Lists.newArrayList();
-		Set<Object> set = Sets.newLinkedHashSet();
+		List<Object> list = new ArrayList<>();
+		Set<Object> set = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.concat(list, set).size());
 
@@ -125,8 +120,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatListListDifferentTypes() {
-		List<String> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
+		List<String> list1 = new ArrayList<>();
+		List<Integer> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.concat(list1, list2).size());
 
@@ -144,8 +139,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatListSetDifferentTypes() {
-		List<String> list = Lists.newArrayList();
-		Set<Integer> set = Sets.newLinkedHashSet();
+		List<String> list = new ArrayList<>();
+		Set<Integer> set = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.concat(list, set).size());
 
@@ -163,28 +158,28 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testConcatListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.concat(list, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testConcatNullList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.concat(list, null);
 	}
 
 	@Test
 	public void testConcatListsWithDuplicates() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("a");
 		list1.add("b");
 		list1.add("c");
 		list1.add("c");
 		list1.add("c");
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add("c");
 		list2.add("b");
 		list2.add("a");
@@ -200,7 +195,7 @@ public class CollectionServicesTest {
 		assertEquals("b", result.get(6));
 		assertEquals("a", result.get(7));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add("c");
 		set1.add("b");
 		set1.add("a");
@@ -219,8 +214,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatSetList() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		List<Object> list = Lists.newArrayList();
+		Set<Object> set = new LinkedHashSet<>();
+		List<Object> list = new ArrayList<>();
 
 		assertEquals(0, collectionServices.concat(set, list).size());
 
@@ -243,8 +238,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
+		Set<Object> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.concat(set1, set2).size());
 
@@ -267,8 +262,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatSetListDifferentTypes() {
-		Set<String> set = Sets.newLinkedHashSet();
-		List<Integer> list = Lists.newArrayList();
+		Set<String> set = new LinkedHashSet<>();
+		List<Integer> list = new ArrayList<>();
 
 		assertEquals(0, collectionServices.concat(set, list).size());
 
@@ -287,8 +282,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testConcatSetSetDifferentTypes() {
-		Set<String> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
+		Set<String> set1 = new LinkedHashSet<>();
+		Set<Integer> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.concat(set1, set2).size());
 
@@ -307,27 +302,27 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testConcatSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.concat(set, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testConcatNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.concat(set, null);
 	}
 
 	@Test
 	public void testConcatSetsWithDuplicates() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add("a");
 		set1.add("b");
 		set1.add("c");
 		set1.add("d");
 
-		Set<String> set2 = Sets.newLinkedHashSet();
+		Set<String> set2 = new LinkedHashSet<>();
 		set2.add("e");
 		set2.add("d");
 		set2.add("c");
@@ -342,7 +337,7 @@ public class CollectionServicesTest {
 		assertEquals("d", itr.next());
 		assertEquals("e", itr.next());
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("e");
 		list1.add("d");
 		list1.add("c");
@@ -360,8 +355,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testUnionListList() {
-		List<Object> list1 = Lists.newArrayList();
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
+		List<Object> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.union(list1, list2).size());
 
@@ -383,8 +378,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testUnionListListDifferentTypes() {
-		List<String> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
+		List<String> list1 = new ArrayList<>();
+		List<Integer> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.union(list1, list2).size());
 
@@ -402,28 +397,28 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testUnionListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.union(list, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testUnionNullList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.union(list, null);
 	}
 
 	@Test
 	public void testUnionListsWithDuplicates() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("a");
 		list1.add("b");
 		list1.add("c");
 		list1.add("c");
 		list1.add("c");
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add("c");
 		list2.add("b");
 		list2.add("a");
@@ -442,8 +437,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testUnionSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
+		Set<Object> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.union(set1, set2).size());
 
@@ -466,8 +461,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testUnionSetSetDifferentTypes() {
-		Set<String> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
+		Set<String> set1 = new LinkedHashSet<>();
+		Set<Integer> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.union(set1, set2).size());
 
@@ -486,27 +481,27 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testUnionSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.union(set, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testUnionNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.union(set, null);
 	}
 
 	@Test
 	public void testUnionSetsWithDuplicates() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add("a");
 		set1.add("b");
 		set1.add("c");
 		set1.add("d");
 
-		Set<String> set2 = Sets.newLinkedHashSet();
+		Set<String> set2 = new LinkedHashSet<>();
 		set2.add("e");
 		set2.add("d");
 		set2.add("c");
@@ -524,8 +519,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddListList() {
-		List<Object> list1 = Lists.newArrayList();
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
+		List<Object> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.add(list1, list2).size());
 
@@ -547,8 +542,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddListSet() {
-		List<Object> list = Lists.newArrayList();
-		Set<Object> set = Sets.newLinkedHashSet();
+		List<Object> list = new ArrayList<>();
+		Set<Object> set = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.add(list, set).size());
 
@@ -570,8 +565,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddListListDifferentTypes() {
-		List<String> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
+		List<String> list1 = new ArrayList<>();
+		List<Integer> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.add(list1, list2).size());
 
@@ -589,8 +584,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddListSetDifferentTypes() {
-		List<String> list = Lists.newArrayList();
-		Set<Integer> set = Sets.newLinkedHashSet();
+		List<String> list = new ArrayList<>();
+		Set<Integer> set = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.add(list, set).size());
 
@@ -608,28 +603,28 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testAddListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.add(list, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testAddNullList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.add((List<?>)null, list);
 	}
 
 	@Test
 	public void testAddListWithDuplicates() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("a");
 		list1.add("b");
 		list1.add("c");
 		list1.add("c");
 		list1.add("c");
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add("c");
 		list2.add("b");
 		list2.add("a");
@@ -645,7 +640,7 @@ public class CollectionServicesTest {
 		assertEquals("b", result.get(6));
 		assertEquals("a", result.get(7));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add("c");
 		set1.add("b");
 		set1.add("a");
@@ -664,8 +659,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddSetList() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		List<Object> list = Lists.newArrayList();
+		Set<Object> set = new LinkedHashSet<>();
+		List<Object> list = new ArrayList<>();
 
 		assertEquals(0, collectionServices.add(set, list).size());
 
@@ -688,8 +683,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
+		Set<Object> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.add(set1, set2).size());
 
@@ -712,8 +707,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddSetListDifferentTypes() {
-		Set<String> set = Sets.newLinkedHashSet();
-		List<Integer> list = Lists.newArrayList();
+		Set<String> set = new LinkedHashSet<>();
+		List<Integer> list = new ArrayList<>();
 
 		assertEquals(0, collectionServices.add(set, list).size());
 
@@ -732,8 +727,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAddSetSetDifferentTypes() {
-		Set<String> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
+		Set<String> set1 = new LinkedHashSet<>();
+		Set<Integer> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.add(set1, set2).size());
 
@@ -752,27 +747,27 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testAddSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.add(set, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testAddNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.add((Set<?>)null, set);
 	}
 
 	@Test
 	public void testAddSetWithDuplicates() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add("a");
 		set1.add("b");
 		set1.add("c");
 		set1.add("d");
 
-		Set<String> set2 = Sets.newLinkedHashSet();
+		Set<String> set2 = new LinkedHashSet<>();
 		set2.add("e");
 		set2.add("d");
 		set2.add("c");
@@ -787,7 +782,7 @@ public class CollectionServicesTest {
 		assertEquals("d", itr.next());
 		assertEquals("e", itr.next());
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("e");
 		list1.add("d");
 		list1.add("c");
@@ -805,8 +800,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubListList() {
-		List<Object> list1 = Lists.newArrayList();
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
+		List<Object> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.sub(list1, list2).size());
 
@@ -832,8 +827,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubListSet() {
-		List<Object> list = Lists.newArrayList();
-		Set<Object> set = Sets.newLinkedHashSet();
+		List<Object> list = new ArrayList<>();
+		Set<Object> set = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.sub(list, set).size());
 
@@ -859,8 +854,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubListListDifferentTypes() {
-		List<Number> list1 = Lists.newArrayList();
-		List<Integer> list2 = Lists.newArrayList();
+		List<Number> list1 = new ArrayList<>();
+		List<Integer> list2 = new ArrayList<>();
 
 		assertEquals(0, collectionServices.sub(list1, list2).size());
 
@@ -882,8 +877,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubListSetDifferentTypes() {
-		List<Number> list = Lists.newArrayList();
-		Set<Integer> set = Sets.newLinkedHashSet();
+		List<Number> list = new ArrayList<>();
+		Set<Integer> set = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.sub(list, set).size());
 
@@ -905,7 +900,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSubListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(new Object());
 
 		collectionServices.sub(list, null);
@@ -913,7 +908,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSubNullList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(new Object());
 
 		collectionServices.sub((List<?>)null, list);
@@ -921,28 +916,28 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSubListNullEmptyList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.sub(list, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testSubNullListEmptyList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 
 		collectionServices.sub((List<?>)null, list);
 	}
 
 	@Test
 	public void testSubListWithDuplicates() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("a");
 		list1.add("b");
 		list1.add("c");
 		list1.add("c");
 		list1.add("c");
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add("c");
 
 		List<Object> result = collectionServices.sub(list1, list2);
@@ -953,8 +948,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubSetList() {
-		Set<Object> set = Sets.newLinkedHashSet();
-		List<Object> list = Lists.newArrayList();
+		Set<Object> set = new LinkedHashSet<>();
+		List<Object> list = new ArrayList<>();
 
 		assertEquals(0, collectionServices.sub(set, list).size());
 
@@ -982,8 +977,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubSetSet() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
+		Set<Object> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.sub(set1, set2).size());
 
@@ -1011,8 +1006,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubSetListDifferentTypes() {
-		Set<Number> set = Sets.newLinkedHashSet();
-		List<Integer> list = Lists.newArrayList();
+		Set<Number> set = new LinkedHashSet<>();
+		List<Integer> list = new ArrayList<>();
 
 		assertEquals(0, collectionServices.sub(set, list).size());
 
@@ -1036,8 +1031,8 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubSetSetDifferentTypes() {
-		Set<Number> set1 = Sets.newLinkedHashSet();
-		Set<Integer> set2 = Sets.newLinkedHashSet();
+		Set<Number> set1 = new LinkedHashSet<>();
+		Set<Integer> set2 = new LinkedHashSet<>();
 
 		assertEquals(0, collectionServices.sub(set1, set2).size());
 
@@ -1061,21 +1056,21 @@ public class CollectionServicesTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testSubSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.sub(set, null);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testSubNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 
 		collectionServices.sub((Set<?>)null, set);
 	}
 
 	@Test
 	public void testIncludingList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		list.add(elt);
 
@@ -1094,7 +1089,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludingListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		list.add(elt);
 
@@ -1139,7 +1134,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludingList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
 		list.add(elt);
@@ -1150,7 +1145,7 @@ public class CollectionServicesTest {
 		assertFalse(result.contains(elt2));
 		assertEquals(elt, result.get(0));
 
-		list = Lists.newArrayList();
+		list = new ArrayList<>();
 		list.add(elt);
 		result = collectionServices.excluding(list, elt2);
 		assertEquals(list, result);
@@ -1160,7 +1155,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludingListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		list.add(elt);
 		list.add(null);
@@ -1170,7 +1165,7 @@ public class CollectionServicesTest {
 		assertFalse(result.contains(null));
 		assertEquals(elt, result.get(0));
 
-		list = Lists.newArrayList();
+		list = new ArrayList<>();
 		list.add(elt);
 		result = collectionServices.excluding(list, null);
 		assertEquals(list, result);
@@ -1243,7 +1238,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testReverseList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		assertEquals(0, collectionServices.reverse(list).size());
 		Object elt = new Object();
 		Object elt2 = new Object();
@@ -1272,7 +1267,7 @@ public class CollectionServicesTest {
 	@Test
 	public void testReverseListCopy() {
 		// make sure "reverse" returns a copy of the list
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		assertEquals(0, collectionServices.reverse(list).size());
 		Object elt = new Object();
 		Object elt2 = new Object();
@@ -1310,19 +1305,19 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIsEmptyList() {
-		assertTrue(collectionServices.isEmpty(Lists.newArrayList()));
-		assertFalse(collectionServices.isEmpty(ImmutableList.of(new Object())));
+		assertTrue(collectionServices.isEmpty(new ArrayList<>()));
+		assertFalse(collectionServices.isEmpty(Collections.singleton(new Object())));
 	}
 
 	@Test
 	public void testIsEmptySet() {
-		assertTrue(collectionServices.isEmpty(Sets.newLinkedHashSet()));
-		assertFalse(collectionServices.isEmpty(ImmutableSet.of(new Object())));
+		assertTrue(collectionServices.isEmpty(new LinkedHashSet<>()));
+		assertFalse(collectionServices.isEmpty(Collections.singleton(new Object())));
 	}
 
 	@Test
 	public void testNotEmptyList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		assertFalse(collectionServices.notEmpty(list));
 		list.add(new Object());
 		assertTrue(collectionServices.notEmpty(list));
@@ -1330,7 +1325,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testNotEmptySet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		assertFalse(collectionServices.notEmpty(set));
 		set.add(new Object());
 		assertTrue(collectionServices.notEmpty(set));
@@ -1338,7 +1333,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFirstList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		list.add(elt);
 		list.add(new Object());
@@ -1347,13 +1342,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFirstEmptyList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		assertEquals(null, collectionServices.first(list));
 	}
 
 	@Test
 	public void testFirstSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		Object elt = new Object();
 		set.add(elt);
 		set.add(new Object());
@@ -1362,7 +1357,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFirstEmptySet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		assertEquals(null, collectionServices.first(set));
 	}
 
@@ -1373,7 +1368,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAt() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
 		Object elt3 = new Object();
@@ -1393,14 +1388,14 @@ public class CollectionServicesTest {
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAtOutOfBounds() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(new Object());
 		collectionServices.at(list, 2);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAtZero() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(new Object());
 		collectionServices.at(list, 0);
 	}
@@ -1412,7 +1407,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSizeList() {
-		List<Integer> list = Lists.newArrayList();
+		List<Integer> list = new ArrayList<>();
 		list.add(1);
 		assertEquals(Integer.valueOf(1), collectionServices.size(list));
 
@@ -1426,7 +1421,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSizeSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(1);
 		assertEquals(new Integer(1), collectionServices.size(set));
 
@@ -1445,7 +1440,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAsSetList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
 		list.add(elt);
@@ -1468,7 +1463,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAsSetSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
 		set.add(elt);
@@ -1495,7 +1490,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAsOrderedSetList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
 		list.add(elt);
@@ -1518,7 +1513,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAsOrderedSetSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		Object elt = new Object();
 		Object elt2 = new Object();
 		set.add(elt);
@@ -1545,7 +1540,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAsSequenceList() {
-		List<Integer> list = Lists.newArrayList();
+		List<Integer> list = new ArrayList<>();
 		list.add(1);
 		list.add(2);
 		list.add(3);
@@ -1564,7 +1559,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAsSequenceSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(1);
 		set.add(2);
 		set.add(3);
@@ -1886,7 +1881,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		List<EObject> list = Lists.newArrayList();
+		List<EObject> list = new ArrayList<>();
 		EObject queryWithExpression = iterator.next();
 		list.add(queryWithExpression);
 		list.add(iterator.next());
@@ -1895,8 +1890,8 @@ public class CollectionServicesTest {
 		List<EObject> filtered = collectionServices.select(list, null);
 		assertTrue(filtered.isEmpty());
 
-		filtered = collectionServices.select(list,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		filtered = collectionServices.select(list, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 		assertEquals(1, filtered.size());
 		assertEquals(queryWithExpression, filtered.get(0));
 	}
@@ -1904,13 +1899,13 @@ public class CollectionServicesTest {
 	@Test(expected = NullPointerException.class)
 	public void testSelectNullList() {
 		List<Object> nullList = null;
-		collectionServices.select(nullList,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.select(nullList, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	@Test
 	public void testSelectListNullLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
@@ -1920,7 +1915,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSelectListNotBooleanLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
@@ -1930,14 +1925,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSelectListExceptionLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
 
 		Diagnostic diagnostic = new BasicDiagnostic();
-		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list,
-				createExceptionLambda(diagnostic)));
+		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list, createExceptionLambda(
+				diagnostic)));
 		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
 		assertEquals(3, diagnostic.getChildren().size());
 		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
@@ -1954,7 +1949,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<EObject> set = Sets.newLinkedHashSet();
+		Set<EObject> set = new LinkedHashSet<>();
 		EObject queryWithExpression = iterator.next();
 		set.add(queryWithExpression);
 		set.add(iterator.next());
@@ -1963,8 +1958,8 @@ public class CollectionServicesTest {
 		Set<EObject> filtered = collectionServices.select(set, null);
 		assertTrue(filtered.isEmpty());
 
-		filtered = collectionServices.select(set,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		filtered = collectionServices.select(set, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 		assertEquals(1, filtered.size());
 		assertEquals(queryWithExpression, filtered.iterator().next());
 	}
@@ -1972,13 +1967,13 @@ public class CollectionServicesTest {
 	@Test(expected = NullPointerException.class)
 	public void testSelectNullSet() {
 		Set<Object> nullSet = null;
-		collectionServices.select(nullSet,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.select(nullSet, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	@Test
 	public void testSelectSetNullLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
+		Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
@@ -1988,7 +1983,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSelectSetNotBooleanLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
+		Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
@@ -2002,7 +1997,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		List<EObject> list = Lists.newArrayList();
+		List<EObject> list = new ArrayList<>();
 		EObject queryWithExpression = iterator.next();
 		EObject eObj2 = iterator.next();
 		EObject eObj3 = iterator.next();
@@ -2013,8 +2008,8 @@ public class CollectionServicesTest {
 		List<EObject> filtered = collectionServices.reject(list, null);
 		assertTrue(filtered.isEmpty());
 
-		filtered = collectionServices.reject(list,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		filtered = collectionServices.reject(list, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 		assertEquals(2, filtered.size());
 		assertEquals(eObj2, filtered.get(0));
 		assertEquals(eObj3, filtered.get(1));
@@ -2023,13 +2018,13 @@ public class CollectionServicesTest {
 	@Test(expected = NullPointerException.class)
 	public void testRejectNullList() {
 		List<Object> nullList = null;
-		collectionServices.reject(nullList,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.reject(nullList, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	@Test
 	public void testRejectListNullLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
@@ -2039,7 +2034,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testRejectListNotBooleanLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
@@ -2048,14 +2043,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testRejectListExceptionLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
 
 		Diagnostic diagnostic = new BasicDiagnostic();
-		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list,
-				createExceptionLambda(diagnostic)));
+		assertEquals(Collections.EMPTY_LIST, collectionServices.reject(list, createExceptionLambda(
+				diagnostic)));
 		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
 		assertEquals(3, diagnostic.getChildren().size());
 		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
@@ -2072,7 +2067,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<EObject> set = Sets.newLinkedHashSet();
+		Set<EObject> set = new LinkedHashSet<>();
 		EObject queryWithExpression = iterator.next();
 		EObject eObj2 = iterator.next();
 		EObject eObj3 = iterator.next();
@@ -2083,8 +2078,8 @@ public class CollectionServicesTest {
 		Set<EObject> filtered = collectionServices.reject(set, null);
 		assertTrue(filtered.isEmpty());
 
-		filtered = collectionServices.reject(set,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		filtered = collectionServices.reject(set, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 		assertEquals(2, filtered.size());
 		Iterator<EObject> itr = filtered.iterator();
 		assertEquals(eObj2, itr.next());
@@ -2094,13 +2089,13 @@ public class CollectionServicesTest {
 	@Test(expected = NullPointerException.class)
 	public void testRejectNullSet() {
 		Set<Object> nullSet = null;
-		collectionServices.reject(nullSet,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.reject(nullSet, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	@Test
 	public void testRejectSetNullLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
+		Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
@@ -2110,7 +2105,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testRejectSetNotBooleanLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
+		Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
@@ -2120,13 +2115,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testRejectSetExceptionLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
+		Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
 
 		Diagnostic diagnostic = new BasicDiagnostic();
-		assertEquals(Collections.EMPTY_SET, collectionServices.reject(set, createExceptionLambda(diagnostic)));
+		assertEquals(Collections.EMPTY_SET, collectionServices.reject(set, createExceptionLambda(
+				diagnostic)));
 		assertEquals(Diagnostic.WARNING, diagnostic.getSeverity());
 		assertEquals(3, diagnostic.getChildren().size());
 		assertEquals(Diagnostic.WARNING, diagnostic.getChildren().get(0).getSeverity());
@@ -2143,7 +2139,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(iterator.next());
 		list.add(iterator.next());
 		list.add(iterator.next());
@@ -2151,8 +2147,8 @@ public class CollectionServicesTest {
 		List<Object> filtered = collectionServices.collect(list, null);
 		assertTrue(filtered.isEmpty());
 
-		filtered = collectionServices.collect(list,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		filtered = collectionServices.collect(list, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 		assertEquals(3, filtered.size());
 		assertEquals(Boolean.TRUE, filtered.get(0));
 		assertEquals(Boolean.FALSE, filtered.get(1));
@@ -2162,8 +2158,8 @@ public class CollectionServicesTest {
 	@Test(expected = NullPointerException.class)
 	public void testCollectNullList() {
 		List<Object> nullList = null;
-		collectionServices.collect(nullList,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.collect(nullList, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	/**
@@ -2175,7 +2171,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		Object queryWithExpression = iterator.next();
 		assertTrue(queryWithExpression instanceof org.eclipse.acceleo.query.tests.qmodel.Query);
 		list.add(queryWithExpression);
@@ -2194,7 +2190,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testCollectListNullLambda() {
-		List<String> list = Lists.newArrayList();
+		List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
@@ -2228,7 +2224,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(iterator.next());
 		set.add(iterator.next());
 		set.add(iterator.next());
@@ -2236,8 +2232,8 @@ public class CollectionServicesTest {
 		Set<Object> filtered = collectionServices.collect(set, null);
 		assertTrue(filtered.isEmpty());
 
-		filtered = collectionServices.collect(set,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		filtered = collectionServices.collect(set, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 		// This "instance of" lambda will return true, false and false...
 		// but our "set" result cannot hold a duplicated Boolean.FALSE
 		assertEquals(2, filtered.size());
@@ -2249,8 +2245,8 @@ public class CollectionServicesTest {
 	@Test(expected = NullPointerException.class)
 	public void testCollectNullSet() {
 		Set<Object> nullSet = null;
-		collectionServices.collect(nullSet,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.collect(nullSet, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	/**
@@ -2262,7 +2258,7 @@ public class CollectionServicesTest {
 		EObject queries = reverseModel.getContents().get(0);
 		TreeIterator<EObject> iterator = queries.eAllContents();
 
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		Object queryWithExpression = iterator.next();
 		assertTrue(queryWithExpression instanceof org.eclipse.acceleo.query.tests.qmodel.Query);
 		set.add(queryWithExpression);
@@ -2281,7 +2277,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testCollectSetNullLambda() {
-		Set<String> set = Sets.newLinkedHashSet();
+		Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
@@ -2487,7 +2483,7 @@ public class CollectionServicesTest {
 			}
 		};
 
-		Set<Object> result = collectionServices.closure(ImmutableSet.of(pkg), subPackagesLambdaValue);
+		Set<Object> result = collectionServices.closure(Collections.singleton(pkg), subPackagesLambdaValue);
 
 		assertEquals(7, result.size());
 		Iterator<Object> it = result.iterator();
@@ -2517,7 +2513,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterSetNullType() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
@@ -2530,7 +2526,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
@@ -2559,7 +2555,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterListNullType() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -2572,7 +2568,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterList() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -2602,7 +2598,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterSetNullTypeEClassifierSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
@@ -2615,20 +2611,20 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterSetEmptyEClassifierSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
 		set.add(EcorePackage.eINSTANCE.getEClass());
 
-		final Set<Object> result = collectionServices.filter(set, Sets.<EClassifier> newLinkedHashSet());
+		final Set<Object> result = collectionServices.filter(set, new LinkedHashSet<>());
 
 		assertEquals(0, result.size());
 	}
 
 	@Test
 	public void testFilterSetEClassifierSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
@@ -2662,7 +2658,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterListNullTypeEClassifierSet() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -2675,20 +2671,20 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testFilterListEmptyEClassifierSet() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
 		list.add(EcorePackage.eINSTANCE.getEClass());
 
-		final List<Object> result = collectionServices.filter(list, Sets.<EClassifier> newLinkedHashSet());
+		final List<Object> result = collectionServices.filter(list, new LinkedHashSet<>());
 
 		assertEquals(0, result.size());
 	}
 
 	@Test
 	public void testFilterListEClassifierSet() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -2778,14 +2774,14 @@ public class CollectionServicesTest {
 	public void testSepEmptyList() {
 		final Object separator = new Object();
 
-		final List<Object> result = collectionServices.sep(Lists.newArrayList(), separator);
+		final List<Object> result = collectionServices.sep(new ArrayList<>(), separator);
 
 		assertTrue(result.isEmpty());
 	}
 
 	@Test
 	public void testSepListNullSeparator() {
-		final List<String> list = Lists.newArrayList();
+		final List<String> list = new ArrayList<>();
 		list.add("a");
 		list.add("b");
 		list.add("c");
@@ -2802,7 +2798,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepList() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -2841,14 +2837,14 @@ public class CollectionServicesTest {
 	public void testSepEmptySet() {
 		final Object separator = new Object();
 
-		final List<Object> result = collectionServices.sep(Sets.newLinkedHashSet(), separator);
+		final List<Object> result = collectionServices.sep(new LinkedHashSet<>(), separator);
 
 		assertTrue(result.isEmpty());
 	}
 
 	@Test
 	public void testSepSetNullSeparator() {
-		final Set<String> set = Sets.newLinkedHashSet();
+		final Set<String> set = new LinkedHashSet<>();
 		set.add("a");
 		set.add("b");
 		set.add("c");
@@ -2865,7 +2861,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
@@ -2985,7 +2981,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullPrefixNullSeparatorNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3007,7 +3003,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullSeparatorNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3030,7 +3026,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3054,7 +3050,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullSeparator() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3078,7 +3074,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffix() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3103,7 +3099,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullPrefixNullSuffix() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3126,7 +3122,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullPrefixNullSeparator() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3149,7 +3145,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSepPrefixSuffixNullPrefix() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3180,7 +3176,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testLastEmptyList() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 
 		Object result = collectionServices.last(list);
 
@@ -3189,7 +3185,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testLastList() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 		list.add(this);
 		list.add("");
 		list.add(EcorePackage.eINSTANCE);
@@ -3209,7 +3205,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testLastEmptySet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 
 		Object result = collectionServices.last(set);
 
@@ -3218,7 +3214,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testLastSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 		set.add(this);
 		set.add("");
 		set.add(EcorePackage.eINSTANCE);
@@ -3231,7 +3227,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesList() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 
 		assertTrue(collectionServices.excludes(list, this));
 
@@ -3247,7 +3243,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 
 		assertTrue(collectionServices.excludes(set, this));
 
@@ -3263,7 +3259,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesList() {
-		final List<Object> list = Lists.newArrayList();
+		final List<Object> list = new ArrayList<>();
 
 		assertEquals(false, collectionServices.includes(list, this));
 
@@ -3279,7 +3275,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesSet() {
-		final Set<Object> set = Sets.newLinkedHashSet();
+		final Set<Object> set = new LinkedHashSet<>();
 
 		assertEquals(false, collectionServices.includes(set, this));
 
@@ -3300,19 +3296,19 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAnyNullList() {
-		collectionServices.any((List<?>)null,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.any((List<?>)null, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testAnyNullSet() {
-		collectionServices.any((Set<?>)null,
-				createInstanceOfLambda(org.eclipse.acceleo.query.tests.qmodel.Query.class));
+		collectionServices.any((Set<?>)null, createInstanceOfLambda(
+				org.eclipse.acceleo.query.tests.qmodel.Query.class));
 	}
 
 	@Test
 	public void testAnySetNullLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3324,7 +3320,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnyListNullLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3336,7 +3332,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnySetNotBooleanLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3347,7 +3343,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnySetExceptionLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3369,7 +3365,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnyListNotBooleanLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3380,7 +3376,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnyListExceptionLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3402,7 +3398,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnySet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3417,7 +3413,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testAnyList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3437,7 +3433,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testCountSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3449,7 +3445,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testCountSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3470,7 +3466,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testCountListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3482,7 +3478,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testCountList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3503,7 +3499,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsSetNullLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3515,7 +3511,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsListNullLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3527,7 +3523,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsSetNotBooleanLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3539,7 +3535,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsSetExceptionLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3562,7 +3558,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsListNotBooleanLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3574,7 +3570,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsListExceptionLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3596,7 +3592,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3612,7 +3608,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExistsList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3633,7 +3629,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllListNullLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3645,7 +3641,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllSetNullLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3657,7 +3653,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllSetNotBooleanLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3669,7 +3665,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllSetExceptionLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3685,7 +3681,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllListNotBooleanLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3697,7 +3693,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllListExceptionLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3716,7 +3712,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3732,7 +3728,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testForAllList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3753,7 +3749,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testExcludesAllSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3764,7 +3760,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testExcludesAllListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3775,7 +3771,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testExcludesAllNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3786,7 +3782,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testExcludesAllNullList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3797,13 +3793,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllSetSetFalse() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(5));
 
@@ -3813,13 +3809,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllSetSetTrue() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(6));
 		set1.add(Integer.valueOf(5));
 
@@ -3829,13 +3825,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllSetListFalse() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(5));
 
@@ -3845,13 +3841,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllSetListTrue() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(6));
 		list1.add(Integer.valueOf(5));
 
@@ -3861,13 +3857,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllListSetFalse() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(5));
 
@@ -3877,13 +3873,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllListSetTrue() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(6));
 		set1.add(Integer.valueOf(5));
 
@@ -3893,13 +3889,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllListListFalse() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(5));
 
@@ -3909,13 +3905,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testExcludesAllListListTrue() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(6));
 		list1.add(Integer.valueOf(5));
 
@@ -3930,7 +3926,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIncludesAllSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3941,7 +3937,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIncludesAllListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3952,7 +3948,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIncludesAllNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -3963,7 +3959,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIncludesAllNullList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -3974,13 +3970,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllSetSetFalse() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(5));
 
@@ -3990,13 +3986,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllSetSetTrue() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 
@@ -4006,13 +4002,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllSetListFalse() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(5));
 
@@ -4022,13 +4018,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllSetListTrue() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 
@@ -4038,13 +4034,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllListSetFalse() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(5));
 
@@ -4054,13 +4050,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllListSetTrue() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 
@@ -4070,13 +4066,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllListListFalse() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(5));
 
@@ -4086,13 +4082,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIncludesAllListListTrue() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 
@@ -4107,7 +4103,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIsUniqueSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
@@ -4117,7 +4113,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIsUniqueListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
@@ -4127,7 +4123,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIsUniqueSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 
 		Boolean result = collectionServices.isUnique(set, createInstanceOfLambda(String.class));
@@ -4144,7 +4140,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIsUniqueList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 
 		Boolean result = collectionServices.isUnique(list, createInstanceOfLambda(String.class));
@@ -4166,7 +4162,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
@@ -4180,7 +4176,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
@@ -4194,7 +4190,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneSetNotBooleanLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
@@ -4204,7 +4200,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneSetExceptionLambda() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
@@ -4220,7 +4216,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneListNotBooleanLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
@@ -4230,7 +4226,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneListExceptionLambda() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
@@ -4246,7 +4242,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(3));
 
@@ -4264,7 +4260,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testOneList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(3));
 
@@ -4287,7 +4283,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testSumSetNotNumber() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add("potatoes");
 		set.add(Integer.valueOf(3));
@@ -4297,7 +4293,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testSumListNotNumber() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add("potatoes");
 		list.add(Integer.valueOf(3));
@@ -4307,7 +4303,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSumSetIntegers() {
-		Set<Number> set = Sets.newLinkedHashSet();
+		Set<Number> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4319,7 +4315,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSumSetTypeMix() {
-		Set<Number> set = Sets.newLinkedHashSet();
+		Set<Number> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Long.valueOf(2));
 		set.add(Double.valueOf(3));
@@ -4332,7 +4328,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSumListIntegers() {
-		List<Number> list = Lists.newArrayList();
+		List<Number> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4344,7 +4340,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSumListTypeMix() {
-		List<Number> list = Lists.newArrayList();
+		List<Number> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Double.valueOf(2));
 		list.add(Float.valueOf(3));
@@ -4361,7 +4357,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIndexOfListNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4376,7 +4372,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIndexOfList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4399,7 +4395,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIndexOfSetNull() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4414,7 +4410,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIndexOfSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(null);
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
@@ -4433,19 +4429,19 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIndexOfSetEquality() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(null);
-		set.add(ImmutableSet.of("s"));
+		set.add(Collections.singleton("s"));
 		set.add(Integer.valueOf(1));
 
 		Integer result = collectionServices.indexOf(set, Integer.valueOf(7));
 		assertEquals(Integer.valueOf(0), result);
 
-		result = collectionServices.indexOf(set, ImmutableSet.of("s"));
+		result = collectionServices.indexOf(set, Collections.singleton("s"));
 		assertEquals(Integer.valueOf(2), result);
 
-		set.remove(ImmutableSet.of("s"));
-		result = collectionServices.indexOf(set, ImmutableSet.of("s"));
+		set.remove(Collections.singleton("s"));
+		result = collectionServices.indexOf(set, Collections.singleton("s"));
 		assertEquals(Integer.valueOf(0), result);
 	}
 
@@ -4456,7 +4452,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testInsertAtListUnderLowerBound() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4466,7 +4462,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testInsertAtListOverUpperBound() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4476,7 +4472,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testInsertAtList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4492,7 +4488,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testInsertAtExtremityList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4521,7 +4517,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testInsertAtSetUnderLowerBound() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4531,7 +4527,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testInsertAtSetOverUpperBound() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4541,7 +4537,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testInsertAtSet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4558,7 +4554,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testInsertAtExtremitySet() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4584,7 +4580,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testInsertAtSetDuplicate() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4600,18 +4596,18 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testInsertAtSetDuplicateEquality() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
-		set.add(ImmutableSet.of("s"));
+		set.add(Collections.singleton("s"));
 		set.add(Integer.valueOf(2));
 
-		final Set<Object> result = collectionServices.insertAt(set, 3, ImmutableSet.of("s"));
+		final Set<Object> result = collectionServices.insertAt(set, 3, Collections.singleton("s"));
 		assertTrue(set != result);
 		assertEquals(3, result.size());
 		Iterator<Object> itr = result.iterator();
 		assertEquals(Integer.valueOf(1), itr.next());
 		assertEquals(Integer.valueOf(2), itr.next());
-		assertEquals(ImmutableSet.of("s"), itr.next());
+		assertEquals(Collections.singleton("s"), itr.next());
 	}
 
 	@Test(expected = java.lang.NullPointerException.class)
@@ -4621,7 +4617,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testPrependList() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4637,7 +4633,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testPrependListDuplicate() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4658,7 +4654,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testPrependSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4675,7 +4671,7 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testPrependSetDuplicate() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4696,7 +4692,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIntersectionSetSetNull() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4706,7 +4702,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIntersectionSetNullSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -4716,12 +4712,12 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionSetSameSize() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 		set1.add(Integer.valueOf(3));
 
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set2 = new LinkedHashSet<>();
 		set2.add(Integer.valueOf(3));
 		set2.add(Integer.valueOf(4));
 		set2.add(Integer.valueOf(1));
@@ -4737,13 +4733,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionSetLongestFirst() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 		set1.add(Integer.valueOf(3));
 		set1.add(Integer.valueOf(4));
 
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set2 = new LinkedHashSet<>();
 		set2.add(Integer.valueOf(3));
 		set2.add(Integer.valueOf(5));
 		set2.add(Integer.valueOf(1));
@@ -4759,12 +4755,12 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionSetLongestSecond() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 		set1.add(Integer.valueOf(3));
 
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set2 = new LinkedHashSet<>();
 		set2.add(Integer.valueOf(3));
 		set2.add(Integer.valueOf(4));
 		set2.add(Integer.valueOf(1));
@@ -4781,13 +4777,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionSetIntegerDouble() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 		set1.add(Integer.valueOf(3));
 		set1.add(Integer.valueOf(4));
 
-		Set<Object> set2 = Sets.newLinkedHashSet();
+		Set<Object> set2 = new LinkedHashSet<>();
 		set2.add(Double.valueOf(3));
 		set2.add(Double.valueOf(5));
 		set2.add(Double.valueOf(1));
@@ -4798,14 +4794,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionSetDifferentClasses() {
-		Set<Object> set1 = Sets.newLinkedHashSet();
+		Set<Object> set1 = new LinkedHashSet<>();
 		set1.add("aString");
 		set1.add(Integer.valueOf(1));
 		set1.add(Integer.valueOf(2));
 		set1.add("anotherString");
 		set1.add("aThirdString");
 
-		Set<String> set2 = Sets.newLinkedHashSet();
+		Set<String> set2 = new LinkedHashSet<>();
 		set2.add("aThirdString");
 		set2.add("a");
 		set2.add("b");
@@ -4823,12 +4819,12 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionSetList() {
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 
-		List<Integer> list = Lists.newArrayList();
+		List<Integer> list = new ArrayList<>();
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 		list.add(Integer.valueOf(1));
@@ -4851,7 +4847,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIntersectionListSetNull() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4861,7 +4857,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.NullPointerException.class)
 	public void testIntersectionListNullSet() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -4871,12 +4867,12 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListSameSize() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 		list1.add(Integer.valueOf(3));
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add(Integer.valueOf(3));
 		list2.add(Integer.valueOf(4));
 		list2.add(Integer.valueOf(1));
@@ -4892,13 +4888,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListLongestFirst() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 		list1.add(Integer.valueOf(3));
 		list1.add(Integer.valueOf(4));
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add(Integer.valueOf(3));
 		list2.add(Integer.valueOf(5));
 		list2.add(Integer.valueOf(1));
@@ -4914,12 +4910,12 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListLongestSecond() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 		list1.add(Integer.valueOf(3));
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add(Integer.valueOf(3));
 		list2.add(Integer.valueOf(4));
 		list2.add(Integer.valueOf(1));
@@ -4936,13 +4932,13 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListIntegerDouble() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 		list1.add(Integer.valueOf(3));
 		list1.add(Integer.valueOf(4));
 
-		List<Object> list2 = Lists.newArrayList();
+		List<Object> list2 = new ArrayList<>();
 		list2.add(Double.valueOf(3));
 		list2.add(Double.valueOf(5));
 		list2.add(Double.valueOf(1));
@@ -4953,14 +4949,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListDifferentClasses() {
-		List<Object> list1 = Lists.newArrayList();
+		List<Object> list1 = new ArrayList<>();
 		list1.add("aString");
 		list1.add(Integer.valueOf(1));
 		list1.add(Integer.valueOf(2));
 		list1.add("anotherString");
 		list1.add("aThirdString");
 
-		List<String> list2 = Lists.newArrayList();
+		List<String> list2 = new ArrayList<>();
 		list2.add("aThirdString");
 		list2.add("a");
 		list2.add("b");
@@ -4978,14 +4974,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListDuplicatesInFirst() {
-		List<String> list1 = Lists.newArrayList();
+		List<String> list1 = new ArrayList<>();
 		list1.add("a");
 		list1.add("b");
 		list1.add("a");
 		list1.add("c");
 		list1.add("b");
 
-		List<String> list2 = Lists.newArrayList();
+		List<String> list2 = new ArrayList<>();
 		list2.add("b");
 		list2.add("d");
 		list2.add("c");
@@ -5002,12 +4998,12 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListDuplicatesInSecond() {
-		List<String> list1 = Lists.newArrayList();
+		List<String> list1 = new ArrayList<>();
 		list1.add("b");
 		list1.add("d");
 		list1.add("c");
 
-		List<String> list2 = Lists.newArrayList();
+		List<String> list2 = new ArrayList<>();
 		list2.add("a");
 		list2.add("b");
 		list2.add("a");
@@ -5025,14 +5021,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListDuplicatesOrder() {
-		List<String> list1 = Lists.newArrayList();
+		List<String> list1 = new ArrayList<>();
 		list1.add("a");
 		list1.add("b");
 		list1.add("a");
 		list1.add("c");
 		list1.add("b");
 
-		List<String> list2 = Lists.newArrayList();
+		List<String> list2 = new ArrayList<>();
 		list2.add("b");
 		list2.add("a");
 		list2.add("d");
@@ -5051,14 +5047,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testIntersectionListSet() {
-		List<Integer> list = Lists.newArrayList();
+		List<Integer> list = new ArrayList<>();
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(5));
 		list.add(Integer.valueOf(1));
 
-		Set<Integer> set = Sets.newLinkedHashSet();
+		Set<Integer> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -5080,7 +5076,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubOrderedSetStartTooLow() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -5091,7 +5087,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubOrderedSetStartTooHigh() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -5102,7 +5098,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubOrderedSetEndTooLow() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -5113,7 +5109,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubOrderedSetEndTooHigh() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -5124,7 +5120,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubOrderedSetEndLowerThanStart() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
@@ -5135,14 +5131,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubOrderedSetStartEqualsEnd() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(3), Integer
-				.valueOf(3));
+		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(3), Integer.valueOf(
+				3));
 		assertEquals(1, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(3), it.next());
@@ -5150,14 +5146,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubOrderedSet() {
-		Set<Object> set = Sets.newLinkedHashSet();
+		Set<Object> set = new LinkedHashSet<>();
 		set.add(Integer.valueOf(1));
 		set.add(Integer.valueOf(2));
 		set.add(Integer.valueOf(3));
 		set.add(Integer.valueOf(4));
 
-		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(2), Integer
-				.valueOf(4));
+		final Set<Object> result = collectionServices.subOrderedSet(set, Integer.valueOf(2), Integer.valueOf(
+				4));
 		assertEquals(3, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(2), it.next());
@@ -5172,7 +5168,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubSequenceStartTooLow() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -5183,7 +5179,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubSequenceStartTooHigh() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -5194,7 +5190,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubSequenceEndTooLow() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -5205,7 +5201,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubSequenceEndTooHigh() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -5216,7 +5212,7 @@ public class CollectionServicesTest {
 
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void testSubSequenceEndLowerThanStart() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
@@ -5227,14 +5223,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubSequenceStartEqualsEnd() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(3), Integer
-				.valueOf(3));
+		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(3), Integer.valueOf(
+				3));
 		assertEquals(1, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(3), it.next());
@@ -5242,14 +5238,14 @@ public class CollectionServicesTest {
 
 	@Test
 	public void testSubSequence() {
-		List<Object> list = Lists.newArrayList();
+		List<Object> list = new ArrayList<>();
 		list.add(Integer.valueOf(1));
 		list.add(Integer.valueOf(2));
 		list.add(Integer.valueOf(3));
 		list.add(Integer.valueOf(4));
 
-		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(2), Integer
-				.valueOf(4));
+		final List<Object> result = collectionServices.subSequence(list, Integer.valueOf(2), Integer.valueOf(
+				4));
 		assertEquals(3, result.size());
 		Iterator<Object> it = result.iterator();
 		assertEquals(Integer.valueOf(2), it.next());

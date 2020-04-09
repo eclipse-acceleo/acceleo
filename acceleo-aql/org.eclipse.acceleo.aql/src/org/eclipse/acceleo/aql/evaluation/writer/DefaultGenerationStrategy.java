@@ -10,8 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation.writer;
 
-import com.google.common.io.LineReader;
-
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -74,7 +73,8 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	}
 
 	@Override
-	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, String charset, String lineDelimiter) {
+	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, String charset,
+			String lineDelimiter) {
 		try {
 			final IAcceleoWriter writer;
 			final boolean exists = uriConverter.exists(uri, EMPTY_OPTION_MAP);
@@ -112,7 +112,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 			return writer;
 		} catch (IOException e) {
 			// FIXME log
-                        e.printStackTrace();
+			e.printStackTrace();
 			return new NullWriter(uri);
 		}
 	}
@@ -126,7 +126,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	protected Map<String, String> readProtectedAreaContent(Reader fileReader, String lineDelimiter)
 			throws IOException {
 		Map<String, String> protectedAreas = new LinkedHashMap<>();
-		LineReader reader = new LineReader(fileReader);
+		BufferedReader reader = new BufferedReader(fileReader);
 
 		String line = reader.readLine();
 		while (line != null) {

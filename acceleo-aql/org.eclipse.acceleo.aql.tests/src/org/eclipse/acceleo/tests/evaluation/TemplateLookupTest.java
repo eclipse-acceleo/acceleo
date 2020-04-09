@@ -4,11 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.google.common.io.CharStreams;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +18,7 @@ import org.eclipse.acceleo.aql.evaluation.writer.DefaultGenerationStrategy;
 import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.Query;
+import org.eclipse.acceleo.tests.utils.AbstractTemplatesTestSuite;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -234,7 +232,7 @@ public class TemplateLookupTest {
 		AcceleoParser parser = new AcceleoParser(env);
 		InputStream content = getClass().getResourceAsStream(name);
 		try (InputStream stream = (InputStream)content) {
-			String moduleSource = CharStreams.toString(new InputStreamReader(stream, "UTF-8"));
+			String moduleSource = AbstractTemplatesTestSuite.getContent(stream, "UTF-8");
 			return parser.parse(moduleSource).getModule();
 		}
 	}

@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation;
 
-import static com.google.common.base.Predicates.and;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.acceleo.Module;
@@ -191,49 +188,15 @@ public class AcceleoLookupEngine extends BasicLookupEngine {
 	 */
 	private IService lookup(Set<AbstractModuleElementService> services, IType[] argumentTypes,
 			VisibilityKind... candidateVisibilities) {
-		Iterator<AbstractModuleElementService> candidateIterator = Iterators.filter(services.iterator(), and(
-				argumentCountIs(argumentTypes.length), visibilityIsIn(candidateVisibilities)));
-		while (candidateIterator.hasNext()) {
-			AbstractModuleElementService candidate = candidateIterator.next();
-			if (candidate.matches(queryEnvironment, argumentTypes)) {
-				return candidate;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Creates a predicate that can be used to check if an IService has the given number of arguments.
-	 * 
-	 * @param argumentCount
-	 *            The number of arguments we're expecting for a service.
-	 * @return The ready-to-be used predicate.
-	 */
-	private static Predicate<AbstractModuleElementService> argumentCountIs(final int argumentCount) {
-		return new Predicate<AbstractModuleElementService>() {
-			@Override
-			public boolean apply(AbstractModuleElementService input) {
-				return input != null && input.getNumberOfParameters() == argumentCount;
-			}
-		};
-	}
-
-	/**
-	 * Creates a predicate that can be used to check if an IService wraps a module element with a given
-	 * visibility.
-	 * 
-	 * @param candidateVisibilities
-	 *            The set of visibilities we're allowing got the IService.
-	 * @return The ready-to-be used predicate.
-	 */
-	private static Predicate<AbstractModuleElementService> visibilityIsIn(
-			final VisibilityKind... candidateVisibilities) {
-		return new Predicate<AbstractModuleElementService>() {
-			@Override
-			public boolean apply(AbstractModuleElementService input) {
-				return input != null && Arrays.asList(candidateVisibilities).contains(input.getVisibility());
-			}
-		};
+		List<VisibilityKind> visibilityList = Arrays.asList(candidateVisibilities);
+		// @formatter:off
+		Optional<AbstractModuleElementService> result = services.stream()
+				.filter(service -> service.getNumberOfParameters() == argumentTypes.length)
+				.filter(service -> visibilityList.contains(service.getVisibility()))
+				.filter(service -> service.matches(queryEnvironment, argumentTypes))
+				.findAny();
+		// @formatter:on
+		return result.orElse(null);
 	}
 
 	/**
