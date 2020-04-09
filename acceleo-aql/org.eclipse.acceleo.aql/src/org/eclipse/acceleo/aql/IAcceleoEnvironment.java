@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql;
 
+import java.nio.charset.Charset;
 import java.util.Collection;
 
 import org.eclipse.acceleo.Module;
@@ -124,11 +125,11 @@ public interface IAcceleoEnvironment {
 	 * @param openMode
 	 *            The mode in which to open the file.
 	 * @param charset
-	 *            Charset for the target file.
+	 *            The {@link Charset} for the target file.
 	 * @param lineDelimiter
 	 *            Line delimiter that should be used for that file.
 	 */
-	public void openWriter(URI uri, OpenModeKind openMode, String charset, String lineDelimiter);
+	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter);
 
 	/**
 	 * Closes the last {@link #openWriter(String, OpenModeKind, String, String) opened} writer.

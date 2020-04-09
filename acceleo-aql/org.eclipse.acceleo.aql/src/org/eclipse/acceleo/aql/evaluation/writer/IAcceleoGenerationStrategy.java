@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.acceleo.aql.internal.AcceleoMessages;
@@ -86,12 +87,12 @@ public interface IAcceleoGenerationStrategy {
 	 * @param openMode
 	 *            The kind of generation specified by this file block.
 	 * @param charset
-	 *            Charset of the stream that's to be saved.
+	 *            The {@link Charset} of the stream that's to be saved.
 	 * @param lineDelimiter
 	 *            the line delimiter that was demanded by the user for this writer.
 	 * @return The created writer. It can't be <code>null</code> use {@link NullWriter} instead.
 	 */
-	IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, String charset, String lineDelimiter);
+	IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter);
 
 	/**
 	 * This will be called by the engine when the evaluation ends or is cancelled. The strategy can use this

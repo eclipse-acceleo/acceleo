@@ -73,7 +73,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 	}
 
 	@Override
-	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, String charset,
+	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
 			String lineDelimiter) {
 		try {
 			final IAcceleoWriter writer;
@@ -96,9 +96,7 @@ public class DefaultGenerationStrategy implements IAcceleoGenerationStrategy {
 						}
 					}
 
-					// TODO Throw exception if charset doesn't exist? Should be caught by validation.
-					Charset cs = Charset.forName(charset);
-					writer = new AcceleoFileWriter(uri, uriConverter, cs);
+					writer = new AcceleoFileWriter(uri, uriConverter, charset);
 					break;
 				case APPEND:
 					// FIXME we can't create a stream to "append" to a file with the URIConverter. We probably

@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
@@ -294,7 +295,7 @@ public class AcceleoEnvironment implements IAcceleoEnvironment {
 	 * @param lineDelimiter
 	 *            Line delimiter that should be used for that file.
 	 */
-	public void openWriter(URI uri, OpenModeKind openMode, String charset, String lineDelimiter) {
+	public void openWriter(URI uri, OpenModeKind openMode, Charset charset, String lineDelimiter) {
 		final IAcceleoWriter writer = generationStrategy.createWriterFor(uri, openMode, charset,
 				lineDelimiter);
 		writers.addLast(writer);

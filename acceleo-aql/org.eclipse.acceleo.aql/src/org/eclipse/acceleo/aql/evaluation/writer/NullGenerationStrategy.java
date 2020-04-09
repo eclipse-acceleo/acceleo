@@ -11,6 +11,7 @@
 package org.eclipse.acceleo.aql.evaluation.writer;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import org.eclipse.acceleo.OpenModeKind;
 import org.eclipse.emf.common.util.URI;
@@ -33,7 +34,8 @@ public class NullGenerationStrategy implements IAcceleoGenerationStrategy {
 	}
 
 	@Override
-	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, String charset, String lineDelimiter) {
+	public IAcceleoWriter createWriterFor(URI uri, OpenModeKind openMode, Charset charset,
+			String lineDelimiter) {
 		return new NullWriter(uri);
 	}
 

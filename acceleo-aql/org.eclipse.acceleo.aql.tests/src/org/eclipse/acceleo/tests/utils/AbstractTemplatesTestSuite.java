@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2016 Obeo. 
+ *  Copyright (c) 2016, 2020 Obeo. 
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.acceleo.Module;
 import org.eclipse.acceleo.ModuleElement;
@@ -46,6 +47,7 @@ import org.eclipse.acceleo.aql.parser.AcceleoParser;
 import org.eclipse.acceleo.aql.validation.AcceleoValidator;
 import org.eclipse.acceleo.query.ast.TypeLiteral;
 import org.eclipse.acceleo.query.runtime.IValidationMessage;
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -378,10 +380,95 @@ public abstract class AbstractTemplatesTestSuite {
 				}
 			}
 		}
+		assertGenerationMessages(environment.getGenerationResult());
 
 		if (missingFile) {
 			fail("missing file.");
 		}
+	}
+
+	/**
+	 * Asserts the runtime messages.
+	 * 
+	 * @param generationResult
+	 *            the {@link GenerationResult}
+	 * @throws IOException
+	 */
+	private void assertGenerationMessages(GenerationResult generationResult) throws IOException {
+		final String actualContent = getRuntimeMessages(generationResult.getDiagnostic());
+
+		final File expectedFile = getExpectedRuntimeMessageFile(new File(testFolderPath));
+		final File actualFile = getActualRuntimeMessageFile(new File(testFolderPath));
+
+		if (!expectedFile.exists()) {
+			if (!actualFile.exists() && !expectedFile.exists()) {
+				actualFile.createNewFile();
+			}
+			try (final FileOutputStream stream = new FileOutputStream(actualFile);) {
+				setContent(stream, UTF_8, actualContent);
+			}
+			fail("file doesn't exist.");
+		} else {
+			String expectedContent = "";
+			try (final FileInputStream stream = new FileInputStream(expectedFile);) {
+				expectedContent = getContent(stream, UTF_8);
+			}
+			assertEquals(expectedContent, actualContent);
+		}
+	}
+
+	/**
+	 * Gets the {@link String} representation of the given {@link Diagnostic}.
+	 * 
+	 * @param diagnostic
+	 *            the {@link Diagnostic}
+	 * @return the {@link String} representation of the given {@link Diagnostic}
+	 */
+	private String getRuntimeMessages(Diagnostic diagnostic) {
+		final StringBuilder builder = new StringBuilder();
+
+		walkDiagnostic(builder, "", diagnostic);
+
+		return getPortableString(builder.toString());
+	}
+
+	private void walkDiagnostic(StringBuilder builder, String prefix, Diagnostic diagnostic) {
+		builder.append(prefix + " (" + diagnostic.getSource() + " " + diagnostic.getCode() + " " + diagnostic
+				.getSeverity() + ") " + diagnostic.getMessage() + "[" + getDataString(diagnostic.getData())
+				+ "]\n");
+		for (Diagnostic child : diagnostic.getChildren()) {
+			walkDiagnostic(builder, prefix + "  ", child);
+		}
+	}
+
+	/**
+	 * Gets the {@link Diagnostic} data {@link String}.
+	 * 
+	 * @param data
+	 *            the {@link List} of data
+	 * @return the {@link Diagnostic} data {@link String}
+	 */
+	@SuppressWarnings("unchecked")
+	private String getDataString(List<?> data) {
+		final StringBuilder builder = new StringBuilder();
+
+		if (data != null) {
+			for (Object datum : data) {
+				if (datum instanceof Map) {
+					builder.append("[");
+					for (Entry<Object, Object> entry : ((Map<Object, Object>)datum).entrySet()) {
+						builder.append("(" + entry.getKey() + ", " + entry.getValue() + "), ");
+					}
+					builder.append("]");
+				} else if (datum != null) {
+					builder.append(datum.toString());
+				} else {
+					builder.append("null");
+				}
+			}
+		}
+
+		return builder.toString();
 	}
 
 	/**
@@ -448,6 +535,28 @@ public abstract class AbstractTemplatesTestSuite {
 	 */
 	protected File getActualValidatedFile(File testFolder) {
 		return new File(testFolder + File.separator + testFolder.getName() + "-actual-validation.txt");
+	}
+
+	/**
+	 * Gets the actual validated template file from the test folder path.
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual template file from the test folder path
+	 */
+	protected File getExpectedRuntimeMessageFile(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName() + "-expected-runtimeMessages.txt");
+	}
+
+	/**
+	 * Gets the actual validated template file from the test folder path.
+	 * 
+	 * @param testFolder
+	 *            the test folder path
+	 * @return the actual template file from the test folder path
+	 */
+	protected File getActualRuntimeMessageFile(File testFolder) {
+		return new File(testFolder + File.separator + testFolder.getName() + "-actual-runtimeMessages.txt");
 	}
 
 	/**
@@ -601,6 +710,33 @@ public abstract class AbstractTemplatesTestSuite {
 			}
 			return nread;
 		}
+	}
+
+	/**
+	 * Gets the portable version of the given {@link String}.
+	 * 
+	 * @param textContent
+	 *            the text content
+	 * @return the portable version of the given {@link String}
+	 */
+	private String getPortableString(String textContent) {
+		String res;
+
+		res = textContent.replaceAll("/home/.*/M2Doc", "/home/.../M2Doc"); // remove folder prefix
+		res = res.replaceAll("file:/.*/M2Doc", "file:/.../M2Doc"); // remove folder prefix
+		res = res.replaceAll("Aucun fichier ou dossier de ce type", "No such file or directory"); // replace
+																									// localized
+																									// message
+		res = res.replaceAll("20[^ ]* [^ ]* - Lost", "20...date and time... - Lost");// strip lost user doc
+																						// date
+		res = res.replaceAll("@[a-f0-9]{5,8}[, )]", "@00000000 "); // object address in toString()
+		res = res.replaceAll(
+				"(\\tat [a-zA-Z0-9$./]+((<|&lt;)init(>|&gt;))?\\((Unknown Source|Native Method|[a-zA-Z0-9$./]+java:[0-9]+)\\)\n?)+",
+				"...STACK..."); // strip stack traces
+		res = res.replaceAll("127.0.0.100:12.345", "127.0.0.100:12 345"); // localized port...
+		res = res.replaceAll("127.0.0.100:12,345", "127.0.0.100:12 345"); // localized port...
+
+		return res;
 	}
 
 }

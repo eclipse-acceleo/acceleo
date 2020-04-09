@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017  Obeo.
+ * Copyright (c) 2016, 2020  Obeo.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.acceleo.aql.evaluation;
 
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +27,7 @@ import org.eclipse.acceleo.ASTNode;
 import org.eclipse.acceleo.Binding;
 import org.eclipse.acceleo.Block;
 import org.eclipse.acceleo.Comment;
+import org.eclipse.acceleo.Error;
 import org.eclipse.acceleo.Expression;
 import org.eclipse.acceleo.ExpressionStatement;
 import org.eclipse.acceleo.FileStatement;
@@ -44,8 +49,10 @@ import org.eclipse.acceleo.query.runtime.IQueryEnvironment;
 import org.eclipse.acceleo.query.runtime.IQueryEvaluationEngine;
 import org.eclipse.acceleo.query.runtime.QueryEvaluation;
 import org.eclipse.acceleo.util.AcceleoSwitch;
+import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.util.EcoreUtil.FilteredSettingsIterator;
 
 /**
  * This implementation of a switch dedicated to Acceleo elements will be used to evaluate their results as we
@@ -54,6 +61,11 @@ import org.eclipse.emf.common.util.URI;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class AcceleoEvaluator extends AcceleoSwitch<Object> {
+
+	/**
+	 * The plugin ID.
+	 */
+	private static final String ID = "org.eclipse.acceleo.aql";
 
 	/**
 	 * The empty result;
@@ -158,11 +170,20 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public Object caseExpression(Expression expression) {
 		AstResult ast = expression.getAst();
 		if (ast.getDiagnostic().getSeverity() == Diagnostic.ERROR) {
-			// FIXME throw / log
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+					"AQL parsing issue", new Object[] {expression });
+			diagnostic.addAll(ast.getDiagnostic());
+			environment.getGenerationResult().addDiagnostic(diagnostic);
 		}
 
-		// FIXME log evaluation problems
 		final EvaluationResult evalResult = aqlEngine.eval(ast, peekVariables());
+		if (evalResult.getDiagnostic().getSeverity() != Diagnostic.OK) {
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(evalResult.getDiagnostic().getSeverity(),
+					ID, 0, "AQL evaluation issue", new Object[] {expression, new HashMap<String, Object>(
+							peekVariables()) });
+			diagnostic.addAll(evalResult.getDiagnostic());
+			environment.getGenerationResult().addDiagnostic(diagnostic);
+		}
 
 		return evalResult.getResult();
 	}
@@ -280,37 +301,69 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 */
 	@Override
 	public String caseFileStatement(FileStatement fileStatement) {
+		final String res;
+
 		Object uriObject = doSwitch(fileStatement.getUrl());
 		if (uriObject == null) {
-			// FIXME log properly
-			return null;
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+					"The URL can't be null", new Object[] {fileStatement.getUrl(),
+							new HashMap<String, Object>(peekVariables()) });
+			environment.getGenerationResult().addDiagnostic(diagnostic);
+
+			res = EMPTY_RESULT;
+		} else {
+			final OpenModeKind mode = fileStatement.getMode();
+			final Charset charset = getCharset(fileStatement);
+			final URI uri = URI.createURI(toString(uriObject), true).resolve(environment.getDestination());
+			// FIXME line delimiter
+			environment.openWriter(uri, mode, charset, "\n");
+			try {
+				final String content = (String)doSwitch(fileStatement.getBody());
+				environment.write(content);
+			} finally {
+				environment.closeWriter();
+			}
+
+			res = EMPTY_RESULT;
 		}
-		final Object fileCharset;
-		final OpenModeKind mode = fileStatement.getMode();
+
+		return res;
+	}
+
+	/**
+	 * Gets the {@link Charset} of the given {@link FileStatement}.
+	 * 
+	 * @param fileStatement
+	 *            the {@link FilteredSettingsIterator}
+	 * @return the {@link Charset} of the given {@link FileStatement}
+	 */
+	private Charset getCharset(FileStatement fileStatement) {
+		final Charset charset;
 		if (fileStatement.getCharset() != null) {
-			// TODO add syntax for charset
 			final Object charsetValue = doSwitch(fileStatement.getCharset());
 			if (charsetValue != null) {
-				fileCharset = charsetValue;
+				final String charsetString = toString(charsetValue);
+				Charset defaultCharset = StandardCharsets.UTF_8;
+				try {
+					defaultCharset = Charset.forName(charsetString);
+				} catch (IllegalCharsetNameException | UnsupportedCharsetException e) {
+					final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0, e
+							.getMessage() + " fallback to UTF-8", new Object[] {fileStatement.getUrl(),
+									new HashMap<String, Object>(peekVariables()) });
+					environment.getGenerationResult().addDiagnostic(diagnostic);
+				}
+				charset = defaultCharset;
 			} else {
-				// FIXME log ?
-				fileCharset = "UTF-8";
+				final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
+						"The Charset can't be null, fallback to UTF-8", new Object[] {fileStatement.getUrl(),
+								new HashMap<String, Object>(peekVariables()) });
+				environment.getGenerationResult().addDiagnostic(diagnostic);
+				charset = StandardCharsets.UTF_8;
 			}
 		} else {
-			fileCharset = "UTF-8";
+			charset = StandardCharsets.UTF_8;
 		}
-
-		final URI uri = URI.createURI(toString(uriObject), true).resolve(environment.getDestination());
-		// FIXME line delimiter
-		environment.openWriter(uri, mode, toString(fileCharset), "\n");
-		try {
-			final String content = (String)doSwitch(fileStatement.getBody());
-			environment.write(content);
-		} finally {
-			environment.closeWriter();
-		}
-
-		return EMPTY_RESULT;
+		return charset;
 	}
 
 	@Override
@@ -325,7 +378,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 				res = (String)doSwitch(ifStatement.getElse());
 			}
 		} else {
-			// FIXME log, evaluate to "false", ... ?
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+					"The expression must be evaluated to a boolean not: " + toString(condition),
+					new Object[] {ifStatement.getCondition(), new HashMap<String, Object>(peekVariables()) });
+			environment.getGenerationResult().addDiagnostic(diagnostic);
 			res = EMPTY_RESULT;
 		}
 
@@ -343,7 +399,10 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		} else if (value != null) {
 			iteration.add(value);
 		} else {
-			// FIXME log null value ?
+			final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.WARNING, ID, 0,
+					"The expression should not be null", new Object[] {forStatement.getBinding()
+							.getInitExpression(), new HashMap<String, Object>(peekVariables()) });
+			environment.getGenerationResult().addDiagnostic(diagnostic);
 		}
 		final Map<String, Object> variables = new HashMap<String, Object>(peekVariables());
 		final String name = forStatement.getBinding().getName();
@@ -364,6 +423,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	public Object caseProtectedArea(ProtectedArea object) {
 		// TODO Auto-generated method stub
 		return super.caseProtectedArea(object);
+	}
+
+	@Override
+	public Object caseError(Error error) {
+		final BasicDiagnostic diagnostic = new BasicDiagnostic(Diagnostic.ERROR, ID, 0,
+				"Acceleo parsing error see validation for more details", new Object[] {error });
+		environment.getGenerationResult().addDiagnostic(diagnostic);
+		return EMPTY_RESULT;
 	}
 
 	/**
