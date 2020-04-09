@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.tm4e.registry.grammars">
+      <grammar
+            path="grammar/acceleo.tmLanguage.json"
+            scopeName="text.acceleo">
+      </grammar>
+      <scopeNameContentTypeBinding
+            contentTypeId="org.eclipse.acceleo.aql.ide.ui"
+            scopeName="text.acceleo">
+      </scopeNameContentTypeBinding>
+   </extension>
+   <extension
+         point="org.eclipse.tm4e.languageconfiguration.languageConfigurations">
+      <languageConfiguration
+            contentTypeId="org.eclipse.acceleo.aql.ide.ui"
+            path="configuration/acceleo-configuration.json">
+      </languageConfiguration>
+   </extension>
+</plugin>

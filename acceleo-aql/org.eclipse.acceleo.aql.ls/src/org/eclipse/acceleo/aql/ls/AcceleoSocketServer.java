@@ -28,6 +28,11 @@ import org.eclipse.lsp4j.services.LanguageClient;
 public class AcceleoSocketServer {
 
 	/**
+	 * Backlog for the socket server.
+	 */
+	private static final int BACKLOG = 50;
+
+	/**
 	 * The {@link ServerSocket}.
 	 */
 	private ServerSocket serverSocket;
@@ -37,30 +42,42 @@ public class AcceleoSocketServer {
 	 */
 	private Thread serverThread;
 
+	/**
+	 * Starts this server.
+	 * 
+	 * @param host
+	 * @param port
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public synchronized void start(String host, int port) throws UnknownHostException, IOException {
-		serverSocket = new ServerSocket(port, 50, InetAddress.getByName(host));
+		serverSocket = new ServerSocket(port, BACKLOG, InetAddress.getByName(host));
 		serverThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				while (true) {
-					try {
-						final Socket client = serverSocket.accept();
-						final AcceleoLanguageServer acceleoLanguageServer = new AcceleoLanguageServer();
-						final Launcher<LanguageClient> launcher = LSPLauncher.createServerLauncher(
-								acceleoLanguageServer, client.getInputStream(), client.getOutputStream());
-						acceleoLanguageServer.connect(launcher.getRemoteProxy());
-						launcher.startListening(); // the thread is created inside this method
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				try {
+					final Socket client = serverSocket.accept();
+					final AcceleoLanguageServer acceleoLanguageServer = new AcceleoLanguageServer();
+					final Launcher<LanguageClient> launcher = LSPLauncher.createServerLauncher(
+							acceleoLanguageServer, client.getInputStream(), client.getOutputStream());
+					launcher.startListening(); // the thread is created inside this method
+					acceleoLanguageServer.connect(launcher.getRemoteProxy());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}, "Acceleo LS: " + serverSocket.getInetAddress().getHostName() + ":" + serverSocket.getLocalPort());
 		serverThread.start();
 	}
 
+	/**
+	 * Stops this server.
+	 * 
+	 * @throws IOException
+	 *             if an I/O error occurs when stopping the server.
+	 */
 	public synchronized void stop() throws IOException {
 		serverSocket.close();
 		serverThread.interrupt();

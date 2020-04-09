@@ -38,6 +38,7 @@
       <unit id="org.eclipse.jface" version="0.0.0"/>
       <unit id="org.eclipse.tm4e.core" version="0.0.0"/>
       <unit id="org.eclipse.tm4e.ui" version="0.0.0"/>
+      <unit id="org.eclipse.tm4e.languageconfiguration" version="0.0.0"/>
       <repository location="http://download.eclipse.org/releases/2019-09"/>
     </location>
   </locations>

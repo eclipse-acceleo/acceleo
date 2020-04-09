@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.acceleo.aql.ls;
+package org.eclipse.acceleo.aql.ls.services.workspace;
 
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
@@ -19,9 +19,14 @@ import org.eclipse.lsp4j.services.WorkspaceService;
 public class AcceleoWorkspaceService implements WorkspaceService, LanguageClientAware {
 
 	/**
-	 * The {@link LanguageClient}.
+	 * The current client.
 	 */
-	private LanguageClient client;
+	private LanguageClient languageClient;
+
+	@Override
+	public void connect(LanguageClient newLanguageClient) {
+		this.languageClient = newLanguageClient;
+	}
 
 	@Override
 	public void didChangeConfiguration(DidChangeConfigurationParams params) {
@@ -33,11 +38,6 @@ public class AcceleoWorkspaceService implements WorkspaceService, LanguageClient
 	public void didChangeWatchedFiles(DidChangeWatchedFilesParams params) {
 		// TODO Auto-generated method stub
 		System.out.println(params);
-	}
-
-	@Override
-	public void connect(LanguageClient client) {
-		this.client = client;
 	}
 
 }

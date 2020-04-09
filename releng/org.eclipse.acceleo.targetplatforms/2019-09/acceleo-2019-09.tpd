@@ -21,4 +21,5 @@ location "http://download.eclipse.org/releases/2019-09" {
 	org.eclipse.jface lazy
 	org.eclipse.tm4e.core lazy
 	org.eclipse.tm4e.ui lazy
+	org.eclipse.tm4e.languageconfiguration lazy
 }

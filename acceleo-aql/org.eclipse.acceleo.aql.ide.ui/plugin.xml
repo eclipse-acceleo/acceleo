@@ -25,18 +25,6 @@
       </content-type>
    </extension>
    <extension
-         point="org.eclipse.lsp4e.languageServer">
-      <server
-            class="org.eclipse.acceleo.aql.ide.ui.AcceleoConnectionProvider"
-            id="org.eclipse.acceleo.aql.ide.ui.server"
-            label="Acceleo Language Server">
-      </server>
-      <contentTypeMapping
-            contentType="org.eclipse.acceleo.aql.ide.ui"
-            id="org.eclipse.acceleo.aql.ide.ui.server">
-      </contentTypeMapping>
-   </extension>
-   <extension
          point="org.eclipse.ui.genericeditor.presentationReconcilers">
       <presentationReconciler
             class="org.eclipse.tm4e.ui.text.TMPresentationReconciler"
@@ -50,15 +38,19 @@
             editorId="org.eclipse.ui.genericeditor.GenericEditor">
       </editorContentTypeBinding>
    </extension>
+   
+
    <extension
-         point="org.eclipse.tm4e.registry.grammars">
-      <grammar
-            path="syntaxes/acceleo.tmLanguage.json"
-            scopeName="text.acceleo">
-      </grammar>
-      <scopeNameContentTypeBinding
-            contentTypeId="org.eclipse.acceleo.aql.ide.ui"
-            scopeName="text.acceleo">
-      </scopeNameContentTypeBinding>
+         point="org.eclipse.lsp4e.languageServer">
+      <server
+            class="org.eclipse.acceleo.aql.ide.ui.AcceleoConnectionProvider"
+            id="org.eclipse.acceleo.aql.ide.ui.server"
+            label="Acceleo Language Server"
+            singleton="true">
+      </server>
+      <contentTypeMapping
+            contentType="org.eclipse.acceleo.aql.ide.ui"
+            id="org.eclipse.acceleo.aql.ide.ui.server">
+      </contentTypeMapping>
    </extension>
 </plugin>

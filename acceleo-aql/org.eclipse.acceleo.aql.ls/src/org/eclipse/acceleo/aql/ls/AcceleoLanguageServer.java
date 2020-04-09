@@ -12,9 +12,13 @@ package org.eclipse.acceleo.aql.ls;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.eclipse.acceleo.aql.ls.services.textdocument.AcceleoTextDocumentService;
+import org.eclipse.acceleo.aql.ls.services.workspace.AcceleoWorkspaceService;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.ServerCapabilities;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageClientAware;
@@ -29,14 +33,30 @@ import org.eclipse.lsp4j.services.WorkspaceService;
  */
 public class AcceleoLanguageServer implements LanguageServer, LanguageClientAware {
 
+	/**
+	 * The text-document-related service.
+	 */
 	private final AcceleoTextDocumentService textDocumentService = new AcceleoTextDocumentService();
 
+	/**
+	 * The workspace-related service.
+	 */
 	private final AcceleoWorkspaceService workspaceService = new AcceleoWorkspaceService();
 
 	/**
-	 * The {@link LanguageClient}.
+	 * The current language client.
 	 */
-	private LanguageClient client;
+	private LanguageClient languageClient;
+
+	@Override
+	public void connect(LanguageClient newLanguageClient) {
+		this.languageClient = newLanguageClient;
+		this.textDocumentService.connect(newLanguageClient);
+		this.workspaceService.connect(newLanguageClient);
+
+		newLanguageClient.logMessage(new MessageParams(MessageType.Info,
+				"Connected to the Acceleo Language Server"));
+	}
 
 	@Override
 	public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
@@ -46,20 +66,33 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 		completionProvider.setResolveProvider(true);
 		capabilities.setCompletionProvider(completionProvider);
 
+		// Note that LSP4E seems to ignore the declaration provider, cf. {@link
+		// OpenDeclarationHyperlinkDetector}, so we also need to enable the definition provider.
+		// capabilities.setDeclarationProvider(true);
+		capabilities.setDefinitionProvider(true);
+
+		// FIXME: Maybe at some point we will need to set hierarchicalDocumentSymbolSupport to true?
+		capabilities.setDocumentSymbolProvider(true);
+
 		final InitializeResult res = new InitializeResult(capabilities);
 		return CompletableFuture.completedFuture(res);
 	}
 
 	@Override
 	public CompletableFuture<Object> shutdown() {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.languageClient != null) {
+			this.languageClient.logMessage(new MessageParams(MessageType.Log,
+					"Acceleo Language Server is shutting down"));
+		}
+		return CompletableFuture.completedFuture(null);
 	}
 
 	@Override
 	public void exit() {
-		// TODO Auto-generated method stub
-
+		if (this.languageClient != null) {
+			this.languageClient.logMessage(new MessageParams(MessageType.Log,
+					"Acceleo Language Server is exiting"));
+		}
 	}
 
 	@Override
@@ -70,13 +103,6 @@ public class AcceleoLanguageServer implements LanguageServer, LanguageClientAwar
 	@Override
 	public WorkspaceService getWorkspaceService() {
 		return workspaceService;
-	}
-
-	@Override
-	public void connect(LanguageClient client) {
-		this.client = client;
-		textDocumentService.connect(client);
-		workspaceService.connect(client);
 	}
 
 }

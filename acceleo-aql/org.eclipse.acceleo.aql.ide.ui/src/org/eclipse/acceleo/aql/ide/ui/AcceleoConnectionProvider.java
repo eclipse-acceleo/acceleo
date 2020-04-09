@@ -27,59 +27,79 @@ import org.eclipse.lsp4e.server.StreamConnectionProvider;
 public class AcceleoConnectionProvider implements StreamConnectionProvider {
 
 	/**
+	 * The host.
+	 */
+	private static final String HOST = "127.0.0.1";
+
+	/**
+	 * The port.
+	 */
+	private static final int PORT = 30000;
+
+	/**
 	 * The {@link AcceleoSocketServer}.
 	 */
 	// TODO we probably want to start this once for all...
-	private AcceleoSocketServer server = new AcceleoSocketServer();
+	private AcceleoSocketServer socketServer = new AcceleoSocketServer();
 
 	/**
 	 * The client {@link Socket}.
 	 */
-	private Socket client;
+	private Socket socketClient;
+
+	/**
+	 * Constructor.
+	 */
+	public AcceleoConnectionProvider() {
+	}
 
 	@Override
-	public InputStream getErrorStream() {
-		return getInputStream();
+	public synchronized void start() throws IOException {
+		// TODO Might need to be made a constant and made available from other classes?
+		socketServer.start(HOST, PORT);
+		socketClient = new Socket(InetAddress.getByName(HOST), PORT);
+	}
+
+	@Override
+	public synchronized void stop() {
+		try {
+			socketClient.close();
+			socketServer.stop();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public InputStream getInputStream() {
-		try {
-			return client.getInputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (this.socketClient != null) {
+			try {
+				return socketClient.getInputStream();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
 
 	@Override
 	public OutputStream getOutputStream() {
-		try {
-			return client.getOutputStream();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (this.socketClient != null) {
+			try {
+				return socketClient.getOutputStream();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
 
 	@Override
-	public synchronized void start() throws IOException {
-		// TODO Might need to be made a constant and made available from other classes?
-		server.start("127.0.0.1", 30000);
-		client = new Socket(InetAddress.getByName("127.0.0.1"), 30000);
+	public InputStream getErrorStream() {
+		// return getInputStream();
+		return null;
 	}
-
-	@Override
-	public synchronized void stop() {
-		try {
-			client.close();
-			server.stop();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }
