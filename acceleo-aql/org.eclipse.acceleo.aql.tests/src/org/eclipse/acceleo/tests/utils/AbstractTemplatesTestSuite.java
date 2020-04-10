@@ -20,6 +20,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -330,8 +331,10 @@ public abstract class AbstractTemplatesTestSuite {
 			}
 		}
 
+		final URI generatedFolderURI = URI.createURI("generated/").resolve(module.eResource().getURI());
+		final List<URI> expectedGeneratedFiles = getExpectedGeneratedFiles(generatedFolderURI);
+		final List<URI> unexpectedGeneratedFiles = new ArrayList<URI>();
 		final List<EObject> eObjects = new ArrayList<EObject>();
-		boolean missingFile = false;
 		if (main != null && model != null) {
 			final String parameterName = main.getParameters().get(0).getName();
 			final EClassifier parameterType = (EClassifier)((TypeLiteral)main.getParameters().get(0).getType()
@@ -356,12 +359,13 @@ public abstract class AbstractTemplatesTestSuite {
 			}
 
 			// assert generated content
+
 			final GenerationResult result = environment.getGenerationResult();
-			final URI generatedFolderURI = URI.createURI("generated/").resolve(module.eResource().getURI());
 			for (URI memoryGeneratedURI : result.getGeneratedFiles()) {
 				final URI generatedURI = URI.createURI(memoryGeneratedURI.toString().substring(
 						memoryDestinationString.length())).resolve(generatedFolderURI);
 				final URI expectedURI = URI.createURI(generatedURI.toString() + "-expected.txt");
+				expectedGeneratedFiles.remove(expectedURI);
 				final URI actualURI = URI.createURI(generatedURI.toString() + "-actual.txt");
 				if (URIConverter.INSTANCE.exists(expectedURI, null)) {
 					final String expectedContent;
@@ -376,18 +380,42 @@ public abstract class AbstractTemplatesTestSuite {
 					assertEquals(expectedContent, actualContent);
 				} else {
 					copy(memoryGeneratedURI, actualURI);
-					missingFile = true;
+					unexpectedGeneratedFiles.add(actualURI);
 				}
 			}
 		}
-		// TODO check if some expected files are not checked against generated file: we expect some file but
-		// it has not been generated
 
 		assertGenerationMessages(environment.getGenerationResult());
 
-		if (missingFile) {
-			fail("missing file.");
+		if (!unexpectedGeneratedFiles.isEmpty()) {
+			fail("unexpected generated file: " + Arrays.deepToString(unexpectedGeneratedFiles.toArray()));
 		}
+		if (!expectedGeneratedFiles.isEmpty()) {
+			fail("expected generated file are missing: " + Arrays.deepToString(expectedGeneratedFiles.toArray(
+					new URI[expectedGeneratedFiles.size()])));
+		}
+	}
+
+	private List<URI> getExpectedGeneratedFiles(URI generatedFolderURI) {
+		final List<URI> res = new ArrayList<URI>();
+
+		final File generatedFolder = new File(generatedFolderURI.toFileString());
+
+		final String[] expectedFileNames = generatedFolder.list(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith("-expected.txt");
+			}
+		});
+
+		if (expectedFileNames != null) {
+			for (String expectedFileName : expectedFileNames) {
+				res.add(URI.createURI(expectedFileName).resolve(generatedFolderURI));
+			}
+		}
+
+		return res;
 	}
 
 	/**
