@@ -235,11 +235,11 @@ public final class AcceleoServicesRegistry {
 					serviceInstance = serviceClass.newInstance();
 					serviceInstances.put(serviceClass, serviceInstance);
 				} catch (InstantiationException e) {
-					AcceleoLogger.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY,
-							serviceClass.getName()), e, false);
+					AcceleoLogger.log(AcceleoCommonMessages.getString(INSTANTIATION_FAILURE_KEY, serviceClass
+							.getName()), e, false);
 				} catch (IllegalAccessException e) {
-					AcceleoLogger.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY,
-							serviceClass.getName()), e, false);
+					AcceleoLogger.log(AcceleoCommonMessages.getString(CONSTRUCTOR_FAILURE_KEY, serviceClass
+							.getName()), e, false);
 				}
 			}
 		}

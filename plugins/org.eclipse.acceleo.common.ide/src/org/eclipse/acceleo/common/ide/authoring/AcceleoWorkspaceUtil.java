@@ -193,9 +193,9 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 			try {
 				uninstallBundle(bundle);
 			} catch (BundleException e) {
-				AcceleoCommonPlugin
-						.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages
-								.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()), e));
+				AcceleoCommonPlugin.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
+						AcceleoCommonMessages.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()),
+						e));
 			}
 		}
 		workspaceInstalledBundles.clear();
@@ -226,7 +226,8 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 			if (workspaceInstance.isStale()) {
 				for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
 					final IPluginModelBase model = entry.getKey();
-					if (workspaceInstance.getBundle().equals(model.getBundleDescription().getSymbolicName())) {
+					if (workspaceInstance.getBundle().equals(model.getBundleDescription()
+							.getSymbolicName())) {
 						clazz = internalLoadClass(entry.getValue(), qualifiedName);
 						workspaceInstance.setStale(false);
 						workspaceInstance.setClass(clazz);
@@ -331,8 +332,8 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 				if (workspaceInstance.isStale()) {
 					for (Map.Entry<IPluginModelBase, Bundle> entry : workspaceInstalledBundles.entrySet()) {
 						final IPluginModelBase model = entry.getKey();
-						if (workspaceInstance.getBundle().equals(
-								model.getBundleDescription().getSymbolicName())) {
+						if (workspaceInstance.getBundle().equals(model.getBundleDescription()
+								.getSymbolicName())) {
 							Class<?> clazz = internalLoadClass(entry.getValue(), qualifiedName);
 							workspaceInstance.setStale(false);
 							workspaceInstance.setClass(clazz);
@@ -404,9 +405,9 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 					uninstallBundle(bundle);
 				}
 			} catch (BundleException e) {
-				AcceleoCommonPlugin
-						.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages
-								.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()), e));
+				AcceleoCommonPlugin.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
+						AcceleoCommonMessages.getString(UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()),
+						e));
 			}
 		}
 		workspaceInstalledBundles.clear();
@@ -578,8 +579,8 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 			}
 
 			if (url != null) {
-				final String candidateLocationReference = REFERENCE_URI_PREFIX
-						+ URLDecoder.decode(url.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
+				final String candidateLocationReference = REFERENCE_URI_PREFIX + URLDecoder.decode(url
+						.toExternalForm(), System.getProperty("file.encoding")); //$NON-NLS-1$
 
 				Bundle bundle = org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil
 						.getBundle(candidateLocationReference);
@@ -720,10 +721,10 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 		 */
 		public void resourceChanged(IResourceChangeEvent event) {
 			switch (event.getType()) {
-			/*
-			 * Closing and deleting projects trigger the same actions : we must remove the model listener and
-			 * uninstall the bundle.
-			 */
+				/*
+				 * Closing and deleting projects trigger the same actions : we must remove the model listener
+				 * and uninstall the bundle.
+				 */
 				case IResourceChangeEvent.PRE_CLOSE:
 				case IResourceChangeEvent.PRE_DELETE:
 					if (event.getResource() instanceof IProject) {
@@ -736,11 +737,10 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 								try {
 									uninstallBundle(bundle);
 								} catch (BundleException e) {
-									AcceleoCommonPlugin
-											.log(new Status(IStatus.ERROR, AcceleoCommonPlugin.PLUGIN_ID,
-													AcceleoCommonMessages.getString(
-															UNINSTALLATION_FAILURE_KEY, bundle
-																	.getSymbolicName()), e));
+									AcceleoCommonPlugin.log(new Status(IStatus.ERROR,
+											AcceleoCommonPlugin.PLUGIN_ID, AcceleoCommonMessages.getString(
+													UNINSTALLATION_FAILURE_KEY, bundle.getSymbolicName()),
+											e));
 								}
 							}
 						}
@@ -771,8 +771,7 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 					if (!ResourcesPlugin.getWorkspace().isAutoBuilding()) {
 						break;
 					}
-					// Fall through to the incremental build handling otherwise
-					//$FALL-THROUGH$
+					// fall through to the incremental build handling otherwise
 				case IncrementalProjectBuilder.INCREMENTAL_BUILD:
 					final AcceleoDeltaVisitor visitor = new AcceleoDeltaVisitor();
 					try {
@@ -787,8 +786,8 @@ public final class AcceleoWorkspaceUtil implements ClassLoadingCompanion {
 						}
 					}
 					for (String changedClass : visitor.getChangedClasses()) {
-						final WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses
-								.get(changedClass);
+						final WorkspaceClassInstance workspaceInstance = workspaceLoadedClasses.get(
+								changedClass);
 						if (workspaceInstance != null) {
 							workspaceInstance.setStale(true);
 						}

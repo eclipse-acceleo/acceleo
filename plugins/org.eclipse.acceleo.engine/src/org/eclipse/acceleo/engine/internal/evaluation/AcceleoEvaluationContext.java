@@ -194,8 +194,8 @@ public class AcceleoEvaluationContext<C> {
 					fireTextGenerated(new AcceleoTextGenerationEvent(string, sourceBlock, source));
 				}
 			} else {
-				final String message = AcceleoEngineMessages
-						.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
+				final String message = AcceleoEngineMessages.getString(
+						"AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
 				if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
 					AcceleoEnginePlugin.log(message, false);
 				}
@@ -205,8 +205,8 @@ public class AcceleoEvaluationContext<C> {
 				defaultWriter.append(string);
 			}
 		} catch (final IOException e) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.AppendError"), e); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.AppendError"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -336,8 +336,8 @@ public class AcceleoEvaluationContext<C> {
 				Module containingModule = (Module)rootContainer;
 				String moduleFile;
 				if (containingModule.eResource() != null && containingModule.eResource().getURI() != null) {
-					moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment()
-							+ '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
+					moduleFile = containingModule.eResource().getURI().trimFileExtension().lastSegment() + '.'
+							+ IAcceleoConstants.MTL_FILE_EXTENSION;
 				} else {
 					moduleFile = containingModule.getName() + '.' + IAcceleoConstants.MTL_FILE_EXTENSION;
 				}
@@ -350,8 +350,8 @@ public class AcceleoEvaluationContext<C> {
 				if (adapter instanceof AcceleoASTNodeAdapter) {
 					line = ((AcceleoASTNodeAdapter)adapter).getLine();
 				}
-				stackTrace[expressionStack.size() - i - 1] = new StackTraceElement(
-						containingModule.getName(), containingModuleElement.toString(), moduleFile, line);
+				stackTrace[expressionStack.size() - i - 1] = new StackTraceElement(containingModule.getName(),
+						containingModuleElement.toString(), moduleFile, line);
 			} else if (rootContainer instanceof ProtectedAreaBlock) {
 				// Let's not handle this now...
 				stackTrace = new StackTraceElement[0];
@@ -386,8 +386,8 @@ public class AcceleoEvaluationContext<C> {
 	 */
 	public String closeContext(Block sourceBlock, EObject source) throws AcceleoEvaluationException {
 		if (writers.isEmpty()) {
-			final String message = AcceleoEngineMessages
-					.getString("AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
+			final String message = AcceleoEngineMessages.getString(
+					"AcceleoEvaluationVisitor.PossibleEmptyFileName"); //$NON-NLS-1$
 			if (EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences.isDebugMessagesEnabled()) {
 				AcceleoEnginePlugin.log(message, false);
 			}
@@ -421,8 +421,8 @@ public class AcceleoEvaluationContext<C> {
 			}
 			return result;
 		} catch (final IOException e) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.WriteError"), e); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.WriteError"), e); //$NON-NLS-1$
 		}
 	}
 
@@ -440,8 +440,8 @@ public class AcceleoEvaluationContext<C> {
 					writer.close();
 				}
 			} catch (final IOException e) {
-				exception = new AcceleoEvaluationException(AcceleoEngineMessages
-						.getString("AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
+				exception = new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+						"AcceleoEvaluationContext.CleanUpError"), e); //$NON-NLS-1$
 			}
 		} finally {
 			generationPreview.clear();
@@ -496,8 +496,8 @@ public class AcceleoEvaluationContext<C> {
 		if (expressionStack.isEmpty()) {
 			return null;
 		}
-		final ListIterator<OCLExpression<C>> expressionIterator = expressionStack
-				.listIterator(expressionStack.size());
+		final ListIterator<OCLExpression<C>> expressionIterator = expressionStack.listIterator(expressionStack
+				.size());
 		OCLExpression<C> previous;
 		do {
 			previous = expressionIterator.previous();
@@ -642,8 +642,8 @@ public class AcceleoEvaluationContext<C> {
 		try {
 			strategy.flushWriters(generationPreview);
 		} catch (IOException e) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.WriteError"), e); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.WriteError"), e); //$NON-NLS-1$
 		}
 
 		Map<String, Integer> filteredFiles = Maps.filterEntries(generateFiles,
@@ -654,8 +654,8 @@ public class AcceleoEvaluationContext<C> {
 				});
 
 		if (!filteredFiles.isEmpty()) {
-			final StringBuilder message = new StringBuilder(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.OverrodeFiles")); //$NON-NLS-1$
+			final StringBuilder message = new StringBuilder(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.OverrodeFiles")); //$NON-NLS-1$
 			message.append('\n').append('\n');
 			for (Map.Entry<String, Integer> file : filteredFiles.entrySet()) {
 				message.append(file.getKey() + " : " + file.getValue().toString() + " times" + '\n'); //$NON-NLS-1$ //$NON-NLS-2$
@@ -676,8 +676,8 @@ public class AcceleoEvaluationContext<C> {
 				writers.getLast().flush();
 			}
 		} catch (final IOException e) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.FlushError"), e); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.FlushError"), e); //$NON-NLS-1$
 		}
 		writers.add(new StringWriter(DEFAULT_BUFFER_SIZE));
 	}
@@ -721,11 +721,11 @@ public class AcceleoEvaluationContext<C> {
 			// We checked for JMerge tags when saving protected areas. we'll use this information here.
 			final AbstractAcceleoWriter writer;
 			if (charset != null) {
-				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview
-						.get(generatedFile.getPath()), appendMode, hasJMergeTag, charset);
+				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview.get(
+						generatedFile.getPath()), appendMode, hasJMergeTag, charset);
 			} else {
-				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview
-						.get(generatedFile.getPath()), appendMode, hasJMergeTag);
+				writer = strategy.createWriterFor(generatedFile, (AbstractAcceleoWriter)generationPreview.get(
+						generatedFile.getPath()), appendMode, hasJMergeTag);
 			}
 			generationPreview.put(generatedFile.getPath(), writer);
 			// reset the jmerge state for the following file blocks
@@ -751,8 +751,8 @@ public class AcceleoEvaluationContext<C> {
 				writers.getLast().flush();
 			}
 		} catch (final IOException e) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationContext.FlushError"), e); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationContext.FlushError"), e); //$NON-NLS-1$
 		}
 		writers.add(new OutputStreamWriter(new AcceleoFilterOutputStream(stream)));
 	}
@@ -965,7 +965,7 @@ public class AcceleoEvaluationContext<C> {
 		 * @param out
 		 *            The decorated output stream.
 		 */
-		public AcceleoFilterOutputStream(OutputStream out) {
+		AcceleoFilterOutputStream(OutputStream out) {
 			super(out);
 		}
 
@@ -1042,8 +1042,8 @@ public class AcceleoEvaluationContext<C> {
 			String line = null;
 			synchronized(lock) {
 				if (input == null) {
-					throw new IOException(AcceleoEngineMessages
-							.getString("AcceleoEvaluationContext.ClosedStream")); //$NON-NLS-1$
+					throw new IOException(AcceleoEngineMessages.getString(
+							"AcceleoEvaluationContext.ClosedStream")); //$NON-NLS-1$
 				}
 
 				while (line == null) {
@@ -1089,7 +1089,8 @@ public class AcceleoEvaluationContext<C> {
 							nextChar++;
 						} else if (c == '\r') {
 							final int max = 8191;
-							if (nextChar != max && buffer.length >= nextChar && buffer[nextChar + 1] == '\n') {
+							if (nextChar != max && buffer.length >= nextChar && buffer[nextChar
+									+ 1] == '\n') {
 								lastEOL = DOS_LINE_SEPARATOR;
 								nextChar += 2;
 							} else if (nextChar != max) {

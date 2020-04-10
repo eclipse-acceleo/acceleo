@@ -251,7 +251,9 @@ public class AcceleoLauncher implements IApplication {
 						try {
 							new AcceleoGeneratorRunner(output, generatorParameters).launchAcceleoGenerator(
 									monitor, modelURIS, generatorsFullName);
+							// CHECKSTYLE:OFF
 						} catch (RuntimeException e) {
+							// CHECKSTYLE:ON
 							/*
 							 * the exception has been logged in the launchAcceleoGenerator method.
 							 */

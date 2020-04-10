@@ -250,8 +250,8 @@ public final class AcceleoLaunchingUtil {
 			int modelPathSeparator = launchID.indexOf(LAUNCHER_ID_SEPARATOR, modelPathOffset);
 
 			if (modelPathSeparator > 0) {
-				return launchID
-						.substring(modelPathOffset + LAUNCH_ID_MODEL_PATH.length(), modelPathSeparator);
+				return launchID.substring(modelPathOffset + LAUNCH_ID_MODEL_PATH.length(),
+						modelPathSeparator);
 			}
 		}
 
@@ -298,7 +298,7 @@ public final class AcceleoLaunchingUtil {
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
-	public static enum Launcher {
+	enum Launcher {
 		/**
 		 * This will be used to indicate that the generation has been launched from an Eclipse launch
 		 * configuration.

@@ -310,7 +310,9 @@ public class InterpreterView extends ViewPart {
 	/** The composite that will display the sub-expressions. */
 	private Composite subExpressionComposite;
 
-	/** Keeps a reference to the toolkit used to create our form. This will be used when switching languages. */
+	/**
+	 * Keeps a reference to the toolkit used to create our form. This will be used when switching languages.
+	 */
 	private FormToolkit formToolkit;
 
 	/** Form that will contain the interpreter itself (left part of the view). */
@@ -751,8 +753,8 @@ public class InterpreterView extends ViewPart {
 			if (activeEditor == null) {
 				linkWithEditorContextAction.setEnabled(false);
 			} else {
-				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
-						activeEditor));
+				linkWithEditorContextAction
+						.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(activeEditor));
 			}
 		}
 	}
@@ -769,7 +771,8 @@ public class InterpreterView extends ViewPart {
 			memento.putMemento(partMemento);
 		} else {
 			if (getCurrentLanguageDescriptor() != null) {
-				memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY, getCurrentLanguageDescriptor().getClassName());
+				memento.putString(MEMENTO_CURRENT_LANGUAGE_KEY,
+						getCurrentLanguageDescriptor().getClassName());
 			}
 			memento.putString(MEMENTO_EXPRESSION_KEY, expressionViewer.getTextWidget().getText());
 			memento.putBoolean(MEMENTO_REAL_TIME_KEY, Boolean.valueOf(realTime));
@@ -1116,8 +1119,8 @@ public class InterpreterView extends ViewPart {
 		if (titleImageDescriptor != null) {
 			titleImage = titleImageDescriptor.createImage();
 		} else {
-			titleImage = InterpreterImages.getImageDescriptor(
-					IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage();
+			titleImage = InterpreterImages
+					.getImageDescriptor(IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage();
 		}
 		setTitleImage(titleImage);
 		getForm().setImage(titleImage);
@@ -1273,8 +1276,8 @@ public class InterpreterView extends ViewPart {
 			if (currentEditor == null) {
 				linkWithEditorContextAction.setEnabled(false);
 			} else {
-				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
-						currentEditor));
+				linkWithEditorContextAction
+						.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(currentEditor));
 			}
 		} else {
 			linkWithEditorContextAction.setEnabled(false);
@@ -1385,8 +1388,8 @@ public class InterpreterView extends ViewPart {
 	 */
 	protected void createSubExpressionsSection(FormToolkit toolkit, Composite parentComposite) {
 		Section subExpressionsSection = toolkit.createSection(parentComposite, ExpandableComposite.TITLE_BAR);
-		subExpressionsSection.setText(InterpreterMessages
-				.getString("interpreter.view.subexpression.section.name")); //$NON-NLS-1$
+		subExpressionsSection
+				.setText(InterpreterMessages.getString("interpreter.view.subexpression.section.name")); //$NON-NLS-1$
 
 		Composite subExpressionsSectionBody = toolkit.createComposite(subExpressionsSection);
 		subExpressionsSectionBody.setLayout(new GridLayout());
@@ -1486,8 +1489,8 @@ public class InterpreterView extends ViewPart {
 				if (partMemento == null || partMemento.getString(MEMENTO_CURRENT_LANGUAGE_KEY) == null) {
 					currentLanguage = descriptor;
 					action.setChecked(true);
-				} else if (partMemento.getString(MEMENTO_CURRENT_LANGUAGE_KEY).equals(
-						descriptor.getClassName())) {
+				} else if (partMemento.getString(MEMENTO_CURRENT_LANGUAGE_KEY)
+						.equals(descriptor.getClassName())) {
 					currentLanguage = descriptor;
 					action.setChecked(true);
 				}
@@ -1605,8 +1608,8 @@ public class InterpreterView extends ViewPart {
 		if (getCurrentLanguageDescriptor().getIcon() != null) {
 			setTitleImage(getCurrentLanguageDescriptor().getIcon().createImage());
 		} else if (previousLanguage != null && previousLanguage.getIcon() != null) {
-			setTitleImage(InterpreterImages.getImageDescriptor(
-					IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage());
+			setTitleImage(InterpreterImages
+					.getImageDescriptor(IInterpreterConstants.INTERPRETER_VIEW_DEFAULT_ICON).createImage());
 		}
 		if (previousImage != null) {
 			previousImage.dispose();
@@ -1651,8 +1654,8 @@ public class InterpreterView extends ViewPart {
 			if (currentEditor == null) {
 				linkWithEditorContextAction.setEnabled(false);
 			} else {
-				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
-						currentEditor));
+				linkWithEditorContextAction
+						.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(currentEditor));
 			}
 		} else {
 			linkWithEditorContextAction.setEnabled(false);
@@ -1964,8 +1967,8 @@ public class InterpreterView extends ViewPart {
 	}
 
 	/**
-	 * This implementation of a part listener will allow us to determine at all times whether the
-	 * "work in editor context" action should be enabled.
+	 * This implementation of a part listener will allow us to determine at all times whether the "work in
+	 * editor context" action should be enabled.
 	 * 
 	 * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
 	 */
@@ -1978,8 +1981,8 @@ public class InterpreterView extends ViewPart {
 		public void partActivated(IWorkbenchPartReference partRef) {
 			// If the toggle is checked, defer enablement computing till we uncheck it
 			if (!linkWithEditorContextAction.isChecked() && partRef instanceof IEditorReference) {
-				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
-						((IEditorReference)partRef).getEditor(false)));
+				linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter()
+						.canLinkWithEditor(((IEditorReference)partRef).getEditor(false)));
 			}
 		}
 
@@ -2005,8 +2008,8 @@ public class InterpreterView extends ViewPart {
 				if (editorPart == null) {
 					linkWithEditorContextAction.setEnabled(false);
 				} else {
-					linkWithEditorContextAction.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(
-							editorPart));
+					linkWithEditorContextAction
+							.setEnabled(getCurrentLanguageInterpreter().canLinkWithEditor(editorPart));
 				}
 			}
 		}
@@ -2110,8 +2113,8 @@ public class InterpreterView extends ViewPart {
 			}
 			final IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
 			final IStorage storage = new InterpreterFileStorage(file);
-			final IEditorDescriptor editor = workbench.getEditorRegistry().getDefaultEditor(
-					file.getFileName());
+			final IEditorDescriptor editor = workbench.getEditorRegistry()
+					.getDefaultEditor(file.getFileName());
 			final IEditorInput input = new StorageEditorInput(storage);
 
 			try {
@@ -2275,7 +2278,7 @@ public class InterpreterView extends ViewPart {
 		 * @param language
 		 *            The language to which this action will change the interpreter.
 		 */
-		public ChangeLanguageAction(LanguageInterpreterDescriptor language) {
+		ChangeLanguageAction(LanguageInterpreterDescriptor language) {
 			super(language.getLabel(), IAction.AS_RADIO_BUTTON);
 			this.language = language;
 		}
@@ -2316,7 +2319,7 @@ public class InterpreterView extends ViewPart {
 		 * @param compilationTask
 		 *            Thread which result we are to wait for.
 		 */
-		public CompilationThread(Future<CompilationResult> compilationTask) {
+		CompilationThread(Future<CompilationResult> compilationTask) {
 			super("InterpreterCompilationThread"); //$NON-NLS-1$
 			this.compilationTask = compilationTask;
 		}
@@ -2411,7 +2414,7 @@ public class InterpreterView extends ViewPart {
 		/**
 		 * Increases visibility of the default constructor.
 		 */
-		public NotifierSelectionListener() {
+		NotifierSelectionListener() {
 			// Increases visibility
 		}
 
@@ -2503,7 +2506,7 @@ public class InterpreterView extends ViewPart {
 		 * @param interpreterContext
 		 *            The initial interpreter context.
 		 */
-		public EvaluationThread(InterpreterContext interpreterContext) {
+		EvaluationThread(InterpreterContext interpreterContext) {
 			super("InterpreterEvaluationThread"); //$NON-NLS-1$
 			this.interpreterContext = interpreterContext;
 		}
@@ -2638,7 +2641,7 @@ public class InterpreterView extends ViewPart {
 		 * @param interpreterContext
 		 *            The initial interpreter context.
 		 */
-		public ExpressionSplittingThread(InterpreterContext interpreterContext) {
+		ExpressionSplittingThread(InterpreterContext interpreterContext) {
 			super("InterpreterExpressionSplittingThread"); //$NON-NLS-1$
 			this.interpreterContext = interpreterContext;
 		}
@@ -2749,7 +2752,7 @@ public class InterpreterView extends ViewPart {
 		/**
 		 * Instantiates the real-time evaluation thread.
 		 */
-		public RealTimeThread() {
+		RealTimeThread() {
 			super("InterpreterRealTimeThread"); //$NON-NLS-1$
 			setPriority(Thread.MIN_PRIORITY);
 			setDaemon(true);
@@ -2833,7 +2836,7 @@ public class InterpreterView extends ViewPart {
 		 * @param view
 		 *            The view which activation we are interested in.
 		 */
-		public ActivationListener(InterpreterView view) {
+		ActivationListener(InterpreterView view) {
 			this.view = view;
 		}
 

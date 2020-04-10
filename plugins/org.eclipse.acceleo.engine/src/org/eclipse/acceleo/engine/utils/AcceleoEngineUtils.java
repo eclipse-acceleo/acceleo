@@ -64,16 +64,15 @@ public final class AcceleoEngineUtils {
 			file = eResource.getURI().toString();
 		}
 		if (file.startsWith("platform:/resource/")) { //$NON-NLS-1$
-			IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFile(
-					new Path(file.substring("platform:/resource/".length()))); //$NON-NLS-1$
+			IFile iFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(file.substring(
+					"platform:/resource/".length()))); //$NON-NLS-1$
 			file = iFile.getLocation().toFile().getAbsolutePath();
 		}
 
 		File modelDirectory = new File(file).getParentFile();
 
 		for (File propertiesFile : modelDirectory.listFiles()) {
-			if (propertiesFile.isFile() && propertiesFile.getName().endsWith(".properties")) //$NON-NLS-1$
-			{
+			if (propertiesFile.isFile() && propertiesFile.getName().endsWith(".properties")) { //$NON-NLS-1$
 				String propertiesFilePath = propertiesFile.getAbsolutePath();
 				propertiesFilesNearModel.add(propertiesFilePath);
 			}

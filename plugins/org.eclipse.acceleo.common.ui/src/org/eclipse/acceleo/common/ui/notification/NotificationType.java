@@ -61,7 +61,7 @@ public enum NotificationType {
 	 * @param img
 	 *            The image.
 	 */
-	private NotificationType(Image img) {
+	NotificationType(Image img) {
 		image = img;
 	}
 

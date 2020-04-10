@@ -188,7 +188,7 @@ public class FormMessageManagerGanymede implements IFormMessageManager {
 		 * @param type
 		 *            Type of this message.
 		 */
-		public Message(Object key, String message, int type) {
+		Message(Object key, String message, int type) {
 			this(key, message, type, null);
 		}
 
@@ -204,7 +204,7 @@ public class FormMessageManagerGanymede implements IFormMessageManager {
 		 * @param control
 		 *            Control with which this message is to be associated
 		 */
-		public Message(Object key, String message, int type, Control control) {
+		Message(Object key, String message, int type, Control control) {
 			this.key = key;
 			this.message = message;
 			this.type = type;

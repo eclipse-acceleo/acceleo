@@ -533,7 +533,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		 * @param set2
 		 *            Second of the two sets to iterate over.
 		 */
-		public AcceleoMultipleSet(Set<K> set1, Set<K> set2) {
+		AcceleoMultipleSet(Set<K> set1, Set<K> set2) {
 			firstSet = set1;
 			secondSet = set2;
 		}
@@ -580,7 +580,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		 * @param collection2
 		 *            Second of the two collections to iterate over.
 		 */
-		public AcceleoMultipleCollection(Collection<V> collection1, Collection<V> collection2) {
+		AcceleoMultipleCollection(Collection<V> collection1, Collection<V> collection2) {
 			firstCollection = collection1;
 			secondCollection = collection2;
 		}
@@ -651,7 +651,7 @@ public final class AcceleoPackageRegistry extends HashMap<String, Object> implem
 		 * @param iterator2
 		 *            Second of the two iterators to iterate over.
 		 */
-		public AcceleoMultipleIterator(Iterator<E> iterator1, Iterator<E> iterator2) {
+		AcceleoMultipleIterator(Iterator<E> iterator1, Iterator<E> iterator2) {
 			firstIterator = iterator1;
 			secondIterator = iterator2;
 			current = firstIterator;

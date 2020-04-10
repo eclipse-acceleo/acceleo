@@ -245,7 +245,8 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		}
 		Writer writer = null;
 		try {
-			final File lostFile = new File(originalPath.concat(IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
+			final File lostFile = new File(originalPath.concat(
+					IAcceleoConstants.ACCELEO_LOST_FILE_EXTENSION));
 			writer = new BufferedWriter(new FileWriter(lostFile, true));
 			writer.append(LINE_SEPARATOR).append(Calendar.getInstance().getTime().toString()).append(
 					LINE_SEPARATOR);
@@ -285,7 +286,7 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		 * @param files
 		 *            The files we seek to modify.
 		 */
-		public EditValidator(IFile[] files) {
+		EditValidator(IFile[] files) {
 			this.files = files;
 		}
 
@@ -295,8 +296,8 @@ public class WorkspaceAwareStrategy extends AbstractGenerationStrategy {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			validationResult = ResourcesPlugin.getWorkspace().validateEdit(files,
-					Display.getDefault().getActiveShell());
+			validationResult = ResourcesPlugin.getWorkspace().validateEdit(files, Display.getDefault()
+					.getActiveShell());
 		}
 
 		/**

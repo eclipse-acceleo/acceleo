@@ -246,7 +246,8 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 			// The MTL ecore file mustn't be dynamic!!!
 			// TODO JMU we should use an extension point for the dynamic ecore files we would like to exclude
 			if (!"mtl".equals(ePackage.getNsPrefix()) && !"mtlnonstdlib".equals(ePackage.getNsPrefix()) //$NON-NLS-1$ //$NON-NLS-2$
-					&& !"mtlstdlib".equals(ePackage.getNsPrefix()) && !"oclstdlib".equals(ePackage.getNsPrefix())) { //$NON-NLS-1$ //$NON-NLS-2$
+					&& !"mtlstdlib".equals(ePackage.getNsPrefix()) && !"oclstdlib".equals(ePackage //$NON-NLS-1$ //$NON-NLS-2$
+							.getNsPrefix())) {
 				registry.put(ePackage.getNsURI(), ePackage);
 			}
 		}
@@ -295,7 +296,8 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 	 *            the registry to populate.
 	 * @return a new descriptor representing the instance.
 	 */
-	public static List<LazyEPackageDescriptor> create(URI metaURI, ResourceSet set, EPackage.Registry registry) {
+	public static List<LazyEPackageDescriptor> create(URI metaURI, ResourceSet set,
+			EPackage.Registry registry) {
 		List<LazyEPackageDescriptor> result = new ArrayList<LazyEPackageDescriptor>();
 		InputStream is = null;
 		try {
@@ -399,7 +401,7 @@ public class LazyEPackageDescriptor implements EPackage.Descriptor {
 		 * @param registry
 		 *            The registry to use when instanciating {@link LazyEPackageDescriptor}.
 		 */
-		public EcoreEPackageSAXHandler(ResourceSet set, URI resourceURI, Registry registry) {
+		EcoreEPackageSAXHandler(ResourceSet set, URI resourceURI, Registry registry) {
 			this.set = set;
 			this.registry = registry;
 			this.resourceURI = resourceURI;
