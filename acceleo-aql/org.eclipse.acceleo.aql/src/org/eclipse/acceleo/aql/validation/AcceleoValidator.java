@@ -863,7 +863,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 		if (fileStatement.getCharset() != null) {
 			final IValidationResult charsetValidationResult = (IValidationResult)doSwitch(fileStatement
 					.getCharset());
-			Set<IType> charsetpossibleTypes = charsetValidationResult.getPossibleTypes(urlValidationResult
+			Set<IType> charsetpossibleTypes = charsetValidationResult.getPossibleTypes(charsetValidationResult
 					.getAstResult().getAst());
 			checkStringType(fileStatement.getCharset(), charsetpossibleTypes);
 		}

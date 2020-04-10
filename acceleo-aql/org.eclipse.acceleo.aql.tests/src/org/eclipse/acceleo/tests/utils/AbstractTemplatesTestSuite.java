@@ -380,6 +380,9 @@ public abstract class AbstractTemplatesTestSuite {
 				}
 			}
 		}
+		// TODO check if some expected files are not checked against generated file: we expect some file but
+		// it has not been generated
+
 		assertGenerationMessages(environment.getGenerationResult());
 
 		if (missingFile) {

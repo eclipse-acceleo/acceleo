@@ -1397,8 +1397,8 @@ public class AcceleoParser {
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
-			final int expressionEndLimit = getAqlExpressionEndLimit(COMMA, FILE_HEADER_END);
-			final Expression url = parseExpression(expressionEndLimit);
+			final int urlExpressionEndLimit = getAqlExpressionEndLimit(COMMA, FILE_HEADER_END);
+			final Expression url = parseExpression(urlExpressionEndLimit);
 			skipSpaces();
 			final int missingComma = readMissingString(COMMA);
 			skipSpaces();
@@ -1409,7 +1409,15 @@ public class AcceleoParser {
 			} else {
 				missingOpenMode = -1;
 			}
-			// TODO charset
+			final Expression charset;
+			if (readString(COMMA)) {
+				skipSpaces();
+				final int charsetExpressionEndLimit = getAqlExpressionEndLimit(CLOSE_PARENTHESIS,
+						FILE_HEADER_END);
+				charset = parseExpression(charsetExpressionEndLimit);
+			} else {
+				charset = null;
+			}
 			skipSpaces();
 			final int missingCloseParenthesis = readMissingString(CLOSE_PARENTHESIS);
 			skipSpaces();
@@ -1432,6 +1440,7 @@ public class AcceleoParser {
 			}
 			res.setStartPosition(startPostion);
 			res.setUrl(url);
+			res.setCharset(charset);
 			res.setMode(openMode);
 			res.setBody(body);
 			res.setEndPosition(currentPosition);

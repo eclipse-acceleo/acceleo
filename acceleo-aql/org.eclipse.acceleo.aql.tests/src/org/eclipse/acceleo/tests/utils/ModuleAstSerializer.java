@@ -631,6 +631,10 @@ public class ModuleAstSerializer extends AcceleoSwitch<Void> {
 		doSwitch(file.getUrl());
 		builder.append(" mode ");
 		builder.append(file.getMode().getName());
+		if (file.getCharset() != null) {
+			builder.append(" charset ");
+			doSwitch(file.getCharset());
+		}
 		doSwitch(file.getBody());
 		newLine();
 		builder.append("[/file]");
