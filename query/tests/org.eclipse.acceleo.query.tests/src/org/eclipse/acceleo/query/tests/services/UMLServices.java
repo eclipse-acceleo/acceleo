@@ -39,7 +39,6 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.EncapsulatedClassifier;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.InstanceSpecification;
-import org.eclipse.uml2.uml.InstanceValue;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
@@ -315,21 +314,6 @@ public class UMLServices {
 	}
 
 	/**
-	 * Create an instance value.
-	 * 
-	 * @param instance
-	 *            Instance referenced by the slot
-	 * @param slot
-	 *            Slot under which instance will be created
-	 */
-	private void createInstanceValue(InstanceSpecification instance, Slot slot) {
-		// Set instance value
-		final InstanceValue value = UMLFactory.eINSTANCE.createInstanceValue();
-		value.setInstance(instance);
-		slot.getValues().add(value);
-	}
-
-	/**
 	 * Get all available types in model.
 	 * 
 	 * @param pkg
@@ -339,9 +323,11 @@ public class UMLServices {
 	public Set<Type> getAvailableTypes(Package pkg) {
 		Set<Type> availableTypes = new LinkedHashSet<>();
 		Set<Package> availablePackages = getAvailablePackages(pkg);
+
 		for (Package availablePackage : availablePackages) {
 			Set<Type> types = availablePackage.getOwnedTypes().stream().filter(type -> type instanceof Class
-					|| type instanceof Interface || type instanceof DataType).collect(Collectors.toSet());
+					|| type instanceof Interface || type instanceof DataType).collect(Collectors.toCollection(
+							LinkedHashSet::new));
 			availableTypes.addAll(types);
 		}
 		return availableTypes;

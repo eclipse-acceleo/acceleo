@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.acceleo.query.tests.qmodel.Query;
-import org.eclipse.acceleo.query.tests.qmodel.QueryEvaluationResultExpectation;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResult;
 import org.eclipse.acceleo.query.tests.qmodel.QueryValidationResultExpectation;
 import org.eclipse.emf.ecore.EObject;
@@ -57,13 +56,13 @@ public abstract class TestValidationQModel {
 		Iterable<EObject> allContents = () -> reverse.getAllContents();
 		int i = 0;
 		// @formatter:off
-		Iterator<QueryEvaluationResultExpectation> filtered = StreamSupport.stream(allContents.spliterator(), false)
-				.filter(QueryEvaluationResultExpectation.class::isInstance)
-				.map(QueryEvaluationResultExpectation.class::cast)
+		Iterator<QueryValidationResultExpectation> filtered = StreamSupport.stream(allContents.spliterator(), false)
+				.filter(QueryValidationResultExpectation.class::isInstance)
+				.map(QueryValidationResultExpectation.class::cast)
 				.iterator();
 		// @formatter:on
 		while (filtered.hasNext()) {
-			QueryEvaluationResultExpectation cur = filtered.next();
+			QueryValidationResultExpectation cur = filtered.next();
 			if (cur.getExpectedResult() != null) {
 				parameters.add(new Object[] {cur, ++i + " " + ((Query)cur.eContainer()).getExpression() });
 			}
