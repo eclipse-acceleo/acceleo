@@ -1,0 +1,317 @@
+= Acceleo 4 User Guide =
+Yvan Lussaud <yvan.lussaud@obeo.fr>
+:Author Initials: YLU
+:toc:
+:icons:
+:numbered:
+:website: TODO
+
+== Introduction ==
+
+TODO
+
+== Module authoring ==
+
+TODO
+
+=== Acceleo 4 syntax ===
+
+This section describe the syntax of an Acceleo 4 module. The syntax is described using the https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form[Backus Naur from].
+
+==== Comment ====
+
+A comment can be used to document any part of the <<Module>>. It generate nothing if placed directly or indirectly in a <<File Statement>>. For simplification comments will not be present in the BNF representation of the grammar.
+
+====
+<<Comment>> = '[comment ' ... '/]'
+====
+
+==== Module ====
+
+The module is the top level element of a .mtl file. It represent a namespace declaring <<Template>> and <<Query>>. The name of the module is qualified by the location of the file in the source folder.
+
+====
+<<Module>> =
+
+(<<Module Documentation>>)* '[module ' <<Identifier>> '(' <<Metamodel>> ',' (<<Metamodel>>)* ')' ('extends <<Module Reference>>')? '/]'
+
+<<Import>>*
+
+<<Module Element>>*
+====
+
+An example can be found TODO. An other examples of this section
+
+
+==== Identifier ====
+
+An identifier is used to name elements that need to be identified, or reference element that can be identified.
+
+====
+<<Identifier>> = [a-zA-Z_][a-zA-Z_0-9]*
+====
+
+==== Module Documentation ====
+
+The module documentation should contains a description of the <<Module>>. It also can contains metadata such as the author, version, and since (the version since this <<Module>> exists).
+
+====
+<<Module Documentation>> =
+
+'[**'
+
+...
+
+('@author' ...)?
+
+('@version' ...)?
+
+('@since' ...)?
+
+...
+
+'/]'
+
+====
+
+==== Metamodel ====
+
+This is the declaration of used metamodels. Metamodels are references using their EPackage nsURI between simple quote.
+
+====
+<<Metamodel>> = '\'' ... '\''
+====
+
+==== Import ====
+
+This allow to import other <<Module>> or service classes.
+
+====
+<<Import>> = '[import ' <<Module Reference>> '/]'
+====
+
+==== Module Reference ====
+
+The module reference is a qualified reference to a <<Module>>
+
+====
+<<Module Reference>> = <<Module Qualified Name>>
+====
+
+==== Module Qualified Name ====
+
+====
+<<Module Qualified Name>> = <<Identifier>> ('::' <<Identifier>>)*
+====
+
+
+==== Module Element ====
+
+A module element is either a <<Template>> or a <<Query>>.
+
+<<Module Element>> = <<Template>> | <<Query>>
+
+==== Template ====
+
+A template returns a String produced using contained <<Statement>>, it can be called as a service. It can be preceded by a <<Module Element documentation>>.
+
+====
+<<Template>> =
+
+'[template ' <<Visibility>> <<Identifier>> '(' <<Parameter>>(',' <<Parameter>>)* ')' ('?' <<AQL Expression>>)? ('post(' <<AQL Expression>> ')')? ']'
+
+(<<Statement>>)*
+
+'[/template]'
+
+====
+
+==== Visibility ====
+
+The visibility define the scope where the <<Template>> or <<Query>> can be called as a service.
+
+====
+<<Visibility>> = 'private' | 'protected' | 'public'
+====
+
+* *private*: visible only in the current <<Module>>.
+* *protected*: visible in the current <<Module>> and <<Module>> that extend it directly or indirectly.
+* *public*: visible in the current <<Module>>, <<Module>> that extend it directly or indirectly, and <<Module>> that import the containing <<Module>>.
+
+==== Parameter ====
+
+A parameter is used to pass a value from the caller. This value can be later referenced using its name.
+
+====
+<<Parameter>> = <<Identifier>> ':' <<AQL Type Literal>>
+====
+
+==== Statement ====
+
+A statement is a directive used to produce an output or control the execution flow.
+
+====
+<<Statement>> =
+
+<<File Statement>> | <<For Statement>> | <<If Statement>> | <<Let Statement>> | <<Protected Area>> | <<Expression Statement>> | <<Text Statement>>
+====
+
+==== File Statement ====
+
+This statement is used to start the generation of a new file. Strings returned by a statement contained directly or indirectly in the execution flow, will be generated into that file. It returns an empty String.
+
+====
+<<File Statement>> =
+
+'[file ' '(' <<AQL Expression>> ',' <<Open Mode Kind>> (',' <<AQL Expression>>)? ')' ']'
+
+(<<Statement>>)*
+
+'[/file]' 
+====
+
+==== For Statement ====
+
+This statement loops over a list of values and return the concatenation of all returned String.
+
+====
+<<For Statement>> =
+
+'[for ' '(' <<Identifier>> (':' <<AQL Type Literal>>)? '|' <<AQL Expression>> ')' ']'
+
+(<<Statement>>)*
+
+'[/for]'
+====
+
+==== If Statement ====
+
+This statement create a branch in the execution flow and return the String of one of its branch according to the <<AQL Expression>> evaluated to true. If a condition doesn't evaluate to a boolean an empty String is generated and an error is logged.
+
+====
+<<If Statement>> =
+
+'[if ' '(' <<AQL Expression>> ')' ']'
+
+(<<Statement>>)*
+
+('[elseif ' '(' <<AQL Expression>> ')' ']'
+
+(<<Statement>>)*)*
+
+('[else]'
+
+(<<Statement>>)*)?
+
+'[/if]'
+====
+
+==== Let Statement ====
+
+This statement allows to compute one or more <<AQL Expression>> and reference their value using an identifier. It can be used to improve readability of the template or increase performance when using the same <<AQL Expression>> many times in a block of <<Statement>>.
+
+====
+<<Let Statement>> =
+
+'[let ' <<Identifier> ('=' <<AQL Type Literal>>)? '|' <<AQL Expression>> (',' <<Identifier>> ('=' <<AQL Type Literal>>)? '|' <<AQL Expression>>)* ']'
+
+(<<Statement>>)*)?
+
+'[/let]'
+====
+
+==== Protected Area ====
+
+This statement declare an identified area in the generated file. If the generated file exists and a protected area with the identifier exists then the content of this area is returned. If it doesn't exist the concatenation of statement String is returned.
+
+====
+<<Protected Area>> =
+
+'[protected ' '(' <<AQL Expression>> ')' ']'
+
+(<<Statement>>)*)?
+
+'[/protected]'
+====
+
+==== Expression Statement ====
+
+This statement returns the String representation of the evaluation of the <<AQL Expression>>.
+
+====
+<<Expression Statement>> = '[' <<AQL Expression>> '/]'
+====
+
+==== Text Statement ====
+
+This is any other text outside of '[' and ']'.
+
+==== AQL Expression ====
+
+This is an Acceleo query language expression. It's used to navigate through models and call services. In the context of Acceleo, <<Template>> and <<Query>> can be called as services.
+
+TODO link AQL documentation
+
+==== AQL Type Literal ====
+
+This is a type literal as defined in the Acceleo query language.
+
+TODO link AQL documentation
+
+==== Query ====
+
+A query reference an <<AQL Expression>> with parameter and can be called as a service. It can be preceded by a <<Module Element documentation>>.
+
+====
+<<Query>> = '[query ' <<Visibility>> <<Identifier>> '(' <<Parameter>>(',' <<Parameter>>)* ')' ':' <<AQL Type Literal>> '=' <<AQL Expression>> '/]'
+====
+
+==== Module Element documentation ====
+
+The documentation of a <<Template>> or a <<Query>>.
+
+====
+<<Module Element documentation>> =
+
+'[**'
+
+...
+
+'@param ' ...
+
+...
+
+'/]'
+
+====
+
+=== White spaces ===
+
+TODO
+
+== Using Acceleo 4 programmatically ==
+
+=== Parsing ===
+
+----
+TODO
+----
+
+
+=== Validation ===
+
+----
+TODO
+----
+
+=== Completion ===
+
+----
+TODO
+----
+
+=== Generation ===
+
+----
+TODO
+----

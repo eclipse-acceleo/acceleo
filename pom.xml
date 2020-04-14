@@ -48,6 +48,10 @@
     <target-java-version>${source-java-version}</target-java-version>
 
     <tycho.scmUrl>scm:git:http://git.eclipse.org/gitroot/acceleo/org.eclipse.acceleo.git</tycho.scmUrl>
+
+    <asciidoc-version>2.0.0-RC.1</asciidoc-version>
+    <jruby.version>9.2.8.0</jruby.version>
+    <asciidoctorj.version>2.1.0</asciidoctorj.version>
   </properties>
 
   <scm>
@@ -80,6 +84,7 @@
     <module>acceleo-aql/org.eclipse.acceleo.aql</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.tests</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ls</module>
+    <module>acceleo-aql/org.eclipse.acceleo.aql.doc</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.ui</module>
     <module>acceleo-aql/org.eclipse.acceleo.aql.ide.tests</module>
@@ -277,6 +282,23 @@
           <configuration>
             <defaultP2Metadata>false</defaultP2Metadata>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.asciidoctor</groupId>
+          <artifactId>asciidoctor-maven-plugin</artifactId>
+          <version>${asciidoc-version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.jruby</groupId>
+              <artifactId>jruby-complete</artifactId>
+              <version>${jruby.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.asciidoctor</groupId>
+              <artifactId>asciidoctorj</artifactId>
+              <version>${asciidoctorj.version}</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>

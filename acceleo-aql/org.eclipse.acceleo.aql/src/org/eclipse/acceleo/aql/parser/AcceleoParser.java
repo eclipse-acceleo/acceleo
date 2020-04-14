@@ -301,12 +301,12 @@ public class AcceleoParser {
 	public static final String QUERY_END = SLASH_END;
 
 	/**
-	 * Start of {@link Query}.
+	 * Start of {@link Import}.
 	 */
 	public static final String IMPORT_START = "[import ";
 
 	/**
-	 * End of {@link Query}.
+	 * End of {@link Import}.
 	 */
 	public static final String IMPORT_END = SLASH_END;
 
@@ -926,7 +926,7 @@ public class AcceleoParser {
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
-			final List<Variable> parameters = parseVariables();
+			final List<Variable> parameters = parseParameters();
 			final int missingParameters;
 			if (parameters.isEmpty()) {
 				missingParameters = currentPosition;
@@ -994,7 +994,7 @@ public class AcceleoParser {
 	 * 
 	 * @return the {@link List} of at least one {@link Variable}
 	 */
-	protected List<Variable> parseVariables() {
+	protected List<Variable> parseParameters() {
 		final List<Variable> res = new ArrayList<Variable>();
 
 		Variable variable = parseVariable();
@@ -1099,7 +1099,7 @@ public class AcceleoParser {
 			skipSpaces();
 			final int missingOpenParenthesis = readMissingString(OPEN_PARENTHESIS);
 			skipSpaces();
-			final List<Variable> parameters = parseVariables();
+			final List<Variable> parameters = parseParameters();
 			final int missingParameters;
 			if (parameters.isEmpty()) {
 				missingParameters = currentPosition;
