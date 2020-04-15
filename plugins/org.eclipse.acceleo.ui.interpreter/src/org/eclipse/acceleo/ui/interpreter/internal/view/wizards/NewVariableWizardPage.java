@@ -235,8 +235,8 @@ public class NewVariableWizardPage extends WizardPage {
 		if (valueControl != null) {
 			valueControl.dispose();
 		}
-		valueControl = SWTUtil.createScrollableText(parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL
-				| SWT.V_SCROLL);
+		valueControl = SWTUtil.createScrollableText(parent,
+				SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -261,8 +261,8 @@ public class NewVariableWizardPage extends WizardPage {
 			}
 
 			if (exists) {
-				setMessage(InterpreterMessages.getString(
-						"interpreter.wizard.newvariable.info.existingvariable", name), SWT.NONE); //$NON-NLS-1$
+				setMessage(InterpreterMessages
+						.getString("interpreter.wizard.newvariable.info.existingvariable", name), SWT.NONE); //$NON-NLS-1$
 			} else {
 				setMessage(null);
 			}
@@ -391,8 +391,8 @@ public class NewVariableWizardPage extends WizardPage {
 	private void createVariableControls(Composite parent) {
 		final Label variableLabel = new Label(parent, SWT.LEFT | SWT.WRAP);
 		variableLabel.setFont(parent.getFont());
-		variableLabel
-				.setText(InterpreterMessages.getString("interpreter.wizard.newvariable.variable.label") + ':'); //$NON-NLS-1$
+		variableLabel.setText(
+				InterpreterMessages.getString("interpreter.wizard.newvariable.variable.label") + ':'); //$NON-NLS-1$
 		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		variableLabel.setLayoutData(gridData);
 
@@ -459,7 +459,7 @@ public class NewVariableWizardPage extends WizardPage {
 		} else if (valueControl != null) {
 			variableValue = Boolean.valueOf(((BooleanChooser)valueControl).getValue());
 		} else {
-			variableValue = ""; //$NON-NLS-1$			
+			variableValue = ""; //$NON-NLS-1$
 		}
 	}
 
@@ -477,8 +477,8 @@ public class NewVariableWizardPage extends WizardPage {
 		public String isValid(String newText) {
 			String errorMessage = null;
 			if (newText != null && newText.length() > 0 && !isReal(newText)) {
-				errorMessage = InterpreterMessages.getString(
-						"interpreter.wizard.newvariable.error.float.invalid", newText); //$NON-NLS-1$
+				errorMessage = InterpreterMessages
+						.getString("interpreter.wizard.newvariable.error.float.invalid", newText); //$NON-NLS-1$
 			}
 			return errorMessage;
 		}
@@ -537,8 +537,8 @@ public class NewVariableWizardPage extends WizardPage {
 			if (newText == null || "".equals(newText)) { //$NON-NLS-1$
 				errorMessage = InterpreterMessages.getString("interpreter.wizard.newvariable.error.noname"); //$NON-NLS-1$
 			} else if (!isJavaIdentifier(newText)) {
-				errorMessage = InterpreterMessages.getString(
-						"interpreter.wizard.newvariable.error.invalid", newText); //$NON-NLS-1$
+				errorMessage = InterpreterMessages.getString("interpreter.wizard.newvariable.error.invalid", //$NON-NLS-1$
+						newText);
 			}
 			return errorMessage;
 		}
@@ -576,7 +576,7 @@ public class NewVariableWizardPage extends WizardPage {
 		 * @param parent
 		 *            Parent composite of this Control.
 		 */
-		public BooleanChooser(Composite parent) {
+		BooleanChooser(Composite parent) {
 			super(parent, SWT.NONE);
 			setLayout(new FillLayout(SWT.VERTICAL));
 			createContents();

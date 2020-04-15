@@ -406,7 +406,7 @@ public class AnyServices extends AbstractServiceProvider {
 
 	private static class OCLAsTypeService extends FilterService {
 
-		public OCLAsTypeService(Method publicMethod, Object serviceInstance) {
+		OCLAsTypeService(Method publicMethod, Object serviceInstance) {
 			super(publicMethod, serviceInstance);
 		}
 
@@ -429,19 +429,17 @@ public class AnyServices extends AbstractServiceProvider {
 					result.add(services.nothing("Unknown type %s", "null"));
 				}
 			} else {
-				if (receiverType instanceof EClassifierType
-						&& !environment.getEPackageProvider().isRegistered(
-								((EClassifierType)receiverType).getType())) {
+				if (receiverType instanceof EClassifierType && !environment.getEPackageProvider()
+						.isRegistered(((EClassifierType)receiverType).getType())) {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							receiverType));
-				} else if (filterType instanceof EClassifierType
-						&& !environment.getEPackageProvider().isRegistered(
-								((EClassifierType)filterType).getType())) {
+				} else if (filterType instanceof EClassifierType && !environment.getEPackageProvider()
+						.isRegistered(((EClassifierType)filterType).getType())) {
 					result.add(services.nothing("%s is not registered within the current environment.",
 							filterType));
 				} else {
-					result.add(services
-							.nothing("%s is not compatible with type %s", receiverType, filterType));
+					result.add(services.nothing("%s is not compatible with type %s", receiverType,
+							filterType));
 					result.addAll(services.intersection(receiverType, filterType));
 				}
 			}

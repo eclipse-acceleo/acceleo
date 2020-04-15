@@ -45,7 +45,7 @@ final class WorkspaceClassInstance {
 	 * @param bundle
 	 *            Symbolic name of the bundle from which this class has been loaded.
 	 */
-	public WorkspaceClassInstance(Class<?> clazz, String bundle) {
+	WorkspaceClassInstance(Class<?> clazz, String bundle) {
 		this.clazz = clazz;
 		this.bundle = bundle;
 	}

@@ -31,7 +31,7 @@ public interface IQueryBuilderEngine extends IQueryEngine {
 	 * 
 	 * @author <a href="mailto:yvan.lussaud@obeo.fr">Yvan Lussaud</a>
 	 */
-	public static class AstResult {
+	class AstResult {
 
 		/**
 		 * The built {@link Expression}.

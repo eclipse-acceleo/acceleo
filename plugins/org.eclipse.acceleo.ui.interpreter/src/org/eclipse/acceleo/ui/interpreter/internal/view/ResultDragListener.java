@@ -14,6 +14,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.events.TypedEvent;
 
 /**
  * This listener will be registered against the "Result" TreeViewer in order to allow drag operations on that
@@ -22,6 +23,13 @@ import org.eclipse.swt.dnd.DragSourceEvent;
  * @author <a href="mailto:laurent.goubet@obeo.fr">Laurent Goubet</a>
  */
 public class ResultDragListener extends DragSourceAdapter {
+	/**
+	 * TypedEvent.time is an unsigned integer while we need a signed long.
+	 * 
+	 * @see TypedEvent#time
+	 */
+	private static final long TIME_MASK = 0xFFFFFFFFL;
+
 	/** Keeps a reference towards the viewer against which this listener is registered. */
 	private TreeViewer viewer;
 
@@ -66,7 +74,7 @@ public class ResultDragListener extends DragSourceAdapter {
 	@Override
 	public void dragStart(DragSourceEvent event) {
 		LocalSelectionTransfer.getTransfer().setSelection(viewer.getSelection());
-		LocalSelectionTransfer.getTransfer().setSelectionSetTime(event.time & 0xFFFFFFFFL);
+		LocalSelectionTransfer.getTransfer().setSelectionSetTime(event.time & TIME_MASK);
 		event.doit = true;
 	}
 }

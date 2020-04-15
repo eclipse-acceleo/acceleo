@@ -137,7 +137,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 */
 	private int currentContextIndex;
 
-	/** This flag will be set to <code>true</code> whenever we start evaluation of init section's variables. */
+	/**
+	 * This flag will be set to <code>true</code> whenever we start evaluation of init section's variables.
+	 */
 	private boolean evaluatingInitSection;
 
 	/**
@@ -418,8 +420,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			source = lastEObjectSelfValue;
 		}
 
-		getContext().getProgressMonitor().subTask(
-				AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.Generatingfile", filePath)); //$NON-NLS-1$
+		getContext().getProgressMonitor().subTask(AcceleoEngineMessages.getString(
+				"AcceleoEvaluationVisitor.Generatingfile", filePath)); //$NON-NLS-1$
 		if ("stdout".equals(filePath)) { //$NON-NLS-1$
 			getContext().openNested(System.out);
 		} else {
@@ -487,9 +489,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				if (loopVariable != null && loopVariable.getType() != null) {
 					// class cast check on each iteration value
 					// [436843] "OclAny" is a wild card such as "Object" would be in java.
-					if (!loopVariable.getType().isInstance(o)
-							&& loopVariable.getType() != getAcceleoEnvironment().getOCLStandardLibrary()
-									.getOclAny()) {
+					if (!loopVariable.getType().isInstance(o) && loopVariable
+							.getType() != getAcceleoEnvironment().getOCLStandardLibrary().getOclAny()) {
 						if (!iterationCCE) {
 							logIterationError(forBlock, loopVariable, o);
 							iterationCCE = true;
@@ -521,8 +522,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					fireGenerationEvent = fireEvents;
 				}
 				if (isInvalid(guardValue)) {
-					final AcceleoEvaluationException exception = getContext().createAcceleoException(
-							forBlock, (OCLExpression<C>)forBlock.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, o);
+					final AcceleoEvaluationException exception = getContext().createAcceleoException(forBlock,
+							(OCLExpression<C>)forBlock.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, o);
 					throw exception;
 				}
 				if (guardValue != null && ((Boolean)guardValue).booleanValue()) {
@@ -574,10 +575,9 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			actualType = iterationValue.getClass().getName();
 		}
 		final String expectedType = loopVariable.getType().getName();
-		final String message = AcceleoEngineMessages.getString(
-				"AcceleoEvaluationVisitor.IterationClassCast", Integer.valueOf(line), //$NON-NLS-1$
-				((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock.toString(), actualType,
-				expectedType);
+		final String message = AcceleoEngineMessages.getString("AcceleoEvaluationVisitor.IterationClassCast", //$NON-NLS-1$
+				Integer.valueOf(line), ((Module)EcoreUtil.getRootContainer(forBlock)).getName(), forBlock
+						.toString(), actualType, expectedType);
 		final AcceleoEvaluationException exception = new AcceleoEvaluationException(message);
 		exception.setStackTrace(getContext().createAcceleoStackTrace());
 		AcceleoEnginePlugin.log(exception, false);
@@ -620,8 +620,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				IfBlock temp = null;
 				for (final IfBlock elseif : ifBlock.getElseIf()) {
 					fireGenerationEvent = false;
-					final Object elseValue = getVisitor().visitExpression(
-							(OCLExpression<C>)elseif.getIfExpr());
+					final Object elseValue = getVisitor().visitExpression((OCLExpression<C>)elseif
+							.getIfExpr());
 					fireGenerationEvent = fireEvents;
 					if (isInvalid(elseValue)) {
 						final AcceleoEvaluationException exception = getContext().createAcceleoException(
@@ -630,9 +630,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 					}
 
 					if (elseValue != null && !(elseValue instanceof Boolean)) {
-						throw getContext().createAcceleoException(ifBlock,
-								(OCLExpression<C>)elseif.getIfExpr(),
-								"AcceleoEvaluationVisitor.NotBooleanCondition", currentSelf); //$NON-NLS-1$
+						throw getContext().createAcceleoException(ifBlock, (OCLExpression<C>)elseif
+								.getIfExpr(), "AcceleoEvaluationVisitor.NotBooleanCondition", currentSelf); //$NON-NLS-1$
 					}
 
 					if (elseValue != null && ((Boolean)elseValue).booleanValue()) {
@@ -697,8 +696,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// This will hold the name of the variable which value we replaced
 		String varName = null;
 		try {
-			if (var.getType().isInstance(value)
-					|| var.getType() == getEnvironment().getOCLStandardLibrary().getOclAny()) {
+			if (var.getType().isInstance(value) || var.getType() == getEnvironment().getOCLStandardLibrary()
+					.getOclAny()) {
 				varName = var.getName();
 				getEvaluationEnvironment().add(varName, value);
 				for (final org.eclipse.ocl.ecore.OCLExpression nested : letBlock.getBody()) {
@@ -810,8 +809,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	 * @return The protected content without any indentation marker.
 	 */
 	public static String removeProtectedMarkers(String string) {
-		final Matcher matcher = Pattern
-				.compile(PROTECTED_AREA_MARKER + "\\{([^}])([^}])?\\}").matcher(string); //$NON-NLS-1$
+		final Matcher matcher = Pattern.compile(PROTECTED_AREA_MARKER + "\\{([^}])([^}])?\\}") //$NON-NLS-1$
+				.matcher(string);
 		if (matcher.find()) {
 			final StringBuffer buffer = new StringBuffer();
 			do {
@@ -855,8 +854,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			for (Variable var : query.getParameter()) {
 				getEvaluationEnvironment().remove(var.getName());
 			}
-			if (QueryCache.isInvalid(cachedResult) && EMFPlugin.IS_ECLIPSE_RUNNING
-					&& AcceleoPreferences.isDebugMessagesEnabled()) {
+			if (QueryCache.isInvalid(cachedResult) && EMFPlugin.IS_ECLIPSE_RUNNING && AcceleoPreferences
+					.isDebugMessagesEnabled()) {
 				final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
 				final AcceleoEvaluationException exception = getContext().createAcceleoException(query,
 						(OCLExpression<C>)query.getExpression(), "AcceleoEvaluationVisitor.InvalidQuery", //$NON-NLS-1$
@@ -954,8 +953,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// FIXME handle multiple invocations and "each"
 		final Template actualTemplate = prepareInvocation(invocation);
 		if (actualTemplate.getParameter().size() > 0) {
-			final Object contextValue = getEvaluationEnvironment().getValueOf(
-					actualTemplate.getParameter().get(0).getName());
+			final Object contextValue = getEvaluationEnvironment().getValueOf(actualTemplate.getParameter()
+					.get(0).getName());
 			// [255379] sets new value of "self" to match the very first arg of the invocation
 			getEvaluationEnvironment().add(SELF_VARIABLE_NAME, contextValue);
 			implicitContextVariableName = addContextVariableFor(contextValue);
@@ -1137,8 +1136,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 
 		if (expression.eContainingFeature().equals(MtlPackage.eINSTANCE.getBlock_Body())) {
 			EObject eContainer = expression.eContainer();
-			while (eContainer != null && !(eContainer instanceof FileBlock)
-					&& MtlPackage.eINSTANCE.getBlock_Body().equals(eContainer.eContainingFeature())) {
+			while (eContainer != null && !(eContainer instanceof FileBlock) && MtlPackage.eINSTANCE
+					.getBlock_Body().equals(eContainer.eContainingFeature())) {
 				eContainer = eContainer.eContainer();
 			}
 
@@ -1147,8 +1146,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 				Deque<OCLExpression<C>> expressionStack = this.context.getExpressionStack();
 				for (int i = expressionStack.size() - 1; i >= 0; i--) {
 					OCLExpression<C> oclExpression = expressionStack.get(i);
-					if (oclExpression instanceof TemplateInvocation
-							&& expressionStack.indexOf(eContainer) > expressionStack.indexOf(oclExpression)) {
+					if (oclExpression instanceof TemplateInvocation && expressionStack.indexOf(
+							eContainer) > expressionStack.indexOf(oclExpression)) {
 						preventTemplateInvocation = false;
 						break;
 					}
@@ -1172,8 +1171,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// We need something a little more intelligent to avoid overriding all "+" operators
 		if (callExp.getOperationCode() == PredefinedType.PLUS) {
 			final C stringType = getEnvironment().getOCLStandardLibrary().getString();
-			if (callExp.getSource().getType() == stringType
-					|| callExp.getArgument().get(0).getType() == stringType) {
+			if (callExp.getSource().getType() == stringType || callExp.getArgument().get(0)
+					.getType() == stringType) {
 				((EObject)callExp.getReferredOperation()).eAdapters().add(new AcceleoOverrideAdapter());
 			}
 		} else if (((EObject)callExp.getReferredOperation()).eIsProxy()) {
@@ -1212,14 +1211,13 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			}
 			try {
 				if (isStandardOperation) {
-					result = AcceleoLibraryOperationVisitor
-							.callStandardOperation((AcceleoEvaluationEnvironment)getEvaluationEnvironment(),
-									operation, source, args);
+					result = AcceleoLibraryOperationVisitor.callStandardOperation(
+							(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source,
+							args);
 				} else {
-					result = AcceleoLibraryOperationVisitor
-							.callNonStandardOperation(
-									(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation,
-									source, args);
+					result = AcceleoLibraryOperationVisitor.callNonStandardOperation(
+							(AcceleoEvaluationEnvironment)getEvaluationEnvironment(), operation, source,
+							args);
 				}
 				// CHECKSTYLE:OFF
 			} catch (Exception e) {
@@ -1309,8 +1307,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			debug = null;
 		}
 		getContext().dispose();
-		throw new AcceleoEvaluationCancelledException(AcceleoEngineMessages
-				.getString("AcceleoEvaluationVisitor.CancelException")); //$NON-NLS-1$
+		throw new AcceleoEvaluationCancelledException(AcceleoEngineMessages.getString(
+				"AcceleoEvaluationVisitor.CancelException")); //$NON-NLS-1$
 	}
 
 	/**
@@ -1508,8 +1506,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 			if (isInvalid(guardValue)) {
 				if (exception == null) {
 					final Object currentSelf = getEvaluationEnvironment().getValueOf(SELF_VARIABLE_NAME);
-					exception = getContext().createAcceleoException(candidate,
-							(OCLExpression<C>)candidate.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, currentSelf);
+					exception = getContext().createAcceleoException(candidate, (OCLExpression<C>)candidate
+							.getGuard(), UNDEFINED_GUARD_MESSAGE_KEY, currentSelf);
 				}
 				candidateIterator.remove();
 			} else if (guardValue == null || !((Boolean)guardValue).booleanValue()) {
@@ -1871,9 +1869,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		// Note : sort this by order of frequency to allow shot-circuit evaluation
 		boolean generate = reference == MtlPackage.eINSTANCE.getBlock_Body();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Each();
-		generate = generate
-				|| (fireProtectedAreaGenerationEvent && reference == MtlPackage.eINSTANCE
-						.getProtectedAreaBlock_Marker());
+		generate = generate || (fireProtectedAreaGenerationEvent && reference == MtlPackage.eINSTANCE
+				.getProtectedAreaBlock_Marker());
 		generate = generate || reference == MtlPackage.eINSTANCE.getTemplateInvocation_Each();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_Before();
 		generate = generate || reference == MtlPackage.eINSTANCE.getForBlock_After();
@@ -1892,8 +1889,8 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 	private Object switchExpression(OCLExpression<C> expression) {
 		Object result;
 		if (expression == null) {
-			throw new AcceleoEvaluationException(AcceleoEngineMessages
-					.getString("AcceleoEvaluationVisitor.UnresolvedCompilationErrorNull")); //$NON-NLS-1$
+			throw new AcceleoEvaluationException(AcceleoEngineMessages.getString(
+					"AcceleoEvaluationVisitor.UnresolvedCompilationErrorNull")); //$NON-NLS-1$
 		}
 		AcceleoEvaluationVisitorDecorator<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS, E> delegate = getAcceleoVisitor();
 		if (expression instanceof Template) {
@@ -2040,7 +2037,7 @@ public class AcceleoEvaluationVisitor<PK, C, O, P, EL, PM, S, COA, SSA, CT, CLS,
 		 * @param expession
 		 *            Expression to which evaluation will be delegated.
 		 */
-		public ParameterInitExpression(OCLExpression<C> expession) {
+		ParameterInitExpression(OCLExpression<C> expession) {
 			referredExpression = expession;
 		}
 
