@@ -79,6 +79,11 @@ import org.eclipse.emf.ecore.EPackage;
 public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 	/**
+	 * The is incompatible with message.
+	 */
+	private static final String IS_INCOMPATIBLE_WITH = " is incompatible with ";
+
+	/**
 	 * Missing name message.
 	 */
 	private static final String MISSING_NAME = "Missing name";
@@ -128,6 +133,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	 */
 	private final IType booleanType;
 
+	/**
+	 * {@link Boolean} {@link IType}.
+	 */
 	private final IType booleanObjectType;
 
 	/**
@@ -332,7 +340,6 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 						addMessage(template, ValidationMessageLevel.ERROR, parameter.getName()
 								+ " duplicated parameter", parameter.getStartPosition(), parameter
 										.getEndPosition());
-
 					}
 				}
 			}
@@ -563,7 +570,7 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 						messages.addAll(validateBindingTypeForceCollection(binding, iType, possibleType));
 					} else {
 						messages.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType
-								+ " is incompatible with " + possibleType, binding.getStartPosition(), binding
+								+ IS_INCOMPATIBLE_WITH + possibleType, binding.getStartPosition(), binding
 										.getEndPosition()));
 					}
 				} else {
@@ -594,11 +601,11 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 
 		if (possibleType instanceof ICollectionType) {
 			if (!iType.isAssignableFrom(((ICollectionType)possibleType).getCollectionType())) {
-				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + " is incompatible with "
+				res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + IS_INCOMPATIBLE_WITH
 						+ possibleType, node.getStartPosition(), node.getEndPosition()));
 			}
 		} else if (!iType.isAssignableFrom(possibleType)) {
-			res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + " is incompatible with "
+			res.add(new ValidationMessage(ValidationMessageLevel.WARNING, iType + IS_INCOMPATIBLE_WITH
 					+ possibleType, node.getStartPosition(), node.getEndPosition()));
 		}
 
@@ -880,7 +887,9 @@ public class AcceleoValidator extends AcceleoSwitch<Object> {
 	}
 
 	/**
-	 * @param astNode
+	 * Checks given possible {@link IType} against the {@link String} {@link IType}.
+	 * 
+	 * @param node
 	 *            the {@link ASTNode}
 	 * @param possibleTypes
 	 *            the {@link Set} of possible {@link IType}

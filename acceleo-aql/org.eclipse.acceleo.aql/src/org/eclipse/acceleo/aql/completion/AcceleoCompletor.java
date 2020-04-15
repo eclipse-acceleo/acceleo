@@ -281,6 +281,14 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 					+ AcceleoParser.TEMPLATE_HEADER_END, 0));
 		} else if (errorTemplate.getMissingEndHeader() != -1) {
 			res.add(new TextCompletionProposal(AcceleoParser.TEMPLATE_HEADER_END, 0));
+			if (errorTemplate.getGuard() == null && errorTemplate.getPost() == null) {
+				res.add(new TextCompletionProposal(AcceleoParser.TEMPLATE_GUARD + SPACE
+						+ AcceleoParser.OPEN_PARENTHESIS + AcceleoParser.CLOSE_PARENTHESIS, 1));
+			}
+			if (errorTemplate.getPost() == null) {
+				res.add(new TextCompletionProposal(AcceleoParser.TEMPLATE_POST
+						+ AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.TEMPLATE_HEADER_END, 2));
+			}
 		} else if (errorTemplate.getMissingEnd() != -1) {
 			res.addAll(getStatementProposals());
 			res.add(new TextCompletionProposal(AcceleoParser.TEMPLATE_END, 0));
@@ -470,7 +478,7 @@ public class AcceleoCompletor extends AcceleoSwitch<List<ICompletionProposal>> {
 			res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS + AcceleoParser.FOR_HEADER_END,
 					0));
 			if (errorForStatement.getSeparator() == null) {
-				res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS + " "
+				res.add(new TextCompletionProposal(AcceleoParser.CLOSE_PARENTHESIS + SPACE
 						+ AcceleoParser.FOR_SEPARATOR + AcceleoParser.CLOSE_PARENTHESIS
 						+ AcceleoParser.FOR_HEADER_END, 2));
 			}

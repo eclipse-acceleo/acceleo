@@ -69,7 +69,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	private static final String ID = "org.eclipse.acceleo.aql";
 
 	/**
-	 * The empty result;
+	 * The empty result.
 	 */
 	private static final String EMPTY_RESULT = "";
 
@@ -89,7 +89,7 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	/**
 	 * Generates the given {@link ASTNode} with the given variables.
 	 * 
-	 * @param environment
+	 * @param acceleoEnvironment
 	 *            the {@link IAcceleoEnvironment}
 	 * @param node
 	 *            the {@link ASTNode} to generate
@@ -97,13 +97,14 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 	 *            the variables
 	 * @return the generated {@link Object}, can be <code>null</code>
 	 */
-	public Object generate(IAcceleoEnvironment environment, ASTNode node, Map<String, Object> variables) {
+	public Object generate(IAcceleoEnvironment acceleoEnvironment, ASTNode node,
+			Map<String, Object> variables) {
 
 		final Object res;
 
-		this.environment = environment;
-		final IQueryEnvironment env = environment.getQueryEnvironment();
-		this.aqlEngine = QueryEvaluation.newEngine(env);
+		this.environment = acceleoEnvironment;
+		final IQueryEnvironment queryEnvironment = acceleoEnvironment.getQueryEnvironment();
+		this.aqlEngine = QueryEvaluation.newEngine(queryEnvironment);
 		this.variablesStack = new ArrayDeque<>();
 
 		pushVariables(variables);
@@ -227,7 +228,13 @@ public class AcceleoEvaluator extends AcceleoSwitch<Object> {
 		final String res;
 
 		try {
-			res = (String)doSwitch(template.getBody());
+			final String templateText = (String)doSwitch(template.getBody());
+			if (template.getPost() != null) {
+				variablesStack.peek().put("self", templateText);
+				res = toString(doSwitch(template.getPost()));
+			} else {
+				res = templateText;
+			}
 		} finally {
 			environment.popStack(template);
 		}

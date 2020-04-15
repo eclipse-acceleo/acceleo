@@ -17,7 +17,7 @@
  * My template has a nice comment.
  * <<templateComment>>@param myParam the input EPackage<<templateCommentAfterParameters>>
 */]
-[template <<templateVisibility>>public <<templateName>>myTemplate<<templateOpenParenthesis>>(<<templateVariableName>>myParam <<templateVariableColon>>: <<templateVariableType>>ecore::EPackage<<templateCloseParenthesis>>) ? <<templateGuardOpenParenthesis>>(<<templateGuardExpression>>myParam.<<templateGuardExpressionAfterDot>>name <> null<<templateGuardCloseParenthesis>>) post(<<templatePostExpression>>self.<<templatePostExpressionAfterDot>>trim()<<templatePostCloseParenthesis>>) <<templateEndHeader>>]
+[template <<templateVisibility>>public <<templateName>>myTemplate<<templateOpenParenthesis>>(<<templateVariableName>>myParam <<templateVariableColon>>: <<templateVariableType>>ecore::EPackage<<templateCloseParenthesis>>) ? <<templateGuardOpenParenthesis>>(<<templateGuardExpression>>myParam.<<templateGuardExpressionAfterDot>>name <> null<<templateGuardCloseParenthesis>>) <<templatePost>>post(<<templatePostExpression>>self.<<templatePostExpressionAfterDot>>trim()<<templatePostCloseParenthesis>>) <<templateEndHeader>>]
   <<statementInTemplate>>
   some static text.
   [<<queryStatementExpression>>myParam.<<queryStatementExpressionAfterDot>>name + '.txt'<<queryStatementEnd>>/]
@@ -60,6 +60,8 @@
       [/for]
     [/let]
   [/let]
+[/template]
+[template public myTemplate1 (myParam : ecore::EPackage) <<templateEndHeaderNotGuardNoPost>>]
 [/template]
 <<moduleElement>>
 
